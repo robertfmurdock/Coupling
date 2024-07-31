@@ -17,6 +17,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.jso
 import react.Props
+import react.ReactNode
 import react.router.dom.SetURLSearchParams
 import react.router.dom.useSearchParams
 
@@ -55,6 +56,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
                     when (visualization) {
                         Visualization.LineOverTime -> PairFrequencyLineGraph.create(data, window)
                         Visualization.Heatmap -> PairFrequencyHeatMap.create(data, window, spinsUntilFullRotation)
+                        Visualization.CycleTimeBarChart -> ReactNode("TBD")
                     }
                 },
                 window = window,

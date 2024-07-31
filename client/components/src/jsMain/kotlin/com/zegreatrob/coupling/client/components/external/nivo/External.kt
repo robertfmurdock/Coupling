@@ -49,7 +49,7 @@ sealed external interface NivoHeatMapAxis {
     var tickSize: Number
     var tickPadding: Number
     var tickRotation: Number
-    var legend: String
+    var legend: String?
     var legendPosition: String?
     var legendOffset: Number
     var truncateTickAt: Number

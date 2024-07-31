@@ -19,6 +19,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
@@ -38,7 +40,7 @@ suspend fun generateFakeContributions(
     pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
     selectedWindow: GqlContributionWindow,
     fakeStyle: FakeDataStyle,
-): List<Pair<CouplingPair, List<Contribution>>> =
+): List<Pair<CouplingPair, ContributionReport>> =
     contributionStartDateTime(selectedWindow, pairsContributions)
         .let { startDateTime ->
             val datesUntilNow = (1..(startDateTime.daysUntil(Clock.System.now(), TimeZone.currentSystemDefault())))
@@ -56,7 +58,15 @@ suspend fun generateFakeContributions(
             }
         }.let { updated ->
             pairsContributions.map { (pair) ->
-                pair to (updated[pair] ?: emptyList())
+                pair to ContributionReport(
+                    contributions = (updated[pair] ?: emptyList()).map {
+                        partyRecord(
+                            partyId = PartyId(""),
+                            data = it,
+                            modifyingUserEmail = "",
+                        )
+                    },
+                )
             }
         }
 

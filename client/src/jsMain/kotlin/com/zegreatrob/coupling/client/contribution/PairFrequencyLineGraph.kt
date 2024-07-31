@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -23,7 +25,7 @@ import web.cssom.Color
 import web.cssom.px
 
 external interface PairFrequencyLineGraphProps : Props {
-    var data: List<Pair<CouplingPair, List<Contribution>>>
+    var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
 }
 
@@ -31,7 +33,7 @@ external interface PairFrequencyLineGraphProps : Props {
 val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) ->
     val duration = window.toModel()
 
-    if (data.flatMap { it.second }.isNotEmpty()) {
+    if (data.flatMap { it.second.contributions?.elements ?: emptyList() }.isNotEmpty()) {
         CouplingResponsiveLine {
             legend = "Pair Commits Over Time"
             this.data = pairingLineData(data)
@@ -56,8 +58,9 @@ val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) 
     }
 }
 
-private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribution>>>): Array<NivoLineData> =
-    selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
+private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, ContributionReport>>): Array<NivoLineData> =
+    selectedPairs.map { pairContributionLine(it.first, it.second.contributions?.elements ?: emptyList()) }
+        .toTypedArray()
 
 private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>) =
     NivoLineData(

@@ -8,7 +8,8 @@ import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.client.components.stats.heatmap.interpolatorAsync
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
 import com.zegreatrob.coupling.json.GqlContributionWindow
-import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -17,7 +18,7 @@ import react.useEffect
 import react.useState
 
 external interface PairFrequencyHeatMapProps : Props {
-    var data: List<Pair<CouplingPair, List<Contribution>>>
+    var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
     var spinsUntilFullRotation: Int
 }
@@ -31,7 +32,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
     }
     interpolator ?: return@nfc
 
-    val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap())
+    val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap().mapValues { (_, report) -> report.contributions?.elements ?: emptyList() })
     val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(
         window,
         spinsUntilFullRotation,
@@ -52,8 +53,6 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
             tickSize = 5,
             tickPadding = 5,
             tickRotation = 0,
-            legend = "Player",
-            legendPosition = "middle",
             legendOffset = -52,
             truncateTickAt = 0,
         )
@@ -61,8 +60,6 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
             tickSize = 5,
             tickPadding = 5,
             tickRotation = -90,
-            legend = "Player",
-            legendPosition = "middle",
             legendOffset = -30,
             truncateTickAt = 0,
         )

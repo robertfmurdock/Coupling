@@ -41,8 +41,9 @@ class PairFrequencyControlsTest {
     fun selectingAPairWillPassThroughThatPairContributions() = asyncSetup(object {
         val expectedPair = pairOf(stubPlayer())
         val expectedContributions = listOf(stubContribution())
+        val expectedReport = stubContributionReport(expectedContributions)
         var pairs = listOf(
-            expectedPair to stubContributionReport(expectedContributions),
+            expectedPair to expectedReport,
             pairOf(stubPlayer()) to stubContributionReport(listOf(stubContribution())),
         )
         val viewSpy = SpyData<VisualizationContext, ReactNode>()
@@ -54,7 +55,7 @@ class PairFrequencyControlsTest {
         actor.click(screen.findByRole("checkbox", RoleOptions(expectedPair.pairName)))
     } verify {
         viewSpy.spyReceivedValues.last()
-            .assertIsEqualTo(VisualizationContext(Heatmap, listOf(expectedPair to expectedContributions)))
+            .assertIsEqualTo(VisualizationContext(Heatmap, listOf(expectedPair to expectedReport)))
     }
 }
 

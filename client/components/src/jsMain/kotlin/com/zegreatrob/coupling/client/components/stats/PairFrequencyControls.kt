@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.contribution.contributionConten
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
+import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
@@ -38,6 +39,7 @@ external interface PairFrequencyControlsProps : Props {
 enum class Visualization {
     Heatmap,
     LineOverTime,
+    CycleTimeBarChart,
 }
 
 enum class FakeDataStyle {
@@ -48,7 +50,7 @@ enum class FakeDataStyle {
 
 data class VisualizationContext(
     val visualization: Visualization,
-    val data: List<Pair<CouplingPair, List<Contribution>>>,
+    val data: List<Pair<CouplingPair, ContributionReport>>,
 )
 
 @ReactFunc
@@ -57,19 +59,22 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
     val (visualization, setVisualization) = useState(Visualization.Heatmap)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
-    val (fakeContributions, setFakeContributions) = useState<List<Pair<CouplingPair, List<Contribution>>>>(emptyList())
+    val (fakeContributions, setFakeContributions) = useState<List<Pair<CouplingPair, ContributionReport>>>(emptyList())
     useEffect(fakeStyle) {
         if (fakeStyle != null) {
             setFakeContributions(generateFakeContributions(pairsContributions, selectedWindow, fakeStyle))
         }
     }
-    val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> = if (fakeStyle != null) {
+    val allPairContributions: List<Pair<CouplingPair, ContributionReport>> = if (fakeStyle != null) {
         fakeContributions
     } else {
-        pairsContributions.mapNotNull { it.first to (it.second.contributions?.elements ?: return@mapNotNull null) }
+        pairsContributions
     }
 
-    val allLabels = allPairContributions.flatMap { it.second.map(Contribution::label) }.toSet()
+    val allLabels =
+        allPairContributions.mapNotNull { it.second.contributions?.elements?.map(Contribution::label) }
+            .flatten()
+            .toSet()
     val filteredData = allPairContributions.applyFilters(
         selectedPairs,
         selectedLabelFilter,
@@ -87,7 +92,9 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                 css { display = Display.inlineBlock }
                 PairSelector(
                     pairs = allPairContributions.toMap()
-                        .filterValues(List<Contribution>::isNotEmpty).keys.toList(),
+                        .filterValues { it.contributions?.isNotEmpty() == true }
+                        .keys
+                        .toList(),
                     selectedPairs = selectedPairs,
                     onSelectionChange = setSelectedPairs::invoke,
                 )
@@ -181,10 +188,10 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
     }
 }
 
-private fun List<Pair<CouplingPair, List<Contribution>>>.applyFilters(
+private fun List<Pair<CouplingPair, ContributionReport>>.applyFilters(
     selectedPairs: List<CouplingPair>,
     selectedLabelFilter: String?,
-): List<Pair<CouplingPair, List<Contribution>>> {
+): List<Pair<CouplingPair, ContributionReport>> {
     val transforms = if (selectedLabelFilter != null) {
         listOf(selectedLabelTransform(selectedLabelFilter))
     } else {
@@ -197,6 +204,8 @@ private fun List<Pair<CouplingPair, List<Contribution>>>.applyFilters(
 }
 
 private fun selectedLabelTransform(selectedLabelFilter: String) =
-    { (pair, contributions): Pair<CouplingPair, List<Contribution>> ->
-        pair to contributions.filter { it.label == selectedLabelFilter }
+    { (pair, report): Pair<CouplingPair, ContributionReport> ->
+        pair to report.run {
+            copy(contributions = contributions?.filter { it.element.label == selectedLabelFilter })
+        }
     }
