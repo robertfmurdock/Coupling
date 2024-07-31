@@ -58,14 +58,17 @@ suspend fun generateFakeContributions(
             }
         }.let { updated ->
             pairsContributions.map { (pair) ->
+                val contributions = updated[pair] ?: emptyList()
                 pair to ContributionReport(
-                    contributions = (updated[pair] ?: emptyList()).map {
+                    contributions = contributions.map {
                         partyRecord(
                             partyId = PartyId(""),
                             data = it,
                             modifyingUserEmail = "",
                         )
                     },
+                    medianCycleTime = contributions.getOrNull(contributions.size / 2)?.cycleTime,
+                    withCycleTimeCount = contributions.mapNotNull { it.cycleTime }.count(),
                 )
             }
         }
@@ -174,7 +177,7 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     semver = null,
     firstCommitDateTime = this.toInstant(TimeZone.currentSystemDefault()) - 10.minutes,
     integrationDateTime = this.toInstant(TimeZone.currentSystemDefault()) - 20.minutes,
-    cycleTime = (1..4).random().days,
+    cycleTime = ((1..12).random() / 4.0).days,
     name = null,
     commitCount = null,
 )

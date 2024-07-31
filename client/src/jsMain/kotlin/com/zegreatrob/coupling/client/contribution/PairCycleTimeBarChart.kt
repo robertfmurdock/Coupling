@@ -54,7 +54,7 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
         margin = NivoChartMargin(
             top = 65,
             right = 90,
-            bottom = 10 + estimatedPlayerWidth * largestMobSize,
+            bottom = 10 + ESTIMATED_PLAYER_WIDTH * largestMobSize,
             left = 90,
         )
         this.valueFormat = formatMillisAsDuration
@@ -66,19 +66,20 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
         this.labelPosition = "end"
         this.labelOffset = -10
         this.groupMode = "grouped"
+        colors = jso { scheme = "pastel1" }
         tooltipLabel = { data ->
             "${data.indexValue.unsafeCast<CouplingPair>().pairName} - ${data.formattedValue}"
         }
     }
 }
 
-val estimatedPlayerWidth = 40.0
+private const val ESTIMATED_PLAYER_WIDTH = 40.0
 
 val PairTickMark = FC<AxisTickProps> { props ->
     val pair = props.value.unsafeCast<CouplingPair>()
-    val elementWidth = pair.count() * estimatedPlayerWidth
+    val elementWidth = pair.count() * ESTIMATED_PLAYER_WIDTH
     val elementHeight = 45.0
-    val backColor = "rgb(232, 193, 160)"
+    val backColor = "rgb(251, 180, 174)"
     g {
         transform = "translate(${props.x.toDouble()}, ${props.y.toDouble() + 22})"
         rect {
