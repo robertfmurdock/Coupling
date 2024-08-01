@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.datetime.Clock
 import kotlin.time.Duration
@@ -57,10 +59,10 @@ fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
 
     val data: Array<NivoHeatMapData> = players.map { player1 ->
         NivoHeatMapData(
-            id = player1.name,
+            id = pairOf(player1).pairId,
             data = players.map { player2 ->
                 NivoPoint(
-                    x = player2.name,
+                    x = pairOf(player2).pairId,
                     y = this[setOf(player1, player2)]?.size,
                 )
             }.toTypedArray(),

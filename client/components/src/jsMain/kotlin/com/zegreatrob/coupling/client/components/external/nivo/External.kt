@@ -36,7 +36,7 @@ sealed external interface NivoDatum {
 }
 
 sealed external interface NivoHeatMapData {
-    var id: String
+    var id: Any
     var data: Array<NivoPoint>
 }
 
@@ -62,7 +62,7 @@ sealed external interface NivoAxis {
 
 external interface AxisTickProps : Props {
     var tickIndex: Number
-    var value: Number
+    var value: dynamic
     var format: ((Number) -> String)?
     var x: Number
     var y: Number

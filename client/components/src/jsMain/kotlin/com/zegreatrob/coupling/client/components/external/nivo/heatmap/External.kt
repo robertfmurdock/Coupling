@@ -17,6 +17,7 @@ external interface ResponsiveHeatMapProps : Props {
     var axisTop: NivoAxis
     var axisLeft: NivoAxis
     var axisRight: NivoAxis
+    var axisBottom: NivoAxis
     var emptyColor: String
     var margin: NivoChartMargin
 }

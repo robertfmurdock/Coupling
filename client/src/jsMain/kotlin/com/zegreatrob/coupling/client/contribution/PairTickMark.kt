@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.external.nivo.AxisTickProps
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import emotion.react.css
 import react.FC
 import react.dom.html.ReactHTML.div
@@ -11,19 +11,36 @@ import react.dom.svg.ReactSVG.g
 import react.dom.svg.ReactSVG.line
 import react.dom.svg.ReactSVG.rect
 import react.useContext
+import react.useLayoutEffect
+import react.useRef
+import react.useState
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.px
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.cos
+import kotlin.math.sin
 
 const val ESTIMATED_PLAYER_WIDTH = 40.0
 
 val PairTickMark = FC<AxisTickProps> { props ->
     val getColor = useContext(colorContext)
-
-    val pair = props.value.unsafeCast<CouplingPair>()
-    val elementWidth = pair.count() * ESTIMATED_PLAYER_WIDTH
-    val elementHeight = 45.0
+    val pairs = useContext(pairContext)
+    val pair = pairs.find { it.pairId == props.value } ?: return@FC
     val backColor = getColor(props)
+    val targetRef = useRef<web.html.HTMLDivElement>()
+    val (elementWidth, setElementWidth) = useState(0)
+    val (elementHeight, setElementHeight) = useState(0)
+
+    useLayoutEffect(dependencies = emptyArray()) {
+        targetRef.current?.let {
+            setElementWidth(it.offsetWidth)
+            setElementHeight(it.offsetHeight)
+        }
+    }
+
+    val tickLength = 12.0
     g {
         transform = "translate(${props.x.toDouble()}, ${props.y.toDouble() + 22})"
         rect {
@@ -38,14 +55,22 @@ val PairTickMark = FC<AxisTickProps> { props ->
             stroke = backColor
             strokeWidth = 1.5
             y1 = -22.0
-            y2 = -12.0
+            y2 = -tickLength
         }
+
+        val rotation = 90.0 + (props.rotate?.toDouble() ?: 0.0)
+
+        val rotationRadians = rotation * PI / 180.0
+//        val rotatedWidth = abs(elementWidth * sin(rotationRadians)) + abs(elementHeight * cos(rotationRadians))
+        val rotatedHeight = abs(elementWidth * cos(rotationRadians)) + abs(elementHeight * sin(rotationRadians))
         g {
-            transform = "translate(${elementHeight / 2}, ${-24.0}) rotate(90)"
+            transform = "translate(${rotatedHeight / 2}, ${-tickLength})"
             foreignObject {
-                width = elementWidth
-                height = elementHeight
+                width = elementWidth.toDouble()
+                height = elementHeight.toDouble()
+                transform = "rotate($rotation)"
                 div {
+                    ref = targetRef
                     css {
                         display = Display.inlineBlock
                     }
