@@ -4890,7 +4890,7 @@
   dependencies:
     "@react-spring/web" "9.3.1"
 
-"@nivo/tooltip@0.87.0":
+"@nivo/tooltip@0.87.0", "@nivo/tooltip@^0.87.0":
   version "0.87.0"
   resolved "https://registry.yarnpkg.com/@nivo/tooltip/-/tooltip-0.87.0.tgz#5c5898371cc4f291fbb5865d68f42dd84beead35"
   integrity sha512-nZJWyRIt/45V/JBdJ9ksmNm1LFfj59G1Dy9wB63Icf2YwyBT+J+zCzOGXaY7gxCxgF1mnSL3dC7fttcEdXyN/g==

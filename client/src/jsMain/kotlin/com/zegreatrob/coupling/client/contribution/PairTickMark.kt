@@ -35,53 +35,62 @@ val PairTickMark = FC<AxisTickProps> { props ->
 
     useLayoutEffect(dependencies = emptyArray()) {
         targetRef.current?.let {
-            setElementWidth(it.offsetWidth)
-            setElementHeight(it.offsetHeight)
+            setElementWidth(it.scrollWidth)
+            setElementHeight(it.scrollHeight)
         }
     }
 
     val tickLength = 12.0
     g {
-        transform = "translate(${props.x.toDouble()}, ${props.y.toDouble() + 22})"
+        transform = "translate(${props.x.toDouble()}, ${props.y.toDouble()}) rotate(${props.rotate})"
         rect {
-            x = -14.0
-            y = -6.0
-            ry = 3.0
-            width = 28.0
-            height = 24.0
-            fill = "rgba(0, 0, 0, .05)"
+            x = -2.0
+            y = -2.0
+            width = 4.0
+            height = 4.0
+            fill = "rgba(0, 0, 0)"
         }
-        line {
-            stroke = backColor
-            strokeWidth = 1.5
-            y1 = -22.0
-            y2 = -tickLength
-        }
-
-        val rotation = 90.0 + (props.rotate?.toDouble() ?: 0.0)
-
-        val rotationRadians = rotation * PI / 180.0
-//        val rotatedWidth = abs(elementWidth * sin(rotationRadians)) + abs(elementHeight * cos(rotationRadians))
-        val rotatedHeight = abs(elementWidth * cos(rotationRadians)) + abs(elementHeight * sin(rotationRadians))
         g {
-            transform = "translate(${rotatedHeight / 2}, ${-tickLength})"
-            foreignObject {
-                width = elementWidth.toDouble()
-                height = elementHeight.toDouble()
-                transform = "rotate($rotation)"
-                div {
-                    ref = targetRef
-                    css {
-                        display = Display.inlineBlock
-                    }
+            transform = "translate(0, 22)"
+            rect {
+                x = -14.0
+                y = -6.0
+                ry = 3.0
+                width = 28.0
+                height = 24.0
+                fill = "rgba(0, 0, 0, .05)"
+            }
+            line {
+                stroke = backColor
+                strokeWidth = 1.5
+                y1 = -22.0
+                y2 = -tickLength
+            }
+
+            val rotation = 90.0
+
+            val rotationRadians = rotation * PI / 180.0
+            val rotatedHeight = abs(elementWidth * cos(rotationRadians)) + abs(elementHeight * sin(rotationRadians))
+            g {
+                transform = "translate(${rotatedHeight / 2.0}, ${-tickLength})"
+                foreignObject {
+                    width = elementWidth.toDouble()
+                    height = elementHeight.toDouble()
+                    transform = "rotate(90)"
                     div {
+                        ref = targetRef
                         css {
-                            backgroundColor = Color(backColor)
-                            borderRadius = 5.px
-                            paddingTop = 1.px
-                            paddingBottom = 4.px
+                            display = Display.inlineBlock
                         }
-                        TiltedPlayerList(playerList = pair, size = 25)
+                        div {
+                            css {
+                                backgroundColor = Color(backColor)
+                                borderRadius = 5.px
+                                paddingTop = 1.px
+                                paddingBottom = 4.px
+                            }
+                            TiltedPlayerList(playerList = pair, size = 25)
+                        }
                     }
                 }
             }

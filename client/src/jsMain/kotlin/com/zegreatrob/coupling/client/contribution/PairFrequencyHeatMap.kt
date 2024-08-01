@@ -63,14 +63,14 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
                     tickSize = 5,
                     tickPadding = 5,
                     legendOffset = -52,
-                    tickRotation = -90,
+                    tickRotation = 90,
                     truncateTickAt = 0,
                     renderTick = PairTickMark,
                 )
                 axisTop = NivoAxis(
                     tickSize = 5,
                     tickPadding = 5,
-                    tickRotation = -90,
+                    tickRotation = 180,
                     legendOffset = -30,
                     truncateTickAt = 0,
                     renderTick = PairTickMark,
@@ -87,7 +87,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
                 )
                 axisBottom = NivoAxis(
                     renderTick = PairTickMark,
-                    tickRotation = -90,
+                    tickRotation = 0,
                 )
             }
         }
