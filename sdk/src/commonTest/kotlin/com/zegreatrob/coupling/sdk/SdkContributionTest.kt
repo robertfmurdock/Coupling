@@ -212,6 +212,7 @@ class SdkContributionTest {
         val excludedContributionInput = stubContributionInput()
             .copy(
                 dateTime = Clock.System.now().minus(8.days),
+                integrationDateTime = null,
                 participantEmails = setOf(expectedPlayer.email),
             )
         val contributionInputs = listOf(
@@ -250,7 +251,7 @@ class SdkContributionTest {
         val contributionInputs = (0..12).map { number ->
             now.minus(number.days)
         }.map { dateTime ->
-            stubContributionInput().copy(dateTime = dateTime)
+            stubContributionInput().copy(dateTime = dateTime, integrationDateTime = dateTime)
         }
         val expectedLimit = 6
     }) {

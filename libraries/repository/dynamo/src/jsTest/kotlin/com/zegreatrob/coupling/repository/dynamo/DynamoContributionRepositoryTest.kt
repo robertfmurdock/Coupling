@@ -38,6 +38,69 @@ class DynamoContributionRepositoryTest {
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyId.with(elementList = contributions)
+                .sortedByDescending { "${it.element.integrationDateTime} ${it.element.id}" }
+                .map {
+                    Record(
+                        data = it,
+                        modifyingUserId = userEmail,
+                        isDeleted = false,
+                        timestamp = clock.now(),
+                    )
+                },
+        )
+    }
+
+    @Test
+    fun contributionsAreOrderedByIntegrationDateTime() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoContributionRepository
+        val userEmail = uuidString()
+        val clock = MagicClock().apply { currentTime = Clock.System.now() }
+        val contributions = generateSequence { stubContribution() }
+            .take(8)
+            .toList()
+        val unrelatedContribution = stubContribution()
+    }) {
+        repository = DynamoContributionRepository.invoke(userEmail, clock)
+    } exercise {
+        repository.save(partyId.with(element = contributions))
+        repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
+        repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
+    } verify { result: List<PartyRecord<Contribution>> ->
+        result.assertIsEqualTo(
+            partyId.with(elementList = contributions)
+                .sortedByDescending { "${it.element.integrationDateTime} ${it.element.id}" }
+                .map {
+                    Record(
+                        data = it,
+                        modifyingUserId = userEmail,
+                        isDeleted = false,
+                        timestamp = clock.now(),
+                    )
+                },
+        )
+    }
+
+    @Test
+    fun contributionsAreOrderedByDateTimeWhenNoIntegrationDateTimeIsAvailable() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoContributionRepository
+        val userEmail = uuidString()
+        val clock = MagicClock().apply { currentTime = Clock.System.now() }
+        val contributions = generateSequence { stubContribution() }
+            .take(8)
+            .map { it.copy(integrationDateTime = null) }
+            .toList()
+        val unrelatedContribution = stubContribution()
+    }) {
+        repository = DynamoContributionRepository.invoke(userEmail, clock)
+    } exercise {
+        repository.save(partyId.with(element = contributions))
+        repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
+        repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
+    } verify { result: List<PartyRecord<Contribution>> ->
+        result.assertIsEqualTo(
+            partyId.with(elementList = contributions)
                 .sortedByDescending { "${it.element.dateTime} ${it.element.id}" }
                 .map {
                     Record(
@@ -109,26 +172,56 @@ class DynamoContributionRepositoryTest {
     }
 
     @Test
-    fun loadCanFilterByDurationWindow() = asyncSetup(object {
+    fun loadCanFilterByDurationWindowBasedOnIntegrationDateTime() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
         val userEmail = uuidString()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val expectedContributions = generateSequence {
-            stubContribution().copy(dateTime = clock.now())
+            stubContribution().copy(integrationDateTime = clock.now())
         }
-            .take(3)
+            .take(8)
             .toList()
         val window = 10.days
-        val outsideContribution = stubContribution().copy(dateTime = clock.now() - (window + 2.minutes))
+        val outsideContribution = stubContribution().copy(integrationDateTime = clock.now() - (window + 2.minutes))
         val allContributions = (expectedContributions + outsideContribution).shuffled()
-        val partyContributions = partyId.with(elementList = allContributions)
     }) {
         repository = DynamoContributionRepository.invoke(userEmail, clock)
     } exercise {
         repository.save(partyId.with(element = allContributions))
         repository.get(ContributionQueryParams(partyId, window, null))
     } verify { result: List<PartyRecord<Contribution>> ->
+        result.elements.size.assertIsEqualTo(expectedContributions.size)
+
+        result.elements.assertIsEqualTo(
+            expectedContributions.sortedByDescending { "${it.integrationDateTime} ${it.id}" },
+        )
+    }
+
+    @Test
+    fun loadCanFilterByDurationWindowBasedOnDateTimeWhenNoIntegrationDateTimeAvailable() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoContributionRepository
+        val userEmail = uuidString()
+        val clock = MagicClock().apply { currentTime = Clock.System.now() }
+        val expectedContributions = generateSequence {
+            stubContribution().copy(integrationDateTime = null, dateTime = clock.now())
+        }
+            .take(8)
+            .toList()
+        val window = 10.days
+        val outsideContribution = stubContribution().copy(
+            integrationDateTime = null,
+            dateTime = clock.now() - (window + 2.minutes),
+        )
+        val allContributions = (expectedContributions + outsideContribution).shuffled()
+    }) {
+        repository = DynamoContributionRepository.invoke(userEmail, clock)
+    } exercise {
+        repository.save(partyId.with(element = allContributions))
+        repository.get(ContributionQueryParams(partyId, window, null))
+    } verify { result: List<PartyRecord<Contribution>> ->
+        result.elements.size.assertIsEqualTo(expectedContributions.size)
         result.elements.assertIsEqualTo(
             expectedContributions.sortedByDescending { "${it.dateTime} ${it.id}" },
         )

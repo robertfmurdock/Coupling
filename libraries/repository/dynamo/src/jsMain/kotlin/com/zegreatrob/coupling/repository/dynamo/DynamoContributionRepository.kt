@@ -66,7 +66,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         .add(json("timestamp+id" to sortKeyWithDateTimeFirst()))
 
     private fun PartyRecord<Contribution>.sortKeyWithDateTimeFirst() =
-        "${data.element.dateTime?.isoWithMillis()?.let { "dT$it" } ?: timestamp}+${data.element.id}"
+        "${(data.element.integrationDateTime ?: data.element.dateTime)?.isoWithMillis()?.let { "dT$it" } ?: timestamp}+${data.element.id}"
 
     private fun PartyElement<Contribution>.toJson() = json(
         "id" to element.id,
@@ -92,7 +92,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         params.performDynamoQuery()
     }
         .mapNotNull { toRecord(it) }
-        .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
+        .sortedByDescending { "${it.data.element.integrationDateTime ?: it.data.element.dateTime} ${it.data.element.id}" }
 
     private suspend fun ContributionQueryParams.performDynamoQuery() = queryForItemList(
         contributionListQuery(partyId, window, limit),
@@ -105,12 +105,16 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             "ExpressionAttributeValues" to json(
                 ":tribeId" to partyId.value,
                 ":windowStart" to (now() - window).isoWithMillis(),
+                ":null" to "NULL",
             ),
             "Limit" to limit,
             "ScanIndexForward" to false,
             "KeyConditionExpression" to "tribeId = :tribeId",
-            "ExpressionAttributeNames" to json("#dt" to "dateTime"),
-            "FilterExpression" to "#dt > :windowStart",
+            "ExpressionAttributeNames" to json(
+                "#dt" to "dateTime",
+                "#idt" to "integrationDateTime",
+            ),
+            "FilterExpression" to "#idt > :windowStart OR (attribute_type(integrationDateTime, :null) AND #dt > :windowStart)",
         )
     } else {
         json(
