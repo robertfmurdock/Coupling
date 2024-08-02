@@ -105,19 +105,25 @@ private fun PropertiesBuilder.playerCardStyles(tilt: Angle, deselected: Boolean)
 }
 
 private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
-    val totalExtraMarginNeededForImage = 2 * (size * 0.02)
-    width = (size + totalExtraMarginNeededForImage).px
-    height = (size * 1.4).px
-    borderWidth = (size * 0.04).px
-    borderRadius = (size * 0.08).px
-    boxShadow = BoxShadow((size * 0.02).px, (size * 0.04).px, (size * 0.04).px, rgb(0, 0, 0, 0.6))
+    val sizeInEm = size.inCouplingEm()
+    val totalExtraMarginNeededForImage = 2 * (sizeInEm * 0.02)
+    width = (sizeInEm + totalExtraMarginNeededForImage).em
+    height = (sizeInEm * 1.4).em
+    borderWidth = (sizeInEm * 0.04).em
+    borderRadius = (sizeInEm * 0.08).em
+    boxShadow = BoxShadow((sizeInEm * 0.02).em, (sizeInEm * 0.04).em, (sizeInEm * 0.04).em, rgb(0, 0, 0, 0.6))
     flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 
+fun Int.inCouplingEm(): Double = this / 14.0
+
 private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = img {
     alt = "player-icon"
-    width = size.toDouble()
-    height = size.toDouble()
+    css {
+        width = size.inCouplingEm().em
+        height = size.inCouplingEm().em
+    }
+
     src = when {
         player.imageURL != null -> player.imageURL
         player.avatarType != null -> player.getDirectAvatarImageUrl(size, player.avatarType!!)
