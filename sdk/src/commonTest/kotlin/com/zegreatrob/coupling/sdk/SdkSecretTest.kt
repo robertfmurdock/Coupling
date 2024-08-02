@@ -74,11 +74,10 @@ class SdkSecretTest {
     } verify { result ->
         result?.first()?.lastUsedTimestamp
             ?.let { Clock.System.now() - it }
-            ?.let { it < 0.1.seconds }
-            .let {
-                it.assertIsEqualTo(
-                    true,
-                    "lastUsedTimestamp should have been now-ish, but was $it earlier, at ${result?.first()?.lastUsedTimestamp}",
+            .let { delta ->
+                delta.assertIsEqualTo(
+                    delta?.let { delta < 0.1.seconds },
+                    "lastUsedTimestamp should have been now-ish, but was $delta earlier, at ${result?.first()?.lastUsedTimestamp}",
                 )
             }
     }
