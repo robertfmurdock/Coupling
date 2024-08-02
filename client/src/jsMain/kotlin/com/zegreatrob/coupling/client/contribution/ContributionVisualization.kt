@@ -18,7 +18,6 @@ import com.zegreatrob.minreact.nfc
 import js.objects.jso
 import react.Props
 import react.router.dom.SetURLSearchParams
-import react.router.dom.useSearchParams
 
 external interface ContributionVisualizationProps : Props {
     var commander: Commander
@@ -29,11 +28,7 @@ external interface ContributionVisualizationProps : Props {
 @ReactFunc
 val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     val (commander, party, spinsUntilFullRotation) = props
-    val (searchParams, setSearchParams) = useSearchParams()
-    val window: GqlContributionWindow = searchParams["window"]?.let { window ->
-        GqlContributionWindow.entries.find { it.name == window }
-    } ?: GqlContributionWindow.Quarter
-    val setWindow = setWindowSearchParamHandler(setSearchParams)
+    val (window, setWindow) = useWindow(GqlContributionWindow.Quarter)
     CouplingQuery(
         commander = commander,
         query = graphQuery {
@@ -69,7 +64,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     )
 }
 
-private fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) =
+fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) =
     { updatedWindow: GqlContributionWindow? ->
         setSearchParams({ previous ->
             previous.also {

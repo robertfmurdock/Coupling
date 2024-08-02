@@ -23,9 +23,7 @@ import react.useState
 import web.cssom.AlignItems
 import web.cssom.Color
 import web.cssom.Display
-import web.cssom.FontSize
 import web.cssom.WhiteSpace
-import web.cssom.fr
 import web.cssom.px
 import web.html.InputType
 
@@ -102,14 +100,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
             }
             div {
                 div {
-                    div {
-                        css {
-                            margin = 6.px
-                            display = Display.grid
-                            fontSize = FontSize.smaller
-                            gridTemplateColumns = web.cssom.repeat(2, 1.fr)
-                            alignItems = AlignItems.baseline
-                        }
+                    ContributionControlPanelFrame {
                         div {
                             EnumSelector(
                                 default = selectedWindow,
