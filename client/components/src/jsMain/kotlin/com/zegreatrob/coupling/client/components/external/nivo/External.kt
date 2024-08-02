@@ -52,6 +52,7 @@ sealed external interface NivoAxis {
     var tickSize: Number?
     var tickPadding: Number?
     var tickRotation: Number?
+    var ticksPosition: String?
     var legend: String?
     var legendPosition: String?
     var legendOffset: Number?

@@ -17,14 +17,17 @@ import react.useState
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.px
-import kotlin.math.PI
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sin
 
 const val ESTIMATED_PLAYER_WIDTH = 40.0
 
 val PairTickMark = FC<AxisTickProps> { props ->
+    val shouldInvert = props.textAnchor == "end"
+    val inversionMultiplier = if (shouldInvert) -1 else 1
+    val rotate = if (shouldInvert) {
+        (props.rotate?.toDouble() ?: 0.0) + 180
+    } else {
+        props.rotate
+    }
     val getColor = useContext(colorContext)
     val pairs = useContext(pairContext)
     val pair = pairs.find { it.pairId == props.value } ?: return@FC
@@ -40,32 +43,30 @@ val PairTickMark = FC<AxisTickProps> { props ->
         }
     }
 
-    val tickLength = 12.0
     g {
-        transform = "translate(${props.x.toDouble()}, ${props.y.toDouble()}) rotate(${props.rotate})"
+        transform = "translate(${props.x.toDouble()}, ${props.y.toDouble()}) rotate($rotate)"
+        rect {
+            width = 28.0
+            height = 24.0
+            x = -(width!! / 2)
+            y = if (shouldInvert) (height!! * 3 / -4) else (height!! / -4)
+            ry = 3.0
+            fill = "rgba(0, 0, 0, .05)"
+        }
+        val tickHeight = 10.0
         g {
-            transform = "translate(0, 22)"
-            rect {
-                x = -14.0
-                y = -6.0
-                ry = 3.0
-                width = 28.0
-                height = 24.0
-                fill = "rgba(0, 0, 0, .05)"
-            }
             line {
                 stroke = backColor
                 strokeWidth = 1.5
-                y1 = -22.0
-                y2 = -tickLength
+                y1 = 0.0
+                y2 = tickHeight * inversionMultiplier
             }
-
-            val rotation = 90.0
-
-            val rotationRadians = rotation * PI / 180.0
-            val rotatedHeight = abs(elementWidth * cos(rotationRadians)) + abs(elementHeight * sin(rotationRadians))
+        }
+        g {
+            transform = "translate(0, ${tickHeight * inversionMultiplier})"
             g {
-                transform = "translate(${rotatedHeight / 2.0}, ${-tickLength})"
+                val cardOffset = if (shouldInvert) -elementWidth else 0
+                transform = "translate(${elementHeight / 2.0}, $cardOffset)"
                 foreignObject {
                     width = elementWidth.toDouble()
                     height = elementHeight.toDouble()

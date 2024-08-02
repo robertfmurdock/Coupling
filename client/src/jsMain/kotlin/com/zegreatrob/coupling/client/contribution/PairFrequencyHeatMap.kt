@@ -65,6 +65,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
                     legendOffset = -52,
                     tickRotation = 90,
                     truncateTickAt = 0,
+                    ticksPosition = "before",
                     renderTick = PairTickMark,
                 )
                 axisTop = NivoAxis(

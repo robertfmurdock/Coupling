@@ -22,7 +22,7 @@ external interface PairCycleTimeBarChartProps : Props {
     var window: GqlContributionWindow
 }
 
-val colorContext = createContext<dynamic>()
+val colorContext = createContext<(dynamic) -> String> { "" }
 val pairContext = createContext<Set<CouplingPair>>(emptySet())
 
 @ReactFunc
