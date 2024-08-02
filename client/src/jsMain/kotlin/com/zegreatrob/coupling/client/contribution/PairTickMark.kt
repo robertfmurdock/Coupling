@@ -33,23 +33,16 @@ val PairTickMark = FC<AxisTickProps> { props ->
     val (elementWidth, setElementWidth) = useState(0)
     val (elementHeight, setElementHeight) = useState(0)
 
-    useLayoutEffect(dependencies = emptyArray()) {
+    useLayoutEffect {
         targetRef.current?.let {
-            setElementWidth(it.scrollWidth)
-            setElementHeight(it.scrollHeight)
+            setElementWidth(it.offsetWidth)
+            setElementHeight(it.offsetHeight)
         }
     }
 
     val tickLength = 12.0
     g {
         transform = "translate(${props.x.toDouble()}, ${props.y.toDouble()}) rotate(${props.rotate})"
-        rect {
-            x = -2.0
-            y = -2.0
-            width = 4.0
-            height = 4.0
-            fill = "rgba(0, 0, 0)"
-        }
         g {
             transform = "translate(0, 22)"
             rect {
