@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
-import com.zegreatrob.coupling.client.components.ContributionOverviewButton
-import com.zegreatrob.coupling.client.components.ContributionVisualizationButton
 import com.zegreatrob.coupling.client.components.NavigationPanel
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -30,6 +28,7 @@ val ContributionContentFrame by nfc<ContributionContentFrameProps> { props ->
             NavigationPanel {
                 ContributionOverviewButton(partyId)
                 ContributionVisualizationButton(partyId)
+                ContributionListButton(partyId)
             }
             +props.children
         }

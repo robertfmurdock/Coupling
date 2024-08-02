@@ -1,5 +1,10 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.PartyButtonProps
+import com.zegreatrob.coupling.client.components.component1
+import com.zegreatrob.coupling.client.components.large
+import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.dom.html.ReactHTML.i

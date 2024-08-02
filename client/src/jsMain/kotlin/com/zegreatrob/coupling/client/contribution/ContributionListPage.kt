@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 
 val ContributionListPage = partyPageFunction { props, partyId ->
-    val (window: GqlContributionWindow, setWindow) = useWindow(GqlContributionWindow.Quarter)
+    val (window: GqlContributionWindow, setWindow) = useWindow(GqlContributionWindow.Week)
     CouplingQuery(
         commander = props.commander,
         query = graphQuery {
@@ -34,12 +34,9 @@ val ContributionListPage = partyPageFunction { props, partyId ->
                 ?.elements
                 ?: return@CouplingQuery null
             ContributionContentFrame.create(party = party) {
-                ContributionListContent(party, contributions, contributors, window, {
-                    setWindow(it)
-                    reload()
-                })
+                ContributionListContent(party, contributions, contributors, window, setWindow)
             }
         },
-        key = partyId.value,
+        key = "${partyId.value}$window",
     )
 }
