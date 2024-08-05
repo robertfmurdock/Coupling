@@ -115,7 +115,7 @@ val CouplingHeatmapTooltip = FC<TooltipProps> { props ->
     if (cell.formattedValue === null) return@FC
 
     BasicTooltip {
-        id = TiltedPlayerList.create(playerList = pair, size = 25)
+        id = TiltedPlayerList.create(playerList = pair, size = 35)
         value = cell.formattedValue
         enableChip = true
         color = cell.color
