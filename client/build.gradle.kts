@@ -83,7 +83,6 @@ dependencies {
     jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
     jsMainImplementation(npmConstrained("@auth0/auth0-react"))
     jsMainImplementation(npmConstrained("@nivo/core"))
-    jsMainImplementation(npmConstrained("@nivo/api"))
     jsMainImplementation(npmConstrained("@nivo/line"))
     jsMainImplementation(npmConstrained("@babel/core"))
     jsMainImplementation(npmConstrained("@babel/preset-env"))
