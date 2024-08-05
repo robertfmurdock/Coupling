@@ -25,6 +25,7 @@ dependencies {
     constraints {
         api(libs.com.benasher44.uuid)
         api(libs.com.fasterxml.jackson.core.jackson.databind)
+        api(libs.com.github.ajalt.clikt.clikt)
         api(libs.com.lemonappdev.konsist)
         api(libs.io.github.oshai.kotlin.logging)
         api(libs.org.jetbrains.kotlinx.kotlinx.datetime)

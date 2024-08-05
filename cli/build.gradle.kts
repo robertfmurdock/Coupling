@@ -1,4 +1,3 @@
-
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
@@ -35,7 +34,7 @@ dependencies {
     commonMainImplementation(project(":libraries:action"))
     commonMainImplementation(project(":libraries:model"))
     commonMainImplementation(project(":sdk"))
-    commonMainImplementation(libs.com.github.ajalt.clikt.clikt)
+    commonMainImplementation("com.github.ajalt.clikt:clikt")
     commonMainImplementation("com.benasher44:uuid")
     commonMainImplementation("com.zegreatrob.tools:digger-json")
     commonMainImplementation("io.ktor:ktor-client-content-negotiation")
@@ -76,7 +75,6 @@ tasks {
     rootProject.tasks.named("rootPackageJson").configure {
         mustRunAfter(copyWebpackConfig)
     }
-
 
     val jsProcessResources by named<ProcessResources>("jsProcessResources") {
         dependsOn("dependencyResources")
