@@ -14,7 +14,7 @@ org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime
 org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.7.1"
 org-junit-junit-bom = "org.junit:junit-bom:5.10.3"
 org-kotools-types = "org.kotools:types:4.5.2"
-org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.13"
+org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.14"
 
 [plugins]
 com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.7"
