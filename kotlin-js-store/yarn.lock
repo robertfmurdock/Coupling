@@ -6197,10 +6197,10 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-4.1.0.tgz#11a54478df28b7a2d146251f645fb26e9efc9bfd"
-  integrity sha512-HhstGRUz/4JdbZpb26OcOf8Qb/cFR02arvHvgz4sPFLSnI6ZNHC53Jc6JP/FGNwxtrF719YyUnK0gGy4oyhucQ==
+"@stripe/stripe-js@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-4.2.0.tgz#c54be2ec4837a814734c31e6cd3bb7e650f53a1a"
+  integrity sha512-MdTpmXqtm+B9rIAmaSlCkF6qv3793UrghA95SFI4Ge7KGYWZAMYyxbX/z9FXs6XnU5gUbKtGtlVgZQp1T88UfQ==
 
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
@@ -8469,10 +8469,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@127.0.1:
-  version "127.0.1"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-127.0.1.tgz#3f296e8f89efa67dd895d0ee13dbdc6bafb13191"
-  integrity sha512-j57OWXsxdhwK+faTWA2pi+8hf052qVjZjP0wXnjqY/QglHtlOXWhRj4s7/+ybJRNgs1zQ5csfOyV6sQQdH+Fnw==
+chromedriver@127.0.2:
+  version "127.0.2"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-127.0.2.tgz#12c607b8d9b3fbe81d663161d28ded17e989bbf3"
+  integrity sha512-mYfJ/8FqzsdFOs2rPiAI4y0suFnv78cRnzZK0MHdSfSIDeRPbqZz0rNX4lrXt14hXc9vqXa+a8cMxlrhWtXKSQ==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.6.7"
