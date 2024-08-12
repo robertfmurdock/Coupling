@@ -17,7 +17,6 @@ import react.ReactNode
 import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
-import react.dom.html.ReactHTML.option
 import react.useEffect
 import react.useState
 import web.cssom.AlignItems
@@ -71,7 +70,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
     }
 
     val allLabels =
-        allPairContributions.mapNotNull { it.second.contributions?.elements?.map(Contribution::label) }
+        allPairContributions.mapNotNull { it.second.contributions?.elements?.mapNotNull(Contribution::label) }
             .flatten()
             .toSet()
     val filteredData = allPairContributions.applyFilters(
@@ -117,24 +116,11 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                                 backgroundColor = contributionContentBackgroundColor,
                             )
                         }
-                        CouplingSelect {
-                            label = ReactNode("Label Filter")
-                            backgroundColor = contributionContentBackgroundColor
-                            selectProps = jso {
-                                disabled = allLabels.size <= 1
-                                onChange = { event -> setSelectedLabelFilter(event.handlePlaceholder()) }
-                            }
-                            option {
-                                value = NULL_PLACEHOLDER
-                                +"All Labels"
-                            }
-                            allLabels.map { label ->
-                                option {
-                                    value = label
-                                    +label
-                                }
-                            }
-                        }
+                        ContributionLabelFilter(
+                            allLabels,
+                            selectedLabelFilter,
+                            setSelectedLabelFilter::invoke,
+                        )
                         div {
                             div {
                                 EnumSelector(

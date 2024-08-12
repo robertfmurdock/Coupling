@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.stats.ContributionControlPanelFrame
+import com.zegreatrob.coupling.client.components.stats.ContributionLabelFilter
 import com.zegreatrob.coupling.client.components.stats.EnumSelector
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
@@ -40,6 +41,13 @@ val ContributionListContent by nfc<ContributionListContentProps> { (_, contribut
                             onChange = setWindow,
                             label = ReactNode("Time Window"),
                             backgroundColor = contributionContentBackgroundColor,
+                        )
+                    }
+                    div {
+                        ContributionLabelFilter(
+                            allLabels = emptySet(),
+                            selected = null,
+                            setSelected = {},
                         )
                     }
                 }

@@ -6,7 +6,6 @@ import js.objects.jso
 import react.ChildrenBuilder
 import react.Props
 import react.ReactNode
-import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.option
 import react.dom.html.SelectHTMLAttributes
 import web.cssom.BackgroundColor
@@ -33,7 +32,7 @@ val EnumSelector by nfc<EnumSelectorProps<Any>> { props ->
             +props.selectProps
             defaultValue = props.enumName(props.default)
             onChange = { event ->
-                event.handlePlaceholder()?.let(props.valueOf)?.let(props.onChange)
+                event.target.value.let(props.valueOf).let(props.onChange)
             }
         }
         props.entries.map { entry ->
@@ -43,12 +42,6 @@ val EnumSelector by nfc<EnumSelectorProps<Any>> { props ->
             }
         }
     }
-}
-
-const val NULL_PLACEHOLDER = "NULL"
-
-fun ChangeEvent<HTMLSelectElement>.handlePlaceholder() = target.value.let {
-    if (it == NULL_PLACEHOLDER) null else it
 }
 
 @Suppress("FunctionName")
