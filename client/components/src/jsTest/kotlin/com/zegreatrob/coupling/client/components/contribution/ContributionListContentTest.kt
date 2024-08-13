@@ -15,6 +15,31 @@ import kotlin.test.Test
 class ContributionListContentTest {
 
     @Test
+    fun byDefaultWillShowAllContributions() = asyncSetup(object {
+        val contributions = listOf(
+            stubContribution().copy(label = "1"),
+            stubContribution().copy(label = "2"),
+            stubContribution().copy(label = "3"),
+            stubContribution().copy(label = "2"),
+        )
+    }) exercise {
+        render(
+            ContributionListContent.create(
+                stubPartyDetails(),
+                contributions,
+                emptyList(),
+                GqlContributionWindow.All,
+                {},
+            ),
+        )
+    } verify {
+        contributions.forEach { contribution ->
+            screen.queryByText(contribution.id.asShortId())
+                .assertIsNotEqualTo(null)
+        }
+    }
+
+    @Test
     fun selectingLabelWillOnlyShowContributionsWithLabel() = asyncSetup(object {
         val expectedContribution1 = stubContribution().copy(label = "2")
         val expectedContribution2 = stubContribution().copy(label = "2")

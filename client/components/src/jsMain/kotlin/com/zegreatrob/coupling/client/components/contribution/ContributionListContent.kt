@@ -30,7 +30,8 @@ external interface ContributionListContentProps : Props {
 val ContributionListContent by nfc<ContributionListContentProps> { (_, contributions, contributors, window, setWindow) ->
     val allLabels = contributions.mapNotNull(Contribution::label).toSet()
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
-    val filteredContributions = contributions.filter { it.label == selectedLabelFilter }
+    val filteredContributions = selectedLabelFilter?.let { contributions.filter { it.label == selectedLabelFilter } }
+        ?: contributions
     div {
         div {
             css { display = Display.inlineBlock }
