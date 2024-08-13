@@ -3,10 +3,9 @@ package com.zegreatrob.coupling.repository.validation
 import com.zegreatrob.testmints.async.Exercise
 import com.zegreatrob.testmints.async.Verify
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.TestResult
 import kotlin.time.TimeSource
 
-infix fun <C : Any, R> Exercise<C, R>.verifyWithWait(assertionFunctions: suspend C.(R) -> Unit): TestResult =
+infix fun <C : Any, R> Exercise<C, R>.verifyWithWait(assertionFunctions: suspend C.(R) -> Unit) =
     this.verify { result -> vWW(assertionFunctions, result) }
 
 infix fun <C : Any, R> Exercise<C, R>.verifyWithWaitAnd(assertionFunctions: suspend C.(R) -> Unit): Verify<C, R?> =
