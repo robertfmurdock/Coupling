@@ -14,6 +14,7 @@ import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
+import react.useState
 import web.cssom.Display
 import web.cssom.em
 
@@ -27,6 +28,9 @@ external interface ContributionListContentProps : Props {
 
 @ReactFunc
 val ContributionListContent by nfc<ContributionListContentProps> { (_, contributions, contributors, window, setWindow) ->
+    val allLabels = contributions.mapNotNull(Contribution::label).toSet()
+    val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
+    val filteredContributions = contributions.filter { it.label == selectedLabelFilter }
     div {
         div {
             css { display = Display.inlineBlock }
@@ -45,16 +49,16 @@ val ContributionListContent by nfc<ContributionListContentProps> { (_, contribut
                     }
                     div {
                         ContributionLabelFilter(
-                            allLabels = emptySet(),
-                            selected = null,
-                            setSelected = {},
+                            allLabels = allLabels,
+                            selected = selectedLabelFilter,
+                            setSelected = setSelectedLabelFilter::invoke,
                         )
                     }
                 }
             }
             div {
                 css { fontSize = 0.75.em }
-                contributions.forEach { contribution ->
+                filteredContributions.forEach { contribution ->
                     ContributionCard(contribution = contribution, contributors = contributors, key = contribution.id)
                 }
             }
