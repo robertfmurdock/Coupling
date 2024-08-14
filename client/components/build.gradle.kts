@@ -44,6 +44,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     jsMainImplementation(npmConstrained("@stripe/react-stripe-js"))
     jsMainImplementation(npmConstrained("@stripe/stripe-js"))
+    jsMainImplementation(npmConstrained("d3-array"))
     jsMainImplementation(npmConstrained("date-fns"))
     jsMainImplementation(npmConstrained("fitty"))
     jsMainImplementation(npmConstrained("html2canvas"))
