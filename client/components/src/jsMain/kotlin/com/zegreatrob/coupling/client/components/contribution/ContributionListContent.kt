@@ -99,7 +99,7 @@ val ContributionListContent by nfc<ContributionListContentProps> { (_, contribut
                                     }
                                     div {
                                         h4 { +"10%" }
-                                        +"${cycleTimes.quantile(0.25, d3Array)}"
+                                        +"${cycleTimes.quantile(0.10, d3Array)}"
                                     }
                                 }
                             }
@@ -118,6 +118,8 @@ val ContributionListContent by nfc<ContributionListContentProps> { (_, contribut
 }
 
 private fun List<Duration>.quantile(p: Double, d3Array: D3Array): Duration = d3Array.quantileSorted(
-    map { it.toDouble(DurationUnit.MILLISECONDS) }.toTypedArray(),
+    map { it.toDouble(DurationUnit.MILLISECONDS) }
+        .sorted()
+        .toTypedArray(),
     p,
 ).milliseconds
