@@ -11983,6 +11983,11 @@ jose@^5.0.0, jose@^5.6.3:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.6.3.tgz#415688bc84875461c86dfe271ea6029112a23e27"
   integrity sha512-1Jh//hEEwMhNYPDDLwXHa2ePWgWiFNNUadVmguAAw2IJ6sj9mNxV5tGXJNqlMkJAybF6Lgw1mISDxTePP/187g==
 
+jose@^5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-5.7.0.tgz#5c3a6eb811235e692e1af4891904b7b91b204f57"
+  integrity sha512-3P9qfTYDVnNn642LCAqIKbTGb9a1TBxZ9ti5zEVEr48aDdflgRjhspWFb6WM4PzAfFbGMJYC4+803v8riCRAKw==
+
 js-string-escape@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/js-string-escape/-/js-string-escape-1.0.1.tgz#e2625badbc0d67c7533e9edc1068c587ae4137ef"
@@ -12907,10 +12912,10 @@ min-indent@1.0.1:
   resolved "https://registry.yarnpkg.com/min-indent/-/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
   integrity sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==
 
-mini-css-extract-plugin@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.9.0.tgz#c73a1327ccf466f69026ac22a8e8fd707b78a235"
-  integrity sha512-Zs1YsZVfemekSZG+44vBsYTLQORkPMwnlv+aehcxK/NLKC+EGhDB39/YePYYqx/sTk6NnYpuqikhSn7+JIevTA==
+mini-css-extract-plugin@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.9.1.tgz#4d184f12ce90582e983ccef0f6f9db637b4be758"
+  integrity sha512-+Vyi+GCCOHnrJ2VPS+6aPoXN2k2jgUzDRhTFLjjTBn23qyXJXkjUWQgTL+mXpF5/A8ixLdCc6kWsoeOjKGejKQ==
   dependencies:
     schema-utils "^4.0.0"
     tapable "^2.2.1"
