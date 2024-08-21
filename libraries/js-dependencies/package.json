@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.2.4",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.632.0",
-    "@aws-sdk/client-dynamodb": "3.632.0",
-    "@aws-sdk/client-lambda": "~3.634.0",
-    "@aws-sdk/lib-dynamodb": "3.632.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.635.0",
+    "@aws-sdk/client-dynamodb": "3.635.0",
+    "@aws-sdk/client-lambda": "~3.635.0",
+    "@aws-sdk/lib-dynamodb": "3.635.0",
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/preset-react": "^7.24.7",
