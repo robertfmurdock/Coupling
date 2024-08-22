@@ -160,7 +160,8 @@ class SdkSecretTest {
         signature.assertIsNotEqualTo(null)
     }
 
-    private fun String.parseAsObject() = Base64.decode(this)
+    private fun String.parseAsObject() = Base64.withPadding(option = Base64.PaddingOption.PRESENT_OPTIONAL)
+        .decode(this)
         .decodeToString()
         .let(Json.Default::parseToJsonElement)
         .jsonObject
