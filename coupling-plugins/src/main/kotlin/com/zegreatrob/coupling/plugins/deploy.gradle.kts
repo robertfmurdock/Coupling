@@ -53,8 +53,8 @@ tasks {
         mustRunAfter(
             ":release",
             ":client:uploadToS3",
-            prune
         )
+        dependsOn(prune)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
