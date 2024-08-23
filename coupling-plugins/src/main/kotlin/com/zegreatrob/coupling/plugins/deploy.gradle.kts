@@ -37,6 +37,12 @@ tasks {
 
     val prune by registering(NodeExec::class) {
         setup(project)
+        mustRunAfter(
+            ":release",
+            ":client:uploadToS3",
+            ":server:check",
+            ":e2e:check"
+        )
         workingDir = deployDir.get().asFile
         nodeCommand = "serverless"
         arguments = listOf(
@@ -53,11 +59,10 @@ tasks {
         mustRunAfter(
             ":release",
             ":client:uploadToS3",
+            ":server:check",
+            ":e2e:check"
         )
         dependsOn(prune)
-        if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
-            enabled = false
-        }
         workingDir = deployDir.get().asFile
         nodeCommand = "serverless"
         arguments = listOf(
@@ -70,14 +75,17 @@ tasks {
             project.name
         )
         dependsOn(":release", copyDeployResources)
-        mustRunAfter(":server:check")
-        mustRunAfter(":e2e:check")
+    }
+
+    if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
+        prune { enabled = false }
+        deploy { enabled = false }
     }
     rootProject
         .tasks
         .withType(ReleaseVersion::class.java)
         .named("release").configure {
-            finalizedBy(deploy)
+            finalizedBy(prune, deploy)
         }
 }
 
