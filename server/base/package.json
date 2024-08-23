@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "serverless": "^3.39.0",
-    "serverless-offline": "^13.6.0"
+    "serverless-offline": "^13.6.0",
+    "serverless-prune-plugin": "^2.0.2"
   }
 }

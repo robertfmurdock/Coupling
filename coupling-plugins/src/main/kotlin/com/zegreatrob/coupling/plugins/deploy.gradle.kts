@@ -35,8 +35,40 @@ tasks {
         from(serverProject.layout.buildDirectory.dir("executable"))
     }
 
+    val prune by registering(NodeExec::class) {
+        setup(project)
+        workingDir = deployDir.get().asFile
+        nodeCommand = "serverless"
+        arguments = listOf(
+            "prune",
+            "-n=10",
+            "--config",
+            deployDir.get().file("serverless.yml").asFile.absolutePath,
+            "--stage",
+            project.name
+        )
+    }
     val deploy by registering(NodeExec::class) {
-        configureDeploy(project.name)
+        setup(project)
+        mustRunAfter(
+            ":release",
+            ":client:uploadToS3",
+            prune
+        )
+        if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
+            enabled = false
+        }
+        workingDir = deployDir.get().asFile
+        nodeCommand = "serverless"
+        arguments = listOf(
+            "deploy",
+            "--config",
+            deployDir.get().file("serverless.yml").asFile.absolutePath,
+            "--package",
+            serverProject.layout.buildDirectory.dir("${project.name}/lambda-dist").get().asFile.absolutePath,
+            "--stage",
+            project.name
+        )
         dependsOn(":release", copyDeployResources)
         mustRunAfter(":server:check")
         mustRunAfter(":e2e:check")
@@ -49,24 +81,3 @@ tasks {
         }
 }
 
-fun NodeExec.configureDeploy(stage: String) {
-    setup(project)
-    mustRunAfter(
-        ":release",
-        ":client:uploadToS3",
-    )
-    if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
-        enabled = false
-    }
-    workingDir = deployDir.get().asFile
-    nodeCommand = "serverless"
-    arguments = listOf(
-        "deploy",
-        "--config",
-        deployDir.get().file("serverless.yml").asFile.absolutePath,
-        "--package",
-        serverProject.layout.buildDirectory.dir("${project.name}/lambda-dist").get().asFile.absolutePath,
-        "--stage",
-        stage
-    )
-}

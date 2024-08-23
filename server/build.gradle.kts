@@ -78,6 +78,7 @@ dependencies {
     jsTestImplementation(npmConstrained("serverless"))
     jsTestImplementation(npmConstrained("serverless-offline"))
     jsTestImplementation(npmConstrained("serverless-offline-ssm"))
+    jsTestImplementation(npmConstrained("serverless-prune-plugin"))
 }
 
 tasks {
