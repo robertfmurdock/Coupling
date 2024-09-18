@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.cli
 
+import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import com.zegreatrob.coupling.cli.party.party
 import com.zegreatrob.coupling.cli.party.query
