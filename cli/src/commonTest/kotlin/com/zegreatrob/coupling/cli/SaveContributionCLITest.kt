@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.cli
 
 import com.benasher44.uuid.uuid4
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.obj
 import com.github.ajalt.clikt.testing.test
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
