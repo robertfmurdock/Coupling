@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.0.20"
 ktlint = "0.45.2"
-org-apache-logging-log4j = "2.24.0"
+org-apache-logging-log4j = "2.24.1"
 org-jlleitschuh-gradle-ktlint = "11.0.0"
 
 [libraries]
