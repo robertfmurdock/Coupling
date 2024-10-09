@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.slack
 
 import js.array.tupleOf
-import js.objects.jso
 import js.objects.recordOf
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -10,6 +9,7 @@ import web.form.FormData
 import web.http.BodyInit
 import web.http.Headers
 import web.http.Request
+import web.http.RequestInit
 import web.http.RequestMethod
 import web.http.fetch
 import kotlin.io.encoding.Base64
@@ -29,16 +29,16 @@ class FetchSlackClient(
 
     override suspend fun exchangeCodeForAccess(code: String): AccessResponse = fetch(
         "https://slack.com/api/oauth.v2.access",
-        jso {
-            method = RequestMethod.POST
-            headers = Headers(recordOf("Authorization" to "Basic ${btoa("$clientId:$clientSecret")}"))
+        RequestInit(
+            method = RequestMethod.POST,
+            headers = Headers(recordOf("Authorization" to "Basic ${btoa("$clientId:$clientSecret")}")),
             body = BodyInit(
                 FormData().apply {
                     append("code", code)
                     append("redirect_uri", slackRedirectUri)
                 },
-            )
-        },
+            ),
+        ),
     )
         .textAsync()
         .await()
@@ -55,9 +55,9 @@ class FetchSlackClient(
     ): MessageResponse {
         val request = Request(
             "https://slack.com/api/chat.postMessage",
-            jso {
-                method = RequestMethod.POST
-                headers = jsonHeaders(accessToken)
+            RequestInit(
+                method = RequestMethod.POST,
+                headers = jsonHeaders(accessToken),
                 body = BodyInit(
                     JSON.stringify(
                         json(
@@ -66,8 +66,8 @@ class FetchSlackClient(
                             "blocks" to blocks,
                         ),
                     ),
-                )
-            },
+                ),
+            ),
         )
         console.log("FETCH SLACK", JSON.stringify(request))
         return fetch(request)
@@ -91,9 +91,9 @@ class FetchSlackClient(
         blocks: String?,
     ): MessageResponse = fetch(
         "https://slack.com/api/chat.update",
-        jso {
-            method = RequestMethod.POST
-            headers = jsonHeaders(accessToken)
+        RequestInit(
+            method = RequestMethod.POST,
+            headers = jsonHeaders(accessToken),
             body = BodyInit(
                 JSON.stringify(
                     json(
@@ -103,8 +103,8 @@ class FetchSlackClient(
                         "blocks" to blocks,
                     ),
                 ),
-            )
-        },
+            ),
+        ),
     )
         .textAsync()
         .await()
@@ -117,9 +117,9 @@ class FetchSlackClient(
         oldest: Double,
     ): HistoryResponse = fetch(
         "https://slack.com/api/conversations.history",
-        jso {
-            method = RequestMethod.POST
-            headers = jsonHeaders(accessToken)
+        RequestInit(
+            method = RequestMethod.POST,
+            headers = jsonHeaders(accessToken),
             body = BodyInit(
                 JSON.stringify(
                     json(
@@ -128,8 +128,8 @@ class FetchSlackClient(
                         "oldest" to oldest.toUnixString(),
                     ),
                 ),
-            )
-        },
+            ),
+        ),
     )
         .textAsync()
         .await()
@@ -137,9 +137,9 @@ class FetchSlackClient(
 
     suspend fun deleteMessage(accessToken: String, channel: String, ts: String): MessageResponse = fetch(
         "https://slack.com/api/chat.delete",
-        jso {
-            method = RequestMethod.POST
-            headers = jsonHeaders(accessToken)
+        RequestInit(
+            method = RequestMethod.POST,
+            headers = jsonHeaders(accessToken),
             body = BodyInit(
                 JSON.stringify(
                     json(
@@ -147,8 +147,8 @@ class FetchSlackClient(
                         "channel" to channel,
                     ),
                 ),
-            )
-        },
+            ),
+        ),
     )
         .textAsync()
         .await()
