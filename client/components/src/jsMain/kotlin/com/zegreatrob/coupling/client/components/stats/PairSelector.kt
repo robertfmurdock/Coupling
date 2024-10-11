@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
+import com.zegreatrob.coupling.client.components.basicPlayerCardRenderer
 import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
@@ -56,7 +57,7 @@ val PairSelector by nfc<PairSelectorProps> { props ->
             PairPanel {
                 label {
                     ariaLabel = pair.pairName
-                    TiltedPlayerList(playerList = pair, size = 25)
+                    TiltedPlayerList(playerList = pair, element = basicPlayerCardRenderer(25))
                     input {
                         type = InputType.checkbox
                         checked = props.selectedPairs.contains(pair)

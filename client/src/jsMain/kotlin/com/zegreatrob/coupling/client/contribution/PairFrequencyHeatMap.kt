@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
+import com.zegreatrob.coupling.client.components.basicPlayerCardRenderer
 import com.zegreatrob.coupling.client.components.create
 import com.zegreatrob.coupling.client.components.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
@@ -115,7 +116,7 @@ val CouplingHeatmapTooltip = FC<TooltipProps> { props ->
     if (cell.formattedValue === null) return@FC
 
     BasicTooltip {
-        id = TiltedPlayerList.create(playerList = pair, size = 35)
+        id = TiltedPlayerList.create(playerList = pair, element = basicPlayerCardRenderer(35))
         value = cell.formattedValue
         enableChip = true
         color = cell.color
