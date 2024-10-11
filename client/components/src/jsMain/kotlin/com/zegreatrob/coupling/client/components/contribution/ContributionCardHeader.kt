@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
-import com.zegreatrob.coupling.client.components.basicPlayerCardRenderer
 import com.zegreatrob.coupling.client.components.format
+import com.zegreatrob.coupling.client.components.player.PlayerCard
+import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.player.Player
@@ -106,7 +107,9 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { (contribution, 
                 playerList = contribution.participantEmails.mapNotNull { email ->
                     contributors.find { it.emails.contains(email) }
                 }.toSet(),
-                element = basicPlayerCardRenderer(30),
+                element = { tilt, player ->
+                    PlayerCard.create(player = player, tilt = tilt, size = 30, key = player.id)
+                },
             )
         }
         contribution.link?.let { link ->

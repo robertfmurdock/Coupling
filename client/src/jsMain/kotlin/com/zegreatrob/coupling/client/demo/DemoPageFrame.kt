@@ -27,6 +27,7 @@ import react.ChildrenBuilder
 import react.MutableRefObject
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.popper.PopperInstance
 import react.popper.UsePopperOptions
 import react.popper.usePopper
 import react.useLayoutEffect
@@ -86,6 +87,23 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
                 is PrepareToSpin -> prepareSpinFrame(state)
             }
         }
+    }
+}
+
+fun ChildrenBuilder.popperDiv(
+    popperRef: MutableRefObject<HTMLElement>,
+    arrowRef: MutableRefObject<HTMLElement>,
+    state: DemoAnimationState,
+    popperInstance: PopperInstance,
+) = CouplingPopUp(
+    show = state.description.isBlank(),
+    popperRef = popperRef,
+    arrowRef = arrowRef,
+    popperInstance = popperInstance,
+) {
+    Markdown { +state.description }
+    if (state.showReturnButton) {
+        returnToCouplingButton()
     }
 }
 
