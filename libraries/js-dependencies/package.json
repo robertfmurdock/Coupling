@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.2.4",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.668.0",
-    "@aws-sdk/client-dynamodb": "3.668.0",
-    "@aws-sdk/client-lambda": "~3.668.0",
-    "@aws-sdk/lib-dynamodb": "3.668.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.669.0",
+    "@aws-sdk/client-dynamodb": "3.669.0",
+    "@aws-sdk/client-lambda": "~3.669.0",
+    "@aws-sdk/lib-dynamodb": "3.669.0",
     "@babel/core": "^7.25.8",
     "@babel/preset-env": "^7.25.8",
     "@babel/preset-react": "^7.25.7",
@@ -58,7 +58,7 @@
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.6.0",
     "html2canvas": "^1.4.1",
-    "jose": "^5.9.3",
+    "jose": "^5.9.4",
     "jsdom": "25.0.1",
     "jwks-rsa": "3.1.0",
     "jwt-decode": "4.0.0",
