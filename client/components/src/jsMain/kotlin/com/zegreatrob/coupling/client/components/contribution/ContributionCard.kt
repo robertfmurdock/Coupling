@@ -27,14 +27,17 @@ import web.cssom.fr
 import web.cssom.px
 import web.cssom.repeat
 import web.cssom.rgb
+import web.html.HTMLElement
 
 external interface ContributionCardProps : Props {
     var contribution: Contribution
     var contributors: List<Player>
+    var onPlayerClick: ((Player, HTMLElement) -> Unit)?
 }
 
 @ReactFunc
-val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors) ->
+val ContributionCard by nfc<ContributionCardProps> { props ->
+    val (contribution, contributors) = props
     val shortId = contribution.id.asShortId()
 
     div {
@@ -57,7 +60,7 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                 borderRadius = 1.em
                 padding = 1.em
             }
-            ContributionCardHeader(contribution, contributors)
+            ContributionCardHeader(contribution, contributors, props.onPlayerClick)
             div {
                 css {
                     display = Display.grid
