@@ -21,6 +21,7 @@ import react.MutableRefObject
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 import react.popper.UsePopperOptions
 import react.popper.usePopper
 import react.useRef
@@ -134,7 +135,7 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { (contribution, 
                     contributors.find { it.emails.contains(email) }
                 }.toSet(),
                 element = { tilt, player ->
-                    div.create {
+                    span.create {
                         onClick = {
                             setReferenceElement(ReferenceElement(it.currentTarget))
                             popperInstance.forceUpdate?.invoke()
