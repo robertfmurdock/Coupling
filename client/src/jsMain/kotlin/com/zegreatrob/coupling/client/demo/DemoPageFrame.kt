@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.aboutPageContent
 import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.client.components.CouplingPopUp
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
@@ -102,7 +103,7 @@ fun ChildrenBuilder.popperDiv(
     state: DemoAnimationState,
     popperInstance: PopperInstance,
 ) = CouplingPopUp(
-    show = state.description.isBlank(),
+    hide = state.description.isBlank(),
     popperRef = popperRef,
     arrowRef = arrowRef,
     popperInstance = popperInstance,

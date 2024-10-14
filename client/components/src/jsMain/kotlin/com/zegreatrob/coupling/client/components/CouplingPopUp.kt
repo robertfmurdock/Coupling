@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.demo
+package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -27,7 +27,7 @@ import web.html.HTMLElement
 import kotlin.js.Json
 
 external interface CouplingPopUpProps : PropsWithChildren {
-    var show: Boolean
+    var hide: Boolean
     var popperRef: MutableRefObject<HTMLElement>
     var arrowRef: MutableRefObject<HTMLElement>
     var popperInstance: PopperInstance
@@ -38,7 +38,7 @@ val CouplingPopUp by nfc<CouplingPopUpProps> { props ->
     val (_, popperRef, arrowRef, popperInstance) = props
     div {
         css {
-            if (props.show) display = None.none
+            if (props.hide) display = None.none
         }
         div {
             css {

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.CouplingPopUp
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.format
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.player.Player
@@ -11,8 +11,20 @@ import com.zegreatrob.coupling.model.player.emails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.objects.jso
+import popper.core.Placement
+import popper.core.ReferenceElement
+import popper.core.modifier
+import popper.core.modifiers.Arrow
+import popper.core.modifiers.Offset
+import react.MutableRefObject
 import react.Props
+import react.create
 import react.dom.html.ReactHTML.div
+import react.popper.UsePopperOptions
+import react.popper.usePopper
+import react.useRef
+import react.useState
 import web.cssom.AlignItems
 import web.cssom.BackgroundRepeat
 import web.cssom.Color
@@ -35,6 +47,7 @@ import web.cssom.rotatex
 import web.cssom.scale
 import web.cssom.translate
 import web.cssom.url
+import web.html.HTMLElement
 
 external interface ContributionCardHeaderProps : Props {
     var contribution: Contribution
@@ -43,7 +56,20 @@ external interface ContributionCardHeaderProps : Props {
 
 @ReactFunc
 val ContributionCardHeader by nfc<ContributionCardHeaderProps> { (contribution, contributors) ->
+    val popperRef = useRef<HTMLElement>()
+    val arrowRef = useRef<HTMLElement>()
+    val (referenceElement, setReferenceElement) = useState<ReferenceElement?>(null)
+    val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef))
+
     val shortId = contribution.id.asShortId()
+    CouplingPopUp(
+        hide = referenceElement == null,
+        popperRef = popperRef,
+        arrowRef = arrowRef,
+        popperInstance = popperInstance,
+    ) {
+        +"Menu Goes here"
+    }
     div {
         css {
             margin = Margin(0.2.em, 0.px)
@@ -108,7 +134,13 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { (contribution, 
                     contributors.find { it.emails.contains(email) }
                 }.toSet(),
                 element = { tilt, player ->
-                    PlayerCard.create(player = player, tilt = tilt, size = 30, key = player.id)
+                    div.create {
+                        onClick = {
+                            setReferenceElement(ReferenceElement(it.currentTarget))
+                            popperInstance.forceUpdate?.invoke()
+                        }
+                        PlayerCard(player = player, tilt = tilt, size = 30, key = player.id)
+                    }
                 },
             )
         }
@@ -122,4 +154,18 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { (contribution, 
             }
         }
     }
+}
+
+private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>): UsePopperOptions = jso {
+    this.placement = Placement.right
+    this.modifiers = arrayOf(
+        Arrow.modifier {
+            this.options = jso {
+                this.element = arrowRef.current
+            }
+        },
+        Offset.modifier {
+            this.options = jso { offset = Offset(0.0, 10.0) }
+        },
+    )
 }
