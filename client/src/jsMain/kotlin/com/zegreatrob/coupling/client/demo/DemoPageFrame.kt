@@ -18,7 +18,6 @@ import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.ActionCannon
 import emotion.react.css
 import js.objects.jso
-import kotlinx.browser.document
 import popper.core.ReferenceElement
 import popper.core.modifier
 import popper.core.modifiers.Arrow
@@ -30,7 +29,7 @@ import react.dom.html.ReactHTML.div
 import react.popper.PopperInstance
 import react.popper.UsePopperOptions
 import react.popper.usePopper
-import react.useLayoutEffect
+import react.useEffect
 import react.useRef
 import react.useState
 import web.cssom.Auto
@@ -38,7 +37,10 @@ import web.cssom.Color
 import web.cssom.None
 import web.cssom.Position
 import web.cssom.vw
+import web.dom.document
 import web.html.HTMLElement
+import web.timers.setTimeout
+import kotlin.time.Duration.Companion.milliseconds
 
 external interface DemoPageFrameProps : Props {
     var state: DemoAnimationState
@@ -51,19 +53,23 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
     val (referenceElement, setReferenceElement) = useState<ReferenceElement?>(null)
     val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
 
-    useLayoutEffect(state) {
-        val className = state.descriptionSelector
-        val element: ReferenceElement? = if (className.isNotBlank()) {
-            document.querySelector(className).unsafeCast<ReferenceElement>()
-        } else {
-            null
+    useEffect(state) {
+        setTimeout(20.milliseconds) {
+            val selector = state.descriptionSelector
+            val element: ReferenceElement? = if (selector.isNotBlank()) {
+                document.querySelector(selector).unsafeCast<ReferenceElement>()
+            } else {
+                null
+            }
+            setReferenceElement(element)
+            popperInstance.forceUpdate?.invoke()
         }
-        setReferenceElement(element)
-        popperInstance.forceUpdate?.invoke()
     }
 
     div {
-        popperDiv(popperRef, arrowRef, state, popperInstance)
+        if (referenceElement != null) {
+            popperDiv(popperRef, arrowRef, state, popperInstance)
+        }
         div {
             css {
                 position = Position.absolute
