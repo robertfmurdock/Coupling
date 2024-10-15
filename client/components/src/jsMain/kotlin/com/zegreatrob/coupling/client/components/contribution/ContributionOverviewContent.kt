@@ -51,7 +51,7 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (part
             val (menuTarget, setMenuTarget) = useState<Pair<ReferenceElement, Player>?>(null)
             val popperInstance = usePopper(menuTarget?.first, popperRef.current, popperOptions(arrowRef))
             CouplingPopUp(
-                hide = menuTarget != null,
+                hide = menuTarget == null,
                 popperRef = popperRef,
                 arrowRef = arrowRef,
                 popperInstance = popperInstance,
