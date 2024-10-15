@@ -52,7 +52,21 @@ class ContributorMenuTest {
     }
 
     @Test
-    fun whenContributorIsNotPlayerWillShowCreatePlayerButton() = asyncSetup(object {
+    fun whenContributorIsAlsoPlayerButOnlyByIdWillShowPlayerConfigButton() = asyncSetup(object {
+        val contributor = stubPlayer()
+        val partyId = stubPartyId()
+        val players = (stubPlayers(3) + stubPlayer().copy(id = contributor.id)).shuffled()
+    }) exercise {
+        render(
+            ContributorMenu.create(contributor, players, partyId, StubDispatcher().func()),
+            jso { wrapper = TestRouter },
+        )
+    } verify {
+        screen.findByText("Player Config").assertNotNull()
+    }
+
+    @Test
+    fun whenContributorIsNotPlayerCanUseCreatePlayerButton() = asyncSetup(object {
         val contributor = stubPlayer()
         val partyId = stubPartyId()
         val players = stubPlayers(3)
@@ -85,7 +99,7 @@ class ContributorMenuTest {
     }) {
         render(TestRouter.create { ContributorMenu(contributor, players, partyId, stubDispatcher.func()) })
     } exercise {
-        val addEmailToExistingPlayerSection = screen.findByText("Add Email to Existing Player")
+        val addEmailToExistingPlayerSection = screen.findByText("Add Email to Existing Player").parentElement
         user.click(within(addEmailToExistingPlayerSection).findByRole("button", RoleOptions(name = targetPlayer.id)))
     } verify {
         stubDispatcher.receivedActions

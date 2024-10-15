@@ -17,6 +17,7 @@ import react.dom.aria.ariaLabel
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h3
 import react.router.useNavigate
 import web.html.HTMLButtonElement
 
@@ -44,7 +45,7 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
         }
     }
 
-    if (players.contains(contributor)) {
+    if (players.map(Player::id).contains(contributor.id)) {
         CouplingButton {
             onClick = { navigate(partyId.with(contributor).playerConfigPage()) }
             +"Player Config"
@@ -57,13 +58,17 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
             }
         }
         div {
-            +"Add Email to Existing Player"
-
-            players.forEach { player ->
-                button {
-                    ariaLabel = player.id
-                    onClick = addEmailToExistingPlayer(player)
-                    PlayerCard(player, size = 20)
+            h3 { +"Add Email to Existing Player" }
+            div { +contributor.name }
+            div { +contributor.email }
+            div {
+                players.forEach { player ->
+                    button {
+                        key = player.id
+                        ariaLabel = player.id
+                        onClick = addEmailToExistingPlayer(player)
+                        PlayerCard(player, size = 20)
+                    }
                 }
             }
         }
