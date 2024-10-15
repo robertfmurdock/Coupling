@@ -48,16 +48,16 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (part
             }
             val popperRef = useRef<HTMLElement>()
             val arrowRef = useRef<HTMLElement>()
-            val (referenceElement, setReferenceElement) = useState<Pair<ReferenceElement, Player>?>(null)
-            val popperInstance = usePopper(referenceElement?.first, popperRef.current, popperOptions(arrowRef))
-            if (referenceElement != null) {
-                CouplingPopUp(
-                    hide = false,
-                    popperRef = popperRef,
-                    arrowRef = arrowRef,
-                    popperInstance = popperInstance,
-                ) {
-                    ContributorMenu(referenceElement.second, players, party.id)
+            val (menuTarget, setMenuTarget) = useState<Pair<ReferenceElement, Player>?>(null)
+            val popperInstance = usePopper(menuTarget?.first, popperRef.current, popperOptions(arrowRef))
+            CouplingPopUp(
+                hide = menuTarget != null,
+                popperRef = popperRef,
+                arrowRef = arrowRef,
+                popperInstance = popperInstance,
+            ) {
+                if (menuTarget != null) {
+                    ContributorMenu(menuTarget.second, players, party.id)
                 }
             }
             contributions.forEach { contribution ->
@@ -66,7 +66,7 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (part
                     contributors = contributors,
                     key = contribution.id,
                     onPlayerClick = { player, element ->
-                        setReferenceElement(ReferenceElement(element)!! to player)
+                        setMenuTarget(ReferenceElement(element)!! to player)
                         popperInstance.forceUpdate?.invoke()
                     },
                 )
