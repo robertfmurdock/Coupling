@@ -6,13 +6,19 @@ import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
+import react.dom.aria.ariaLabel
+import react.dom.events.MouseEvent
+import react.dom.html.ReactHTML.button
+import react.dom.html.ReactHTML.div
 import react.router.useNavigate
+import web.html.HTMLButtonElement
 
 external interface ContributorMenuProps : Props {
     var contributor: Player
@@ -31,6 +37,12 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
     val createPlayer = dispatchFunc {
         fire(SavePlayerCommand(partyId, contributor.copy(id = "${uuid4()}")))
     }
+    val addEmailToExistingPlayer = { player: Player ->
+        fun(_: MouseEvent<HTMLButtonElement, *>) {
+            val updatedPlayer = player.copy(additionalEmails = player.additionalEmails + contributor.email)
+            dispatchFunc { fire(SavePlayerCommand(partyId, updatedPlayer)) }()
+        }
+    }
 
     if (players.contains(contributor)) {
         CouplingButton {
@@ -38,9 +50,22 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
             +"Player Config"
         }
     } else {
-        CouplingButton {
-            onClick = createPlayer
-            +"Create Player"
+        div {
+            CouplingButton {
+                onClick = createPlayer
+                +"Create Player"
+            }
+        }
+        div {
+            +"Add Email to Existing Player"
+
+            players.forEach { player ->
+                button {
+                    ariaLabel = player.id
+                    onClick = addEmailToExistingPlayer(player)
+                    PlayerCard(player, size = 20)
+                }
+            }
         }
     }
 }
