@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.CouplingPopUp
+import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.contributor.ContributorMenu
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -32,10 +34,16 @@ external interface ContributionOverviewContentProps : Props {
     var contributions: List<Contribution>
     var contributors: List<Player>
     var players: List<Player>
+    var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>
 }
 
 @ReactFunc
-val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (party, contributions, contributors, players) ->
+val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { props ->
+    val (party, contributions, contributors, players) = props
+    val popperRef = useRef<HTMLElement>()
+    val arrowRef = useRef<HTMLElement>()
+    val (menuTarget, setMenuTarget) = useState<Pair<ReferenceElement, Player>?>(null)
+    val popperInstance = usePopper(menuTarget?.first, popperRef.current, popperOptions(arrowRef))
     div {
         div {
             css {
@@ -46,10 +54,6 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (part
             h2 {
                 +"Most Recent ${contributions.size} Contributions:"
             }
-            val popperRef = useRef<HTMLElement>()
-            val arrowRef = useRef<HTMLElement>()
-            val (menuTarget, setMenuTarget) = useState<Pair<ReferenceElement, Player>?>(null)
-            val popperInstance = usePopper(menuTarget?.first, popperRef.current, popperOptions(arrowRef))
             CouplingPopUp(
                 hide = menuTarget == null,
                 popperRef = popperRef,
@@ -57,7 +61,7 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (part
                 popperInstance = popperInstance,
             ) {
                 if (menuTarget != null) {
-                    ContributorMenu(menuTarget.second, players, party.id)
+                    ContributorMenu(menuTarget.second, players, party.id, props.dispatchFunc)
                 }
             }
             contributions.forEach { contribution ->

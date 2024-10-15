@@ -23,7 +23,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
                 }
             }
         },
-        toNode = { _, _, queryResult ->
+        toNode = { _, dispatchFunc, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
             val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
             val contributions =
@@ -38,7 +38,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
                 if (contributions.isEmpty()) {
                     ContributionStartContent(party)
                 } else {
-                    ContributionOverviewContent(party, contributions, contributors, players)
+                    ContributionOverviewContent(party, contributions, contributors, players, dispatchFunc)
                 }
             }
         },
