@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.CouplingPopUp
+import com.zegreatrob.coupling.client.components.contributor.ContributorMenu
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
@@ -30,10 +31,11 @@ external interface ContributionOverviewContentProps : Props {
     var party: PartyDetails
     var contributions: List<Contribution>
     var contributors: List<Player>
+    var players: List<Player>
 }
 
 @ReactFunc
-val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (_, contributions, contributors) ->
+val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (party, contributions, contributors, players) ->
     div {
         div {
             css {
@@ -46,23 +48,25 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (_, c
             }
             val popperRef = useRef<HTMLElement>()
             val arrowRef = useRef<HTMLElement>()
-            val (referenceElement, setReferenceElement) = useState<ReferenceElement?>(null)
-            val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef))
-            CouplingPopUp(
-                hide = referenceElement == null,
-                popperRef = popperRef,
-                arrowRef = arrowRef,
-                popperInstance = popperInstance,
-            ) {
-                +"Menu Goes here"
+            val (referenceElement, setReferenceElement) = useState<Pair<ReferenceElement, Player>?>(null)
+            val popperInstance = usePopper(referenceElement?.first, popperRef.current, popperOptions(arrowRef))
+            if (referenceElement != null) {
+                CouplingPopUp(
+                    hide = false,
+                    popperRef = popperRef,
+                    arrowRef = arrowRef,
+                    popperInstance = popperInstance,
+                ) {
+                    ContributorMenu(referenceElement.second, players, party.id)
+                }
             }
             contributions.forEach { contribution ->
                 ContributionCard(
                     contribution = contribution,
                     contributors = contributors,
                     key = contribution.id,
-                    onPlayerClick = { _, element ->
-                        setReferenceElement(ReferenceElement(element))
+                    onPlayerClick = { player, element ->
+                        setReferenceElement(ReferenceElement(element)!! to player)
                         popperInstance.forceUpdate?.invoke()
                     },
                 )

@@ -16,6 +16,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
         query = graphQuery {
             party(partyId) {
                 details()
+                playerList()
                 contributionReport(limit = 5) {
                     contributions()
                     contributors { details() }
@@ -24,6 +25,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
         },
         toNode = { _, _, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
+            val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
             val contributions =
                 queryResult.party?.contributionReport?.contributions?.elements ?: return@CouplingQuery null
             val contributors = queryResult.party
@@ -36,7 +38,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
                 if (contributions.isEmpty()) {
                     ContributionStartContent(party)
                 } else {
-                    ContributionOverviewContent(party, contributions, contributors)
+                    ContributionOverviewContent(party, contributions, contributors, players)
                 }
             }
         },
