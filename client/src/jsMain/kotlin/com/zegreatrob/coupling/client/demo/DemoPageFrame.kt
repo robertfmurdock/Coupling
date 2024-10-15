@@ -37,6 +37,7 @@ import web.cssom.Auto
 import web.cssom.Color
 import web.cssom.None
 import web.cssom.Position
+import web.cssom.px
 import web.cssom.vw
 import web.dom.document
 import web.html.HTMLElement
@@ -102,15 +103,24 @@ fun ChildrenBuilder.popperDiv(
     arrowRef: MutableRefObject<HTMLElement>,
     state: DemoAnimationState,
     popperInstance: PopperInstance,
-) = CouplingPopUp(
-    hide = state.description.isBlank(),
-    popperRef = popperRef,
-    arrowRef = arrowRef,
-    popperInstance = popperInstance,
-) {
-    Markdown { +state.description }
-    if (state.showReturnButton) {
-        returnToCouplingButton()
+) = div {
+    css {
+        "h2" {
+            fontSize = 30.px
+        }
+        fontSize = 24.px
+        "div" { maxWidth = 400.px }
+    }
+    CouplingPopUp(
+        hide = state.description.isBlank(),
+        popperRef = popperRef,
+        arrowRef = arrowRef,
+        popperInstance = popperInstance,
+    ) {
+        Markdown { +state.description }
+        if (state.showReturnButton) {
+            returnToCouplingButton()
+        }
     }
 }
 

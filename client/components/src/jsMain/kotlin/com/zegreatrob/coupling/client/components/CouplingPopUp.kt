@@ -46,15 +46,9 @@ val CouplingPopUp by nfc<CouplingPopUpProps> { props ->
                 color = NamedColor.white
                 fontWeight = FontWeight.bold
                 padding = Padding(4.px, 8.px)
-                fontSize = 24.px
                 borderRadius = 20.px
-                width = 400.px
                 zIndex = integer(200)
                 display = Display.inlineBlock
-
-                "h2" {
-                    fontSize = 30.px
-                }
             }
             ref = popperRef
             style = popperInstance.styles[Popper]
