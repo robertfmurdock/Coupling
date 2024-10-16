@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.stubmodel.stubContribution
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -30,6 +31,8 @@ class ContributionListContentTest {
                 emptyList(),
                 GqlContributionWindow.All,
                 {},
+                emptyList(),
+                StubDispatcher().func(),
             ),
         )
     } verify {
@@ -60,6 +63,8 @@ class ContributionListContentTest {
                 emptyList(),
                 GqlContributionWindow.All,
                 {},
+                emptyList(),
+                StubDispatcher().func(),
             ),
         )
     } exercise {

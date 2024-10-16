@@ -17,14 +17,16 @@ val ContributionListPage = partyPageFunction { props, partyId ->
         query = graphQuery {
             party(partyId) {
                 details()
+                playerList()
                 contributionReport(window = window) {
                     contributions()
                     contributors { details() }
                 }
             }
         },
-        toNode = { reload, _, queryResult ->
+        toNode = { reload, dispatchFunc, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
+            val playerList = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
             val contributions =
                 queryResult.party?.contributionReport?.contributions?.elements ?: return@CouplingQuery null
             val contributors = queryResult.party
@@ -34,7 +36,7 @@ val ContributionListPage = partyPageFunction { props, partyId ->
                 ?.elements
                 ?: return@CouplingQuery null
             ContributionContentFrame.create(party = party) {
-                ContributionListContent(party, contributions, contributors, window, setWindow)
+                ContributionListContent(party, contributions, contributors, window, setWindow, playerList, dispatchFunc)
             }
         },
         key = "${partyId.value}$window",
