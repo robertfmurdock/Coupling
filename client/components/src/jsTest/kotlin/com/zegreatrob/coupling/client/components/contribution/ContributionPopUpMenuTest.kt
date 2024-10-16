@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.components.create
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -19,6 +20,7 @@ import react.dom.html.ReactHTML.button
 import kotlin.test.Test
 
 class ContributionPopUpMenuTest {
+
     @Test
     fun selectingPlayerCardWillShowPopUp() = asyncSetup(object {
         val partyId = stubPartyId()
@@ -44,5 +46,33 @@ class ContributionPopUpMenuTest {
     } verify {
         screen.findByText("Create Player")
             .assertNotNull()
+    }
+
+    @Test
+    fun clickingCloseWillHidePopUp() = asyncSetup(object {
+        val partyId = stubPartyId()
+        val targetPlayer = stubPlayer()
+        val actor = UserEvent.setup()
+    }) {
+        render(
+            ContributionPopUpMenu.create(
+                partyId = partyId,
+                players = emptyList(),
+                dispatchFunc = StubDispatcher().func(),
+                child = { setSelectedPlayer ->
+                    button.create {
+                        onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
+                        +"Press me"
+                    }
+                },
+            ),
+            RenderOptions(wrapper = TestRouter),
+        )
+        actor.click(screen.findByRole("button", RoleOptions(name = "Press me")))
+    } exercise {
+        actor.click(screen.findByRole("button", RoleOptions(name = "Close")))
+    } verify {
+        screen.queryByText("Create Player")
+            .assertIsEqualTo(null, "Pop up should have closed.")
     }
 }

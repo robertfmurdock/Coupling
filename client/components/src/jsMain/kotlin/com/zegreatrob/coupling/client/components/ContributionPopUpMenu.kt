@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import emotion.react.css
 import js.objects.jso
 import popper.core.Placement
 import popper.core.ReferenceElement
@@ -15,10 +16,13 @@ import popper.core.modifiers.Offset
 import react.MutableRefObject
 import react.Props
 import react.ReactNode
+import react.dom.html.ReactHTML.div
 import react.popper.UsePopperOptions
 import react.popper.usePopper
 import react.useRef
 import react.useState
+import web.cssom.Position
+import web.cssom.em
 import web.html.HTMLElement
 
 external interface ContributionPopUpMenuProps : Props {
@@ -43,6 +47,13 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
         arrowRef = arrowRef,
         popperInstance = popperInstance,
     ) {
+        div {
+            css {
+                position = Position.absolute
+                right = 1.em
+            }
+            CloseButton { onClose = { setMenuTarget(null) } }
+        }
         if (menuTarget != null) {
             ContributorMenu(menuTarget.second, players, partyId, dispatchFunc)
         }
