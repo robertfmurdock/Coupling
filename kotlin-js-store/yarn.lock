@@ -3552,12 +3552,12 @@
     "@whatwg-node/fetch" "^0.9.0"
     tslib "^2.4.0"
 
-"@graphql-tools/batch-delegate@^9.0.7":
-  version "9.0.7"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-9.0.7.tgz#5250927238ece8179179c0840d1884b8bc0de656"
-  integrity sha512-rrIceXTFKRp9TncokFnKPPifOQ33uoKMSbgrofosawNH/HnXCBqAjULhd0AMwYJvCMBDQPpSrfiZFUvWTBy/aQ==
+"@graphql-tools/batch-delegate@^9.0.8":
+  version "9.0.8"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-9.0.8.tgz#1a93eecc9f1aef6dd66e3798c40da275a9949357"
+  integrity sha512-VDxa6O72j6i7GEhuPF3n+4dd5GWjLHUGj09GTSmNhp7z6lPxgXEyBlmi0JhfpLmmemCnTExicL6CSgtP6TlRuQ==
   dependencies:
-    "@graphql-tools/delegate" "^10.0.25"
+    "@graphql-tools/delegate" "^10.0.26"
     "@graphql-tools/utils" "^10.5.5"
     dataloader "2.2.2"
     tslib "^2.4.0"
@@ -3594,10 +3594,10 @@
     tslib "^2.4.0"
     unixify "^1.0.0"
 
-"@graphql-tools/delegate@^10.0.25":
-  version "10.0.25"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-10.0.25.tgz#e346c86adf9e8f1d0ba7e2db82072930b403a5f2"
-  integrity sha512-524H8Z8G886FsQRYwzBJZxjxXL+4dbjA169Zb+Ouwwtva+0hRV4AKNblnhyPJrdl04h4wZT53pd+SdaRv7H1oA==
+"@graphql-tools/delegate@^10.0.26":
+  version "10.0.26"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-10.0.26.tgz#8f0770099ffb2c22e82ddbafa5fb90280b6f8f0e"
+  integrity sha512-8KaphA86onhO8h9WJeu7YpRNwYDkbbD+KctV6LPJ99vK3w+rQuWkZoxrL1H2nN2FwDBP/9OXposeE7z5C6cv8w==
   dependencies:
     "@graphql-tools/batch-execute" "^9.0.5"
     "@graphql-tools/executor" "^1.3.2"
@@ -3871,18 +3871,18 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/stitch@^9.2.14":
-  version "9.2.14"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.2.14.tgz#b0d74196c6ba153b79bd9e51b7674fcff8f2b96f"
-  integrity sha512-xLZNOCLUp75L0Q1Sj0mpUqrLqoJo+5W6brx2OgXaSuuzYzFYtaPRint5+Xz2cGnLCPjupwr8arCAWrnc4YW/Gw==
+"@graphql-tools/stitch@^9.2.15":
+  version "9.2.15"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.2.15.tgz#4a652a379882c49d7f932f98688ff0495919608c"
+  integrity sha512-NOnmymAaXxH0ZM3t1dP9MyPsOsmKGiCayBUjjn4Ej0TgUgZoSxjn78KQaXWcQ/FwxXPLmRdJ7bpwXe3aYzG/rA==
   dependencies:
-    "@graphql-tools/batch-delegate" "^9.0.7"
-    "@graphql-tools/delegate" "^10.0.25"
+    "@graphql-tools/batch-delegate" "^9.0.8"
+    "@graphql-tools/delegate" "^10.0.26"
     "@graphql-tools/executor" "^1.3.2"
     "@graphql-tools/merge" "^9.0.8"
     "@graphql-tools/schema" "^10.0.7"
     "@graphql-tools/utils" "^10.5.5"
-    "@graphql-tools/wrap" "^10.0.9"
+    "@graphql-tools/wrap" "^10.0.10"
     tslib "^2.4.0"
     value-or-promise "^1.0.11"
 
@@ -3960,6 +3960,17 @@
     "@graphql-typed-document-node/core" "^3.1.1"
     tslib "^2.4.0"
 
+"@graphql-tools/wrap@^10.0.10":
+  version "10.0.10"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-10.0.10.tgz#b4c8b502b1b867a445a7706021ca1d13ce57f55c"
+  integrity sha512-3f1CUM+EpsALjt/HofzSWCLyfY65o9VpmqCTvIwVWGOnaP82cWbZE1Ytwb+t7yAZBKqCCc+1ginp+COIPD3ULw==
+  dependencies:
+    "@graphql-tools/delegate" "^10.0.26"
+    "@graphql-tools/schema" "^10.0.7"
+    "@graphql-tools/utils" "^10.5.5"
+    tslib "^2.4.0"
+    value-or-promise "^1.0.12"
+
 "@graphql-tools/wrap@^10.0.2":
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-10.0.2.tgz#87f510b5f35db2771e7743bc3d71059ee4adaf09"
@@ -3968,17 +3979,6 @@
     "@graphql-tools/delegate" "^10.0.4"
     "@graphql-tools/schema" "^10.0.3"
     "@graphql-tools/utils" "^10.0.13"
-    tslib "^2.4.0"
-    value-or-promise "^1.0.12"
-
-"@graphql-tools/wrap@^10.0.9":
-  version "10.0.9"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-10.0.9.tgz#c2c26141cc31ed3d0cf534e907fb7cfbed0ea6eb"
-  integrity sha512-3zOpVnUyc2IRcjwH8GQlW1Yt1PsD6kjqmFmaDlFZeV3+yNT+99e+HDH7bPemLgH1pg89mv6tW6AcxdLbnsOcRQ==
-  dependencies:
-    "@graphql-tools/delegate" "^10.0.25"
-    "@graphql-tools/schema" "^10.0.7"
-    "@graphql-tools/utils" "^10.5.5"
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
@@ -4816,10 +4816,10 @@
     "@react-spring/shared" "~9.7.3"
     "@react-spring/types" "~9.7.3"
 
-"@remix-run/router@1.19.2", "@remix-run/router@^1.19.2":
-  version "1.19.2"
-  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.19.2.tgz#0c896535473291cb41f152c180bedd5680a3b273"
-  integrity sha512-baiMx18+IMuD1yyvOGaHM9QrVUPGGG0jC+z+IPHnRJWUAUvaKuWKyE8gjDj2rzv3sz9zOGoRSPgeBVHRhZnBlA==
+"@remix-run/router@1.20.0", "@remix-run/router@^1.20.0":
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.20.0.tgz#03554155b45d8b529adf635b2f6ad1165d70d8b4"
+  integrity sha512-mUnk8rPJBI9loFDZ+YzPGdeniYK+FTmRD1TMCz7ev2SNIozyKKpnGgsxO34u6Z4z/t0ITuu7voi/AshfsGsgFg==
 
 "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"
@@ -11938,10 +11938,10 @@ html-webpack-plugin@^5.5.0:
     pretty-error "^4.0.0"
     tapable "^2.0.0"
 
-html-webpack-plugin@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-5.6.0.tgz#50a8fa6709245608cb00e811eacecb8e0d7b7ea0"
-  integrity sha512-iwaY4wzbe48AfKLZ/Cc8k0L+FKG6oSNRaZ8x5A/T/IVDGyXcbHncM9TdDa93wn0FsSm82FhTKW7f3vS61thXAw==
+html-webpack-plugin@^5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-5.6.1.tgz#f48117ec3f18d807b854e6137e1fc3b51ad45d84"
+  integrity sha512-t4aRC1wx8aCZev3bCYta/k0LE2b68fv0BmmQdmHiRwDfkdGzjCZVk1VFQLfHy8EmAw/T3jA7/QeEAwNaHIj0ZQ==
   dependencies:
     "@types/html-minifier-terser" "^6.0.0"
     html-minifier-terser "^6.0.2"
@@ -12945,7 +12945,7 @@ jsdom@25.0.1:
     ws "^8.18.0"
     xml-name-validator "^5.0.0"
 
-jsep@^1.3.8:
+jsep@^1.3.9:
   version "1.3.9"
   resolved "https://registry.yarnpkg.com/jsep/-/jsep-1.3.9.tgz#8ce42df80ee9c1b39e52d0dd062a465342f35440"
   integrity sha512-i1rBX5N7VPl0eYb6+mHNp52sEuaS2Wi8CDYx1X5sn9naevL78+265XJqy1qENEk7mRKwS06NHpUqiBwR7qeodw==
@@ -13066,14 +13066,14 @@ jsonparse@^1.2.0:
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
   integrity sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==
 
-jsonpath-plus@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/jsonpath-plus/-/jsonpath-plus-9.0.0.tgz#bb8703ee481531142bca8dee9a42fe72b8358a7f"
-  integrity sha512-bqE77VIDStrOTV/czspZhTn+o27Xx9ZJRGVkdVShEtPoqsIx5yALv3lWVU6y+PqYvWPJNWE7ORCQheQkEe0DDA==
+jsonpath-plus@^10.0.0:
+  version "10.0.4"
+  resolved "https://registry.yarnpkg.com/jsonpath-plus/-/jsonpath-plus-10.0.4.tgz#78887fa6d57b15ed4693d6ced7316587f05ff814"
+  integrity sha512-UjLP1tV5VCvK4EkjlTPvtTpKKAv+4SXHPk8ApTp+bCit5rVzS205qoMpaTkTOHK/oqy50hv4HzIeuL0ciX01wA==
   dependencies:
     "@jsep-plugin/assignment" "^1.2.1"
     "@jsep-plugin/regex" "^1.0.3"
-    jsep "^1.3.8"
+    jsep "^1.3.9"
 
 jsonschema@^1.4.1:
   version "1.4.1"
@@ -14232,10 +14232,10 @@ normalize-url@^8.0.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-8.0.0.tgz#593dbd284f743e8dcf6a5ddf8fadff149c82701a"
   integrity sha512-uVFpKhj5MheNBJRTiMZ9pE/7hD1QTeEvugSJW/OmLzAp78PB5O6adfMNTvmfKhXBkvCzC+rqifWcVYpGFwTjnw==
 
-npm-check-updates@17.1.3:
-  version "17.1.3"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-17.1.3.tgz#7d7aefd073c95a2f29ccd1db9eea39e9f3be343a"
-  integrity sha512-4uDLBWPuDHT5KLieIJ20FoAB8yqJejmupI42wPyfObgQOBbPAikQSwT73afDwREvhuxYrRDqlRvxTMSfvO+L8A==
+npm-check-updates@17.1.4:
+  version "17.1.4"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-17.1.4.tgz#1bebfb7a32a92c0d98f6ed6cf780b8841d787077"
+  integrity sha512-crOUeN2GngqlkRCFQ/zi1zsneWd9IGZgIfAWYGAuhYiPnfbBTmJBL7Yq1wI0e1dsW8CfWc+h348WmfCREqeOBA==
 
 npm-registry-utilities@^1.0.0:
   version "1.0.0"
@@ -15312,20 +15312,20 @@ react-popper@^2.3.0:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
-react-router-dom@^6.26.2:
-  version "6.26.2"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.26.2.tgz#a6e3b0cbd6bfd508e42b9342099d015a0ac59680"
-  integrity sha512-z7YkaEW0Dy35T3/QKPYB1LjMK2R1fxnHO8kWpUMTBdfVzZrWOiY9a7CtN8HqdWtDUWd5FY6Dl8HFsqVwH4uOtQ==
+react-router-dom@^6.27.0:
+  version "6.27.0"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.27.0.tgz#8d7972a425fd75f91c1e1ff67e47240c5752dc3f"
+  integrity sha512-+bvtFWMC0DgAFrfKXKG9Fc+BcXWRUO1aJIihbB79xaeq0v5UzfvnM5houGUm1Y461WVRcgAQ+Clh5rdb1eCx4g==
   dependencies:
-    "@remix-run/router" "1.19.2"
-    react-router "6.26.2"
+    "@remix-run/router" "1.20.0"
+    react-router "6.27.0"
 
-react-router@6.26.2, react-router@^6.26.2:
-  version "6.26.2"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.26.2.tgz#2f0a68999168954431cdc29dd36cec3b6fa44a7e"
-  integrity sha512-tvN1iuT03kHgOFnLPfLJ8V95eijteveqdOSk+srqfePtQvqCExB8eHOYnlilbOcyJyKnYkr1vJvf7YqotAJu1A==
+react-router@6.27.0, react-router@^6.27.0:
+  version "6.27.0"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.27.0.tgz#db292474926c814c996c0ff3ef0162d1f9f60ed4"
+  integrity sha512-YA+HGZXz4jaAkVoYBE98VQl+nVzI+cVI2Oj/06F5ZM+0u3TgedN9Y9kmMRo2mnkSK2nCpNQn0DVob4HCsY/WLw==
   dependencies:
-    "@remix-run/router" "1.19.2"
+    "@remix-run/router" "1.20.0"
 
 react-use-websocket@^4.9.0:
   version "4.9.0"
@@ -16060,10 +16060,10 @@ serverless-offline-ssm@^6.2.0:
   resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-6.2.0.tgz#f2db290a72631629579ce5f940ed76f254f96653"
   integrity sha512-Af7JeLbU4OHAx7ZgAs2OLP2DGKyp/g45rX7SWQ8KiBzn47jme+MqN+GOV6qd5oZ8V9khd3p62+RueHR3ezEZZQ==
 
-serverless-offline@^14.3.2:
-  version "14.3.2"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.3.2.tgz#667e53a5a6d106a6f86b7c11ce1528ec79f8c16b"
-  integrity sha512-+stI4DJ9YAy8JDU8f8rvsJUEw9X6sDyAmjPXt/1Z+pjWt278RZmpI77prz0X/O+4GUKAx4dBRGQmHxjMbT3vDg==
+serverless-offline@^14.3.3:
+  version "14.3.3"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.3.3.tgz#c6af45dc3d1ca9aba0eca0251aceea0ae57e79be"
+  integrity sha512-q/m/5BclrBQiF9mqfvGl2xCz+hs5+MGwdTou6tq/Jud+bExdF3rofl/bKVu7ahlV7FIjOo0Xfa0LLI404oL61g==
   dependencies:
     "@aws-sdk/client-lambda" "^3.636.0"
     "@hapi/boom" "^10.0.1"
@@ -16079,7 +16079,7 @@ serverless-offline@^14.3.2:
     java-invoke-local "0.0.6"
     jose "^5.7.0"
     js-string-escape "^1.0.1"
-    jsonpath-plus "^9.0.0"
+    jsonpath-plus "^10.0.0"
     jsonschema "^1.4.1"
     jszip "^3.10.1"
     luxon "^3.5.0"
