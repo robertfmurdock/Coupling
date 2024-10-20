@@ -8,12 +8,12 @@ com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.5.24"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:7.0.0"
 io-ktor-ktor-bom = "io.ktor:ktor-bom:3.0.0"
-org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.819"
+org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.820"
 org-jetbrains-kotlinx-kotlinx-coroutines-bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.9.0"
 org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
 org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.7.3"
 org-junit-junit-bom = "org.junit:junit-bom:5.11.2"
-org-kotools-types = "org.kotools:types:4.5.2"
+org-kotools-types = "org.kotools:types:4.5.3"
 org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.16"
 
 [plugins]
