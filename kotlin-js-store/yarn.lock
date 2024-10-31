@@ -4998,10 +4998,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.6.0.tgz#41dd6093d34652cddb5d5bdeee04eafc33826668"
   integrity sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==
 
-"@slack/bolt@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.0.0.tgz#822bc049667bb639935a437ef8f54fc0a5bb74f5"
-  integrity sha512-QYkscY7+Ds4IGvbE5pxKc7INbRyTD/WOuFki1J6YyM78EfKkykgtdxiA/HXY0NfZWoq05zFuaJWSGusLzSijZw==
+"@slack/bolt@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.0.1.tgz#111d9c2deb995bd0d5f325a443d90e0dc09f6435"
+  integrity sha512-JcBOe1xfgBxSjgRkoAiQLb5yy+IP/ve6pR+2iZNedyGxEWzGdfCGFIIl4/vug8w3a6U/fW1ArY/C/aQeHBdB5g==
   dependencies:
     "@slack/logger" "^4.0.0"
     "@slack/oauth" "^3"
@@ -5056,7 +5056,7 @@
   resolved "https://registry.yarnpkg.com/@slack/types/-/types-2.9.0.tgz#c4c7bc704a4c0c62a30490e85679febac9314543"
   integrity sha512-YfZGo0xVOmI7CHhiwCmEC33HzjQl1lakNmyo5GPGb4KHKEaUoY7zenAdKsYCJqYwdaM9OL+hqYt/tZ2zgvVc7g==
 
-"@slack/web-api@^7", "@slack/web-api@^7.6.0":
+"@slack/web-api@^7":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.6.0.tgz#7bfa2e0da4fce934715b54e47305fd02e722c0aa"
   integrity sha512-1u9JnP12RPk8ChF8RXKKoVtlox9HlZXhf+6lvvRORKxRd4+8ZQ41KskhPO6WiD0Q+wE6k/M6U627BXzVzBcVNA==
@@ -5078,6 +5078,24 @@
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.3.4.tgz#b62a1268ab84c4742d24d504636c1fde0bc4913f"
   integrity sha512-KwLK8dlz2lhr3NO7kbYQ7zgPTXPKrhq1JfQc0etJ0K8LSJhYYnf8GbVznvgDT/Uz1/pBXfFQnoXjrQIOKAdSuw==
+  dependencies:
+    "@slack/logger" "^4.0.0"
+    "@slack/types" "^2.9.0"
+    "@types/node" ">=18.0.0"
+    "@types/retry" "0.12.0"
+    axios "^1.7.4"
+    eventemitter3 "^5.0.1"
+    form-data "^4.0.0"
+    is-electron "2.2.2"
+    is-stream "^2"
+    p-queue "^6"
+    p-retry "^4"
+    retry "^0.13.1"
+
+"@slack/web-api@^7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.7.0.tgz#a2f4014dcfada8027049c3cb4835999c1fb8cef0"
+  integrity sha512-DtRyjgQi0mObA2uC6H8nL2OhAISKDhvtOXgRjGRBnBhiaWb6df5vPmKHsOHjpweYALBMHtiqE5ajZFkDW/ag8Q==
   dependencies:
     "@slack/logger" "^4.0.0"
     "@slack/types" "^2.9.0"
@@ -8436,10 +8454,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@130.0.0:
-  version "130.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-130.0.0.tgz#a6251ebfc4aeaca9bc2f22cddc4fcf7a105c04b8"
-  integrity sha512-1g1eMoKF22Uh6l8DTFOPvWLovINPrkAMw7yDHlF6Rx+4W4JI9aGdCZ2Cx7c181hUgALU1oSKGH3uKNryYM5DaQ==
+chromedriver@130.0.1:
+  version "130.0.1"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-130.0.1.tgz#24fd5b2c9c9df4ebfc5d28c94eca8658915fbe15"
+  integrity sha512-JH+OxDZ7gVv02r9oXwj4mQ8JCtj62g0fCD1LMUUYdB/4mPxn/E2ys+1IzXItoE7vXM9fGVc9R1akvXLqwwuSww==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
@@ -11921,10 +11939,10 @@ html-webpack-plugin@^5.5.0:
     pretty-error "^4.0.0"
     tapable "^2.0.0"
 
-html-webpack-plugin@^5.6.2:
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-5.6.2.tgz#174a67c8e55aa3fa2ba94c8e8e42894bfe4978ea"
-  integrity sha512-q7xp/FO9RGBVoTKNItkdX1jKLscLFkgn/dLVFNYbHVbfHLBk6DYW5nsQ8kCzIWcgKP/kUBocetjvav6lD8YfCQ==
+html-webpack-plugin@^5.6.3:
+  version "5.6.3"
+  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-5.6.3.tgz#a31145f0fee4184d53a794f9513147df1e653685"
+  integrity sha512-QSf1yjtSAsmf7rYBV7XX86uua4W/vkhIt0xNXKbsi2foEeW7vjJQz4bhnpL3xH+l1ryl1680uNv968Z+X6jSYg==
   dependencies:
     "@types/html-minifier-terser" "^6.0.0"
     html-minifier-terser "^6.0.2"
@@ -14672,10 +14690,10 @@ parse5@^7.0.0, parse5@^7.1.1, parse5@^7.1.2:
   dependencies:
     entities "^4.4.0"
 
-parse5@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/parse5/-/parse5-7.2.0.tgz#8a0591ce9b7c5e2027173ab737d4d3fc3d826fab"
-  integrity sha512-ZkDsAOcxsUMZ4Lz5fVciOehNcJ+Gb8gTzcA4yl3wnc273BAybYWrQ+Ks/OjCjSEpjvQkDSeZbybK9qj2VHHdGA==
+parse5@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-7.2.1.tgz#8928f55915e6125f430cc44309765bf17556a33a"
+  integrity sha512-BuBYQYlv1ckiPdQi/ohiivi9Sagc9JG+Ozs0r7b/0iK3sKmrb0b9FdWdBbOdx6hBCM/F9Ir82ofnBhtZOjCRPQ==
   dependencies:
     entities "^4.5.0"
 
