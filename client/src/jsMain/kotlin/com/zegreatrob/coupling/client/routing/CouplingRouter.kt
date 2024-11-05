@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
+import com.zegreatrob.coupling.client.components.thirdPartyAvatarsDisabledContext
 import com.zegreatrob.coupling.client.contribution.ContributionListPage
 import com.zegreatrob.coupling.client.contribution.ContributionOverviewPage
 import com.zegreatrob.coupling.client.contribution.ContributionVisualizationPage
@@ -46,11 +47,12 @@ import react.useMemo
 
 external interface CouplingRouterProps : Props {
     var animationsDisabled: Boolean
+    var thirdPartyAvatarsDisabled: Boolean
     var config: ClientConfig
 }
 
 @ReactFunc
-val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
+val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, thirdPartyAvatarsDisabled, config) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()
     val browserRouter = useMemo(isSignedIn, config) {
         createBrowserRouter(
@@ -64,9 +66,11 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
         )
     }
     animationsDisabledContext(animationsDisabled) {
-        if (!isLoading) {
-            RouterProvider {
-                router = browserRouter
+        thirdPartyAvatarsDisabledContext(thirdPartyAvatarsDisabled) {
+            if (!isLoading) {
+                RouterProvider {
+                    router = browserRouter
+                }
             }
         }
     }

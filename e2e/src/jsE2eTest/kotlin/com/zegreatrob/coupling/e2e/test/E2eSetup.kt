@@ -26,7 +26,7 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
                 ?.forEach { fire(it) }
 
             WebdriverBrowser.setUrl("")
-            js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")
+            js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); window.sessionStorage.setItem('thirdPartyAvatarsDisabled', true); done()}, undefined)")
                 .unsafeCast<Promise<Unit>>()
                 .await()
 

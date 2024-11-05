@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarUrl
 import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
 import com.zegreatrob.coupling.client.components.pngPath
+import com.zegreatrob.coupling.client.components.thirdPartyAvatarsDisabledContext
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -13,6 +14,7 @@ import csstype.PropertiesBuilder
 import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
+import react.create
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
@@ -117,19 +119,26 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
 
 fun Int.inCouplingEm(): Double = this / 14.0
 
-private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = img {
-    alt = "player-icon"
-    css {
-        width = size.inCouplingEm().em
-        height = size.inCouplingEm().em
-    }
+val noPlayerImagePath = pngPath("players/autumn")
 
-    src = when {
-        player.imageURL != null -> player.imageURL
-        player.avatarType != null -> player.getDirectAvatarImageUrl(size, player.avatarType!!)
-        else -> player.getGravatarSafeAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())
+private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) =
+    thirdPartyAvatarsDisabledContext.Consumer {
+        children = { disabled ->
+            img.create {
+                alt = "player-icon"
+                css {
+                    width = size.inCouplingEm().em
+                    height = size.inCouplingEm().em
+                }
+                src = when {
+                    disabled -> noPlayerImagePath
+                    player.imageURL != null -> player.imageURL
+                    player.avatarType != null -> player.getDirectAvatarImageUrl(size, player.avatarType!!)
+                    else -> player.getGravatarSafeAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())
+                }
+            }
+        }
     }
-}
 
 private fun String.gravatarWrapper(email: String, size: Int) = gravatarUrl(
     email,

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.SessionConfig.animationsDisabled
+import com.zegreatrob.coupling.client.SessionConfig.thirdPartyAvatarsDisabled
 import com.zegreatrob.coupling.client.components.external.auth0.react.Auth0AuthorizationParams
 import com.zegreatrob.coupling.client.components.external.auth0.react.Auth0Provider
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions.Companion.window
@@ -26,7 +27,7 @@ val RootComponent by nfc<RootProps> { props ->
         skipRedirectCallback = isCallbackFromOtherProvider()
         useRefreshTokens = true
 
-        CouplingRouter(animationsDisabled, config)
+        CouplingRouter(animationsDisabled, thirdPartyAvatarsDisabled, config)
     }
 }
 
