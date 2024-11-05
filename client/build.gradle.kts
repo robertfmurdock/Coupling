@@ -95,7 +95,6 @@ dependencies {
     jsMainImplementation(npmConstrained("d3-selection"))
     jsMainImplementation(npmConstrained("date-fns"))
     jsMainImplementation(npmConstrained("drag-drop-webkit-mobile"))
-    jsMainImplementation(npmConstrained("favicons"))
     jsMainImplementation(npmConstrained("file-loader"))
     jsMainImplementation(npmConstrained("fitty"))
     jsMainImplementation(npmConstrained("html-webpack-harddisk-plugin"))
