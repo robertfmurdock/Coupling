@@ -36,7 +36,6 @@ dependencies {
     jsMainImplementation("com.zegreatrob.testmints:action-async")
     jsMainImplementation("com.zegreatrob.testmints:minspy")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")

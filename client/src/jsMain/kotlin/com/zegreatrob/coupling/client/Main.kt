@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client
 
-import kotlinext.js.require
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -20,3 +19,5 @@ private fun configureDragDropWebkitMobile() {
     val ddwm = require<(Json) -> Unit>("drag-drop-webkit-mobile")
     ddwm(json("enableEnterLeave" to true))
 }
+
+external fun <T> require(module: String): T

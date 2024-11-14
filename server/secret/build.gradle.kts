@@ -12,7 +12,6 @@ kotlin {
 dependencies {
     jsMainImplementation(project(":libraries:model"))
     jsMainImplementation(project(":server:actionz"))
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     jsTestImplementation(project(":libraries:stub-model"))
     jsTestImplementation(kotlin("test"))

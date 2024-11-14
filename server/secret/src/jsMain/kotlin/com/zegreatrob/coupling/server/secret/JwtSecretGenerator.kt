@@ -29,5 +29,5 @@ interface JwtSecretGenerator : SecretGenerator {
 }
 
 external class TextEncoder {
-    fun encode(input: String = definedExternally): Uint8Array
+    fun encode(input: String = definedExternally): Uint8Array<*>
 }

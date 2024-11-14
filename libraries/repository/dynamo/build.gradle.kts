@@ -31,7 +31,7 @@ dependencies {
     jsMainApi(project(":libraries:model"))
     jsMainApi(project(":libraries:repository:core"))
     jsMainApi(project(":libraries:logging"))
-    jsMainApi("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    jsMainApi("org.jetbrains.kotlin-wrappers:kotlin-js")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     jsMainImplementation("com.benasher44:uuid")
     jsMainImplementation("io.github.oshai:kotlin-logging")

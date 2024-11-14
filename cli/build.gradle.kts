@@ -43,7 +43,6 @@ dependencies {
     commonMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-node")
-    "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     "jvmMainImplementation"("org.slf4j:slf4j-api")
     "jvmMainImplementation"("org.slf4j:slf4j-simple")
 

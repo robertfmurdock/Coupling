@@ -23,6 +23,8 @@ import kotlinx.serialization.json.jsonPrimitive
 import node.crypto.randomUUID
 import kotlin.test.Test
 
+external fun <T> require(module: String): T
+
 class DiscordClientTest {
 
     @Test
@@ -31,7 +33,7 @@ class DiscordClientTest {
         val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
             lastRequestData = request
             respond(
-                content = JSON.stringify(kotlinext.js.require("./expected-access-response.json")),
+                content = JSON.stringify(require("./expected-access-response.json")),
                 headers = headersOf("Content-Type", "application/json"),
             )
         }
@@ -79,7 +81,7 @@ class DiscordClientTest {
     @Test
     fun canSendMessage() = asyncSetup(object : ScopeMint() {
         var lastRequestData: HttpRequestData? = null
-        val responseJson = JSON.stringify(kotlinext.js.require("./expected-message-response.json"))
+        val responseJson = JSON.stringify(require("./expected-message-response.json"))
         val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
             lastRequestData = request
             respond(
@@ -118,7 +120,7 @@ class DiscordClientTest {
     @Test
     fun canUpdateMessage() = asyncSetup(object : ScopeMint() {
         var lastRequestData: HttpRequestData? = null
-        val responseJson = JSON.stringify(kotlinext.js.require("./expected-message-response.json"))
+        val responseJson = JSON.stringify(require("./expected-message-response.json"))
         val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
             lastRequestData = request
             respond(

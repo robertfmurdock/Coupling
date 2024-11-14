@@ -12,7 +12,6 @@ kotlin {
 dependencies {
     jsMainImplementation(npmConstrained("@slack/webhook"))
     jsMainImplementation(npmConstrained("@slack/oauth"))
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     jsTestImplementation("com.zegreatrob.testmints:async")

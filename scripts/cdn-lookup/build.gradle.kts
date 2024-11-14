@@ -21,7 +21,6 @@ dependencies {
     jsMainImplementation("io.ktor:ktor-client-encoding")
     jsMainImplementation("io.ktor:ktor-client-logging")
     jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     jsMainImplementation(npmConstrained("resolve-pkg"))
     jsMainImplementation(npmConstrained("read-pkg-up"))

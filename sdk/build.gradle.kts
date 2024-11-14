@@ -36,7 +36,7 @@ dependencies {
     "commonTestImplementation"("io.github.oshai:kotlin-logging")
     "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
 
-    "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-js")
     "jsMainImplementation"(npmConstrained("ws"))
     "jsTestImplementation"(project(":server:slack"))
     "jvmTestImplementation"("io.ktor:ktor-client-java")

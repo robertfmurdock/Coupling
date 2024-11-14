@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.external.fitty
 
+import com.zegreatrob.coupling.client.components.require
 import web.html.HTMLElement
 import kotlin.js.json
 
@@ -7,7 +8,7 @@ fun HTMLElement.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: B
     if (js("global.IS_JSDOM") == true) {
         return
     }
-    val fitty = kotlinext.js.require<dynamic>("fitty")
+    val fitty = require<dynamic>("fitty")
     fitty.default(
         this,
         json(

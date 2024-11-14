@@ -14,12 +14,12 @@ external class SignJWT(jwt: dynamic) {
     fun setAudience(audience: String): SignJWT
     fun setSubject(audience: String): SignJWT
     fun setExpirationTime(audience: String): SignJWT
-    fun sign(secret: Uint8Array): Promise<String>
+    fun sign(secret: Uint8Array<*>): Promise<String>
 }
 
 external fun jwtVerify(
     token: String,
-    secret: Uint8Array,
+    secret: Uint8Array<*>,
     options: JWTVerifyOptions = definedExternally,
 ): Promise<JWTVerifyResult>
 

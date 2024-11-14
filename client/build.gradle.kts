@@ -72,7 +72,6 @@ dependencies {
     jsMainImplementation("com.zegreatrob.testmints:action-async")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-css")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")

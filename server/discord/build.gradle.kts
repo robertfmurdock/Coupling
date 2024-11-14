@@ -14,7 +14,6 @@ dependencies {
     jsMainImplementation("io.ktor:ktor-client-core")
     jsMainImplementation("io.ktor:ktor-client-logging")
     jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     jsTestImplementation("com.zegreatrob.testmints:async")

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk.gql
 
-actual fun loadGqlFile(path: String): String = kotlinext.js.require<dynamic>("fs")
+actual fun loadGqlFile(path: String): String = require<dynamic>("fs")
     ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()
     ?.let { readFileSync: dynamic ->
         try {
@@ -12,4 +12,6 @@ actual fun loadGqlFile(path: String): String = kotlinext.js.require<dynamic>("fs
             null
         }
     }
-    ?: kotlinext.js.require<dynamic>("com/zegreatrob/coupling/sdk/$path.graphql").default.unsafeCast<String>()
+    ?: require<dynamic>("com/zegreatrob/coupling/sdk/$path.graphql").default.unsafeCast<String>()
+
+external fun <T> require(module: String): T
