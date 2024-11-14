@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.2.4",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.687.0",
-    "@aws-sdk/client-dynamodb": "3.687.0",
-    "@aws-sdk/client-lambda": "~3.689.0",
-    "@aws-sdk/lib-dynamodb": "3.689.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.691.0",
+    "@aws-sdk/client-dynamodb": "3.691.0",
+    "@aws-sdk/client-lambda": "~3.691.0",
+    "@aws-sdk/lib-dynamodb": "3.691.0",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
@@ -33,7 +33,7 @@
     "babel-loader": "^9.2.1",
     "blueimp-md5": "^2.19.0",
     "body-parser": "^1.20.3",
-    "chromedriver": "130.0.4",
+    "chromedriver": "131.0.0",
     "compression": "^1.7.5",
     "cookie-parser": "^1.4.7",
     "core-js": "^3.39.0",
