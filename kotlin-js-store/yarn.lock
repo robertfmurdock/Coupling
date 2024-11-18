@@ -6251,10 +6251,10 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^4.10.0":
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-4.10.0.tgz#5c785f9a5a500113d69d98c16061e0addd1c0305"
-  integrity sha512-KrMOL+sH69htCIXCaZ4JluJ35bchuCCznyPyrbN8JXSGQfwBI1SuIEMZNwvy8L8ykj29t6sa5BAAiL7fNoLZ8A==
+"@stripe/stripe-js@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-5.0.0.tgz#c5fe8e8fbd94080cfd7d55e35e51939ec5c57346"
+  integrity sha512-u/f/uq7oCgHGgnSxC/I68pHpMf1XQMNBeb8mbhbxFSCji86uz4HvC50vbUS1FBTkx+b4gkTIo/UCnYjwn1cseg==
 
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
@@ -15198,10 +15198,10 @@ react-router@6.28.0, react-router@^6.28.0:
   dependencies:
     "@remix-run/router" "1.21.0"
 
-react-use-websocket@^4.10.1:
-  version "4.10.1"
-  resolved "https://registry.yarnpkg.com/react-use-websocket/-/react-use-websocket-4.10.1.tgz#3cded26f6ab5f905b03ff28bd489182ea91fbec0"
-  integrity sha512-PrZbKj3BSy9kRU9otKEoMi0FOcEVh1abyYxJDzB/oL7kMBDBs+ZXhnWWed/sc679nPHAWMOn1gotoV04j5gJUw==
+react-use-websocket@^4.11.0:
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/react-use-websocket/-/react-use-websocket-4.11.0.tgz#60e3b1a5d74acf28c39f39d8a4d285123fb3ac35"
+  integrity sha512-VPoY47DKbULo80h4ya2i166fABub1cLN17wPcJOzlkNial5pHVAcDGl7E5Fk2JPT0W3Yg2k9K1nFJh0c8x2K8w==
 
 react@18.3.1, react@^18.3.1:
   version "18.3.1"
