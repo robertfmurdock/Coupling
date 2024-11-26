@@ -26,11 +26,10 @@ object PartyListQuery {
             async { getPartyRecords() } to async { getUserPlayerIds() }
         }
 
-        private fun Pair<List<Record<PartyDetails>>, List<PartyElement<String>>>.onlyAuthenticatedParties() =
-            let { (partyRecords, players) ->
-                partyRecords.filter {
-                    players.authenticatedFilter()(it)
-                }
+        private fun Pair<List<Record<PartyDetails>>, List<PartyElement<String>>>.onlyAuthenticatedParties() = let { (partyRecords, players) ->
+            partyRecords.filter {
+                players.authenticatedFilter()(it)
             }
+        }
     }
 }

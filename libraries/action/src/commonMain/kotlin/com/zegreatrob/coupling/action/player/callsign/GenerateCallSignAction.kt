@@ -24,8 +24,7 @@ data class GenerateCallSignAction(
             pickNoun(),
         )
 
-        private fun GenerateCallSignAction.pickAdjective() =
-            rollForUnusedTerm(shuffledAdjectives(), players.adjectives(), email)
+        private fun GenerateCallSignAction.pickAdjective() = rollForUnusedTerm(shuffledAdjectives(), players.adjectives(), email)
 
         private fun List<Player>.adjectives() = mapNotNull { it.callSignAdjective }
 

@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
-import react.dom.aria.ariaLabel
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div

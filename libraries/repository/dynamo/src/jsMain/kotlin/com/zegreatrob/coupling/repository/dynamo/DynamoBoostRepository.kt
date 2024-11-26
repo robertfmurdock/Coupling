@@ -81,10 +81,9 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
             .performPutItems()
     }
 
-    private fun buildTribeCopyRecordJson(partyIdsToUpdate: Set<PartyId>, dynamoJson: Json) =
-        partyIdsToUpdate.map { tribeId ->
-            copyWithDifferentPk(dynamoJson, tribeId)
-        }
+    private fun buildTribeCopyRecordJson(partyIdsToUpdate: Set<PartyId>, dynamoJson: Json) = partyIdsToUpdate.map { tribeId ->
+        copyWithDifferentPk(dynamoJson, tribeId)
+    }
 
     private suspend fun List<Json>.performPutItems() = coroutineScope {
         forEach {
@@ -92,8 +91,7 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
         }
     }
 
-    private fun copyWithDifferentPk(dynamoJson: Json, partyId: PartyId) =
-        assign(jso(), dynamoJson).add(json("pk" to tribeKey(partyId)))
+    private fun copyWithDifferentPk(dynamoJson: Json, partyId: PartyId) = assign(jso(), dynamoJson).add(json("pk" to tribeKey(partyId)))
 
     private suspend fun allTribeCopiesToUpdate(boostRecord: Record<Boost>): Set<PartyId> {
         val previousRecord = getByPk(userKey(boostRecord.data.userId))

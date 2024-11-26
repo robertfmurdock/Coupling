@@ -30,8 +30,7 @@ interface RepositoryCatalog {
     val contributionRepository: ContributionRepository
 }
 
-suspend fun commandDispatcher(user: UserDetails, scope: CoroutineScope, traceId: Uuid) =
-    CommandDispatcher(user, repositoryCatalog(user), scope, traceId)
+suspend fun commandDispatcher(user: UserDetails, scope: CoroutineScope, traceId: Uuid) = CommandDispatcher(user, repositoryCatalog(user), scope, traceId)
 
 private suspend fun repositoryCatalog(user: UserDetails): RepositoryCatalog = if (useInMemory()) {
     memoryRepositoryCatalog(user.id)

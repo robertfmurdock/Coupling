@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
 import react.ChildrenBuilder
-import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label

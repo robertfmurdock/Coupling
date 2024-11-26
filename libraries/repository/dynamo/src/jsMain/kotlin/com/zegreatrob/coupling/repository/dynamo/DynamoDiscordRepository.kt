@@ -25,9 +25,8 @@ class DynamoDiscordRepository private constructor(override val userId: String, o
             .asDynamoJson(),
     )
 
-    override suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>? =
-        performGetSingleItemQuery(partyId.value, partyId)
-            ?.toRecord()
+    override suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>? = performGetSingleItemQuery(partyId.value, partyId)
+        ?.toRecord()
 
     private fun Json.toRecord(): Record<PartyElement<DiscordTeamAccess>> {
         val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)

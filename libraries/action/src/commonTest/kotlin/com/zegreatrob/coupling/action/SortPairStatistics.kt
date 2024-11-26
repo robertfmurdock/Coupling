@@ -51,17 +51,16 @@ class SortPairStatistics {
     }
 
     @Test
-    fun stillSortsCorrectlyWithLargeRealisticHistory() =
-        setup(loadJsonPartySetup("realistic-sort-test-data/inputs.json")) {
-        } exercise {
-            val pairs = players.toPairCombinations()
-            val historyRecords = history.map { Record(PartyElement(party.id, it), "test", false, Instant.DISTANT_PAST) }
-            pairs.map { historyRecords.spinsSinceLastPair(it) }
-                .sortedByDescending { it }
-        } verify { result ->
-            result.assertIsEqualTo(
-                loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
-                    .toList(),
-            )
-        }
+    fun stillSortsCorrectlyWithLargeRealisticHistory() = setup(loadJsonPartySetup("realistic-sort-test-data/inputs.json")) {
+    } exercise {
+        val pairs = players.toPairCombinations()
+        val historyRecords = history.map { Record(PartyElement(party.id, it), "test", false, Instant.DISTANT_PAST) }
+        pairs.map { historyRecords.spinsSinceLastPair(it) }
+            .sortedByDescending { it }
+    } verify { result ->
+        result.assertIsEqualTo(
+            loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
+                .toList(),
+        )
+    }
 }

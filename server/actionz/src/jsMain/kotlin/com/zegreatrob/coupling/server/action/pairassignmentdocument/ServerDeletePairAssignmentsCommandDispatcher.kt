@@ -63,8 +63,7 @@ interface ServerDeletePairAssignmentsCommandDispatcher :
             ?.deleteMessage(element)
     }
 
-    private suspend fun DiscordTeamAccess.deleteMessage(pairAssignmentDocument: PairAssignmentDocument) =
-        discordRepository.deleteMessage(webhook, pairAssignmentDocument)
+    private suspend fun DiscordTeamAccess.deleteMessage(pairAssignmentDocument: PairAssignmentDocument) = discordRepository.deleteMessage(webhook, pairAssignmentDocument)
 
     private suspend fun PartyId.getDiscordTeamAccess() = discordAccessRepository.get(this)?.data?.element
 

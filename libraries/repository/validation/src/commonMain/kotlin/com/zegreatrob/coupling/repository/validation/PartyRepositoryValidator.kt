@@ -28,8 +28,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
         result.parties().assertContainsAll(parties)
     }
 
-    private fun List<PartyDetails>.assertContainsAll(expectedParties: List<PartyDetails>) =
-        expectedParties.forEach(this::assertContains)
+    private fun List<PartyDetails>.assertContainsAll(expectedParties: List<PartyDetails>) = expectedParties.forEach(this::assertContains)
 
     private fun List<Record<PartyDetails>>.parties() = map(Record<PartyDetails>::data)
 

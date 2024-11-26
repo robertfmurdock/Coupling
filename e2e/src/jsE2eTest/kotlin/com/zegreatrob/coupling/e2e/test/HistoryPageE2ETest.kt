@@ -67,12 +67,11 @@ class HistoryPageE2ETest {
                 ),
             ).onEach { sdk.fire(SavePairAssignmentsCommand(party.id, it)) }
 
-            private fun buildPairAssignmentDocument(number: Int, pairs: NotEmptyList<CouplingPair>) =
-                PairAssignmentDocument(
-                    PairAssignmentDocumentId("${Clock.System.now().toEpochMilliseconds()}-HistoryPageE2ETest-$number"),
-                    Clock.System.now(),
-                    pairs.map { it.withPins(emptySet()) },
-                )
+            private fun buildPairAssignmentDocument(number: Int, pairs: NotEmptyList<CouplingPair>) = PairAssignmentDocument(
+                PairAssignmentDocumentId("${Clock.System.now().toEpochMilliseconds()}-HistoryPageE2ETest-$number"),
+                Clock.System.now(),
+                pairs.map { it.withPins(emptySet()) },
+            )
 
             private fun buildParty() = "${randomInt()}-HistoryPageE2ETest".let {
                 PartyDetails(it.let(::PartyId), name = it)

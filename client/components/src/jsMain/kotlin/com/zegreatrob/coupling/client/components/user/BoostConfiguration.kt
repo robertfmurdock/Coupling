@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
-import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.h4
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.p

@@ -9,8 +9,7 @@ interface PartyIdDynamoItemListGetSyntax :
 
     suspend fun PartyId.queryForItemList() = logAsync("itemList") { queryForItemList(itemListQueryParams()) }
 
-    suspend fun PartyId.queryForDeletedItemList() =
-        logAsync("getDeleteItems") { queryForDeletedItemList(itemListQueryParams()) }
+    suspend fun PartyId.queryForDeletedItemList() = logAsync("getDeleteItems") { queryForDeletedItemList(itemListQueryParams()) }
 
     fun PartyId.itemListQueryParams() = json(
         "TableName" to prefixedTableName,

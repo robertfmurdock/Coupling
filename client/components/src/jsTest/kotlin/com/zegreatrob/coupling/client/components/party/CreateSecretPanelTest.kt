@@ -21,7 +21,7 @@ class CreateSecretPanelTest {
         val dispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
-        js.globals.globalThis.alert = {}
+        js.globals.globalThis["alert"] = {}
         render { CreateSecretPanel(partyId, dispatcher.func()) }
     } exercise {
         actor.click(screen.findByRole("button", RoleOptions("Create New Secret")))

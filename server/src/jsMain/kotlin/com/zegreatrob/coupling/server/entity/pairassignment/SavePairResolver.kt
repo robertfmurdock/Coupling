@@ -22,5 +22,4 @@ val savePairsResolver = dispatch(
     toSerializable = { true },
 )
 
-private fun GqlSavePairAssignmentsInput.command() =
-    SavePairAssignmentsCommand(PartyId(partyId), toModel())
+private fun GqlSavePairAssignmentsInput.command() = SavePairAssignmentsCommand(PartyId(partyId), toModel())

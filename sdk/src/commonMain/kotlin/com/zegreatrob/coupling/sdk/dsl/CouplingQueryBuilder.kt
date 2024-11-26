@@ -131,9 +131,8 @@ class ConfigQueryBuilder : QueryBuilder<GqlConfiguration> {
     }
 }
 
-inline fun <reified J, T> T.queryContent(): String where T : BuilderWithInput, T : QueryBuilder<J> =
-    output.nestedKeys<J>()
-        .toQueryLines()
-        .plus(queries)
-        .joinToString(", ")
-        .let { "{ $it }" }
+inline fun <reified J, T> T.queryContent(): String where T : BuilderWithInput, T : QueryBuilder<J> = output.nestedKeys<J>()
+    .toQueryLines()
+    .plus(queries)
+    .joinToString(", ")
+    .let { "{ $it }" }

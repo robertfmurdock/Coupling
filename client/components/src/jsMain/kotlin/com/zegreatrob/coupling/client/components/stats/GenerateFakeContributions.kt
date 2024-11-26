@@ -40,38 +40,37 @@ suspend fun generateFakeContributions(
     pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
     selectedWindow: GqlContributionWindow,
     fakeStyle: FakeDataStyle,
-): List<Pair<CouplingPair, ContributionReport>> =
-    contributionStartDateTime(selectedWindow, pairsContributions)
-        .let { startDateTime ->
-            val datesUntilNow = (1..(startDateTime.daysUntil(Clock.System.now(), TimeZone.currentSystemDefault())))
-                .map { dayCount -> (startDateTime + dayCount.days).toLocalDateTime(TimeZone.currentSystemDefault()) }
+): List<Pair<CouplingPair, ContributionReport>> = contributionStartDateTime(selectedWindow, pairsContributions)
+    .let { startDateTime ->
+        val datesUntilNow = (1..(startDateTime.daysUntil(Clock.System.now(), TimeZone.currentSystemDefault())))
+            .map { dayCount -> (startDateTime + dayCount.days).toLocalDateTime(TimeZone.currentSystemDefault()) }
 
-            when (fakeStyle) {
-                FakeDataStyle.RandomPairs -> generatePairsRandomlyNoSolos(pairsContributions, datesUntilNow, true)
-                FakeDataStyle.RandomPairsWithRandomSolos -> generatePairsRandomlyNoSolos(
-                    pairsContributions,
-                    datesUntilNow,
-                    false,
-                )
+        when (fakeStyle) {
+            FakeDataStyle.RandomPairs -> generatePairsRandomlyNoSolos(pairsContributions, datesUntilNow, true)
+            FakeDataStyle.RandomPairsWithRandomSolos -> generatePairsRandomlyNoSolos(
+                pairsContributions,
+                datesUntilNow,
+                false,
+            )
 
-                FakeDataStyle.StrongPairingTeam -> generateStrongPairingTeam(pairsContributions, datesUntilNow)
-            }
-        }.let { updated ->
-            pairsContributions.map { (pair) ->
-                val contributions = updated[pair] ?: emptyList()
-                pair to ContributionReport(
-                    contributions = contributions.map {
-                        partyRecord(
-                            partyId = PartyId(""),
-                            data = it,
-                            modifyingUserEmail = "",
-                        )
-                    },
-                    medianCycleTime = contributions.getOrNull(contributions.size / 2)?.cycleTime,
-                    withCycleTimeCount = contributions.mapNotNull { it.cycleTime }.count(),
-                )
-            }
+            FakeDataStyle.StrongPairingTeam -> generateStrongPairingTeam(pairsContributions, datesUntilNow)
         }
+    }.let { updated ->
+        pairsContributions.map { (pair) ->
+            val contributions = updated[pair] ?: emptyList()
+            pair to ContributionReport(
+                contributions = contributions.map {
+                    partyRecord(
+                        partyId = PartyId(""),
+                        data = it,
+                        modifyingUserEmail = "",
+                    )
+                },
+                medianCycleTime = contributions.getOrNull(contributions.size / 2)?.cycleTime,
+                withCycleTimeCount = contributions.mapNotNull { it.cycleTime }.count(),
+            )
+        }
+    }
 
 private fun generatePairsRandomlyNoSolos(
     pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
@@ -141,14 +140,13 @@ class FakeContributionDispatcher :
     override val cannon = DispatcherPipeCannon(this)
 }
 
-private fun List<CouplingPair>.generatePairingSet(): List<CouplingPair> =
-    fold(emptyList()) { pairingSet, couplingPair ->
-        if (couplingPair.any { pairingSet.flatten().contains(it) }) {
-            pairingSet
-        } else {
-            pairingSet + listOf(couplingPair)
-        }
+private fun List<CouplingPair>.generatePairingSet(): List<CouplingPair> = fold(emptyList()) { pairingSet, couplingPair ->
+    if (couplingPair.any { pairingSet.flatten().contains(it) }) {
+        pairingSet
+    } else {
+        pairingSet + listOf(couplingPair)
     }
+}
 
 private fun contributionStartDateTime(
     selectedWindow: GqlContributionWindow,

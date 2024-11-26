@@ -196,8 +196,7 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     uuid4(),
 )
 
-private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) =
-    socketDispatcher.perform(BroadcastAction(first, second))
+private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) = socketDispatcher.perform(BroadcastAction(first, second))
 
 private fun delete(connectionId: String, managementApi: ApiGatewayManagementApiClient) = managementApi.send(
     DeleteConnectionCommand(json("ConnectionId" to connectionId)),

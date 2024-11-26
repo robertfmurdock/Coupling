@@ -101,17 +101,15 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     private fun Json.PartyId() = PartyId(this["tribeId"].unsafeCast<String>())
 
-    override suspend fun save(partyPlayer: PartyElement<Player>) =
-        saveRawRecord(
-            partyPlayer.copyWithIdCorrection().toRecord(),
-        )
+    override suspend fun save(partyPlayer: PartyElement<Player>) = saveRawRecord(
+        partyPlayer.copyWithIdCorrection().toRecord(),
+    )
 
-    private fun PartyElement<Player>.copyWithIdCorrection() =
-        copy(
-            element = with(element) {
-                copy(id = id)
-            },
-        )
+    private fun PartyElement<Player>.copyWithIdCorrection() = copy(
+        element = with(element) {
+            copy(id = id)
+        },
+    )
 
     suspend fun saveRawRecord(record: PartyRecord<Player>) = performPutItem(record.asDynamoJson())
 
@@ -123,29 +121,27 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         { asDynamoJson() },
     )
 
-    override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> =
-        partyId.queryForDeletedItemList()
-            .mapNotNull { it.toPlayerRecord() }
+    override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> = partyId.queryForDeletedItemList()
+        .mapNotNull { it.toPlayerRecord() }
 
-    override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>> =
-        logAsync("getPlayerIdsByEmail") {
-            val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
-                queryAllRecords(emailQueryParams(email))
-                    .mapNotNull { it.getDynamoStringValue("id") }
-                    .toSet()
-            }
-            logAsync("recordsWithIds") {
-                scanAllRecords(playerIdScanParams(playerIdsWithEmail))
-                    .sortByRecordTimestamp()
-                    .groupBy { it.getDynamoStringValue("id") }
-                    .map { it.value.last() }
-                    .filter { it["email"] == email && it["isDeleted"] != true }
-                    .map {
-                        PartyId(it.getDynamoStringValue("tribeId") ?: "")
-                            .with(it.getDynamoStringValue("id") ?: "")
-                    }
-            }
+    override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>> = logAsync("getPlayerIdsByEmail") {
+        val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
+            queryAllRecords(emailQueryParams(email))
+                .mapNotNull { it.getDynamoStringValue("id") }
+                .toSet()
         }
+        logAsync("recordsWithIds") {
+            scanAllRecords(playerIdScanParams(playerIdsWithEmail))
+                .sortByRecordTimestamp()
+                .groupBy { it.getDynamoStringValue("id") }
+                .map { it.value.last() }
+                .filter { it["email"] == email && it["isDeleted"] != true }
+                .map {
+                    PartyId(it.getDynamoStringValue("tribeId") ?: "")
+                        .with(it.getDynamoStringValue("id") ?: "")
+                }
+        }
+    }
 
     private fun playerIdScanParams(recordTribePlayerIds: Set<String>) = json(
         "TableName" to prefixedTableName,

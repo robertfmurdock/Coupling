@@ -11,17 +11,15 @@ interface SdkSaveSlackIntegrationCommandDispatcher :
     SaveSlackIntegrationCommand.Dispatcher,
     GqlTrait {
 
-    override suspend fun perform(command: SaveSlackIntegrationCommand) =
-        doQuery(Mutation.saveSlackIntegration, command.saveSlackIntegrationInput())
-            .parseMutationResult()
-            .toDomain()
-            .saveSlackIntegration
-            .toVoidResult()
+    override suspend fun perform(command: SaveSlackIntegrationCommand) = doQuery(Mutation.saveSlackIntegration, command.saveSlackIntegrationInput())
+        .parseMutationResult()
+        .toDomain()
+        .saveSlackIntegration
+        .toVoidResult()
 
-    private fun SaveSlackIntegrationCommand.saveSlackIntegrationInput() =
-        GqlSaveSlackIntegrationInput(
-            team = team,
-            channel = channel,
-            partyId = partyId.value,
-        )
+    private fun SaveSlackIntegrationCommand.saveSlackIntegrationInput() = GqlSaveSlackIntegrationInput(
+        team = team,
+        channel = channel,
+        partyId = partyId.value,
+    )
 }

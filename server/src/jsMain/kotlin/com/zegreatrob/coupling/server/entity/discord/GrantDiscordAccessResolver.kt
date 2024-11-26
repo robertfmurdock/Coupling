@@ -19,5 +19,4 @@ val grantDiscordAccessResolver: Resolver = dispatch(
     toSerializable = VoidResult::toJson,
 )
 
-private fun GqlGrantDiscordAccessInput.command() =
-    GrantDiscordAccessCommand(code, guildId, PartyId(partyId))
+private fun GqlGrantDiscordAccessInput.command() = GrantDiscordAccessCommand(code, guildId, PartyId(partyId))

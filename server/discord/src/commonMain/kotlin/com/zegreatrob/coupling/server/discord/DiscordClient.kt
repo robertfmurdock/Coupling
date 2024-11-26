@@ -113,9 +113,8 @@ class DiscordClient(
         }
     }
 
-    suspend fun deleteWebhookMessage(messageId: String, webhookId: String, webhookToken: String): Boolean =
-        httpClient.delete("webhooks/$webhookId/$webhookToken/messages/$messageId")
-            .status.isSuccess()
+    suspend fun deleteWebhookMessage(messageId: String, webhookId: String, webhookToken: String): Boolean = httpClient.delete("webhooks/$webhookId/$webhookToken/messages/$messageId")
+        .status.isSuccess()
 }
 
 data class DiscordEmbed(

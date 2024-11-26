@@ -27,16 +27,15 @@ import kotlin.test.Test
 class PlayerConfigPageE2ETest {
 
     companion object {
-        private fun playerConfigOnePlayerSetup(buildParty: () -> PartyDetails, buildPlayer: () -> Player) =
-            e2eSetup.extend(beforeAll = {
-                val party = buildParty()
-                val player = buildPlayer()
-                sdk.await().apply {
-                    fire(SavePartyCommand(party))
-                    fire(SavePlayerCommand(party.id, player))
-                }
-                Triple(player, party, sdk.await())
-            })
+        private fun playerConfigOnePlayerSetup(buildParty: () -> PartyDetails, buildPlayer: () -> Player) = e2eSetup.extend(beforeAll = {
+            val party = buildParty()
+            val player = buildPlayer()
+            sdk.await().apply {
+                fire(SavePartyCommand(party))
+                fire(SavePlayerCommand(party.id, player))
+            }
+            Triple(player, party, sdk.await())
+        })
     }
 
     @Test

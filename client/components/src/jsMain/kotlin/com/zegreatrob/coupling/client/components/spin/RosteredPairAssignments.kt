@@ -9,10 +9,9 @@ class RosteredPairAssignments private constructor(
     val selectedPlayers: List<Player>,
 ) {
     companion object {
-        fun rosteredPairAssignments(pairAssignments: PairAssignmentDocument, allPlayers: List<Player>) =
-            RosteredPairAssignments(
-                pairAssignments,
-                pairAssignments.orderedPairedPlayers().let { allPlayers.filter(it::contains) },
-            )
+        fun rosteredPairAssignments(pairAssignments: PairAssignmentDocument, allPlayers: List<Player>) = RosteredPairAssignments(
+            pairAssignments,
+            pairAssignments.orderedPairedPlayers().let { allPlayers.filter(it::contains) },
+        )
     }
 }

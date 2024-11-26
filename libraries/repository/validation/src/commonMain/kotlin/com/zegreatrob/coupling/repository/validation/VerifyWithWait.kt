@@ -5,11 +5,9 @@ import com.zegreatrob.testmints.async.Verify
 import kotlinx.coroutines.delay
 import kotlin.time.TimeSource
 
-infix fun <C : Any, R> Exercise<C, R>.verifyWithWait(assertionFunctions: suspend C.(R) -> Unit) =
-    this.verify { result -> vWW(assertionFunctions, result) }
+infix fun <C : Any, R> Exercise<C, R>.verifyWithWait(assertionFunctions: suspend C.(R) -> Unit) = this.verify { result -> vWW(assertionFunctions, result) }
 
-infix fun <C : Any, R> Exercise<C, R>.verifyWithWaitAnd(assertionFunctions: suspend C.(R) -> Unit): Verify<C, R?> =
-    this.verifyAnd { result -> vWW(assertionFunctions, result) }
+infix fun <C : Any, R> Exercise<C, R>.verifyWithWaitAnd(assertionFunctions: suspend C.(R) -> Unit): Verify<C, R?> = this.verifyAnd { result -> vWW(assertionFunctions, result) }
 
 private suspend fun <C : Any, R> C.vWW(assertionFunctions: suspend C.(R) -> Unit, result: R) {
     val timeout = 2000

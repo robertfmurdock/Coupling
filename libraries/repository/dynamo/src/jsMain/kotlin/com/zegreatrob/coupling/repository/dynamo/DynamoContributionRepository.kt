@@ -65,8 +65,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         .add(data.toJson())
         .add(json("timestamp+id" to sortKeyWithDateTimeFirst()))
 
-    private fun PartyRecord<Contribution>.sortKeyWithDateTimeFirst() =
-        "${(data.element.integrationDateTime ?: data.element.dateTime)?.isoWithMillis()?.let { "dT$it" } ?: timestamp}+${data.element.id}"
+    private fun PartyRecord<Contribution>.sortKeyWithDateTimeFirst() = "${(data.element.integrationDateTime ?: data.element.dateTime)?.isoWithMillis()?.let { "dT$it" } ?: timestamp}+${data.element.id}"
 
     private fun PartyElement<Contribution>.toJson() = json(
         "id" to element.id,

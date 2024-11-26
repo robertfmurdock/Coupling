@@ -41,7 +41,6 @@ data class CreatePairCandidateReportAction(
             ?.let { (timeResult, partners) -> PairCandidateReport(player, partners, timeResult) }
             ?: PairCandidateReport(player, emptyList(), NeverPaired)
 
-        private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =
-            maxByOrNull { (key, _) -> if (key is TimeResultValue) key.time else -1 }
+        private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() = maxByOrNull { (key, _) -> if (key is TimeResultValue) key.time else -1 }
     }
 }

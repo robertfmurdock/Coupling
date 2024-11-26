@@ -29,18 +29,17 @@ fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     slackMessageId = slackMessageId,
 )
 
-fun GqlPairAssignmentDocumentDetails.toModel(): PartyRecord<PairAssignmentDocument> =
-    PartyRecord(
-        PartyId(partyId).with(
-            PairAssignmentDocument(
-                id = id.let(::PairAssignmentDocumentId),
-                date = date,
-                pairs = pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrThrow(),
-                discordMessageId = discordMessageId,
-                slackMessageId = slackMessageId,
-            ),
+fun GqlPairAssignmentDocumentDetails.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
+    PartyId(partyId).with(
+        PairAssignmentDocument(
+            id = id.let(::PairAssignmentDocumentId),
+            date = date,
+            pairs = pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrThrow(),
+            discordMessageId = discordMessageId,
+            slackMessageId = slackMessageId,
         ),
-        modifyingUserId = modifyingUserEmail,
-        isDeleted = isDeleted,
-        timestamp = date,
-    )
+    ),
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = date,
+)

@@ -33,5 +33,4 @@ fun useAuth0Data(): AuthHookData {
     )
 }
 
-private suspend fun Promise<Json>.collectRawToken() =
-    await()["__raw"].toString()
+private suspend fun Promise<Json>.collectRawToken() = await()["__raw"].toString()

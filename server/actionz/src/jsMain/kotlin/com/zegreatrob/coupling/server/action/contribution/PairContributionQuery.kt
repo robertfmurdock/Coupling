@@ -19,11 +19,10 @@ data class PairContributionQuery(
     val limit: Int? = null,
 ) {
     interface Dispatcher : PartyIdContributionsTrait {
-        suspend fun perform(query: PairContributionQuery): ContributionReport =
-            query.partyId.contributions(query.window, query.limit)
-                .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
-                .filter(byWindow(query))
-                .let { contributionReport(it, query.partyId) }
+        suspend fun perform(query: PairContributionQuery): ContributionReport = query.partyId.contributions(query.window, query.limit)
+            .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
+            .filter(byWindow(query))
+            .let { contributionReport(it, query.partyId) }
 
         private fun byWindow(query: PairContributionQuery): (PartyRecord<Contribution>) -> Boolean {
             val window = query.window ?: return { true }
@@ -42,9 +41,8 @@ data class PairContributionQuery(
 
 private fun CouplingPair.targetPlayerEmailGroups() = asArray()
 
-private fun pairMatches(pairEmails: Set<String>, targetPlayerEmailGroups: Array<Player>): Boolean =
-    allGroupsAreMatched(targetPlayerEmailGroups, pairEmails) &&
-        allEmailsAreMatches(pairEmails, targetPlayerEmailGroups)
+private fun pairMatches(pairEmails: Set<String>, targetPlayerEmailGroups: Array<Player>): Boolean = allGroupsAreMatched(targetPlayerEmailGroups, pairEmails) &&
+    allEmailsAreMatches(pairEmails, targetPlayerEmailGroups)
 
 private fun allEmailsAreMatches(
     pairEmails: Set<String>,

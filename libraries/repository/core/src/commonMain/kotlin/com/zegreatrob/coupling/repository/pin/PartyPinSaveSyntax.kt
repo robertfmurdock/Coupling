@@ -7,6 +7,5 @@ interface PartyPinSaveSyntax {
 
     val pinRepository: PinSave
 
-    suspend fun PartyElement<Pin>.save() =
-        pinRepository.save(this)
+    suspend fun PartyElement<Pin>.save() = pinRepository.save(this)
 }

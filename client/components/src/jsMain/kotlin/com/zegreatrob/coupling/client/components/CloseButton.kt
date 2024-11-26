@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.components
 import emotion.react.css
 import react.FC
 import react.Props
-import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.i
 import web.cssom.ClassName

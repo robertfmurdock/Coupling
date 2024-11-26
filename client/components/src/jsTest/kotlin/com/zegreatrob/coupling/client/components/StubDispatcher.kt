@@ -27,11 +27,10 @@ object StubDispatcher {
             ),
         )
 
-        suspend inline fun onActionReturn(returnValue: Any): Any =
-            actionChannel.receiveAsFlow()
-                .filterIsInstance<ActionWrapper<*, *>>()
-                .first()
-                .action
-                .also { resultChannel.send(returnValue) }
+        suspend inline fun onActionReturn(returnValue: Any): Any = actionChannel.receiveAsFlow()
+            .filterIsInstance<ActionWrapper<*, *>>()
+            .first()
+            .action
+            .also { resultChannel.send(returnValue) }
     }
 }

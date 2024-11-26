@@ -17,15 +17,13 @@ class MemoryPairAssignmentDocumentRepository(
     TypeRecordSyntax<PartyElement<PairAssignmentDocument>>,
     RecordBackend<PartyElement<PairAssignmentDocument>> by recordBackend {
 
-    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) =
-        partyPairDocument
-            .record()
-            .save()
+    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = partyPairDocument
+        .record()
+        .save()
 
-    override suspend fun loadPairAssignments(partyId: PartyId): List<Record<PartyElement<PairAssignmentDocument>>> =
-        partyId.records()
-            .filterNot { it.isDeleted }
-            .sortedByDescending { it.data.document.date }
+    override suspend fun loadPairAssignments(partyId: PartyId): List<Record<PartyElement<PairAssignmentDocument>>> = partyId.records()
+        .filterNot { it.isDeleted }
+        .sortedByDescending { it.data.document.date }
 
     override suspend fun getCurrentPairAssignments(partyId: PartyId) = partyId.records()
         .filterNot { it.isDeleted }

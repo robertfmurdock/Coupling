@@ -43,12 +43,11 @@ object StubCannon {
             }
         }
 
-        private fun <R> SuspendAction<D, R>.unwrap() =
-            if (this is ActionWrapper<*, *>) {
-                action
-            } else {
-                this
-            }
+        private fun <R> SuspendAction<D, R>.unwrap() = if (this is ActionWrapper<*, *>) {
+            action
+        } else {
+            this
+        }
 
         inner class Captor<D, R>(val action: SuspendAction<D, R>) {
             fun thenReturn(value: R) {

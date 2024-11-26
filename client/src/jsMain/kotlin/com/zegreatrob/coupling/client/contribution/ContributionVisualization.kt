@@ -64,18 +64,17 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     )
 }
 
-fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) =
-    { updatedWindow: GqlContributionWindow? ->
-        setSearchParams({ previous ->
-            previous.also {
-                if (updatedWindow != null) {
-                    previous["window"] = updatedWindow.name
-                } else {
-                    previous.delete("window")
-                }
+fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updatedWindow: GqlContributionWindow? ->
+    setSearchParams({ previous ->
+        previous.also {
+            if (updatedWindow != null) {
+                previous["window"] = updatedWindow.name
+            } else {
+                previous.delete("window")
             }
-        }, jso { })
-    }
+        }
+    }, jso { })
+}
 
 private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
     val contributionReport = it.contributionReport ?: return@mapNotNull null

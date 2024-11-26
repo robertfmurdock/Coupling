@@ -12,8 +12,7 @@ fun pairOf(player1: Player) = CouplingPair.Single(player1)
 
 fun pairOf(player1: Player, player2: Player) = CouplingPair.Double(player1, player2)
 
-fun mobOf(player1: Player, player2: Player, player3: Player, vararg more: Player) =
-    CouplingPair.Mob(player1, player2, player3, more.toSet())
+fun mobOf(player1: Player, player2: Player, player3: Player, vararg more: Player) = CouplingPair.Mob(player1, player2, player3, more.toSet())
 
 sealed class CouplingPair : Iterable<Player> {
 
@@ -30,8 +29,7 @@ sealed class CouplingPair : Iterable<Player> {
     }
 
     data class Mob(val player1: Player, val player2: Player, val player3: Player, val more: Set<Player>) : CouplingPair() {
-        override fun toNotEmptyList() =
-            notEmptyListOf(player1, tail = listOf(player2, player3).plus(more).toTypedArray())
+        override fun toNotEmptyList() = notEmptyListOf(player1, tail = listOf(player2, player3).plus(more).toTypedArray())
     }
 
     companion object {

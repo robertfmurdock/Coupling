@@ -29,8 +29,7 @@ interface SdkPairAssignmentDocumentSave :
     }
 }
 
-private fun PartyElement<PairAssignmentDocument>.savePairAssignmentsInput() =
-    toSavePairAssignmentsInput().toJsonElement()
+private fun PartyElement<PairAssignmentDocument>.savePairAssignmentsInput() = toSavePairAssignmentsInput().toJsonElement()
 
 interface SdkSavePairAssignmentsCommandDispatcher :
     SavePairAssignmentsCommand.Dispatcher,

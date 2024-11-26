@@ -11,12 +11,10 @@ class CompoundPairAssignmentDocumentRepository(
     private val repository2: PairAssignmentDocumentRepository,
 ) : PairAssignmentDocumentRepository by repository1 {
 
-    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) =
-        arrayOf(repository1, repository2)
-            .forEach { it.save(partyPairDocument) }
+    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = arrayOf(repository1, repository2)
+        .forEach { it.save(partyPairDocument) }
 
-    override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
-        repository1.deleteIt(partyId, pairAssignmentDocumentId).also {
-            repository2.deleteIt(partyId, pairAssignmentDocumentId)
-        }
+    override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = repository1.deleteIt(partyId, pairAssignmentDocumentId).also {
+        repository2.deleteIt(partyId, pairAssignmentDocumentId)
+    }
 }

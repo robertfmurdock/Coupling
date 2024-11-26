@@ -14,7 +14,6 @@ data class FindCallSignAction(val players: List<Player>, val email: String) {
             action.generateCallSign(adjectives, nouns)
         }
 
-        private fun FindCallSignAction.generateCallSign(adjectives: Set<String>, nouns: Set<String>) =
-            execute(GenerateCallSignAction(adjectives, nouns, email, players))
+        private fun FindCallSignAction.generateCallSign(adjectives: Set<String>, nouns: Set<String>) = execute(GenerateCallSignAction(adjectives, nouns, email, players))
     }
 }

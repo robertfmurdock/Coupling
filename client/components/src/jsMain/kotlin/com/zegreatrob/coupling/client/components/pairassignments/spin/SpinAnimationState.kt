@@ -16,11 +16,10 @@ sealed class SpinAnimationState {
     open fun duration(pairAssignments: PairAssignmentDocument): Int = 200
 
     companion object {
-        fun sequence(pairAssignments: PairAssignmentDocument): Sequence<Frame<SpinAnimationState>> =
-            generateSequence<Frame<SpinAnimationState>>(Frame(Start, 0)) { (state, time) ->
-                state.next(pairAssignments)
-                    ?.let { Frame(it, time + state.duration(pairAssignments)) }
-            }
+        fun sequence(pairAssignments: PairAssignmentDocument): Sequence<Frame<SpinAnimationState>> = generateSequence<Frame<SpinAnimationState>>(Frame(Start, 0)) { (state, time) ->
+            state.next(pairAssignments)
+                ?.let { Frame(it, time + state.duration(pairAssignments)) }
+        }
     }
 }
 
@@ -53,8 +52,7 @@ data object End : SpinAnimationState() {
 
 data class ShowPlayer(val player: Player) : SpinAnimationState() {
     override fun duration(pairAssignments: PairAssignmentDocument) = 500
-    override fun next(pairAssignments: PairAssignmentDocument) =
-        AssignedPlayer(player)
+    override fun next(pairAssignments: PairAssignmentDocument) = AssignedPlayer(player)
 
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
         fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = rosterPlayers.ifEmpty {
@@ -94,8 +92,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
         return orderedPairedPlayers.count() - indexOfTarget
     }
 
-    override fun duration(pairAssignments: PairAssignmentDocument) =
-        shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
+    override fun duration(pairAssignments: PairAssignmentDocument) = shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
 
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
         fun rotateList(rosterPlayers: List<Player>): List<Player> {
@@ -134,14 +131,13 @@ private fun PairAssignmentDocument.previouslyPresentedPlayers(player: Player) = 
     .takeWhile { it != player }
     .toList()
 
-private fun PairAssignmentDocument.revealedPairs(presentedPlayers: List<Player>) =
-    presentedPlayers
-        .let {
-            it + makePlaceholderPlayers(
-                it,
-                this,
-            )
-        }.toSimulatedPairs()
+private fun PairAssignmentDocument.revealedPairs(presentedPlayers: List<Player>) = presentedPlayers
+    .let {
+        it + makePlaceholderPlayers(
+            it,
+            this,
+        )
+    }.toSimulatedPairs()
 
 private fun List<Player>.toSimulatedPairs() = chunked(2)
     .map {

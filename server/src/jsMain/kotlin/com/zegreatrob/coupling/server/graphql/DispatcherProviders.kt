@@ -39,8 +39,7 @@ object DispatcherProviders {
                 override val subscriptionRepository by lazy { StripeSubscriptionRepository() }
                 override val userId = dispatcher.currentUser.id
 
-                override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message) =
-                    dispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
+                override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message) = dispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
             }
         }
     }

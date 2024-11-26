@@ -42,8 +42,7 @@ private fun scheduleStateFunc(setState: (Any) -> Unit, speed: Double) = setState
 
 private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
 
-private fun ((Any) -> Unit).statePairToTimeoutArgsFunc(): (Frame<Any>) -> Pair<() -> Unit, Int> =
-    toFrameFunc(pairTransformFirstFunc(curryOneArgToNoArgsFunc()))
+private fun ((Any) -> Unit).statePairToTimeoutArgsFunc(): (Frame<Any>) -> Pair<() -> Unit, Int> = toFrameFunc(pairTransformFirstFunc(curryOneArgToNoArgsFunc()))
 
 fun toFrameFunc(target: (Pair<Any, Int>) -> Pair<() -> Unit, Int>) = fun(it: Frame<Any>): Pair<() -> Unit, Int> = target(Pair(it.data, it.delay))
 

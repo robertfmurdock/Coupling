@@ -20,13 +20,12 @@ import kotlin.test.Test
 class SdkHeatMapDataTest {
 
     companion object : AssignPinsAction.Dispatcher {
-        private fun pairAssignmentDocument(player1: Player, player2: Player) =
-            PairAssignmentDocument(
-                id = stubPairAssignmentId(),
-                date = Clock.System.now(),
-                pairs = notEmptyListOf(pairOf(player1, player2)).withPins(),
-                null,
-            )
+        private fun pairAssignmentDocument(player1: Player, player2: Player) = PairAssignmentDocument(
+            id = stubPairAssignmentId(),
+            date = Clock.System.now(),
+            pairs = notEmptyListOf(pairOf(player1, player2)).withPins(),
+            null,
+        )
     }
 
     @Test

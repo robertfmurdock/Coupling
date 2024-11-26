@@ -20,6 +20,5 @@ class MemoryBoostRepositoryTest : ExtendedBoostRepositoryValidator<MemoryBoostRe
         SharedContextData(buildRepository(user, clock = clock), clock, user)
     })
 
-    override suspend fun buildRepository(user: UserDetails, clock: MagicClock) =
-        MemoryBoostRepository(user.id, clock, recordBackend)
+    override suspend fun buildRepository(user: UserDetails, clock: MagicClock) = MemoryBoostRepository(user.id, clock, recordBackend)
 }

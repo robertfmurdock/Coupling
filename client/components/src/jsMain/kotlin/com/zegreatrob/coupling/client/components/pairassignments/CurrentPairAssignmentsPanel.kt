@@ -63,8 +63,7 @@ val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props
     }
 }
 
-private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) =
-    div { div { PairAssignmentsHeader(pairAssignments) } }
+private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div { div { PairAssignmentsHeader(pairAssignments) } }
 
 private fun ChildrenBuilder.pairAssignmentList(
     party: PartyDetails,

@@ -40,12 +40,11 @@ data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, 
                 .slice(0 until min(getLastRelevantRotation(rotationPeriod), history.size))
         }
 
-        private fun List<PairAssignmentDocument>.limitHistory(pairAssignmentDocumentId: PairAssignmentDocumentId?) =
-            if (pairAssignmentDocumentId != null) {
-                slice(0..map(PairAssignmentDocument::id).indexOf(pairAssignmentDocumentId))
-            } else {
-                this
-            }
+        private fun List<PairAssignmentDocument>.limitHistory(pairAssignmentDocumentId: PairAssignmentDocumentId?) = if (pairAssignmentDocumentId != null) {
+            slice(0..map(PairAssignmentDocument::id).indexOf(pairAssignmentDocumentId))
+        } else {
+            this
+        }
 
         private fun getLastRelevantRotation(rotationPeriod: Int) = rotationPeriod * ROTATION_HEAT_WINDOW
 

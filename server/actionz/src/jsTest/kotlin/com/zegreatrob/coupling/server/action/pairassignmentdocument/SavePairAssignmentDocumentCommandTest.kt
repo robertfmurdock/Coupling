@@ -75,6 +75,5 @@ class SavePairAssignmentDocumentCommandTest {
 class SpyPairAssignmentDocumentRepository :
     PairAssignmentDocumentSave,
     Spy<PartyElement<PairAssignmentDocument>, Unit> by SpyData() {
-    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) =
-        spyFunction(partyPairDocument)
+    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = spyFunction(partyPairDocument)
 }

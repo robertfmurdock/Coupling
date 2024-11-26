@@ -24,8 +24,7 @@ fun PairAssignmentDocument.orderedPairedPlayers(): List<Player> = pairs
 
 val PartyElement<PairAssignmentDocument>.document get() = element
 
-fun List<PartyRecord<PairAssignmentDocument>>.spinsSinceLastPair(couplingPair: CouplingPair) =
-    indexOfFirst { it.element.hasPair(couplingPair) }
-        .takeIf { it != -1 }
+fun List<PartyRecord<PairAssignmentDocument>>.spinsSinceLastPair(couplingPair: CouplingPair) = indexOfFirst { it.element.hasPair(couplingPair) }
+    .takeIf { it != -1 }
 
 fun PairAssignmentDocument.hasPair(pair: CouplingPair) = pairs.toList().any { areEqualPairs(pair, it.toPair()) }

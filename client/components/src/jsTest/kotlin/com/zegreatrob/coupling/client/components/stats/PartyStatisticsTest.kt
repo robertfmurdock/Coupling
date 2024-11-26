@@ -99,9 +99,8 @@ class PartyStatisticsTest {
             )
     }
 
-    private fun pairList(player1: Player, player2: Player): List<Record<PartyElement<Player>>> =
-        listOf(player1, player2)
-            .map { Record(PartyElement(stubPartyId(), it), "test", false, Instant.DISTANT_PAST) }
+    private fun pairList(player1: Player, player2: Player): List<Record<PartyElement<Player>>> = listOf(player1, player2)
+        .map { Record(PartyElement(stubPartyId(), it), "test", false, Instant.DISTANT_PAST) }
 
     @Test
     fun sendsPlayerHeatDataToSubComponent() = setup(object {

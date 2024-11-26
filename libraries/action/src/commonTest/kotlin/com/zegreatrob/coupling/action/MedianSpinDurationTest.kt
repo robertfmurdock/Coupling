@@ -20,20 +20,18 @@ import kotlin.time.Duration.Companion.hours
 class MedianSpinDurationTest {
 
     companion object {
-        private fun pairAssignmentDocument(dateTime: Instant) =
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId(""),
-                date = dateTime,
-                pairs = stubPinnedPairs(),
-                null,
-            )
+        private fun pairAssignmentDocument(dateTime: Instant) = PairAssignmentDocument(
+            id = PairAssignmentDocumentId(""),
+            date = dateTime,
+            pairs = stubPinnedPairs(),
+            null,
+        )
 
         private fun stubPinnedPairs() = notEmptyListOf(
             PinnedCouplingPair(notEmptyListOf(stubPlayer().withPins(emptyList())), emptySet()),
         )
 
-        private fun dateTime(year: Int, month: Int, day: Int, hour: Int = 0) =
-            LocalDateTime(year, month, day, hour, 0, 0).toInstant(TimeZone.currentSystemDefault())
+        private fun dateTime(year: Int, month: Int, day: Int, hour: Int = 0) = LocalDateTime(year, month, day, hour, 0, 0).toInstant(TimeZone.currentSystemDefault())
     }
 
     @Test

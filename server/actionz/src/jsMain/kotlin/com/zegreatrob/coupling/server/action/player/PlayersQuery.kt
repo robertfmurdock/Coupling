@@ -28,8 +28,7 @@ data class PlayersQuery(val partyId: PartyId) {
             record.copy(data = record.data.copy(element = record.data.player.withPopulatedCallSign(callSign)))
         }
 
-        private fun <T1> List<T1>.foldIndexedToList(operation: (index: Int, acc: List<T1>, T1) -> T1): List<T1> =
-            foldIndexed(emptyList()) { index, acc, record -> acc + operation(index, acc, record) }
+        private fun <T1> List<T1>.foldIndexedToList(operation: (index: Int, acc: List<T1>, T1) -> T1): List<T1> = foldIndexed(emptyList()) { index, acc, record -> acc + operation(index, acc, record) }
 
         private fun List<PartyRecord<Player>>.findCallSign(
             index: Int,
@@ -59,8 +58,7 @@ data class PlayersQuery(val partyId: PartyId) {
             ),
         )
 
-        private fun playersWithNamesSoFar(updatedPlayers: List<Player>, players: List<Player>, index: Int) =
-            updatedPlayers + players.subList(index, players.lastIndex)
+        private fun playersWithNamesSoFar(updatedPlayers: List<Player>, players: List<Player>, index: Int) = updatedPlayers + players.subList(index, players.lastIndex)
     }
 }
 

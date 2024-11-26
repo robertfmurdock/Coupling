@@ -30,17 +30,13 @@ data class ShufflePairsAction(
 
         suspend fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
-        private suspend fun ShufflePairsAction.assignPinsToPairs(): NotEmptyList<PinnedCouplingPair> =
-            cannon.fire(assignPinsAction(findNewPairs()))
+        private suspend fun ShufflePairsAction.assignPinsToPairs(): NotEmptyList<PinnedCouplingPair> = cannon.fire(assignPinsAction(findNewPairs()))
 
-        private suspend fun ShufflePairsAction.findNewPairs(): NotEmptyList<CouplingPair> =
-            cannon.fire(findNewPairsAction())
+        private suspend fun ShufflePairsAction.findNewPairs(): NotEmptyList<CouplingPair> = cannon.fire(findNewPairsAction())
 
-        private fun ShufflePairsAction.assignPinsAction(pairs: NotEmptyList<CouplingPair>) =
-            AssignPinsAction(pairs, pins, history)
+        private fun ShufflePairsAction.assignPinsAction(pairs: NotEmptyList<CouplingPair>) = AssignPinsAction(pairs, pins, history)
 
-        private fun ShufflePairsAction.findNewPairsAction() =
-            FindNewPairsAction(Game(players, history, party.pairingRule))
+        private fun ShufflePairsAction.findNewPairsAction() = FindNewPairsAction(Game(players, history, party.pairingRule))
 
         private fun pairAssignmentDocument(pairAssignments: NotEmptyList<PinnedCouplingPair>) = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),

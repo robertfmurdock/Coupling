@@ -53,8 +53,6 @@ val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
     }
 }
 
-private fun stripePurchaseUrl(purchaseCode: String, email: String) =
-    "https://buy.stripe.com/$purchaseCode?prefilled_email=$email"
+private fun stripePurchaseUrl(purchaseCode: String, email: String) = "https://buy.stripe.com/$purchaseCode?prefilled_email=$email"
 
-private fun stripeAdminUrl(adminCode: String, userEmail: String) =
-    "https://billing.stripe.com/p/login/$adminCode?prefilled_email=$userEmail"
+private fun stripeAdminUrl(adminCode: String, userEmail: String) = "https://billing.stripe.com/p/login/$adminCode?prefilled_email=$userEmail"

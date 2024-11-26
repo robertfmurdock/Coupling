@@ -17,8 +17,7 @@ val pairAssignmentListResolve = dispatch(
     toSerializable = ::toSerializable,
 )
 
-private fun toSerializable(result: List<PartyRecord<PairAssignmentDocument>>?) =
-    result?.map(PartyRecord<PairAssignmentDocument>::toSerializable)
+private fun toSerializable(result: List<PartyRecord<PairAssignmentDocument>>?) = result?.map(PartyRecord<PairAssignmentDocument>::toSerializable)
 
 val medianSpinDurationResolve = dispatch(
     dispatcherFunc = partyCommand,

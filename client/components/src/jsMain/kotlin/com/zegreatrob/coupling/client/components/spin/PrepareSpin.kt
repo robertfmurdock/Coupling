@@ -61,6 +61,5 @@ private fun isInLastSetOfPairs(player: Player, currentPairsDoc: PairAssignmentDo
     ?.contains(player.id)
     ?: false
 
-private fun List<Pair<Player, Boolean>>.selectedPlayerIds() =
-    filter { (_, isSelected) -> isSelected }
-        .map { it.first.id }
+private fun List<Pair<Player, Boolean>>.selectedPlayerIds() = filter { (_, isSelected) -> isSelected }
+    .map { it.first.id }

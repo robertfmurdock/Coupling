@@ -31,6 +31,5 @@ val RootComponent by nfc<RootProps> { props ->
     }
 }
 
-private fun isCallbackFromOtherProvider() =
-    window.location.pathname.endsWith("/integration/slack/callback") ||
-        window.location.pathname.endsWith("/integration/discord/callback")
+private fun isCallbackFromOtherProvider() = window.location.pathname.endsWith("/integration/slack/callback") ||
+    window.location.pathname.endsWith("/integration/discord/callback")

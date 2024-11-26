@@ -14,7 +14,6 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
-import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.events.ChangeEventHandler
 import react.dom.html.ReactHTML.div
@@ -52,7 +51,7 @@ val PartyConfigContent by nfc<PartyConfigContentProps> { (party, boost, isNew, o
         }
         div {
             css { display = Display.flex }
-            partyConfigEditor(party, isNew ?: false, onChange, onSave, onDelete)
+            partyConfigEditor(party, isNew == true, onChange, onSave, onDelete)
             PartyCard(party)
         }
     }
@@ -77,58 +76,57 @@ private fun ChildrenBuilder.partyConfigEditor(
     }
 }
 
-private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) =
-    div {
-        Editor {
-            li {
-                nameInput(party, onChange)
-                span { +"The full party name!" }
-            }
-            li {
-                emailInput(party, onChange)
-                span {
-                    +"The party email address - Attach a"
-                    gravatarLink {}
-                    +"to this to cheese your party icon."
-                }
-            }
-
-            if (isNew) {
-                li {
-                    uniqueIdInput(party, onChange)
-                    span { +"This affects your party's URL. This is permanently assigned." }
-                }
-            }
-            li {
-                enableAnimationsInput(party, onChange)
-                span { +"Keep things wacky and springy, or still and deadly serious." }
-            }
-            li {
-                animationSpeedSelect(party, onChange)
-                span { +"In case you want things to move a little... faster." }
-            }
-            li {
-                enableCallSignsInput(party, onChange)
-                span { +"Every Couple needs a Call Sign. Makes things more fun!" }
-            }
-            li {
-                enableBadgesInput(party, onChange)
-                span { +"Advanced users only: this lets you divide your party into two groups." }
-            }
-            li {
-                defaultBadgeInput(party, onChange)
-                span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
-            }
-            li {
-                altBadgeInput(party, onChange)
-                span { +"The other badge a player can be given. A player can only have one badge at a time." }
-            }
-            li {
-                pairingRuleSelect(party, onChange)
-                span { +"Advanced users only: This rule affects how players are assigned." }
+private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) = div {
+    Editor {
+        li {
+            nameInput(party, onChange)
+            span { +"The full party name!" }
+        }
+        li {
+            emailInput(party, onChange)
+            span {
+                +"The party email address - Attach a"
+                gravatarLink {}
+                +"to this to cheese your party icon."
             }
         }
+
+        if (isNew) {
+            li {
+                uniqueIdInput(party, onChange)
+                span { +"This affects your party's URL. This is permanently assigned." }
+            }
+        }
+        li {
+            enableAnimationsInput(party, onChange)
+            span { +"Keep things wacky and springy, or still and deadly serious." }
+        }
+        li {
+            animationSpeedSelect(party, onChange)
+            span { +"In case you want things to move a little... faster." }
+        }
+        li {
+            enableCallSignsInput(party, onChange)
+            span { +"Every Couple needs a Call Sign. Makes things more fun!" }
+        }
+        li {
+            enableBadgesInput(party, onChange)
+            span { +"Advanced users only: this lets you divide your party into two groups." }
+        }
+        li {
+            defaultBadgeInput(party, onChange)
+            span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
+        }
+        li {
+            altBadgeInput(party, onChange)
+            span { +"The other badge a player can be given. A player can only have one badge at a time." }
+        }
+        li {
+            pairingRuleSelect(party, onChange)
+            span { +"Advanced users only: This rule affects how players are assigned." }
+        }
     }
+}
 
 private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: ChangeEventHandler<*>) {
     label {
@@ -201,16 +199,15 @@ private fun ChildrenBuilder.enableBadgesInput(party: PartyDetails, onChange: (Ch
     checked = party.badgesEnabled,
 )
 
-private fun ChildrenBuilder.enableAnimationsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) =
-    configInput(
-        labelText = "Enable Animations",
-        id = "animations-checkbox",
-        name = "animationsEnabled",
-        value = party.id.value,
-        type = InputType.checkbox,
-        onChange = onChange,
-        checked = party.animationEnabled,
-    )
+private fun ChildrenBuilder.enableAnimationsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+    labelText = "Enable Animations",
+    id = "animations-checkbox",
+    name = "animationsEnabled",
+    value = party.id.value,
+    type = InputType.checkbox,
+    onChange = onChange,
+    checked = party.animationEnabled,
+)
 
 private fun ChildrenBuilder.enableCallSignsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Call Signs",

@@ -9,8 +9,6 @@ data class CurrentPairAssignmentDocumentQuery(val partyId: PartyId) {
     interface Dispatcher {
         val pairAssignmentDocumentRepository: PairAssignmentDocumentGetCurrent
 
-        suspend fun perform(query: CurrentPairAssignmentDocumentQuery) =
-
-            pairAssignmentDocumentRepository.getCurrentPairAssignments(query.partyId)
+        suspend fun perform(query: CurrentPairAssignmentDocumentQuery) = pairAssignmentDocumentRepository.getCurrentPairAssignments(query.partyId)
     }
 }

@@ -16,7 +16,6 @@ import csstype.PropertiesBuilder
 import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
-import react.dom.aria.ariaHidden
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span

@@ -34,14 +34,14 @@ class PrepareSpinTest {
 
     private val prepareSetup = asyncTestTemplate(
         sharedSetup = suspend {
-            val matchFunc = js.globals.globalThis.window["matchMedia"]
-            js.globals.globalThis.window["matchMedia"] = fun () {}
+            val matchFunc = js.globals.globalThis["window"].asDynamic().matchMedia
+            js.globals.globalThis["window"].asDynamic()["matchMedia"] = fun () {}
             object {
                 val matchFunc = matchFunc
             }
         },
         sharedTeardown = {
-            js.globals.globalThis.window["matchMedia"] = it.matchFunc
+            js.globals.globalThis["window"].asDynamic()["matchMedia"] = it.matchFunc
         },
     )
 

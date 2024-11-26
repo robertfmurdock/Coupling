@@ -31,33 +31,31 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     }
 
     @Test
-    fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() =
-        repositorySetup.with(
-            object : PartyContextMint<R>() {
-                val email = "test-${uuid4()}@zegreatrob.com"
-                val player = stubPlayer().copy(email = email)
-                val updatedPlayer = player.copy(name = "Besto", email = "something else ")
-            }.bind(),
-        ) exercise {
-            repository.save(partyId.with(player))
-            repository.save(partyId.with(updatedPlayer))
-        } verifyWithWait {
-            repository.getPlayerIdsByEmail(email)
-                .assertIsEqualTo(emptyList())
-        }
+    fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val email = "test-${uuid4()}@zegreatrob.com"
+            val player = stubPlayer().copy(email = email)
+            val updatedPlayer = player.copy(name = "Besto", email = "something else ")
+        }.bind(),
+    ) exercise {
+        repository.save(partyId.with(player))
+        repository.save(partyId.with(updatedPlayer))
+    } verifyWithWait {
+        repository.getPlayerIdsByEmail(email)
+            .assertIsEqualTo(emptyList())
+    }
 
     @Test
-    fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() =
-        repositorySetup.with(
-            object : PartyContextMint<R>() {
-                val email = "test-${uuid4()}@zegreatrob.com"
-                val player = stubPlayer().copy(email = email)
-            }.bind(),
-        ) exercise {
-            repository.save(partyId.with(player))
-            repository.deletePlayer(partyId, player.id)
-        } verifyWithWait {
-            repository.getPlayerIdsByEmail(email)
-                .assertIsEqualTo(emptyList())
-        }
+    fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val email = "test-${uuid4()}@zegreatrob.com"
+            val player = stubPlayer().copy(email = email)
+        }.bind(),
+    ) exercise {
+        repository.save(partyId.with(player))
+        repository.deletePlayer(partyId, player.id)
+    } verifyWithWait {
+        repository.getPlayerIdsByEmail(email)
+            .assertIsEqualTo(emptyList())
+    }
 }

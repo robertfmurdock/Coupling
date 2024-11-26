@@ -234,8 +234,7 @@ class WebsocketTest {
     }
 }
 
-private fun String.toCouplingServerMessage(): CouplingSocketMessage =
-    fromJsonString<JsonCouplingSocketMessage>().toModel()
+private fun String.toCouplingServerMessage(): CouplingSocketMessage = fromJsonString<JsonCouplingSocketMessage>().toModel()
 
 fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 

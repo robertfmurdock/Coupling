@@ -29,11 +29,9 @@ class CachedContributionRepositoryTest {
                     delay(100)
                 }
 
-            override suspend fun save(partyContributions: PartyElement<List<Contribution>>) =
-                throw NotImplementedError()
+            override suspend fun save(partyContributions: PartyElement<List<Contribution>>) = throw NotImplementedError()
 
-            override suspend fun deleteAll(partyId: PartyId) =
-                throw NotImplementedError()
+            override suspend fun deleteAll(partyId: PartyId) = throw NotImplementedError()
         }
         val cacheRepository: ContributionRepository = CachedContributionRepository(backingRepository)
         val params = ContributionQueryParams(stubPartyId(), 10.minutes, 20)

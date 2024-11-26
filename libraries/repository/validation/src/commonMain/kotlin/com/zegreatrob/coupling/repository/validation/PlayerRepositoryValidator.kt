@@ -123,22 +123,21 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() =
-        repositorySetup.with(
-            object : PartyContextMint<R>() {
-                val player = stubPlayer()
-                val playerId = player.id
-            }.bind(),
-        ) exercise {
-            repository.save(partyId.with(player))
-            repository.deletePlayer(partyId, playerId)
-            repository.save(partyId.with(player))
-            repository.deletePlayer(partyId, playerId)
-        } verifyWithWait {
-            repository.getDeleted(partyId)
-                .map { it.data.player }
-                .assertIsEqualTo(listOf(player))
-        }
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val player = stubPlayer()
+            val playerId = player.id
+        }.bind(),
+    ) exercise {
+        repository.save(partyId.with(player))
+        repository.deletePlayer(partyId, playerId)
+        repository.save(partyId.with(player))
+        repository.deletePlayer(partyId, playerId)
+    } verifyWithWait {
+        repository.getDeleted(partyId)
+            .map { it.data.player }
+            .assertIsEqualTo(listOf(player))
+    }
 
     @Test
     fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup.with(

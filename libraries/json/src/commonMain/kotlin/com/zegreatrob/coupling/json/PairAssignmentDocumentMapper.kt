@@ -19,15 +19,14 @@ data class JsonPairAssignmentDocument(
     val slackMessageId: String? = null,
 )
 
-fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
-    GqlSavePairAssignmentsInput(
-        partyId = partyId.value,
-        pairAssignmentsId = element.id.value,
-        date = element.date,
-        pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),
-        discordMessageId = element.discordMessageId,
-        slackMessageId = element.slackMessageId,
-    )
+fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = GqlSavePairAssignmentsInput(
+    partyId = partyId.value,
+    pairAssignmentsId = element.id.value,
+    date = element.date,
+    pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),
+    discordMessageId = element.discordMessageId,
+    slackMessageId = element.slackMessageId,
+)
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     id = id.let(::PairAssignmentDocumentId),

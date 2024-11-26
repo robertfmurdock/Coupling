@@ -24,25 +24,24 @@ val RetiredPlayerPage by nfc<PageProps> { props ->
     }
 }
 
-private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: PartyId, playerId: String) =
-    CouplingQuery(
-        commander = props.commander,
-        query = graphQuery {
-            party(partyId) {
-                details()
-                retiredPlayers()
-            }
-        },
-        toNode = { reload, commandFunc, result ->
-            val players = result.party?.retiredPlayers?.elements ?: return@CouplingQuery null
-            PlayerConfig.create(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
-                boost = result.party?.boost?.data,
-                player = players.first { it.id == playerId },
-                players = players,
-                reload = reload,
-                dispatchFunc = commandFunc,
-            )
-        },
-        key = playerId,
-    )
+private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: PartyId, playerId: String) = CouplingQuery(
+    commander = props.commander,
+    query = graphQuery {
+        party(partyId) {
+            details()
+            retiredPlayers()
+        }
+    },
+    toNode = { reload, commandFunc, result ->
+        val players = result.party?.retiredPlayers?.elements ?: return@CouplingQuery null
+        PlayerConfig.create(
+            party = result.party?.details?.data ?: return@CouplingQuery null,
+            boost = result.party?.boost?.data,
+            player = players.first { it.id == playerId },
+            players = players,
+            reload = reload,
+            dispatchFunc = commandFunc,
+        )
+    },
+    key = playerId,
+)

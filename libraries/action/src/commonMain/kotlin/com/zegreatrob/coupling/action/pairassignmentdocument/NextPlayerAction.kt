@@ -26,14 +26,12 @@ data class NextPlayerAction(val gameSpin: GameSpin) {
             }
         }
 
-        private suspend fun NextPlayerAction.createPairCandidateReports(): NotEmptyList<PairCandidateReport> =
-            cannon.fire(CreatePairCandidateReportListAction(gameSpin))
+        private suspend fun NextPlayerAction.createPairCandidateReports(): NotEmptyList<PairCandidateReport> = cannon.fire(CreatePairCandidateReportListAction(gameSpin))
 
-        private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) =
-            when {
-                report.partners.size < reportWithLongestTime.partners.size -> report
-                else -> reportWithLongestTime
-            }
+        private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) = when {
+            report.partners.size < reportWithLongestTime.partners.size -> report
+            else -> reportWithLongestTime
+        }
 
         private fun timeSinceLastPairedIsLonger(
             report: PairCandidateReport,

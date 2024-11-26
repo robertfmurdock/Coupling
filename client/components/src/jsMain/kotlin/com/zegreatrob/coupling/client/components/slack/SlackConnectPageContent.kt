@@ -19,7 +19,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
-import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li

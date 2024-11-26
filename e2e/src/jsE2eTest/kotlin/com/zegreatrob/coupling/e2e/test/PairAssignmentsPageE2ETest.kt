@@ -40,12 +40,11 @@ import kotlin.test.Test
 class PairAssignmentsPageE2ETest {
 
     companion object {
-        private suspend fun ActionCannon<CouplingSdkDispatcher>.save(party: PartyDetails, players: List<Player>) =
-            coroutineScope {
-                fire(SavePartyCommand(party))
-                players.map { SavePlayerCommand(party.id, it) }
-                    .forEach { fire(it) }
-            }
+        private suspend fun ActionCannon<CouplingSdkDispatcher>.save(party: PartyDetails, players: List<Player>) = coroutineScope {
+            fire(SavePartyCommand(party))
+            players.map { SavePlayerCommand(party.id, it) }
+                .forEach { fire(it) }
+        }
     }
 
     class GivenNoCurrentSetOfPairs {
@@ -73,8 +72,7 @@ class PairAssignmentsPageE2ETest {
                 sdk.save(party, players)
             })
 
-            private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
-                template(context = PairAssignmentsPage, additionalActions = additionalSetup)
+            private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) = template(context = PairAssignmentsPage, additionalActions = additionalSetup)
         }
 
         @Test
@@ -195,8 +193,7 @@ class PairAssignmentsPageE2ETest {
                 }
             })
 
-            private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
-                setup(context = PairAssignmentsPage, additionalActions = additionalSetup)
+            private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) = setup(context = PairAssignmentsPage, additionalActions = additionalSetup)
         }
 
         @Test

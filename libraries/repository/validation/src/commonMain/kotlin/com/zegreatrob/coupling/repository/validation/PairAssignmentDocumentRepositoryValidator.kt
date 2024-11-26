@@ -106,20 +106,19 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() =
-        repositorySetup.with(
-            object : PartyContextMint<R>() {
-                val originalDateTime = now()
-                val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
-                val updatedDateTime = originalDateTime.plus(3.days)
-                val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
-            }.bind(),
-        ) {
-            repository.save(partyId.with(pairAssignmentDocument))
-        } exercise {
-            repository.save(partyId.with(updatedDocument))
-        } verifyWithWait {
-            repository.loadPairAssignments(partyId).data().map { it.document }
-                .assertIsEqualTo(listOf(updatedDocument))
-        }
+    fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val originalDateTime = now()
+            val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
+            val updatedDateTime = originalDateTime.plus(3.days)
+            val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
+        }.bind(),
+    ) {
+        repository.save(partyId.with(pairAssignmentDocument))
+    } exercise {
+        repository.save(partyId.with(updatedDocument))
+    } verifyWithWait {
+        repository.loadPairAssignments(partyId).data().map { it.document }
+            .assertIsEqualTo(listOf(updatedDocument))
+    }
 }

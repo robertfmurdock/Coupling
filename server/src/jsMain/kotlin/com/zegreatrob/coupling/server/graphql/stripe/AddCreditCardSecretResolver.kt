@@ -12,10 +12,9 @@ val stripe by lazy { stripe(Config.stripeSecretKey) }
 private suspend fun CommandDispatcher.stripeCustomerId(user: UserDetails) = user.findOrCreateStripeCustomer().id
     .also { userRepository.save(user.copy(stripeCustomerId = it)) }
 
-private suspend fun UserDetails.findOrCreateStripeCustomer() =
-    stripe.customers.list(jso { email = this@findOrCreateStripeCustomer.email })
+private suspend fun UserDetails.findOrCreateStripeCustomer() = stripe.customers.list(jso { email = this@findOrCreateStripeCustomer.email })
+    .await()
+    .data
+    .firstOrNull()
+    ?: stripe.customers.create(jso { email = this@findOrCreateStripeCustomer.email })
         .await()
-        .data
-        .firstOrNull()
-        ?: stripe.customers.create(jso { email = this@findOrCreateStripeCustomer.email })
-            .await()

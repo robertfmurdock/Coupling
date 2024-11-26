@@ -58,23 +58,21 @@ val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) 
     }
 }
 
-private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, ContributionReport>>): Array<NivoLineData> =
-    selectedPairs.map { pairContributionLine(it.first, it.second.contributions?.elements ?: emptyList()) }
-        .toTypedArray()
+private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, ContributionReport>>): Array<NivoLineData> = selectedPairs.map { pairContributionLine(it.first, it.second.contributions?.elements ?: emptyList()) }
+    .toTypedArray()
 
-private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>) =
-    NivoLineData(
-        couplingPair.joinToString("-") { it.name },
-        contributions.groupBy { contribution ->
-            contribution.dateTime
-                ?.toLocalDateTime(TimeZone.currentSystemDefault())
-                ?.date
-        }.mapNotNull {
-            val date = it.key ?: return@mapNotNull null
-            NivoPoint(
-                x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
-                y = it.value.size,
-                context = it.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
-            )
-        }.toTypedArray(),
-    )
+private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>) = NivoLineData(
+    couplingPair.joinToString("-") { it.name },
+    contributions.groupBy { contribution ->
+        contribution.dateTime
+            ?.toLocalDateTime(TimeZone.currentSystemDefault())
+            ?.date
+    }.mapNotNull {
+        val date = it.key ?: return@mapNotNull null
+        NivoPoint(
+            x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
+            y = it.value.size,
+            context = it.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
+        )
+    }.toTypedArray(),
+)

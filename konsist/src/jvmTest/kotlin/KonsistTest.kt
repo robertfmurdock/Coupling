@@ -30,17 +30,15 @@ class KonsistTest {
             assertTrue(function = ::dispatcherHasPerformFunction)
         }
 
-    private fun dispatcherHasPerformFunction(classDeclaration: KoClassDeclaration) =
-        classDeclaration.hasInterface {
-            withPerformFunction(it, classDeclaration.name)
-        }
+    private fun dispatcherHasPerformFunction(classDeclaration: KoClassDeclaration) = classDeclaration.hasInterface {
+        withPerformFunction(it, classDeclaration.name)
+    }
 
-    private fun withPerformFunction(declaration: KoInterfaceDeclaration, commandName: String): Boolean =
-        declaration.hasFunction {
-            it.name == "perform" &&
-                it.parameters.size == 1 &&
-                it.parameters.all { param -> (param.type.name == commandName) }
-        }
+    private fun withPerformFunction(declaration: KoInterfaceDeclaration, commandName: String): Boolean = declaration.hasFunction {
+        it.name == "perform" &&
+            it.parameters.size == 1 &&
+            it.parameters.all { param -> (param.type.name == commandName) }
+    }
 
     private fun isNamedDispatcher(dispatcher: KoInterfaceDeclaration): Boolean = dispatcher.name == "Dispatcher"
 }

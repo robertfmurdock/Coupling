@@ -121,24 +121,23 @@ fun Int.inCouplingEm(): Double = this / 14.0
 
 val noPlayerImagePath = pngPath("players/autumn")
 
-private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) =
-    thirdPartyAvatarsDisabledContext.Consumer {
-        children = { disabled ->
-            img.create {
-                alt = "player-icon"
-                css {
-                    width = size.inCouplingEm().em
-                    height = size.inCouplingEm().em
-                }
-                src = when {
-                    disabled -> noPlayerImagePath
-                    player.imageURL != null -> player.imageURL
-                    player.avatarType != null -> player.getDirectAvatarImageUrl(size, player.avatarType!!)
-                    else -> player.getGravatarSafeAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())
-                }
+private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = thirdPartyAvatarsDisabledContext.Consumer {
+    children = { disabled ->
+        img.create {
+            alt = "player-icon"
+            css {
+                width = size.inCouplingEm().em
+                height = size.inCouplingEm().em
+            }
+            src = when {
+                disabled -> noPlayerImagePath
+                player.imageURL != null -> player.imageURL
+                player.avatarType != null -> player.getDirectAvatarImageUrl(size, player.avatarType!!)
+                else -> player.getGravatarSafeAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())
             }
         }
     }
+}
 
 private fun String.gravatarWrapper(email: String, size: Int) = gravatarUrl(
     email,
@@ -201,16 +200,13 @@ private fun Player.getDirectAvatarImageUrl(size: Int, avatarType: AvatarType) = 
 private fun Player.gravatarDicebearUrl(set: String, size: Int) = dicebearUrl(set, size, "png")
     .gravatarWrapper(emailWithFallback(), size)
 
-private fun Player.dicebearUrl(set: String, size: Int, type: String) =
-    "https://api.dicebear.com/6.x/$set/$type/seed=${emailWithFallback()}&size=$size"
+private fun Player.dicebearUrl(set: String, size: Int, type: String) = "https://api.dicebear.com/6.x/$set/$type/seed=${emailWithFallback()}&size=$size"
 
 private fun Player.multiavatarUrl(type: String) = "https://api.multiavatar.com/${emailWithFallback()}.$type"
 
-private fun Player.boringUrl(size: Int, boringSet: String) =
-    "https://source.boringavatars.com/$boringSet/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
+private fun Player.boringUrl(size: Int, boringSet: String) = "https://source.boringavatars.com/$boringSet/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
 
-private fun Player.getRobohashImageUrl(setName: String, additionalArgs: String = "") =
-    "https://robohash.org/${emailWithFallback()}?set=$setName$additionalArgs"
+private fun Player.getRobohashImageUrl(setName: String, additionalArgs: String = "") = "https://robohash.org/${emailWithFallback()}?set=$setName$additionalArgs"
 
 private fun Player.emailWithFallback() = when {
     email != "" -> email

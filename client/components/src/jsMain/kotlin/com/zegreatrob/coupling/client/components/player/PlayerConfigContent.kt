@@ -21,7 +21,6 @@ import emotion.react.css
 import org.w3c.dom.HTMLInputElement
 import react.ChildrenBuilder
 import react.Props
-import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.datalist

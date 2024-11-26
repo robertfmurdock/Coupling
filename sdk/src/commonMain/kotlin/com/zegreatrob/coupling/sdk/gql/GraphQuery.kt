@@ -13,8 +13,7 @@ data class GraphQuery(val queryString: String, val variables: JsonObject?) : Sim
     }
 }
 
-fun graphQuery(block: CouplingQueryBuilder.() -> Unit) =
-    CouplingQueryBuilder()
-        .apply(block)
-        .build()
-        .let { (query, variables) -> GraphQuery(query, variables) }
+fun graphQuery(block: CouplingQueryBuilder.() -> Unit) = CouplingQueryBuilder()
+    .apply(block)
+    .build()
+    .let { (query, variables) -> GraphQuery(query, variables) }

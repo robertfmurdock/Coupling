@@ -53,9 +53,8 @@ interface ServerSavePartyCommandDispatcher :
         )
     }
 
-    private fun shouldSave(partyId: PartyId, loadedParty: PartyDetails?, playerList: List<PartyElement<String>>) =
-        loadedParty.partyIsNew() ||
-            playerList.authenticatedPartyIds().contains(partyId)
+    private fun shouldSave(partyId: PartyId, loadedParty: PartyDetails?, playerList: List<PartyElement<String>>) = loadedParty.partyIsNew() ||
+        playerList.authenticatedPartyIds().contains(partyId)
 
     private fun PartyDetails?.partyIsNew() = this == null
 

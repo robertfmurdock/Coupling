@@ -30,9 +30,8 @@ fun ChildrenBuilder.gravatarImage(
     className?.let { this.className = className }
 }
 
-fun myGravatarUrl(options: GravatarOptions, email: String?, fallback: String?) =
-    if (email == null && fallback != null) {
-        fallback
-    } else {
-        gravatarUrl(email ?: "", options)
-    }
+fun myGravatarUrl(options: GravatarOptions, email: String?, fallback: String?) = if (email == null && fallback != null) {
+    fallback
+} else {
+    gravatarUrl(email ?: "", options)
+}

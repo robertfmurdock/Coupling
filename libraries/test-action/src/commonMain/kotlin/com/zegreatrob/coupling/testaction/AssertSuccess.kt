@@ -10,7 +10,6 @@ fun <V> Result<V>.assertSuccess(successfulAssertions: V.() -> Unit = {}) = when 
     else -> DefaultAsserter.fail("Result $this was not successful")
 }
 
-infix fun <C : Any, R : Result<V>, V> Exercise<C, R>.verifySuccess(validations: C.(V) -> Unit) =
-    verify { result ->
-        result.assertSuccess { validations(this) }
-    }
+infix fun <C : Any, R : Result<V>, V> Exercise<C, R>.verifySuccess(validations: C.(V) -> Unit) = verify { result ->
+    result.assertSuccess { validations(this) }
+}

@@ -149,9 +149,8 @@ class CommandDispatcher(
 
     private val playersQueryCache = mutableMapOf<PartyId, Deferred<List<PartyRecord<Player>>>>()
 
-    override suspend fun perform(query: PlayersQuery) =
-        playersQueryCache.getOrPut(query.partyId) { scope.async { nonCachingPlayerQueryDispatcher().perform(query) } }
-            .await()
+    override suspend fun perform(query: PlayersQuery) = playersQueryCache.getOrPut(query.partyId) { scope.async { nonCachingPlayerQueryDispatcher().perform(query) } }
+        .await()
 }
 
 class CurrentPartyDispatcher(
@@ -190,8 +189,7 @@ class CurrentPartyDispatcher(
         .contains(currentUser.email)
 
     private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
-    override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
-        commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
+    override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
 
     override val secretGenerator: SecretGenerator = object : JwtSecretGenerator {
         override val secretIssuer: String = Config.publicUrl

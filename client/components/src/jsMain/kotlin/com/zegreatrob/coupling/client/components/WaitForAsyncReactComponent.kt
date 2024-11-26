@@ -47,10 +47,9 @@ val AsyncReactComponent by nfc<AsyncReactComponentProps<Props>> { props ->
     }
 }
 
-private suspend fun <T : Props> waitForComponent(getComponent: () -> ElementType<T>?): ElementType<T>? =
-    withTimeout(2000) {
-        while (getComponent() == null) {
-            delay(5)
-        }
-        getComponent()
+private suspend fun <T : Props> waitForComponent(getComponent: () -> ElementType<T>?): ElementType<T>? = withTimeout(2000) {
+    while (getComponent() == null) {
+        delay(5)
     }
+    getComponent()
+}

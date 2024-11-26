@@ -48,21 +48,20 @@ class MemoryRepositoryCatalog private constructor(
     ClockProvider {
 
     companion object {
-        operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: Clock) =
-            MemoryRepositoryCatalog(
-                userEmail,
-                clock,
-                MemoryPartyRepository(userEmail, clock, backend.party),
-                MemoryPlayerRepository(userEmail, clock, backend.player),
-                MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
-                MemoryPinRepository(userEmail, clock, backend.pin),
-                MemoryUserRepository(userEmail, clock, backend.user),
-                MemoryLiveInfoRepository(),
-                MemorySecretRepository(),
-                MemorySlackRepository(),
-                MemoryDiscordRepository(),
-                MemoryContributionRepository(),
-            )
+        operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: Clock) = MemoryRepositoryCatalog(
+            userEmail,
+            clock,
+            MemoryPartyRepository(userEmail, clock, backend.party),
+            MemoryPlayerRepository(userEmail, clock, backend.player),
+            MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
+            MemoryPinRepository(userEmail, clock, backend.pin),
+            MemoryUserRepository(userEmail, clock, backend.user),
+            MemoryLiveInfoRepository(),
+            MemorySecretRepository(),
+            MemorySlackRepository(),
+            MemoryDiscordRepository(),
+            MemoryContributionRepository(),
+        )
     }
 }
 

@@ -19,10 +19,9 @@ interface SdkSavePinCommandDispatcher :
     }
 }
 
-private fun PartyElement<Pin>.savePinInput() =
-    mapOf(
-        "partyId" to partyId.value,
-        "pinId" to element.id,
-        "icon" to element.icon,
-        "name" to element.name,
-    )
+private fun PartyElement<Pin>.savePinInput() = mapOf(
+    "partyId" to partyId.value,
+    "pinId" to element.id,
+    "icon" to element.icon,
+    "name" to element.name,
+)

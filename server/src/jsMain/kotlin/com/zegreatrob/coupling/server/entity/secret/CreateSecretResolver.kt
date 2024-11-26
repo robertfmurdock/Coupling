@@ -17,5 +17,4 @@ val createSecretResolver = dispatch(
     toSerializable = { it?.toModel() },
 )
 
-private fun GqlCreateSecretInput.toCommand() =
-    CreateSecretCommand(PartyId(partyId), description)
+private fun GqlCreateSecretInput.toCommand() = CreateSecretCommand(PartyId(partyId), description)

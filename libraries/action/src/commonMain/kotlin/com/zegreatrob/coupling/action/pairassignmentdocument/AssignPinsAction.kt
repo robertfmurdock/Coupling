@@ -80,7 +80,6 @@ data class AssignPinsAction(
         private fun playersWithPin(doc: PairAssignmentDocument, pin: Pin) = pairWithPin(doc, pin)
             ?.players
 
-        private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) =
-            pairAssignmentDocument.pairs.toList().find { docPair -> docPair.pins.contains(pin) }
+        private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) = pairAssignmentDocument.pairs.toList().find { docPair -> docPair.pins.contains(pin) }
     }
 }

@@ -14,14 +14,13 @@ data class SharedContextData<R>(
     override val user: UserDetails,
 ) : SharedContext<R>
 
-fun <C : ContextMint<R>, R> C.bind(): suspend (SharedContext<R>) -> C =
-    { parent: SharedContext<R> ->
-        also {
-            repository = parent.repository
-            clock = parent.clock
-            user = parent.user
-        }
+fun <C : ContextMint<R>, R> C.bind(): suspend (SharedContext<R>) -> C = { parent: SharedContext<R> ->
+    also {
+        repository = parent.repository
+        clock = parent.clock
+        user = parent.user
     }
+}
 
 abstract class ContextMint<R : Any> : SharedContext<R> {
     override lateinit var repository: R

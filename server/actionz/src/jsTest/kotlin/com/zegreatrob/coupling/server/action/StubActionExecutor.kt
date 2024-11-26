@@ -10,8 +10,7 @@ import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecutor
 import kotlin.reflect.KClass
 
-fun <D, C : DispatchableAction<D, R>, R> stubActionExecutor(@Suppress("UNUSED_PARAMETER") kClass: KClass<C>) =
-    StubActionExecutor<D, C, R>()
+fun <D, C : DispatchableAction<D, R>, R> stubActionExecutor(@Suppress("UNUSED_PARAMETER") kClass: KClass<C>) = StubActionExecutor<D, C, R>()
 
 class StubActionExecutor<D, C : DispatchableAction<D, R>, R> :
     ExecutableActionExecutor<D>,

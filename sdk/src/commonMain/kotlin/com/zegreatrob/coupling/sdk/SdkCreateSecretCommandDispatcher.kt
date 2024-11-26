@@ -16,11 +16,10 @@ interface SdkCreateSecretCommandDispatcher :
     CreateSecretCommand.Dispatcher,
     GqlTrait {
 
-    override suspend fun perform(command: CreateSecretCommand) =
-        doQuery(Mutation.createSecret, createSecretInput(command))
-            .parseMutationResult()
-            .toDomain()
-            .createSecret
+    override suspend fun perform(command: CreateSecretCommand) = doQuery(Mutation.createSecret, createSecretInput(command))
+        .parseMutationResult()
+        .toDomain()
+        .createSecret
 
     private fun createSecretInput(command: CreateSecretCommand) = GqlCreateSecretInput(
         partyId = command.partyId.value,

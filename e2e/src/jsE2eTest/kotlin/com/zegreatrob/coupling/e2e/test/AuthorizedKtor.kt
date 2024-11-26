@@ -24,10 +24,9 @@ val primaryAuthorizedSdkDeferred by lazyDeferred {
     authorizedKtorCouplingSdk(PRIMARY_AUTHORIZED_USERNAME, primaryTestPassword)
 }
 
-private suspend fun authorizedKtorCouplingSdk(username: String, password: String) =
-    authorizedSdk(
-        generateAccessToken(username, password),
-    )
+private suspend fun authorizedKtorCouplingSdk(username: String, password: String) = authorizedSdk(
+    generateAccessToken(username, password),
+)
 
 suspend fun authorizedKtorCouplingSdk() = primaryAuthorizedSdkDeferred.await()
 

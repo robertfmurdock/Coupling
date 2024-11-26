@@ -22,16 +22,14 @@ class CreatePairCandidateReportActionTest {
 
     companion object :
         CreatePairCandidateReportAction.Dispatcher {
-        fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) =
-            PairAssignmentDocument(id = PairAssignmentDocumentId(""), date = Clock.System.now(), pairs = pairs)
+        fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) = PairAssignmentDocument(id = PairAssignmentDocumentId(""), date = Clock.System.now(), pairs = pairs)
 
-        fun pinnedPair(player1: Player, player2: Player) =
-            PinnedCouplingPair(
-                notEmptyListOf(
-                    player1.withPins(emptyList()),
-                    player2.withPins(emptyList()),
-                ),
-            )
+        fun pinnedPair(player1: Player, player2: Player) = PinnedCouplingPair(
+            notEmptyListOf(
+                player1.withPins(emptyList()),
+                player2.withPins(emptyList()),
+            ),
+        )
     }
 
     @Test

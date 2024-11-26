@@ -35,16 +35,15 @@ private fun Map<CouplingPair, List<Contribution>>.missingPairings(): Set<Set<Pla
     return (allPairs - keys.map(CouplingPair::toSet).toSet()).toSet()
 }
 
-private fun Map<Set<Player>, List<Contribution>>.addToPairsTransform() =
-    { (players, contributions): Map.Entry<Set<Player>, List<Contribution>> ->
-        contributions + flatMap { (mob, mobContributions) ->
-            if (players.size == 2 && mob.containsAll(players)) {
-                mobContributions
-            } else {
-                emptySet()
-            }
+private fun Map<Set<Player>, List<Contribution>>.addToPairsTransform() = { (players, contributions): Map.Entry<Set<Player>, List<Contribution>> ->
+    contributions + flatMap { (mob, mobContributions) ->
+        if (players.size == 2 && mob.containsAll(players)) {
+            mobContributions
+        } else {
+            emptySet()
         }
     }
+}
 
 private const val WORKDAYS_PER_WEEK = 5
 private const val EXCELLENT_CONTRIBUTIONS_PER_DAY = 4
@@ -71,17 +70,14 @@ fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
     return Pair(max, data)
 }
 
-private fun GqlContributionWindow.weeks(map: Map<Set<Player>, List<Contribution>>) =
-    toModel()
-        ?.inWholeWeeks()
-        ?: map.weeksSinceFirstContribution()
+private fun GqlContributionWindow.weeks(map: Map<Set<Player>, List<Contribution>>) = toModel()
+    ?.inWholeWeeks()
+    ?: map.weeksSinceFirstContribution()
 
-private fun Map<Set<Player>, List<Contribution>>.weeksSinceFirstContribution(): Int =
-    (Clock.System.now() - values.flatten().firstContributionInstant()).inWholeWeeks()
+private fun Map<Set<Player>, List<Contribution>>.weeksSinceFirstContribution(): Int = (Clock.System.now() - values.flatten().firstContributionInstant()).inWholeWeeks()
 
-fun List<Contribution>.firstContributionInstant() =
-    mapNotNull { it.dateTime }
-        .minOrNull()
-        ?: Clock.System.now()
+fun List<Contribution>.firstContributionInstant() = mapNotNull { it.dateTime }
+    .minOrNull()
+    ?: Clock.System.now()
 
 private fun Duration.inWholeWeeks(): Int = (inWholeDays.toInt() / 7)

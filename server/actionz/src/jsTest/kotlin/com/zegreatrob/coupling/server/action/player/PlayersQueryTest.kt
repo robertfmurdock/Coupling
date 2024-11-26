@@ -45,13 +45,12 @@ class PlayersQueryTest {
         result.map { it.data.player }.assertIsEqualTo(players)
     }
 
-    private fun toRecord(it: Player, authorizedPartyId: PartyId) =
-        Record(
-            authorizedPartyId.with(it),
-            "${uuid4()}@email.com",
-            false,
-            Clock.System.now(),
-        )
+    private fun toRecord(it: Player, authorizedPartyId: PartyId) = Record(
+        authorizedPartyId.with(it),
+        "${uuid4()}@email.com",
+        false,
+        Clock.System.now(),
+    )
 
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object :

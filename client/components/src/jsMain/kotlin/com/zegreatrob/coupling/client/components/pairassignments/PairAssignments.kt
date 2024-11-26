@@ -124,14 +124,12 @@ private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) 
     },
 )
 
-private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
-    if (pairAssignments == null) {
-        players
-    } else {
-        val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
-        players.filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
-    }
+private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) = if (pairAssignments == null) {
+    players
+} else {
+    val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
+    players.filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
+}
 
-private fun PairAssignmentDocument.currentlyPairedPlayerIds() =
-    pairs.flatMap(PinnedCouplingPair::players)
-        .map(Player::id)
+private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap(PinnedCouplingPair::players)
+    .map(Player::id)

@@ -240,8 +240,7 @@ class SpinTest {
     }
 }
 
-private suspend fun queryCurrentPairs(partyId: PartyId, sdk: ActionCannon<CouplingSdkDispatcher>) =
-    sdk.fire(graphQuery { party(partyId) { currentPairAssignments() } })
-        ?.party
-        ?.currentPairAssignmentDocument
-        ?.element
+private suspend fun queryCurrentPairs(partyId: PartyId, sdk: ActionCannon<CouplingSdkDispatcher>) = sdk.fire(graphQuery { party(partyId) { currentPairAssignments() } })
+    ?.party
+    ?.currentPairAssignmentDocument
+    ?.element

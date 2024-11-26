@@ -52,16 +52,15 @@ inline fun <reified E, reified I> parseGraphJsons(entityJson: Json?, args: Json)
 
 typealias GraphQLResolver = (Json?, Json, CouplingContext, Json) -> Promise<dynamic>
 
-inline fun <reified E, reified A, reified R> resolver(crossinline block: suspend (E, A?, CouplingContext, Json) -> R?): GraphQLResolver =
-    { entityJson: Json?, args: Json, context: CouplingContext, queryInfo: Json ->
-        val (entity, second) = parseGraphJsons<E, A>(entityJson, args)
-        context.scope.promise {
-            try {
-                block(entity, second, context, queryInfo)
-                    ?.let { couplingJsonFormat.encodeToDynamic(it) }
-            } catch (error: Throwable) {
-                error.printStackTrace()
-                throw error
-            }
+inline fun <reified E, reified A, reified R> resolver(crossinline block: suspend (E, A?, CouplingContext, Json) -> R?): GraphQLResolver = { entityJson: Json?, args: Json, context: CouplingContext, queryInfo: Json ->
+    val (entity, second) = parseGraphJsons<E, A>(entityJson, args)
+    context.scope.promise {
+        try {
+            block(entity, second, context, queryInfo)
+                ?.let { couplingJsonFormat.encodeToDynamic(it) }
+        } catch (error: Throwable) {
+            error.printStackTrace()
+            throw error
         }
     }
+}

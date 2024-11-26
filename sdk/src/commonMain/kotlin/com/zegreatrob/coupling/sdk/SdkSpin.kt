@@ -12,13 +12,12 @@ interface SdkSpin :
     SpinCommand.Dispatcher,
     GqlTrait {
 
-    override suspend fun perform(command: SpinCommand): SpinCommand.Result =
-        doQuery(
-            mutation = Mutation.spin,
-            input = command.spinInput(),
-            resultName = "spin",
-            toOutput = { _: JsonElement -> SpinCommand.Result.Success },
-        ) ?: CommandResult.Unauthorized
+    override suspend fun perform(command: SpinCommand): SpinCommand.Result = doQuery(
+        mutation = Mutation.spin,
+        input = command.spinInput(),
+        resultName = "spin",
+        toOutput = { _: JsonElement -> SpinCommand.Result.Success },
+    ) ?: CommandResult.Unauthorized
 }
 
 fun SpinCommand.spinInput() = GqlSpinInput(

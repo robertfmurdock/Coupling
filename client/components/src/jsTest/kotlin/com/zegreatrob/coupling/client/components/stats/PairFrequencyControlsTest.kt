@@ -59,13 +59,12 @@ class PairFrequencyControlsTest {
     }
 }
 
-fun stubContributionReport(contributions: List<Contribution>) =
-    ContributionReport(
-        contributions = contributions.map {
-            partyRecord(
-                partyId = stubPartyId(),
-                data = it,
-                modifyingUserEmail = "",
-            )
-        },
-    )
+fun stubContributionReport(contributions: List<Contribution>) = ContributionReport(
+    contributions = contributions.map {
+        partyRecord(
+            partyId = stubPartyId(),
+            data = it,
+            modifyingUserEmail = "",
+        )
+    },
+)
