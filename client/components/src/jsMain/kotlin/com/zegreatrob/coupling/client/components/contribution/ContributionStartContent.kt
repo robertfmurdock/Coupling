@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.objects.jso
 import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.AlignItems
@@ -29,7 +30,9 @@ val ContributionStartContent by nfc<ContributionStartContentProps> {
                 width = 40.em
                 textAlign = TextAlign.left
             }
-            Markdown { +loadMarkdownString("ContributionStart") }
+            div {
+                dangerouslySetInnerHTML = jso { __html = parse(loadMarkdownString("ContributionStart")) }
+            }
         }
     }
 }

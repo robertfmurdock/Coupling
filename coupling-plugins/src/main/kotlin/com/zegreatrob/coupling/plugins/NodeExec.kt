@@ -64,7 +64,9 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
 
 fun NodeExec.setup(project: Project) {
     val nodeJs = NodeJsRootPlugin.apply(project.rootProject)
+    @Suppress("DEPRECATION")
     nodeBinDir = nodeJs.requireConfigured().nodeBinDir
+    @Suppress("DEPRECATION")
     nodeExecPath = nodeJs.requireConfigured().executable
     projectNodeModulesDir = project.nodeModulesDir
 }

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.aboutPageContent
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.CouplingPopUp
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.components.party.PartyConfigContent
 import com.zegreatrob.coupling.client.components.pin.PinConfigContent
@@ -86,8 +86,14 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
         div {
             css { pointerEvents = None.none }
             when (state) {
-                is Start -> aboutPageContent { Markdown { +state.text } }
-                is ShowIntro -> aboutPageContent { Markdown { +state.text } }
+                is Start -> aboutPageContent {
+                    div { dangerouslySetInnerHTML = jso { __html = parse(state.text) } }
+                }
+
+                is ShowIntro -> aboutPageContent {
+                    div { dangerouslySetInnerHTML = jso { __html = parse(state.text) } }
+                }
+
                 is MakeParty -> partyConfigFrame(state)
                 is AddPlayer -> playerConfigFrame(state)
                 is AddPin -> pinConfigFrame(state)
@@ -117,7 +123,7 @@ fun ChildrenBuilder.popperDiv(
         arrowRef = arrowRef,
         popperInstance = popperInstance,
     ) {
-        Markdown { +state.description }
+        div { dangerouslySetInnerHTML = jso { __html = parse(state.description) } }
         if (state.showReturnButton) {
             returnToCouplingButton()
         }

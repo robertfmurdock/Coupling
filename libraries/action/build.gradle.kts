@@ -54,24 +54,24 @@ tasks {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
         useJUnitPlatform()
     }
-    "formatKotlinCommonMain" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "formatKotlinJsMain" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "formatKotlinJsTest" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "lintKotlinCommonMain" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "lintKotlinJsMain" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "lintKotlinJsTest" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
+//    "formatKotlinCommonMain" {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//    "formatKotlinJsMain" {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//    "formatKotlinJsTest" {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//    "lintKotlinCommonMain" {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//    "lintKotlinJsMain" {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//    "lintKotlinJsTest" {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
     withType(KotlinCompilationTask::class).configureEach {
         if (name != "kspCommonMainKotlinMetadata") {
             dependsOn("kspCommonMainKotlinMetadata")

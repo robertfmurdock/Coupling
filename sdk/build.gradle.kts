@@ -16,7 +16,7 @@ kotlin {
 dependencies {
     "commonMainApi"(project(":libraries:action"))
     "commonMainApi"(project(":libraries:model"))
-    "commonMainImplementation"(project(":libraries:json"))
+    "commonMainApi"(project(":libraries:json"))
     "commonMainImplementation"(project(":libraries:repository:core"))
     "commonMainImplementation"("io.ktor:ktor-client-content-negotiation")
     "commonMainImplementation"("io.ktor:ktor-client-core")

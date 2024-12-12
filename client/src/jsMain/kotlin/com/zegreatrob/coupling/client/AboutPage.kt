@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.blue
-import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.player.PlayerCard
@@ -12,9 +12,9 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.objects.jso
 import react.Props
 import react.PropsWithChildren
-import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -29,7 +29,11 @@ import web.cssom.px
 
 val AboutPage by nfc<PageProps> {
     aboutPageContent {
-        Markdown { +loadMarkdownString("About") }
+        div {
+            dangerouslySetInnerHTML = jso { __html =
+                parse(loadMarkdownString("About"))
+            }
+        }
     }
 }
 
@@ -52,7 +56,7 @@ val aboutPageContent by nfc<PropsWithChildren> { props ->
 private val backButtonSection by nfc<Props> {
     div {
         css { position = Position.relative }
-        ReactHTML.span {
+        span {
             css {
                 float = Float.left
                 position = Position.absolute

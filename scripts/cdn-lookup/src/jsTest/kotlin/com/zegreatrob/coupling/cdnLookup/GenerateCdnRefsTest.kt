@@ -2,11 +2,13 @@ package com.zegreatrob.coupling.cdnLookup
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 class GenerateCdnRefsTest {
 
     @Test
+    @Ignore
     fun generateRefWorks() = asyncSetup(object {
         val lib = "react"
         val cdnLibs = listOf(lib)

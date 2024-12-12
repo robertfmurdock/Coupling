@@ -16,12 +16,12 @@ kotlin {
 }
 
 tasks {
-    formatKotlinJsMain {
-        dependsOn("kspKotlinJs")
-    }
-    lintKotlinJsMain {
-        dependsOn("kspKotlinJs")
-    }
+//    formatKotlinJsMain {
+//        dependsOn("kspKotlinJs")
+//    }
+//    lintKotlinJsMain {
+//        dependsOn("kspKotlinJs")
+//    }
 }
 
 dependencies {
@@ -41,12 +41,18 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
+    jsMainImplementation(npmConstrained("@nivo/bar"))
+    jsMainImplementation(npmConstrained("@nivo/boxplot"))
+    jsMainImplementation(npmConstrained("@nivo/core"))
+    jsMainImplementation(npmConstrained("@nivo/heatmap"))
+    jsMainImplementation(npmConstrained("@nivo/line"))
     jsMainImplementation(npmConstrained("@stripe/react-stripe-js"))
     jsMainImplementation(npmConstrained("@stripe/stripe-js"))
     jsMainImplementation(npmConstrained("d3-array"))
     jsMainImplementation(npmConstrained("date-fns"))
     jsMainImplementation(npmConstrained("fitty"))
     jsMainImplementation(npmConstrained("html2canvas"))
+    jsMainImplementation(npmConstrained("marked"))
     jsMainImplementation(npmConstrained("react-dnd"))
     jsMainImplementation(npmConstrained("react-dnd-html5-backend"))
     jsMainImplementation(npmConstrained("react-use-websocket"))

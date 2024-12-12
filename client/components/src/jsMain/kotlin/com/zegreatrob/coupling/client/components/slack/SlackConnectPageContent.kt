@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Editor
-import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.integrations.slackChannel
 import com.zegreatrob.coupling.client.components.integrations.slackTeam
 import com.zegreatrob.coupling.client.components.large
@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.objects.jso
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
@@ -87,7 +88,7 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
             }
         }
     } else {
-        Markdown { +loadMarkdownString("ConnectSuccess") }
+        div { dangerouslySetInnerHTML = jso { __html = parse(loadMarkdownString("ConnectSuccess")) } }
         ReturnToCouplingButton { to = "/${command.partyId.value}/pairAssignments/current/" }
     }
 }

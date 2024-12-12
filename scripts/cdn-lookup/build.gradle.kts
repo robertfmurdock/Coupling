@@ -26,7 +26,6 @@ dependencies {
     jsMainImplementation(npmConstrained("read-pkg-up"))
 
     jsTestImplementation(kotlin("test"))
-    jsTestImplementation(npmConstrained("react"))
     jsTestImplementation("com.zegreatrob.testmints:standard")
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")

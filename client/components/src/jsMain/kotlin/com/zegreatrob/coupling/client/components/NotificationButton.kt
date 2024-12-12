@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.external.reactpopup.popup
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.objects.jso
 import kotlinx.browser.localStorage
 import react.Props
 import react.create
@@ -31,7 +32,8 @@ private fun saveNotificationLog(updatedThing: Array<String>) {
     localStorage.setItem("notification-log", JSON.stringify(updatedThing))
 }
 
-private fun loadNotificationLog() = localStorage.getItem("notification-log")?.let { JSON.parse<Array<String>>(it) } ?: emptyArray()
+private fun loadNotificationLog() =
+    localStorage.getItem("notification-log")?.let { JSON.parse<Array<String>>(it) } ?: emptyArray()
 
 val NotificationButton by nfc<Props> {
     val recentInfoMd = loadMarkdownString("recent-info")
@@ -78,7 +80,7 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
                 marginRight = 15.px
                 marginBottom = 15.px
             }
-            Markdown { +recentInfoMd }
+            div { dangerouslySetInnerHTML = jso { __html = parse(recentInfoMd) } }
         }
     },
     contentStyle = json(

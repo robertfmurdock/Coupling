@@ -4,14 +4,16 @@ import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.objects.jso
 import react.Props
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h4
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.p
@@ -33,7 +35,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
     var boostedParty by useState { props.parties.firstOrNull { props.boost?.partyIds?.contains(it.id) == true } }
 
     if (subscription?.isActive == true) {
-        Markdown { +loadMarkdownString("Boost") }
+        div { dangerouslySetInnerHTML = jso { __html = parse(loadMarkdownString("Boost")) } }
 
         h4 { +"Currently Boosting:" }
         p { +(boostedParty?.name ?: "No party") }

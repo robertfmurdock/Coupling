@@ -81,8 +81,6 @@ dependencies {
     jsMainImplementation("io.ktor:ktor-client-content-negotiation")
     jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
     jsMainImplementation(npmConstrained("@auth0/auth0-react"))
-    jsMainImplementation(npmConstrained("@nivo/core"))
-    jsMainImplementation(npmConstrained("@nivo/line"))
     jsMainImplementation(npmConstrained("@babel/core"))
     jsMainImplementation(npmConstrained("@babel/preset-env"))
     jsMainImplementation(npmConstrained("@babel/preset-react"))
@@ -210,12 +208,12 @@ tasks {
 }
 
 tasks {
-    formatKotlinJsMain {
-        dependsOn("kspKotlinJs")
-    }
-    lintKotlinJsMain {
-        dependsOn("kspKotlinJs")
-    }
+//    formatKotlinJsMain {
+//        dependsOn("kspKotlinJs")
+//    }
+//    lintKotlinJsMain {
+//        dependsOn("kspKotlinJs")
+//    }
 }
 
 artifacts {
