@@ -1,25 +1,23 @@
 # News
 
-## March 14, 2024
+## Dec 12, 2024
 
-Oo rah!
+Hey ya'll!
 
-Wow I took a long time to update recent news.
+Been a minute - I've been working hard on the full-time job - but an update here is overdue.
 
-Hi!
+First, the app was recently updated to React 19. Sadly that means one or two things don't work for the moment: specifically a pairing visualization on the stats page (and a few more that are... secret).
 
-Just a reminder, if you want to try the Slack integration, please do! Its working super-well now. I've been using it on my team personally for the last five months and it's been just swanky.
+Hopefully these will become fixable over the next month or so, but as these features aren't essential AFAIK, they're going to be defunct for the moment. IF YOU FEEL THIS IS A PROBLEM, let me know! I'll find a workaround in the interim if its causing actual pain.
 
-To use it, click on this [link](/incubating) and hit the "Add to Slack" button.
+There are still a few features cooking that I need to bring out, but I want to make sure they have a solid introduction before making them public.
 
-And if you have any trouble getting it set up, let me know!
+That of course includes the slack integration I mentioned before: to use it, click on this [link](/incubating) and hit the "Add to Slack" button.
 
-I just put out a new year-in-review for Coupling over on [www.zegreatrob.com](https://www.zegreatrob.com/blog.html).
+Upcoming work includes a bunch of new ways to track a team's performance over time. It'll requires more setup than vanilla Coupling, but if you like seeing / collection how things have been going on your project, I'm hoping it'll tickle your fancy. 
 
-Check it out if you're curious what's been up!
+Send me a note if you want to learn more! Always available at rob@continuousexcellence.io
 
-Nothing else to report here for now. Just that I appreciate your continued use.
-
-May all of your work be successful and valuable.
+Other then that, happy holidays, merry Christmas, and we'll chat more in the New Year!
 
 - RoB
