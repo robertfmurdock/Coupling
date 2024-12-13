@@ -1,8 +1,27 @@
 import {ResponsiveLine} from '@nivo/line'
+import {
+    LineChart, CartesianGrid,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+    Line,
+} from 'recharts'
+import {timeFormat as d3TimeFormat} from 'd3-time-format'
+import { scaleOrdinal } from 'd3-scale'
+import { schemeCategory10 } from 'd3-scale-chromatic'
+import * as React from "react"
 
 export const CouplingResponsiveLine = (props) => {
-    const allPoints = props.data.flatMap(line => line.data)
-    const xValues = allPoints.map(point => point.x.getTime());
+    const allPoints = props.data.flatMap(line => [...(line.data.map(value => ({
+        ...value,
+        x: value.x.getTime(),
+        [`${line.id}`]: value.y
+    })))])
+    console.log('allPoints', allPoints)
+    const lineIds = props.data.map(value => value.id);
+    console.log('line ids', lineIds)
+    const xValues = allPoints.map(point => point.x);
     const xMin = props.xMin ?? new Date(Math.min(...xValues))
     const xMax = props.xMax ?? new Date(Math.max(...xValues))
 
@@ -29,6 +48,42 @@ export const CouplingResponsiveLine = (props) => {
     }
 
     const {format, precision} = calculatePrecision()
+
+    const myColor = scaleOrdinal().domain(lineIds).range(schemeCategory10);
+    return (<LineChart
+        width={600}
+        height={600}
+
+        data={allPoints}
+        margin={{
+            bottom: 60,
+            left: 40,
+            right: 80,
+            top: 20
+        }}>
+        <CartesianGrid strokeDasharray="3 3"/>
+        <XAxis
+            dataKey="x"
+            type="number"
+            scale="time"
+            domain={['auto', 'auto']}
+            tickFormatter={d3TimeFormat(format)}
+        />
+        <YAxis
+            dataKey='y'
+            type="number"
+        />
+        <Tooltip labelFormatter={(value) => d3TimeFormat(format)(value)}/>
+        <Legend/>
+        {lineIds.map((lineId, index) =>
+            <Line
+                key={lineId}
+                type="monotone"
+                dataKey={lineId}
+                stroke={myColor(index)}
+                labelFormatter={(value) => d3TimeFormat(format)(value)}
+            />)}
+    </LineChart>)
 
     return (<ResponsiveLine
             animate
