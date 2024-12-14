@@ -84,7 +84,7 @@ export const CouplingResponsiveLine = (props) => {
                 />
                 <Tooltip
                     labelFormatter={(value) => d3TimeFormat(format)(value)}
-                    content={props.tooltip ? (args) => props.tooltip(args.point.data) : undefined}
+                    content={props.tooltip ? (args) => props.tooltip(args) : undefined}
                 />
                 <Legend
                     width={'90%'}

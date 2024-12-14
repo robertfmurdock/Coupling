@@ -43,15 +43,17 @@ val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) 
             }
             this.xMax = Clock.System.now().toJSDate()
 
-            tooltip = { point ->
+            tooltip = { args ->
                 div.create {
                     css {
                         backgroundColor = Color("rgb(0 0 0 / 14%)")
                         padding = 10.px
                         borderRadius = 20.px
                     }
-                    div { +"${point.xFormatted} - ${point.yFormatted}" }
-                    div { +"${point.context}" }
+                    args.payload?.forEach { payload ->
+                        div { +"${payload.name} - ${payload.value}" }
+                    }
+                    div { +"${args.label}" }
                 }
             }
         }
