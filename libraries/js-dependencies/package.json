@@ -10,7 +10,7 @@
     "@babel/preset-react": "^7.26.3",
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/kotlin": "^3.0.1",
-    "@graphql-tools/schema": "^10.0.12",
+    "@graphql-tools/schema": "^10.0.13",
     "@graphql-tools/stitch": "^9.4.10",
     "@graphql-codegen/java-common": "^3.0.0",
     "@graphql-codegen/plugin-helpers": "^5.1.0",
