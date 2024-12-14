@@ -87,6 +87,9 @@ export const CouplingResponsiveLine = (props) => {
                     content={props.tooltip ? (args) => props.tooltip(args.point.data) : undefined}
                 />
                 <Legend
+                    width={'90%'}
+                    height={'7%'}
+                    wrapperStyle={{whiteSpace: 'pre-wrap'}}
                     onClick={props => handleLegendClick(props.dataKey)}
                 />
                 {lineIds.map((lineId, index) =>
