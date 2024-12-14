@@ -9,7 +9,7 @@ repositories {
 plugins {
     `kotlin-dsl`
     id("java-gradle-plugin")
-//    alias(libs.plugins.org.jmailen.kotlinter)
+    alias(libs.plugins.org.jmailen.kotlinter)
     alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.nl.littlerobots.version.catalog.update)
 }
@@ -33,7 +33,7 @@ dependencies {
     implementation(libs.org.apache.logging.log4j.log4j.iostreams)
     implementation(libs.org.jetbrains.kotlin.kotlin.stdlib)
     implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
-//    implementation(libs.org.jmailen.gradle.kotlinter.gradle)
+    implementation(libs.org.jmailen.gradle.kotlinter.gradle)
     implementation(libs.org.slf4j.slf4j.api)
     implementation(platform(libs.com.zegreatrob.jsmints.jsmints.bom))
     implementation(platform(libs.com.zegreatrob.testmints.testmints.bom))

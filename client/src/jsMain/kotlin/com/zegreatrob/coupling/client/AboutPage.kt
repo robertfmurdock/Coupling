@@ -30,8 +30,9 @@ import web.cssom.px
 val AboutPage by nfc<PageProps> {
     aboutPageContent {
         div {
-            dangerouslySetInnerHTML = jso { __html =
-                parse(loadMarkdownString("About"))
+            dangerouslySetInnerHTML = jso {
+                __html =
+                    parse(loadMarkdownString("About"))
             }
         }
     }

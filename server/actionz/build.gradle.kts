@@ -27,10 +27,10 @@ dependencies {
     "jsTestImplementation"("org.jetbrains.kotlin:kotlin-test-annotations-common")
 }
 tasks {
-//    "formatKotlinJsMain" {
-//        dependsOn("kspKotlinJs")
-//    }
-//    "lintKotlinJsMain" {
-//        dependsOn("kspKotlinJs")
-//    }
+    "formatKotlinJsMain" {
+        dependsOn("kspKotlinJs")
+    }
+    "lintKotlinJsMain" {
+        dependsOn("kspKotlinJs")
+    }
 }

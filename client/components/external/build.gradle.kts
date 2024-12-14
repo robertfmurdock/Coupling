@@ -22,12 +22,12 @@ kotlin {
 }
 
 tasks {
-//    formatKotlinJsMain {
-//        dependsOn("kspKotlinJs")
-//    }
-//    lintKotlinJsMain {
-//        dependsOn("kspKotlinJs")
-//    }
+    formatKotlinJsMain {
+        dependsOn("kspKotlinJs")
+    }
+    lintKotlinJsMain {
+        dependsOn("kspKotlinJs")
+    }
 }
 
 dependencies {

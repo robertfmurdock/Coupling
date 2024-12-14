@@ -7,5 +7,4 @@ external interface Marked {
     fun parse(markdown: String): String
 }
 
-
 fun parse(markdown: String): String = marked.parse(markdown)

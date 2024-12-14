@@ -56,7 +56,6 @@ dependencies {
     jsMainImplementation(npmConstrained("@graphql-tools/schema"))
     jsMainImplementation(npmConstrained("@graphql-tools/stitch"))
     jsMainImplementation(npmConstrained("body-parser"))
-    jsMainImplementation(npmConstrained("compression"))
     jsMainImplementation(npmConstrained("cookie-parser"))
     jsMainImplementation(npmConstrained("express"))
     jsMainImplementation(npmConstrained("express-jwt"))

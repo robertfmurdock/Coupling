@@ -25,7 +25,7 @@ suspend inline fun <D : TraceIdProvider, reified E, reified I> cannon(
     return ActionCannon(dispatcher, LoggingActionPipe(dispatcher.traceId))
 }
 
-typealias CommandFunc<E,I, C> = (entity: E, input: I?) -> C?
+typealias CommandFunc<E, I, C> = (entity: E, input: I?) -> C?
 
 inline fun <reified E : Any, reified I : Any, reified D : TraceIdProvider, reified C, reified R, reified J> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,

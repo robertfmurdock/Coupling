@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.stats
 
-//import com.zegreatrob.coupling.client.components.stats.Visualization.Heatmap
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport

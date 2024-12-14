@@ -32,8 +32,7 @@ private fun saveNotificationLog(updatedThing: Array<String>) {
     localStorage.setItem("notification-log", JSON.stringify(updatedThing))
 }
 
-private fun loadNotificationLog() =
-    localStorage.getItem("notification-log")?.let { JSON.parse<Array<String>>(it) } ?: emptyArray()
+private fun loadNotificationLog() = localStorage.getItem("notification-log")?.let { JSON.parse<Array<String>>(it) } ?: emptyArray()
 
 val NotificationButton by nfc<Props> {
     val recentInfoMd = loadMarkdownString("recent-info")

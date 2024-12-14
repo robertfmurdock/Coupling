@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon
-//import org.jmailen.gradle.kotlinter.tasks.FormatTask
-//import org.jmailen.gradle.kotlinter.tasks.LintTask
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -71,10 +71,10 @@ tasks {
     withType(Kotlin2JsCompile::class) {
         dependsOn(gqlCodeGen)
     }
-//    withType<FormatTask> {
-//        dependsOn(gqlCodeGen)
-//    }
-//    withType<LintTask> {
-//        dependsOn(gqlCodeGen)
-//    }
+    withType<FormatTask> {
+        dependsOn(gqlCodeGen)
+    }
+    withType<LintTask> {
+        dependsOn(gqlCodeGen)
+    }
 }
