@@ -23,8 +23,6 @@ export const CouplingResponsiveLine = (props) => {
         .map(group => group[1].reduce((result, current) => Object.assign(result, current), {}));
     const lineIds = props.data.map(value => value.id);
     const xValues = allPoints.map(point => point.x);
-    const xMin = props.xMin ?? new Date(Math.min(...xValues))
-    const xMax = props.xMax ?? new Date(Math.max(...xValues))
 
     const xMinMillis = Math.min(...xValues)
     const xMaxMillis = Math.max(...xValues)
@@ -37,18 +35,18 @@ export const CouplingResponsiveLine = (props) => {
         const hasMonths = (range / (1000 * 60 * 60 * 24 * 30)) > 1
 
         if (hasMonths)
-            return {format: '%y-%m-%d', precision: "day"}
+            return {format: '%y-%m-%d'}
         if (hasDays)
-            return {format: '%m-%d', precision: "hour"}
+            return {format: '%m-%d'}
         else if (hasHours)
-            return {format: '%H:%M', precision: "minute"}
+            return {format: '%H:%M'}
         else if (hasMinutes)
-            return {format: '%H:%M:%S', precision: "second"}
+            return {format: '%H:%M:%S'}
         else
-            return {format: '%H:%M:%S.%L', precision: "millisecond"}
+            return {format: '%H:%M:%S.%L'}
     }
 
-    const {format, precision} = calculatePrecision()
+    const {format} = calculatePrecision()
 
     const myColor = scaleOrdinal().domain(lineIds).range(schemeCategory10);
     const timeScale = scaleTime().domain([xMinMillis, xMaxMillis]).nice();
@@ -84,7 +82,10 @@ export const CouplingResponsiveLine = (props) => {
                     dataKey='y'
                     type="number"
                 />
-                <Tooltip labelFormatter={(value) => d3TimeFormat(format)(value)}/>
+                <Tooltip
+                    labelFormatter={(value) => d3TimeFormat(format)(value)}
+                    content={props.tooltip ? (args) => props.tooltip(args.point.data) : undefined}
+                />
                 <Legend
                     onClick={props => handleLegendClick(props.dataKey)}
                 />
@@ -100,75 +101,5 @@ export const CouplingResponsiveLine = (props) => {
                     />)}
             </LineChart>
         </ResponsiveContainer>
-    )
-
-    return (<ResponsiveLine
-            animate
-            axisBottom={{
-                format: format,
-                legend: 'Time',
-                legendOffset: -12,
-                tickOffset: -20,
-                tickRotation: 85,
-            }}
-            axisLeft={{
-                legend: props.legend,
-                legendOffset: 12
-            }}
-            colors={{scheme: 'paired'}}
-            curve="monotoneX"
-            data={props.data}
-            margin={{
-                bottom: 60,
-                left: 40,
-                right: 80,
-                top: 20
-            }}
-            pointSize={6}
-            pointColor="#FFFFFF"
-            pointBorderWidth={1}
-            pointBorderColor={{from: 'serieColor'}}
-            pointLabelYOffset={-12}
-            useMesh
-            xScale={{
-                format: format,
-                type: 'time',
-                precision: precision,
-                useUTC: false,
-                min: xMin,
-                max: xMax,
-            }}
-            xFormat={"time:" + format}
-            yScale={{
-                type: 'linear'
-            }}
-            tooltip={props.tooltip ? (args) => props.tooltip(args.point.data) : undefined}
-            legends={[
-                {
-                    anchor: 'bottom-right',
-                    direction: 'column',
-                    justify: false,
-                    translateX: 85,
-                    translateY: 0,
-                    itemsSpacing: 0,
-                    itemDirection: 'left-to-right',
-                    itemWidth: 80,
-                    itemHeight: 20,
-                    itemOpacity: 0.75,
-                    symbolSize: 12,
-                    symbolShape: 'circle',
-                    symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                    effects: [
-                        {
-                            on: 'hover',
-                            style: {
-                                itemBackground: 'rgba(0, 0, 0, .03)',
-                                itemOpacity: 1
-                            }
-                        }
-                    ]
-                }
-            ]}
-        />
     )
 }
