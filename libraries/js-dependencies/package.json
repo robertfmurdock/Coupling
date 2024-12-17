@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.2.4",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.712.0",
-    "@aws-sdk/client-dynamodb": "3.712.0",
-    "@aws-sdk/client-lambda": "~3.712.0",
-    "@aws-sdk/lib-dynamodb": "3.712.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.713.0",
+    "@aws-sdk/client-dynamodb": "3.713.0",
+    "@aws-sdk/client-lambda": "~3.713.0",
+    "@aws-sdk/lib-dynamodb": "3.713.0",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
@@ -24,7 +24,7 @@
     "@nivo/heatmap": "^0.88.0",
     "@nivo/line": "^0.88.0",
     "@nivo/tooltip": "^0.88.0",
-    "@slack/bolt": "^4.1.1",
+    "@slack/bolt": "^4.2.0",
     "@slack/oauth": "^3.0.2",
     "@slack/web-api": "^7.8.0",
     "@slack/webhook": "^7.0.4",
