@@ -3,7 +3,6 @@ import com.avast.gradle.dockercompose.tasks.ComposeUp
 import com.gradle.scan.plugin.internal.dep.com.fasterxml.jackson.databind.ObjectMapper
 import java.time.Duration
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
