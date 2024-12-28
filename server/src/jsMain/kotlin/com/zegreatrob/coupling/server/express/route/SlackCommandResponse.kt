@@ -9,7 +9,7 @@ import kotlin.js.Json
 import kotlin.js.json
 
 fun slackCommandResponse(): Handler = { request, response, _ ->
-    val body = request.body as Buffer
+    val body = request.body as Buffer<*>
     val params = URLSearchParams(body.toString(encoding = BufferEncoding.utf8))
 
     val slackTeam = params["team_id"] ?: ""
