@@ -5,8 +5,8 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import popper.core.Popper
 import popper.core.modifiers.Arrow
-import react.MutableRefObject
 import react.PropsWithChildren
+import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.popper.PopperInstance
 import web.cssom.Color
@@ -28,8 +28,8 @@ import kotlin.js.Json
 
 external interface CouplingPopUpProps : PropsWithChildren {
     var hide: Boolean
-    var popperRef: MutableRefObject<HTMLElement>
-    var arrowRef: MutableRefObject<HTMLElement>
+    var popperRef: RefObject<HTMLElement>
+    var arrowRef: RefObject<HTMLElement>
     var popperInstance: PopperInstance
 }
 

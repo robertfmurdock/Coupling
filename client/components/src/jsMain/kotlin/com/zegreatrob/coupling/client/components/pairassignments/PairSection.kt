@@ -17,8 +17,8 @@ import js.objects.jso
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
 import react.ChildrenBuilder
-import react.MutableRefObject
 import react.Props
+import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.useRef
@@ -63,7 +63,7 @@ val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, se
     }
 }
 
-private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElement>) {
+private fun ChildrenBuilder.copyToClipboardButton(ref: RefObject<HTMLElement>) {
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
         CouplingButton {
             sizeRuleSet = large

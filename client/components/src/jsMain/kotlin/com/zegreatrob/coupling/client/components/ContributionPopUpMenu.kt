@@ -13,9 +13,9 @@ import popper.core.ReferenceElement
 import popper.core.modifier
 import popper.core.modifiers.Arrow
 import popper.core.modifiers.Offset
-import react.MutableRefObject
 import react.Props
 import react.ReactNode
+import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.popper.UsePopperOptions
 import react.popper.usePopper
@@ -64,7 +64,7 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
     }
 }
 
-private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>): UsePopperOptions = jso {
+private fun popperOptions(arrowRef: RefObject<HTMLElement>): UsePopperOptions = jso {
     placement = Placement.right
     modifiers = arrayOf(
         Arrow.modifier {
