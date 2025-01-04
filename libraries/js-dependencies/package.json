@@ -86,7 +86,7 @@
     "source-map-loader": "^5.0.0",
     "stripe": "^17.5.0",
     "style-loader": "^4.0.0",
-    "styled-components": "^6.1.13",
+    "styled-components": "^6.1.14",
     "text-loader": "0.0.1",
     "url-loader": "^4.1.1",
     "webpack": "5.97.1",
