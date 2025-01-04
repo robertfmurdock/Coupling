@@ -14,8 +14,8 @@ import csstype.PropertiesBuilder
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
-import react.MutableRefObject
 import react.Props
+import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useLayoutEffect
@@ -111,7 +111,7 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 private data class Card(val name: String, val imagePath: String)
 
 private fun ChildrenBuilder.welcomeSplash(
-    welcomeTitleRef: MutableRefObject<HTMLDivElement>,
+    welcomeTitleRef: RefObject<HTMLDivElement>,
     pair: CouplingPair.Double,
     proverb: String,
 ) = span {
@@ -156,7 +156,7 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = defaultPlayer.copy(id = name, name = name, imageURL = imagePath)
 
-private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<HTMLDivElement>) = div {
+private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: RefObject<HTMLDivElement>) = div {
     css {
         marginTop = 0.5.em
         marginBottom = 0.4.em

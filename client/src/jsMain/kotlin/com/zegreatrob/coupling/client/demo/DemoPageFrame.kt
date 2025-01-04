@@ -24,8 +24,8 @@ import popper.core.modifier
 import popper.core.modifiers.Arrow
 import popper.core.modifiers.Offset
 import react.ChildrenBuilder
-import react.MutableRefObject
 import react.Props
+import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.popper.PopperInstance
 import react.popper.UsePopperOptions
@@ -105,8 +105,8 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
 }
 
 fun ChildrenBuilder.popperDiv(
-    popperRef: MutableRefObject<HTMLElement>,
-    arrowRef: MutableRefObject<HTMLElement>,
+    popperRef: RefObject<HTMLElement>,
+    arrowRef: RefObject<HTMLElement>,
     state: DemoAnimationState,
     popperInstance: PopperInstance,
 ) = div {
@@ -130,7 +130,7 @@ fun ChildrenBuilder.popperDiv(
     }
 }
 
-private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>, state: DemoAnimationState): UsePopperOptions = jso {
+private fun popperOptions(arrowRef: RefObject<HTMLElement>, state: DemoAnimationState): UsePopperOptions = jso {
     this.placement = state.placement
     this.modifiers = arrayOf(
         Arrow.modifier {
