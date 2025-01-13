@@ -43,6 +43,7 @@ tasks {
             ":server:check",
             ":e2e:check"
         )
+        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
         workingDir = deployDir.get().asFile
         nodeCommand = "serverless"
         arguments = listOf(
@@ -57,6 +58,7 @@ tasks {
     }
     val deploy by registering(NodeExec::class) {
         setup(project)
+        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
         mustRunAfter(
             ":release",
             ":client:uploadToS3",
