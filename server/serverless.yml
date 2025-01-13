@@ -43,7 +43,7 @@ provider:
     SECRET_SIGNING_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SECRET_SIGNING_SECRET, env:SECRET_SIGNING_SECRET, ssm:/${opt:stage, 'local'}/secret_signing_secret}
     SLACK_CLIENT_ID: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_CLIENT_ID, env:SLACK_CLIENT_ID, ssm:/${opt:stage, 'local'}/slack_client_id}
     SLACK_CLIENT_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_CLIENT_SECRET, env:SLACK_CLIENT_SECRET, ssm:/${opt:stage, 'local'}/slack_client_secret}
-    SLACK_SIGNING_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_SIGNING_SECRET, env:SLACK_SIGNING_SECRET, ssm:/$${opt:stage, 'local'}/slack_signing_secret}
+    SLACK_SIGNING_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_SIGNING_SECRET, env:SLACK_SIGNING_SECRET, ssm:/${opt:stage, 'local'}/slack_signing_secret}
     DISCORD_CLIENT_ID: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DISCORD_CLIENT_ID, env:DISCORD_CLIENT_ID, ssm:/${opt:stage, 'local'}/discord_client_id}
     DISCORD_CLIENT_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DISCORD_CLIENT_SECRET, env:DISCORD_CLIENT_SECRET, ssm:/${opt:stage, 'local'}/discord_client_secret}
     STRIPE_PUBLISHABLE_KEY: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):STRIPE_PUBLISHABLE_KEY, env:STRIPE_PUBLISHABLE_KEY, ssm:/${opt:stage, 'local'}/stripe_pk}
