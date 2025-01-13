@@ -215,9 +215,11 @@ tasks {
         setup(project)
         dependsOn(assemble, jsTest, compileKotlinJs, ":calculateVersion")
         val releaseVersion = rootProject.version
-        environment("CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion")
-        environment("CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion")
-        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
+        environment(
+            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion",
+            "CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion",
+            "SERVERLESS_ACCESS_KEY" to System.getenv("SERVERLESS_ACCESS_KEY"),
+        )
         enabled = "$releaseVersion".run { !(contains("SNAPSHOT") || isBlank()) }
         nodeCommand = "serverless"
         arguments = listOf(
