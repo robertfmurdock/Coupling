@@ -224,6 +224,7 @@ tasks {
         nodeCommand = "serverless"
         arguments = listOf(
             "package",
+            "--verbose",
             "--config",
             project.relativePath("serverless.yml"),
             "--package",
