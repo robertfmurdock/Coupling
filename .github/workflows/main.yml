@@ -81,11 +81,8 @@ jobs:
             kotlin-js-store/yarn.lock
       - name: Generate Version 🧮
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
-      - name: ssh
-        uses: ryanchapman/gha-ssh@v1
-        timeout-minutes: 10
-        with:
-          authorized_github_users: 'robertfmurdock'
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
       - name: Build + Release Coupling
         run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan --stacktrace
       - name: Update Contributions
