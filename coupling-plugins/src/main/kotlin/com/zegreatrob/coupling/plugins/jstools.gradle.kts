@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -50,4 +51,10 @@ dependencies {
 
 tasks.withType(KotlinJsTest::class).configureEach {
     outputs.cacheIf { true }
+}
+
+rootProject.extensions.findByType(NodeJsRootExtension::class.java).let {
+    if (it?.version != "22.13.0") {
+        it?.version = "22.13.0"
+    }
 }

@@ -53,6 +53,7 @@ tasks {
             "--stage",
             project.name
         )
+        dependsOn(copyDeployResources)
     }
     val deploy by registering(NodeExec::class) {
         setup(project)
