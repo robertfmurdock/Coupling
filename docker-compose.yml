@@ -16,6 +16,7 @@ services:
       - ENABLE_PRERELEASE_FEATURES=true
       - STRIPE_PUBLISHABLE_KEY
       - STRIPE_SECRET_KEY
+      - SERVERLESS_ACCESS_KEY
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 2s

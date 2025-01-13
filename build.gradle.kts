@@ -21,13 +21,14 @@ dockerCompose {
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
-    val (pk, sk) = providers.exec {
+    val (sak, pk, sk) = providers.exec {
         commandLine(
             "/bin/bash",
             "-c",
-            "aws ssm get-parameters --names /prerelease/stripe_pk /prerelease/stripe_sk --with-decryption | jq '[.Parameters[].Value']"
+            "aws ssm get-parameters --names /local/SERVERLESS_ACCESS_KEY /prerelease/stripe_pk /prerelease/stripe_sk --with-decryption | jq '[.Parameters[].Value']"
         )
     }.standardOutput.asText.get().toByteArray().let { ObjectMapper().readValue(it, List::class.java) }
+    environment.put("SERVERLESS_ACCESS_KEY", sak.toString())
     environment.put("STRIPE_PUBLISHABLE_KEY", pk.toString())
     environment.put("STRIPE_SECRET_KEY", sk.toString())
 
