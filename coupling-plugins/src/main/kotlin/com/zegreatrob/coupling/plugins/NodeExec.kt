@@ -48,7 +48,7 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
             listOfNotNull(nodeModulesDir, projectNodeModulesDir, moreNodeDirs)
                 .joinToString(":")
         )
-        environment("PATH", "$nodeBinDir")
+        environment("PATH", "$nodeBinDir${System.getenv("PATH")}")
         npmProjectDir?.let { workingDir = it }
         val commandFromBin = nodeCommand?.let { listOf("$projectNodeModulesDir/.bin/$nodeCommand") } ?: emptyList()
         commandLine = listOf(nodeExecPath) + commandFromBin + arguments
