@@ -3526,10 +3526,10 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/stitch@^9.4.13":
-  version "9.4.13"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.4.13.tgz#272438fac113bf7b03b8fddbabfa7ff96ff75d8b"
-  integrity sha512-uSTfIonlYdB+0odl6Hjvb9842GDa0hJK9JOiuANYu7AvGFLUL81pwH5Kl9jGGrD/TU26+pHd+FP9cNBZ+3dARQ==
+"@graphql-tools/stitch@^9.4.14":
+  version "9.4.14"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.4.14.tgz#96f32a52ada5a8bf59f502137311fef60e1b6993"
+  integrity sha512-mHaAsur5EWXrk3QjkfXBnoS3S+lGJnn4yND0VNYJ+5FSORIjgn9k708LkE1JxwCsD1Ikfj0dywtb72++cB+rSQ==
   dependencies:
     "@graphql-tools/batch-delegate" "^9.0.27"
     "@graphql-tools/delegate" "^10.2.9"
@@ -7449,10 +7449,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@131.0.5:
-  version "131.0.5"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-131.0.5.tgz#3c45d821906157fabc07de23435062ada68fe7c4"
-  integrity sha512-OQY4BHUe9JedxH4aAsPZJcf8Y0lMlE7y+3tiCvQSCQ6qDz2b99R0qsqyqzUUSW2DFx0bg4YxmK8CDVMKb9u5kg==
+chromedriver@132.0.0:
+  version "132.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-132.0.0.tgz#0eef414ccf906313f7685edb772fbbfa374e100d"
+  integrity sha512-jECVJjty5ypYKptQ/QCf8Q0Iq0qq2eW5x1WnYwlGCgmBBcwDH+XrdjFKc4mA3lFO1p3dpOUgTbayKCiGpMPBjg==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
