@@ -9715,6 +9715,15 @@ fs-extra@^11.1.0, fs-extra@^11.2.0:
     jsonfile "^6.0.1"
     universalify "^2.0.0"
 
+fs-extra@^11.3.0:
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.3.0.tgz#0daced136bbaf65a555a326719af931adc7a314d"
+  integrity sha512-Z4XaCL6dUDHfP/jT25jJKMmtxvuwbkrD1vNSMFlo9lNLY2c5FHYSQgHPRZUjAB26TpDEoW9HCOgplrdbaPV/ew==
+  dependencies:
+    graceful-fs "^4.2.0"
+    jsonfile "^6.0.1"
+    universalify "^2.0.0"
+
 fs-extra@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
@@ -13922,10 +13931,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.4.18:
-  version "4.4.18"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.4.18.tgz#c38283a9dd5ea70524115a2844b38e4e590962d3"
-  integrity sha512-d3LVphMT/rrZ9kLnUL9xrCRpR2L4k6irYDB/Stje1n9NEr/iGIKlEd4GxcZH4VBj7bO3XDaG7LvVDKmmXHGNBw==
+serverless@^4.4.19:
+  version "4.4.19"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.4.19.tgz#12966b64218c8342a0ade375681f28810ef9b36e"
+  integrity sha512-zUI35NGDgjeu2RLB81NFpG0nGg0AsfjVrS3AOJFsOnXN0ROsG7m6EZjzn5TZeAdrtCR0mukaim8JCWQCE1bNvQ==
   dependencies:
     axios "^1.7.4"
     axios-proxy-builder "^0.1.2"
