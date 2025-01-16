@@ -3,6 +3,9 @@ plugins {
 }
 
 tasks {
+    named("prune") {
+        mustRunAfter(":server:serverlessBuildPrerelease")
+    }
     named("deploy") {
         dependsOn(":server:serverlessBuildPrerelease")
     }

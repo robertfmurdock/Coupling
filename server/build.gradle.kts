@@ -234,7 +234,7 @@ tasks {
             stage
         )
     }
-    
+
     register<NodeExec>("serverlessBuild") {
         configureBuild("prod")
     }

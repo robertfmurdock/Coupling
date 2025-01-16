@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
 import com.zegreatrob.tools.tagger.ReleaseVersion
-import com.zegreatrob.tools.tagger.TaggerExtension
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -15,8 +14,6 @@ kotlin {
 }
 
 val serverProject: Project = project.project(":server")
-
-val taggerExtension: TaggerExtension = rootProject.extensions.getByType(TaggerExtension::class.java)
 
 val deployDir: Provider<Directory> = layout.buildDirectory.dir("deploy")
 
