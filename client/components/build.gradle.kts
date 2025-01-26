@@ -40,7 +40,6 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     jsMainImplementation(npmConstrained("@nivo/bar"))
     jsMainImplementation(npmConstrained("@nivo/boxplot"))
     jsMainImplementation(npmConstrained("@nivo/core"))

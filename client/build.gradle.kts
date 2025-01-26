@@ -73,7 +73,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-css")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
