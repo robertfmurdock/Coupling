@@ -18,6 +18,9 @@ plugins {
 kotlin {
     js {
         useCommonJs()
+        compilerOptions {
+            target = "es2015"
+        }
         binaries.executable()
     }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)

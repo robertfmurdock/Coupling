@@ -6,6 +6,7 @@ kotlin {
     js {
         nodejs()
         useCommonJs()
+        compilerOptions { target = "es2015" }
     }
 }
 dependencies {

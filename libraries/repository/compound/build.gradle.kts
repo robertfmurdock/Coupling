@@ -3,7 +3,9 @@ plugins {
 }
 kotlin {
     jvm()
-    js { nodejs() }
+    js {
+        nodejs()
+    }
 }
 dependencies {
     commonMainApi(project(":libraries:model"))

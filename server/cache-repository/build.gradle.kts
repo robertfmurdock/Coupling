@@ -2,7 +2,9 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
 kotlin {
-    js { nodejs() }
+    js {
+        nodejs()
+    }
 }
 dependencies {
     "jsMainApi"(project(":libraries:repository:core"))
