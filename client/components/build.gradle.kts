@@ -2,6 +2,7 @@ plugins {
     id("com.zegreatrob.jsmints.plugins.minreact")
     id("com.zegreatrob.jsmints.plugins.wrapper")
     id("com.zegreatrob.coupling.plugins.jstools")
+    alias(libs.plugins.io.github.turansky.seskar)
 }
 
 kotlin {
