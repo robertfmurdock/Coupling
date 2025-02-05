@@ -5,10 +5,20 @@ kotlin {
     jvm()
     js {
         nodejs()
-        useCommonJs()
-        compilerOptions { target = "es2015" }
+        compilerOptions {
+            target = "es2015"
+            freeCompilerArgs.add("-Xir-per-module")
+        }
+        compilations.named("test") {
+            compileTaskProvider {
+                compilerOptions {
+                    target = "es5"
+                }
+            }
+        }
     }
 }
+
 dependencies {
     commonMainApi(enforcedPlatform(project(":libraries:dependency-bom")))
     commonMainApi("com.benasher44:uuid")

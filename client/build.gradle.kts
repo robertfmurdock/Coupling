@@ -16,6 +16,7 @@ plugins {
 
 kotlin {
     js {
+        useCommonJs()
         browser {
             webpackTask {
                 dependsOn("additionalResources")
@@ -77,6 +78,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-datetime")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     jsMainImplementation("io.ktor:ktor-client-core")
     jsMainImplementation("io.ktor:ktor-client-content-negotiation")

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.components.external.nivo
+package com.zegreatrob.coupling.client.components.graphing.external.nivo
 
 import js.array.ReadonlyArray
 import react.ElementType

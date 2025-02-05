@@ -13,7 +13,9 @@ plugins {
 }
 kotlin {
     jvm()
-    js { nodejs() }
+    js {
+        nodejs()
+    }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         allWarningsAsErrors = false
@@ -21,6 +23,7 @@ kotlin {
     sourceSets {
         commonMain { kotlin.srcDir("build/generated/codegen") }
     }
+
 }
 
 dependencies {

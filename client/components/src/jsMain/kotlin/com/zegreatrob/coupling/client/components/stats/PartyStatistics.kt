@@ -6,8 +6,9 @@ import com.zegreatrob.coupling.action.timeSincePairSort
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
-import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
-import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
+import com.zegreatrob.coupling.client.components.graphing.CouplingResponsiveLineProps
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements

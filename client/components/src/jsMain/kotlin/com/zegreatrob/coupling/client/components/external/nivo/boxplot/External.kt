@@ -3,9 +3,9 @@
 package com.zegreatrob.coupling.client.components.external.nivo.boxplot
 
 import com.zegreatrob.coupling.client.components.external.nivo.ComputedDatum
-import com.zegreatrob.coupling.client.components.external.nivo.NivoAxis
-import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.client.components.external.nivo.NivoOrdinalScaleColorConfig
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
 import react.ComponentType
 import react.Props
 

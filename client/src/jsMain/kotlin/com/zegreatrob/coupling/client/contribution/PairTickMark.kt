@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.basicPlayerCardRenderer
-import com.zegreatrob.coupling.client.components.external.nivo.AxisTickProps
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.AxisTickProps
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import emotion.react.css
 import react.FC

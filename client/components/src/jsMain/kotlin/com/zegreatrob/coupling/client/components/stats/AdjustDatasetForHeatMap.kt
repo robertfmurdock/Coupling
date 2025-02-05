@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
-import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution

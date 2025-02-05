@@ -7,6 +7,7 @@ plugins {
 
 kotlin {
     js {
+        useCommonJs()
         nodejs { testTask { enabled = false } }
     }
 }

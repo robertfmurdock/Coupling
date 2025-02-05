@@ -2,10 +2,10 @@
 
 package com.zegreatrob.coupling.client.components.external.nivo.heatmap
 
-import com.zegreatrob.coupling.client.components.external.nivo.NivoAxis
-import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
-import com.zegreatrob.coupling.client.components.external.nivo.NivoDatum
-import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoDatum
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
 import react.ComponentType
 import react.ElementType
 import react.Props

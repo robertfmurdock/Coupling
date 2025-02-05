@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.contribution
 
-import com.zegreatrob.coupling.client.components.external.nivo.NivoAxis
-import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.client.components.external.nivo.NivoOrdinalScaleColorConfig
 import com.zegreatrob.coupling.client.components.external.nivo.boxplot.ResponsiveBoxPlot
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements

@@ -41,6 +41,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-datetime")
     jsMainImplementation(npmConstrained("@stripe/react-stripe-js"))
     jsMainImplementation(npmConstrained("@stripe/stripe-js"))
     jsMainImplementation(npmConstrained("date-fns"))

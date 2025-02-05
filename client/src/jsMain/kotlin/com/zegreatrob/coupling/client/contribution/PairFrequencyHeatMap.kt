@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.client.contribution
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.basicPlayerCardRenderer
 import com.zegreatrob.coupling.client.components.create
-import com.zegreatrob.coupling.client.components.external.nivo.NivoAxis
-import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
-import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.TooltipProps
 import com.zegreatrob.coupling.client.components.external.nivo.tooltip.BasicTooltip
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.client.components.stats.heatmap.interpolatorAsync
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings

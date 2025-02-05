@@ -8,6 +8,7 @@ plugins {
 
 kotlin {
     js {
+        useCommonJs()
         nodejs {
             binaries.executable()
             testTask { useMocha { timeout = "400s" } }

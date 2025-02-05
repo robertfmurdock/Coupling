@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.contribution
 
-import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
-import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
-import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
+import com.zegreatrob.coupling.client.components.graphing.CouplingResponsiveLine
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution

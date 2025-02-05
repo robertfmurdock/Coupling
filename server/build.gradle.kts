@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
@@ -8,7 +7,10 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-kotlin.js().nodejs()
+kotlin.js {
+    nodejs()
+    useCommonJs()
+}
 
 kotlin.sourceSets {
     getByName("jsMain") {
