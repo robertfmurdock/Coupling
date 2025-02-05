@@ -88,9 +88,6 @@ dependencies {
     jsMainImplementation(npmConstrained("babel-loader"))
     jsMainImplementation(npmConstrained("core-js"))
     jsMainImplementation(npmConstrained("css-loader"))
-    jsMainImplementation(npmConstrained("d3"))
-    jsMainImplementation(npmConstrained("d3-color"))
-    jsMainImplementation(npmConstrained("d3-selection"))
     jsMainImplementation(npmConstrained("date-fns"))
     jsMainImplementation(npmConstrained("drag-drop-webkit-mobile"))
     jsMainImplementation(npmConstrained("file-loader"))
@@ -123,8 +120,6 @@ dependencies {
 }
 
 rootProject.apply<TaggerPlugin>()
-
-val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 rootProject.yarn.ignoreScripts = false
 
