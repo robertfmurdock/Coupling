@@ -1,12 +1,12 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.3.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.743.0",
-    "@aws-sdk/client-dynamodb": "3.743.0",
-    "@aws-sdk/client-lambda": "~3.743.0",
-    "@aws-sdk/lib-dynamodb": "3.743.0",
-    "@babel/core": "^7.26.7",
-    "@babel/preset-env": "^7.26.7",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.744.0",
+    "@aws-sdk/client-dynamodb": "3.744.0",
+    "@aws-sdk/client-lambda": "~3.744.0",
+    "@aws-sdk/lib-dynamodb": "3.744.0",
+    "@babel/core": "^7.26.8",
+    "@babel/preset-env": "^7.26.8",
     "@babel/preset-react": "^7.26.3",
     "@graphql-codegen/cli": "^5.0.4",
     "@graphql-codegen/kotlin": "^3.0.1",
