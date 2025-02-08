@@ -23,6 +23,7 @@ kotlin {
             "main" {
                 packageJson {
                     customField("bin", mapOf("coupling" to "./kotlin/bin/coupling"))
+                    customField("type", "module")
                 }
             }
         }
