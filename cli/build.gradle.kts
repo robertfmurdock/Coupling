@@ -1,5 +1,4 @@
 import com.zegreatrob.tools.tagger.ReleaseVersion
-import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
@@ -72,7 +71,6 @@ tasks {
         compression = Compression.GZIP
         archiveFileName.set("coupling-cli.tgz")
     }
-    val compileProductionExecutableKotlinJs by named<KotlinJsIrLink>("compileProductionExecutableKotlinJs")
 
     val mainNpmProjectDir = kotlin.js().compilations.getByName("main").npmProject.dir
 
@@ -88,7 +86,7 @@ tasks {
         dependsOn("dependencyResources")
     }
 
-    val dependencyResources by registering(Copy::class) {
+    register("dependencyResources", Copy::class) {
         dependsOn(":sdk:jsProcessResources")
         into(jsProcessResources.destinationDir)
         from("$rootDir/sdk/build/processedResources/js/main")
@@ -111,7 +109,7 @@ tasks {
         compression = Compression.GZIP
         archiveFileName.set("coupling-cli-js.tgz")
     }
-    val jsLink by registering(Exec::class) {
+    register("jsLink", Exec::class) {
         dependsOn(jsCliTar)
         workingDir(mainNpmProjectDir)
         commandLine("npm", "link")
