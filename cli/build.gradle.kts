@@ -26,6 +26,14 @@ kotlin {
                     customField("type", "commonjs")
                 }
             }
+            "test" {
+                compileTaskProvider {
+                    compilerOptions {
+                        target = "es5"
+                        freeCompilerArgs.add("-Xir-per-module")
+                    }
+                }
+            }
         }
     }
 }
