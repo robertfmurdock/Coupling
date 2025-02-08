@@ -16,14 +16,14 @@ kotlin {
     jvm { withJava() }
     js {
         nodejs {
-            useEsModules()
+            useCommonJs()
             binaries.executable()
         }
         compilations {
             "main" {
                 packageJson {
                     customField("bin", mapOf("coupling" to "./kotlin/bin/coupling"))
-                    customField("type", "module")
+                    customField("type", "commonjs")
                 }
             }
         }
