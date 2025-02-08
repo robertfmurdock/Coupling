@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.cdnLookup
 
+import com.zegreatrob.coupling.cdnLookup.external.readpkgup.readPkgUp
+import com.zegreatrob.coupling.cdnLookup.external.resolvepkg.resolvePkg
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestRetry
@@ -17,11 +19,7 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.js.Json
-import kotlin.js.Promise
 import kotlin.js.json
-
-val readPkgUp = js("require('read-pkg-up')")
-val resolvePkg = js("require('resolve-pkg')")
 
 val contextPath = js("__dirname").unsafeCast<String>()
 
@@ -65,6 +63,6 @@ private fun JsonObject.getFiles(): List<String> {
 
 suspend fun getVersionForLibrary(lib: String): String {
     val libPackage = resolvePkg(lib, json("cwd" to contextPath))
-    val pkg = readPkgUp(json("cwd" to libPackage)).unsafeCast<Promise<Json>>().await()
+    val pkg = readPkgUp(json("cwd" to libPackage)).await()
     return pkg["pkg"].unsafeCast<Json>()["version"].unsafeCast<String>()
 }

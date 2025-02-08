@@ -16,14 +16,13 @@ import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import node.buffer.BufferEncoding
 import node.crypto.randomUUID
+import node.fs.readFileSync
 import kotlin.test.Test
-
-external fun <T> require(module: String): T
 
 class DiscordClientTest {
 
@@ -33,7 +32,7 @@ class DiscordClientTest {
         val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
             lastRequestData = request
             respond(
-                content = JSON.stringify(require("./expected-access-response.json")),
+                content = readFileSync("./kotlin/expected-access-response.json", BufferEncoding.utf8),
                 headers = headersOf("Content-Type", "application/json"),
             )
         }
@@ -81,7 +80,7 @@ class DiscordClientTest {
     @Test
     fun canSendMessage() = asyncSetup(object : ScopeMint() {
         var lastRequestData: HttpRequestData? = null
-        val responseJson = JSON.stringify(require("./expected-message-response.json"))
+        val responseJson = readFileSync("./kotlin/expected-message-response.json", BufferEncoding.utf8)
         val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
             lastRequestData = request
             respond(
@@ -120,7 +119,7 @@ class DiscordClientTest {
     @Test
     fun canUpdateMessage() = asyncSetup(object : ScopeMint() {
         var lastRequestData: HttpRequestData? = null
-        val responseJson = JSON.stringify(require("./expected-message-response.json"))
+        val responseJson = readFileSync("./kotlin/expected-message-response.json", BufferEncoding.utf8)
         val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
             lastRequestData = request
             respond(

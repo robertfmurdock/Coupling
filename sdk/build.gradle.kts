@@ -9,6 +9,15 @@ kotlin {
         val main = compilations.findByName("main")!!
         val test = compilations.findByName("test")!!
         test.defaultSourceSet.dependsOn(main.defaultSourceSet)
+
+        compilations.named("test") {
+            compileTaskProvider {
+                compilerOptions {
+                    target = "es5"
+                    freeCompilerArgs.add("-Xir-per-module")
+                }
+            }
+        }
     }
     jvm()
 }

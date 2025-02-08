@@ -13,6 +13,14 @@ kotlin {
             binaries.executable()
             testTask { useMocha { timeout = "400s" } }
         }
+        compilations.named("test") {
+            compileTaskProvider {
+                compilerOptions {
+                    target = "es5"
+                    freeCompilerArgs.add("-Xir-per-module")
+                }
+            }
+        }
     }
 }
 

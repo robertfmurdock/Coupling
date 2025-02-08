@@ -16,7 +16,7 @@ kotlin {
     jvm { withJava() }
     js {
         nodejs {
-            useCommonJs()
+            useEsModules()
             binaries.executable()
         }
         compilations {

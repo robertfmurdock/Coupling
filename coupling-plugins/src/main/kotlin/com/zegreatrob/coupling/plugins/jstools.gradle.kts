@@ -21,15 +21,6 @@ kotlin {
             target = "es2015"
         }
         binaries.executable()
-
-        compilations.named("test") {
-            compileTaskProvider {
-                compilerOptions {
-                    target = "es5"
-                    freeCompilerArgs.add("-Xir-per-module")
-                }
-            }
-        }
     }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
