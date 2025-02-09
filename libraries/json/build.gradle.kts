@@ -23,7 +23,6 @@ kotlin {
     sourceSets {
         commonMain { kotlin.srcDir("build/generated/codegen") }
     }
-
 }
 
 dependencies {

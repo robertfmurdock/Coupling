@@ -41,7 +41,9 @@ val GraphIQLPageLoader by nfc<PropsWithValue<DataLoadState<String>>> { props ->
         is PendingState -> +"Loading authorization..."
         is ResolvedState -> GraphiQL {
             this.editorTheme = "dracula"
-            this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
+            this.url = graphQlUrl
+            this.token = state.result
+//            this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
         }
     }
 }
