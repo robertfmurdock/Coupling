@@ -54,6 +54,6 @@ val GraphiQL: ElementType<GraphiQLProps> = FC { props ->
 }
 
 external interface GraphiQLProps : Props {
-    var editorTheme: String
+    var editorTheme: String?
     var fetcher: (graphQlParams: Json) -> Promise<String>
 }
