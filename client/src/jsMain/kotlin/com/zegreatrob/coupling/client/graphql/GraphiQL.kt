@@ -1,18 +1,33 @@
 package com.zegreatrob.coupling.client.graphql
 
+import emotion.react.css
 import react.ElementType
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.iframe
+import react.useEffectOnce
+import react.useRef
+import web.cssom.vh
+import web.cssom.vw
+import web.html.HTMLIFrameElement
+import kotlin.js.Json
+import kotlin.js.Promise
 
 val GraphiQL: ElementType<GraphiQLProps> = FC { props ->
+    val iframeRef = useRef<HTMLIFrameElement>(null)
+    useEffectOnce {
+        iframeRef.current?.contentWindow?.set("graphiqlProps", props)
+    }
+
     iframe {
+        ref = iframeRef
+        css {
+            width = 100.vw
+            height = 100.vh
+        }
         name = "graphiql-frame"
         allowFullScreen = true
         sandbox = "allow-scripts allow-same-origin"
-        asDynamic()["height"] = "100%"
-        asDynamic()["width"] = "100%"
-
         this.srcDoc = """
 <!DOCTYPE html>
 <html width="100%" height="100%">
@@ -24,23 +39,13 @@ val GraphiQL: ElementType<GraphiQLProps> = FC { props ->
             integrity="sha256-IvqrlAZ7aV5feVlhn75obrzIlVACoMl9mGvLukrUvCw="
             crossorigin="anonymous"></script>
 </head>
-<body>
-<div id="root"></div>
+<body style='margin:0;'>
+<div id="root" style='width:100vw; height:100vh'></div>
 </body>
 <script>
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(
-        React.createElement(GraphiQL, {
-            fetcher: (graphQlParams) =>
-                fetch('${props.url}', {
-                    headers: {
-                        "Authorization": "Bearer ${props.token}",
-                        "Content-Type": "application/json"
-                    },
-                    method: "POST",
-                    body: JSON.stringify(graphQlParams)
-                })
-        })
+        React.createElement(GraphiQL, window.graphiqlProps)
     );
 </script>
 </html>
@@ -50,6 +55,5 @@ val GraphiQL: ElementType<GraphiQLProps> = FC { props ->
 
 external interface GraphiQLProps : Props {
     var editorTheme: String
-    var url: String
-    var token: String
+    var fetcher: (graphQlParams: Json) -> Promise<String>
 }
