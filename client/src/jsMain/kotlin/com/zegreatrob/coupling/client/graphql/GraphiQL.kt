@@ -12,7 +12,7 @@ val GraphiQL: ElementType<GraphiQLProps> = FC { props ->
         sandbox = "allow-scripts allow-same-origin"
         asDynamic()["height"] = "100%"
         asDynamic()["width"] = "100%"
-        
+
         this.srcDoc = """
 <!DOCTYPE html>
 <html width="100%" height="100%">
