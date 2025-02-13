@@ -2930,10 +2930,10 @@
     "@graphql-codegen/plugin-helpers" "^5.0.3"
     tslib "~2.6.0"
 
-"@graphql-codegen/cli@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-5.0.4.tgz#22a8fc492ff20028f236dda16ecd9f5bd9783c5a"
-  integrity sha512-vPO1mCtrttFVy8mPR+jMAvsYTv8E/7payIPaneeGE15mQjyvQXXsHoAg06Qpf6tykOdCwKVLWre0Mf6g0KBwUg==
+"@graphql-codegen/cli@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-5.0.5.tgz#9a29b2c7a459e333fbae025dff951927fafe5d2f"
+  integrity sha512-9p9SI5dPhJdyU+O6p1LUqi5ajDwpm6pUhutb1fBONd0GZltLFwkgWFiFtM6smxkYXlYVzw61p1kTtwqsuXO16w==
   dependencies:
     "@babel/generator" "^7.18.13"
     "@babel/template" "^7.18.10"
@@ -3165,22 +3165,22 @@
     "@whatwg-node/fetch" "^0.9.0"
     tslib "^2.4.0"
 
-"@graphql-tools/batch-delegate@^9.0.29":
-  version "9.0.29"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-9.0.29.tgz#fb17c4ff709f13cd7ab2a8f2f52f855a2083dfae"
-  integrity sha512-LfN239NpJn9zEbHVJaTc0rBm2ljl2wURyL4nX7vBQiqbYb0qE1a+zIvK8evUig07fQanYkVgjOLUHUE5i9Gp5A==
+"@graphql-tools/batch-delegate@^9.0.30":
+  version "9.0.30"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-9.0.30.tgz#c5b414e1a573a5f7199936b93bbe062c063a71d2"
+  integrity sha512-1i31Y9TUzj8QJbXuOWtNQNkIIfeY87rriHw3/DYiIT/nLvt5WJe8nbZ5inzHsYra99EkXZCAiFebRS/WBeUn8w==
   dependencies:
-    "@graphql-tools/delegate" "^10.2.11"
-    "@graphql-tools/utils" "^10.7.0"
+    "@graphql-tools/delegate" "^10.2.12"
+    "@graphql-tools/utils" "^10.8.1"
     dataloader "^2.2.3"
     tslib "^2.8.1"
 
-"@graphql-tools/batch-execute@^9.0.11":
-  version "9.0.11"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-9.0.11.tgz#3a659997a335aea5e894403c2685fa04c81c4611"
-  integrity sha512-v9b618cj3hIrRGTDrOotYzpK+ZigvNcKdXK3LNBM4g/uA7pND0d4GOnuOSBQGKKN6kT/1nsz4ZpUxCoUvWPbzg==
+"@graphql-tools/batch-execute@^9.0.12":
+  version "9.0.12"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-9.0.12.tgz#807e393ec6560247eeefb0338a02779a2e7175ab"
+  integrity sha512-AUKU/KLez9LvBFh8Uur4h5n2cKrHnBFADKyHWMP7/dAuG6vzFES047bYsKQR2oWhzO26ucQMVBm9GGw1+VCv8A==
   dependencies:
-    "@graphql-tools/utils" "^10.7.0"
+    "@graphql-tools/utils" "^10.8.1"
     dataloader "^2.2.3"
     tslib "^2.8.1"
 
@@ -3217,15 +3217,15 @@
     dataloader "^2.2.2"
     tslib "^2.5.0"
 
-"@graphql-tools/delegate@^10.2.11":
-  version "10.2.11"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-10.2.11.tgz#1d5bc5afc5205856b35f1ef6bcf93f8cbd26619b"
-  integrity sha512-eLqczQkDlSHpz0foBWfjISSsHiedMOBz4spaa1ako1eM4bX9VxQa/HWQuMK8dmAf8By+F47OzvLUNa03Aq6vXw==
+"@graphql-tools/delegate@^10.2.12":
+  version "10.2.12"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-10.2.12.tgz#cf7e300bf9dd32d8ddf8e7284819f6053c84c349"
+  integrity sha512-vyPjy7znb5wZd7OsKgK77dHJVt3RhSiq4sqdDL5d55jkIuekcJQdBoLlKN6hsakSGV31YneNGiiOPpw0kWRu3Q==
   dependencies:
-    "@graphql-tools/batch-execute" "^9.0.11"
+    "@graphql-tools/batch-execute" "^9.0.12"
     "@graphql-tools/executor" "^1.3.10"
     "@graphql-tools/schema" "^10.0.11"
-    "@graphql-tools/utils" "^10.7.0"
+    "@graphql-tools/utils" "^10.8.1"
     "@repeaterjs/repeater" "^3.0.6"
     dataloader "^2.2.3"
     dset "^3.1.2"
@@ -3501,18 +3501,18 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/stitch@^9.4.16":
-  version "9.4.16"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.4.16.tgz#2b90d6cb28f84752a8641145f893db11477bd875"
-  integrity sha512-SYsdAlpKY1o2AxIc9v2zHLeVwxq0w2Sp3CIl/wE3dcnD5QqXJqvyqoeciJ7T+XWTldyhxyJpUfbSQLWGXbqwiQ==
+"@graphql-tools/stitch@^9.4.17":
+  version "9.4.17"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.4.17.tgz#dc2f5d2b93ce77aa3786d2606a18ab514ec4ca8b"
+  integrity sha512-HKG7mswagPiSZbLCDli0C5w7pSIfoms3HNIs3qhXn1sS2JaHc9a8xQvKY+7KsexBOIJXE7AURfwjpSsWfFTtNg==
   dependencies:
-    "@graphql-tools/batch-delegate" "^9.0.29"
-    "@graphql-tools/delegate" "^10.2.11"
+    "@graphql-tools/batch-delegate" "^9.0.30"
+    "@graphql-tools/delegate" "^10.2.12"
     "@graphql-tools/executor" "^1.3.10"
     "@graphql-tools/merge" "^9.0.12"
     "@graphql-tools/schema" "^10.0.11"
-    "@graphql-tools/utils" "^10.7.0"
-    "@graphql-tools/wrap" "^10.0.29"
+    "@graphql-tools/utils" "^10.8.1"
+    "@graphql-tools/wrap" "^10.0.30"
     tslib "^2.8.1"
 
 "@graphql-tools/url-loader@^8.0.0", "@graphql-tools/url-loader@^8.0.2":
@@ -3620,14 +3620,14 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/wrap@^10.0.29":
-  version "10.0.29"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-10.0.29.tgz#4256c0086505a6fdc4d194273604766577f6d44e"
-  integrity sha512-kQdosPBo6EvFhQV5s0XpN6+N0YN+31mCZTV7uwZisaUwwroAT19ujs2Zxz8Zyw4H9XRCsueLT0wqmSupjIFibQ==
+"@graphql-tools/wrap@^10.0.30":
+  version "10.0.30"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-10.0.30.tgz#da57a5f9cbe322c296c8d765bc2e5d31be643344"
+  integrity sha512-zzG7ol4DdbRtvEe2QdPkDucRT99gfvQtPnMqUEOIEjwfHWTbjGFCh/E4nynOSpEc2MiR0xaZIPAaIptAho/uoQ==
   dependencies:
-    "@graphql-tools/delegate" "^10.2.11"
+    "@graphql-tools/delegate" "^10.2.12"
     "@graphql-tools/schema" "^10.0.11"
-    "@graphql-tools/utils" "^10.7.0"
+    "@graphql-tools/utils" "^10.8.1"
     tslib "^2.8.1"
 
 "@graphql-typed-document-node/core@3.2.0", "@graphql-typed-document-node/core@^3.1.1", "@graphql-typed-document-node/core@^3.2.0":
@@ -4096,14 +4096,6 @@
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.0.tgz#3188bcb273a414b0d215fd22a58540b989b9409a"
   integrity sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==
-
-"@jridgewell/trace-mapping@^0.3.20":
-  version "0.3.22"
-  resolved "https://registry.yarnpkg.com/@jridgewell/trace-mapping/-/trace-mapping-0.3.22.tgz#72a621e5de59f5f1ef792d0793a82ee20f645e4c"
-  integrity sha512-Wf963MzWtA2sjrNt+g18IAln9lKnlRp+K2eH4jjIoF1wYeq3aMREpG09xhlhdzS0EjwU7qmUJYangWa+151vZw==
-  dependencies:
-    "@jridgewell/resolve-uri" "^3.1.0"
-    "@jridgewell/sourcemap-codec" "^1.4.14"
 
 "@jridgewell/trace-mapping@^0.3.24", "@jridgewell/trace-mapping@^0.3.25":
   version "0.3.25"
@@ -7428,10 +7420,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@133.0.0:
-  version "133.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-133.0.0.tgz#56dedd23974f986ef5fb1ec3402d2d5b845e35dc"
-  integrity sha512-7arRrtD9WGSlemMLE4IOoD42OSKKyOtQP/Z0x/WB5jYSaCzcI95j67EK0wQ2w1y5IjSJnYvnmXOJM6Nla4OG2w==
+chromedriver@133.0.1:
+  version "133.0.1"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-133.0.1.tgz#6fabe45f7ed5b2f6daf3bb6047159f970f203b89"
+  integrity sha512-Z9VrJ9547daetazzP4k+7COj0PTtkomvtt8OZr8swTzsqDOzG0Xymdxg0dUtptc4da3X9Zts1iZoxOkm7blx/g==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
@@ -13681,7 +13673,7 @@ scheduler@^0.25.0:
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.25.0.tgz#336cd9768e8cceebf52d3c80e3dcf5de23e7e015"
   integrity sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==
 
-schema-utils@^3.0.0, schema-utils@^3.1.1, schema-utils@^3.2.0:
+schema-utils@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-3.3.0.tgz#f50a88877c3c01652a15b622ae9e9795df7a60fe"
   integrity sha512-pN/yOAvcC+5rQ5nERGuwrjLlYvLTbCibnZ1I7B1LaiAz9BRBlE9GMgE/eqV30P7aJQUf7Ddimy/RsbYO/GrVGg==
@@ -13694,6 +13686,16 @@ schema-utils@^4.0.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.2.0.tgz#70d7c93e153a273a805801882ebd3bff20d89c8b"
   integrity sha512-L0jRsrPpjdckP3oPug3/VxNKt2trR8TcabrM6FOAAlvC/9Phcmm+cuAgTlxBqdBR1WJx7Naj9WHw+aOmheSVbw==
+  dependencies:
+    "@types/json-schema" "^7.0.9"
+    ajv "^8.9.0"
+    ajv-formats "^2.1.1"
+    ajv-keywords "^5.1.0"
+
+schema-utils@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.3.0.tgz#3b669f04f71ff2dfb5aba7ce2d5a9d79b35622c0"
+  integrity sha512-Gf9qqc58SpCA/xdziiHz35F4GNIWYWZrEshUc/G/r5BnLph6xpKuLeoJoQuj5WfBIx/eQLf+hmVPYHaxJu7V2g==
   dependencies:
     "@types/json-schema" "^7.0.9"
     ajv "^8.9.0"
@@ -13816,13 +13818,6 @@ serialize-javascript@6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-6.0.0.tgz#efae5d88f45d7924141da8b5c3a7a7e663fefeb8"
   integrity sha512-Qr3TosvguFt8ePWqsvRfrKyQXIiW+nGbYpy8XK24NQHE83caxWt+mIymTT19DGFbNWNLfEwsrkSmN64lVWB9ag==
-  dependencies:
-    randombytes "^2.1.0"
-
-serialize-javascript@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-6.0.1.tgz#b206efb27c3da0b0ab6b52f48d170b7996458e5c"
-  integrity sha512-owoXEFjWRllis8/M1Q+Cw5k8ZH40e3zhp/ovX+Xr/vi1qj6QesbyXXViFbpNvWvPNAD62SutwEXavefrLJWj7w==
   dependencies:
     randombytes "^2.1.0"
 
@@ -14529,16 +14524,16 @@ tcp-port-used@^1.0.2:
     debug "4.3.1"
     is2 "^2.0.6"
 
-terser-webpack-plugin@^5.3.10:
-  version "5.3.10"
-  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-5.3.10.tgz#904f4c9193c6fd2a03f693a2150c62a92f40d199"
-  integrity sha512-BKFPWlPDndPs+NGGCr1U59t0XScL5317Y0UReNrHaw9/FwhPENlq6bfgs+4yPfyP51vqC1bQ4rp1EfXW5ZSH9w==
+terser-webpack-plugin@^5.3.11:
+  version "5.3.11"
+  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-5.3.11.tgz#93c21f44ca86634257cac176f884f942b7ba3832"
+  integrity sha512-RVCsMfuD0+cTt3EwX8hSl2Ks56EbFHWmhluwcqoPKtBnfjiT6olaq7PRIRfhyU8nnC2MrnDrBLfrD/RGE+cVXQ==
   dependencies:
-    "@jridgewell/trace-mapping" "^0.3.20"
+    "@jridgewell/trace-mapping" "^0.3.25"
     jest-worker "^27.4.5"
-    schema-utils "^3.1.1"
-    serialize-javascript "^6.0.1"
-    terser "^5.26.0"
+    schema-utils "^4.3.0"
+    serialize-javascript "^6.0.2"
+    terser "^5.31.1"
 
 terser@^5.10.0:
   version "5.19.4"
@@ -14550,10 +14545,10 @@ terser@^5.10.0:
     commander "^2.20.0"
     source-map-support "~0.5.20"
 
-terser@^5.26.0:
-  version "5.27.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.27.0.tgz#70108689d9ab25fef61c4e93e808e9fd092bf20c"
-  integrity sha512-bi1HRwVRskAjheeYl291n3JC4GgO/Ty4z1nVs5AAsmonJulGxpSektecnNedrwK9C7vpvVtcX3cw00VSLt7U2A==
+terser@^5.31.1:
+  version "5.39.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.39.0.tgz#0e82033ed57b3ddf1f96708d123cca717d86ca3a"
+  integrity sha512-LBAhFyLho16harJoWMg/nZsQYgTrg5jXOn2nCYjRUcZZEdE3qa2zb8QEDRUGVZBW4rlazf2fxkg8tztybTaqWw==
   dependencies:
     "@jridgewell/source-map" "^0.3.3"
     acorn "^8.8.2"
@@ -15322,10 +15317,10 @@ webpack-sources@^3.2.3:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
-webpack@5.97.1:
-  version "5.97.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.97.1.tgz#972a8320a438b56ff0f1d94ade9e82eac155fa58"
-  integrity sha512-EksG6gFY3L1eFMROS/7Wzgrii5mBAFe4rIr3r2BTfo7bcc+DWwFZ4OJ/miOuHJO/A85HwyI4eQ0F6IKXesO7Fg==
+webpack@5.98.0:
+  version "5.98.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.98.0.tgz#44ae19a8f2ba97537978246072fb89d10d1fbd17"
+  integrity sha512-UFynvx+gM44Gv9qFgj0acCQK2VE1CtdfwFdimkapco3hlPCJ/zeq73n2yVKimVbtm+TnApIugGhLJnkU6gjYXA==
   dependencies:
     "@types/eslint-scope" "^3.7.7"
     "@types/estree" "^1.0.6"
@@ -15345,9 +15340,9 @@ webpack@5.97.1:
     loader-runner "^4.2.0"
     mime-types "^2.1.27"
     neo-async "^2.6.2"
-    schema-utils "^3.2.0"
+    schema-utils "^4.3.0"
     tapable "^2.1.1"
-    terser-webpack-plugin "^5.3.10"
+    terser-webpack-plugin "^5.3.11"
     watchpack "^2.4.1"
     webpack-sources "^3.2.3"
 
