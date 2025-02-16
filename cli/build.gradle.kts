@@ -43,7 +43,6 @@ dependencies {
     commonMainImplementation(project(":libraries:model"))
     commonMainImplementation(project(":sdk"))
     commonMainImplementation("com.github.ajalt.clikt:clikt")
-    commonMainImplementation("com.benasher44:uuid")
     commonMainImplementation("com.zegreatrob.tools:digger-json")
     commonMainImplementation("io.ktor:ktor-client-content-negotiation")
     commonMainImplementation("io.ktor:ktor-client-core")

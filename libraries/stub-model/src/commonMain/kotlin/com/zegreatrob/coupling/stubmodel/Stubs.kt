@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.stubmodel
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Record
@@ -27,6 +26,7 @@ import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
+import kotlin.uuid.Uuid
 
 fun stubParties(number: Int) = generateSequence(::stubPartyDetails).take(number).toList()
 
@@ -105,7 +105,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
 
 fun stubPairAssignmentId() = PairAssignmentDocumentId(uuidString())
 
-fun uuidString() = uuid4().toString()
+fun uuidString() = Uuid.random().toString()
 
 var userCounter = 1
 fun stubUserDetails() = UserDetails(

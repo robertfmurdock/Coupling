@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action
 
-import com.benasher44.uuid.Uuid
+import kotlin.uuid.Uuid
 
 interface TraceIdProvider {
     val traceId: Uuid

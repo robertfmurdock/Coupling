@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server
 
-import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.TraceIdProvider
@@ -76,6 +75,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlin.js.json
+import kotlin.uuid.Uuid
 
 interface ICommandDispatcher :
     AwsManagementApiSyntax,

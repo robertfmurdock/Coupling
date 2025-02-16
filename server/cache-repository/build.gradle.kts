@@ -9,7 +9,6 @@ kotlin {
 dependencies {
     "jsMainApi"(project(":libraries:repository:core"))
     "jsMainApi"(project(":libraries:model"))
-    "jsMainApi"("com.benasher44:uuid")
     "jsMainApi"("io.github.oshai:kotlin-logging")
     "jsMainApi"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 

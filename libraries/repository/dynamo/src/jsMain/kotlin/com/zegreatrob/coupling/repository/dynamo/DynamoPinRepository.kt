@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -30,7 +29,7 @@ class DynamoPinRepository private constructor(override val userId: String, overr
     }
 
     override suspend fun save(partyPin: PartyElement<Pin>) = performPutItem(
-        partyPin.copy(element = with(partyPin.element) { copy(id = id ?: "${uuid4()}") })
+        partyPin.copy(element = with(partyPin.element) { copy(id = id) })
             .toRecord()
             .asDynamoJson(),
     )

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.cli
 
-import com.benasher44.uuid.uuid4
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.obj
 import com.github.ajalt.clikt.testing.test
@@ -23,23 +22,24 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
+import kotlin.uuid.Uuid
 
 class SaveContributionCLITest {
 
     @Test
     fun canOverrideFields() = asyncSetup(object : ScopeMint() {
         val sourceContribution = Contribution(
-            lastCommit = "${uuid4()}",
-            firstCommit = "${uuid4()}",
-            authors = listOf("${uuid4()}"),
+            lastCommit = "${Uuid.random()}",
+            firstCommit = "${Uuid.random()}",
+            authors = listOf("${Uuid.random()}"),
             dateTime = Clock.System.now(),
             ease = 7,
-            storyId = "${uuid4()}",
-            semver = "${uuid4()}",
-            label = "${uuid4()}",
+            storyId = "${Uuid.random()}",
+            semver = "${Uuid.random()}",
+            label = "${Uuid.random()}",
             firstCommitDateTime = Clock.System.now() - 20.minutes,
             tagDateTime = Clock.System.now() - 15.minutes,
-            tagName = "${uuid4()}",
+            tagName = "${Uuid.random()}",
             commitCount = 134,
         )
         val partyId = stubPartyId()
@@ -89,16 +89,16 @@ class SaveContributionCLITest {
         val dateTime = now.minus(5.minutes)
         val firstCommitDateTime = now - expectedCycleTime
         val sourceContribution = Contribution(
-            lastCommit = "${uuid4()}",
-            firstCommit = "${uuid4()}",
-            authors = listOf("${uuid4()}"),
+            lastCommit = "${Uuid.random()}",
+            firstCommit = "${Uuid.random()}",
+            authors = listOf("${Uuid.random()}"),
             dateTime = dateTime,
             ease = 7,
-            storyId = "${uuid4()}",
-            semver = "${uuid4()}",
-            label = "${uuid4()}",
+            storyId = "${Uuid.random()}",
+            semver = "${Uuid.random()}",
+            label = "${Uuid.random()}",
             firstCommitDateTime = firstCommitDateTime,
-            tagName = "${uuid4()}",
+            tagName = "${Uuid.random()}",
             tagDateTime = null,
             commitCount = 3214,
         )
@@ -133,16 +133,16 @@ class SaveContributionCLITest {
         val tagDateTime = dateTime.minus(2.minutes)
         val firstCommitDateTime = tagDateTime - expectedCycleTime
         val sourceContribution = Contribution(
-            lastCommit = "${uuid4()}",
-            firstCommit = "${uuid4()}",
-            authors = listOf("${uuid4()}"),
+            lastCommit = "${Uuid.random()}",
+            firstCommit = "${Uuid.random()}",
+            authors = listOf("${Uuid.random()}"),
             dateTime = dateTime,
             ease = 7,
-            storyId = "${uuid4()}",
-            semver = "${uuid4()}",
-            label = "${uuid4()}",
+            storyId = "${Uuid.random()}",
+            semver = "${Uuid.random()}",
+            label = "${Uuid.random()}",
             firstCommitDateTime = firstCommitDateTime,
-            tagName = "${uuid4()}",
+            tagName = "${Uuid.random()}",
             tagDateTime = tagDateTime,
             commitCount = 3214,
         )
@@ -167,14 +167,14 @@ class SaveContributionCLITest {
     @Test
     fun usingCommitTimeRangeAsCycleTimeWillWarnWhenOneIsMissing() = asyncSetup(object : ScopeMint() {
         val sourceContribution = Contribution(
-            lastCommit = "${uuid4()}",
-            firstCommit = "${uuid4()}",
-            authors = listOf("${uuid4()}"),
+            lastCommit = "${Uuid.random()}",
+            firstCommit = "${Uuid.random()}",
+            authors = listOf("${Uuid.random()}"),
             dateTime = Clock.System.now(),
             ease = 7,
-            storyId = "${uuid4()}",
-            semver = "${uuid4()}",
-            label = "${uuid4()}",
+            storyId = "${Uuid.random()}",
+            semver = "${Uuid.random()}",
+            label = "${Uuid.random()}",
             firstCommitDateTime = null,
             tagDateTime = Clock.System.now().plus(43.minutes),
             tagName = "Bill",

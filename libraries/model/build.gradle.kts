@@ -21,7 +21,6 @@ kotlin {
 
 dependencies {
     commonMainApi(enforcedPlatform(project(":libraries:dependency-bom")))
-    commonMainApi("com.benasher44:uuid")
     commonMainApi("org.jetbrains.kotlinx:kotlinx-datetime")
     commonMainApi("org.kotools:types")
     commonTestImplementation(project(":libraries:test-logging"))

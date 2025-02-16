@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.validation
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
@@ -15,6 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
+import kotlin.uuid.Uuid
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
@@ -38,7 +38,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
             val boost by lazy {
                 Boost(
                     userId = user.id,
-                    partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")),
+                    partyIds = setOf(PartyId("${Uuid.random()}"), PartyId("${Uuid.random()}")),
                     expirationDate = Clock.System.now(),
                 )
             }
@@ -56,7 +56,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
         repository.save(
             Boost(
                 userId = user.id,
-                partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")),
+                partyIds = setOf(PartyId("${Uuid.random()}"), PartyId("${Uuid.random()}")),
                 expirationDate = Clock.System.now(),
             ),
         )
@@ -71,11 +71,11 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
         object : SharedContext<R> by parent {
             val boost = Boost(
                 userId = user.id,
-                partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")),
+                partyIds = setOf(PartyId("${Uuid.random()}"), PartyId("${Uuid.random()}")),
                 expirationDate = Clock.System.now(),
             )
             val updatedBoost1 = boost.copy(partyIds = emptySet())
-            val updatedBoost2 = updatedBoost1.copy(partyIds = setOf(PartyId("${uuid4()}")))
+            val updatedBoost2 = updatedBoost1.copy(partyIds = setOf(PartyId("${Uuid.random()}")))
         }
     }) exercise {
         with(repository) {
@@ -94,10 +94,10 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     @Test
     fun saveBoostRepeatedlyGetByPartyGetsLatest() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
-            val partyId = PartyId("${uuid4()}")
+            val partyId = PartyId("${Uuid.random()}")
             val boost = Boost(
                 userId = user.id,
-                partyIds = setOf(partyId, PartyId("${uuid4()}")),
+                partyIds = setOf(partyId, PartyId("${Uuid.random()}")),
                 expirationDate = Clock.System.now(),
             )
             val updatedBoost1 = boost.copy(partyIds = emptySet())
@@ -119,10 +119,10 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
         val altRepository = buildRepository(stubUserDetails(), sharedContext.clock)
         object : SharedContext<R> by sharedContext {
             val altRepository = altRepository
-            val partyId = PartyId("${uuid4()}")
+            val partyId = PartyId("${Uuid.random()}")
             val boost = Boost(
                 userId = user.id,
-                partyIds = setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")),
+                partyIds = setOf(PartyId("${Uuid.random()}"), partyId, PartyId("${Uuid.random()}")),
                 expirationDate = Clock.System.now(),
             )
         }
@@ -137,10 +137,10 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     @Test
     fun getSavedBoostByPartyIdForBoostRemovedBoostWillReturnNull() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
-            val partyId = PartyId("${uuid4()}")
+            val partyId = PartyId("${Uuid.random()}")
             val boost = Boost(
                 userId = user.id,
-                partyIds = setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")),
+                partyIds = setOf(PartyId("${Uuid.random()}"), partyId, PartyId("${Uuid.random()}")),
                 expirationDate = Clock.System.now(),
             )
         }

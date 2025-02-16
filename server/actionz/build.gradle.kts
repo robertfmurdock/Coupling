@@ -13,7 +13,6 @@ dependencies {
     "jsMainApi"(project(":libraries:action"))
     "jsMainApi"("com.zegreatrob.testmints:action")
     "jsMainApi"("com.zegreatrob.testmints:action-async")
-    "jsMainApi"("com.benasher44:uuid")
     "jsMainApi"("io.github.oshai:kotlin-logging")
     "jsMainApi"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 

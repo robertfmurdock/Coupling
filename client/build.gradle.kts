@@ -67,7 +67,6 @@ dependencies {
     jsMainImplementation(project(":libraries:logging"))
     jsMainImplementation(project(":libraries:repository:core"))
     jsMainImplementation(project(":libraries:repository:memory"))
-    jsMainImplementation("com.benasher44:uuid")
     jsMainImplementation("com.zegreatrob.jsmints:minreact")
     jsMainImplementation("com.zegreatrob.jsmints:react-data-loader")
     jsMainImplementation("com.zegreatrob.testmints:action")

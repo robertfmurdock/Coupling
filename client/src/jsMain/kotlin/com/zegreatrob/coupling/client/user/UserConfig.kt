@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.user
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.client.components.DemoButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
@@ -32,6 +31,7 @@ import web.cssom.Color
 import web.cssom.Display
 import web.cssom.number
 import web.html.InputType
+import kotlin.uuid.Uuid
 
 external interface UserConfigProps<D> : Props where D : GraphQuery.Dispatcher, D : ApplyBoostCommand.Dispatcher {
     var user: UserDetails?
@@ -73,7 +73,7 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                     }
                     Editor {
                         li {
-                            val inputId = uuid4().toString()
+                            val inputId = Uuid.random().toString()
                             label {
                                 +"User Id"
                                 htmlFor = inputId
@@ -88,7 +88,7 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                             }
                         }
                         li {
-                            val inputId = uuid4().toString()
+                            val inputId = Uuid.random().toString()
                             label {
                                 +"User Email"
                                 htmlFor = inputId

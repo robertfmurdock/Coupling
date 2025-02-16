@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.fire
@@ -15,6 +14,7 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.datetime.Instant
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class SdkBoostTest {
 
@@ -33,7 +33,7 @@ class SdkBoostTest {
     @Test
     fun deleteWillMakeBoostNotRecoverableThroughGet() = setupWithUser {
     } exercise {
-        sdk.fire(ApplyBoostCommand(PartyId("${uuid4()}")))
+        sdk.fire(ApplyBoostCommand(PartyId("${Uuid.random()}")))
         sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
         sdk.fire(graphQuery { user { boost() } })
@@ -58,7 +58,7 @@ class SdkBoostTest {
         object {
             val sdk = it.sdk
             val userId = it.user.id
-            val partyId = PartyId("${uuid4()}")
+            val partyId = PartyId("${Uuid.random()}")
         }
     }) exercise {
         sdk.fire(ApplyBoostCommand(partyId))
@@ -101,9 +101,9 @@ class SdkBoostTest {
         object {
             val sdk = it.sdk
             val userId = it.user.id
-            val initialBoostParty = PartyId("${uuid4()}")
-            val updatedBoostParty1 = PartyId("${uuid4()}")
-            val updatedBoostParty2 = PartyId("${uuid4()}")
+            val initialBoostParty = PartyId("${Uuid.random()}")
+            val updatedBoostParty1 = PartyId("${Uuid.random()}")
+            val updatedBoostParty2 = PartyId("${Uuid.random()}")
         }
     }) exercise {
         sdk.fire(ApplyBoostCommand(initialBoostParty))

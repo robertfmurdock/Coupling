@@ -36,7 +36,6 @@ dependencies {
     commonMainApi("com.zegreatrob.testmints:action")
     commonMainApi("com.zegreatrob.testmints:action-async")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    commonMainImplementation("com.benasher44:uuid")
     commonMainImplementation("com.zegreatrob.testmints:action-annotation")
 
     commonTestImplementation(project(":libraries:json"))

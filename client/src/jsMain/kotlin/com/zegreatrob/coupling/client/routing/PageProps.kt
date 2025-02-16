@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.benasher44.uuid.Uuid
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.ClientDispatcher
@@ -15,6 +13,7 @@ import kotlinx.browser.window
 import org.w3c.dom.get
 import react.Props
 import web.url.URLSearchParams
+import kotlin.uuid.Uuid
 
 external interface PageProps : Props {
     var pathParams: ReadonlyRecord<String, String>
@@ -29,7 +28,8 @@ val PageProps.pinId: String? get() = pathParams["pinId"]
 
 interface Commander {
     fun tracingCannon(traceId: Uuid): DispatcherPipeCannon<CouplingSdkDispatcher>
-    fun tracingCannon() = tracingCannon(uuid4()).let { DispatcherPipeCannon(ClientDispatcher(it.dispatcher), it.pipe) }
+    fun tracingCannon() = tracingCannon(Uuid.random())
+        .let { DispatcherPipeCannon(ClientDispatcher(it.dispatcher), it.pipe) }
 }
 
 class MasterCommander(private val getIdentityToken: suspend () -> String) : Commander {

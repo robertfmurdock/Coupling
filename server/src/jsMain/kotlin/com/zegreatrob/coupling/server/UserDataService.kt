@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server
 
-import com.benasher44.uuid.Uuid
+import kotlin.uuid.Uuid
 
 object UserDataService {
 

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
@@ -33,6 +32,7 @@ import kotools.types.collection.toNotEmptyList
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
+import kotlin.uuid.Uuid
 
 private val random = Random(10)
 
@@ -111,7 +111,7 @@ private suspend fun generateStrongPairingTeam(
             return@fold history
         }
         val pairAssignmentsNewestFirst = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"),
+            id = PairAssignmentDocumentId("${Uuid.random()}"),
             date = date.toInstant(TimeZone.currentSystemDefault()),
             pairs = dispatcher.perform(FindNewPairsAction(Game(players, history, PairingRule.LongestTime))).withPins(),
         )
@@ -162,7 +162,7 @@ private fun beginningOfWindow(selectedWindow: GqlContributionWindow) = selectedW
 }
 
 private fun LocalDateTime.toFakeContribution() = Contribution(
-    id = "${uuid4()}",
+    id = "${Uuid.random()}",
     createdAt = Clock.System.now(),
     dateTime = toInstant(TimeZone.currentSystemDefault()),
     hash = null,

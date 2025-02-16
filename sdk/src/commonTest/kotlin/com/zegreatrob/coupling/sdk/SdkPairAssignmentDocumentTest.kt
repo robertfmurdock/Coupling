@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
@@ -27,6 +26,7 @@ import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.seconds
+import kotlin.uuid.Uuid
 
 class SdkPairAssignmentDocumentTest {
 
@@ -71,7 +71,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun deleteWhenDocumentDoesNotExistWillNotExplode() = repositorySetup().exercise {
-        runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}"))) }
+        runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${Uuid.random()}"))) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)

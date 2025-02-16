@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
@@ -24,6 +23,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlin.uuid.Uuid
 
 class SdkPartyTest {
 
@@ -92,7 +92,7 @@ class SdkPartyTest {
         sharedSetup = { _ ->
             object {
                 suspend fun altSdk() = altAuthorizedSdkDeferred.await()
-                val party = PartyDetails(PartyId(uuid4().toString()), name = "party-from-endpoint-tests")
+                val party = PartyDetails(PartyId(Uuid.random().toString()), name = "party-from-endpoint-tests")
                 val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_NAME)
             }
         },

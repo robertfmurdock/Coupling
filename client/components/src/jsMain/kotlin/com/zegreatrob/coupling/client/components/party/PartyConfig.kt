@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.party
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
@@ -21,6 +20,7 @@ import react.Props
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
+import kotlin.uuid.Uuid
 
 external interface PartyConfigProps<D> : Props
     where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
@@ -67,5 +67,5 @@ private fun Json.correctTypes() = also {
 private fun PartyDetails.withDefaultPartyId() = if (id.value.isNotBlank()) {
     this
 } else {
-    copy(id = PartyId("${uuid4()}"))
+    copy(id = PartyId("${Uuid.random()}"))
 }

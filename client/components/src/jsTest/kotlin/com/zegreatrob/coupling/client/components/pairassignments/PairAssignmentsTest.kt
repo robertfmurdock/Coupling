@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.model.CouplingSocketMessage
@@ -22,6 +21,7 @@ import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class PairAssignmentsTest {
 
@@ -39,7 +39,7 @@ class PairAssignmentsTest {
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
         var pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"),
+            id = PairAssignmentDocumentId("${Uuid.random()}"),
             date = Clock.System.now(),
             pairs = notEmptyListOf(
                 pairOf(

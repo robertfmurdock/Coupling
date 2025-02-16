@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
@@ -22,6 +21,7 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 @Suppress("unused")
 class PlayerConfigPageE2ETest {
@@ -68,7 +68,7 @@ class PlayerConfigPageE2ETest {
                 buildParty = {
                     PartyDetails(
                         PartyId("${randomInt()}-PlayerConfigPageE2E"),
-                        name = "${uuid4()}",
+                        name = "${Uuid.random()}",
                     )
                 },
                 buildPlayer = {

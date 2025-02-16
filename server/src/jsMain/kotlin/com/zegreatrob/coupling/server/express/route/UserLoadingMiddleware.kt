@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.express.route
 
-import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.elements
@@ -17,6 +16,7 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.secretRepository
 import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.datetime.Clock
+import kotlin.uuid.Uuid
 
 fun userLoadingMiddleware(): Handler = { request, _, next ->
     val auth = request.auth

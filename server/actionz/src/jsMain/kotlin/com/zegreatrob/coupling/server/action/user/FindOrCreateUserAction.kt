@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.action.user
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserIdProvider
+import kotlin.uuid.Uuid
 
 object FindOrCreateUserAction : SimpleSuspendResultAction<FindOrCreateUserActionDispatcher, UserDetails> {
     override val performFunc = link(FindOrCreateUserActionDispatcher::perform)
@@ -26,7 +26,7 @@ interface FindOrCreateUserActionDispatcher :
         ?.data
 
     private suspend fun newUser() = UserDetails(
-        id = "${uuid4()}",
+        id = "${Uuid.random()}",
         email = userId,
         authorizedPartyIds = emptySet(),
         stripeCustomerId = null,

@@ -12,5 +12,4 @@ kotlin {
 
 dependencies {
     commonMainImplementation(project(":libraries:model"))
-    commonMainApi("com.benasher44:uuid")
 }

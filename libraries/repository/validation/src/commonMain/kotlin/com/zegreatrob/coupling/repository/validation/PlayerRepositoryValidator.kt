@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.validation
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
@@ -16,6 +15,7 @@ import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlin.uuid.Uuid
 
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, PartyContext<R>> {
 
@@ -142,7 +142,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     @Test
     fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val playerId = "${uuid4()}"
+            val playerId = "${Uuid.random()}"
         }.bind(),
     ) exercise {
         repository.deletePlayer(partyId, playerId)

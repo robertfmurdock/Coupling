@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.components.spin.PrepareSpin
 import com.zegreatrob.coupling.client.components.spin.deselectedPinsClass
 import com.zegreatrob.coupling.client.components.spin.selectedPinsClass
@@ -29,6 +28,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class PrepareSpinTest {
 
@@ -186,7 +186,7 @@ class PrepareSpinTest {
         val user = UserEvent.setup()
         val players = stubPlayers(3).toNotEmptyList().getOrThrow()
         val currentPairs = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"),
+            id = PairAssignmentDocumentId("${Uuid.random()}"),
             date = Clock.System.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
             null,

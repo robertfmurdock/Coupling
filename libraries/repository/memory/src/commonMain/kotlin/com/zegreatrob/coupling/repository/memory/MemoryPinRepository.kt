@@ -15,7 +15,7 @@ class MemoryPinRepository(
     TypeRecordSyntax<PartyElement<Pin>>,
     RecordBackend<PartyElement<Pin>> by recordBackend {
 
-    override suspend fun save(partyPin: PartyElement<Pin>) = partyPin.copy(element = with(partyPin.element) { copy(id = id ?: "${com.benasher44.uuid.uuid4()}") })
+    override suspend fun save(partyPin: PartyElement<Pin>) = partyPin.copy(element = with(partyPin.element) { copy(id = id) })
         .record().save()
 
     override suspend fun getPins(partyId: PartyId) = partyId.recordList()

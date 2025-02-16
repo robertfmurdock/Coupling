@@ -47,7 +47,6 @@ dependencies {
     jsMainImplementation(project(":libraries:json"))
     jsMainImplementation(project(":libraries:repository:dynamo"))
     jsMainImplementation(project(":libraries:repository:memory"))
-    jsMainImplementation("com.benasher44:uuid")
     jsMainImplementation("com.zegreatrob.jsmints:minjson")
     jsMainImplementation("io.github.oshai:kotlin-logging")
     jsMainImplementation("io.ktor:ktor-client-logging")

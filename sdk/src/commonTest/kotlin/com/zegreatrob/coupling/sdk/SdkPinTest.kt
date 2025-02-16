@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
@@ -20,6 +19,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class SdkPinTest {
 
@@ -60,7 +60,7 @@ class SdkPinTest {
 
     @Test
     fun whenPinDoesNotExistDeleteWillDoNothing() = partySetup() exercise {
-        runCatching { sdk.fire(DeletePinCommand(party.id, "${uuid4()}")) }
+        runCatching { sdk.fire(DeletePinCommand(party.id, "${Uuid.random()}")) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)
@@ -88,7 +88,7 @@ class SdkPinTest {
         }
     }) exercise {
         pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
-        sdk.fire(DeletePinCommand(party.id, this.pins[1].id!!))
+        sdk.fire(DeletePinCommand(party.id, this.pins[1].id))
     } verifyWithWait {
         sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party

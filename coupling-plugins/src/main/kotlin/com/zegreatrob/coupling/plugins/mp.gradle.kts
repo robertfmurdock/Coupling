@@ -25,6 +25,7 @@ kotlin {
             languageSettings {
                 optIn("kotlin.js.ExperimentalJsExport")
                 optIn("kotlin.time.ExperimentalTime")
+                optIn("kotlin.uuid.ExperimentalUuidApi")
                 optIn("kotlinx.serialization.ExperimentalSerializationApi")
                 optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             }

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
@@ -16,6 +15,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.test.fail
+import kotlin.uuid.Uuid
 
 class FindOrCreateUserActionTest {
 
@@ -43,7 +43,7 @@ class FindOrCreateUserActionTest {
             override val userRepository = this
             override val userId = "test@test.tes"
 
-            val expectedUser = UserDetails("${uuid4()}", userId, setOf(PartyId("Best party")), null)
+            val expectedUser = UserDetails("${Uuid.random()}", userId, setOf(PartyId("Best party")), null)
             override suspend fun getUser() = Record(expectedUser, "", false, Clock.System.now())
             override suspend fun getUsersWithEmail(email: String): List<Record<UserDetails>> = emptyList()
             override suspend fun save(user: UserDetails) = fail("Should not save")
@@ -60,7 +60,7 @@ class FindOrCreateUserActionTest {
         override val userRepository = this
         override val userId = "test@test.tes"
 
-        val expectedUser = UserDetails("${uuid4()}", userId, setOf(PartyId("Best party")), null)
+        val expectedUser = UserDetails("${Uuid.random()}", userId, setOf(PartyId("Best party")), null)
         override suspend fun getUser(): Nothing? = null
         override suspend fun getUsersWithEmail(email: String): List<Record<UserDetails>> = listOf(Record(expectedUser, "", false, Clock.System.now()))
 

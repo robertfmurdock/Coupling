@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -16,6 +15,7 @@ import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class PlayersQueryTest {
 
@@ -47,7 +47,7 @@ class PlayersQueryTest {
 
     private fun toRecord(it: Player, authorizedPartyId: PartyId) = Record(
         authorizedPartyId.with(it),
-        "${uuid4()}@email.com",
+        "${Uuid.random()}@email.com",
         false,
         Clock.System.now(),
     )

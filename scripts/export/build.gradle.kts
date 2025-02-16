@@ -25,7 +25,6 @@ kotlin {
 
 dependencies {
     commonMainApi(project(":libraries:model"))
-    commonMainApi("com.benasher44:uuid")
     commonMainApi("io.github.oshai:kotlin-logging")
     commonMainApi("org.jetbrains.kotlinx:kotlinx-serialization-json")
 

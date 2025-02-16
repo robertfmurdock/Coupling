@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
@@ -26,6 +25,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class SdkPlayerTest {
 
@@ -91,7 +91,7 @@ class SdkPlayerTest {
         object {
             val sdk = it.sdk
             val party = it.party
-            val playerId = "${uuid4()}"
+            val playerId = "${Uuid.random()}"
         }
     }) exercise {
         runCatching { sdk.fire(DeletePlayerCommand(party.id, playerId)) }
@@ -311,7 +311,7 @@ class SdkPlayerTest {
                 asyncSetup(object {
                     val party = stubPartyDetails()
                     val player = defaultPlayer.copy(
-                        id = "${uuid4()}",
+                        id = "${Uuid.random()}",
                         name = "Awesome-O",
                         callSignAdjective = "Awesome",
                         callSignNoun = "Sauce",

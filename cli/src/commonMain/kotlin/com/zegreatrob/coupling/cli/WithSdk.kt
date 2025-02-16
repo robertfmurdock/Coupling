@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.cli
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.couplingSdk
@@ -9,6 +8,7 @@ import com.zegreatrob.testmints.action.ActionCannon
 import io.ktor.client.plugins.HttpRequestRetry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.uuid.Uuid
 
 fun withSdk(
     scope: CoroutineScope,
@@ -49,7 +49,7 @@ private fun actionCannon(
                 exponentialDelay()
             }
         },
-        pipe = LoggingActionPipe(uuid4()),
+        pipe = LoggingActionPipe(Uuid.random()),
     )
     return sdk
 }

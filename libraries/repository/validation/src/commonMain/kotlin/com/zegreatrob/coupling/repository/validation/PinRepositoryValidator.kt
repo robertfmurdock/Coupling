@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.validation
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
@@ -12,6 +11,7 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.hours
+import kotlin.uuid.Uuid
 
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, PartyContext<R>> {
 
@@ -67,7 +67,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
         partyId.with(pins).forEach {
             repository.save(it)
         }
-        repository.deletePin(partyId, pins[1].id!!)
+        repository.deletePin(partyId, pins[1].id)
     } verifyWithWait {
         repository.getPins(partyId).map { it.data.pin }
             .assertContains(pins[0])
@@ -82,7 +82,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
         }.bind(),
     ) {
     } exercise {
-        repository.deletePin(partyId, "${uuid4()}")
+        repository.deletePin(partyId, "${Uuid.random()}")
     } verify { result ->
         result.assertIsEqualTo(false)
     }

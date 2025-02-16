@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.client.components.pairassignments.pairAssignmentsClassName
 import com.zegreatrob.coupling.client.components.pairassignments.prepareToSpinButtonClassName
@@ -23,9 +22,10 @@ import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import popper.core.Placement
 import web.cssom.ClassName
+import kotlin.uuid.Uuid
 
 private val demoParty = PartyDetails(
-    id = PartyId("${uuid4()}"),
+    id = PartyId("${Uuid.random()}"),
     name = "The Simpsons",
     imageURL = svgPath("parties/simpsons"),
 )

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
@@ -44,6 +43,7 @@ import kotlinx.datetime.toInstant
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class SpinTest {
 
@@ -51,7 +51,7 @@ class SpinTest {
     fun willTakeThePlayersGivenAndUseThoseForPairing() = asyncSetup.with({ context ->
         object : SdkContext by context {
             val party = PartyDetails(
-                id = PartyId(uuid4().toString()),
+                id = PartyId(Uuid.random().toString()),
                 pairingRule = PairingRule.LongestTime,
                 name = "commonTest",
             )
@@ -82,13 +82,13 @@ class SpinTest {
     fun givenThePartyRuleIsPreferDifferentBadgeThenPairsWillComply() = asyncSetup.with({
         object : SdkContext by it {
             val party = PartyDetails(
-                id = PartyId(uuid4().toString()),
+                id = PartyId(Uuid.random().toString()),
                 pairingRule = PairingRule.PreferDifferentBadge,
             )
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${uuid4()}"),
+                    id = PairAssignmentDocumentId("${Uuid.random()}"),
                     date = dateTime(2014, 1, 10),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(),
@@ -97,7 +97,7 @@ class SpinTest {
                     null,
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${uuid4()}"),
+                    id = PairAssignmentDocumentId("${Uuid.random()}"),
                     date = dateTime(2014, 1, 9),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[3]).withPins(),
@@ -131,12 +131,12 @@ class SpinTest {
     @Test
     fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
         val sdk = setupScope.async { sdk() }
-        val party = PartyDetails(id = PartyId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
+        val party = PartyDetails(id = PartyId(Uuid.random().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"),
-                date = dateTime(2014, 2, 10),
+                id = PairAssignmentDocumentId("${Uuid.random()}"),
+                date = dateTime(2013, 2, 10),
                 pairs = notEmptyListOf(
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins(),
@@ -144,8 +144,8 @@ class SpinTest {
                 null,
             ),
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"),
-                date = dateTime(2014, 2, 9),
+                id = PairAssignmentDocumentId("${Uuid.random()}"),
+                date = dateTime(2013, 2, 9),
                 pairs = notEmptyListOf(
                     pairOf(players[0], players[2]).withPins(),
                     pairOf(players[1], players[3]).withPins(),
@@ -186,7 +186,7 @@ class SpinTest {
         fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.fire(SpinCommand(party.id, players.map { it.id }, listOf(pin.id!!)))
+            sdk.fire(SpinCommand(party.id, players.map { it.id }, listOf(pin.id)))
         } verifyAnd { result ->
             result.assertIsEqualTo(SpinCommand.Result.Success)
             queryCurrentPairs(party.id, sdk)
@@ -216,10 +216,10 @@ class SpinTest {
     }
 
     private fun fourPlayersTwoDefaultTwoAlternate() = notEmptyListOf(
-        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Default.value, name = "One"),
-        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Default.value, name = "Two"),
-        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Three"),
-        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Four"),
+        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Default.value, name = "One"),
+        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Default.value, name = "Two"),
+        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Alternate.value, name = "Three"),
+        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Alternate.value, name = "Four"),
     )
 
     companion object {

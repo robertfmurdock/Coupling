@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.slack
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.party.fire
@@ -30,6 +29,7 @@ import react.router.dom.Link
 import react.router.dom.LinkProps
 import react.useMemo
 import react.useState
+import kotlin.uuid.Uuid
 
 external interface SlackConnectPageContentProps : Props {
     var parties: List<PartyDetails>
@@ -40,7 +40,7 @@ external interface SlackConnectPageContentProps : Props {
 
 @ReactFunc
 val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
-    val partySelectId = useMemo { "${uuid4()}" }
+    val partySelectId = useMemo { "${Uuid.random()}" }
 
     var command by useState {
         SaveSlackIntegrationCommand(

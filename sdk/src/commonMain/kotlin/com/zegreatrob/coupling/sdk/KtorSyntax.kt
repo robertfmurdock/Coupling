@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.Uuid
-import com.benasher44.uuid.uuid4
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
@@ -10,6 +8,7 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders.UserAgent
 import io.ktor.serialization.kotlinx.json.json
+import kotlin.uuid.Uuid
 
 fun defaultClient(hostUrl: String, traceId: Uuid? = null) = HttpClient {
     install(ContentNegotiation) {
@@ -21,7 +20,7 @@ fun defaultClient(hostUrl: String, traceId: Uuid? = null) = HttpClient {
     expectSuccess = false
     defaultRequest {
         header(UserAgent, "CouplingSdk")
-        header("X-Request-ID", traceId ?: uuid4())
+        header("X-Request-ID", traceId ?: Uuid.random())
         url(hostUrl)
     }
 }

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server
 
-import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
@@ -16,6 +15,7 @@ import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.Clock
+import kotlin.uuid.Uuid
 
 interface RepositoryCatalog {
     val partyRepository: PartyRepository

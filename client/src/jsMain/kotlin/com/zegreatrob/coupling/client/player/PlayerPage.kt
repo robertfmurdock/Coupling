@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.client.components.player.PlayerConfig
 import com.zegreatrob.coupling.client.components.player.create
@@ -14,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import kotlin.uuid.Uuid
 
 val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
     val playerId = props.playerId
@@ -48,7 +48,7 @@ private fun List<Player>.defaultWithCallSign() = object : FindCallSignAction.Dis
     .let(::defaultWith)
 
 private fun defaultWith(callSign: CallSign) = defaultPlayer.copy(
-    id = "${uuid4()}",
+    id = "${Uuid.random()}",
     callSignAdjective = callSign.adjective,
     callSignNoun = callSign.noun,
 )

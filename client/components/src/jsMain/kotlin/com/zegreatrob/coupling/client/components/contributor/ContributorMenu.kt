@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.contributor
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
@@ -20,6 +19,7 @@ import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.hr
 import react.router.useNavigate
 import web.html.HTMLButtonElement
+import kotlin.uuid.Uuid
 
 external interface ContributorMenuProps : Props {
     var contributor: Player
@@ -36,7 +36,7 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
     val navigate = useNavigate()
 
     val createPlayer = dispatchFunc {
-        fire(SavePlayerCommand(partyId, contributor.copy(id = "${uuid4()}")))
+        fire(SavePlayerCommand(partyId, contributor.copy(id = "${Uuid.random()}")))
     }
     val addEmailToExistingPlayer = { player: Player ->
         fun(_: MouseEvent<HTMLButtonElement, *>) {

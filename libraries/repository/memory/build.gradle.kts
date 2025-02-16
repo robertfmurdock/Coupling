@@ -22,7 +22,6 @@ dependencies {
     commonMainImplementation(project(":libraries:model"))
     commonMainImplementation(project(":libraries:repository:core"))
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    commonMainImplementation("com.benasher44:uuid")
 
     commonTestImplementation(project(":libraries:test-logging"))
     commonTestImplementation(project(":libraries:repository:validation"))

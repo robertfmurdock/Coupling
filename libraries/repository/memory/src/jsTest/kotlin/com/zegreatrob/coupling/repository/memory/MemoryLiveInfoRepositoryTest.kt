@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.validation.LiveInfoRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
@@ -8,6 +7,7 @@ import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlin.uuid.Uuid
 
 @Suppress("unused")
 class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoRepository> {
@@ -17,7 +17,7 @@ class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoR
             SharedContextData(
                 MemoryLiveInfoRepository(),
                 MagicClock(),
-                UserDetails("${uuid4()}", "${uuid4()}@mail.com", emptySet(), null),
+                UserDetails("${Uuid.random()}", "${Uuid.random()}@mail.com", emptySet(), null),
             )
         })
 }

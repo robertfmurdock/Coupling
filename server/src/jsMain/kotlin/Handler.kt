@@ -1,6 +1,5 @@
 @file:Suppress("HttpUrlsUsage")
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
 import com.zegreatrob.coupling.json.toJsonString
@@ -40,6 +39,7 @@ import kotlinx.coroutines.promise
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
+import kotlin.uuid.Uuid
 
 private val app by lazy {
     buildApp()
@@ -193,7 +193,7 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     UserDetails("websocket", "websocket", emptySet(), null),
     this,
-    uuid4(),
+    Uuid.random(),
 )
 
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) = socketDispatcher.perform(BroadcastAction(first, second))

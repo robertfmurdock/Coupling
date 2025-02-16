@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.external.express
 
-import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.server.CommandDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlin.js.Json
+import kotlin.uuid.Uuid
 
 external interface Request {
     val auth: Json?

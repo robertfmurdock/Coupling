@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.repository.validation
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     where R : PlayerRepository, R : PlayerListGetByEmail {
@@ -14,7 +14,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     @Test
     fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val email = "test-${uuid4()}@zegreatrob.com"
+            val email = "test-${Uuid.random()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
             val redHerring = stubPlayer().copy(email = "something else")
             val updatedPlayer = player.copy(name = "Besto")
@@ -33,7 +33,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val email = "test-${uuid4()}@zegreatrob.com"
+            val email = "test-${Uuid.random()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
             val updatedPlayer = player.copy(name = "Besto", email = "something else ")
         }.bind(),
@@ -48,7 +48,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val email = "test-${uuid4()}@zegreatrob.com"
+            val email = "test-${Uuid.random()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
         }.bind(),
     ) exercise {

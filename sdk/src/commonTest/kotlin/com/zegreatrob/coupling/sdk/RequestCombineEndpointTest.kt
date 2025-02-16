@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.pin.SavePinCommand
@@ -17,6 +16,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class RequestCombineEndpointTest {
     @Test
@@ -24,16 +24,16 @@ class RequestCombineEndpointTest {
         val sdk = sdk()
         object {
             val sdk = sdk
-            val party = PartyDetails(id = PartyId("et-${uuid4()}"))
+            val party = PartyDetails(id = PartyId("et-${Uuid.random()}"))
             val playersToSave = listOf(
                 defaultPlayer.copy(
-                    id = "${uuid4()}",
+                    id = "${Uuid.random()}",
                     name = "Awesome-O",
                     callSignAdjective = "Awesome",
                     callSignNoun = "Sauce",
                 ),
             )
-            val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
+            val pinsToSave = listOf(Pin(Uuid.random().toString(), "1"))
         }
     }) {
         sdk.fire(SavePartyCommand(party))

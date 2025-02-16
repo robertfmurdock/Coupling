@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
@@ -24,6 +23,7 @@ import react.create
 import react.router.RouterProvider
 import react.router.createMemoryRouter
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class CurrentPairAssignmentsPanelTest {
 
@@ -31,7 +31,7 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
         val party = stubPartyDetails()
         val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"),
+            id = PairAssignmentDocumentId("${Uuid.random()}"),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.action
 
-import com.benasher44.uuid.Uuid
 import com.zegreatrob.testmints.action.ActionPipe
 import com.zegreatrob.testmints.action.async.SuspendAction
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlin.uuid.Uuid
 
 private val theLogger by lazy { KotlinLogging.logger("ActionLogger") }
 

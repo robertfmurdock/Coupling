@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
@@ -35,6 +34,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 @Suppress("unused")
 class PairAssignmentsPageE2ETest {
@@ -169,7 +169,7 @@ class PairAssignmentsPageE2ETest {
             }
             private val pairAssignmentDocument by lazy {
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${uuid4()}"),
+                    id = PairAssignmentDocumentId("${Uuid.random()}"),
                     date = LocalDateTime(2015, 5, 30, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(emptySet()),

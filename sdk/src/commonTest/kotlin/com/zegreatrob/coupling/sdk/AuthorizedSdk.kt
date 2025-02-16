@@ -2,7 +2,6 @@
 
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.fire
@@ -27,6 +26,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlin.uuid.Uuid
 
 const val PRIMARY_AUTHORIZED_USER_NAME = "couplingtestuser@gmail.com"
 val primaryTestPassword = getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
@@ -56,7 +56,7 @@ private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedPartie
     ?.forEach { fire(DeletePartyCommand(it)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> couplingSdk({ token }, buildClient(), LoggingActionPipe(uuid4())) }
+    .let { token -> couplingSdk({ token }, buildClient(), LoggingActionPipe(Uuid.random())) }
 
 suspend fun sdk(): ActionCannon<CouplingSdkDispatcher> = primaryAuthorizedSdkDeferred.await()
 
@@ -73,7 +73,7 @@ val generalPurposeClient = HttpClient {
         }
         level = LogLevel.ALL
     }
-    defaultRequest { header("X-Request-Id", "${uuid4()}") }
+    defaultRequest { header("X-Request-Id", "${Uuid.random()}") }
 }
 
 expect fun setupPlatformSpecificKtorSettings()
@@ -85,7 +85,7 @@ private val ktorLogger = KotlinLogging.logger("ktor")
 fun buildClient(): HttpClient {
     setupPlatformSpecificKtorSettings()
 
-    val client = defaultClient("$baseUrl", uuid4()).config {
+    val client = defaultClient("$baseUrl", Uuid.random()).config {
         followRedirects = false
         expectSuccess = false
         install(Logging) {

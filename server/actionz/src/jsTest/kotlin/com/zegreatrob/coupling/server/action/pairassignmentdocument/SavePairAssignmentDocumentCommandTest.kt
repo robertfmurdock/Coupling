@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.CouplingConnection
@@ -31,6 +30,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class SavePairAssignmentDocumentCommandTest {
     interface SavePairAssignmentDocumentCommandTestDispatcher :
@@ -48,7 +48,7 @@ class SavePairAssignmentDocumentCommandTest {
 
         val pairAssignmentDocument = party.id.with(
             PairAssignmentDocument(
-                PairAssignmentDocumentId("${uuid4()}"),
+                PairAssignmentDocumentId("${Uuid.random()}"),
                 date = Clock.System.now(),
                 pairs = notEmptyListOf(stubPinnedCouplingPair()),
             ),

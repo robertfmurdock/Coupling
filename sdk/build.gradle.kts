@@ -36,7 +36,6 @@ dependencies {
     "commonTestImplementation"(project(":libraries:repository:validation"))
     "commonTestImplementation"(project(":libraries:stub-model"))
     "commonTestImplementation"(project(":libraries:test-logging"))
-    "commonTestImplementation"("com.benasher44:uuid")
     "commonTestImplementation"("com.zegreatrob.testmints:async")
     "commonTestImplementation"("com.zegreatrob.testmints:minassert")
     "commonTestImplementation"("com.zegreatrob.testmints:standard")
