@@ -72,7 +72,7 @@ object GqlReference {
         callSignAdjective = "",
         callSignNoun = "",
         imageURL = "",
-        avatarType = GqlAvatarType.BoringBeam,
+        avatarType = GqlAvatarType.Retro,
         pins = listOf(pinData),
         unvalidatedEmails = listOf(""),
     )
@@ -164,7 +164,7 @@ object GqlReference {
         callSignAdjective = "",
         callSignNoun = "",
         imageURL = "",
-        avatarType = GqlAvatarType.BoringBeam,
+        avatarType = GqlAvatarType.Retro,
         partyId = "",
         modifyingUserEmail = "",
         isDeleted = false,

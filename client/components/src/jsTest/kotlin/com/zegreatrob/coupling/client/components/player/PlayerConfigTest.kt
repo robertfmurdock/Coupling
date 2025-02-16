@@ -80,7 +80,7 @@ class PlayerConfigTest {
     @Test
     fun deselectingAvatarTypeWillRemoveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.BoringBeam)
+        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.Retro)
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -166,7 +166,7 @@ class PlayerConfigTest {
     @Test
     fun canAddAdditionalEmailFieldAndSaveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = "blarg", email = "blarg@heh.io", avatarType = AvatarType.BoringBeam)
+        val player = defaultPlayer.copy(id = "blarg", email = "blarg@heh.io", avatarType = AvatarType.Multiavatar)
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
         val secondEmail = uuidString()
@@ -200,7 +200,7 @@ class PlayerConfigTest {
     @Test
     fun canAddAdditionalEmailFieldAndSavingItBlankDoesNotSaveBlank() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = "blarg", email = "blarg@heh.io", avatarType = AvatarType.BoringBeam)
+        val player = defaultPlayer.copy(id = "blarg", email = "blarg@heh.io", avatarType = AvatarType.Multiavatar)
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -228,7 +228,7 @@ class PlayerConfigTest {
     @Test
     fun noAdditionalEmailFieldsAreShownByDefault() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.BoringBeam)
+        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.Retro)
         val stubDispatcher = StubDispatcher()
     }) exercise {
         render(

@@ -7,8 +7,6 @@ enum class AvatarType(val attribution: String?) {
     RobohashSet3(attribution = "https://robohash.org/"),
     RobohashSet4(attribution = "https://robohash.org/"),
     RobohashSet5(attribution = "https://robohash.org/"),
-    BoringBeam(attribution = "https://boringavatars.com/"),
-    BoringBauhaus(attribution = "https://boringavatars.com/"),
     Multiavatar(attribution = "https://multiavatar.com/"),
     DicebearPixelArt(attribution = "https://www.dicebear.com/styles/pixel-art"),
     DicebearAdventurer(attribution = "https://www.dicebear.com/styles/adventurer"),

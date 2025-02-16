@@ -61,7 +61,7 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
     val onClickFunc: (MouseEvent<*, *>) -> Unit = useCallback(onClick) { onClick?.invoke() }
     val size = props.size ?: 100
     val tilt = props.tilt ?: 0.deg
-    val deselected = props.deselected ?: false
+    val deselected = props.deselected == true
     div {
         css(className) {
             playerCardStyles(tilt, deselected)
@@ -187,8 +187,6 @@ private fun Player.getDirectAvatarImageUrl(size: Int, avatarType: AvatarType) = 
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
     AvatarType.RobohashSet4 -> getRobohashImageUrl("set4")
     AvatarType.RobohashSet5 -> getRobohashImageUrl("set5")
-    AvatarType.BoringBeam -> boringUrl(size, "beam")
-    AvatarType.BoringBauhaus -> boringUrl(size, "bauhaus")
     AvatarType.Multiavatar -> multiavatarUrl("svg")
     AvatarType.DicebearPixelArt -> dicebearUrl("pixel-art", size, "svg")
     AvatarType.DicebearAdventurer -> dicebearUrl("adventurer", size, "svg")
@@ -203,8 +201,6 @@ private fun Player.gravatarDicebearUrl(set: String, size: Int) = dicebearUrl(set
 private fun Player.dicebearUrl(set: String, size: Int, type: String) = "https://api.dicebear.com/6.x/$set/$type/seed=${emailWithFallback()}&size=$size"
 
 private fun Player.multiavatarUrl(type: String) = "https://api.multiavatar.com/${emailWithFallback()}.$type"
-
-private fun Player.boringUrl(size: Int, boringSet: String) = "https://source.boringavatars.com/$boringSet/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
 
 private fun Player.getRobohashImageUrl(setName: String, additionalArgs: String = "") = "https://robohash.org/${emailWithFallback()}?set=$setName$additionalArgs"
 
