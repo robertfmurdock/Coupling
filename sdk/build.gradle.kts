@@ -56,6 +56,7 @@ tasks {
     }
 
     val importCert by registering(com.zegreatrob.tools.certifier.InstallCertificate::class) {
+        dependsOn(":caddyComposeUp")
         jdkSelector = "20"
         certificatePath = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
     }
