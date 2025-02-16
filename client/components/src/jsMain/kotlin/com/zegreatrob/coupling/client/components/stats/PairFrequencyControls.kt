@@ -35,9 +35,9 @@ external interface PairFrequencyControlsProps : Props {
 
 enum class Visualization {
     LineOverTime,
-//    Heatmap,
-//    MedianCycleTimeBarChart,
-//    CycleTimeBoxPlot,
+    Heatmap,
+    MedianCycleTimeBarChart,
+    CycleTimeBoxPlot,
 }
 
 enum class FakeDataStyle {
