@@ -62,7 +62,13 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, thirdParty
                 config.couplingRoute("/demo", "Demo", DemoPage),
                 config.couplingRoute("/loading", "Loading Test", LoadingPage),
             ).plus(routes(isSignedIn, config)),
-            opts = jso { basename = config.basename },
+            opts = jso {
+                basename = config.basename
+                future = jso {
+                    this.asDynamic()["v7_startTransition"] = true
+                    v7_relativeSplatPath = true
+                }
+            },
         )
     }
     animationsDisabledContext(animationsDisabled) {
