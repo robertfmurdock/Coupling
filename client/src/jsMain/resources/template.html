@@ -29,9 +29,11 @@
     </script>
     <% } %>
 
-    <% htmlWebpackPlugin.options.cdnContent.forEach( cdnEntry => { %>
-    <script defer="defer" src="<%=cdnEntry%>"></script>
-    <% }) %>
+    <script type="importmap">
+        {
+          "imports": <%= htmlWebpackPlugin.options.cdnFile %>
+        }
+    </script>
 
     <%= htmlWebpackPlugin.tags.headTags %>
 </head>

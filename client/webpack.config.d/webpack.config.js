@@ -14,14 +14,14 @@ if(config.devServer) {
     cdnFile = cdnFile.replaceAll('production', 'development')
 }
 
-const cdnResources = JSON.parse(
-    cdnFile
-        .split(/\r?\n/)
-        .filter((line) => !line.includes("TRACE"))
-        .join("\n")
-)
+const cdnResources = JSON.parse(cdnFile)
 
 const cdnSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/cdn.settings.json')))
+
+const moduleMap = {}
+for(const key in cdnResources) {
+    moduleMap[cdnSettings[key]] = cdnResources[key];
+}
 
 if (config.entry && config.entry.main) {
     config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
@@ -29,6 +29,8 @@ if (config.entry && config.entry.main) {
 
 if (config.output) {
     config.output.publicPath = '/app/build/'
+    config.output.libraryTarget = 'global'
+    config.output.module = true
 }
 if (!config.resolve.modules) {
     config.resolve.modules = []
@@ -119,7 +121,7 @@ config.performance = {
     },
 }
 
-config.externals = {"cheerio": "window", "fs": "empty", ...cdnSettings}
+config.externals = {"cheerio": "window", "fs": "commonjs-module empty", ...cdnSettings}
 
 if (config.devServer) {
     config.devServer.port = 3001
@@ -137,7 +139,9 @@ if (config.devServer) {
 }
 
 config.cache = true
-
+config.experiments = {
+    outputModule: true,
+}
 config.plugins.push(
     new HtmlWebpackPlugin({
         alwaysWriteToDisk: !!config.devServer,
@@ -148,6 +152,8 @@ config.plugins.push(
         appMountClass: 'view-container',
         inject: false,
         cdnContent: Object.values(cdnResources),
+        cdnFile: JSON.stringify(moduleMap),
+        scriptLoading: 'module',
         window: config.devServer ? {
             expressEnv: "dev",
             inMemory: true,

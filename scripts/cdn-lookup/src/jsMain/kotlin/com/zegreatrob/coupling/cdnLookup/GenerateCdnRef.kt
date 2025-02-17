@@ -38,8 +38,14 @@ suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = 
 
 private suspend fun lookupCdnUrl(lib: String): Pair<String, String> {
     val version = getVersionForLibrary(lib)
+    val cdnPath = umdUri(lib, version)
+    return lib to "https://esm.run/$lib@$version"
+}
+
+private suspend fun umdUri(lib: String, version: String): String {
     val filename = lookupCdnFilename(lib, version)
-    return lib to "https://cdn.jsdelivr.net/npm/$lib@$version/$filename"
+    val cdnPath = "https://cdn.jsdelivr.net/npm/$lib@$version/$filename"
+    return cdnPath
 }
 
 private suspend fun lookupCdnFilename(lib: String, version: String): String {

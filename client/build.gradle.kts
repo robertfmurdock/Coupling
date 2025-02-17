@@ -17,6 +17,7 @@ plugins {
 kotlin {
     js {
         useCommonJs()
+
         browser {
             webpackTask {
                 dependsOn("additionalResources")

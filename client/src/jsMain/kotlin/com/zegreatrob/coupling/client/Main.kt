@@ -3,7 +3,9 @@ package com.zegreatrob.coupling.client
 import kotlin.js.Json
 import kotlin.js.json
 
+@JsExport
 fun main() {
+    println("hi mom its me main")
     if (isTestRun()) {
         return
     }
