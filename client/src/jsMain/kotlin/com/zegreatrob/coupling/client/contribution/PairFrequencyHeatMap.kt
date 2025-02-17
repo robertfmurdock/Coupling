@@ -10,8 +10,8 @@ import com.zegreatrob.coupling.client.components.external.nivo.tooltip.BasicTool
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
+import com.zegreatrob.coupling.client.components.graphing.interpolatorAsync
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
-import com.zegreatrob.coupling.client.components.stats.heatmap.interpolatorAsync
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.graphing
 
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
-import com.zegreatrob.coupling.client.components.graphing.external.nivo.RechartsTooltipArgs
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.RechartsTooltipArgs
 import js.lazy.Lazy
 import react.FC
 import react.Props

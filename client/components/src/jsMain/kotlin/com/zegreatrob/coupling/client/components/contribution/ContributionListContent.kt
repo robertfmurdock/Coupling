@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.contribution
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.client.components.external.d3.array.D3Array
+import com.zegreatrob.coupling.client.components.graphing.external.d3.array.D3Array
 import com.zegreatrob.coupling.client.components.stats.ContributionControlPanelFrame
 import com.zegreatrob.coupling.client.components.stats.ContributionLabelFilter
 import com.zegreatrob.coupling.client.components.stats.EnumSelector
@@ -52,7 +52,7 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
     val filteredContributions = selectedLabelFilter?.let { contributions.filter { it.label == selectedLabelFilter } }
         ?: contributions
     val (d3Array, setD3Array) = useState<D3Array?>(null)
-    useEffect { setD3Array(com.zegreatrob.coupling.client.components.external.d3.array.d3Array.await()) }
+    useEffect { setD3Array(com.zegreatrob.coupling.client.components.graphing.external.d3.array.d3Array.await()) }
 
     div {
         div {

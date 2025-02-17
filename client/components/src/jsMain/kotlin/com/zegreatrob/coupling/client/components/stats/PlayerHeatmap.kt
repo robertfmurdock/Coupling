@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.graphing.Heatmap
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc

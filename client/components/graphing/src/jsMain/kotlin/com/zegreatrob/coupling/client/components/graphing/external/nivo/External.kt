@@ -1,9 +1,7 @@
 package com.zegreatrob.coupling.client.components.graphing.external.nivo
 
-import js.array.ReadonlyArray
 import react.ElementType
 import react.Props
-import react.ReactNode
 
 sealed external interface NivoLineData {
     var id: String
@@ -23,12 +21,6 @@ sealed external interface NinoLinePointDecorated {
     var y: Any
     var yFormatted: Any
     var context: Any?
-}
-
-sealed external interface RechartsTooltipArgs {
-    var label: Any?
-    var labelFormatter: (label: Any?) -> ReactNode
-    var payload: ReadonlyArray<RechartsTooltipPayload>?
 }
 
 external interface RechartsTooltipPayload {

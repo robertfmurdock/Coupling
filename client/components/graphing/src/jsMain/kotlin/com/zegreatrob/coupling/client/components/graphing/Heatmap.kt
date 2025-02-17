@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.components.stats.heatmap
+package com.zegreatrob.coupling.client.components.graphing
 
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc

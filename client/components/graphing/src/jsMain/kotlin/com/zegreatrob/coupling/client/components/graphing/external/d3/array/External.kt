@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.components.external.d3.array
+package com.zegreatrob.coupling.client.components.graphing.external.d3.array
 
 import js.import.importAsync
 import js.promise.asDeferred
