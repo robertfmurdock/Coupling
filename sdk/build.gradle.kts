@@ -54,16 +54,14 @@ tasks {
         dependsOn(":composeUp")
         outputs.cacheIf { true }
     }
-
-    val importCert by registering(com.zegreatrob.tools.certifier.InstallCertificate::class) {
+    installCert {
         dependsOn(":caddyComposeUp")
         jdkSelector = "20"
         certificatePath = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
     }
-
     "jvmTest" {
         mustRunAfter(jsNodeTest)
         dependsOn(":composeUp")
-        dependsOn(importCert)
+        dependsOn(installCert)
     }
 }

@@ -16,6 +16,7 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(20)
     js {
         compilerOptions {
             target = "es2015"
