@@ -10,7 +10,7 @@
     "@babel/preset-react": "^7.26.3",
     "@graphql-codegen/cli": "^5.0.5",
     "@graphql-codegen/kotlin": "^3.0.1",
-    "@graphql-tools/schema": "^10.0.18",
+    "@graphql-tools/schema": "^10.0.19",
     "@graphql-tools/stitch": "^9.4.18",
     "@graphql-codegen/java-common": "^3.0.0",
     "@graphql-codegen/plugin-helpers": "^5.1.0",
@@ -93,6 +93,6 @@
     "webpack-cli": "6.0.1",
     "webpack-favicons": "1.5.4",
     "webpack-node-externals": "^3.0.0",
-    "ws": "^8.18.0"
+    "ws": "^8.18.1"
   }
 }
