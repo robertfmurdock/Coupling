@@ -13,12 +13,6 @@ kotlin {
             packageJson {
                 customField("mocha", mapOf("require" to "global-jsdom/register"))
             }
-            compileTaskProvider {
-                compilerOptions {
-                    target = "es5"
-                    freeCompilerArgs.add("-Xir-per-module")
-                }
-            }
         }
     }
 }

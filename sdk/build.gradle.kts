@@ -6,17 +6,6 @@ plugins {
 kotlin {
     js {
         nodejs { testTask { useMocha { timeout = "10s" } } }
-
-        compilations {
-            "test" {
-                compileTaskProvider {
-                    compilerOptions {
-                        target = "es5"
-                        freeCompilerArgs.add("-Xir-per-module")
-                    }
-                }
-            }
-        }
     }
     jvm()
 }
