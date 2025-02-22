@@ -31,15 +31,13 @@ val CouplingQuery by nfc<CouplingQueryProps<Any>> { props ->
     val (query, toNode, commander) = props
 
     val getDataAsync: suspend (DataLoaderTools) -> ReactNode? = useCallback(query, toNode, commander) { tools ->
-        commander.tracingCannon()
-            .fire(query)
-            ?.let { value ->
-                toNode(
-                    tools.reloadData,
-                    DecoratedDispatchFunc({ commander.tracingCannon() }, tools),
-                    value,
-                )
+        commander.tracingCannon().fire(query)?.let { response ->
+            PageFunctionsContext.Provider.create {
+                val dispatchFunc = DecoratedDispatchFunc({ commander.tracingCannon() }, tools)
+                this.value = PageFunctions(tools.reloadData, dispatchFunc)
+                +toNode(tools.reloadData, dispatchFunc, response)
             }
+        }
     }
     DataLoader(getDataAsync, { null }, child = { CouplingQueryLoadState.create { value = it } })
 }
@@ -48,9 +46,6 @@ val CouplingQueryLoadState by nfc<PropsWithValue<DataLoadState<ReactNode?>>> { p
     when (val state = props.value) {
         is EmptyState -> LoadingPage()
         is PendingState -> LoadingPage()
-        is ResolvedState -> when (val result = state.result) {
-            null -> notFoundContent()
-            else -> animationFrame(state) { +result }
-        }
+        is ResolvedState -> state.result?.let { result -> animationFrame(state) { +result } } ?: notFoundContent()
     }
 }
