@@ -51,6 +51,36 @@ class UpdatingPlayerListTest {
     }
 
     @Test
+    fun whenSavePlayerCommandSucceedsWillReplacePlayerInList() = asyncSetup(object {
+        val targetPlayer = stubPlayer()
+        val partyId = stubPartyId()
+        val players = stubPlayers(3)
+        val stubCannon = StubCannon<SavePlayerCommand.Dispatcher>(mutableListOf()).apply {
+            givenAny(SavePlayerCommandWrapper::class, VoidResult.Accepted)
+        }
+        var lastPlayersCallback: List<Player>? = null
+        var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>? = null
+        val updatedPlayer = targetPlayer.copy(name = "Bill")
+    }) {
+        render {
+            UpdatingPlayerList<SavePlayerCommand.Dispatcher>(
+                players + targetPlayer,
+                dispatchFunc = stubDispatchFunc(stubCannon),
+                child = { players, dispatcher ->
+                    lastPlayersCallback = players
+                    dispatchFunc = dispatcher
+                    ReactNode("lol")
+                },
+            )
+        }
+    } exercise {
+        act { dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, updatedPlayer)) }() }
+    } verify { result ->
+        stubCannon.receivedActions.contains(SavePlayerCommand(partyId, updatedPlayer))
+        lastPlayersCallback.assertIsEqualTo(players + updatedPlayer)
+    }
+
+    @Test
     fun whenSavePlayerCommandFailsWillNotAddPlayerToList() = asyncSetup(object {
         val newPlayer = stubPlayer()
         val partyId = stubPartyId()

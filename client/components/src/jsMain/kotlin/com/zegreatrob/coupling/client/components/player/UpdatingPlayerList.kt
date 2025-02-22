@@ -22,14 +22,32 @@ external interface UpdatingPlayerListProps<D> : Props where D : SavePlayerComman
 @ReactFunc
 val UpdatingPlayerList by nfc<UpdatingPlayerListProps<*>> { props ->
     var players by useState<List<Player>>(props.players)
+    val addPlayer = { updated: Player -> players = players.merge(updated) }
 
     @Suppress("UNCHECKED_CAST")
     val dispatchFunc = props.dispatchFunc as DispatchFunc<Nothing>
 
     val newDispatchFunc = DispatchFunc { block ->
-        dispatchFunc { block(SecretCannon(this) { it: Player -> players = players + it }) }
+        dispatchFunc { block(SecretCannon(this, addPlayer)) }
     }
     +props.child(players, newDispatchFunc)
+}
+
+private fun List<Player>.merge(updated: Player): List<Player> {
+    val existingPlayerIndex = indexOfFirst { p -> p.id == updated.id }
+    return if (existingPlayerIndex == -1) {
+        this + updated
+    } else {
+        replaceAtIndex(existingPlayerIndex, updated)
+    }
+}
+
+private fun List<Player>.replaceAtIndex(targetIndex: Int, replacement: Player) = mapIndexed { index, player ->
+    if (index == targetIndex) {
+        replacement
+    } else {
+        player
+    }
 }
 
 private class SecretCannon(
