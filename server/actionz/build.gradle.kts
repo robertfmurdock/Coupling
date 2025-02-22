@@ -3,9 +3,7 @@ plugins {
     id("com.zegreatrob.testmints.action-mint")
 }
 kotlin {
-    js {
-        nodejs()
-    }
+    js { nodejs() }
 }
 dependencies {
     "jsMainApi"(project(":libraries:repository:core"))

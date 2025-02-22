@@ -18,19 +18,8 @@ plugins {
 kotlin {
     jvmToolchain(20)
     js {
-        compilerOptions {
-            target = "es2015"
-        }
+        useCommonJs()
         binaries.executable()
-
-        compilations.named("test") {
-            compileTaskProvider {
-                compilerOptions {
-                    target = "es5"
-                    freeCompilerArgs.add("-Xir-per-module")
-                }
-            }
-        }
     }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {

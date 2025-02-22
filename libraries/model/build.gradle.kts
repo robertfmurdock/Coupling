@@ -5,20 +5,9 @@ kotlin {
     jvm()
     js {
         nodejs()
-        compilerOptions {
-            target = "es2015"
-            freeCompilerArgs.add("-Xir-per-module")
-        }
-        compilations.named("test") {
-            compileTaskProvider {
-                compilerOptions {
-                    target = "es5"
-                }
-            }
-        }
+        useCommonJs()
     }
 }
-
 dependencies {
     commonMainApi(enforcedPlatform(project(":libraries:dependency-bom")))
     commonMainApi("org.jetbrains.kotlinx:kotlinx-datetime")

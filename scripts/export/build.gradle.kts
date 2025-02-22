@@ -7,7 +7,6 @@ plugins {
 kotlin {
     jvm()
     js {
-        compilerOptions { target = "es2015" }
         nodejs {
             binaries.executable()
         }
