@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 object StubCannon {
     operator fun <D : Any> invoke(receivedActions: MutableList<Any?>) = Synchronous<D>(receivedActions)
 
-    class Synchronous<D : Any>(private val receivedActions: MutableList<Any?> = mutableListOf()) : ActionCannon<D> {
+    class Synchronous<D : Any>(val receivedActions: MutableList<Any?> = mutableListOf()) : ActionCannon<D> {
 
         private val immediateReturn = mutableMapOf<Any, Any?>()
         private val anyReturn = mutableListOf<Any?>()
