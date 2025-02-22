@@ -11074,15 +11074,15 @@ jose@^5.0.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.6.3.tgz#415688bc84875461c86dfe271ea6029112a23e27"
   integrity sha512-1Jh//hEEwMhNYPDDLwXHa2ePWgWiFNNUadVmguAAw2IJ6sj9mNxV5tGXJNqlMkJAybF6Lgw1mISDxTePP/187g==
 
-jose@^5.10.0:
-  version "5.10.0"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-5.10.0.tgz#c37346a099d6467c401351a9a0c2161e0f52c4be"
-  integrity sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==
-
 jose@^5.7.0:
   version "5.9.3"
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.3.tgz#6eba1ee3f70b42891f0e1883fe0084a46dbbe02c"
   integrity sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==
+
+jose@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.3.tgz#f4578e38f7d2d8e553469c86d9748aeb3564af90"
+  integrity sha512-7bOLhKorsp4NWBGpNJZPHy3CqN0JG5XKMKPtMN02EPMg3rcgbCEkJ27GCWHUOb3jHRqo1oJxfdMdAeQYX4cqSQ==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
@@ -13980,10 +13980,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.6.3:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.6.3.tgz#8396edc8e202597b4dbe82ca822b529011f3522d"
-  integrity sha512-aFSVOTc5+3f4eWMZm5nV99Ob8xn5SAw6aq0CX2UjV2LZ16z7xYpSNx/X3HqkjMq4GIHJHRgIDR0KGSQQgP59aA==
+serverless@^4.6.4:
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.6.4.tgz#daaf022e08f91f45f7670563b3796290d5b20aa1"
+  integrity sha512-wsrQ8A8qOfkk8gA01Lg4VUKwuFVFhGrJ8MTSfL/iBjaiTE+P8Txnr04z58k2wKdrjgzfPCQopONAi6HS9iUSKw==
   dependencies:
     axios "^1.7.4"
     axios-proxy-builder "^0.1.2"
