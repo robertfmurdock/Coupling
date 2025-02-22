@@ -19,11 +19,14 @@ external interface UpdatingPlayerListProps<D> : Props where D : SavePlayerComman
 }
 
 @ReactFunc
-val UpdatingPlayerList by nfc<UpdatingPlayerListProps<Nothing>> { props ->
+val UpdatingPlayerList by nfc<UpdatingPlayerListProps<*>> { props ->
     var players by useState<List<Player>>(props.players)
     val childFunc = props.child
 
-    val newDispatchFunc = SecretDispatchFunc(props.dispatchFunc) { players = players + it }
+    @Suppress("UNCHECKED_CAST")
+    val newDispatchFunc = SecretDispatchFunc(props.dispatchFunc as DispatchFunc<Nothing>) {
+        players = players + it
+    }
     +childFunc(players, newDispatchFunc)
 }
 
