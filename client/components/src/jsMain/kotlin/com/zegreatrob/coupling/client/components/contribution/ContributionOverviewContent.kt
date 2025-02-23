@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -23,7 +24,7 @@ import web.html.HTMLElement
 external interface ContributionOverviewContentProps : Props {
     var party: PartyDetails
     var contributions: List<Contribution>
-    var contributors: List<Player>
+    var contributors: List<Contributor>
     var players: List<Player>
     var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>
 }
@@ -47,8 +48,9 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { props
                     contributions.forEach { contribution ->
                         ContributionCard(
                             key = contribution.id,
+                            partyId = party.id,
                             contribution = contribution,
-                            contributors = contributors,
+                            players = players,
                             onPlayerClick = onPlayerClick,
                         )
                     }

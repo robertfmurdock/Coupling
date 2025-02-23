@@ -39,5 +39,4 @@ data class ContributionReport(
 data class Contributor(
     val email: String? = null,
     val playerId: String? = null,
-    val details: PartyRecord<Player>? = null,
 )

@@ -49,7 +49,7 @@ class PairQueryBuilder :
 }
 
 class ContributorQueryBuilder : QueryBuilder<GqlContributor> {
-    override var output: GqlContributor = GqlContributor(details = null, email = null)
+    override var output: GqlContributor = GqlContributor(playerId = null, email = null)
     fun email() = also { output = output.copy(email = "") }
-    fun details() = also { output = output.copy(details = GqlReference.playerRecord) }
+    fun playerId() = also { output = output.copy(playerId = "") }
 }

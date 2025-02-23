@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.format
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -30,14 +31,16 @@ import web.cssom.rgb
 import web.html.HTMLElement
 
 external interface ContributionCardProps : Props {
+    @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
+    var partyId: PartyId
     var contribution: Contribution
-    var contributors: List<Player>
+    var players: List<Player>
     var onPlayerClick: ((Player, HTMLElement) -> Unit)?
 }
 
 @ReactFunc
 val ContributionCard by nfc<ContributionCardProps> { props ->
-    val (contribution, contributors) = props
+    val contribution = props.contribution
     val shortId = contribution.id.asShortId()
 
     div {
@@ -60,7 +63,7 @@ val ContributionCard by nfc<ContributionCardProps> { props ->
                 borderRadius = 1.em
                 padding = 1.em
             }
-            ContributionCardHeader(contribution, contributors, props.onPlayerClick)
+            ContributionCardHeader(props.partyId, contribution, props.players, props.onPlayerClick)
             div {
                 css {
                     display = Display.grid

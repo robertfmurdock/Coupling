@@ -24,7 +24,6 @@ class PartyContributorQueryTest {
                 Contributor(
                     email = email,
                     playerId = null,
-                    details = null,
                 ),
             ),
         )

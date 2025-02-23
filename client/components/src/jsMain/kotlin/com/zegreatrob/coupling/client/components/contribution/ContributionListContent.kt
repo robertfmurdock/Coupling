@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.stats.ContributionLabelFilter
 import com.zegreatrob.coupling.client.components.stats.EnumSelector
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -37,7 +38,7 @@ import kotlin.time.DurationUnit
 external interface ContributionListContentProps : Props {
     var party: PartyDetails
     var contributions: List<Contribution>
-    var contributors: List<Player>
+    var contributors: List<Contributor>
     var window: GqlContributionWindow
     var setWindow: (GqlContributionWindow) -> Unit
     var players: List<Player>
@@ -127,8 +128,9 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
                         filteredContributions.forEach { contribution ->
                             ContributionCard(
                                 key = contribution.id,
+                                partyId = party.id,
                                 contribution = contribution,
-                                contributors = contributors,
+                                players = props.players,
                                 onPlayerClick = onPlayerClick,
                             )
                         }

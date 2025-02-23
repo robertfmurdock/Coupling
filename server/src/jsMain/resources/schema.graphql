@@ -177,7 +177,7 @@ type Party {
 
 type Contributor {
     email: String
-    details: PlayerDetails
+    playerId: ID
 }
 
 input PairInput {

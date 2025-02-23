@@ -5,7 +5,9 @@ import com.zegreatrob.coupling.client.components.format
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.emails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -39,14 +41,16 @@ import web.cssom.url
 import web.html.HTMLElement
 
 external interface ContributionCardHeaderProps : Props {
+    @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
+    var partyId: PartyId
     var contribution: Contribution
-    var contributors: List<Player>
+    var players: List<Player>
     var onPlayerClick: ((Player, HTMLElement) -> Unit)?
 }
 
 @ReactFunc
 val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
-    val (contribution, contributors) = props
+    val (partyId, contribution, players) = props
     val shortId = contribution.id.asShortId()
     div {
         css {
@@ -108,8 +112,13 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
                 top = (-0.5).em
             }
             TiltedPlayerList(
-                playerList = contribution.participantEmails.mapNotNull { email ->
-                    contributors.find { it.emails.contains(email) }
+                playerList = contribution.participantEmails.map { email ->
+                    props.players.find { it.emails.contains(email) }
+                        ?: defaultPlayer.copy(
+                            id = partyId.value + email,
+                            name = email.substringBefore("@"),
+                            email = email,
+                        )
                 }.toSet(),
                 element = { tilt, player ->
                     span.create {

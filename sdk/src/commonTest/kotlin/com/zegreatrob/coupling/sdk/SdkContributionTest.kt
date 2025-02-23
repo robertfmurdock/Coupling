@@ -335,7 +335,7 @@ class SdkContributionTest {
                     contributionReport {
                         contributors {
                             email()
-                            details()
+                            playerId()
                         }
                     }
                 }
@@ -347,7 +347,7 @@ class SdkContributionTest {
                 contributionInputs.asSequence().flatMap { it.participantEmails }
                     .toSet()
                     .sorted()
-                    .map { Contributor(email = it, details = null) }.toList(),
+                    .map { Contributor(email = it, playerId = null) }.toList(),
             )
     }
 
@@ -370,16 +370,16 @@ class SdkContributionTest {
                     contributionReport {
                         contributors {
                             email()
-                            details()
+                            playerId()
                         }
                     }
                 }
             },
         )
     } verify { result ->
-        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributionReport?.contributors?.map { it.playerId }
             .assertIsEqualTo(
-                players.sortedBy { it.email },
+                players.sortedBy { it.email }.map { it.id },
             )
     }
 
@@ -398,11 +398,11 @@ class SdkContributionTest {
         savePartyState(party, listOf(player), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionReport { contributors { details() } } } })
+        sdk().fire(graphQuery { party(party.id) { contributionReport { contributors { playerId() } } } })
     } verify { result ->
-        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributionReport?.contributors?.map { it.playerId }
             .assertIsEqualTo(
-                listOf(player),
+                listOf(player.id),
             )
     }
 
@@ -424,15 +424,15 @@ class SdkContributionTest {
                     contributionReport {
                         contributors {
                             email()
-                            details()
+                            playerId()
                         }
                     }
                 }
             },
         )
     } verify { result ->
-        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
-            .assertIsEqualTo(listOf(player))
+        result?.party?.contributionReport?.contributors?.map { it.playerId }
+            .assertIsEqualTo(listOf(player.id))
     }
 
     @Test
@@ -453,15 +453,15 @@ class SdkContributionTest {
                     contributionReport {
                         contributors {
                             email()
-                            details()
+                            playerId()
                         }
                     }
                 }
             },
         )
     } verify { result ->
-        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
-            .assertIsEqualTo(listOf(player))
+        result?.party?.contributionReport?.contributors?.map { it.playerId }
+            .assertIsEqualTo(listOf(player.id))
     }
 }
 

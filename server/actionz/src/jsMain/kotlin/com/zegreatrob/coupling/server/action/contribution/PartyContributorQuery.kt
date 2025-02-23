@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.matches
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
@@ -24,9 +25,9 @@ data class PartyContributorQuery(val partyId: PartyId, val contributions: List<C
             contributorEmails: List<String>,
             players: List<PartyRecord<Player>>,
         ): List<Contributor> = contributorEmails.map { email -> contributor(partyId, email, players) }
-            .groupBy(Contributor::details)
+            .groupBy(Contributor::playerId)
             .flatMap {
-                it.key?.let { details -> listOf(Contributor(email = details.element.email, details = details)) }
+                it.key?.let { playerId -> listOf(Contributor(email = it.value.first().email, playerId = playerId)) }
                     ?: it.value
             }
 
@@ -36,7 +37,7 @@ data class PartyContributorQuery(val partyId: PartyId, val contributions: List<C
             players: List<PartyRecord<Player>>,
         ): Contributor = Contributor(
             email = email,
-            details = playerForEmail(email, players = players, partyId = partyId),
+            playerId = playerForEmail(email, players = players, partyId = partyId)?.data?.player?.id,
         )
 
         private fun List<Contribution>.contributorEmails() = flatMap { it.participantEmails }.toSet().sorted()
