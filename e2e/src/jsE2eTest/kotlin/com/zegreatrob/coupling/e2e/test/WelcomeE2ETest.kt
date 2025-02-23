@@ -11,7 +11,7 @@ class WelcomeE2ETest {
     } exercise {
         getLoginButton().click()
     } verifyAnd {
-        waitToArriveAtUrl("https://zegreatrob.us.auth0.com")
+        waitToArriveAtUrl("https://zegreatrob.us.auth0.com", timeout = 10000)
     } teardown {
         purgeBrowserLogsBecauseGoogleIsCreatingWarning()
     }
