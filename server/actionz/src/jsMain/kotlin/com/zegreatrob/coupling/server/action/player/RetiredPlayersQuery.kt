@@ -1,12 +1,31 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.player.PartyRetiredPlayerRecordsSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class RetiredPlayersQuery(val partyId: PartyId) {
     interface Dispatcher : PartyRetiredPlayerRecordsSyntax {
-        suspend fun perform(query: RetiredPlayersQuery) = query.partyId.loadRetiredPlayerRecords()
+        suspend fun perform(query: RetiredPlayersQuery): List<PartyRecord<Player>> = query.partyId.loadRetiredPlayerRecords()
+            .groupBy { it.data.element.email }
+            .mapNotNull {
+                it.value.fold<PartyRecord<Player>, PartyRecord<Player>?>(null) { current, entry ->
+                    current?.mergeFrom(entry) ?: entry
+                }
+            }
+            .toList()
+
+        private fun PartyRecord<Player>.mergeFrom(entry: PartyRecord<Player>): Record<PartyElement<Player>> = copy(
+            data = data.copy(
+                element = data.element.copy(
+                    additionalEmails = data.element.additionalEmails + entry.data.element.additionalEmails,
+                ),
+            ),
+        )
     }
 }

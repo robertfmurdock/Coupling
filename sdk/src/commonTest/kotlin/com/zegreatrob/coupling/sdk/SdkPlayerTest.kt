@@ -123,6 +123,37 @@ class SdkPlayerTest {
     }
 
     @Test
+    fun multipleDeletedPlayersWithSameEmailWillCollapseIntoOne() = sdkSetup.with(
+        {
+            object {
+                val sdk = it.sdk
+                val party = it.party
+                val player = stubPlayer()
+                val similarPlayer = stubPlayer()
+                    .copy(
+                        email = player.email,
+                        additionalEmails = setOf(Uuid.random().toString()),
+                    )
+            }
+        },
+    ) {
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(DeletePlayerCommand(party.id, player.id))
+        sdk.fire(SavePlayerCommand(party.id, similarPlayer))
+        sdk.fire(DeletePlayerCommand(party.id, similarPlayer.id))
+    } exercise {
+        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
+            ?.party
+            ?.retiredPlayers
+            .let { it ?: emptyList() }
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(
+                listOf(player.copy(additionalEmails = player.additionalEmails + similarPlayer.additionalEmails)),
+            )
+    }
+
+    @Test
     fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = sdkSetup.with({
         object {
             val sdk = it.sdk
