@@ -154,6 +154,32 @@ class SdkPlayerTest {
     }
 
     @Test
+    fun multipleDeletedPlayersWithBlankEmailWillNotCollapseIntoOne() = sdkSetup.with(
+        {
+            object {
+                val sdk = it.sdk
+                val party = it.party
+                val player = stubPlayer().copy(email = "")
+                val player2 = stubPlayer()
+                    .copy(email = " ")
+            }
+        },
+    ) {
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(DeletePlayerCommand(party.id, player.id))
+        sdk.fire(SavePlayerCommand(party.id, player2))
+        sdk.fire(DeletePlayerCommand(party.id, player2.id))
+    } exercise {
+        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
+            ?.party
+            ?.retiredPlayers
+            .let { it ?: emptyList() }
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(listOf(player, player2))
+    }
+
+    @Test
     fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = sdkSetup.with({
         object {
             val sdk = it.sdk

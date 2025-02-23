@@ -13,12 +13,19 @@ data class RetiredPlayersQuery(val partyId: PartyId) {
     interface Dispatcher : PartyRetiredPlayerRecordsSyntax {
         suspend fun perform(query: RetiredPlayersQuery): List<PartyRecord<Player>> = query.partyId.loadRetiredPlayerRecords()
             .groupBy { it.data.element.email }
-            .mapNotNull {
-                it.value.fold<PartyRecord<Player>, PartyRecord<Player>?>(null) { current, entry ->
-                    current?.mergeFrom(entry) ?: entry
+            .flatMap {
+                if (it.key.isBlank()) {
+                    it.value
+                } else {
+                    it.value.mergeAllRecordsInGroup()
                 }
             }
-            .toList()
+
+        private fun List<PartyRecord<Player>>.mergeAllRecordsInGroup(): List<PartyRecord<Player>> = listOfNotNull(
+            fold<PartyRecord<Player>, PartyRecord<Player>?>(null) { current, entry ->
+                current?.mergeFrom(entry) ?: entry
+            },
+        )
 
         private fun PartyRecord<Player>.mergeFrom(entry: PartyRecord<Player>): Record<PartyElement<Player>> = copy(
             data = data.copy(
