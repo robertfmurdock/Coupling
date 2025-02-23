@@ -54,13 +54,14 @@ external interface PlayerConfigContentProps : Props {
     var players: List<Player>
     var onChange: (ChangeEvent<*>) -> Unit
     var onSubmit: () -> Unit
-    var onRemove: () -> Unit
+    var onRemove: (() -> Unit)?
     var onPlayerChange: (Player) -> Unit
 }
 
 @ReactFunc
 val PlayerConfigContent by nfc<PlayerConfigContentProps> { props ->
     val (party, boost, player, players, onChange, onSubmit, onRemove, onPlayerChange) = props
+
     ConfigFrame {
         css(playerConfigContentClassName) {
             "input[type=text]" {

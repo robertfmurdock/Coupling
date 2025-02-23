@@ -4,8 +4,10 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.client.components.dispatchFunc
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -281,7 +283,7 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = asyncSetup(object {
+    fun clickingDeleteAndConfirmingWillRemoveAndRerouteToCurrentPairAssignments() = asyncSetup(object {
         val windowFuncs = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         }
@@ -305,7 +307,7 @@ class PlayerConfigTest {
                                 PlayerConfig(
                                     party = party,
                                     player = player,
-                                    players = emptyList(),
+                                    players = listOf(player),
                                     reload = { },
                                     dispatchFunc = altStubDispatcher.func(),
                                     windowFuncs = windowFuncs,
@@ -327,6 +329,49 @@ class PlayerConfigTest {
     }
 
     @Test
+    fun whenPlayerIsNotInPlayerListRetireButtonIsDisabled() = asyncSetup(object {
+        val party = PartyDetails(PartyId("party"))
+        val player = defaultPlayer.copy("blarg", badge = Badge.Alternate.value)
+    }) exercise {
+        render(
+            TestRouter.create {
+                PlayerConfig(
+                    party = party,
+                    player = player,
+                    players = emptyList(),
+                    reload = { },
+                    dispatchFunc = StubDispatcher().func(),
+                )
+            },
+        )
+    } verify { action ->
+        screen.queryByText("Retire").assertIsEqualTo(null)
+    }
+
+    @Test
+    fun whenPlayerIsEditedRetireButtonRemainsEnabled() = asyncSetup(object {
+        val party = PartyDetails(PartyId("party"))
+        val player = defaultPlayer.copy("blarg", badge = Badge.Alternate.value)
+        val actor = UserEvent.setup()
+    }) {
+        render(
+            TestRouter.create {
+                PlayerConfig(
+                    party = party,
+                    player = player,
+                    players = listOf(player),
+                    reload = { },
+                    dispatchFunc = StubDispatcher().func(),
+                )
+            },
+        )
+    } exercise {
+        actor.type(screen.getByLabelText("Name"), "differentName")
+    } verify { action ->
+        screen.getByText("Retire").assertNotNull()
+    }
+
+    @Test
     fun clickingDeleteWhenNotConfirmedWillDoNothing() = asyncSetup(object {
         val windowFunctions = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
@@ -342,7 +387,7 @@ class PlayerConfigTest {
                     PlayerConfig(
                         party = party,
                         player = player,
-                        players = emptyList(),
+                        players = listOf(player),
                         reload = { },
                         dispatchFunc = stubDispatcher.func(),
                         windowFuncs = windowFunctions,

@@ -60,10 +60,14 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
         )
         reload()
     }
-    val onRemove = dispatchFunc {
-        fire(DeletePlayerCommand(party.id, player.id))
-        setRedirectUrl(party.id.currentPairsPage())
-    }.requireConfirmation("Are you sure you want to delete this player?", windowFuncs ?: WindowFunctions)
+    val onRemove = if (!players.contains(player)) {
+        null
+    } else {
+        dispatchFunc {
+            fire(DeletePlayerCommand(party.id, player.id))
+            setRedirectUrl(party.id.currentPairsPage())
+        }.requireConfirmation("Are you sure you want to delete this player?", windowFuncs ?: WindowFunctions)
+    }
     val onPlayerChange = { changedPlayer: Player ->
         setValues {
             changedPlayer
