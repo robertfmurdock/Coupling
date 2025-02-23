@@ -2,9 +2,10 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.retireButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
@@ -16,6 +17,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
@@ -170,7 +172,7 @@ class PlayerConfigPageE2ETest {
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            deleteButton().click()
+            retireButton().click()
             WebdriverBrowser.acceptAlert()
         } verify {
             page.waitToArriveAt(("/${party.id.value}/pairAssignments/current/"))
@@ -327,6 +329,23 @@ class PlayerConfigPageE2ETest {
                 .assertIsEqualTo("Superior")
             PlayerConfigPage.nounTextInput().attribute("value")
                 .assertIsEqualTo("Spider-Man")
+        }
+    }
+
+    class WhenPlayerIsDeleted {
+        @Test
+        fun playerAttributesCanBeSeen() = e2eSetup(object {
+            val party = stubPartyDetails()
+            val player = stubPlayer()
+        }) {
+            sdk().fire(SavePartyCommand(party))
+            sdk().fire(SavePlayerCommand(party.id, player))
+            sdk().fire(DeletePlayerCommand(party.id, player.id))
+        } exercise {
+            PlayerConfigPage.goTo(party.id, player.id)
+        } verify { result ->
+            PlayerConfigPage.playerNameTextField().attribute("value")
+                .assertIsEqualTo(player.name)
         }
     }
 

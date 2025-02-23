@@ -23,12 +23,14 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
             party(partyId) {
                 details()
                 playerList()
+                retiredPlayers()
             }
         },
         toNode = { reload, commandFunc, data ->
             val partyDetails = data.party?.details?.data ?: return@CouplingQuery null
             val playerList = data.party?.playerList?.elements ?: return@CouplingQuery null
-            val player = playerList.find { it.id == playerId }
+            val retiredPlayers = data.party?.retiredPlayers?.elements ?: return@CouplingQuery null
+            val player = (playerList + retiredPlayers).find { it.id == playerId }
                 ?: playerList.defaultWithCallSign()
             PlayerConfig.create(
                 party = partyDetails,

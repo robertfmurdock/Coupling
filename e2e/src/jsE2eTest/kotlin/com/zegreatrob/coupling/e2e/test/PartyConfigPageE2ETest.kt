@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.retireButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -81,7 +81,7 @@ class PartyConfigPageE2ETest {
             sdk.fire(SavePartyCommand(party))
             PartyConfigPage.goTo(party.id)
         } exercise {
-            deleteButton().click()
+            retireButton().click()
             PartyListPage.waitForPage()
         } verify {
             PartyListPage.partyCardElements
