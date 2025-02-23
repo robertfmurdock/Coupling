@@ -11079,10 +11079,10 @@ jose@^5.7.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.3.tgz#6eba1ee3f70b42891f0e1883fe0084a46dbbe02c"
   integrity sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==
 
-jose@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.3.tgz#f4578e38f7d2d8e553469c86d9748aeb3564af90"
-  integrity sha512-7bOLhKorsp4NWBGpNJZPHy3CqN0JG5XKMKPtMN02EPMg3rcgbCEkJ27GCWHUOb3jHRqo1oJxfdMdAeQYX4cqSQ==
+jose@^6.0.4:
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.4.tgz#c90287da6b28b3a77a9404b589968b567bc2f1de"
+  integrity sha512-GTWKmlIq0xs50pnwa7q+8eG0ZLR1DVcHxa75s2VArJcriBd+YEC18uK/kbTObF3gMXgqBeZXAoZA9eMLhPjSpQ==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
