@@ -39,6 +39,7 @@ import web.cssom.scale
 import web.cssom.translate
 import web.cssom.url
 import web.html.HTMLElement
+import kotlin.uuid.Uuid
 
 external interface ContributionCardHeaderProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
@@ -52,6 +53,15 @@ external interface ContributionCardHeaderProps : Props {
 val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
     val (partyId, contribution, players) = props
     val shortId = contribution.id.asShortId()
+    val contributionPlayerList = contribution.participantEmails.map { email ->
+        props.players.find { it.emails.contains(email) }
+            ?: defaultPlayer.copy(
+                id = "${Uuid.random()}",
+                name = email.substringBefore("@"),
+                email = email,
+            )
+    }.toSet()
+
     div {
         css {
             margin = Margin(0.2.em, 0.px)
@@ -112,14 +122,7 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
                 top = (-0.5).em
             }
             TiltedPlayerList(
-                playerList = contribution.participantEmails.map { email ->
-                    props.players.find { it.emails.contains(email) }
-                        ?: defaultPlayer.copy(
-                            id = partyId.value + email,
-                            name = email.substringBefore("@"),
-                            email = email,
-                        )
-                }.toSet(),
+                playerList = contributionPlayerList,
                 element = { tilt, player ->
                     span.create {
                         onClick = { props.onPlayerClick?.invoke(player, it.currentTarget) }

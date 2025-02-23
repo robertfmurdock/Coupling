@@ -19,6 +19,7 @@ import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.popper.UsePopperOptions
 import react.popper.usePopper
+import react.useEffect
 import react.useRef
 import react.useState
 import web.cssom.Position
@@ -40,6 +41,8 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
     val popperRef = useRef<HTMLElement>()
     val arrowRef = useRef<HTMLElement>()
     val popperInstance = usePopper(menuTarget?.first, popperRef.current, popperOptions(arrowRef))
+
+    useEffect(players) { setMenuTarget(null) }
 
     CouplingPopUp(
         hide = menuTarget == null,

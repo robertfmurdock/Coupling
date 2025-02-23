@@ -19,7 +19,6 @@ import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.hr
 import react.router.useNavigate
 import web.html.HTMLButtonElement
-import kotlin.uuid.Uuid
 
 external interface ContributorMenuProps : Props {
     var contributor: Player
@@ -36,7 +35,7 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
     val navigate = useNavigate()
 
     val createPlayer = dispatchFunc {
-        fire(SavePlayerCommand(partyId, contributor.copy(id = "${Uuid.random()}")))
+        fire(SavePlayerCommand(partyId, contributor))
     }
     val addEmailToExistingPlayer = { player: Player ->
         fun(_: MouseEvent<HTMLButtonElement, *>) {

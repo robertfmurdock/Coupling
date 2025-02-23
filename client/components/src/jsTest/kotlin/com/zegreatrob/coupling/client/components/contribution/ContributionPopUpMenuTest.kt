@@ -15,6 +15,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import popper.core.ReferenceElement
+import react.ReactNode
 import react.create
 import react.dom.html.ReactHTML.button
 import kotlin.test.Test
@@ -46,6 +47,41 @@ class ContributionPopUpMenuTest {
     } verify {
         screen.findByText("Create Player")
             .assertNotNull()
+    }
+
+    @Test
+    fun changingPlayersListWillClosePopup() = asyncSetup(object {
+        val partyId = stubPartyId()
+        val targetPlayer = stubPlayer()
+        val actor = UserEvent.setup()
+    }) {
+    } exercise {
+        val result = render(
+            ContributionPopUpMenu.create(
+                partyId = partyId,
+                players = listOf(targetPlayer),
+                dispatchFunc = StubDispatcher().func(),
+                child = { setSelectedPlayer ->
+                    button.create {
+                        onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
+                        +"Press me"
+                    }
+                },
+            ),
+            RenderOptions(wrapper = TestRouter),
+        )
+        actor.click(screen.findByRole("button", RoleOptions(name = "Press me")))
+        result.rerender(
+            ContributionPopUpMenu.create(
+                partyId = partyId,
+                players = emptyList(),
+                dispatchFunc = StubDispatcher().func(),
+                child = { setSelectedPlayer -> ReactNode("lol") },
+            ),
+        )
+    } verify {
+        screen.queryByText("Create Player")
+            .assertIsEqualTo(null, "Pop up should have closed.")
     }
 
     @Test
