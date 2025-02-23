@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.client.components.stats.ContributionLabelFilter
 import com.zegreatrob.coupling.client.components.stats.EnumSelector
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
-import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -38,7 +37,6 @@ import kotlin.time.DurationUnit
 external interface ContributionListContentProps : Props {
     var party: PartyDetails
     var contributions: List<Contribution>
-    var contributors: List<Contributor>
     var window: GqlContributionWindow
     var setWindow: (GqlContributionWindow) -> Unit
     var players: List<Player>
@@ -47,7 +45,7 @@ external interface ContributionListContentProps : Props {
 
 @ReactFunc
 val ContributionListContent by nfc<ContributionListContentProps> { props ->
-    val (party, contributions, contributors, window, setWindow, players, dispatchFunc) = props
+    val (party, contributions, window, setWindow, players, dispatchFunc) = props
     val allLabels = contributions.mapNotNull(Contribution::label).toSet()
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
     val filteredContributions = selectedLabelFilter?.let { contributions.filter { it.label == selectedLabelFilter } }

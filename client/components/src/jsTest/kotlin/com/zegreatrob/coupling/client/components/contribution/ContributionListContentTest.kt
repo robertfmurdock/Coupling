@@ -28,7 +28,6 @@ class ContributionListContentTest {
             ContributionListContent.create(
                 stubPartyDetails(),
                 contributions,
-                emptyList(),
                 GqlContributionWindow.All,
                 {},
                 emptyList(),
@@ -60,7 +59,6 @@ class ContributionListContentTest {
             ContributionListContent.create(
                 stubPartyDetails(),
                 contributions,
-                emptyList(),
                 GqlContributionWindow.All,
                 {},
                 emptyList(),

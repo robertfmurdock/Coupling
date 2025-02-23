@@ -18,6 +18,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
             party(partyId) {
                 details()
                 playerList()
+                retiredPlayers()
                 contributionReport(limit = 5) { contributions() }
             }
         },
@@ -25,8 +26,10 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
             val contributions =
                 queryResult.party?.contributionReport?.contributions?.elements ?: return@CouplingQuery null
+            val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
+            val retiredPlayers = queryResult.party?.retiredPlayers?.elements ?: return@CouplingQuery null
             UpdatingPlayerList.create(
-                players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null,
+                players = players + retiredPlayers,
                 dispatchFunc = dispatchFunc,
                 child = { playerList, dispatchFunc ->
                     ContributionContentFrame.create(party = party) {

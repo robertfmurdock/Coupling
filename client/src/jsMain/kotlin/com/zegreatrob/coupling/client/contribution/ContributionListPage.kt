@@ -19,20 +19,13 @@ val ContributionListPage = partyPageFunction { props, partyId ->
             party(partyId) {
                 details()
                 playerList()
-                contributionReport(window = window) {
-                    contributions()
-                    contributors { playerId() }
-                }
+                contributionReport(window = window) { contributions() }
             }
         },
         toNode = { reload, dispatchFunc, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
             val contributions =
                 queryResult.party?.contributionReport?.contributions?.elements ?: return@CouplingQuery null
-            val contributors = queryResult.party
-                ?.contributionReport
-                ?.contributors
-                ?: return@CouplingQuery null
 
             UpdatingPlayerList.create(
                 players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null,
@@ -42,7 +35,6 @@ val ContributionListPage = partyPageFunction { props, partyId ->
                         ContributionListContent(
                             party,
                             contributions,
-                            contributors,
                             window,
                             setWindow,
                             playerList,
