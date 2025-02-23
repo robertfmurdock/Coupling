@@ -24,7 +24,6 @@ import com.zegreatrob.coupling.client.party.PartySecretsPage
 import com.zegreatrob.coupling.client.pin.PinListPage
 import com.zegreatrob.coupling.client.pin.PinPage
 import com.zegreatrob.coupling.client.player.PlayerPage
-import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
 import com.zegreatrob.coupling.client.slack.SlackCallbackPage
 import com.zegreatrob.coupling.client.slack.SlackConnectPage
@@ -123,7 +122,6 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/:partyId/pairAssignments/new", "New Pairs", NewPairAssignmentsPage),
     couplingRoute("/:partyId/player/new", "New Player", PlayerPage),
     couplingRoute("/:partyId/player/:playerId/", "Player Config", PlayerPage),
-    couplingRoute("/:partyId/retired-player/:playerId/", "Retired Player Config", RetiredPlayerPage),
     couplingRoute("/:partyId/players/retired", "Retired Player List", RetiredPlayersPage),
     couplingRoute("/:partyId/statistics", "Statistics", StatisticsPage),
     couplingRoute("/:partyId/contributions", "Contributions", ContributionOverviewPage),

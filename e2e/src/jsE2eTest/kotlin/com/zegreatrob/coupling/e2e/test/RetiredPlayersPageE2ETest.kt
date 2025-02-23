@@ -17,7 +17,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
 
-class RetiredPlayerPageE2ETest {
+class RetiredPlayersPageE2ETest {
 
     companion object {
         private suspend fun delete(
