@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
-import com.zegreatrob.coupling.client.components.basicPlayerCardRenderer
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.AxisTickProps
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
+import com.zegreatrob.coupling.model.player.Player
 import emotion.react.css
 import react.FC
 import react.dom.html.ReactHTML.div
@@ -15,6 +16,7 @@ import react.useContext
 import react.useLayoutEffect
 import react.useRef
 import react.useState
+import web.cssom.Angle
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.px
@@ -84,7 +86,9 @@ val PairTickMark = FC<AxisTickProps> { props ->
                                 paddingTop = 1.px
                                 paddingBottom = 4.px
                             }
-                            TiltedPlayerList(playerList = pair, element = basicPlayerCardRenderer(25))
+                            TiltedPlayerList(playerList = pair) { tilt: Angle, player: Player ->
+                                PlayerCard(player, tilt = tilt, size = 25, key = player.id)
+                            }
                         }
                     }
                 }

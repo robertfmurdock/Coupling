@@ -12,7 +12,7 @@ import web.cssom.deg
 
 external interface TiltedPlayerListProps : Props {
     var playerList: Iterable<Player>
-    var element: (Angle, Player) -> ReactNode
+    var children: (Angle, Player) -> ReactNode
 }
 
 private const val MAX_TILT_ANGLE = 8
@@ -22,7 +22,7 @@ val TiltedPlayerList = FC<TiltedPlayerListProps> { props ->
     val incrementSize = (MAX_TILT_ANGLE * 2.0) / (props.playerList.count() - 1)
     props.playerList.forEachIndexed { index, player ->
         val tilt = incrementSize * index - MAX_TILT_ANGLE
-        +props.element(tilt.deg, player)
+        +props.children(tilt.deg, player)
     }
 }
 

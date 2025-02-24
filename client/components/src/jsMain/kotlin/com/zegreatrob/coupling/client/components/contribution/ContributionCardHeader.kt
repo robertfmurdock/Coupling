@@ -13,7 +13,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
-import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import web.cssom.AlignItems
@@ -121,15 +120,12 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
                 right = if (contribution.link != null) 2.5.em else 5.px
                 top = (-0.5).em
             }
-            TiltedPlayerList(
-                playerList = contributionPlayerList,
-                element = { tilt, player ->
-                    span.create {
-                        onClick = { props.onPlayerClick?.invoke(player, it.currentTarget) }
-                        PlayerCard(player = player, tilt = tilt, size = 30, key = player.id)
-                    }
-                },
-            )
+            TiltedPlayerList(playerList = contributionPlayerList) { tilt, player ->
+                span {
+                    onClick = { props.onPlayerClick?.invoke(player, it.currentTarget) }
+                    PlayerCard(player = player, tilt = tilt, size = 30, key = player.id)
+                }
+            }
         }
         contribution.link?.let { link ->
             div {

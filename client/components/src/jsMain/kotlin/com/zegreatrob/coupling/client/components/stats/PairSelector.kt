@@ -2,11 +2,12 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
-import com.zegreatrob.coupling.client.components.basicPlayerCardRenderer
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -14,6 +15,7 @@ import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
+import web.cssom.Angle
 import web.cssom.px
 import web.html.InputType
 
@@ -56,7 +58,9 @@ val PairSelector by nfc<PairSelectorProps> { props ->
             PairPanel {
                 label {
                     ariaLabel = pair.pairName
-                    TiltedPlayerList(playerList = pair, element = basicPlayerCardRenderer(25))
+                    TiltedPlayerList(playerList = pair) { tilt: Angle, player: Player ->
+                        PlayerCard(player, tilt = tilt, size = 25, key = player.id)
+                    }
                     input {
                         type = InputType.checkbox
                         checked = props.selectedPairs.contains(pair)
