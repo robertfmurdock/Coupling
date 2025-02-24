@@ -5513,10 +5513,10 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-5.6.0.tgz#cbb5b5f6110f870ca7de7e8ea3d189e9525a1019"
-  integrity sha512-w8CEY73X/7tw2KKlL3iOk679V9bWseE4GzNz3zlaYxcTjmcmWOathRb0emgo/QQ3eoNzmq68+2Y2gxluAv3xGw==
+"@stripe/stripe-js@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-5.7.0.tgz#ab4ce04a033e8a5bf9cddb9958aa2f85a3c8d22a"
+  integrity sha512-9pCOK3AH75hDKPRyJm9PO5TA3aHZ/PVlIBOZwpi6mABxwr6mMIBjqgZEUThIE5zFEkOmaKXwxBgTsVKC29x+mQ==
 
 "@szmarczak/http-timer@^5.0.1":
   version "5.0.1"
@@ -13980,10 +13980,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.6.4:
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.6.4.tgz#daaf022e08f91f45f7670563b3796290d5b20aa1"
-  integrity sha512-wsrQ8A8qOfkk8gA01Lg4VUKwuFVFhGrJ8MTSfL/iBjaiTE+P8Txnr04z58k2wKdrjgzfPCQopONAi6HS9iUSKw==
+serverless@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.7.0.tgz#b5404cd9e7ad8e7781781124410e4c5c953b6085"
+  integrity sha512-hH8C+SEnCA+6uukiN6hywxxy7GdIEBaCBlxISjqNVDaGx/Ra6dRwbh4Kd9bGVa7irQbqM8x11yVg1mrSaYaeDg==
   dependencies:
     axios "^1.7.4"
     axios-proxy-builder "^0.1.2"
