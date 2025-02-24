@@ -3194,10 +3194,10 @@
     parse-filepath "^1.0.2"
     tslib "~2.6.0"
 
-"@graphql-codegen/visitor-plugin-common@5.7.0":
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-5.7.0.tgz#eb9c4eb8c012c3d011d89d11a119097b6f65f02a"
-  integrity sha512-fvtKYpnDFk5R+SM6emgWtViw70Sc4sMggGTUGIrfLSu91TQqTII5FLFz89qjQEEffwSsJCSq4glW/dN7gAuieA==
+"@graphql-codegen/visitor-plugin-common@5.7.1":
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-5.7.1.tgz#45852ff994d6fba9aa24c84bea199663b159e8a9"
+  integrity sha512-jnBjDN7IghoPy1TLqIE1E4O0XcoRc7dJOHENkHvzGhu0SnvPL6ZgJxkQiADI4Vg2hj/4UiTGqo8q/GRoZz22lQ==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^5.1.0"
     "@graphql-tools/optimize" "^2.0.0"
@@ -11079,10 +11079,10 @@ jose@^5.7.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.3.tgz#6eba1ee3f70b42891f0e1883fe0084a46dbbe02c"
   integrity sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==
 
-jose@^6.0.4:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.4.tgz#c90287da6b28b3a77a9404b589968b567bc2f1de"
-  integrity sha512-GTWKmlIq0xs50pnwa7q+8eG0ZLR1DVcHxa75s2VArJcriBd+YEC18uK/kbTObF3gMXgqBeZXAoZA9eMLhPjSpQ==
+jose@^6.0.6:
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.6.tgz#7c50b9ca02e6a78146c5c0820273398715cb24f2"
+  integrity sha512-FFF9x3KcdRJgQo74X8e6I4D1h3Wtd27fEo0suijveKFc+HFz6M5gonqxFPnDos9ulJFRqMNqWI6NexiHQPSnfQ==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
