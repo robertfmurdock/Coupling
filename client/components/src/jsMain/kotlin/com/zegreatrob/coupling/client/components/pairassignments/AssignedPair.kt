@@ -21,7 +21,6 @@ import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
 import react.ReactNode
-import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useRef
@@ -78,8 +77,8 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
 
     val playerCard = playerCardComponent(canDrag, swapCallback)
 
-    DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { }, handler = {
-        span.create {
+    DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { }) {
+        span {
             asDynamic()["data-assigned-pair"] = pair.toPair().pairId
             css {
                 padding = 5.px
@@ -125,7 +124,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
 
             PinSection(pinList = pair.pins.toList(), endCallback = onPinDropEnd)
         }
-    })
+    }
 }
 
 private fun ChildrenBuilder.callSign(callSign: CallSign) {

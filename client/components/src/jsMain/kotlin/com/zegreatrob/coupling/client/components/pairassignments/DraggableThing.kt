@@ -22,7 +22,7 @@ external interface DraggableThingProps : Props {
     var dropCallback: (String) -> Unit
     var endCallback: (itemId: String, dropResult: Json?) -> Unit
     var css: (PropertiesBuilder) -> Unit
-    var handler: (isOver: Boolean) -> ReactNode
+    var children: (isOver: Boolean) -> ReactNode
 }
 
 @ReactFunc
@@ -51,7 +51,7 @@ val DraggableThing by nfc<DraggableThingProps> { props ->
 external interface DroppableThingProps : Props {
     var itemType: String
     var dropCallback: (String) -> Unit
-    var handler: (isOver: Boolean) -> ReactNode
+    var children: (isOver: Boolean) -> ReactNode
 }
 
 @ReactFunc

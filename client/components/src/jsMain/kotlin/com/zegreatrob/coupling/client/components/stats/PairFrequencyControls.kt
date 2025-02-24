@@ -28,7 +28,7 @@ import web.html.InputType
 
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, ContributionReport>>
-    var view: (VisualizationContext) -> ReactNode
+    var children: (VisualizationContext) -> ReactNode
     var window: GqlContributionWindow
     var setWindow: (GqlContributionWindow) -> Unit
 }

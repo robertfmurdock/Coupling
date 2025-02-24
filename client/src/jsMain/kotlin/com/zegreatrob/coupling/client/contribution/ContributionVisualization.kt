@@ -46,20 +46,19 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
         toNode = { reload, _, queryResult ->
             PairFrequencyControls.create(
                 pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery null,
-                view = { (visualization, data) ->
-                    when (visualization) {
-                        Visualization.LineOverTime -> PairFrequencyLineGraph.create(data, window)
-                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data, window, spinsUntilFullRotation)
-                        Visualization.MedianCycleTimeBarChart -> PairCycleTimeBarChart.create(data, window)
-                        Visualization.CycleTimeBoxPlot -> PairCycleTimeBoxPlot.create(data, window)
-                    }
-                },
                 window = window,
                 setWindow = {
                     setWindow(it)
                     reload()
                 },
-            )
+            ) { (visualization, data) ->
+                when (visualization) {
+                    Visualization.LineOverTime -> PairFrequencyLineGraph(data, window)
+                    Visualization.Heatmap -> PairFrequencyHeatMap(data, window, spinsUntilFullRotation)
+                    Visualization.MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
+                    Visualization.CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
+                }
+            }
         },
     )
 }

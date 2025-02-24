@@ -30,7 +30,7 @@ class PairFrequencyControlsTest {
         val viewSpy = SpyData<VisualizationContext, ReactNode>()
             .apply { spyWillReturn(ReactNode("Mission Complete")) }
     }) exercise {
-        render(PairFrequencyControls.create(pairs, viewSpy::spyFunction, GqlContributionWindow.All, {}))
+        render(PairFrequencyControls.create(pairs, GqlContributionWindow.All, {}) { +viewSpy.spyFunction(it) })
     } verify {
         viewSpy.spyReceivedValues.last()
             .assertIsEqualTo(VisualizationContext(Visualization.LineOverTime, emptyList()))
@@ -51,7 +51,7 @@ class PairFrequencyControlsTest {
             .apply { spyWillReturn(listOf("Pending", "Mission Complete").map(::ReactNode)) }
         val actor = UserEvent.setup()
     }) {
-        render(PairFrequencyControls.create(pairs, viewSpy::spyFunction, GqlContributionWindow.All, {}))
+        render(PairFrequencyControls.create(pairs, GqlContributionWindow.All, {}) { +viewSpy.spyFunction(it) })
     } exercise {
         actor.click(screen.findByRole("checkbox", RoleOptions(expectedPair.pairName)))
     } verify {

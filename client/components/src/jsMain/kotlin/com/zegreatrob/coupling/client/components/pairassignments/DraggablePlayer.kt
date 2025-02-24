@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -34,33 +33,32 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, t
         dropCallback = {},
         endCallback = { _, data -> onPlayerDrop(data?.get("dropTargetId")?.toString() ?: "") },
         css = {},
-        handler = { isOver: Boolean ->
-            PlayerCard.create(
-                player = pinnedPlayer.player,
-                tilt = tilt,
-                className = ClassName {
-                    if (zoomOnHover) {
-                        hover {
-                            transitionProperty = TransitionProperty.all
-                            transitionTimingFunction = TransitionTimingFunction.easeIn
-                            transitionDuration = 0.2.s
-                            transform = rotate(0.deg)
-                            animationDuration = 0.5.s
-                            animationName = ident("twitch")
-                            animationDelay = 0.2.s
-                            animationIterationCount = AnimationIterationCount.infinite
-                        }
-                    }
-
-                    if (isOver) {
-                        backgroundColor = NamedColor.orange
-                        animationDuration = 0.25.s
-                        animationName = ident("wiggle")
+    ) { isOver: Boolean ->
+        PlayerCard(
+            player = pinnedPlayer.player,
+            tilt = tilt,
+            className = ClassName {
+                if (zoomOnHover) {
+                    hover {
+                        transitionProperty = TransitionProperty.all
+                        transitionTimingFunction = TransitionTimingFunction.easeIn
+                        transitionDuration = 0.2.s
+                        transform = rotate(0.deg)
+                        animationDuration = 0.5.s
+                        animationName = ident("twitch")
+                        animationDelay = 0.2.s
                         animationIterationCount = AnimationIterationCount.infinite
                     }
-                },
-                key = pinnedPlayer.player.id,
-            )
-        },
-    )
+                }
+
+                if (isOver) {
+                    backgroundColor = NamedColor.orange
+                    animationDuration = 0.25.s
+                    animationName = ident("wiggle")
+                    animationIterationCount = AnimationIterationCount.infinite
+                }
+            },
+            key = pinnedPlayer.player.id,
+        )
+    }
 }
