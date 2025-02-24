@@ -31,7 +31,7 @@ external interface ContributionPopUpMenuProps : Props {
     var partyId: PartyId
     var players: List<Player>
     var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>
-    var child: ((ReferenceElement, Player) -> Unit) -> ReactNode
+    var children: ((ReferenceElement, Player) -> Unit) -> ReactNode
 }
 
 @ReactFunc

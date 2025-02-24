@@ -15,8 +15,6 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import popper.core.ReferenceElement
-import react.ReactNode
-import react.create
 import react.dom.html.ReactHTML.button
 import kotlin.test.Test
 
@@ -33,13 +31,12 @@ class ContributionPopUpMenuTest {
                 partyId = partyId,
                 players = emptyList(),
                 dispatchFunc = StubDispatcher().func(),
-                child = { setSelectedPlayer ->
-                    button.create {
-                        onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                        +"Press me"
-                    }
-                },
-            ),
+            ) { setSelectedPlayer ->
+                button {
+                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
+                    +"Press me"
+                }
+            },
             RenderOptions(wrapper = TestRouter),
         )
     } exercise {
@@ -61,13 +58,12 @@ class ContributionPopUpMenuTest {
                 partyId = partyId,
                 players = listOf(targetPlayer),
                 dispatchFunc = StubDispatcher().func(),
-                child = { setSelectedPlayer ->
-                    button.create {
-                        onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                        +"Press me"
-                    }
-                },
-            ),
+            ) { setSelectedPlayer ->
+                button {
+                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
+                    +"Press me"
+                }
+            },
             RenderOptions(wrapper = TestRouter),
         )
         actor.click(screen.findByRole("button", RoleOptions(name = "Press me")))
@@ -76,8 +72,7 @@ class ContributionPopUpMenuTest {
                 partyId = partyId,
                 players = emptyList(),
                 dispatchFunc = StubDispatcher().func(),
-                child = { setSelectedPlayer -> ReactNode("lol") },
-            ),
+            ) { setSelectedPlayer -> +"lol" },
         )
     } verify {
         screen.queryByText("Create Player")
@@ -95,13 +90,12 @@ class ContributionPopUpMenuTest {
                 partyId = partyId,
                 players = emptyList(),
                 dispatchFunc = StubDispatcher().func(),
-                child = { setSelectedPlayer ->
-                    button.create {
-                        onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                        +"Press me"
-                    }
-                },
-            ),
+            ) { setSelectedPlayer ->
+                button {
+                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
+                    +"Press me"
+                }
+            },
             RenderOptions(wrapper = TestRouter),
         )
         actor.click(screen.findByRole("button", RoleOptions(name = "Press me")))

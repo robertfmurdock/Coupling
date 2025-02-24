@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.components.CouplingWebsocket
 import com.zegreatrob.coupling.client.components.disconnectedMessage
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
-import com.zegreatrob.coupling.client.components.pairassignments.create
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
@@ -57,20 +56,19 @@ val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, bo
         CouplingWebsocket(
             partyId = party.id,
             onMessage = onMessageFunc,
-            buildChild = {
-                PairAssignments.create(
-                    party = party,
-                    boost = boost,
-                    players = players,
-                    pairs = pairAssignments,
-                    setPairs = updatePairAssignments,
-                    controls = controls,
-                    message = message,
-                    allowSave = allowSave,
-                )
-            },
             token = token,
-        )
+        ) {
+            PairAssignments(
+                party = party,
+                boost = boost,
+                players = players,
+                pairs = pairAssignments,
+                setPairs = updatePairAssignments,
+                controls = controls,
+                message = message,
+                allowSave = allowSave,
+            )
+        }
     } else {
         div()
     }

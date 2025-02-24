@@ -30,7 +30,7 @@ external interface CouplingWebsocketProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var partyId: PartyId
     var onMessage: (Message) -> Unit
-    var buildChild: (value: ((Message) -> Unit)?) -> ReactNode
+    var children: (value: ((Message) -> Unit)?) -> ReactNode
     var token: String
     var useSsl: Boolean?
 }

@@ -15,10 +15,8 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import popper.core.ReferenceElement
-import react.Fragment
 import react.Props
 import react.ReactNode
-import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.h3
@@ -118,22 +116,20 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
             }
             div {
                 css { fontSize = 0.75.em }
-                ContributionPopUpMenu(party.id, players, props.dispatchFunc, child = { setSelectedPlayerCard ->
+                ContributionPopUpMenu(party.id, players, props.dispatchFunc) { setSelectedPlayerCard ->
                     val onPlayerClick = { player: Player, element: HTMLElement ->
                         setSelectedPlayerCard(ReferenceElement(element)!!, player)
                     }
-                    Fragment.create {
-                        filteredContributions.forEach { contribution ->
-                            ContributionCard(
-                                key = contribution.id,
-                                partyId = party.id,
-                                contribution = contribution,
-                                players = props.players,
-                                onPlayerClick = onPlayerClick,
-                            )
-                        }
+                    filteredContributions.forEach { contribution ->
+                        ContributionCard(
+                            key = contribution.id,
+                            partyId = party.id,
+                            contribution = contribution,
+                            players = props.players,
+                            onPlayerClick = onPlayerClick,
+                        )
                     }
-                })
+                }
             }
         }
     }

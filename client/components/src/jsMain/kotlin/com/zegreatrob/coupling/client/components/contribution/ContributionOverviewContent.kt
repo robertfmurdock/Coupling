@@ -10,9 +10,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import popper.core.ReferenceElement
-import react.Fragment
 import react.Props
-import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import web.cssom.AlignItems
@@ -38,22 +36,20 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { props
                 alignItems = AlignItems.center
             }
             h2 { +"Most Recent ${contributions.size} Contributions:" }
-            ContributionPopUpMenu(party.id, players, props.dispatchFunc, child = { setSelectedPlayerCard ->
+            ContributionPopUpMenu(party.id, players, props.dispatchFunc) { setSelectedPlayerCard ->
                 val onPlayerClick = { player: Player, element: HTMLElement ->
                     setSelectedPlayerCard(ReferenceElement(element)!!, player)
                 }
-                Fragment.create {
-                    contributions.forEach { contribution ->
-                        ContributionCard(
-                            key = contribution.id,
-                            partyId = party.id,
-                            contribution = contribution,
-                            players = players,
-                            onPlayerClick = onPlayerClick,
-                        )
-                    }
+                contributions.forEach { contribution ->
+                    ContributionCard(
+                        key = contribution.id,
+                        partyId = party.id,
+                        contribution = contribution,
+                        players = players,
+                        onPlayerClick = onPlayerClick,
+                    )
                 }
-            })
+            }
         }
     }
 }
