@@ -16,7 +16,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
-import react.ReactNode
 import kotlin.test.Test
 
 class UpdatingPlayerListTest {
@@ -36,12 +35,11 @@ class UpdatingPlayerListTest {
             UpdatingPlayerList<SavePlayerCommand.Dispatcher>(
                 players,
                 dispatchFunc = stubDispatchFunc(stubCannon),
-                child = { players, dispatcher ->
-                    lastPlayersCallback = players
-                    dispatchFunc = dispatcher
-                    ReactNode("lol")
-                },
-            )
+            ) { players, dispatcher ->
+                lastPlayersCallback = players
+                dispatchFunc = dispatcher
+                +"lol"
+            }
         }
     } exercise {
         act { dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, newPlayer)) }() }
@@ -66,12 +64,11 @@ class UpdatingPlayerListTest {
             UpdatingPlayerList<SavePlayerCommand.Dispatcher>(
                 players + targetPlayer,
                 dispatchFunc = stubDispatchFunc(stubCannon),
-                child = { players, dispatcher ->
-                    lastPlayersCallback = players
-                    dispatchFunc = dispatcher
-                    ReactNode("lol")
-                },
-            )
+            ) { players, dispatcher ->
+                lastPlayersCallback = players
+                dispatchFunc = dispatcher
+                +"lol"
+            }
         }
     } exercise {
         act { dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, updatedPlayer)) }() }
@@ -93,12 +90,11 @@ class UpdatingPlayerListTest {
             UpdatingPlayerList<SavePlayerCommand.Dispatcher>(
                 players,
                 dispatchFunc = stubDispatcher.func<SavePlayerCommand.Dispatcher>(),
-                child = { players, dispatcher ->
-                    lastPlayersCallback = players
-                    dispatchFunc = dispatcher
-                    ReactNode("lol")
-                },
-            )
+            ) { players, dispatcher ->
+                lastPlayersCallback = players
+                dispatchFunc = dispatcher
+                +"lol"
+            }
         }
     } exercise {
         act {

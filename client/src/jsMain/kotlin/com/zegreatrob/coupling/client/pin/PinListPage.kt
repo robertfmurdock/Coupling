@@ -14,12 +14,11 @@ val PinListPage = partyPageFunction { props, partyId ->
                 pinList()
             }
         },
-        toNode = { _, _, result ->
-            PinList.create(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
-                pins = result.party?.pinList?.elements ?: return@CouplingQuery null,
-            )
-        },
         key = partyId.value,
-    )
+    ) { _, _, result ->
+        PinList(
+            party = result.party?.details?.data ?: return@CouplingQuery,
+            pins = result.party?.pinList?.elements ?: return@CouplingQuery,
+        )
+    }
 }

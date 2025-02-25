@@ -21,20 +21,17 @@ val IncubatingPage by nfc<PageProps> { props ->
                 discordClientId()
             }
         },
-        toNode = { _, _, result ->
-            val addToSlackUrl = result.config?.addToSlackUrl
-            val discordClientId = result.config?.discordClientId
-            if (addToSlackUrl == null || discordClientId == null) {
-                null
-            } else {
-                IncubatingContent.create(
-                    discordClientId = discordClientId,
-                    addToSlackUrl = addToSlackUrl,
-                    partyList = result.partyList?.mapNotNull { it.details?.data } ?: emptyList(),
-                )
-            }
-        },
-    )
+    ) { _, _, result ->
+        val addToSlackUrl = result.config?.addToSlackUrl
+        val discordClientId = result.config?.discordClientId
+        if (addToSlackUrl != null && discordClientId != null) {
+            IncubatingContent(
+                discordClientId = discordClientId,
+                addToSlackUrl = addToSlackUrl,
+                partyList = result.partyList?.mapNotNull { it.details?.data } ?: emptyList(),
+            )
+        }
+    }
 }
 
 external interface IncubatingContentProps : Props {

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.client.components.player.PlayerConfig
-import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -26,23 +25,22 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
                 retiredPlayers()
             }
         },
-        toNode = { reload, commandFunc, data ->
-            val partyDetails = data.party?.details?.data ?: return@CouplingQuery null
-            val playerList = data.party?.playerList?.elements ?: return@CouplingQuery null
-            val retiredPlayers = data.party?.retiredPlayers?.elements ?: return@CouplingQuery null
-            val player = (playerList + retiredPlayers).find { it.id == playerId }
-                ?: playerList.defaultWithCallSign()
-            PlayerConfig.create(
-                party = partyDetails,
-                boost = data.party?.boost?.data,
-                player = player,
-                players = playerList,
-                reload = reload,
-                dispatchFunc = commandFunc,
-            )
-        },
         key = "${partyId.value}-$playerId",
-    )
+    ) { reload, commandFunc, data ->
+        val partyDetails = data.party?.details?.data ?: return@CouplingQuery
+        val playerList = data.party?.playerList?.elements ?: return@CouplingQuery
+        val retiredPlayers = data.party?.retiredPlayers?.elements ?: return@CouplingQuery
+        val player = (playerList + retiredPlayers).find { it.id == playerId }
+            ?: playerList.defaultWithCallSign()
+        PlayerConfig(
+            party = partyDetails,
+            boost = data.party?.boost?.data,
+            player = player,
+            players = playerList,
+            reload = reload,
+            dispatchFunc = commandFunc,
+        )
+    }
 }
 
 private fun List<Player>.defaultWithCallSign() = object : FindCallSignAction.Dispatcher {}

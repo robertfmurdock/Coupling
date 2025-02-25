@@ -12,18 +12,17 @@ val CurrentPairsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = currentPairsQuery(partyId),
-        toNode = { reload, dispatchFunc, result ->
-            SocketedPairAssignments.create(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
-                boost = result.party?.boost?.data,
-                players = result.party?.playerList?.elements ?: return@CouplingQuery null,
-                pairAssignments = result.party?.currentPairAssignmentDocument?.element,
-                controls = Controls(dispatchFunc, reload),
-                allowSave = false,
-            )
-        },
         key = partyId.value,
-    )
+    ) { reload, dispatchFunc, result ->
+        SocketedPairAssignments(
+            party = result.party?.details?.data ?: return@CouplingQuery,
+            boost = result.party?.boost?.data,
+            players = result.party?.playerList?.elements ?: return@CouplingQuery,
+            pairAssignments = result.party?.currentPairAssignmentDocument?.element,
+            controls = Controls(dispatchFunc, reload),
+            allowSave = false,
+        )
+    }
 }
 
 private fun currentPairsQuery(partyId: PartyId) = graphQuery {

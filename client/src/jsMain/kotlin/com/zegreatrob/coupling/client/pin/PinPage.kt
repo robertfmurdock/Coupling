@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.components.pin.PinConfig
-import com.zegreatrob.coupling.client.components.pin.create
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.pinId
@@ -19,17 +18,16 @@ val PinPage = partyPageFunction { props, partyId ->
                 pinList()
             }
         },
-        toNode = { reload, commandFunc, result ->
-            val pinList = result.party?.pinList?.elements ?: return@CouplingQuery null
-            PinConfig.create(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
-                boost = result.party?.boost?.data,
-                pinList = pinList,
-                pin = pinList.firstOrNull { it.id == pinId } ?: Pin(),
-                reload = reload,
-                dispatchFunc = commandFunc,
-            )
-        },
         key = pinId,
-    )
+    ) { reload, commandFunc, result ->
+        val pinList = result.party?.pinList?.elements ?: return@CouplingQuery
+        PinConfig(
+            party = result.party?.details?.data ?: return@CouplingQuery,
+            boost = result.party?.boost?.data,
+            pinList = pinList,
+            pin = pinList.firstOrNull { it.id == pinId } ?: Pin(),
+            reload = reload,
+            dispatchFunc = commandFunc,
+        )
+    }
 }

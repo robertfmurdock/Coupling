@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.components.party.PartySecretLayout
-import com.zegreatrob.coupling.client.components.party.create
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.navigateToPartyList
@@ -12,7 +11,9 @@ import com.zegreatrob.minreact.nfc
 
 val PartySecretsPage by nfc<PageProps> { props ->
     val partyId = props.partyId
-    if (partyId != null) {
+    if (partyId == null) {
+        +navigateToPartyList()
+    } else {
         CouplingQuery(
             commander = props.commander,
             query = graphQuery {
@@ -22,18 +23,15 @@ val PartySecretsPage by nfc<PageProps> { props ->
                     boost()
                 }
             },
-            toNode = { reload, dispatcher, result ->
-                PartySecretLayout.create(
-                    partyDetails = result.party?.details?.data ?: return@CouplingQuery null,
-                    secrets = result.party?.secretList?.elements ?: emptyList(),
-                    boost = result.party?.boost?.data,
-                    dispatcher = dispatcher,
-                    reload = reload,
-                )
-            },
             key = props.partyId?.value,
-        )
-    } else {
-        +navigateToPartyList()
+        ) { reload, dispatcher, result ->
+            PartySecretLayout(
+                partyDetails = result.party?.details?.data ?: return@CouplingQuery,
+                secrets = result.party?.secretList?.elements ?: emptyList(),
+                boost = result.party?.boost?.data,
+                dispatcher = dispatcher,
+                reload = reload,
+            )
+        }
     }
 }

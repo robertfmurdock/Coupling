@@ -16,7 +16,7 @@ import react.useState
 external interface UpdatingPlayerListProps<D> : Props where D : SavePlayerCommand.Dispatcher {
     var players: List<Player>
     var dispatchFunc: DispatchFunc<D>
-    var child: (List<Player>, DispatchFunc<D>) -> ReactNode
+    var children: (List<Player>, DispatchFunc<D>) -> ReactNode
 }
 
 @ReactFunc
@@ -30,7 +30,7 @@ val UpdatingPlayerList by nfc<UpdatingPlayerListProps<*>> { props ->
     val newDispatchFunc = DispatchFunc { block ->
         dispatchFunc { block(SecretCannon(this, addPlayer)) }
     }
-    +props.child(players, newDispatchFunc)
+    +props.children(players, newDispatchFunc)
 }
 
 private fun List<Player>.merge(updated: Player): List<Player> {

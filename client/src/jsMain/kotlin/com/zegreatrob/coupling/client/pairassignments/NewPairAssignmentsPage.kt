@@ -17,15 +17,14 @@ val NewPairAssignmentsPage = partyPageFunction { props, partyId ->
                 currentPairAssignments()
             }
         },
-        toNode = { reload, dispatchFunc, result ->
-            SocketedPairAssignments.create(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
-                players = result.party?.playerList?.elements ?: return@CouplingQuery null,
-                pairAssignments = result.party?.currentPairAssignmentDocument?.element,
-                controls = Controls(dispatchFunc, reload),
-                allowSave = true,
-            )
-        },
         key = partyId.value,
-    )
+    ) { reload, dispatchFunc, result ->
+        SocketedPairAssignments(
+            party = result.party?.details?.data ?: return@CouplingQuery,
+            players = result.party?.playerList?.elements ?: return@CouplingQuery,
+            pairAssignments = result.party?.currentPairAssignmentDocument?.element,
+            controls = Controls(dispatchFunc, reload),
+            allowSave = true,
+        )
+    }
 }

@@ -22,7 +22,7 @@ import react.useCallback
 
 external interface CouplingQueryProps<R> : Props {
     var query: SuspendAction<ClientDispatcher, R?>
-    var toNode: (ReloadFunc, DispatchFunc<ClientDispatcher>, R) -> ReactNode?
+    var children: (ReloadFunc, DispatchFunc<ClientDispatcher>, R) -> ReactNode?
     var commander: Commander
 }
 

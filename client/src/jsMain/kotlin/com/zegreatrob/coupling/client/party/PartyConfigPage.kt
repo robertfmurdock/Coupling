@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.components.party.PartyConfig
-import com.zegreatrob.coupling.client.components.party.create
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
@@ -16,22 +15,20 @@ val PartyConfigPage by nfc<PageProps> { props ->
         CouplingQuery(
             commander = props.commander,
             query = graphQuery { party(partyId) { details() } },
-            toNode = { _, commandFunc, result ->
-                PartyConfig.create(
-                    party = result.party?.details?.data ?: return@CouplingQuery null,
-                    boost = result.party?.boost?.data,
-                    dispatchFunc = commandFunc,
-                )
-            },
             key = props.partyId?.value,
-        )
+        ) { _, commandFunc, result ->
+            PartyConfig(
+                party = result.party?.details?.data ?: return@CouplingQuery,
+                boost = result.party?.boost?.data,
+                dispatchFunc = commandFunc,
+            )
+        }
     } else {
         CouplingQuery(
             commander = props.commander,
             query = graphQuery { user { details() } },
-            toNode = { _, commandFunc, _ -> PartyConfig.create(newParty(), null, commandFunc) },
             key = props.partyId?.value,
-        )
+        ) { _, commandFunc, _ -> PartyConfig(newParty(), null, commandFunc) }
     }
 }
 

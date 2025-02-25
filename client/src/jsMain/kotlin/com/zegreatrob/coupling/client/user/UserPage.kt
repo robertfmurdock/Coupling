@@ -23,18 +23,17 @@ val UserPage by nfc<PageProps> {
             }
             partyList { details() }
         },
-        toNode = { reload, dispatcher, result ->
-            UserConfig.create(
-                user = result.user?.details,
-                subscription = result.user?.subscription,
-                partyList = result.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data)
-                    ?: emptyList(),
-                dispatcher = dispatcher,
-                stripeAdminCode = result.config?.stripeAdminCode ?: return@CouplingQuery null,
-                stripePurchaseCode = result.config?.stripePurchaseCode ?: return@CouplingQuery null,
-                boost = result.user?.boost?.data,
-                reload = reload,
-            )
-        },
-    )
+    ) { reload, dispatcher, result ->
+        UserConfig(
+            user = result.user?.details,
+            subscription = result.user?.subscription,
+            partyList = result.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data)
+                ?: emptyList(),
+            dispatcher = dispatcher,
+            stripeAdminCode = result.config?.stripeAdminCode ?: return@CouplingQuery,
+            stripePurchaseCode = result.config?.stripePurchaseCode ?: return@CouplingQuery,
+            boost = result.user?.boost?.data,
+            reload = reload,
+        )
+    }
 }

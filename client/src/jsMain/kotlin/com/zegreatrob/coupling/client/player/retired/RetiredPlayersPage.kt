@@ -14,12 +14,11 @@ val RetiredPlayersPage = partyPageFunction { props, partyId ->
                 retiredPlayers()
             }
         },
-        toNode = { _, _, result ->
-            RetiredPlayers.create(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
-                retiredPlayers = result.party?.retiredPlayers?.elements ?: return@CouplingQuery null,
-            )
-        },
         key = partyId.value,
-    )
+    ) { _, _, result ->
+        RetiredPlayers(
+            party = result.party?.details?.data ?: return@CouplingQuery,
+            retiredPlayers = result.party?.retiredPlayers?.elements ?: return@CouplingQuery,
+        )
+    }
 }

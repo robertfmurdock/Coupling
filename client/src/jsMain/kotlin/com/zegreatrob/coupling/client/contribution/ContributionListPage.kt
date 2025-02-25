@@ -2,9 +2,7 @@ package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.contribution.ContributionContentFrame
 import com.zegreatrob.coupling.client.components.contribution.ContributionListContent
-import com.zegreatrob.coupling.client.components.contribution.create
 import com.zegreatrob.coupling.client.components.player.UpdatingPlayerList
-import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
@@ -23,29 +21,27 @@ val ContributionListPage = partyPageFunction { props, partyId ->
                 contributionReport(window = window) { contributions() }
             }
         },
-        toNode = { reload, dispatchFunc, queryResult ->
-            val party = queryResult.party?.details?.data ?: return@CouplingQuery null
-            val contributions =
-                queryResult.party?.contributionReport?.contributions?.elements ?: return@CouplingQuery null
-            val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
-            val retiredPlayers = queryResult.party?.retiredPlayers?.elements ?: return@CouplingQuery null
-            UpdatingPlayerList.create(
-                players = players + retiredPlayers,
-                dispatchFunc = dispatchFunc,
-                child = { playerList, dispatchFunc ->
-                    ContributionContentFrame.create(party = party) {
-                        ContributionListContent(
-                            party,
-                            contributions,
-                            window,
-                            setWindow,
-                            playerList,
-                            dispatchFunc,
-                        )
-                    }
-                },
-            )
-        },
         key = "${partyId.value}$window",
-    )
+    ) { reload, dispatchFunc, queryResult ->
+        val party = queryResult.party?.details?.data ?: return@CouplingQuery
+        val contributions =
+            queryResult.party?.contributionReport?.contributions?.elements ?: return@CouplingQuery
+        val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery
+        val retiredPlayers = queryResult.party?.retiredPlayers?.elements ?: return@CouplingQuery
+        UpdatingPlayerList(
+            players = players + retiredPlayers,
+            dispatchFunc = dispatchFunc,
+        ) { playerList, dispatchFunc ->
+            ContributionContentFrame(party = party) {
+                ContributionListContent(
+                    party,
+                    contributions,
+                    window,
+                    setWindow,
+                    playerList,
+                    dispatchFunc,
+                )
+            }
+        }
+    }
 }

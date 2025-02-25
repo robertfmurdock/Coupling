@@ -14,13 +14,12 @@ val IntegrationPage = partyPageFunction { props, partyId ->
             }
             config { addToSlackUrl() }
         },
-        toNode = { _, _, result ->
-            IntegrationContent.create(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
-                integration = result.party?.integration?.data,
-                addToSlackUrl = result.config?.addToSlackUrl ?: return@CouplingQuery null,
-            )
-        },
         key = partyId.value,
-    )
+    ) { _, _, result ->
+        IntegrationContent(
+            party = result.party?.details?.data ?: return@CouplingQuery,
+            integration = result.party?.integration?.data,
+            addToSlackUrl = result.config?.addToSlackUrl ?: return@CouplingQuery,
+        )
+    }
 }

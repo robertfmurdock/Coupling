@@ -18,13 +18,12 @@ val HistoryPage = partyPageFunction { props, partyId ->
                 pairAssignmentDocumentList()
             }
         },
-        toNode = { reload, commandFunc, result ->
-            val (party, history) = result.toHistoryData()
-                ?: return@CouplingQuery null
-            History.create(party, history, Controls(commandFunc, reload))
-        },
         key = partyId.value,
-    )
+    ) { reload, commandFunc, result ->
+        val (party, history) = result.toHistoryData()
+            ?: return@CouplingQuery
+        History(party, history, Controls(commandFunc, reload))
+    }
 }
 
 typealias HistoryData = Pair<PartyDetails, List<PairAssignmentDocument>>

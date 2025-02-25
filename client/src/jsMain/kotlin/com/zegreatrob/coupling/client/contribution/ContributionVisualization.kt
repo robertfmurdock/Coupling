@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
 import com.zegreatrob.coupling.client.components.stats.Visualization
-import com.zegreatrob.coupling.client.components.stats.create
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
@@ -43,24 +42,23 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
                 }
             }
         },
-        toNode = { reload, _, queryResult ->
-            PairFrequencyControls.create(
-                pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery null,
-                window = window,
-                setWindow = {
-                    setWindow(it)
-                    reload()
-                },
-            ) { (visualization, data) ->
-                when (visualization) {
-                    Visualization.LineOverTime -> PairFrequencyLineGraph(data, window)
-                    Visualization.Heatmap -> PairFrequencyHeatMap(data, window, spinsUntilFullRotation)
-                    Visualization.MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
-                    Visualization.CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
-                }
+    ) { reload, _, queryResult ->
+        PairFrequencyControls(
+            pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery,
+            window = window,
+            setWindow = {
+                setWindow(it)
+                reload()
+            },
+        ) { (visualization, data) ->
+            when (visualization) {
+                Visualization.LineOverTime -> PairFrequencyLineGraph(data, window)
+                Visualization.Heatmap -> PairFrequencyHeatMap(data, window, spinsUntilFullRotation)
+                Visualization.MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
+                Visualization.CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
             }
-        },
-    )
+        }
+    }
 }
 
 fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updatedWindow: GqlContributionWindow? ->
