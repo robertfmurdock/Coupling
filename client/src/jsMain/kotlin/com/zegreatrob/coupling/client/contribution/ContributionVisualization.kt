@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.contribution
 
+import com.zegreatrob.coupling.client.components.PairFrequencyHeatMap
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
 import com.zegreatrob.coupling.client.components.stats.Visualization
 import com.zegreatrob.coupling.client.routing.Commander

@@ -1,7 +1,6 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.TiltedPlayerList
-import com.zegreatrob.coupling.client.components.create
+import com.zegreatrob.coupling.client.components.PairTickMark
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.TooltipProps
@@ -11,7 +10,6 @@ import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChar
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.graphing.interpolatorAsync
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
 import com.zegreatrob.coupling.json.GqlContributionWindow
@@ -22,17 +20,14 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.nfc
 import js.objects.jso
 import react.FC
 import react.Props
-import react.useContext
+import react.use
 import react.useEffect
 import react.useState
 import web.cssom.Angle
-import kotlin.collections.component1
-import kotlin.collections.component2
 
 external interface PairFrequencyHeatMapProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
@@ -112,7 +107,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
 
 val CouplingHeatmapTooltip = FC<TooltipProps> { props ->
     val cell = props.cell
-    val pairs = useContext(pairContext)
+    val pairs = use(pairContext)
     val flatten = pairs.flatten()
     val players = flatten.filter { cell.id.split(".").contains(it.id) }
     val pair = players.toCouplingPair()

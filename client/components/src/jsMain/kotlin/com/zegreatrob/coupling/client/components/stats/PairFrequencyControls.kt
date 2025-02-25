@@ -13,7 +13,10 @@ import emotion.react.css
 import js.objects.jso
 import react.Fragment
 import react.Props
+import react.PropsWithChildren
+import react.ReactElement
 import react.ReactNode
+import react.StateSetter
 import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
@@ -28,9 +31,9 @@ import web.html.InputType
 
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, ContributionReport>>
-    var children: (VisualizationContext) -> ReactNode
     var window: GqlContributionWindow
     var setWindow: (GqlContributionWindow) -> Unit
+    var children: (VisualizationContext) -> ReactNode
 }
 
 enum class Visualization {
@@ -52,10 +55,10 @@ data class VisualizationContext(
 )
 
 @ReactFunc
-val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, selectedWindow, setWindow) ->
+val PairFrequencyControls by nfc<PairFrequencyControlsProps> { props ->
+    val (pairsContributions, selectedWindow, setWindow) = props
     val (fakeStyle, setFakeStyle) = useState<FakeDataStyle?>(null)
-//    val (visualization, setVisualization) = useState(Visualization.Heatmap)
-    val (visualization, setVisualization) = useState(Visualization.LineOverTime)
+    val (visualization, setVisualization) = useState(Visualization.Heatmap)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
     val (fakeContributions, setFakeContributions) = useState<List<Pair<CouplingPair, ContributionReport>>>(emptyList())
@@ -111,7 +114,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         }
                         div {
                             EnumSelector(
-                                default = Visualization.LineOverTime,
+                                default = Visualization.Heatmap,
                                 onChange = setVisualization::invoke,
                                 label = ReactNode("Visualization Style"),
                                 backgroundColor = contributionContentBackgroundColor,
@@ -126,22 +129,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                             div {
                                 EnumSelector(
                                     backgroundColor = contributionContentBackgroundColor,
-                                    label = Fragment.create {
-                                        div {
-                                            css {
-                                                display = Display.inlineFlex
-                                                alignItems = AlignItems.center
-                                            }
-                                            +"Fake the data"
-                                            input {
-                                                type = InputType.checkbox
-                                                value = fakeStyle != null
-                                                onChange = {
-                                                    setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null)
-                                                }
-                                            }
-                                        }
-                                    },
+                                    label = fakeTheDataCheckbox(fakeStyle, setFakeStyle),
                                     default = FakeDataStyle.RandomPairs,
                                     onChange = setFakeStyle::invoke,
                                     selectProps = jso {
@@ -160,8 +148,28 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         backgroundColor = Color("white")
                         borderRadius = 150.px
                     }
-                    +view(VisualizationContext(visualization, filteredData))
+                    +props.children(VisualizationContext(visualization, filteredData))
                 }
+            }
+        }
+    }
+}
+
+private fun fakeTheDataCheckbox(
+    fakeStyle: FakeDataStyle?,
+    setFakeStyle: StateSetter<FakeDataStyle?>,
+): ReactElement<PropsWithChildren> = Fragment.create {
+    div {
+        css {
+            display = Display.inlineFlex
+            alignItems = AlignItems.center
+        }
+        +"Fake the data"
+        input {
+            type = InputType.checkbox
+            value = fakeStyle != null
+            onChange = {
+                setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null)
             }
         }
     }
