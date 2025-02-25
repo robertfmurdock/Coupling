@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.contribution
 
+import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.AxisTickProps
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
@@ -11,7 +12,7 @@ import react.dom.svg.ReactSVG.foreignObject
 import react.dom.svg.ReactSVG.g
 import react.dom.svg.ReactSVG.line
 import react.dom.svg.ReactSVG.rect
-import react.use
+import react.useContext
 import react.useLayoutEffect
 import react.useRef
 import react.useState
@@ -19,7 +20,6 @@ import web.cssom.Angle
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.px
-import web.html.HTMLDivElement
 
 const val ESTIMATED_PLAYER_WIDTH = 40.0
 
@@ -31,11 +31,11 @@ val PairTickMark = FC<AxisTickProps> { props ->
     } else {
         props.rotate
     }
-    val getColor = use(colorContext)
-    val pairs = use(pairContext)
+    val getColor = useContext(colorContext)
+    val pairs = useContext(pairContext)
     val pair = pairs.find { it.pairId == props.value } ?: return@FC
     val backColor = getColor(props)
-    val targetRef = useRef<HTMLDivElement>()
+    val targetRef = useRef<web.html.HTMLDivElement>()
     val (elementWidth, setElementWidth) = useState(0)
     val (elementHeight, setElementHeight) = useState(0)
 
@@ -45,6 +45,7 @@ val PairTickMark = FC<AxisTickProps> { props ->
             setElementHeight(it.offsetHeight)
         }
     }
+
     g {
         transform = "translate(${props.x.toDouble()}, ${props.y.toDouble()}) rotate($rotate)"
         rect {

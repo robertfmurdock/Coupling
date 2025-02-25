@@ -1,14 +1,10 @@
 package com.zegreatrob.coupling.client.contribution
 
-import com.zegreatrob.coupling.client.components.ESTIMATED_PLAYER_WIDTH
-import com.zegreatrob.coupling.client.components.PairTickMark
-import com.zegreatrob.coupling.client.components.colorContext
 import com.zegreatrob.coupling.client.components.external.nivo.NivoOrdinalScaleColorConfig
 import com.zegreatrob.coupling.client.components.external.nivo.bar.ResponsiveBar
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
-import com.zegreatrob.coupling.client.components.pairContext
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -18,12 +14,16 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.jso
 import react.Props
+import react.createContext
 import kotlin.js.json
 
 external interface PairCycleTimeBarChartProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
 }
+
+val colorContext = createContext<(dynamic) -> String> { "" }
+val pairContext = createContext<Set<CouplingPair>>(emptySet())
 
 @ReactFunc
 val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
