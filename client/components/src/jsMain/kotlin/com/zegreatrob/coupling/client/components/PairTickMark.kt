@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.AxisTickProps
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
@@ -20,6 +19,7 @@ import web.cssom.Angle
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.px
+import web.html.HTMLDivElement
 
 const val ESTIMATED_PLAYER_WIDTH = 40.0
 
@@ -35,7 +35,7 @@ val PairTickMark = FC<AxisTickProps> { props ->
     val pairs = use(pairContext)
     val pair = pairs.find { it.pairId == props.value } ?: return@FC
     val backColor = getColor(props)
-    val targetRef = useRef<web.html.HTMLDivElement>()
+    val targetRef = useRef<HTMLDivElement>()
     val (elementWidth, setElementWidth) = useState(0)
     val (elementHeight, setElementHeight) = useState(0)
 

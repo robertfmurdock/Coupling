@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components
 
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds

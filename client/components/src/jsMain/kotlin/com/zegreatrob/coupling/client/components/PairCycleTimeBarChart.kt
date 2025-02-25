@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.external.nivo.NivoOrdinalScaleColorConfig
 import com.zegreatrob.coupling.client.components.external.nivo.bar.ResponsiveBar
