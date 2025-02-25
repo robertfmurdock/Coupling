@@ -45,7 +45,7 @@ val RetiredPlayers by nfc<RetiredPlayersProps> { (party, players) ->
                     backgroundRepeat = BackgroundRepeat.repeatX
                     backgroundImage = url(pngPath("overlay"))
                     backgroundColor = NamedColor.lightcoral
-                    asDynamic()["text-fill-color"] = kotlinx.css.Color.white
+                    asDynamic()["text-fill-color"] = Color("white")
                     asDynamic()["text-stroke-width"] = 1.5.px
                     asDynamic()["text-stroke-color"] = NamedColor.darkred
                 }
