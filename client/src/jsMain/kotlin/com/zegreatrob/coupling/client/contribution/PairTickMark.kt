@@ -12,7 +12,7 @@ import react.dom.svg.ReactSVG.foreignObject
 import react.dom.svg.ReactSVG.g
 import react.dom.svg.ReactSVG.line
 import react.dom.svg.ReactSVG.rect
-import react.useContext
+import react.use
 import react.useLayoutEffect
 import react.useRef
 import react.useState
@@ -31,8 +31,8 @@ val PairTickMark = FC<AxisTickProps> { props ->
     } else {
         props.rotate
     }
-    val getColor = useContext(colorContext)
-    val pairs = useContext(pairContext)
+    val getColor = use(colorContext)
+    val pairs = use(pairContext)
     val pair = pairs.find { it.pairId == props.value } ?: return@FC
     val backColor = getColor(props)
     val targetRef = useRef<web.html.HTMLDivElement>()

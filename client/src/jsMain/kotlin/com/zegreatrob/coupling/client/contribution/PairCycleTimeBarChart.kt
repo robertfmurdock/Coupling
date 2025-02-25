@@ -14,16 +14,12 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.jso
 import react.Props
-import react.createContext
 import kotlin.js.json
 
 external interface PairCycleTimeBarChartProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
 }
-
-val colorContext = createContext<(dynamic) -> String> { "" }
-val pairContext = createContext<Set<CouplingPair>>(emptySet())
 
 @ReactFunc
 val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
