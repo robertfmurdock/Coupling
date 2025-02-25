@@ -12262,10 +12262,10 @@ normalize-url@^8.0.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-8.0.0.tgz#593dbd284f743e8dcf6a5ddf8fadff149c82701a"
   integrity sha512-uVFpKhj5MheNBJRTiMZ9pE/7hD1QTeEvugSJW/OmLzAp78PB5O6adfMNTvmfKhXBkvCzC+rqifWcVYpGFwTjnw==
 
-npm-check-updates@17.1.14:
-  version "17.1.14"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-17.1.14.tgz#68285d98b296656bf7a8f747123c51d1adbdbb2b"
-  integrity sha512-dr4bXIxETubLI1tFGeock5hN8yVjahvaVpx+lPO4/O2md3zJuxB7FgH3MIoTvQSCgsgkIRpe0skti01IEAA5tA==
+npm-check-updates@17.1.15:
+  version "17.1.15"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-17.1.15.tgz#3e5734f5acf91de1c4ef3cd4ac460172d9195c99"
+  integrity sha512-miATvKu5rjec/1wxc5TGDjpsucgtCHwRVZorZpDkS6NzdWXfnUWlN4abZddWb7XSijAuBNzzYglIdTm9SbgMVg==
 
 npm-run-path@^4.0.1:
   version "4.0.1"
@@ -14472,10 +14472,10 @@ strip-json-comments@3.1.1, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stripe@^17.6.0:
-  version "17.6.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-17.6.0.tgz#6495a42b7a20066e0d96068c362da793d684e79c"
-  integrity sha512-+HB6+SManp0gSRB0dlPmXO+io18krlAe0uimXhhIkL/RG/VIRigkfoM3QDJPkqbuSW0XsA6uzsivNCJU1ELEDA==
+stripe@^17.7.0:
+  version "17.7.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-17.7.0.tgz#7816be2559e6f58bf4c005758fe20be78cdbf995"
+  integrity sha512-aT2BU9KkizY9SATf14WhhYVv2uOapBWX0OFWF4xvcj1mPaNotlSc2CsxpS4DS46ZueSppmCF5BX1sNYBtwBvfw==
   dependencies:
     "@types/node" ">=8.1.0"
     qs "^6.11.0"
