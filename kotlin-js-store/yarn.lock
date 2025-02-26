@@ -7488,10 +7488,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@133.0.2:
-  version "133.0.2"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-133.0.2.tgz#1678b8ebdc9fbd2941f2bce22eed8ce0efc4cf8a"
-  integrity sha512-Ku4JqyzMNyla2t2z40/Or2tTH/FrRBp2xXhg3LUM7/Qi9tN7mk9uB1xtkmoP33S977FJuhkKenHBCEMH67lD2g==
+chromedriver@133.0.3:
+  version "133.0.3"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-133.0.3.tgz#84c314954172cf07dff89485afbe5778c3082b25"
+  integrity sha512-wGZUtrSdyqnbweXEDIbn+ndu7memG4SEqG6/D+mSabKUEic0hveMYepAPAhlYtvyOc0X8JbsARYtEalVD3R/Vg==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
@@ -11068,10 +11068,10 @@ jose@^5.7.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.3.tgz#6eba1ee3f70b42891f0e1883fe0084a46dbbe02c"
   integrity sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==
 
-jose@^6.0.7:
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.7.tgz#81efefce37f3a21fe9f5a03dd0849bfc86d504d3"
-  integrity sha512-IEsxVzzz+j8mNYlZYSxqNNy9RHbPQSIh9R81ZEgYzjsgAeuLLqhXnHBbc0hEotW0r3j7u9PYYWDepWHdVUOdsQ==
+jose@^6.0.8:
+  version "6.0.8"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.8.tgz#210f1692e34be4958fe174a9bc2d3c87e93fde30"
+  integrity sha512-EyUPtOKyTYq+iMOszO42eobQllaIjJnwkZ2U93aJzNyPibCy7CEvT9UQnaCVB51IAd49gbNdCew1c0LcLTCB2g==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
