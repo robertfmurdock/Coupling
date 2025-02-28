@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.3.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.750.0",
-    "@aws-sdk/client-dynamodb": "3.751.0",
-    "@aws-sdk/client-lambda": "~3.750.0",
-    "@aws-sdk/lib-dynamodb": "3.751.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.758.0",
+    "@aws-sdk/client-dynamodb": "3.758.0",
+    "@aws-sdk/client-lambda": "~3.758.0",
+    "@aws-sdk/lib-dynamodb": "3.758.0",
     "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
@@ -30,7 +30,7 @@
     "@slack/webhook": "^7.0.4",
     "@stripe/react-stripe-js": "^3.1.1",
     "@stripe/stripe-js": "^5.7.0",
-    "babel-loader": "^9.2.1",
+    "babel-loader": "^10.0.0",
     "blueimp-md5": "^2.19.0",
     "body-parser": "^1.20.3",
     "chromedriver": "133.0.3",
