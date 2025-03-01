@@ -4540,10 +4540,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.6.0.tgz#41dd6093d34652cddb5d5bdeee04eafc33826668"
   integrity sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==
 
-"@slack/bolt@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.2.0.tgz#f49ed7f18e8f1e1c08806ebcd90b20b656c0118d"
-  integrity sha512-KQGUkC37t6DUR+FVglHmcUrMpdCLbY9wpZXfjW6CUNmQnINits+EeOrVN/5xPcISKJcBIhqgrarLpwU9tpESTw==
+"@slack/bolt@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.2.1.tgz#fb60f99e91b30b6a3026cd6f3f7e98e6ff5eda84"
+  integrity sha512-O+c7i5iZKlxt6ltJAu2BclEoyWuAVkcpir1F3HWCHTez8Pjz0GxwdBzNHR5HDXvOdBT7En1BU0T2L6Ldv++GSg==
   dependencies:
     "@slack/logger" "^4.0.0"
     "@slack/oauth" "^3.0.2"
@@ -7861,10 +7861,10 @@ core-js-compat@^3.40.0:
   dependencies:
     browserslist "^4.24.3"
 
-core-js@^3.40.0:
-  version "3.40.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.40.0.tgz#2773f6b06877d8eda102fc42f828176437062476"
-  integrity sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==
+core-js@^3.41.0:
+  version "3.41.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.41.0.tgz#57714dafb8c751a6095d028a7428f1fb5834a776"
+  integrity sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==
 
 core-util-is@~1.0.0:
   version "1.0.3"
