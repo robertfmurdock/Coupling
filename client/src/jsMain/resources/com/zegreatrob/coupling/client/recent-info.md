@@ -1,23 +1,17 @@
 # News
 
-## Dec 12, 2024
+## March 2, 2025
 
-Hey ya'll!
+2025! What a year its been already. HOOO-EEEEE. Enough about that.
 
-Been a minute - I've been working hard on the full-time job - but an update here is overdue.
+I just put together a write-up for Coupling in 2024 over at my blog: https://www.zegreatrob.com/blog.html
 
-First, the app was recently updated to React 19. Sadly that means one or two things don't work for the moment: specifically a pairing visualization on the stats page (and a few more that are... secret).
+That includes the normal "how've ya'll been using the app" notes and numbers.
 
-Hopefully these will become fixable over the next month or so, but as these features aren't essential AFAIK, they're going to be defunct for the moment. IF YOU FEEL THIS IS A PROBLEM, let me know! I'll find a workaround in the interim if its causing actual pain.
+I'm hoping to enable more features soon, so watch this space if that makes you curious!
 
-There are still a few features cooking that I need to bring out, but I want to make sure they have a solid introduction before making them public.
+I'm still at your service over at rob@continuousexcellence.io, and also generally at GitHub. I appreciate all correspondence!
 
-That of course includes the slack integration I mentioned before: to use it, click on this [link](/incubating) and hit the "Add to Slack" button.
-
-Upcoming work includes a bunch of new ways to track a team's performance over time. It'll requires more setup than vanilla Coupling, but if you like seeing / collection how things have been going on your project, I'm hoping it'll tickle your fancy. 
-
-Send me a note if you want to learn more! Always available at rob@continuousexcellence.io
-
-Other then that, happy holidays, merry Christmas, and we'll chat more in the New Year!
+Have a great spring!
 
 - RoB
