@@ -54,8 +54,7 @@ data class VisualizationContext(
 @ReactFunc
 val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, selectedWindow, setWindow) ->
     val (fakeStyle, setFakeStyle) = useState<FakeDataStyle?>(null)
-//    val (visualization, setVisualization) = useState(Visualization.Heatmap)
-    val (visualization, setVisualization) = useState(Visualization.LineOverTime)
+    val (visualization, setVisualization) = useState(Visualization.Heatmap)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
     val (fakeContributions, setFakeContributions) = useState<List<Pair<CouplingPair, ContributionReport>>>(emptyList())

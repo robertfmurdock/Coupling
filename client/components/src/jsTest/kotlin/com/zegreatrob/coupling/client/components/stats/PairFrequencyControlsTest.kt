@@ -33,9 +33,7 @@ class PairFrequencyControlsTest {
         render(PairFrequencyControls.create(pairs, GqlContributionWindow.All, {}) { +viewSpy.spyFunction(it) })
     } verify {
         viewSpy.spyReceivedValues.last()
-            .assertIsEqualTo(VisualizationContext(Visualization.LineOverTime, emptyList()))
-//        viewSpy.spyReceivedValues.last()
-//            .assertIsEqualTo(VisualizationContext(Heatmap, emptyList()))
+            .assertIsEqualTo(VisualizationContext(Visualization.Heatmap, emptyList()))
     }
 
     @Test
@@ -56,7 +54,7 @@ class PairFrequencyControlsTest {
         actor.click(screen.findByRole("checkbox", RoleOptions(expectedPair.pairName)))
     } verify {
         viewSpy.spyReceivedValues.last()
-            .assertIsEqualTo(VisualizationContext(Visualization.LineOverTime, listOf(expectedPair to expectedReport)))
+            .assertIsEqualTo(VisualizationContext(Visualization.Heatmap, listOf(expectedPair to expectedReport)))
     }
 }
 

@@ -56,6 +56,7 @@ val PairSelector by nfc<PairSelectorProps> { props ->
 
         pairs.forEach { pair: CouplingPair ->
             PairPanel {
+                key = pair.pairId
                 label {
                     ariaLabel = pair.pairName
                     TiltedPlayerList(playerList = pair) { tilt: Angle, player: Player ->

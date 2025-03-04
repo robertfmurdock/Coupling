@@ -39,11 +39,11 @@ val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
                 width = 62.px
             }
         }
-        players.forEach { player -> TopRowPlayer(player) }
+        players.forEach { player -> TopRowPlayer(player, key = player.id) }
     }
     div {
         className = heatmapSideRow
-        players.forEach { player -> SidePlayer(player) }
+        players.forEach { player -> SidePlayer(player, key = player.id) }
     }
     Heatmap(
         heatmapData,

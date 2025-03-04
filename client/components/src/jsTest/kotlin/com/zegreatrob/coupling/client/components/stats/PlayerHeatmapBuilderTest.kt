@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -12,10 +12,10 @@ class PlayerHeatmapBuilderTest {
     @Test
     fun hasRowOfPlayersToTheSide() = asyncSetup(object {
         val players = listOf(
-            defaultPlayer.copy(name = "harry"),
-            defaultPlayer.copy(name = "larry"),
-            defaultPlayer.copy(name = "curly"),
-            defaultPlayer.copy(name = "moe"),
+            stubPlayer().copy(name = "harry"),
+            stubPlayer().copy(name = "larry"),
+            stubPlayer().copy(name = "curly"),
+            stubPlayer().copy(name = "moe"),
         )
     }) exercise {
         render { PlayerHeatmap(players = players, heatmapData = emptyList()) }
@@ -31,10 +31,10 @@ class PlayerHeatmapBuilderTest {
     @Test
     fun hasRowOfPlayersAboveHeatmap() = asyncSetup(object {
         val players = listOf(
-            defaultPlayer.copy(name = "harry"),
-            defaultPlayer.copy(name = "larry"),
-            defaultPlayer.copy(name = "curly"),
-            defaultPlayer.copy(name = "moe"),
+            stubPlayer().copy(name = "harry"),
+            stubPlayer().copy(name = "larry"),
+            stubPlayer().copy(name = "curly"),
+            stubPlayer().copy(name = "moe"),
         )
     }) exercise {
         render { PlayerHeatmap(players = players, heatmapData = emptyList()) }
