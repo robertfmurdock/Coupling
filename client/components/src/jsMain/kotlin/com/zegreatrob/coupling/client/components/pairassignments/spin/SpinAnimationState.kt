@@ -160,4 +160,4 @@ private fun makePlaceholderPlayers(pairAssignmentDocument: PairAssignmentDocumen
     .take(pairAssignmentDocument.orderedPairedPlayers().count())
     .toList()
 
-private fun infinitePlaceholders() = generateSequence { placeholderPlayer }
+private fun infinitePlaceholders() = generateSequence(placeholderPlayer) { it.copy(id = it.id + "?") }

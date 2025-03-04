@@ -13,6 +13,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Fragment
 import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Display
@@ -85,10 +86,13 @@ private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) =
 private fun ChildrenBuilder.playerRoster(players: List<Player>) = div {
     asDynamic()["data-testid"] = "player-roster"
     players.forEach { player ->
-        if (player == placeholderPlayer) {
-            placeholderPlayerCard()
-        } else {
-            flippedPlayer(player, key = player.id)
+        Fragment {
+            key = player.id
+            if (player.id.startsWith("?")) {
+                placeholderPlayerCard()
+            } else {
+                flippedPlayer(player)
+            }
         }
     }
 }

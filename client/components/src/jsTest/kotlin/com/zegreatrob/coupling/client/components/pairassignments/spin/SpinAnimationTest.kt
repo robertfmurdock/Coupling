@@ -94,12 +94,8 @@ class SpinAnimationTest {
         } verify { result ->
             result.apply {
                 playersInRoster().assertIsEqualTo(players.map { it.id })
-                shownPairAssignments().assertIsEqualTo(
-                    listOf(
-                        listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
-                        listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
-                    ),
-                )
+                shownPairAssignments()
+                    .assertIsEqualTo(listOf("?-??", "???-????"))
             }
         }
 
@@ -142,12 +138,8 @@ class SpinAnimationTest {
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(firstAssignedPlayer.id)
             result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map { it.id })
-            result.shownPairAssignments().assertIsEqualTo(
-                listOf(
-                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
-                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
-                ),
-            )
+            result.shownPairAssignments()
+                .assertIsEqualTo(listOf("?-??", "???-????"))
         }
 
         @Test
@@ -164,7 +156,7 @@ class SpinAnimationTest {
             it.shownPairAssignments().assertIsEqualTo(
                 listOf(
                     pairAssignments.pairs[0].players.toList().joinToString("-", transform = Player::id),
-                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
+                    "?-??",
                 ),
             )
         }
@@ -187,12 +179,8 @@ class SpinAnimationTest {
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id)
             result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map(Player::id))
-            result.shownPairAssignments().assertIsEqualTo(
-                listOf(
-                    listOf(firstAssignedPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
-                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
-                ),
-            )
+            result.shownPairAssignments()
+                .assertIsEqualTo(listOf("${firstAssignedPlayer.id}-?", "??-???"))
         }
 
         @Test
