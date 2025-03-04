@@ -33,6 +33,7 @@ val ContributionLabelFilter by nfc<ContributionLabelFilterProps> { props ->
         }
         allLabels.map { label ->
             option {
+                key = label
                 value = label
                 +label
             }

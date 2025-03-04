@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import react.FC
@@ -24,8 +22,4 @@ val TiltedPlayerList = FC<TiltedPlayerListProps> { props ->
         val tilt = incrementSize * index - MAX_TILT_ANGLE
         +props.children(tilt.deg, player)
     }
-}
-
-fun basicPlayerCardRenderer(size: Int): (Angle, Player) -> ReactNode = { tilt: Angle, player: Player ->
-    PlayerCard.create(player, tilt = tilt, size = size, key = player.id)
 }

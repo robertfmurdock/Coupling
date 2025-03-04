@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.graphing.external.d3.array.D3Array
+import com.zegreatrob.coupling.client.components.graphing.external.d3.array.d3Array
 import com.zegreatrob.coupling.client.components.stats.ContributionControlPanelFrame
 import com.zegreatrob.coupling.client.components.stats.ContributionLabelFilter
 import com.zegreatrob.coupling.client.components.stats.EnumSelector
@@ -21,7 +22,6 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.h4
-import react.useEffect
 import react.useState
 import web.cssom.Display
 import web.cssom.em
@@ -48,9 +48,6 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
     val filteredContributions = selectedLabelFilter?.let { contributions.filter { it.label == selectedLabelFilter } }
         ?: contributions
-    val (d3Array, setD3Array) = useState<D3Array?>(null)
-    useEffect { setD3Array(com.zegreatrob.coupling.client.components.graphing.external.d3.array.d3Array.await()) }
-
     div {
         div {
             css { display = Display.inlineBlock }
@@ -81,33 +78,32 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
                             css {
                                 gridColumn = ident("1 / 3")
                             }
-                            if (d3Array != null) {
-                                h3 { +"Cycle Time Quantiles" }
+
+                            h3 { +"Cycle Time Quantiles" }
+                            div {
+                                css {
+                                    display = Display.grid
+                                    gridTemplateColumns = web.cssom.repeat(5, 1.fr)
+                                }
                                 div {
-                                    css {
-                                        display = Display.grid
-                                        gridTemplateColumns = web.cssom.repeat(5, 1.fr)
-                                    }
-                                    div {
-                                        h4 { +"90%" }
-                                        +"${cycleTimes.quantile(0.9, d3Array)}"
-                                    }
-                                    div {
-                                        h4 { +"75%" }
-                                        +"${cycleTimes.quantile(0.75, d3Array)}"
-                                    }
-                                    div {
-                                        h4 { +"50% (Median)" }
-                                        +"${cycleTimes.quantile(0.5, d3Array)}"
-                                    }
-                                    div {
-                                        h4 { +"25%" }
-                                        +"${cycleTimes.quantile(0.25, d3Array)}"
-                                    }
-                                    div {
-                                        h4 { +"10%" }
-                                        +"${cycleTimes.quantile(0.10, d3Array)}"
-                                    }
+                                    h4 { +"90%" }
+                                    +"${cycleTimes.quantile(0.9, d3Array)}"
+                                }
+                                div {
+                                    h4 { +"75%" }
+                                    +"${cycleTimes.quantile(0.75, d3Array)}"
+                                }
+                                div {
+                                    h4 { +"50% (Median)" }
+                                    +"${cycleTimes.quantile(0.5, d3Array)}"
+                                }
+                                div {
+                                    h4 { +"25%" }
+                                    +"${cycleTimes.quantile(0.25, d3Array)}"
+                                }
+                                div {
+                                    h4 { +"10%" }
+                                    +"${cycleTimes.quantile(0.10, d3Array)}"
                                 }
                             }
                         }

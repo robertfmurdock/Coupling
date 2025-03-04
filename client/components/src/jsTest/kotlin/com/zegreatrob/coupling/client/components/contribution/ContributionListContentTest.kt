@@ -36,7 +36,7 @@ class ContributionListContentTest {
         )
     } verify {
         contributions.forEach { contribution ->
-            screen.queryByText(contribution.id.asShortId())
+            screen.getByText(contribution.id.asShortId())
                 .assertIsNotEqualTo(null)
         }
     }

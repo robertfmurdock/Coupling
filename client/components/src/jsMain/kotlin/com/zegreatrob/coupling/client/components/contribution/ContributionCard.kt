@@ -81,7 +81,10 @@ val ContributionCard by nfc<ContributionCardProps> { props ->
                             alignItems = AlignItems.end
                         }
                         contribution.participantEmails.forEach { email ->
-                            div { +email }
+                            div {
+                                key = email
+                                +email
+                            }
                         }
                     }
                 }
@@ -117,18 +120,21 @@ private fun <T> ChildrenBuilder.showProperty(attributeName: String, value: T & A
 }
 
 private fun ChildrenBuilder.showProperty(attributeName: String, value: ChildrenBuilder.() -> Unit) {
-    div {
-        css { justifySelf = JustifySelf.left }
-        +"$attributeName:"
-    }
-    div {
-        css {
-            justifySelf = JustifySelf.right
-            display = Display.inlineFlex
-            maxWidth = 14.em
-            flexDirection = FlexDirection.column
-            alignItems = AlignItems.end
+    Fragment {
+        key = attributeName
+        div {
+            css { justifySelf = JustifySelf.left }
+            +"$attributeName:"
         }
-        +Fragment.create(value)
+        div {
+            css {
+                justifySelf = JustifySelf.right
+                display = Display.inlineFlex
+                maxWidth = 14.em
+                flexDirection = FlexDirection.column
+                alignItems = AlignItems.end
+            }
+            +Fragment.create(value)
+        }
     }
 }

@@ -37,6 +37,7 @@ val EnumSelector by nfc<EnumSelectorProps<Any>> { props ->
         }
         props.entries.map { entry ->
             option {
+                key = props.enumName(entry)
                 value = props.enumName(entry)
                 +props.enumName(entry)
             }

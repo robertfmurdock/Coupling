@@ -122,8 +122,9 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
             }
             TiltedPlayerList(playerList = contributionPlayerList) { tilt, player ->
                 span {
+                    key = player.id
                     onClick = { props.onPlayerClick?.invoke(player, it.currentTarget) }
-                    PlayerCard(player = player, tilt = tilt, size = 30, key = player.id)
+                    PlayerCard(player = player, tilt = tilt, size = 30)
                 }
             }
         }
