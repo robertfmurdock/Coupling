@@ -19,6 +19,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Fragment
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
@@ -118,7 +119,10 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
             }
             div {
                 pair.pinnedPlayers.toList().mapIndexed { index, player ->
-                    playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
+                    Fragment {
+                        key = player.player.id
+                        playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
+                    }
                 }
             }
 

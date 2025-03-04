@@ -152,6 +152,7 @@ private fun ChildrenBuilder.batchSelectButton(
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean,
 ) = CouplingButton {
+    key = text
     onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
     +text
 }
@@ -169,13 +170,13 @@ private fun ChildrenBuilder.pinSelector(
     }
     selectedPinsDiv {
         pins.selectByIds(pinSelections)
-            .map { pin ->
+            .forEach { pin ->
                 flippedPinButton(pin) { setPinSelections(pinSelections - pin.id) }
             }
     }
     deselectedPinsDiv {
         pins.removeByIds(pinSelections)
-            .map { pin ->
+            .forEach { pin ->
                 flippedPinButton(pin) { setPinSelections(pinSelections + pin.id) }
             }
     }
@@ -210,6 +211,7 @@ private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pi
 
 private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = Flipped {
     flipId = pin.id
+    key = pin.id
     div {
         key = pin.id
         css { display = Display.inlineBlock }
@@ -238,8 +240,9 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = Co
 private fun ChildrenBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
-) = playerSelections.map { (player, isSelected) ->
+) = playerSelections.forEach { (player, isSelected) ->
     div {
+        key = player.id
         css {
             paddingBottom = 30.px
             display = Display.inlineBlock
