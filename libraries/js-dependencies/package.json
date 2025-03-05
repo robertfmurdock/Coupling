@@ -33,7 +33,7 @@
     "babel-loader": "^10.0.0",
     "blueimp-md5": "^2.19.0",
     "body-parser": "^1.20.3",
-    "chromedriver": "133.0.3",
+    "chromedriver": "134.0.0",
     "cookie-parser": "^1.4.7",
     "core-js": "^3.41.0",
     "css-loader": "^7.1.2",
