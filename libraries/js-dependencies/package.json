@@ -29,7 +29,7 @@
     "@slack/web-api": "^7.8.0",
     "@slack/webhook": "^7.0.4",
     "@stripe/react-stripe-js": "^3.3.0",
-    "@stripe/stripe-js": "^5.8.0",
+    "@stripe/stripe-js": "^5.9.2",
     "babel-loader": "^10.0.0",
     "blueimp-md5": "^2.19.0",
     "body-parser": "^1.20.3",
