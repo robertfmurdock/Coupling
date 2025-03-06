@@ -57,6 +57,32 @@ class PinConfigE2ETest {
         }
     }
 
+    @Test
+    fun newlyCreatedPinCanBeEdited() = partySetup.with(
+        object : PartyContext() {
+            val newPinName = "Awesome pin name${randomInt()}"
+        }.attachParty(),
+    ) {
+        with(PinConfigPage) {
+            party.id.goToNew()
+            getNameTextField().setValue(newPinName)
+            saveButton().click()
+        }
+    } exercise {
+        with(PinConfigPage) {
+            waitForPinNameToAppear(newPinName, party.id)
+            pinBagButtons().first { it.text() == newPinName }
+                .click()
+            waitForPinNameToAppear(newPinName, party.id)
+        }
+    } verify {
+        val currentUrl = WebdriverBrowser.currentUrl()
+        currentUrl.toString().matches(Regex(".*/${party.id.value}/pin/.*"))
+            .assertIsEqualTo(true, "$currentUrl should be pin edit page")
+        currentUrl.toString().endsWith("new")
+            .assertIsEqualTo(false, "$currentUrl should have an id")
+    }
+
     private suspend fun PinConfigPage.waitForPinNameToAppear(
         newPinName: String,
         id: PartyId,
