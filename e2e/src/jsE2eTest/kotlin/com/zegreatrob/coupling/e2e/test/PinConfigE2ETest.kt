@@ -15,6 +15,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
+import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -23,7 +24,7 @@ class PinConfigE2ETest {
     companion object {
 
         private fun randomPin(nameExt: String = "") = Pin(
-            id = "${randomInt()}-pin",
+            id = "${randomInt()}-pin".toNotBlankString().getOrThrow(),
             icon = "icon-${randomInt()}",
             name = "name-${randomInt()}-$nameExt",
         )
@@ -102,7 +103,7 @@ class PinConfigE2ETest {
         ) {
             sdk.fire(SavePinCommand(party.id, pin))
         } exercise {
-            PinConfigPage.goTo(party.id, pin.id)
+            PinConfigPage.goTo(party.id, pin.id.toString())
         } verify {
             with(PinConfigPage) {
                 getNameTextField().attribute("value")
@@ -119,7 +120,7 @@ class PinConfigE2ETest {
             }.attachParty(),
         ) {
             sdk.fire(SavePinCommand(party.id, pin))
-            PinConfigPage.goTo(party.id, pin.id)
+            PinConfigPage.goTo(party.id, pin.id.toString())
         } exercise {
             retireButton().click()
             WebdriverBrowser.acceptAlert()

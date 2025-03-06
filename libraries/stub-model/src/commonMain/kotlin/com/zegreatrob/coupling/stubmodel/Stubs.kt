@@ -22,6 +22,7 @@ import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
+import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
@@ -77,7 +78,7 @@ fun stubPlayer() = Player(
 fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()
 
 var pinCounter = 1
-fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time", stubPinTarget())
+fun stubPin() = Pin(uuidString().toNotBlankString().getOrThrow(), "pin $pinCounter", "icon time", stubPinTarget())
     .also { pinCounter++ }
 
 var pinTargetCounter = 1

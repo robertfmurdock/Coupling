@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.coroutineScope
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -33,7 +34,7 @@ class RequestCombineEndpointTest {
                     callSignNoun = "Sauce",
                 ),
             )
-            val pinsToSave = listOf(Pin(Uuid.random().toString(), "1"))
+            val pinsToSave = listOf(Pin(Uuid.random().toString().toNotBlankString().getOrThrow(), "1"))
         }
     }) {
         sdk.fire(SavePartyCommand(party))

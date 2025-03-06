@@ -106,7 +106,7 @@ private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) 
     .toList()
     .map(PinnedCouplingPair::pins)
     .flatten()
-    .first { it.id == id }
+    .first { it.id.toString() == id }
 
 private fun NotEmptyList<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
     when {

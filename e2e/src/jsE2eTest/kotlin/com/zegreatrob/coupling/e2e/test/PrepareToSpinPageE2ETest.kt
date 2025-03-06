@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class PrepareToSpinPageE2ETest {
@@ -30,7 +31,7 @@ class PrepareToSpinPageE2ETest {
         private val pinPartySetup: TestTemplate<FullPartyData> = e2eSetup.extend(beforeAll = {
             val party = buildFunkyParty()
             val players = (1..5).map(Companion::buildPlayer)
-            val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest", name = "e2e-pin")
+            val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest".toNotBlankString().getOrThrow(), name = "e2e-pin")
             val sdk = sdk.await().apply {
                 fire(SavePartyCommand(party))
                 players.forEach { fire(SavePlayerCommand(party.id, it)) }

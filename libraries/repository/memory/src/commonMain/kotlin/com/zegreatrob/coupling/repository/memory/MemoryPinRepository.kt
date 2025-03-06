@@ -15,8 +15,7 @@ class MemoryPinRepository(
     TypeRecordSyntax<PartyElement<Pin>>,
     RecordBackend<PartyElement<Pin>> by recordBackend {
 
-    override suspend fun save(partyPin: PartyElement<Pin>) = partyPin.copy(element = with(partyPin.element) { copy(id = id) })
-        .record().save()
+    override suspend fun save(partyPin: PartyElement<Pin>) = partyPin.record().save()
 
     override suspend fun getPins(partyId: PartyId) = partyId.recordList()
         .filterNot { it.isDeleted }
@@ -37,5 +36,5 @@ class MemoryPinRepository(
     }
 
     private fun recordWithId(partyId: PartyId, pinId: String) = partyId.recordList()
-        .find { (data) -> data.pin.id == pinId }
+        .find { (data) -> data.pin.id.toString() == pinId }
 }

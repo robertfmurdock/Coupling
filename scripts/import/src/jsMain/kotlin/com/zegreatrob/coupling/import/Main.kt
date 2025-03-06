@@ -76,8 +76,12 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     }
     jsonLine.getArray("pinRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<GqlPinDetails>(recordJson).toModel()
-        tryToImport({ "Failed to save pin ${record.data.partyId} in party $partyId" }) {
-            catalog.pinRepository.saveRawRecord(record)
+        if (record == null) {
+            logger.warn { "Failed to parse pin: $recordJson" }
+        } else {
+            tryToImport({ "Failed to save pin ${record.data.partyId} in party $partyId" }) {
+                catalog.pinRepository.saveRawRecord(record)
+            }
         }
     }
     jsonLine.getArray("pairAssignmentRecords").forEach { recordJson ->

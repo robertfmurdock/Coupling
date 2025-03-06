@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.routing.pinId
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import kotools.types.text.toNotBlankString
 import kotlin.uuid.Uuid
 
 val PinPage = partyPageFunction { props, partyId ->
@@ -26,7 +27,9 @@ val PinPage = partyPageFunction { props, partyId ->
             party = result.party?.details?.data ?: return@CouplingQuery,
             boost = result.party?.boost?.data,
             pinList = pinList,
-            pin = pinList.firstOrNull { it.id == pinId } ?: Pin(id = Uuid.random().toString()),
+            pin = pinList.firstOrNull { it.id.toString() == pinId } ?: Pin(
+                id = Uuid.random().toString().toNotBlankString().getOrThrow(),
+            ),
             reload = reload,
             dispatchFunc = commandFunc,
         )

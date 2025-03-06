@@ -18,10 +18,10 @@ fun PinnedCouplingPair.toSerializableInput() = GqlPinnedPairInput(
 
 fun GqlPinnedPair.toModel() = PinnedCouplingPair(
     pinnedPlayers = players.map(GqlPinnedPlayer::toModel).toNotEmptyList().getOrThrow(),
-    pins = pins.map(GqlPin::toModel).toSet(),
+    pins = pins.mapNotNull(GqlPin::toModel).toSet(),
 )
 
 fun GqlPinnedPairInput.toModel() = PinnedCouplingPair(
     pinnedPlayers = players.map(GqlPinnedPlayerInput::toModel).toNotEmptyList().getOrThrow(),
-    pins = pins.map(GqlPinInput::toModel).toSet(),
+    pins = pins.mapNotNull(GqlPinInput::toModel).toSet(),
 )

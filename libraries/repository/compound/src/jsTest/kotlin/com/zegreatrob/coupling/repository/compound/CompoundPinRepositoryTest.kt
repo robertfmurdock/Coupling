@@ -49,7 +49,7 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
     @Test
     fun deleteWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
         compoundRepo.save(partyId.with(pin))
-        compoundRepo.deletePin(partyId, pin.id!!)
+        compoundRepo.deletePin(partyId, pin.id.toString())
     } verify {
         repository2.getPins(partyId).map { it.data.pin }.find { it.id == pin.id }
             .assertIsEqualTo(null)

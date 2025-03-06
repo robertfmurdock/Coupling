@@ -14,6 +14,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import kotools.types.text.toNotBlankString
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML
@@ -46,7 +47,7 @@ external interface PartyCardProps : Props {
     var boost: Boost?
 }
 
-private val boostPin = Pin(name = "Boost!", icon = "fa-bolt-lightning")
+private val boostPin = Pin(id = "fake".toNotBlankString().getOrThrow(), name = "Boost!", icon = "fa-bolt-lightning")
 
 @ReactFunc
 val PartyCard by nfc<PartyCardProps> { props ->

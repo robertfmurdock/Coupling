@@ -127,7 +127,7 @@ interface ServerSpinCommandDispatcher<out D> :
     private fun selectedPlayersMap(players: List<Player>, playerIds: NotEmptyList<String>) = playerIds.toList()
         .associateWith { id -> players.find { player -> player.id == id } }
 
-    private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
+    private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains("${it.id}") }
 
     private suspend fun PartyIntegration.sendMessage(pairs: PairAssignmentDocument, partyId: PartyId): String? {
         val team = slackTeam ?: return null

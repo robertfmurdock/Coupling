@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
+import kotools.types.text.toNotBlankString
 
 val savePinResolver = dispatch(
     dispatcherFunc = requiredInput { request, _: JsonNull, args: GqlSavePinInput ->
@@ -22,10 +23,14 @@ val savePinResolver = dispatch(
     toSerializable = { true },
 )
 
-private fun GqlSavePinInput.toCommand() = SavePinCommand(PartyId(partyId), toPin())
+private fun GqlSavePinInput.toCommand(): SavePinCommand? {
+    return SavePinCommand(PartyId(partyId), toPin() ?: return null)
+}
 
-private fun GqlSavePinInput.toPin() = Pin(
-    id = pinId ?: "",
-    name = name,
-    icon = icon,
-)
+private fun GqlSavePinInput.toPin(): Pin? {
+    return Pin(
+        id = pinId?.toNotBlankString()?.getOrNull() ?: return null,
+        name = name,
+        icon = icon,
+    )
+}

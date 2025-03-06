@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import kotools.types.collection.toNotEmptyList
+import kotools.types.text.NotBlankString
 import react.Props
 import react.router.useNavigate
 import react.useState
@@ -29,7 +30,7 @@ external interface PrepareSpinProps : Props {
 @ReactFunc
 val PrepareSpin by nfc<PrepareSpinProps> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
     var playerSelections by useState(defaultSelections(players, currentPairsDoc))
-    var pinSelections by useState(pins.map(Pin::id))
+    var pinSelections by useState(pins.map(Pin::id).map(NotBlankString::toString))
     val navigate = useNavigate()
     val selectedPlayerIds = playerSelections.selectedPlayerIds().toNotEmptyList().getOrNull()
     PrepareSpinContent(
@@ -43,7 +44,7 @@ val PrepareSpin by nfc<PrepareSpinProps> { (party, players, currentPairsDoc, pin
             null
         } else {
             dispatchFunc {
-                fire(SpinCommand(party.id, selectedPlayerIds, pinSelections.filterNotNull()))
+                fire(SpinCommand(party.id, selectedPlayerIds, pinSelections))
                 navigate(party.newPairAssignmentsPath())
             }
         },
@@ -58,8 +59,7 @@ private fun isInLastSetOfPairs(player: Player, currentPairsDoc: PairAssignmentDo
     ?.pairs
     ?.flatMap(PinnedCouplingPair::players)
     ?.map(Player::id)
-    ?.contains(player.id)
-    ?: false
+    ?.contains(player.id) == true
 
 private fun List<Pair<Player, Boolean>>.selectedPlayerIds() = filter { (_, isSelected) -> isSelected }
     .map { it.first.id }

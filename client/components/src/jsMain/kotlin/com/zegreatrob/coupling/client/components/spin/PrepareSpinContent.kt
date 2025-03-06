@@ -177,13 +177,13 @@ private fun ChildrenBuilder.pinSelector(
     selectedPinsDiv {
         pins.selectByIds(pinSelections)
             .forEach { pin ->
-                flippedPinButton(pin) { setPinSelections(pinSelections - pin.id) }
+                flippedPinButton(pin) { setPinSelections(pinSelections - pin.id.toString()) }
             }
     }
     deselectedPinsDiv {
         pins.removeByIds(pinSelections)
             .forEach { pin ->
-                flippedPinButton(pin) { setPinSelections(pinSelections + pin.id) }
+                flippedPinButton(pin) { setPinSelections(pinSelections + pin.id.toString()) }
             }
     }
 }
@@ -211,15 +211,15 @@ private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Un
     children()
 }
 
-private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it.id) }
+private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it.id.toString()) }
 
-private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pinSelections.contains(it.id) }
+private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pinSelections.contains(it.id.toString()) }
 
 private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = Flipped {
-    flipId = pin.id
-    key = pin.id
+    flipId = pin.id.toString()
+    key = pin.id.toString()
     div {
-        key = pin.id
+        key = pin.id.toString()
         css { display = Display.inlineBlock }
         PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick)
     }

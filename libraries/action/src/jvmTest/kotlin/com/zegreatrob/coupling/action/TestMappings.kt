@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.Instant
 import kotools.types.collection.toNotEmptyList
+import kotools.types.text.toNotBlankString
 
 val mapper = ObjectMapper()
 
@@ -51,7 +52,7 @@ private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
     val players = playerArray.map { playerNode ->
         playerNode.toPlayer()
             .withPins(
-                playerNode["pins"].map { pinNode ->
+                playerNode["pins"].mapNotNull { pinNode ->
                     pinNode.toPin()
                 },
             )
@@ -61,10 +62,12 @@ private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
     )
 }
 
-private fun JsonNode.toPin() = Pin(
-    id = this["id"].textValue(),
-    name = this["name"].textValue(),
-)
+private fun JsonNode.toPin(): Pin? {
+    return Pin(
+        id = this["id"].textValue().toNotBlankString().getOrNull() ?: return null,
+        name = this["name"].textValue(),
+    )
+}
 
 private fun JsonNode.toPlayer() = defaultPlayer.copy(
     id = this["id"].textValue(),

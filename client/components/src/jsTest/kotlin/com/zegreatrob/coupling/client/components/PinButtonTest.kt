@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.pin.PinButton
-import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -13,7 +13,7 @@ class PinButtonTest {
 
     @Test
     fun whenGivenPinWithSimpleIconWillUseStandardFontAwesomeTag() = setup(object {
-        val pin = Pin(icon = "angry")
+        val pin = stubPin().copy(icon = "angry")
     }) exercise {
         render { PinButton(pin, onClick = {}) }
     } verify { wrapper ->
@@ -23,7 +23,7 @@ class PinButtonTest {
 
     @Test
     fun whenGivenPinWithAlreadyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
-        val pin = Pin(icon = "fa-angry")
+        val pin = stubPin().copy(icon = "fa-angry")
     }) exercise {
         render { PinButton(pin, onClick = {}) }
     } verify { wrapper ->
@@ -33,7 +33,7 @@ class PinButtonTest {
 
     @Test
     fun whenGivenPinWithFullyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
-        val pin = Pin(icon = "far fa-angry")
+        val pin = stubPin().copy(icon = "far fa-angry")
     }) exercise {
         render { PinButton(pin, onClick = {}) }
     } verify { wrapper ->

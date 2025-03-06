@@ -43,7 +43,7 @@ fun GqlPinnedPlayer.toModel() = PinnedPlayer(
         avatarType = avatarType?.toModel(),
         additionalEmails = unvalidatedEmails?.toSet() ?: emptySet(),
     ),
-    pins = pins.map(GqlPin::toModel),
+    pins = pins.mapNotNull(GqlPin::toModel),
 )
 
 fun GqlPinnedPlayerInput.toModel() = PinnedPlayer(
@@ -58,5 +58,5 @@ fun GqlPinnedPlayerInput.toModel() = PinnedPlayer(
         avatarType = avatarType?.toModel(),
         additionalEmails = unvalidatedEmails.toSet(),
     ),
-    pins = pins.map(GqlPinInput::toModel),
+    pins = pins.mapNotNull(GqlPinInput::toModel),
 )

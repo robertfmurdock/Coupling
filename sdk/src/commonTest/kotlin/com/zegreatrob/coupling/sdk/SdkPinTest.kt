@@ -88,7 +88,7 @@ class SdkPinTest {
         }
     }) exercise {
         pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
-        sdk.fire(DeletePinCommand(party.id, this.pins[1].id))
+        sdk.fire(DeletePinCommand(party.id, this.pins[1].id.toString()))
     } verifyWithWait {
         sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party
@@ -99,34 +99,6 @@ class SdkPinTest {
             .assertContains(this.pins[2])
             .size
             .assertIsEqualTo(2)
-    }
-
-    @Test
-    fun saveWorksWithEmptyValuesAndAssignsIds() = partySetup.with({
-        object {
-            val sdk = it.sdk
-            val partyId = it.party.id
-            val pin = Pin(
-                id = "",
-                name = "",
-                icon = "",
-            )
-        }
-    }) exercise {
-        sdk.fire(SavePinCommand(partyId, pin))
-    } verifyWithWait {
-        sdk.fire(graphQuery { party(partyId) { pinList() } })
-            ?.party
-            ?.pinList
-            .let { it ?: emptyList() }
-            .map { it.data.pin }
-            .also { it.assertHasIds() }
-            .map { it.copy(id = "") }
-            .assertIsEqualTo(listOf(this.pin))
-    }
-
-    private fun List<Pin>.assertHasIds() {
-        forEach { pin -> pin.id.assertIsNotEqualTo(null) }
     }
 
     @Test

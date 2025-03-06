@@ -64,7 +64,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
                 ?.mapNotNull { pinnedPlayerJson -> pinnedPlayerJson.toPinnedPlayer() }
                 ?.toNotEmptyList()?.getOrNull() ?: return null,
             pins = pair.getDynamoListValue("pins")
-                ?.map { pinJson -> pinJson.toPin() }
+                ?.mapNotNull { pinJson -> pinJson.toPin() }
                 ?.toSet()
                 ?: emptySet(),
         )

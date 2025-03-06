@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.client.components.player.singleRouteRouter
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
@@ -23,9 +23,9 @@ import kotlin.test.Test
 class PinConfigEditorTest {
 
     @Test
-    fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
+    fun whenGivenPinIsNotInListWillNotShowDeleteButton() = setup(object {
         val party = PartyDetails(PartyId(""))
-        val pin = Pin(id = "")
+        val pin = stubPin()
     }) exercise {
         render(
             RouterProvider.create {
@@ -46,9 +46,9 @@ class PinConfigEditorTest {
     }
 
     @Test
-    fun whenGivenPinHasIdWillShowDeleteButton() = setup(object {
+    fun whenGivenPinIsInListWillShowDeleteButton() = setup(object {
         val party = PartyDetails(PartyId(""))
-        val pin = Pin(id = "excellent id")
+        val pin = stubPin()
     }) exercise {
         render(
             RouterProvider.create {
@@ -57,7 +57,7 @@ class PinConfigEditorTest {
                         party = party,
                         boost = null,
                         pin = pin,
-                        pinList = emptyList(),
+                        pinList = listOf(pin),
                         reload = {},
                         dispatchFunc = DispatchFunc { {} },
                     )
@@ -72,7 +72,7 @@ class PinConfigEditorTest {
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = asyncSetup(object {
         val party = PartyDetails(PartyId("dumb party"))
-        val pin = Pin(id = "", name = "")
+        val pin = stubPin().copy(name = "", icon = "")
         val newName = "pin new name"
         val newIcon = "pin new icon"
 
@@ -99,6 +99,6 @@ class PinConfigEditorTest {
         act { fireEvent.submit(screen.getByRole("form")) }
     } verify {
         stubDispatcher.receivedActions
-            .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
+            .assertIsEqualTo(listOf(SavePinCommand(party.id, pin.copy(name = newName, icon = newIcon))))
     }
 }

@@ -51,7 +51,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
         clock.currentTime = updatedSaveTime
         repository.save(partyId.with(updatedPin))
         clock.currentTime = updatedSaveTime2
-        repository.deletePin(partyId, pin.id!!)
+        repository.deletePin(partyId, pin.id.toString())
     } verifyWithWait {
         repository.getPinRecords(partyId)
             .assertContains(Record(partyId.with(pin), user.email, false, initialSaveTime))

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.json.GqlSavePinInput
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
@@ -19,9 +20,9 @@ interface SdkSavePinCommandDispatcher :
     }
 }
 
-private fun PartyElement<Pin>.savePinInput() = mapOf(
-    "partyId" to partyId.value,
-    "pinId" to element.id,
-    "icon" to element.icon,
-    "name" to element.name,
+private fun PartyElement<Pin>.savePinInput() = GqlSavePinInput(
+    partyId = partyId.value,
+    pinId = element.id.toString(),
+    icon = element.icon,
+    name = element.name,
 )

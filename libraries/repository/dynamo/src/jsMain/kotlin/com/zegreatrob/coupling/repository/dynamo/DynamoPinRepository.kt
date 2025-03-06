@@ -28,23 +28,19 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         override val tableName = "PIN"
     }
 
-    override suspend fun save(partyPin: PartyElement<Pin>) = performPutItem(
-        partyPin.copy(element = with(partyPin.element) { copy(id = id) })
-            .toRecord()
-            .asDynamoJson(),
-    )
+    override suspend fun save(partyPin: PartyElement<Pin>) = performPutItem(partyPin.toRecord().asDynamoJson())
 
     suspend fun saveRawRecord(record: PartyRecord<Pin>) = performPutItem(
         record.asDynamoJson(),
     )
 
-    override suspend fun getPins(partyId: PartyId) = partyId.queryForItemList().map {
+    override suspend fun getPins(partyId: PartyId) = partyId.queryForItemList().mapNotNull {
         it.toRecord()
     }
 
-    private fun Json.toRecord(): Record<PartyElement<Pin>> {
+    private fun Json.toRecord(): Record<PartyElement<Pin>>? {
         val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)
-        val pin = toPin()
+        val pin = toPin() ?: return null
         return toRecord(partyId.with(pin))
     }
 
@@ -58,8 +54,8 @@ class DynamoPinRepository private constructor(override val userId: String, overr
 
     suspend fun getPinRecords(partyId: PartyId) = partyId.logAsync("itemList") {
         queryAllRecords(partyId.itemListQueryParams())
-    }.map {
-        val pin = it.toPin()
+    }.mapNotNull {
+        val pin = it.toPin() ?: return@mapNotNull null
         it.toRecord(partyId.with(pin))
     }
 }

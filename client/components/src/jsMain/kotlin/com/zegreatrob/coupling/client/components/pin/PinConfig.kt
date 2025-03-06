@@ -38,17 +38,17 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
     val (party, boost, pin, pinList, reload, dispatchFunc) = props
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
-    val updatedPin = values.fromJsonDynamic<GqlPin>().toModel()
+    val updatedPin = values.fromJsonDynamic<GqlPin>().toModel() ?: pin
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSubmit = dispatchFunc {
         fire(SavePinCommand(party.id, updatedPin))
         reload()
     }
-    val onRemove = if (pin.id.isBlank()) {
+    val onRemove = if (!pinList.contains(pin)) {
         null
     } else {
         dispatchFunc {
-            fire(DeletePinCommand(party.id, pin.id))
+            fire(DeletePinCommand(party.id, pin.id.toString()))
             setRedirectUrl(party.id.pinListPath())
         }.requireConfirmation("Are you sure you want to delete this pin?")
     }

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.voidResult
+import com.zegreatrob.coupling.json.GqlDeletePinInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
@@ -17,4 +18,7 @@ interface SdkDeletePinCommandDispatcher :
 }
 
 private fun passThrough(it: Boolean?): Boolean? = it
-private fun deletePinInput(partyId: PartyId, pinId: String) = mapOf("partyId" to partyId.value, "pinId" to pinId)
+private fun deletePinInput(partyId: PartyId, pinId: String) = GqlDeletePinInput(
+    partyId = partyId.value,
+    pinId = pinId,
+)
