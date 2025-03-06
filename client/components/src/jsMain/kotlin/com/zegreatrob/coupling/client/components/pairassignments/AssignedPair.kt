@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
-import com.zegreatrob.coupling.client.components.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.components.pin.PIN_DRAG_ITEM_TYPE
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.player.PlayerCard
@@ -177,7 +176,7 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNo
     div {
         css {
             display = Display.inlineBlock
-            if (player == placeholderPlayer) {
+            if (player.id.contains("?")) {
                 visibility = Visibility.hidden
             }
         }

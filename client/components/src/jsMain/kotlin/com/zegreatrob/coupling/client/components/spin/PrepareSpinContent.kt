@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
+import com.zegreatrob.coupling.client.components.pairassignments.PinReminder
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.pin.PinButton
 import com.zegreatrob.coupling.client.components.pin.PinButtonScale
@@ -90,6 +91,11 @@ val PrepareSpinContent by nfc<PrepareSpinContentProps> { props ->
                             h2 { +"Also, Pins." }
                             +"Tap any pin to skip."
                             pinSelector(pinSelections, setPinSelections, pins)
+                        }
+                    } else {
+                        div {
+                            css { width = 20.em }
+                            PinReminder()
                         }
                     }
                 }

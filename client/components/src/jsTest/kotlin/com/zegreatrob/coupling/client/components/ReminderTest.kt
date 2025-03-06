@@ -32,7 +32,7 @@ class ReminderTest {
     fun willNotShowReminderWhenLocalStorageHasRecentEntry() = asyncSetup(object {
         val reminderId = uuidString()
     }) {
-        localStorage.setItem("reminder-$reminderId", Clock.System.now().toString())
+        localStorage.setItem("coupling:reminder:$reminderId", Clock.System.now().toString())
     } exercise {
         render { Reminder(id = reminderId) { +"The Content" } }
     } verify {
@@ -46,7 +46,7 @@ class ReminderTest {
     }) {
         val now = Clock.System.now()
         val twoWeeksAgo = now - 14.days - 1.milliseconds
-        localStorage.setItem("reminder-$reminderId", twoWeeksAgo.toString())
+        localStorage.setItem("coupling:reminder:$reminderId", twoWeeksAgo.toString())
     } exercise {
         render { Reminder(id = reminderId) { +"The Content" } }
     } verify {
@@ -63,7 +63,7 @@ class ReminderTest {
     } exercise {
         actor.click(screen.getByRole("button", RoleOptions(name = "Close")))
     } verify {
-        localStorage.getItem("reminder-$reminderId")
+        localStorage.getItem("coupling:reminder:$reminderId")
             ?.let { Instant.parse(it) }
             ?.let { Clock.System.now() - it < 300.milliseconds }
             .assertIsEqualTo(true, "should have written time close to now")
