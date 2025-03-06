@@ -19,6 +19,7 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.external.reactTestingLibrary
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.jso
 import kotlinx.datetime.Clock
@@ -35,7 +36,7 @@ class PrepareSpinTest {
     private val prepareSetup = asyncTestTemplate(
         sharedSetup = suspend {
             val matchFunc = js.globals.globalThis["window"].asDynamic().matchMedia
-            js.globals.globalThis["window"].asDynamic()["matchMedia"] = fun () {}
+            js.globals.globalThis["window"].asDynamic()["matchMedia"] = fun() {}
             object {
                 val matchFunc = matchFunc
             }
@@ -70,6 +71,33 @@ class PrepareSpinTest {
             ?.map { it as? HTMLElement }
             ?.firstOrNull()
             .assertIsNotEqualTo(null)
+    }
+
+    @Test
+    fun whenMultipleSelectedPinsAreClickedWillDeselectAll() = prepareSetup(object {
+        val user = UserEvent.setup()
+        val party = stubPartyDetails()
+        val players = emptyList<Player>()
+        val pins = listOf(stubPin(), stubPin())
+        val firstPin = pins[0]
+        val wrapper = render(jso { wrapper = TestRouter }) {
+            PrepareSpin(party, players, null, pins, { {} })
+        }
+    }) exercise {
+        wrapper.container.querySelector(".$selectedPinsClass")
+            ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
+            ?.asList()
+            ?.map { it as? HTMLElement }
+            ?.forEach { user.click(it) }
+    } verify {
+        reactTestingLibrary.waitFor {
+            wrapper.container.querySelector(".$deselectedPinsClass")
+                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+                ?.asList()
+                ?.map { it as? HTMLElement }
+                ?.size
+                .assertIsEqualTo(pins.size)
+        }
     }
 
     @Test

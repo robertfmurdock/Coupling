@@ -30,7 +30,7 @@ external interface PrepareSpinProps : Props {
 @ReactFunc
 val PrepareSpin by nfc<PrepareSpinProps> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
     var playerSelections by useState(defaultSelections(players, currentPairsDoc))
-    var pinSelections by useState(pins.map(Pin::id).map(NotBlankString::toString))
+    val (pinSelections, setPinSelections) = useState(pins.map(Pin::id).map(NotBlankString::toString))
     val navigate = useNavigate()
     val selectedPlayerIds = playerSelections.selectedPlayerIds().toNotEmptyList().getOrNull()
     PrepareSpinContent(
@@ -39,7 +39,9 @@ val PrepareSpin by nfc<PrepareSpinProps> { (party, players, currentPairsDoc, pin
         pins = pins,
         pinSelections = pinSelections,
         setPlayerSelections = { playerSelections = it },
-        setPinSelections = { pinSelections = it },
+        selectPin = { pinId: String, selected: Boolean ->
+            setPinSelections { if (selected) it + pinId else it - pinId }
+        },
         onSpin = if (selectedPlayerIds == null) {
             null
         } else {

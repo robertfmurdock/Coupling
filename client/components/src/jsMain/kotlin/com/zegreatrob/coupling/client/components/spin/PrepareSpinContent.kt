@@ -49,13 +49,13 @@ external interface PrepareSpinContentProps : Props {
     var pins: List<Pin>
     var pinSelections: List<String>
     var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-    var setPinSelections: (List<String>) -> Unit
+    var selectPin: (String, Boolean) -> Unit
     var onSpin: (() -> Unit)?
 }
 
 @ReactFunc
 val PrepareSpinContent by nfc<PrepareSpinContentProps> { props ->
-    val (party, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
+    val (party, playerSelections, pins, pinSelections, setPlayerSelections, selectPin, onSpin) = props
 
     div {
         PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2")) {
@@ -90,7 +90,7 @@ val PrepareSpinContent by nfc<PrepareSpinContentProps> { props ->
                             h1 { br {} }
                             h2 { +"Also, Pins." }
                             +"Tap any pin to skip."
-                            pinSelector(pinSelections, setPinSelections, pins)
+                            pinSelector(pinSelections, selectPin, pins)
                         }
                     } else {
                         div {
@@ -165,7 +165,7 @@ private fun ChildrenBuilder.batchSelectButton(
 
 private fun ChildrenBuilder.pinSelector(
     pinSelections: List<String>,
-    setPinSelections: (List<String>) -> Unit,
+    selectPin: (String, Boolean) -> Unit,
     pins: List<Pin>,
 ) = Flipper {
     flipKey = pinSelections.generateFlipKey()
@@ -177,13 +177,13 @@ private fun ChildrenBuilder.pinSelector(
     selectedPinsDiv {
         pins.selectByIds(pinSelections)
             .forEach { pin ->
-                flippedPinButton(pin) { setPinSelections(pinSelections - pin.id.toString()) }
+                flippedPinButton(pin) { selectPin(pin.id.toString(), false) }
             }
     }
     deselectedPinsDiv {
         pins.removeByIds(pinSelections)
             .forEach { pin ->
-                flippedPinButton(pin) { setPinSelections(pinSelections + pin.id.toString()) }
+                flippedPinButton(pin) { selectPin(pin.id.toString(), true) }
             }
     }
 }
