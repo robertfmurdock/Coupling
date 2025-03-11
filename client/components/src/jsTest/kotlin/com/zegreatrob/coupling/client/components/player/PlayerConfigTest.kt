@@ -12,8 +12,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
-import com.zegreatrob.coupling.model.player.PlayerId
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -49,7 +47,7 @@ class PlayerConfigTest {
     @Test
     fun selectingAvatarTypeWillAffectSavedPlayer() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = PlayerId.new())
+        val player = stubPlayer()
         val actor = UserEvent.setup()
         val stubDispatcher = StubDispatcher()
     }) {
@@ -84,7 +82,7 @@ class PlayerConfigTest {
     @Test
     fun deselectingAvatarTypeWillRemoveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = PlayerId.new(), avatarType = AvatarType.Retro)
+        val player = stubPlayer().copy(avatarType = AvatarType.Retro)
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -118,7 +116,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = PlayerId.new())
+        val player = stubPlayer()
     }) exercise {
         render(
             RouterProvider.create {
@@ -144,7 +142,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = PlayerId.new(), badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate.value)
     }) exercise {
         render(
             RouterProvider.create {
@@ -170,7 +168,11 @@ class PlayerConfigTest {
     @Test
     fun canAddAdditionalEmailFieldAndSaveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = PlayerId.new(), email = "blarg@heh.io", avatarType = AvatarType.Multiavatar)
+        val player = stubPlayer().copy(
+            email = "blarg@heh.io",
+            additionalEmails = emptySet(),
+            avatarType = AvatarType.Multiavatar,
+        )
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
         val secondEmail = uuidString()
@@ -181,7 +183,7 @@ class PlayerConfigTest {
                     PlayerConfig(
                         party = party,
                         player = player,
-                        players = emptyList(),
+                        players = listOf(player),
                         reload = {},
                         dispatchFunc = stubDispatcher.func(),
                     )
@@ -204,7 +206,7 @@ class PlayerConfigTest {
     @Test
     fun canAddAdditionalEmailFieldAndSavingItBlankDoesNotSaveBlank() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = PlayerId.new(), email = "blarg@heh.io", avatarType = AvatarType.Multiavatar)
+        val player = stubPlayer().copy(email = "blarg@heh.io", avatarType = AvatarType.Multiavatar)
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -232,7 +234,7 @@ class PlayerConfigTest {
     @Test
     fun noAdditionalEmailFieldsAreShownByDefault() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = PlayerId.new(), avatarType = AvatarType.Retro)
+        val player = stubPlayer().copy(avatarType = AvatarType.Retro, additionalEmails = emptySet())
         val stubDispatcher = StubDispatcher()
     }) exercise {
         render(
@@ -256,7 +258,7 @@ class PlayerConfigTest {
     @Test
     fun submitWillSaveAndReload() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = defaultPlayer.copy(id = PlayerId.new(), badge = Badge.Default.value)
+        val player = stubPlayer().copy(name = "", badge = Badge.Default.value)
         val reloaderSpy = SpyData<Unit, Unit>()
         val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
@@ -267,7 +269,7 @@ class PlayerConfigTest {
                     PlayerConfig(
                         party = party,
                         player = player,
-                        players = emptyList(),
+                        players = listOf(player),
                         reload = { reloaderSpy.spyFunction() },
                         dispatchFunc = altStubDispatcher.func(),
                     )
@@ -291,7 +293,7 @@ class PlayerConfigTest {
         }
         val pathSetterSpy = SpyData<String, Unit>()
         val party = PartyDetails(PartyId("party"))
-        val player = defaultPlayer.copy(PlayerId.new(), badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate.value)
         val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {

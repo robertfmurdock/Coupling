@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.player.callsign.GenerateCallSignAction
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.setup
@@ -54,7 +54,7 @@ class GenerateCallSignActionTest {
         val nouns = setOf("Lion", "Tiger", "Bear")
         val email = "robert.f.murdock@accenture.com"
         val normalGeneratedCallSign = CallSign("Green", "Bear")
-        val players = listOf(defaultPlayer.copy(callSignAdjective = normalGeneratedCallSign.adjective))
+        val players = listOf(stubPlayer().copy(callSignAdjective = normalGeneratedCallSign.adjective))
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)
     }) exercise {
@@ -69,7 +69,7 @@ class GenerateCallSignActionTest {
         val nouns = setOf("Lion", "Tiger", "Bear")
         val email = "robert.f.murdock@accenture.com"
         val normalGeneratedCallSign = CallSign("Green", "Bear")
-        val players = listOf(defaultPlayer.copy(callSignNoun = normalGeneratedCallSign.noun))
+        val players = listOf(stubPlayer().copy(callSignNoun = normalGeneratedCallSign.noun))
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)
     }) exercise {
@@ -84,9 +84,9 @@ class GenerateCallSignActionTest {
         val nouns = setOf("Lion", "Tiger", "Bear")
         val email = "robert.f.murdock@accenture.com"
         val players = listOf(
-            defaultPlayer.copy(callSignAdjective = "Red", callSignNoun = "Lion"),
-            defaultPlayer.copy(callSignAdjective = "Green", callSignNoun = "Tiger"),
-            defaultPlayer.copy(callSignAdjective = "Blue", callSignNoun = "Bear"),
+            stubPlayer().copy(callSignAdjective = "Red", callSignNoun = "Lion"),
+            stubPlayer().copy(callSignAdjective = "Green", callSignNoun = "Tiger"),
+            stubPlayer().copy(callSignAdjective = "Blue", callSignNoun = "Bear"),
         )
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)

@@ -20,7 +20,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
@@ -217,10 +216,10 @@ class GameExamplesTest {
             PartyId("Avengers"),
             PairingRule.PreferDifferentBadge,
         )
-        val kamala = defaultPlayer.copy(badge = 0, name = "Ms. Marvel")
-        val logan = defaultPlayer.copy(badge = 1, name = "Wolverine")
-        val steve = defaultPlayer.copy(badge = 1, name = "Captain America")
-        val thor = defaultPlayer.copy(badge = 1, name = "Thor")
+        val kamala = stubPlayer().copy(badge = 0, name = "Ms. Marvel")
+        val logan = stubPlayer().copy(badge = 1, name = "Wolverine")
+        val steve = stubPlayer().copy(badge = 1, name = "Captain America")
+        val thor = stubPlayer().copy(badge = 1, name = "Thor")
         val allPlayers = notEmptyListOf(kamala, logan, steve, thor)
 
         val history = listOf(

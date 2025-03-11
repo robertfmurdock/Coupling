@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.stats.spinsUntilFullRotation
 import com.zegreatrob.coupling.model.player.PlayerId
-import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotools.types.text.toNotBlankString
@@ -14,7 +14,7 @@ class CalculateFullRotationTest {
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
             .map { number -> makePlayer("$number") }
 
-        private fun makePlayer(id: String) = defaultPlayer.copy(id = PlayerId(id.toNotBlankString().getOrThrow()))
+        private fun makePlayer(id: String) = stubPlayer().copy(id = PlayerId(id.toNotBlankString().getOrThrow()))
     }
 
     @Test

@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.player.PlayerId
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
@@ -246,7 +245,7 @@ class SdkPlayerTest {
         object {
             val sdk = it.sdk
             val party = it.party
-            val player = defaultPlayer.copy(
+            val player = stubPlayer().copy(
                 name = "",
                 email = "",
                 callSignAdjective = "1",

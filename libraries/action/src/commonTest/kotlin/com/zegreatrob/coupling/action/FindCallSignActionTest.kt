@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -17,8 +17,8 @@ class FindCallSignActionTest {
     @Test
     fun withSimpleSetupWillReturnCallSign() = setup(object {
         val players = listOf(
-            defaultPlayer.copy(callSignAdjective = "Modest", callSignNoun = "Tiger"),
-            defaultPlayer.copy(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
+            stubPlayer().copy(callSignAdjective = "Modest", callSignNoun = "Tiger"),
+            stubPlayer().copy(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
         )
     }) exercise {
         perform(FindCallSignAction(players, EMAIL))
@@ -29,7 +29,7 @@ class FindCallSignActionTest {
     @Test
     fun givenNoCollisionTheNumberOfUsedCallSignsWillNotAffectTheGeneratedResult() = setup(object {
         val players = listOf(
-            defaultPlayer.copy(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
+            stubPlayer().copy(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
         )
     }) exercise {
         perform(FindCallSignAction(players, EMAIL))
@@ -40,7 +40,7 @@ class FindCallSignActionTest {
     @Test
     fun whenTheAdjectiveIsAlreadyUsedAnotherOneWillBeGenerated() = setup(object {
         val players = listOf(
-            defaultPlayer.copy(
+            stubPlayer().copy(
                 callSignAdjective = expectedCallSign.adjective,
                 callSignNoun = "Mongoose",
                 avatarType = null,
@@ -60,7 +60,7 @@ class FindCallSignActionTest {
     @Test
     fun whenTheNounIsAlreadyUsedAnotherOneWillBeGenerated() = setup(object {
         val players = listOf(
-            defaultPlayer.copy(
+            stubPlayer().copy(
                 callSignAdjective = "Intense",
                 callSignNoun = expectedCallSign.noun,
             ),

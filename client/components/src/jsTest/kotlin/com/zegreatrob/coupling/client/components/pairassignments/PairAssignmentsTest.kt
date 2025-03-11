@@ -10,8 +10,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.PlayerId
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -82,11 +80,11 @@ class PairAssignmentsTest {
     @Test
     fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = asyncSetup(object {
         val players = listOf(
-            defaultPlayer.copy(id = PlayerId.new(), name = "rigby"),
-            defaultPlayer.copy(id = PlayerId.new(), name = "Guy"),
-            defaultPlayer.copy(id = PlayerId.new(), name = "fellow"),
-            defaultPlayer.copy(id = PlayerId.new(), name = "nerd"),
-            defaultPlayer.copy(id = PlayerId.new(), name = "pantsmaster"),
+            stubPlayer().copy(name = "rigby"),
+            stubPlayer().copy(name = "Guy"),
+            stubPlayer().copy(name = "fellow"),
+            stubPlayer().copy(name = "nerd"),
+            stubPlayer().copy(name = "pantsmaster"),
         )
     }) exercise {
         render(
