@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.client.components.user.BoostConfiguration
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.model.user.UserDetails
@@ -22,6 +23,7 @@ import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import kotools.types.text.toNotBlankString
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
@@ -105,7 +107,7 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                 }
                 PlayerCard(
                     defaultPlayer.copy(
-                        id = "",
+                        id = PlayerId(user.id.toNotBlankString().getOrThrow()),
                         name = user.email,
                         email = user.email,
                     ),

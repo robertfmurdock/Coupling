@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.GqlPairInput
 import com.zegreatrob.coupling.json.GqlParty
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.boost
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
@@ -66,12 +67,12 @@ class PartyQueryBuilder :
         output = output.copy(pairAssignmentDocumentList = listOf(pairAssignmentRecord))
     }
 
-    fun pair(vararg playerIds: String, block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
+    fun pair(vararg playerIds: PlayerId, block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
         .also(block)
         .output
         .addToQuery(
             "pair",
-            InputSettings(GqlPairInput(playerIds.toList()), "pairInput", "PairInput"),
+            InputSettings(GqlPairInput(playerIds.map { it.value.toString() }.toList()), "pairInput", "PairInput"),
         )
 
     fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()

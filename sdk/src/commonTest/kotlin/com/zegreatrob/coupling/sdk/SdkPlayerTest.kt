@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.validation.assertHasIds
@@ -91,7 +92,7 @@ class SdkPlayerTest {
         object {
             val sdk = it.sdk
             val party = it.party
-            val playerId = "${Uuid.random()}"
+            val playerId = PlayerId.new()
         }
     }) exercise {
         runCatching { sdk.fire(DeletePlayerCommand(party.id, playerId)) }
@@ -367,8 +368,7 @@ class SdkPlayerTest {
             waitForTest {
                 asyncSetup(object {
                     val party = stubPartyDetails()
-                    val player = defaultPlayer.copy(
-                        id = "${Uuid.random()}",
+                    val player = stubPlayer().copy(
                         name = "Awesome-O",
                         callSignAdjective = "Awesome",
                         callSignNoun = "Sauce",
@@ -393,7 +393,7 @@ class SdkPlayerTest {
         fun deleteIsNotAllowed() = asyncSetup(object {
             val party = stubPartyDetails()
         }) exercise {
-            sdk().fire(DeletePlayerCommand(party.id, "player id"))
+            sdk().fire(DeletePlayerCommand(party.id, PlayerId.new()))
         } verify { result ->
             result.assertIsEqualTo(CommandResult.Unauthorized)
         }

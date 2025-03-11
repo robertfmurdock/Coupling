@@ -136,7 +136,7 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
         color = NamedColor.black
         margin = Margin(0.px, 2.px, 0.px, 2.px)
     }
-    key = pinnedPlayer.player.id
+    key = pinnedPlayer.player.id.value.toString()
     div {
         css {
             backgroundColor = NamedColor.darkcyan

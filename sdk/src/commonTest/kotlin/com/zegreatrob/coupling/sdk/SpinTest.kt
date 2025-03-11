@@ -26,7 +26,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
@@ -216,10 +215,10 @@ class SpinTest {
     }
 
     private fun fourPlayersTwoDefaultTwoAlternate() = notEmptyListOf(
-        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Default.value, name = "One"),
-        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Default.value, name = "Two"),
-        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Alternate.value, name = "Three"),
-        defaultPlayer.copy(id = Uuid.random().toString(), badge = Badge.Alternate.value, name = "Four"),
+        stubPlayer().copy(badge = Badge.Default.value, name = "One"),
+        stubPlayer().copy(badge = Badge.Default.value, name = "Two"),
+        stubPlayer().copy(badge = Badge.Alternate.value, name = "Three"),
+        stubPlayer().copy(badge = Badge.Alternate.value, name = "Four"),
     )
 
     companion object {

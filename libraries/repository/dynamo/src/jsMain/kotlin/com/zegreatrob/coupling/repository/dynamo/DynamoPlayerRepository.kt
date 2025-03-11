@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.datetime.Clock
@@ -116,8 +117,8 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     suspend fun saveRawRecord(record: PartyRecord<Player>) = performPutItem(record.asDynamoJson())
 
-    override suspend fun deletePlayer(partyId: PartyId, playerId: String) = performDelete(
-        playerId,
+    override suspend fun deletePlayer(partyId: PartyId, playerId: PlayerId) = performDelete(
+        playerId.value.toString(),
         partyId,
         now(),
         { toPlayerRecord() },
@@ -128,7 +129,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         .mapNotNull { it.toPlayerRecord() }
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
-    override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>> = logAsync("getPlayerIdsByEmail") {
+    override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<PlayerId>> = logAsync("getPlayerIdsByEmail") {
         val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
             queryAllRecords(emailQueryParams(email))
                 .mapNotNull { it.getDynamoStringValue("id") }
@@ -142,7 +143,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                 .filter { it["email"] == email && it["isDeleted"] != true }
                 .map {
                     PartyId(NotBlankString.create(it.getDynamoStringValue("tribeId") ?: ""))
-                        .with(it.getDynamoStringValue("id") ?: "")
+                        .with(PlayerId(NotBlankString.create(it.getDynamoStringValue("id") ?: "")))
                 }
         }
     }

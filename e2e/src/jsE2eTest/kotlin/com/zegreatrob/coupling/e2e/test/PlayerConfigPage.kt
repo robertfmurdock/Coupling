@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.e2e.test.webdriverio.WAIT_TO_BE_PRESENT_DURATION
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 import com.zegreatrob.wrapper.wdio.testing.library.ByRole
@@ -18,8 +19,8 @@ object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
     suspend fun adjectiveTextInput() = queryByRole("combobox", RoleOptions(name = "Call-Sign Adjective"))
     suspend fun nounTextInput() = queryByRole("combobox", RoleOptions(name = "Call-Sign Noun"))
 
-    suspend fun goTo(partyId: PartyId, playerId: String?) {
-        WebdriverBrowser.setLocation("/${partyId.value}/player/$playerId")
+    suspend fun goTo(partyId: PartyId, playerId: PlayerId) {
+        WebdriverBrowser.setLocation("/${partyId.value}/player/${playerId.value}")
         waitForPage()
     }
 

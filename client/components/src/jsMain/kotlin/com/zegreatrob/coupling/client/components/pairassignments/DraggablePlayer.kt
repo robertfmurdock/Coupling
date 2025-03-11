@@ -1,10 +1,15 @@
+@file:OptIn(ExperimentalKotoolsTypesApi::class)
+
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
+import kotools.types.text.toNotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import react.Props
 import web.cssom.Angle
 import web.cssom.AnimationIterationCount
@@ -22,17 +27,19 @@ external interface DraggablePlayerProps : Props {
     var pinnedPlayer: PinnedPlayer
     var zoomOnHover: Boolean
     var tilt: Angle
-    var onPlayerDrop: (String) -> Unit
+    var onPlayerDrop: (PlayerId) -> Unit
 }
 
 @ReactFunc
 val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) ->
     DraggableThing(
         itemType = PLAYER_DRAG_ITEM_TYPE,
-        itemId = pinnedPlayer.player.id,
+        itemId = pinnedPlayer.player.id.value.toString(),
         dropCallback = {},
-        endCallback = { _, data -> onPlayerDrop(data?.get("dropTargetId")?.toString() ?: "") },
         css = {},
+        endCallback = { _, data ->
+            data?.get("dropTargetId")?.toString()?.toNotBlankString()?.getOrNull()?.let { PlayerId(it) }
+        },
     ) { isOver: Boolean ->
         PlayerCard(
             player = pinnedPlayer.player,
@@ -58,7 +65,7 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, t
                     animationIterationCount = AnimationIterationCount.infinite
                 }
             },
-            key = pinnedPlayer.player.id,
+            key = pinnedPlayer.player.id.value.toString(),
         )
     }
 }

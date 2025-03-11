@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -27,6 +28,7 @@ import io.ktor.websocket.readText
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class WebsocketTest {
@@ -239,5 +241,9 @@ private fun String.toCouplingServerMessage(): CouplingSocketMessage = fromJsonSt
 fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 
 private fun expectedOnlinePlayerList(email: String) = listOf(
-    defaultPlayer.copy(id = "-1", name = email.substring(0, email.indexOf("@")), email = email),
+    defaultPlayer.copy(
+        id = PlayerId("-1".toNotBlankString().getOrThrow()),
+        name = email.substring(0, email.indexOf("@")),
+        email = email,
+    ),
 )

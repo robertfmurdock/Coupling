@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.ClientDispatcher
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
@@ -11,6 +12,7 @@ import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import js.objects.ReadonlyRecord
 import kotlinx.browser.window
 import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import org.w3c.dom.get
 import react.Props
@@ -26,7 +28,7 @@ external interface PageProps : Props {
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 val PageProps.partyId: PartyId? get() = pathParams["partyId"]?.let(NotBlankString::createOrNull)?.let { PartyId(it) }
-val PageProps.playerId: String? get() = pathParams["playerId"]
+val PageProps.playerId: PlayerId? get() = pathParams["playerId"]?.toNotBlankString()?.getOrNull()?.let { PlayerId(it) }
 val PageProps.pinId: String? get() = pathParams["pinId"]
 
 interface Commander {

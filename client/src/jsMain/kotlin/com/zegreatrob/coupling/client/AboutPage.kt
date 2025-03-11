@@ -9,10 +9,12 @@ import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import js.objects.jso
+import kotools.types.text.toNotBlankString
 import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
@@ -87,8 +89,20 @@ private val backButton by nfc<Props> {
 private val playerHeader by nfc<Props> {
     div {
         val rob by playerImage()
-        PlayerCard(defaultPlayer.copy("1", name = "RoB", imageURL = rob), tilt = (-8).deg, key = "1")
+        PlayerCard(
+            defaultPlayer.copy(PlayerId("1".toNotBlankString().getOrThrow()), name = "RoB", imageURL = rob),
+            tilt = (-8).deg,
+            key = "1",
+        )
         val autumn by playerImage()
-        PlayerCard(defaultPlayer.copy("2", name = "Autumn", imageURL = autumn), tilt = 8.deg, key = "2")
+        PlayerCard(
+            defaultPlayer.copy(
+                PlayerId("2".toNotBlankString().getOrThrow()),
+                name = "Autumn",
+                imageURL = autumn,
+            ),
+            tilt = 8.deg,
+            key = "2",
+        )
     }
 }

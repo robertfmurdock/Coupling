@@ -62,7 +62,7 @@ val RetiredPlayers by nfc<RetiredPlayersProps> { (party, players) ->
                     Link {
                         to = party.id.with(player).playerConfigPage()
                         draggable = false
-                        key = player.id
+                        key = player.id.value.toString()
                         PlayerCard(player, deselected = true)
                     }
                 }

@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -47,8 +48,8 @@ val LoadingPageFrame by nfc<LoadingPageFrameProps> { (state) ->
             val rob by playerImage()
             val autumn by playerImage()
             val pair = pairOf(
-                player1 = defaultPlayer.copy(id = "rob", name = "rob", imageURL = rob),
-                player2 = defaultPlayer.copy(id = "autumn", name = "autumn", imageURL = autumn),
+                player1 = defaultPlayer.copy(id = PlayerId.new(), name = "rob", imageURL = rob),
+                player2 = defaultPlayer.copy(id = PlayerId.new(), name = "autumn", imageURL = autumn),
             )
             val data = state.data
             Flipper {
@@ -94,8 +95,8 @@ private fun flippedPlayer(
     tilt: Angle,
     left: Left,
 ) = Flipped.create {
-    flipId = player.id
-    key = player.id
+    flipId = player.id.value.toString()
+    key = player.id.value.toString()
     div {
         css {
             position = Position.relative

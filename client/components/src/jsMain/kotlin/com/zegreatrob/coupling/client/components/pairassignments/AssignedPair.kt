@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -56,7 +57,7 @@ external interface AssignedPairProps : Props {
     var party: PartyDetails
     var pair: PinnedCouplingPair
     var canDrag: Boolean
-    var swapPlayersFunc: ((PinnedPlayer, String) -> Unit)?
+    var swapPlayersFunc: ((PinnedPlayer, PlayerId) -> Unit)?
     var pinDropFunc: PinMoveCallback?
 }
 
@@ -119,7 +120,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
             div {
                 pair.pinnedPlayers.toList().forEachIndexed { index, player ->
                     Fragment {
-                        key = player.player.id
+                        key = player.player.id.value.toString()
                         playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
                     }
                 }
@@ -153,7 +154,7 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
 
 private fun playerCardComponent(
     canDrag: Boolean,
-    swap: ((PinnedPlayer, String) -> Unit)?,
+    swap: ((PinnedPlayer, PlayerId) -> Unit)?,
 ): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) {
     { player, tilt ->
         playerFlipped(player.player) {
@@ -161,7 +162,7 @@ private fun playerCardComponent(
                 pinnedPlayer = player,
                 zoomOnHover = canDrag,
                 tilt = tilt,
-                onPlayerDrop = { droppedPlayerId: String -> swap?.invoke(player, droppedPlayerId) },
+                onPlayerDrop = { droppedPlayerId -> swap?.invoke(player, droppedPlayerId) },
             )
         }
     }
@@ -172,15 +173,15 @@ private fun playerCardComponent(
 }
 
 private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNode) = Flipped {
-    flipId = player.id
+    flipId = player.id.value.toString()
+    this.key = player.id.value.toString()
     div {
         css {
             display = Display.inlineBlock
-            if (player.id.contains("?")) {
+            if (player.id.value.toString().contains("?")) {
                 visibility = Visibility.hidden
             }
         }
-        this.key = player.id
         +handler()
     }
 }

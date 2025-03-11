@@ -7,15 +7,19 @@ import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class StatisticsE2ETest {
     @Test
     fun pageShowsImportantElements() = sdkSetup(object : SdkContext() {
         val party = PartyDetails(PartyId("${randomInt()}-statsE2E"), name = "Funkytown")
-        val players = generateSequence { defaultPlayer.copy(id = "${randomInt()}-statsE2E") }
+        val players = generateSequence {
+            defaultPlayer.copy(id = PlayerId("${randomInt()}-statsE2E".toNotBlankString().getOrThrow()))
+        }
             .take(6).toList()
     }) {
         sdk.fire(SavePartyCommand(party))

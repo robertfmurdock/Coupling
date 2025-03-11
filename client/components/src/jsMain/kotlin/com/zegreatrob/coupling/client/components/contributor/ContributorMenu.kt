@@ -68,8 +68,8 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
                 div {
                     players.forEach { player ->
                         button {
-                            key = player.id
-                            ariaLabel = player.id
+                            key = player.id.value.toString()
+                            ariaLabel = player.id.value.toString()
                             onClick = addEmailToExistingPlayer(player)
                             PlayerCard(player, size = 20)
                         }

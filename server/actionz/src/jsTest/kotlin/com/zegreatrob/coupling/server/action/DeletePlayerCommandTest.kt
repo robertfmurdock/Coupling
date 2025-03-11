@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.action
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.stubmodel.stubPartyId
@@ -11,13 +12,14 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class DeletePlayerCommandTest {
 
     @Test
     fun willUseRepositoryToRemove() = asyncSetup(object : ServerDeletePlayerCommandDispatcher {
-        val playerId = "ThatGuyGetHim"
+        val playerId = PlayerId("ThatGuyGetHim".toNotBlankString().getOrThrow())
         override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
         override val currentPartyId = stubPartyId()
     }) exercise {
@@ -29,7 +31,7 @@ class DeletePlayerCommandTest {
 
     class PlayerRepositorySpy :
         PlayerDelete,
-        Spy<String, Boolean> by SpyData() {
-        override suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean = spyFunction(playerId)
+        Spy<PlayerId, Boolean> by SpyData() {
+        override suspend fun deletePlayer(partyId: PartyId, playerId: PlayerId): Boolean = spyFunction(playerId)
     }
 }

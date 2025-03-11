@@ -51,7 +51,7 @@ val PlayerRoster by nfc<PlayerRosterProps> { (label, players, partyId, className
                     Link {
                         to = partyId.with(player).playerConfigPage()
                         draggable = false
-                        key = player.id
+                        key = player.id.value.toString()
                         val tilt = random.nextInt(7) - 3
                         PlayerCard(player, tilt = tilt.deg)
                     }

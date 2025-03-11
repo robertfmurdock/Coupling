@@ -68,7 +68,7 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
             "img" { display = Display.block }
             playerCardRuleSet(size)
         }
-        asDynamic()["data-player-id"] = player.id
+        asDynamic()["data-player-id"] = player.id.value.toString()
         asDynamic()["data-selected"] = "${!deselected}"
         this.onClick = onClickFunc
         div {

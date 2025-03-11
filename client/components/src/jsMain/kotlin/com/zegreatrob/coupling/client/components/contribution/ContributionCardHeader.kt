@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalKotoolsTypesApi::class)
+
 package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
@@ -7,11 +9,14 @@ import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.emails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -55,7 +60,7 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
     val contributionPlayerList = contribution.participantEmails.map { email ->
         props.players.find { it.emails.contains(email) }
             ?: defaultPlayer.copy(
-                id = "${Uuid.random()}",
+                id = PlayerId(NotBlankString.create("${Uuid.random()}")),
                 name = email.substringBefore("@"),
                 email = email,
             )
@@ -122,7 +127,7 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
             }
             TiltedPlayerList(playerList = contributionPlayerList) { tilt, player ->
                 span {
-                    key = player.id
+                    key = player.id.value.toString()
                     onClick = { props.onPlayerClick?.invoke(player, it.currentTarget) }
                     PlayerCard(player = player, tilt = tilt, size = 30)
                 }

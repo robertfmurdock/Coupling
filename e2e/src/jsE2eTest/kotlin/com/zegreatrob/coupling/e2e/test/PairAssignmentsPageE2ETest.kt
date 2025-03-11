@@ -20,6 +20,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -33,6 +34,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotools.types.collection.notEmptyListOf
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -60,7 +62,7 @@ class PairAssignmentsPageE2ETest {
             val players by lazy {
                 (1..5).map {
                     defaultPlayer.copy(
-                        id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
+                        id = PlayerId("${randomInt()}-PairAssignmentsPageE2ETest-$it".toNotBlankString().getOrThrow()),
                         name = "player$it",
                         callSignAdjective = "nimble",
                         callSignNoun = "thimble",
@@ -160,7 +162,7 @@ class PairAssignmentsPageE2ETest {
             private val players by lazy {
                 (1..5).map {
                     defaultPlayer.copy(
-                        id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
+                        id = PlayerId("${randomInt()}-PairAssignmentsPageE2ETest-$it".toNotBlankString().getOrThrow()),
                         name = "player$it",
                         callSignAdjective = "nimble",
                         callSignNoun = "thimble",

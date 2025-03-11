@@ -75,9 +75,9 @@ private fun ChildrenBuilder.placeholderPlayerCard() = div {
 }
 
 private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) = Flipped {
-    flipId = player.id
+    flipId = player.id.value.toString()
+    this.key = key ?: ""
     div {
-        this.key = key ?: ""
         css { display = Display.inlineBlock }
         PlayerCard(player)
     }
@@ -87,8 +87,8 @@ private fun ChildrenBuilder.playerRoster(players: List<Player>) = div {
     asDynamic()["data-testid"] = "player-roster"
     players.forEach { player ->
         Fragment {
-            key = player.id
-            if (player.id.startsWith("?")) {
+            key = player.id.value.toString()
+            if (player.id.value.toString().startsWith("?")) {
                 placeholderPlayerCard()
             } else {
                 flippedPlayer(player)

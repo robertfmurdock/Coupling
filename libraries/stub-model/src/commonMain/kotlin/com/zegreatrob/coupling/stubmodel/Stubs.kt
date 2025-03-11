@@ -18,11 +18,13 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
 import kotools.types.text.toNotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
@@ -63,8 +65,10 @@ fun stubSecret() = Secret(
 )
 
 var playerCounter = 1
+
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun stubPlayer() = Player(
-    id = uuidString(),
+    id = PlayerId.new(),
     badge = 1,
     name = "Tim $playerCounter",
     email = "tim$playerCounter@tim.meat",

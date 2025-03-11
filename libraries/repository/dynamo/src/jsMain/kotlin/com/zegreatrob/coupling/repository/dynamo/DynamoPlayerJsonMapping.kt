@@ -3,8 +3,11 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.player
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -22,7 +25,7 @@ interface DynamoPlayerJsonMapping :
         .add(data.player.toDynamoJson())
 
     fun Player.toDynamoJson() = nullFreeJson(
-        "id" to id,
+        "id" to id.value.toString(),
         "name" to name,
         "email" to email,
         "badge" to badge,
@@ -33,9 +36,10 @@ interface DynamoPlayerJsonMapping :
         "unvalidatedEmails" to additionalEmails.toTypedArray(),
     )
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     fun Json.toPlayer() = getDynamoStringValue("id")?.let {
         Player(
-            id = it,
+            id = PlayerId(NotBlankString.create(it)),
             badge = getDynamoNumberValue("badge")?.toInt() ?: defaultPlayer.badge,
             name = getDynamoStringValue("name") ?: "",
             email = getDynamoStringValue("email") ?: "",

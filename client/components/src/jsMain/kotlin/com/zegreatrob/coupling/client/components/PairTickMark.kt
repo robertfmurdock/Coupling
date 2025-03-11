@@ -87,7 +87,7 @@ val PairTickMark = FC<AxisTickProps> { props ->
                                 paddingBottom = 4.px
                             }
                             TiltedPlayerList(playerList = pair) { tilt: Angle, player: Player ->
-                                PlayerCard(player, tilt = tilt, size = 25, key = player.id)
+                                PlayerCard(player, tilt = tilt, size = 25, key = player.id.value.toString())
                             }
                         }
                     }

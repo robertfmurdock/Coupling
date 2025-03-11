@@ -4,9 +4,19 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyElement
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
+import kotlin.uuid.Uuid
+
+data class PlayerId(val value: NotBlankString) {
+    companion object {
+        fun new() = PlayerId(Uuid.random().toString().toNotBlankString().getOrThrow())
+    }
+}
 
 data class Player(
-    val id: String,
+    val id: PlayerId,
     val badge: Int,
     val name: String,
     val email: String,
@@ -23,8 +33,9 @@ fun Player.matches(email: String) = emails.map(String::lowercase).contains(email
 
 val Player.emails get() = listOf(email) + additionalEmails
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 val defaultPlayer = Player(
-    id = "DEFAULT",
+    id = PlayerId(NotBlankString.create("DEFAULT")),
     badge = Badge.Default.value,
     name = "",
     email = "",

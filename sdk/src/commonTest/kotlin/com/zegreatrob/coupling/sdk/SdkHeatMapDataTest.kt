@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentId
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -45,7 +44,7 @@ class SdkHeatMapDataTest {
     @Test
     fun withOnePlayerProducesOneRowWith10() = asyncSetup(object {
         val party = stubPartyDetails()
-        val players = listOf(defaultPlayer.copy(id = "0"))
+        val players = listOf(stubPlayer())
         val history = emptyList<PairAssignmentDocument>()
     }) {
         savePartyState(party, players, history)
@@ -72,9 +71,9 @@ class SdkHeatMapDataTest {
     @Test
     fun withThreePlayersAndNoHistoryProducesThreeRows() = asyncSetup(object {
         val players = listOf(
-            defaultPlayer.copy(id = "0"),
-            defaultPlayer.copy(id = "1"),
-            defaultPlayer.copy(id = "2"),
+            stubPlayer(),
+            stubPlayer(),
+            stubPlayer(),
         )
         val history = emptyList<PairAssignmentDocument>()
         val party = stubPartyDetails()
@@ -105,8 +104,8 @@ class SdkHeatMapDataTest {
     @Test
     fun withTwoPlayersAndShortHistoryProducesTwoRowsWithHeatValues() = asyncSetup(object {
         val players = listOf(
-            defaultPlayer.copy(id = "0"),
-            defaultPlayer.copy(id = "1"),
+            stubPlayer(),
+            stubPlayer(),
         )
         val history = listOf(pairAssignmentDocument(players[0], players[1]))
         val party = stubPartyDetails()
@@ -136,8 +135,8 @@ class SdkHeatMapDataTest {
     @Test
     fun withTwoPlayersAndFullHistoryProducesTwoRowsWithHeatValues() = asyncSetup(object {
         val players = listOf(
-            defaultPlayer.copy(id = "0"),
-            defaultPlayer.copy(id = "1"),
+            stubPlayer(),
+            stubPlayer(),
         )
         val party = stubPartyDetails()
         val history = listOf(

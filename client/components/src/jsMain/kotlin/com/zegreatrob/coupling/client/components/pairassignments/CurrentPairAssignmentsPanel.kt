@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -81,7 +82,7 @@ private fun ChildrenBuilder.pairAssignmentList(
             party = party,
             pair = pair,
             canDrag = allowSave,
-            swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
+            swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: PlayerId ->
                 setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
             },
             pinDropFunc = { pinId: String, targetId: String ->
@@ -121,7 +122,7 @@ private fun PinnedCouplingPair.addPin(pin: Pin) = copy(pins = pins + pin)
 private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
 
 private fun PairAssignmentDocument.copyWithSwappedPlayers(
-    droppedPlayerId: String,
+    droppedPlayerId: PlayerId,
     targetPlayer: PinnedPlayer,
     targetPair: PinnedCouplingPair,
 ): PairAssignmentDocument {
@@ -153,7 +154,7 @@ private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, repl
     },
 )
 
-private fun NotEmptyList<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = toList()
+private fun NotEmptyList<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: PlayerId) = toList()
     .firstOrNull { pair ->
         pair.pinnedPlayers.toList().any { player -> player.player.id == droppedPlayerId }
     }

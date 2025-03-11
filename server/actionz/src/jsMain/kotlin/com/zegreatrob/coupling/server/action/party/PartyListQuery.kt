@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.action.party
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotlinx.coroutines.async
@@ -26,7 +27,7 @@ object PartyListQuery {
             async { getPartyRecords() } to async { getUserPlayerIds() }
         }
 
-        private fun Pair<List<Record<PartyDetails>>, List<PartyElement<String>>>.onlyAuthenticatedParties() = let { (partyRecords, players) ->
+        private fun Pair<List<Record<PartyDetails>>, List<PartyElement<PlayerId>>>.onlyAuthenticatedParties() = let { (partyRecords, players) ->
             partyRecords.filter {
                 players.authenticatedFilter()(it)
             }

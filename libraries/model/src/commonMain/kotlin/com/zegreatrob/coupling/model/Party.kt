@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import kotlin.time.Duration
 
 data class Party(
@@ -38,5 +39,5 @@ data class ContributionReport(
 
 data class Contributor(
     val email: String? = null,
-    val playerId: String? = null,
+    val playerId: PlayerId? = null,
 )

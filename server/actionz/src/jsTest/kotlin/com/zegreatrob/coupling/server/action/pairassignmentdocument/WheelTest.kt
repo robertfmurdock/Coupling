@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.random.Random
 import kotlin.test.Test
@@ -19,7 +19,7 @@ class WheelTest : Wheel {
     @Test
     fun randomlyChoosesAPersonOnTheWheel() {
         arrayOf("Scooby", "Shaggy", "Scrappy")
-            .map { defaultPlayer.copy(id = it) }
+            .map { stubPlayer().copy(name = it) }
             .toTypedArray()
             .checkSpinWorksForIndex(1)
             .checkSpinWorksForIndex(0)

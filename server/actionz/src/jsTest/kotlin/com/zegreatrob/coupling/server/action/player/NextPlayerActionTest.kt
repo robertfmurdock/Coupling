@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -22,10 +21,10 @@ import kotlin.test.Test
 
 class NextPlayerActionTest {
 
-    private val bill = defaultPlayer.copy(id = "Bill")
-    private val ted = defaultPlayer.copy(id = "Ted")
-    private val amadeus = defaultPlayer.copy(id = "Mozart")
-    private val shorty = defaultPlayer.copy(id = "Napoleon")
+    private val bill = stubPlayer().copy(name = "Bill")
+    private val ted = stubPlayer().copy(name = "Ted")
+    private val amadeus = stubPlayer().copy(name = "Mozart")
+    private val shorty = stubPlayer().copy(name = "Napoleon")
 
     interface NextPlayerActionTestDispatcher :
         NextPlayerAction.Dispatcher<NextPlayerActionTestDispatcher>,

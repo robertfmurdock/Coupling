@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerListGet
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
@@ -24,17 +24,9 @@ class PlayersQueryTest {
         PlayersQuery.Dispatcher {
         val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
-            defaultPlayer.copy(
-                id = "1",
-                callSignAdjective = "Red",
-                callSignNoun = "Horner",
-            ),
-            defaultPlayer.copy(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee"),
-            defaultPlayer.copy(
-                id = "3",
-                callSignAdjective = "Green",
-                callSignNoun = "Tacos",
-            ),
+            stubPlayer().copy(callSignAdjective = "Red", callSignNoun = "Horner"),
+            stubPlayer().copy(callSignAdjective = "Blue", callSignNoun = "Bee"),
+            stubPlayer().copy(callSignAdjective = "Green", callSignNoun = "Tacos"),
         )
 
         override val playerRepository = PlayerRepositorySpy()
@@ -57,9 +49,9 @@ class PlayersQueryTest {
         PlayersQuery.Dispatcher {
         val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
-            defaultPlayer.copy(id = "1"),
-            defaultPlayer.copy(id = "2"),
-            defaultPlayer.copy(id = "3"),
+            stubPlayer(),
+            stubPlayer(),
+            stubPlayer(),
         )
         override val playerRepository = PlayerRepositorySpy()
             .apply { whenever(currentPartyId, players.map { toRecord(it, currentPartyId) }) }

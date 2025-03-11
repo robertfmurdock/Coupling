@@ -115,14 +115,14 @@ val CouplingHeatmapTooltip = FC<TooltipProps> { props ->
     val cell = props.cell
     val pairs = use(pairContext)
     val flatten = pairs.flatten()
-    val players = flatten.filter { cell.id.split(".").contains(it.id) }
+    val players = flatten.filter { cell.id.split(".").contains(it.id.value.toString()) }
     val pair = players.toCouplingPair()
 
     if (cell.formattedValue === null) return@FC
 
     BasicTooltip {
         id = TiltedPlayerList.create(playerList = pair, children = { tilt: Angle, player: Player ->
-            PlayerCard(player, tilt = tilt, size = 35, key = player.id)
+            PlayerCard(player, tilt = tilt, size = 35, key = player.id.value.toString())
         })
         value = cell.formattedValue
         enableChip = true

@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.player.pairCombinations
@@ -15,6 +16,8 @@ import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.coupling.server.action.contribution.PartyIdContributionsTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @ActionMint
 data class PairListQuery(val partyId: PartyId) {
@@ -49,12 +52,13 @@ data class PairListQuery(val partyId: PartyId) {
             )
         }
 
+        @OptIn(ExperimentalKotoolsTypesApi::class)
         private fun placeholderPlayer(
             query: PairListQuery,
             email: String,
         ) = partyRecord(
             partyId = query.partyId,
-            defaultPlayer.copy(id = email, email = email),
+            defaultPlayer.copy(id = PlayerId(NotBlankString.create(email)), email = email),
             "",
         )
     }

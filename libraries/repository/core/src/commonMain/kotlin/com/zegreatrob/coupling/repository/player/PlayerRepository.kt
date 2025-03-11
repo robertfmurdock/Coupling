@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 
 interface PlayerRepository :
     PlayerListGet,
@@ -16,7 +17,7 @@ interface PlayerEmailRepository :
     PlayerListGetByEmail
 
 interface PlayerDelete {
-    suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean
+    suspend fun deletePlayer(partyId: PartyId, playerId: PlayerId): Boolean
 }
 
 interface PlayerSave {
@@ -32,5 +33,5 @@ interface PlayerListGetDeleted {
 }
 
 interface PlayerListGetByEmail {
-    suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>>
+    suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<PlayerId>>
 }

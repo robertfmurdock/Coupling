@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.repository.discord.DiscordAccessGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistoryTrait
@@ -124,7 +125,7 @@ interface ServerSpinCommandDispatcher<out D> :
             ?.let { discordRepository.sendSpinMessage(it, newPairs) }
     }
 
-    private fun selectedPlayersMap(players: List<Player>, playerIds: NotEmptyList<String>) = playerIds.toList()
+    private fun selectedPlayersMap(players: List<Player>, playerIds: NotEmptyList<PlayerId>) = playerIds.toList()
         .associateWith { id -> players.find { player -> player.id == id } }
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains("${it.id}") }

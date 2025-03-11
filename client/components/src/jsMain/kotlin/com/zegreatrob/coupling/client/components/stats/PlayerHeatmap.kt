@@ -39,11 +39,11 @@ val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
                 width = 62.px
             }
         }
-        players.forEach { player -> TopRowPlayer(player, key = player.id) }
+        players.forEach { player -> TopRowPlayer(player, key = player.id.value.toString()) }
     }
     div {
         className = heatmapSideRow
-        players.forEach { player -> SidePlayer(player, key = player.id) }
+        players.forEach { player -> SidePlayer(player, key = player.id.value.toString()) }
     }
     Heatmap(
         heatmapData,
@@ -67,7 +67,7 @@ val TopRowPlayer by nfc<TopRowPlayerProps> { props ->
             width = 90.px
             textAlign = TextAlign.center
         }
-        key = props.player.id
+        key = props.player.id.value.toString()
         PlayerCard(props.player, size = 50, tilt = tweak.deg)
     }
 }
@@ -87,7 +87,7 @@ val SidePlayer by nfc<SidePlayerProps> { props ->
                 verticalAlign = VerticalAlign.middle
             }
         }
-        key = props.player.id
+        key = props.player.id.value.toString()
         PlayerCard(props.player, size = 50, tilt = tweak.deg)
     }
 }

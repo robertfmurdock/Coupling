@@ -24,7 +24,7 @@ val TinyPlayerList by nfc<TinyPlayerListProps> { (party, players) ->
     val random = Random(ref)
     players.forEach { player ->
         Link {
-            key = player.id
+            key = player.id.value.toString()
             to = party.id.with(player).playerConfigPage()
             draggable = false
             val tilt = random.nextInt(7) - 3

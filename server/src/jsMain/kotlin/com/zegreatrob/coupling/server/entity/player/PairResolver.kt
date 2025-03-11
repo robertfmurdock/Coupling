@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
 import com.zegreatrob.coupling.server.action.player.perform
@@ -17,13 +18,14 @@ import com.zegreatrob.coupling.server.entity.boost.adapt
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
+import kotools.types.text.toNotBlankString
 
 val pairResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
     commandFunc = requiredInput { party: GqlParty, input: GqlPairInput ->
         PairQuery(
-            PartyId(party.id ?: return@requiredInput null),
-            input.playerIdList.toSet(),
+            PartyId(party.id),
+            input.playerIdList.map { PlayerId(it.toNotBlankString().getOrNull() ?: return@requiredInput null) }.toSet(),
         )
     },
     fireFunc = ::perform,

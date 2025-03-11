@@ -98,6 +98,6 @@ private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = div 
     css {
         display = Display.inlineBlock
     }
-    key = player.id
+    key = player.id.value.toString()
     PlayerCard(player, size = 50, tilt = tilt)
 }

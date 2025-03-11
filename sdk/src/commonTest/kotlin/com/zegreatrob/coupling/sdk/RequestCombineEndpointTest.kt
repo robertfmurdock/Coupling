@@ -10,8 +10,8 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.coroutineScope
@@ -27,8 +27,7 @@ class RequestCombineEndpointTest {
             val sdk = sdk
             val party = PartyDetails(id = PartyId("et-${Uuid.random()}"))
             val playersToSave = listOf(
-                defaultPlayer.copy(
-                    id = "${Uuid.random()}",
+                stubPlayer().copy(
                     name = "Awesome-O",
                     callSignAdjective = "Awesome",
                     callSignNoun = "Sauce",

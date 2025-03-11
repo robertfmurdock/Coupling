@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
@@ -15,6 +16,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.jso
+import kotools.types.text.toNotBlankString
 import react.ReactNode
 import react.create
 import react.router.RouterProvider
@@ -82,10 +84,17 @@ class ContributorMenuTest {
                 if (it !is SavePlayerCommand) {
                     it
                 } else {
-                    it.copy(player = it.player.copy(id = "generated"))
+                    it.copy(player = it.player.copy(id = PlayerId("generated".toNotBlankString().getOrThrow())))
                 }
             }
-            .assertIsEqualTo(listOf(SavePlayerCommand(partyId, contributor.copy(id = "generated"))))
+            .assertIsEqualTo(
+                listOf(
+                    SavePlayerCommand(
+                        partyId,
+                        contributor.copy(id = PlayerId("generated".toNotBlankString().getOrThrow())),
+                    ),
+                ),
+            )
     }
 
     @Test
@@ -100,7 +109,12 @@ class ContributorMenuTest {
         render(TestRouter.create { ContributorMenu(contributor, players, partyId, stubDispatcher.func()) })
     } exercise {
         val addEmailToExistingPlayerSection = screen.findByText("Add Email to Existing Player").parentElement
-        user.click(within(addEmailToExistingPlayerSection).findByRole("button", RoleOptions(name = targetPlayer.id)))
+        user.click(
+            within(addEmailToExistingPlayerSection).findByRole(
+                "button",
+                RoleOptions(name = targetPlayer.id.value.toString()),
+            ),
+        )
     } verify {
         stubDispatcher.receivedActions
             .assertIsEqualTo(

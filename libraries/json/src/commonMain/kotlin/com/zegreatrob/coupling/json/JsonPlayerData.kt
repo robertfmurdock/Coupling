@@ -2,8 +2,11 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.serialization.Serializable
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
 interface JsonPlayer {
     val id: String
@@ -31,7 +34,7 @@ data class JsonPlayerData(
 ) : JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(
-    id = id,
+    id = id.value.toString(),
     name = name,
     email = email,
     badge = "$badge",
@@ -42,8 +45,9 @@ fun Player.toSerializable() = JsonPlayerData(
     unvalidatedEmails = additionalEmails,
 )
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun JsonPlayer.toModel(): Player = Player(
-    id = id,
+    id = PlayerId(NotBlankString.create(id)),
     badge = badge.toIntOrNull() ?: defaultPlayer.badge,
     name = name,
     email = email,

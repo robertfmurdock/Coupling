@@ -24,9 +24,9 @@ data class UserIsAuthorizedWithDataAction(val partyId: PartyId) : SimpleSuspendR
         PartyPlayersSyntax {
         override val playerRepository: PlayerEmailRepository
 
-        suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf().successResult()
+        suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.doWork().successResult()
 
-        private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<PartyDetails, List<Player>>? {
+        private suspend fun UserIsAuthorizedWithDataAction.doWork(): Pair<PartyDetails, List<Player>>? {
             val contains = getUserPlayerIds()
                 .authenticatedPartyIds()
                 .contains(partyId)

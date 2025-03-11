@@ -248,7 +248,7 @@ private fun ChildrenBuilder.selectablePlayerCardList(
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
 ) = playerSelections.forEach { (player, isSelected) ->
     div {
-        key = player.id
+        key = player.id.value.toString()
         css {
             paddingBottom = 30.px
             display = Display.inlineBlock

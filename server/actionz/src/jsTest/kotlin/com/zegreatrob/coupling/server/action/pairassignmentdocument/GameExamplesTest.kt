@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.async.asyncSetup
@@ -54,12 +55,12 @@ class GameExamplesTest {
                 pairingRule = PairingRule.LongestTime,
             )
 
-            val bruce = defaultPlayer.copy(id = "1", badge = 0, name = "Batman")
-            val hal = defaultPlayer.copy(id = "2", badge = 0, name = "Green Lantern")
-            val barry = defaultPlayer.copy(id = "3", badge = 0, name = "Flash")
-            val john = defaultPlayer.copy(id = "4", badge = 0, name = "Martian Manhunter")
-            val clark = defaultPlayer.copy(id = "5", badge = 0, name = "Superman")
-            val diana = defaultPlayer.copy(id = "6", badge = 0, name = "Wonder Woman")
+            val bruce = stubPlayer().copy(badge = 0, name = "Batman")
+            val hal = stubPlayer().copy(badge = 0, name = "Green Lantern")
+            val barry = stubPlayer().copy(badge = 0, name = "Flash")
+            val john = stubPlayer().copy(badge = 0, name = "Martian Manhunter")
+            val clark = stubPlayer().copy(badge = 0, name = "Superman")
+            val diana = stubPlayer().copy(badge = 0, name = "Wonder Woman")
 
             val allPlayers = notEmptyListOf(
                 clark,
@@ -162,12 +163,12 @@ class GameExamplesTest {
                 pairingRule = PairingRule.LongestTime,
             )
 
-            val bruce = defaultPlayer.copy(id = "1", badge = 0, name = "Batman")
-            val hal = defaultPlayer.copy(id = "2", badge = 1, name = "Green Lantern")
-            val barry = defaultPlayer.copy(id = "3", badge = 0, name = "Flash")
-            val john = defaultPlayer.copy(id = "4", badge = 1, name = "Martian Manhunter")
-            val clark = defaultPlayer.copy(id = "5", badge = 0, name = "Superman")
-            val diana = defaultPlayer.copy(id = "6", badge = 1, name = "Wonder Woman")
+            val bruce = stubPlayer().copy(badge = 0, name = "Batman")
+            val hal = stubPlayer().copy(badge = 1, name = "Green Lantern")
+            val barry = stubPlayer().copy(badge = 0, name = "Flash")
+            val john = stubPlayer().copy(badge = 1, name = "Martian Manhunter")
+            val clark = stubPlayer().copy(badge = 0, name = "Superman")
+            val diana = stubPlayer().copy(badge = 1, name = "Wonder Woman")
 
             val allPlayers = notEmptyListOf(clark, bruce, diana, hal, barry, john)
         }

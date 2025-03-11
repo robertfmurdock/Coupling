@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
@@ -38,12 +39,12 @@ private val lisa by playerImage()
 private val maggie by playerImage()
 private val slh by playerImage()
 
-private val player1 = defaultPlayer.copy(id = "1", name = "Homer", imageURL = homer)
-private val player2 = defaultPlayer.copy(id = "2", name = "Marge", imageURL = marge)
-private val player3 = defaultPlayer.copy(id = "3", name = "Bart", imageURL = bart)
-private val player4 = defaultPlayer.copy(id = "4", name = "Lisa", imageURL = lisa)
-private val player5 = defaultPlayer.copy(id = "5", name = "Maggie", imageURL = maggie)
-private val player6 = defaultPlayer.copy(id = "6", name = "Santa's Lil Helper", imageURL = slh)
+private val player1 = defaultPlayer.copy(id = PlayerId.new(), name = "Homer", imageURL = homer)
+private val player2 = defaultPlayer.copy(id = PlayerId.new(), name = "Marge", imageURL = marge)
+private val player3 = defaultPlayer.copy(id = PlayerId.new(), name = "Bart", imageURL = bart)
+private val player4 = defaultPlayer.copy(id = PlayerId.new(), name = "Lisa", imageURL = lisa)
+private val player5 = defaultPlayer.copy(id = PlayerId.new(), name = "Maggie", imageURL = maggie)
+private val player6 = defaultPlayer.copy(id = PlayerId.new(), name = "Santa's Lil Helper", imageURL = slh)
 
 private val players = listOf(
     player1,

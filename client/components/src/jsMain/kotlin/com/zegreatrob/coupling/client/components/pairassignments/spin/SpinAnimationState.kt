@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
 sealed class SpinAnimationState {
     abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState?
@@ -160,4 +162,5 @@ private fun makePlaceholderPlayers(pairAssignmentDocument: PairAssignmentDocumen
     .take(pairAssignmentDocument.orderedPairedPlayers().count())
     .toList()
 
-private fun infinitePlaceholders() = generateSequence(placeholderPlayer) { it.copy(id = it.id + "?") }
+@OptIn(ExperimentalKotoolsTypesApi::class)
+private fun infinitePlaceholders() = generateSequence(placeholderPlayer) { it.copy(id = PlayerId(it.id.value + "?")) }

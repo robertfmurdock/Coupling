@@ -28,14 +28,14 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val playerListResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { PlayersQuery(it) } },
+    commandFunc = { data, _ -> data.id.let(::PartyId).let { PlayersQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it.map(Record<PartyElement<Player>>::toSerializable) },
 )
 
 val spinsUntilFullRotationResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { SpinsUntilFullRotationQuery(it) } },
+    commandFunc = { data, _ -> data.id.let(::PartyId).let { SpinsUntilFullRotationQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it },
 )

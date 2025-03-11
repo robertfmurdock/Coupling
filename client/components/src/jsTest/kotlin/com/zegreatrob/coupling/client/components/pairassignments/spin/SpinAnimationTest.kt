@@ -62,7 +62,9 @@ class SpinAnimationTest {
             render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
             result.apply {
-                playersInRoster().assertIsEqualTo(players.map(Player::id) - excludedPlayer.id)
+                playersInRoster().assertIsEqualTo(
+                    (players.map(Player::id) - excludedPlayer.id).map { it.value.toString() },
+                )
             }
         }
     }
@@ -93,7 +95,7 @@ class SpinAnimationTest {
             render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
             result.apply {
-                playersInRoster().assertIsEqualTo(players.map { it.id })
+                playersInRoster().assertIsEqualTo(players.map { it.id.value.toString() })
                 shownPairAssignments()
                     .assertIsEqualTo(listOf("?-??", "???-????"))
             }
@@ -136,8 +138,8 @@ class SpinAnimationTest {
         }) exercise {
             render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
-            result.playerInSpotlight().assertIsEqualTo(firstAssignedPlayer.id)
-            result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map { it.id })
+            result.playerInSpotlight().assertIsEqualTo(firstAssignedPlayer.id.value.toString())
+            result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map { it.id.value.toString() })
             result.shownPairAssignments()
                 .assertIsEqualTo(listOf("?-??", "???-????"))
         }
@@ -149,13 +151,13 @@ class SpinAnimationTest {
         }) exercise {
             render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify {
-            it.playerInSpotlight().assertIsEqualTo(midwayShownPlayer.id)
+            it.playerInSpotlight().assertIsEqualTo(midwayShownPlayer.id.value.toString())
             it.playersInRoster().assertIsEqualTo(
-                listOf(pairAssignments.pairs[1].players[1].id),
+                listOf(pairAssignments.pairs[1].players[1].id.value.toString()),
             )
             it.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairAssignments.pairs[0].players.toList().joinToString("-", transform = Player::id),
+                    pairAssignments.pairs[0].players.toList().joinToString("-", transform = { it.id.value.toString() }),
                     "?-??",
                 ),
             )
@@ -177,10 +179,10 @@ class SpinAnimationTest {
         }) exercise {
             render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
-            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id)
-            result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map(Player::id))
+            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id.value.toString())
+            result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map { it.id.value.toString() })
             result.shownPairAssignments()
-                .assertIsEqualTo(listOf("${firstAssignedPlayer.id}-?", "??-???"))
+                .assertIsEqualTo(listOf("${firstAssignedPlayer.id.value}-?", "??-???"))
         }
 
         @Test
@@ -190,14 +192,17 @@ class SpinAnimationTest {
         }) exercise {
             render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
-            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id)
+            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id.value.toString())
             result.playersInRoster().assertIsEqualTo(
-                listOf(pairAssignments.pairs[1].players[1].id),
+                listOf(pairAssignments.pairs[1].players[1].id.value.toString()),
             )
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairAssignments.pairs[0].players.toList().joinToString("-", transform = Player::id),
-                    listOf(midwayAssignedPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
+                    pairAssignments.pairs[0].players.toList().joinToString("-", transform = { it.id.value.toString() }),
+                    listOf(midwayAssignedPlayer, placeholderPlayer).joinToString(
+                        "-",
+                        transform = { it.id.value.toString() },
+                    ),
                 ),
             )
         }

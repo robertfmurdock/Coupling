@@ -10,7 +10,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -29,12 +31,12 @@ class PairAssignmentsTest {
 
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs() = asyncSetup(object {
-        val fellow = defaultPlayer.copy(id = "3", name = "fellow")
-        val guy = defaultPlayer.copy(id = "2", name = "Guy")
+        val fellow = stubPlayer().copy(name = "fellow")
+        val guy = stubPlayer().copy(name = "Guy")
 
-        val rigby = defaultPlayer.copy(id = "1", name = "rigby")
-        val nerd = defaultPlayer.copy(id = "4", name = "nerd")
-        val pantsmaster = defaultPlayer.copy(id = "5", name = "pantsmaster")
+        val rigby = stubPlayer().copy(name = "rigby")
+        val nerd = stubPlayer().copy(name = "nerd")
+        val pantsmaster = stubPlayer().copy(name = "pantsmaster")
 
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
@@ -43,12 +45,8 @@ class PairAssignmentsTest {
             date = Clock.System.now(),
             pairs = notEmptyListOf(
                 pairOf(
-                    defaultPlayer.copy(id = "0", name = "Tom"),
-                    defaultPlayer.copy(
-                        id = "z",
-                        name = "Jerry",
-                        avatarType = null,
-                    ),
+                    stubPlayer().copy(name = "Tom"),
+                    stubPlayer().copy(name = "Jerry", avatarType = null),
                 ),
                 pairOf(fellow, guy),
             ).withPins(),
@@ -76,18 +74,19 @@ class PairAssignmentsTest {
             ?.map { it.getAttribute("data-player-id") }
             .assertIsEqualTo(
                 listOf(rigby, nerd, pantsmaster)
-                    .map(Player::id),
+                    .map(Player::id)
+                    .map { it.value.toString() },
             )
     }
 
     @Test
     fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = asyncSetup(object {
         val players = listOf(
-            defaultPlayer.copy(id = "1", name = "rigby"),
-            defaultPlayer.copy(id = "2", name = "Guy"),
-            defaultPlayer.copy(id = "3", name = "fellow"),
-            defaultPlayer.copy(id = "4", name = "nerd"),
-            defaultPlayer.copy(id = "5", name = "pantsmaster"),
+            defaultPlayer.copy(id = PlayerId.new(), name = "rigby"),
+            defaultPlayer.copy(id = PlayerId.new(), name = "Guy"),
+            defaultPlayer.copy(id = PlayerId.new(), name = "fellow"),
+            defaultPlayer.copy(id = PlayerId.new(), name = "nerd"),
+            defaultPlayer.copy(id = PlayerId.new(), name = "pantsmaster"),
         )
     }) exercise {
         render(
@@ -110,6 +109,6 @@ class PairAssignmentsTest {
             ?.asList()
             ?.mapNotNull { it as? HTMLElement }
             ?.map { it.getAttribute("data-player-id") }
-            .assertIsEqualTo(players.map(Player::id))
+            .assertIsEqualTo(players.map(Player::id).map { it.value.toString() })
     }
 }

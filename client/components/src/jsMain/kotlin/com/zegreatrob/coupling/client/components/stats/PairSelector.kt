@@ -60,7 +60,7 @@ val PairSelector by nfc<PairSelectorProps> { props ->
                 label {
                     ariaLabel = pair.pairName
                     TiltedPlayerList(playerList = pair) { tilt: Angle, player: Player ->
-                        PlayerCard(player, tilt = tilt, size = 25, key = player.id)
+                        PlayerCard(player, tilt = tilt, size = 25, key = player.id.value.toString())
                     }
                     input {
                         type = InputType.checkbox

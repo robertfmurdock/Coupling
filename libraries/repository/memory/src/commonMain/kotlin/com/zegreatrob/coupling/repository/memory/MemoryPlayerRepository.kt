@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
@@ -31,7 +32,7 @@ class MemoryPlayerRepository(
         .groupBy { (data) -> data.player.id }
         .map { it.value.last() }
 
-    override suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean {
+    override suspend fun deletePlayer(partyId: PartyId, playerId: PlayerId): Boolean {
         val partyIdPlayer = partyId.players().find { (data) -> data.player.id == playerId }?.data
 
         return if (partyIdPlayer == null) {

@@ -45,7 +45,7 @@ class ContributionListPageE2ETest {
             .map { it.attribute("data-player-id") }
             .apply {
                 allPlayers.forEach {
-                    assertContains(it.id)
+                    assertContains(it.id.value.toString())
                 }
             }
     }
