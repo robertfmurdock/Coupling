@@ -27,7 +27,7 @@ val StatisticsPage = partyPageFunction { props, partyId ->
                 spinsUntilFullRotation()
             }
         },
-        key = partyId.value,
+        key = partyId.value.toString(),
     ) { _, _, queryResult ->
         PartyStatistics(
             party = queryResult.party?.details?.data ?: return@CouplingQuery,

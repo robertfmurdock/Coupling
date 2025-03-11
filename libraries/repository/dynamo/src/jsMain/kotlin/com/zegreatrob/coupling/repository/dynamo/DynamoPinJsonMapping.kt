@@ -13,7 +13,7 @@ interface DynamoPinJsonMapping : PartyIdDynamoRecordJsonMapping {
     fun Record<PartyElement<Pin>>.asDynamoJson() = recordJson()
         .add(
             json(
-                "tribeId" to data.partyId.value,
+                "tribeId" to data.partyId.value.toString(),
                 "timestamp+id" to "${timestamp.isoWithMillis()}+${data.pin.id}",
             ),
         )

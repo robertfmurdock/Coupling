@@ -20,7 +20,7 @@ data class JsonPairAssignmentDocument(
 )
 
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = GqlSavePairAssignmentsInput(
-    partyId = partyId.value,
+    partyId = partyId.value.toString(),
     pairAssignmentsId = element.id.value,
     date = element.date,
     pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),

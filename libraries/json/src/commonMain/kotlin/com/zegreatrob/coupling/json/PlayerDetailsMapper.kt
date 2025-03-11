@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<Player>.toSerializable() = GqlPlayerDetails(
     id = data.element.id,
@@ -17,7 +19,7 @@ fun PartyRecord<Player>.toSerializable() = GqlPlayerDetails(
     imageURL = data.element.imageURL,
     avatarType = data.element.avatarType?.toSerializable(),
     unvalidatedEmails = data.element.additionalEmails.toList(),
-    partyId = data.partyId.value,
+    partyId = data.partyId.value.toString(),
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -35,8 +37,9 @@ fun GqlSavePlayerInput.toModel(): Player = Player(
     additionalEmails = unvalidatedEmails.toSet(),
 )
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPlayerDetails.toModel(): PartyRecord<Player> = PartyRecord(
-    PartyId(partyId).with(
+    PartyId(NotBlankString.create(partyId)).with(
         Player(
             id = id,
             badge = badge?.toIntOrNull() ?: defaultPlayer.badge,

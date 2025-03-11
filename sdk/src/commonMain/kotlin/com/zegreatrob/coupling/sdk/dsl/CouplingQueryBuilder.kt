@@ -42,7 +42,7 @@ class CouplingQueryBuilder : BuilderWithInput() {
 
     fun party(id: PartyId, block: PartyQueryBuilder.() -> Unit) = mergeToParent(
         queryKey = "party",
-        inputSettings = InputSettings(GqlPartyInput(id.value), "partyInput", "PartyInput"),
+        inputSettings = InputSettings(GqlPartyInput(id.value.toString()), "partyInput", "PartyInput"),
         child = PartyQueryBuilder()
             .also(block),
     )
@@ -69,8 +69,8 @@ abstract class BuilderWithInput {
     abstract var inputs: MutableList<String>
     abstract var variables: MutableMap<String, JsonElement>
 
-    inline fun <reified I> InputSettings<I>.addInputString() = "(input: \$$inputName)".also {
-        inputs.add("\$$inputName: $inputType!")
+    inline fun <reified I> InputSettings<I>.addInputString() = "(input: $$inputName)".also {
+        inputs.add("$$inputName: $inputType!")
         variables[inputName] = Json.encodeToJsonElement(input)
     }
 

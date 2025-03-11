@@ -1,9 +1,12 @@
 package com.zegreatrob.coupling.model.party
 
-import kotlin.jvm.JvmInline
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
-@JvmInline
-value class PartyId(val value: String)
+data class PartyId(val value: NotBlankString)
+
+@OptIn(ExperimentalKotoolsTypesApi::class)
+fun PartyId(value: String) = PartyId(NotBlankString.create(value))
 
 data class PartyElement<T>(val partyId: PartyId, val element: T)
 

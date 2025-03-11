@@ -53,7 +53,7 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
                             }
                             props.partyList.forEach {
                                 option {
-                                    key = it.id.value
+                                    key = it.id.value.toString()
                                     value = it.id.value
                                     +it.name
                                 }
@@ -70,7 +70,7 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
                             parameters.append("scope", "webhook.incoming")
                             parameters.append(
                                 "state",
-                                Parameters.build { append("partyId", selectedParty?.value ?: "") }.formUrlEncode(),
+                                Parameters.build { append("partyId", selectedParty?.value?.toString() ?: "") }.formUrlEncode(),
                             )
                         }.toString()
                         CouplingButton {

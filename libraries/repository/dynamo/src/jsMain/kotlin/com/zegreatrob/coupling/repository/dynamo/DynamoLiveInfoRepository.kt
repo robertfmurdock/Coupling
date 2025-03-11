@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -21,13 +23,14 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
             }.sortedBy { it.connectionId }
     }
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     override suspend fun get(connectionId: String) = connectionId.logAsync("getConnection") {
         queryAllRecords(queryParams(connectionId)).firstNotNullOfOrNull {
             it["userPlayer"].unsafeCast<Json>().toPlayer()
                 ?.let { player ->
                     CouplingConnection(
                         it["id"].toString(),
-                        it["tribeId"].toString().let(::PartyId),
+                        it["tribeId"].toString().let(NotBlankString::create).let(::PartyId),
                         player,
                     )
                 }
@@ -53,7 +56,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":entityType" to ENTITY_TYPE,
-            ":tribeId" to partyId.value,
+            ":tribeId" to partyId.value.toString(),
         ),
         "ExpressionAttributeNames" to json(
             "#sortKey" to "tribeId+id",
@@ -118,7 +121,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
 
     private fun CouplingConnection.toDynamoJson() = json(
         "entityType" to ENTITY_TYPE,
-        "tribeId" to partyId.value,
+        "tribeId" to partyId.value.toString(),
         "id" to connectionId,
         "tribeId+id" to "${partyId.value}+$connectionId",
         "userPlayer" to userPlayer.toDynamoJson(),

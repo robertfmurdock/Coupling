@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -35,7 +36,7 @@ class PartyConfigTest {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
         render(jso { wrapper = TestRouter }) {
-            PartyConfig(party = party, boost = null, dispatchFunc = DispatchFunc { {} })
+            PartyConfig(party = party, boost = null, isNew = false, dispatchFunc = DispatchFunc { {} })
         }
     } verify {
         within(screen.getByLabelText("Pairing Rule"))
@@ -79,6 +80,7 @@ class PartyConfigTest {
                                 PartyConfig(
                                     party = party,
                                     boost = null,
+                                    isNew = false,
                                     dispatchFunc = stubDispatcher.func(),
                                 )
                             }
@@ -99,11 +101,11 @@ class PartyConfigTest {
 
     @Test
     fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = asyncSetup(object {
-        val party = PartyDetails(PartyId(""))
+        val party = PartyDetails(stubPartyId())
         val stubDispatcher = StubDispatcher()
     }) {
         render(jso { wrapper = TestRouter }) {
-            PartyConfig(party = party, boost = null, dispatchFunc = stubDispatcher.func())
+            PartyConfig(party = party, boost = null, isNew = true, dispatchFunc = stubDispatcher.func())
         }
     } exercise {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
@@ -112,7 +114,7 @@ class PartyConfigTest {
         stubDispatcher.receivedActions
             .filterIsInstance<SavePartyCommand>()
             .first()
-            .party.id.value.run {
+            .party.id.value.toString().run {
                 assertIsNotEqualTo("")
                 assertIsEqualTo(automatedPartyId)
             }

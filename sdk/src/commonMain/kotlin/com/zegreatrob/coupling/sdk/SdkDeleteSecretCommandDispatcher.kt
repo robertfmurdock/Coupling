@@ -19,5 +19,5 @@ interface SdkDeleteSecretCommandDispatcher :
         ?.voidResult()
         ?: CommandResult.Unauthorized
 
-    private fun DeleteSecretCommand.toInput() = GqlDeleteSecretInput(partyId.value, secretId)
+    private fun DeleteSecretCommand.toInput() = GqlDeleteSecretInput(partyId.value.toString(), secretId)
 }

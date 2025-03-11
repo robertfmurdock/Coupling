@@ -13,26 +13,24 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
-import kotlin.uuid.Uuid
 
 external interface PartyConfigProps<D> : Props
     where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
     var party: PartyDetails
     var boost: Boost?
     var dispatchFunc: DispatchFunc<D>
+    var isNew: Boolean
 }
 
 @ReactFunc
-val PartyConfig by nfc<PartyConfigProps<*>> { (party, boost, commandFunc) ->
-    val isNew = party.id.value == ""
-    val (values, onChange) = useForm(party.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
+val PartyConfig by nfc<PartyConfigProps<*>> { (party, boost, commandFunc, isNew) ->
+    val (values, onChange) = useForm(party.toSerializable().toJsonDynamic().unsafeCast<Json>())
     val updatedParty = values.correctTypes().fromJsonDynamic<GqlPartyDetails>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToPartyList = { setRedirectUrl(Paths.partyList()) }
@@ -62,10 +60,4 @@ val PartyConfig by nfc<PartyConfigProps<*>> { (party, boost, commandFunc) ->
 private fun Json.correctTypes() = also {
     set("animationSpeed", this["animationSpeed"].toString().toDouble())
     set("pairingRule", this["pairingRule"].toString().toInt())
-}
-
-private fun PartyDetails.withDefaultPartyId() = if (id.value.isNotBlank()) {
-    this
-} else {
-    copy(id = PartyId("${Uuid.random()}"))
 }

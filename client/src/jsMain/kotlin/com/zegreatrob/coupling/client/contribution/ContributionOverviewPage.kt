@@ -20,7 +20,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
                 contributionReport(limit = 5) { contributions() }
             }
         },
-        key = partyId.value,
+        key = partyId.value.toString(),
     ) { _, dispatchFunc, queryResult ->
         val party = queryResult.party?.details?.data ?: return@CouplingQuery
         val contributions =

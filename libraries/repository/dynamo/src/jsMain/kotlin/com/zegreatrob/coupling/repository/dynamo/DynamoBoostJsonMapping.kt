@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -16,15 +18,16 @@ interface DynamoBoostJsonMapping : DynamoRecordJsonMapping {
     fun Boost.asDynamoJson() = json(
         "pk" to "user-$userId",
         "userId" to userId,
-        "tribeIds" to partyIds.map { it.value }.toTypedArray(),
+        "tribeIds" to partyIds.map { it.value.toString() }.toTypedArray(),
         "expirationDate" to expirationDate.toString(),
     )
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     fun Json.toBoost() = Boost(
         this["userId"].toString(),
         this["tribeIds"]
             .unsafeCast<Array<String?>>()
-            .mapNotNull { it?.let(::PartyId) }
+            .mapNotNull { it?.let(NotBlankString::create)?.let(::PartyId) }
             .toSet(),
         this["expirationDate"]?.toString()?.let { Instant.parse(it) } ?: Instant.DISTANT_PAST,
     )

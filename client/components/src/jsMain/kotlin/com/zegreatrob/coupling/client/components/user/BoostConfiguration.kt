@@ -43,7 +43,9 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
         select {
             name = "party"
             value = boostedParty?.id?.value ?: ""
-            onChange = { event -> boostedParty = props.parties.firstOrNull { it.id.value == event.target.value } }
+            onChange = { event ->
+                boostedParty = props.parties.firstOrNull { it.id.value.toString() == event.target.value }
+            }
 
             if (boostedParty == null) {
                 option {
@@ -56,7 +58,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
             props.parties.forEach { party ->
                 val partyName = party.name
                 option {
-                    key = party.id.value
+                    key = party.id.value.toString()
                     value = party.id.value
                     label = partyName
                     if (partyName != null) {

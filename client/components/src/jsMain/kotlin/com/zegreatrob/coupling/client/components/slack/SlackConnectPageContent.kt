@@ -69,7 +69,7 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
                             props.parties.map { party ->
                                 val partyName = party.name
                                 option {
-                                    key = party.id.value
+                                    key = party.id.value.toString()
                                     value = party.id.value
                                     label = partyName
                                     if (partyName != null) {

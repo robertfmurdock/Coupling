@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.time.Duration
@@ -39,7 +41,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
                 "TableName" to prefixedTableName,
                 "ScanIndexForward" to false,
                 "ExpressionAttributeValues" to json(
-                    ":tribeId" to partyId.value,
+                    ":tribeId" to partyId.value.toString(),
                     ":contributionIds" to contributionIds.toTypedArray(),
                 ),
                 "KeyConditionExpression" to "tribeId = :tribeId",
@@ -65,11 +67,13 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         .add(data.toJson())
         .add(json("timestamp+id" to sortKeyWithDateTimeFirst()))
 
-    private fun PartyRecord<Contribution>.sortKeyWithDateTimeFirst() = "${(data.element.integrationDateTime ?: data.element.dateTime)?.isoWithMillis()?.let { "dT$it" } ?: timestamp}+${data.element.id}"
+    private fun PartyRecord<Contribution>.sortKeyWithDateTimeFirst() = "${
+        (data.element.integrationDateTime ?: data.element.dateTime)?.isoWithMillis()?.let { "dT$it" } ?: timestamp
+    }+${data.element.id}"
 
     private fun PartyElement<Contribution>.toJson() = json(
         "id" to element.id,
-        "tribeId" to partyId.value,
+        "tribeId" to partyId.value.toString(),
         "dateTime" to element.dateTime?.isoWithMillis(),
         "ease" to element.ease,
         "hash" to element.hash,
@@ -102,7 +106,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         json(
             "TableName" to prefixedTableName,
             "ExpressionAttributeValues" to json(
-                ":tribeId" to partyId.value,
+                ":tribeId" to partyId.value.toString(),
                 ":windowStart" to (now() - window).isoWithMillis(),
                 ":null" to "NULL",
             ),
@@ -120,7 +124,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             "TableName" to prefixedTableName,
             "Limit" to limit,
             "ScanIndexForward" to false,
-            "ExpressionAttributeValues" to json(":tribeId" to partyId.value),
+            "ExpressionAttributeValues" to json(":tribeId" to partyId.value.toString()),
             "KeyConditionExpression" to "tribeId = :tribeId",
         )
     }
@@ -150,7 +154,8 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         )
     }
 
-    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
+    @OptIn(ExperimentalKotoolsTypesApi::class)
+    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
 
     companion object :
         DynamoRepositoryCreatorSyntax<DynamoContributionRepository>(),

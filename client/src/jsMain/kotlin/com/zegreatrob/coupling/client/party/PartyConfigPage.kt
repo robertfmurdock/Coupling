@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
+import kotlin.uuid.Uuid
 
 val PartyConfigPage by nfc<PageProps> { props ->
     val partyId = props.partyId
@@ -15,25 +16,25 @@ val PartyConfigPage by nfc<PageProps> { props ->
         CouplingQuery(
             commander = props.commander,
             query = graphQuery { party(partyId) { details() } },
-            key = props.partyId?.value,
+            key = partyId.value.toString(),
         ) { _, commandFunc, result ->
             PartyConfig(
                 party = result.party?.details?.data ?: return@CouplingQuery,
                 boost = result.party?.boost?.data,
                 dispatchFunc = commandFunc,
+                isNew = false,
             )
         }
     } else {
         CouplingQuery(
             commander = props.commander,
             query = graphQuery { user { details() } },
-            key = props.partyId?.value,
-        ) { _, commandFunc, _ -> PartyConfig(newParty(), null, commandFunc) }
+        ) { _, commandFunc, _ -> PartyConfig(newParty(), null, commandFunc, isNew = true) }
     }
 }
 
 fun newParty() = PartyDetails(
-    id = PartyId(""),
+    id = PartyId(Uuid.random().toString()),
     defaultBadgeName = "Default",
     alternateBadgeName = "Alternate",
     name = "New Party",

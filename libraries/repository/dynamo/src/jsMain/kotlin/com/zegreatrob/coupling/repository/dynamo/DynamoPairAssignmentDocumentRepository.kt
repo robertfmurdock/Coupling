@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 
 class DynamoPairAssignmentDocumentRepository private constructor(
@@ -66,5 +68,6 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         ?.let { json.tribeId().with(it) }
         ?.let { json.toRecord(it) }
 
-    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
+    @OptIn(ExperimentalKotoolsTypesApi::class)
+    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
 }

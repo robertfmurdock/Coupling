@@ -2,9 +2,12 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlParty.toModel() = Party(
-    id = id.let(::PartyId),
+    id = id.let(NotBlankString::create).let(::PartyId),
     details = details?.toModelRecord(),
     integration = integration?.toModelRecord(),
     pinList = pinList?.mapNotNull(GqlPinDetails::toModel),

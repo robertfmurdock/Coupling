@@ -59,7 +59,7 @@ private suspend fun partyDataSerializable(
     partyRecords: List<Record<PartyDetails>>,
     repositoryCatalog: DynamoRepositoryCatalog,
 ) = PartyData(
-    partyId = partyId.value,
+    partyId = partyId.value.toString(),
     partyRecords = partyRecords.map(Record<PartyDetails>::toSerializable),
     playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(partyId)
         .map(Record<PartyElement<Player>>::toSerializable),

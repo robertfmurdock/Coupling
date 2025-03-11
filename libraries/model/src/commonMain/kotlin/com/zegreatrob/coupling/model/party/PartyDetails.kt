@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.model.party
 
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
+
 data class PartyDetails(
     val id: PartyId,
     val pairingRule: PairingRule = PairingRule.LongestTime,
@@ -19,4 +22,5 @@ data class PartyIntegration(
     val slackChannel: String?,
 )
 
-val defaultParty = PartyDetails(PartyId("DEFAULT"))
+@OptIn(ExperimentalKotoolsTypesApi::class)
+val defaultParty = PartyDetails(PartyId(NotBlankString.create("DEFAULT")))

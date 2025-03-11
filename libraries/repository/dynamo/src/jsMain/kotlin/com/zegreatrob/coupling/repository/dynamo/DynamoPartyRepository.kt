@@ -33,7 +33,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
         override val construct = ::DynamoPartyRepository
     }
 
-    override suspend fun getDetails(partyId: PartyId) = performGetSingleItemQuery(partyId.value)
+    override suspend fun getDetails(partyId: PartyId) = performGetSingleItemQuery(partyId.value.toString())
         ?.let { it.toRecord(it.toParty()) }
 
     override suspend fun save(integration: PartyElement<PartyIntegration>) = performPutItem(
@@ -54,7 +54,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
     override suspend fun save(party: PartyDetails) = performPutItem(party.toRecord().asDynamoJson())
 
     override suspend fun deleteIt(partyId: PartyId) = performDelete(
-        partyId.value,
+        partyId.value.toString(),
         null,
         now(),
         { asPartyRecord() },

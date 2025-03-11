@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.with
 import kotlinx.datetime.Instant
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -14,7 +16,7 @@ interface DynamoSecretJsonMapping : PartyIdDynamoRecordJsonMapping {
     fun Record<PartyElement<Secret>>.asDynamoJson() = recordJson()
         .add(
             json(
-                "tribeId" to data.partyId.value,
+                "tribeId" to data.partyId.value.toString(),
                 "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id}",
             ),
         )
@@ -34,8 +36,9 @@ interface DynamoSecretJsonMapping : PartyIdDynamoRecordJsonMapping {
         lastUsedTimestamp = getDynamoDateTimeValue("lastUsedTimestamp"),
     )
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     fun Json.toRecord(): Record<PartyElement<Secret>> {
-        val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)
+        val partyId = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
         return toRecord(partyId.with(toSecret()))
     }
 }

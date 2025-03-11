@@ -37,7 +37,7 @@ val PartyList by nfc<PartyListProps> { (parties) ->
         }
         div {
             parties.forEach { party ->
-                PartyCard(party, key = party.id.value)
+                PartyCard(party, key = party.id.value.toString())
             }
         }
         div { NewPartyButton() }

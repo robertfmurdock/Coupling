@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -14,15 +16,16 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
         "id" to id,
         "email" to email,
         "stripeCustomerId" to stripeCustomerId,
-        "authorizedTribeIds" to authorizedPartyIds.map { it.value }.toTypedArray(),
+        "authorizedTribeIds" to authorizedPartyIds.map { it.value.toString() }.toTypedArray(),
     )
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     fun Json.toUser() = UserDetails(
         this["id"].toString(),
         this["email"].toString(),
         this["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
-            .mapNotNull { it?.let(::PartyId) }
+            .mapNotNull { it?.let(NotBlankString::createOrNull)?.let(::PartyId) }
             .toSet(),
         getDynamoStringValue("stripeCustomerId"),
     )

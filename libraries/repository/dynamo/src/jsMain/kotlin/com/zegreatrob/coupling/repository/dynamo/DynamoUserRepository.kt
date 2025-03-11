@@ -10,6 +10,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -126,12 +128,13 @@ class DynamoUserRepository private constructor(override val userId: String, over
             ?.let { listOf(it) }
     }
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     private fun emailIdRecordToUser(json: Json) = UserDetails(
         json["user_id"].toString(),
         json["email"].toString(),
         json["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
-            .mapNotNull { it?.let(::PartyId) }
+            .mapNotNull { it?.let(NotBlankString::createOrNull)?.let(::PartyId) }
             .toSet(),
         json.getDynamoStringValue("stripeCustomerId"),
     )
@@ -160,7 +163,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
         "user_id" to data.id,
         "email" to data.email,
         "stripeCustomerId" to data.stripeCustomerId,
-        "authorizedTribeIds" to data.authorizedPartyIds.map { it.value }.toTypedArray(),
+        "authorizedTribeIds" to data.authorizedPartyIds.map { it.value.toString() }.toTypedArray(),
     )
 
     private fun emailId(email: String) = "EMAIL-$email"

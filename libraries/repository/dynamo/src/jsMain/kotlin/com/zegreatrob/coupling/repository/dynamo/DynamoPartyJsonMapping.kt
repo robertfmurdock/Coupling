@@ -7,6 +7,8 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.defaultParty
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -17,7 +19,7 @@ interface DynamoPartyJsonMapping :
     fun Record<PartyDetails>.asDynamoJson() = recordJson().add(data.asDynamoJson())
 
     fun PartyDetails.asDynamoJson() = json(
-        "id" to id.value,
+        "id" to id.value.toString(),
         "name" to name,
         "email" to email,
         "pairingRule" to PairingRule.toValue(pairingRule),
@@ -29,8 +31,9 @@ interface DynamoPartyJsonMapping :
         "animationSpeed" to animationSpeed,
     )
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     fun Json.toParty() = PartyDetails(
-        id = PartyId(getDynamoStringValue("id") ?: ""),
+        id = PartyId(NotBlankString.create(getDynamoStringValue("id") ?: "")),
         pairingRule = getDynamoNumberValue("pairingRule")?.toInt().let { PairingRule.fromValue(it) },
         badgesEnabled = getDynamoBoolValue("badgesEnabled") ?: defaultParty.badgesEnabled,
         defaultBadgeName = getDynamoStringValue("defaultBadgeName") ?: "",

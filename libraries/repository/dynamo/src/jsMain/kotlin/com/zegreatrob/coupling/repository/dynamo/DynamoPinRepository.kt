@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 
 class DynamoPinRepository private constructor(override val userId: String, override val clock: Clock) :
@@ -38,8 +40,9 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         it.toRecord()
     }
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     private fun Json.toRecord(): Record<PartyElement<Pin>>? {
-        val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)
+        val partyId = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
         val pin = toPin() ?: return null
         return toRecord(partyId.with(pin))
     }

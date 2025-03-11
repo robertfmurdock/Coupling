@@ -156,7 +156,7 @@ class SdkSecretTest {
         body.parseAsObject()["sub"]
             ?.jsonPrimitive
             ?.content
-            .assertIsEqualTo(partyId.value)
+            .assertIsEqualTo(partyId.value.toString())
         signature.assertIsNotEqualTo(null)
     }
 

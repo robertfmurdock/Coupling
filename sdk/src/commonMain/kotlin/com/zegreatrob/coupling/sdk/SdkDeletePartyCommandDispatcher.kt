@@ -13,7 +13,7 @@ interface SdkDeletePartyCommandDispatcher :
     override suspend fun perform(command: DeletePartyCommand) = with(command) {
         doQuery(
             Mutation.deleteParty,
-            GqlDeletePartyInput(partyId.value),
+            GqlDeletePartyInput(partyId.value.toString()),
             "deleteParty",
         ) { it: Boolean? -> it }
             .let { it == true }

@@ -23,7 +23,7 @@ val PartySecretsPage by nfc<PageProps> { props ->
                     boost()
                 }
             },
-            key = props.partyId?.value,
+            key = props.partyId?.value?.toString(),
         ) { reload, dispatcher, result ->
             PartySecretLayout(
                 partyDetails = result.party?.details?.data ?: return@CouplingQuery,

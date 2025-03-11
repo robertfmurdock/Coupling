@@ -32,7 +32,7 @@ private fun options(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDo
     put("query", JsonPrimitive(Mutation.deletePairAssignments))
     putJsonObject("variables") {
         putJsonObject("input") {
-            put("partyId", partyId.value)
+            put("partyId", partyId.value.toString())
             put("pairAssignmentsId", pairAssignmentDocumentId.value)
         }
     }

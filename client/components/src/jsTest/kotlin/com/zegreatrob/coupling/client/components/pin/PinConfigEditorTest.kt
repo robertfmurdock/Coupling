@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.client.components.player.singleRouteRouter
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -24,7 +25,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinIsNotInListWillNotShowDeleteButton() = setup(object {
-        val party = PartyDetails(PartyId(""))
+        val party = PartyDetails(stubPartyId())
         val pin = stubPin()
     }) exercise {
         render(
@@ -47,7 +48,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinIsInListWillShowDeleteButton() = setup(object {
-        val party = PartyDetails(PartyId(""))
+        val party = PartyDetails(stubPartyId())
         val pin = stubPin()
     }) exercise {
         render(

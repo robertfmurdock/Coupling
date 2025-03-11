@@ -12,7 +12,7 @@ val CurrentPairsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = currentPairsQuery(partyId),
-        key = partyId.value,
+        key = partyId.value.toString(),
     ) { reload, dispatchFunc, result ->
         SocketedPairAssignments(
             party = result.party?.details?.data ?: return@CouplingQuery,

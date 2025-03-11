@@ -19,7 +19,7 @@ interface SdkSavePartyCommandDispatcher :
 }
 
 private fun PartyDetails.savePartyInput() = GqlSavePartyInput(
-    partyId = id.value,
+    partyId = id.value.toString(),
     name = name,
     email = email,
     pairingRule = PairingRule.toValue(pairingRule),

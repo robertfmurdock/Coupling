@@ -18,7 +18,7 @@ val PrepareSpinPage = partyPageFunction { props, partyId ->
                 pinList()
             }
         },
-        key = partyId.value,
+        key = partyId.value.toString(),
     ) { _, dispatcher, result ->
         PrepareSpin(
             party = result.party?.details?.data ?: return@CouplingQuery,

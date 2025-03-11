@@ -74,7 +74,7 @@ private fun partyStats(
 ): PartyStats {
     val pairDocsThisYear = docs.filter(filter).elements
     return PartyStats(
-        name = party.data.name ?: party.data.id.value,
+        name = party.data.name ?: party.data.id.value.toString(),
         id = party.data.id,
         playerCount = pairDocsThisYear.distinctPlayersPairedThisYear().size,
         spins = pairDocsThisYear.size,

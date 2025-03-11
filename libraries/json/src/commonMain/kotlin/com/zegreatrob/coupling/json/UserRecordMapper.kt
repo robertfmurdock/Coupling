@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotools.types.text.NotBlankString
 
 @Serializable
 data class JsonUserRecord(
@@ -19,7 +20,7 @@ data class JsonUserRecord(
 fun Record<UserDetails>.toSerializable() = JsonUserRecord(
     id = data.id,
     email = data.email,
-    authorizedPartyIds = data.authorizedPartyIds.map(PartyId::value).toSet(),
+    authorizedPartyIds = data.authorizedPartyIds.map(PartyId::value).map(NotBlankString::toString).toSet(),
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,

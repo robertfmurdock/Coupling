@@ -2,12 +2,15 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.party.PartyId
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPartyStats.toModel() = PartyStats(
     name = name,
-    id = PartyId(id),
+    id = PartyId(NotBlankString.create(id)),
     playerCount = playerCount,
     spins = spins,
     medianSpinDuration = medianSpinDurationMillis?.milliseconds,
@@ -17,7 +20,7 @@ fun GqlPartyStats.toModel() = PartyStats(
 
 fun PartyStats.toJson() = GqlPartyStats(
     name = name,
-    id = id.value,
+    id = id.value.toString(),
     playerCount = playerCount,
     appliedPinCount = appliedPinCount,
     uniquePinCount = uniquePinCount,

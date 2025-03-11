@@ -58,12 +58,12 @@ class BoostConfigurationTest {
             )
         }
     } exercise {
-        actor.selectOptions(partyCombobox(), boostedParty.id.value)
+        actor.selectOptions(partyCombobox(), boostedParty.id.value.toString())
     } verify {
         within(partyCombobox())
             .getByRole("option", RoleOptions(selected = true))
             .getAttribute("value")
-            .assertIsEqualTo(boostedParty.id.value)
+            .assertIsEqualTo(boostedParty.id.value.toString())
     }
 
     private val boostButton get() = screen.getByRole("button", RoleOptions(name = "Apply Boost"))
@@ -85,7 +85,7 @@ class BoostConfigurationTest {
                 reload = {},
             )
         }
-        actor.selectOptions(partyCombobox(), boostedParty.id.value)
+        actor.selectOptions(partyCombobox(), boostedParty.id.value.toString())
     } exercise {
         actor.click(boostButton)
     } verify {

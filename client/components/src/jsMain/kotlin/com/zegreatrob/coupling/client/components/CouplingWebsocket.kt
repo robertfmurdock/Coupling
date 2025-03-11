@@ -38,7 +38,7 @@ external interface CouplingWebsocketProps : Props {
 @ReactFunc
 val CouplingWebsocket by nfc<CouplingWebsocketProps> { props ->
     val (partyId, onMessageFunc, buildChild, token) = props
-    val useSsl = props.useSsl ?: "https:" == window.location.protocol
+    val useSsl = (props.useSsl ?: "https:") == window.location.protocol
     var connected by useState(false)
 
     val socketHook = useWebSocket(
@@ -62,10 +62,11 @@ private fun sendMessageWithSocketFunc(sendMessage: (message: String, keep: Boole
 }
 
 private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = URL(
-    "?partyId=${encodeURIComponent(partyId.value)}&token=${encodeURIComponent(token)}",
+    "?partyId=${encodeURIComponent(partyId.value.toString())}&token=${encodeURIComponent(token)}",
     "${useSsl.protocol}://$host",
 )
 
 external fun encodeURIComponent(value: String): String
+
 private val host get() = window["websocketHost"].unsafeCast<String?>() ?: window.location.host
 private val Boolean.protocol get() = if (this) "wss" else "ws"

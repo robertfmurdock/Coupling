@@ -46,7 +46,7 @@ class SlackConnectPageContentTest {
                 dispatchFunc = stubber.func(),
             )
         }
-        actor.selectOptions(partySelect, targetParty.id.value)
+        actor.selectOptions(partySelect, targetParty.id.value.toString())
         returnButton
             .assertIsEqualTo(null, "Return button showed up unexpectedly early")
     } exercise {

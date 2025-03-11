@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.user.UserDetails
 fun UserDetails.toSerializable() = GqlUserDetails(
     id = id,
     email = email,
-    authorizedPartyIds = authorizedPartyIds.map { it.value },
+    authorizedPartyIds = authorizedPartyIds.map { it.value.toString() },
 )
 
 fun GqlUserDetails.toModel() = UserDetails(

@@ -18,7 +18,7 @@ val HistoryPage = partyPageFunction { props, partyId ->
                 pairAssignmentDocumentList()
             }
         },
-        key = partyId.value,
+        key = partyId.value.toString(),
     ) { reload, commandFunc, result ->
         val (party, history) = result.toHistoryData()
             ?: return@CouplingQuery

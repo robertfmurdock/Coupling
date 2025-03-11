@@ -14,7 +14,7 @@ val IntegrationPage = partyPageFunction { props, partyId ->
             }
             config { addToSlackUrl() }
         },
-        key = partyId.value,
+        key = partyId.value.toString(),
     ) { _, _, result ->
         IntegrationContent(
             party = result.party?.details?.data ?: return@CouplingQuery,

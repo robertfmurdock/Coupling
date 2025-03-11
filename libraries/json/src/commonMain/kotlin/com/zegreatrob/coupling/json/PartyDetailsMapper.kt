@@ -6,9 +6,12 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.defaultParty
 import kotlinx.serialization.Serializable
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlSavePartyInput.toModel() = PartyDetails(
-    id = PartyId(partyId),
+    id = PartyId(NotBlankString.create(partyId)),
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled ?: defaultParty.badgesEnabled,
     defaultBadgeName = defaultBadgeName ?: defaultParty.defaultBadgeName,
@@ -35,7 +38,7 @@ data class JsonPartyDetails(
 )
 
 fun PartyDetails.toSerializable() = JsonPartyDetails(
-    id = id.value,
+    id = id.value.toString(),
     pairingRule = PairingRule.toValue(pairingRule),
     badgesEnabled = badgesEnabled,
     defaultBadgeName = defaultBadgeName,
@@ -48,7 +51,7 @@ fun PartyDetails.toSerializable() = JsonPartyDetails(
 )
 
 fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
-    id = data.id.value,
+    id = data.id.value.toString(),
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
     defaultBadgeName = data.defaultBadgeName,
@@ -63,8 +66,9 @@ fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
     timestamp = timestamp,
 )
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPartyDetails.toModel(): PartyDetails = PartyDetails(
-    id = PartyId(id),
+    id = PartyId(NotBlankString.create(id)),
     pairingRule = PairingRule.fromValue(pairingRule),
     defaultBadgeName = defaultBadgeName,
     alternateBadgeName = alternateBadgeName,
@@ -76,10 +80,11 @@ fun GqlPartyDetails.toModel(): PartyDetails = PartyDetails(
     animationSpeed = animationSpeed ?: 1.0,
 )
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPartyDetails.toModelRecord(): Record<PartyDetails>? {
     return Record(
         data = PartyDetails(
-            id = PartyId(id),
+            id = PartyId(NotBlankString.create(id)),
             pairingRule = PairingRule.fromValue(pairingRule),
             defaultBadgeName = defaultBadgeName,
             alternateBadgeName = alternateBadgeName,

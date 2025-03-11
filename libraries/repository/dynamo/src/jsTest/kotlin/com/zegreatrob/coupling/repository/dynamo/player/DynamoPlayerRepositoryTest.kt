@@ -101,7 +101,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
             recordJson(now())
                 .add(
                     json(
-                        "tribeId" to partyId.value,
+                        "tribeId" to partyId.value.toString(),
                         "timestamp+id" to "lol",
                         "name" to "Dead player",
                     ),
@@ -126,7 +126,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
             recordJson(now())
                 .add(
                     json(
-                        "tribeId" to partyId.value,
+                        "tribeId" to partyId.value.toString(),
                         "timestamp+id" to "20210426135844.172+",
                         "name" to "Dead player",
                     ),

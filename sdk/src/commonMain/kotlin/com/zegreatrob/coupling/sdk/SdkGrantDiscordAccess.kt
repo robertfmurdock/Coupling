@@ -21,6 +21,6 @@ interface SdkGrantDiscordAccess :
 
 fun GrantDiscordAccessCommand.grantDiscordAccessInput() = GqlGrantDiscordAccessInput(
     code = code,
-    partyId = partyId.value,
+    partyId = partyId.value.toString(),
     guildId = guildId,
 )

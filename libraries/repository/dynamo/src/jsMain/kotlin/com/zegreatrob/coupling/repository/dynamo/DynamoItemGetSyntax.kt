@@ -22,7 +22,7 @@ interface DynamoItemGetSyntax :
         json(
             "TableName" to prefixedTableName,
             "ExpressionAttributeValues" to json(
-                ":tribeId" to partyId.value,
+                ":tribeId" to partyId.value.toString(),
                 ":id" to id,
             ),
             "KeyConditionExpression" to "tribeId = :tribeId",
@@ -35,25 +35,6 @@ interface DynamoItemGetSyntax :
                 ":id" to id,
             ),
             "KeyConditionExpression" to "id = :id",
-        )
-    }
-
-    private fun singleScanParams(id: String, partyId: PartyId?) = if (partyId == null) {
-        json(
-            "TableName" to prefixedTableName,
-            "ExpressionAttributeValues" to json(
-                ":id" to id,
-            ),
-            "FilterExpression" to "id = :id",
-        )
-    } else {
-        json(
-            "TableName" to prefixedTableName,
-            "ExpressionAttributeValues" to json(
-                ":id" to id,
-                ":tribeId" to partyId.value,
-            ),
-            "FilterExpression" to "id = :id AND tribeId = :tribeId",
         )
     }
 }

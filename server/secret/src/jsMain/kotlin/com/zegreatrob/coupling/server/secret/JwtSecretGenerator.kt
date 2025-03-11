@@ -16,7 +16,7 @@ interface JwtSecretGenerator : SecretGenerator {
 
     override suspend fun createSecret(secret: PartyElement<Secret>) = SignJWT(customClaims(secret))
         .setAudience(secretAudience)
-        .setSubject(secret.partyId.value)
+        .setSubject(secret.partyId.value.toString())
         .setIssuedAt()
         .setIssuer(secretIssuer)
         .setProtectedHeader(jso { alg = "HS256" })

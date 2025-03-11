@@ -31,7 +31,7 @@ class SecretGeneratorTest {
             TextEncoder().encode(secretSigningSecret),
             jso {
                 issuer = arrayOf(this@verify.secretIssuer)
-                subject = partyId.value
+                subject = partyId.value.toString()
                 audience = arrayOf(this@verify.secretAudience)
             },
         ).await()

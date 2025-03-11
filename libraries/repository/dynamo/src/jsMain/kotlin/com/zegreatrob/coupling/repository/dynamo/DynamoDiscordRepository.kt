@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -25,16 +27,13 @@ class DynamoDiscordRepository private constructor(override val userId: String, o
             .asDynamoJson(),
     )
 
-    override suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>? = performGetSingleItemQuery(partyId.value, partyId)
+    override suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>? = performGetSingleItemQuery(partyId.value.toString(), partyId)
         ?.toRecord()
 
+    @OptIn(ExperimentalKotoolsTypesApi::class)
     private fun Json.toRecord(): Record<PartyElement<DiscordTeamAccess>> {
-        val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)
-        return toRecord(
-            partyId.with(
-                toAccess(),
-            ),
-        )
+        val partyId = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
+        return toRecord(partyId.with(toAccess()))
     }
 
     companion object :
@@ -52,13 +51,13 @@ class DynamoDiscordRepository private constructor(override val userId: String, o
         .add(data.toJson())
         .add(
             json(
-                "tribeId" to data.partyId.value,
+                "tribeId" to data.partyId.value.toString(),
                 "timestamp+id" to "${timestamp.isoWithMillis()}+${data.partyId.value}",
             ),
         )
 
     private fun PartyElement<DiscordTeamAccess>.toJson() = json(
-        "id" to partyId.value,
+        "id" to partyId.value.toString(),
         "accessToken" to element.accessToken,
         "refreshToken" to element.refreshToken,
         "webhookId" to element.webhook.id,
