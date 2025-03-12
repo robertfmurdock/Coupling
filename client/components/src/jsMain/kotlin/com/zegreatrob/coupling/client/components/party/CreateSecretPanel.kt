@@ -72,7 +72,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
                 inputProps = jso {
                     type = InputType.text
                     disabled = true
-                    value = createdSecret?.id ?: ""
+                    value = createdSecret?.id?.value?.toString() ?: ""
                 }
             }
         }

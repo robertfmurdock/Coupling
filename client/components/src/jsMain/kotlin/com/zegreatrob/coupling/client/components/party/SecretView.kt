@@ -54,7 +54,7 @@ val SecretView by nfc<SecretViewProps> { props ->
                     props.secrets.forEachIndexed { index, secret ->
                         tr {
                             td { +"$index" }
-                            td { +secret.id }
+                            td { +secret.id.value.toString() }
                             td { +secret.description }
                             td { +(secret.lastUsedTimestamp?.format() ?: "Never used.") }
                             td {

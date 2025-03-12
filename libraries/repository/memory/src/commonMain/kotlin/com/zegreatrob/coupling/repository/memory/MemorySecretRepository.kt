@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.repository.secret.SecretRepository
 import kotlinx.datetime.Clock
@@ -21,7 +22,7 @@ class MemorySecretRepository(
     }
 
     override suspend fun getSecrets(partyId: PartyId): List<PartyRecord<Secret>> = records
-    override suspend fun deleteSecret(partyId: PartyId, secretId: String): Boolean {
+    override suspend fun deleteSecret(partyId: PartyId, secretId: SecretId): Boolean {
         TODO("Not yet implemented")
     }
 }

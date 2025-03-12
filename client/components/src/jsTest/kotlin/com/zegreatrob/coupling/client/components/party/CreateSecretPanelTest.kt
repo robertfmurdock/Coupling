@@ -66,6 +66,6 @@ class CreateSecretPanelTest {
         val idInput = screen.getByLabelText("Secret ID") as HTMLInputElement
         val valueInput = screen.getByLabelText("Secret Value") as HTMLInputElement
         valueInput.value.assertIsEqualTo(expectedSecretValue)
-        idInput.value.assertIsEqualTo(expectedSecret.id)
+        idInput.value.assertIsEqualTo(expectedSecret.id.value.toString())
     }
 }

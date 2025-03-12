@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.server.action
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.Secret
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.secret.SecretSave
 import kotlinx.datetime.Clock
-import kotlin.uuid.Uuid
 
 interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
     val secretRepository: SecretSave
@@ -25,7 +25,7 @@ interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
 
     private fun CreateSecretCommand.partySecret(): PartyElement<Secret> = partyId.with(
         Secret(
-            id = "${Uuid.random()}",
+            id = SecretId.new(),
             description = description,
             createdTimestamp = Clock.System.now(),
             lastUsedTimestamp = null,

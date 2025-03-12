@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.secret.SecretRepository
@@ -26,10 +27,11 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
     } else {
         request.scope.async({ _, _ -> next() }) {
             val userEmail = auth["https://zegreatrob.com/email"].asDynamic()
-            if (userEmail == null) {
+            val secretId = SecretId("${auth["https://zegreatrob.com/secret-id"]}")
+            if (userEmail == null && secretId != null) {
                 userFromSecret(
                     partyId = PartyId("${auth["sub"]}"),
-                    secretId = "${auth["https://zegreatrob.com/secret-id"]}",
+                    secretId = secretId,
                 )
             } else {
                 authCannon(userEmail, request.traceId)
@@ -41,16 +43,17 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
     }
 }
 
-private suspend fun userFromSecret(partyId: PartyId, secretId: String): UserDetails? {
-    val secretRepository = secretRepository(secretId)
+private suspend fun userFromSecret(partyId: PartyId, secretId: SecretId): UserDetails? {
+    val secretUserId = secretId.value.toString()
+    val secretRepository = secretRepository(secretUserId)
     return if (!secretRepository.secretIsNotDeleted(partyId, secretId)) {
         null
     } else {
         secretRepository.save(SecretUsed(partyId, secretId, Clock.System.now()))
 
         UserDetails(
-            id = secretId,
-            email = secretId,
+            id = secretUserId,
+            email = secretUserId,
             authorizedPartyIds = setOf(partyId),
             stripeCustomerId = null,
         )
@@ -62,7 +65,7 @@ private suspend fun authCannon(userEmail: Any?, traceId: Uuid) = ActionCannon(
     LoggingActionPipe(traceId),
 )
 
-private suspend fun SecretRepository.secretIsNotDeleted(partyId: PartyId, secretId: String): Boolean = getSecrets(partyId)
+private suspend fun SecretRepository.secretIsNotDeleted(partyId: PartyId, secretId: SecretId): Boolean = getSecrets(partyId)
     .elements
     .map(Secret::id)
     .contains(secretId)

@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.Secret
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -58,7 +59,7 @@ private fun stubPairingRule() = PairingRule.entries[partyCounter % PairingRule.e
 fun stubPartyId() = PartyId(uuidString())
 
 fun stubSecret() = Secret(
-    id = uuidString(),
+    id = SecretId.new(),
     description = uuidString(),
     createdTimestamp = Clock.System.now().minus((1..5).random().minutes),
     lastUsedTimestamp = Clock.System.now().minus((10..30).random().seconds),

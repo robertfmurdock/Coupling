@@ -36,6 +36,6 @@ class SecretGeneratorTest {
             },
         ).await()
         token.payload["https://zegreatrob.com/secret-id"]
-            .assertIsEqualTo(secret.id)
+            .assertIsEqualTo(secret.id.value.toString())
     }
 }

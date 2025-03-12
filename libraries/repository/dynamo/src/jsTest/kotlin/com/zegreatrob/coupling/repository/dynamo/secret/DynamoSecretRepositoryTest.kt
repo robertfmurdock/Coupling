@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo.secret
 
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.repository.dynamo.now
@@ -18,7 +19,6 @@ import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
-import kotlin.uuid.Uuid
 
 @Suppress("unused")
 class DynamoSecretRepositoryTest {
@@ -73,7 +73,7 @@ class DynamoSecretRepositoryTest {
     }) {
         repository = DynamoSecretRepository("userId", MagicClock())
     } exercise {
-        repository.deleteSecret(partyId, "${Uuid.random()}")
+        repository.deleteSecret(partyId, SecretId.new())
     } verify { result ->
         result.assertIsEqualTo(false)
     }

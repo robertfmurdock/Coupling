@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdProvider
@@ -52,10 +53,10 @@ class DynamoSecretRepository private constructor(override val userId: String, ov
         .let { }
 
     override suspend fun getSecrets(partyId: PartyId): List<PartyRecord<Secret>> = partyId.queryForItemList()
-        .map { it.toRecord() }
+        .mapNotNull { it.toRecord() }
 
-    override suspend fun deleteSecret(partyId: PartyId, secretId: String) = performDelete(
-        secretId,
+    override suspend fun deleteSecret(partyId: PartyId, secretId: SecretId) = performDelete(
+        secretId.value.toString(),
         partyId,
         now(),
         { toRecord() },

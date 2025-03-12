@@ -4,7 +4,9 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.server.action.SecretGenerator
 import com.zegreatrob.coupling.server.secret.external.jose.SignJWT
+import js.objects.Record
 import js.objects.jso
+import js.objects.recordOf
 import js.typedarrays.Uint8Array
 import kotlinx.coroutines.await
 
@@ -23,9 +25,7 @@ interface JwtSecretGenerator : SecretGenerator {
         .sign(TextEncoder().encode(secretSigningSecret))
         .await()
 
-    private fun customClaims(secret: PartyElement<Secret>): dynamic = jso {
-        this["https://zegreatrob.com/secret-id"] = secret.element.id
-    }
+    private fun customClaims(secret: PartyElement<Secret>): Record<String, String> = recordOf("https://zegreatrob.com/secret-id" to secret.element.id.value.toString())
 }
 
 external class TextEncoder {
