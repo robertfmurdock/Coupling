@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
+import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -48,7 +48,7 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
         PlayerCard(contributor, size = 20)
         hr()
         CouplingButton {
-            onClick = { navigate(partyId.with(contributor).playerConfigPage()) }
+            onClick = { navigate(partyId.with(contributor).playerConfigPath()) }
             +"Player Config"
         }
     } else {

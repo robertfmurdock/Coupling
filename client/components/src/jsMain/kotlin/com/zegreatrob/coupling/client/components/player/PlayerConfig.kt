@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.components.Paths.currentPairsPath
 import com.zegreatrob.coupling.client.components.eventHandler
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
@@ -65,7 +65,7 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     } else {
         dispatchFunc {
             fire(DeletePlayerCommand(party.id, player.id))
-            setRedirectUrl(party.id.currentPairsPage())
+            setRedirectUrl(party.id.currentPairsPath())
         }.requireConfirmation("Are you sure you want to delete this player?", windowFuncs ?: WindowFunctions)
     }
     val onPlayerChange = { changedPlayer: Player ->

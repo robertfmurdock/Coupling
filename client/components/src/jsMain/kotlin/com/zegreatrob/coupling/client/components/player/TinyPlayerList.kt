@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.player
 
-import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
+import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
@@ -25,7 +25,7 @@ val TinyPlayerList by nfc<TinyPlayerListProps> { (party, players) ->
     players.forEach { player ->
         Link {
             key = player.id.value.toString()
-            to = party.id.with(player).playerConfigPage()
+            to = party.id.with(player).playerConfigPath()
             draggable = false
             val tilt = random.nextInt(7) - 3
             PlayerCard(player, size = 40, tilt = tilt.deg)

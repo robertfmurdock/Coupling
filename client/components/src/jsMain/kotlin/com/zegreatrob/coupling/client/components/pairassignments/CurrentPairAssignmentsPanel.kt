@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.components.Paths.currentPairsPath
 import com.zegreatrob.coupling.client.components.green
 import com.zegreatrob.coupling.client.components.red
 import com.zegreatrob.coupling.client.components.small
@@ -42,7 +42,7 @@ external interface CurrentPairAssignmentsPanelProps : Props {
 val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props ->
     val (party, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPage()) }
+    val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPath()) }
     val onCancel = dispatchFunc {
         fire(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
         redirectToCurrentFunc()

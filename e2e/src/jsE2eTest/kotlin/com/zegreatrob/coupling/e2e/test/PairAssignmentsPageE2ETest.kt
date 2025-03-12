@@ -105,7 +105,7 @@ class PairAssignmentsPageE2ETest {
             PlayerRoster.getPlayerElements("Unpaired players").first().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(("/${party.id.value}/player/${players[0].id}/"))
+                .assertIsEqualTo(("/${party.id.value}/player/${players[0].id.value}/"))
         }
 
         @Test

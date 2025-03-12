@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.player
 
-import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
+import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
@@ -49,7 +49,7 @@ val PlayerRoster by nfc<PlayerRosterProps> { (label, players, partyId, className
                 }
                 players.map { player ->
                     Link {
-                        to = partyId.with(player).playerConfigPage()
+                        to = partyId.with(player).playerConfigPath()
                         draggable = false
                         key = player.id.value.toString()
                         val tilt = random.nextInt(7) - 3

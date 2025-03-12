@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.party
 
-import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.components.Paths.currentPairsPath
 import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.components.pin.PinButton
@@ -54,7 +54,7 @@ val PartyCard by nfc<PartyCardProps> { props ->
     val (party) = props
     val size = props.size ?: 150
     Link {
-        to = party.id.currentPairsPage()
+        to = party.id.currentPairsPath()
         visuallyHidden { +"Party Home Page" }
         span {
             css {

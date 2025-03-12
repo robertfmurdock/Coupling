@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.components.PageFrame
-import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
+import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.pngPath
@@ -60,7 +60,7 @@ val RetiredPlayers by nfc<RetiredPlayersProps> { (party, players) ->
             div {
                 players.forEach { player ->
                     Link {
-                        to = party.id.with(player).playerConfigPage()
+                        to = party.id.with(player).playerConfigPath()
                         draggable = false
                         key = player.id.value.toString()
                         PlayerCard(player, deselected = true)
