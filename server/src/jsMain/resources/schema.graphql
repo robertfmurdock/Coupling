@@ -93,20 +93,20 @@ type PinnedPlayer {
     callSignAdjective: String!
     callSignNoun: String!
     imageURL: String
-    pins: [Pin]!
+    pins: [Pin!]!
     unvalidatedEmails: [String]
 }
 
 type PinnedPair {
-    players: [PinnedPlayer]!
-    pins: [Pin]!
+    players: [PinnedPlayer!]!
+    pins: [Pin!]!
 }
 
 type PairAssignmentDocumentDetails {
     id: ID!
     partyId: ID!
     date: DateTimeISO!
-    pairs: [PinnedPair]!
+    pairs: [PinnedPair!]!
     discordMessageId: String
     slackMessageId: String
     modifyingUserEmail: String!
@@ -127,7 +127,7 @@ type PartySecret {
 
 type BoostDetails {
     userId: ID!
-    partyIds: [ID]!
+    partyIds: [ID!]!
     expirationDate: DateTimeISO!
     modifyingUserEmail: String!
     timestamp: DateTimeISO!
@@ -161,12 +161,12 @@ type Party {
     id: ID!
     details: PartyDetails
     integration: PartyIntegration
-    pinList: [PinDetails]
-    playerList: [PlayerDetails]
-    retiredPlayers: [PlayerDetails]
-    pairs: [Pair]
-    pairAssignmentDocumentList: [PairAssignmentDocumentDetails]
-    secretList: [PartySecret]
+    pinList: [PinDetails!]
+    playerList: [PlayerDetails!]
+    retiredPlayers: [PlayerDetails!]
+    pairs: [Pair!]
+    pairAssignmentDocumentList: [PairAssignmentDocumentDetails!]
+    secretList: [PartySecret!]
     currentPairAssignmentDocument: PairAssignmentDocumentDetails
     spinsUntilFullRotation: Int
     medianSpinDuration: Duration
@@ -181,7 +181,7 @@ type Contributor {
 }
 
 input PairInput {
-    playerIdList: [ID]!
+    playerIdList: [ID!]!
 }
 
 input ContributionsInput {
@@ -212,8 +212,8 @@ input PinInput {
 
 input SpinInput {
     partyId: ID!
-    playerIds: [ID]!
-    pinIds: [ID]!
+    playerIds: [ID!]!
+    pinIds: [ID!]!
 }
 
 type SpinOutput {
@@ -281,7 +281,7 @@ input SavePairAssignmentsInput {
     partyId: ID!
     pairAssignmentsId: ID!
     date: DateTimeISO!
-    pairs: [PinnedPairInput]!
+    pairs: [PinnedPairInput!]!
     discordMessageId: String
     slackMessageId: String
 }
@@ -305,7 +305,7 @@ input PinnedPlayerInput {
 }
 
 type GlobalStats {
-    parties: [PartyStats]!
+    parties: [PartyStats!]!
     totalParties: Int!,
     totalPlayers: Int!,
     totalAppliedPins: Int!,
@@ -339,16 +339,16 @@ input PartyInput {
 
 type Pair {
     partyId: ID
-    players: [PlayerDetails]
+    players: [PlayerDetails!]
     count: Int
     spinsSinceLastPaired: Int
     recentTimesPaired: Int
     contributionReport(input: ContributionsInput): ContributionReport
-    pairAssignmentHistory: [PairAssignment]
+    pairAssignmentHistory: [PairAssignment!]
 }
 
 type ContributionReport {
-    partyId: String
+    partyId: ID
     contributions: [Contribution!]
     count: Int
     medianCycleTime: Duration
@@ -369,7 +369,7 @@ type PairAssignment {
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Query {
-    partyList: [Party]
+    partyList: [Party!]
     party(input: PartyInput!): Party
     user: User
     globalStats(input: GlobalStatsInput!) : GlobalStats
@@ -400,19 +400,6 @@ type Mutation {
 
 input SaveContributionInput {
     partyId: ID!
-    contributionId: ID @deprecated
-    hash: String @deprecated
-    dateTime: String @deprecated
-    ease: Int @deprecated
-    story: String @deprecated
-    link: String @deprecated
-    label: String @deprecated
-    semver: String @deprecated
-    firstCommit: String @deprecated
-    firstCommitDateTime: String @deprecated
-    integrationDateTime: String @deprecated
-    cycleTime: String @deprecated
-    participantEmails: [String!] @deprecated
     contributionList: [ContributionInput]!
 }
 
