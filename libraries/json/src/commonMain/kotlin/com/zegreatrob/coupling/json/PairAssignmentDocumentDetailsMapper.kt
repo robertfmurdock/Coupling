@@ -13,7 +13,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairAssignmentDocumentDetails(
     partyId = data.partyId.value.toString(),
-    id = data.element.id.value,
+    id = data.element.id.value.toString(),
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable).toList(),
     discordMessageId = data.element.discordMessageId,
@@ -24,7 +24,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairAssignmentDocu
 )
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
-    id = id.value,
+    id = id.value.toString(),
     date = date,
     pairs = pairs.map(PinnedCouplingPair::toSerializable),
     discordMessageId = discordMessageId,
@@ -35,7 +35,7 @@ fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
 fun GqlPairAssignmentDocumentDetails.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
     PartyId(NotBlankString.create(partyId)).with(
         PairAssignmentDocument(
-            id = id.let(::PairAssignmentDocumentId),
+            id = PairAssignmentDocumentId(NotBlankString.create(id)),
             date = date,
             pairs = pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrThrow(),
             discordMessageId = discordMessageId,

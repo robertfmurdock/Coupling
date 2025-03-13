@@ -21,7 +21,7 @@ class MedianSpinDurationTest {
 
     companion object {
         private fun pairAssignmentDocument(dateTime: Instant) = PairAssignmentDocument(
-            id = PairAssignmentDocumentId(""),
+            id = PairAssignmentDocumentId.new(),
             date = dateTime,
             pairs = stubPinnedPairs(),
             null,
@@ -96,7 +96,7 @@ class MedianSpinDurationTest {
     fun withOneHistoryEntryWillReturnNull() = setup(object {
         val history = listOf(
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId(""),
+                id = PairAssignmentDocumentId.new(),
                 date = dateTime(2017, 2, 17),
                 pairs = stubPinnedPairs(),
                 null,

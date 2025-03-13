@@ -30,7 +30,6 @@ import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
-import kotlin.uuid.Uuid
 
 class SavePairAssignmentDocumentCommandTest {
     interface SavePairAssignmentDocumentCommandTestDispatcher :
@@ -48,7 +47,7 @@ class SavePairAssignmentDocumentCommandTest {
 
         val pairAssignmentDocument = party.id.with(
             PairAssignmentDocument(
-                PairAssignmentDocumentId("${Uuid.random()}"),
+                PairAssignmentDocumentId.new(),
                 date = Clock.System.now(),
                 pairs = notEmptyListOf(stubPinnedCouplingPair()),
             ),

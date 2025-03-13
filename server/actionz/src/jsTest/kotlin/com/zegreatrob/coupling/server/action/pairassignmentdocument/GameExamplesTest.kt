@@ -30,7 +30,6 @@ import kotlinx.datetime.toInstant
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
-import kotlin.uuid.Uuid
 
 class GameExamplesTest {
 
@@ -121,22 +120,22 @@ class GameExamplesTest {
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = asyncSetup(object {
             val history = listOf(
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 10),
                     pairs = notEmptyListOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 9),
                     pairs = notEmptyListOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 8),
                     pairs = notEmptyListOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 7),
                     pairs = notEmptyListOf(pairOf(bruce, barry)).withNoPins(),
                 ),
@@ -176,22 +175,22 @@ class GameExamplesTest {
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = asyncSetup(object {
             val history = listOf(
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 10),
                     pairs = notEmptyListOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 9),
                     pairs = notEmptyListOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 8),
                     pairs = notEmptyListOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 7),
                     pairs = notEmptyListOf(pairOf(bruce, barry)).withNoPins(),
                 ),
@@ -224,17 +223,17 @@ class GameExamplesTest {
 
         val history = listOf(
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${Uuid.random()}"),
+                id = PairAssignmentDocumentId.new(),
                 date = dateTime(2014, 1, 10),
                 pairs = notEmptyListOf(pairOf(kamala, thor)).withNoPins(),
             ),
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${Uuid.random()}"),
+                id = PairAssignmentDocumentId.new(),
                 date = dateTime(2014, 1, 9),
                 pairs = notEmptyListOf(pairOf(kamala, steve)).withNoPins(),
             ),
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${Uuid.random()}"),
+                id = PairAssignmentDocumentId.new(),
                 date = dateTime(2014, 1, 8),
                 pairs = notEmptyListOf(pairOf(kamala, logan)).withNoPins(),
             ),

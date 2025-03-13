@@ -11,7 +11,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PairAssignment.toSerializable() = GqlPairAssignment(
     playerIds = playerIds?.map { it.value.toString() },
-    documentId = documentId?.value,
+    documentId = documentId?.value?.toString(),
     date = date,
     allPairs = allPairs?.map(PinnedCouplingPair::toSerializable)?.toList(),
     details = details?.toSerializable(),
@@ -21,7 +21,7 @@ fun PairAssignment.toSerializable() = GqlPairAssignment(
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPairAssignment.toModel() = PairAssignment(
     playerIds = playerIds?.map { PlayerId(NotBlankString.create(it)) },
-    documentId = documentId?.let(::PairAssignmentDocumentId),
+    documentId = documentId?.let { PairAssignmentDocumentId(NotBlankString.create(it)) },
     date = date,
     allPairs = allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),
     details = details?.toModel(),

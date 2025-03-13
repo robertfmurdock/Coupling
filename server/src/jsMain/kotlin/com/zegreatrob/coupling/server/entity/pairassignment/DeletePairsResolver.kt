@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
+import kotools.types.text.toNotBlankString
 
 val deletePairsResolver = dispatch(
     dispatcherFunc = requiredInput { request, _, args ->
@@ -22,7 +23,11 @@ val deletePairsResolver = dispatch(
     toSerializable = { true },
 )
 
-private fun GqlDeletePairAssignmentsInput.toModel() = DeletePairAssignmentsCommand(
-    partyId = PartyId(partyId),
-    pairAssignmentDocumentId = pairAssignmentsId.let(::PairAssignmentDocumentId),
-)
+private fun GqlDeletePairAssignmentsInput.toModel(): DeletePairAssignmentsCommand? {
+    return DeletePairAssignmentsCommand(
+        partyId = PartyId(partyId.toNotBlankString().getOrNull() ?: return null),
+        pairAssignmentDocumentId = PairAssignmentDocumentId(
+            pairAssignmentsId.toNotBlankString().getOrNull() ?: return null,
+        ),
+    )
+}

@@ -87,7 +87,7 @@ class SpinTest {
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 10),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(),
@@ -96,7 +96,7 @@ class SpinTest {
                     null,
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = dateTime(2014, 1, 9),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[3]).withPins(),
@@ -134,7 +134,7 @@ class SpinTest {
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${Uuid.random()}"),
+                id = PairAssignmentDocumentId.new(),
                 date = dateTime(2013, 2, 10),
                 pairs = notEmptyListOf(
                     pairOf(players[0], players[3]).withPins(),
@@ -143,7 +143,7 @@ class SpinTest {
                 null,
             ),
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${Uuid.random()}"),
+                id = PairAssignmentDocumentId.new(),
                 date = dateTime(2013, 2, 9),
                 pairs = notEmptyListOf(
                     pairOf(players[0], players[2]).withPins(),

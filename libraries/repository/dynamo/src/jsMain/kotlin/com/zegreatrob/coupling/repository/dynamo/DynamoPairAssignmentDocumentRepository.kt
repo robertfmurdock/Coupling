@@ -52,7 +52,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         .maxByOrNull { it.data.document.date }
 
     override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = performDelete(
-        pairAssignmentDocumentId.value,
+        pairAssignmentDocumentId.value.toString(),
         partyId,
         now(),
         ::toRecord,

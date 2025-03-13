@@ -34,7 +34,7 @@ class PairAssignmentRowTest {
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("RealId"),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )
@@ -64,7 +64,7 @@ class PairAssignmentRowTest {
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("RealId"),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )

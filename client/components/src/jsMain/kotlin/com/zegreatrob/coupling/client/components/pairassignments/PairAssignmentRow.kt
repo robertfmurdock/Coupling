@@ -74,8 +74,8 @@ val PairAssignmentRow by nfc<PairAssignmentRowProps> { props ->
             backgroundColor = Color("#C3D5CBFF")
             boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
         }
-        asDynamic()["data-pair-assignments-id"] = document.id.value
-        key = document.id.value
+        asDynamic()["data-pair-assignments-id"] = document.id.value.toString()
+        key = document.id.value.toString()
         PairAssignmentBlock {
             +document.dateText()
         }

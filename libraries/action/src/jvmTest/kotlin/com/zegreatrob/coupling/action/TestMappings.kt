@@ -14,10 +14,13 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.Instant
 import kotools.types.collection.toNotEmptyList
+import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
 val mapper = ObjectMapper()
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 actual fun loadJsonPartySetup(fileResource: String): PartySetup {
     val fileJson = mapper.readTree(PartySetup::class.java.classLoader.getResource(fileResource))
 
@@ -38,7 +41,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
         players = fileJson["players"].map { it.toPlayer() },
         history = fileJson["history"].map {
             PairAssignmentDocument(
-                id = it["id"].textValue().let(::PairAssignmentDocumentId),
+                id = PairAssignmentDocumentId(NotBlankString.create(it["id"].textValue())),
                 date = Instant.parse(it["date"].textValue()),
                 pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }.toNotEmptyList().getOrThrow(),
                 null,

@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
-import kotlin.uuid.Uuid
 
 @ActionMint
 data class ShufflePairsAction(
@@ -39,7 +38,7 @@ data class ShufflePairsAction(
         private fun ShufflePairsAction.findNewPairsAction() = FindNewPairsAction(Game(players, history, party.pairingRule))
 
         private fun pairAssignmentDocument(pairAssignments: NotEmptyList<PinnedCouplingPair>) = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${Uuid.random()}"),
+            id = PairAssignmentDocumentId.new(),
             date = currentDate(),
             pairs = pairAssignments,
             discordMessageId = null,

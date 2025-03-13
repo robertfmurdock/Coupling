@@ -23,7 +23,6 @@ import react.create
 import react.router.RouterProvider
 import react.router.createMemoryRouter
 import kotlin.test.Test
-import kotlin.uuid.Uuid
 
 class CurrentPairAssignmentsPanelTest {
 
@@ -31,7 +30,7 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
         val party = stubPartyDetails()
         val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${Uuid.random()}"),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )

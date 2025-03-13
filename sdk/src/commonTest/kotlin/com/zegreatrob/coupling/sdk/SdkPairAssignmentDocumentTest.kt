@@ -26,7 +26,6 @@ import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.seconds
-import kotlin.uuid.Uuid
 
 class SdkPairAssignmentDocumentTest {
 
@@ -71,7 +70,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun deleteWhenDocumentDoesNotExistWillNotExplode() = repositorySetup().exercise {
-        runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${Uuid.random()}"))) }
+        runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId.new())) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)

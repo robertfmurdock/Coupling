@@ -18,7 +18,7 @@ interface DynamoSecretJsonMapping : PartyIdDynamoRecordJsonMapping {
         .add(
             json(
                 "tribeId" to data.partyId.value.toString(),
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id}",
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id.value}",
             ),
         )
         .add(data.element.toDynamoJson())

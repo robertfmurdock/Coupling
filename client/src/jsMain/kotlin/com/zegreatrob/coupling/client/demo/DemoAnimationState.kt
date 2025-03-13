@@ -60,7 +60,7 @@ private val pins = listOf(
 )
 
 private val pairAssignments = PairAssignmentDocument(
-    id = PairAssignmentDocumentId(""),
+    id = PairAssignmentDocumentId.new(),
     date = Clock.System.now(),
     pairs = notEmptyListOf(
         pairOf(player1, player4).withPins(emptySet()),

@@ -14,7 +14,6 @@ import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
-import kotlin.uuid.Uuid
 
 interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRepository> : RepositoryValidator<R, PartyContext<R>> {
 
@@ -97,7 +96,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     @Test
     fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val id = PairAssignmentDocumentId("${Uuid.random()}")
+            val id = PairAssignmentDocumentId.new()
         }.bind(),
     ) exercise {
         repository.deleteIt(partyId, id)

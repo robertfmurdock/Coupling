@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.stats.heatmap.heatmapData
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.coupling.stubmodel.stubPairAssignmentId
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -20,7 +20,7 @@ class SdkHeatMapDataTest {
 
     companion object : AssignPinsAction.Dispatcher {
         private fun pairAssignmentDocument(player1: Player, player2: Player) = PairAssignmentDocument(
-            id = stubPairAssignmentId(),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(pairOf(player1, player2)).withPins(),
             null,

@@ -21,7 +21,6 @@ import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import kotlin.test.Test
-import kotlin.uuid.Uuid
 
 class PairAssignmentsTest {
 
@@ -39,7 +38,7 @@ class PairAssignmentsTest {
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
         var pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${Uuid.random()}"),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(
                 pairOf(

@@ -111,7 +111,7 @@ private suspend fun generateStrongPairingTeam(
             return@fold history
         }
         val pairAssignmentsNewestFirst = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${Uuid.random()}"),
+            id = PairAssignmentDocumentId.new(),
             date = date.toInstant(TimeZone.currentSystemDefault()),
             pairs = dispatcher.perform(FindNewPairsAction(Game(players, history, PairingRule.LongestTime))).withPins(),
         )

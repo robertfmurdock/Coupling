@@ -29,7 +29,6 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
 import kotlin.test.Test
-import kotlin.uuid.Uuid
 
 class PrepareSpinTest {
 
@@ -163,7 +162,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val user = UserEvent.setup()
         val currentPairs = PairAssignmentDocument(
-            PairAssignmentDocumentId(""),
+            PairAssignmentDocumentId.new(),
             Clock.System.now(),
             notEmptyListOf(
                 pairOf(players[0], players[1]).withPins(emptySet()),
@@ -214,7 +213,7 @@ class PrepareSpinTest {
         val user = UserEvent.setup()
         val players = stubPlayers(3).toNotEmptyList().getOrThrow()
         val currentPairs = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${Uuid.random()}"),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
             null,

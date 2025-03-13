@@ -7,7 +7,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
 import kotools.types.collection.toNotEmptyList
+import kotools.types.text.NotBlankString
+import org.kotools.types.ExperimentalKotoolsTypesApi
 
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPair.toModel() = PlayerPair(
     players = players?.map(GqlPlayerDetails::toModel),
     count = count,
@@ -15,7 +18,7 @@ fun GqlPair.toModel() = PlayerPair(
     recentTimesPaired = recentTimesPaired,
     pairAssignmentHistory = pairAssignmentHistory?.map { json ->
         PairAssignment(
-            documentId = json.documentId?.let(::PairAssignmentDocumentId),
+            documentId = json.documentId?.let { PairAssignmentDocumentId(NotBlankString.create(it)) },
             details = json.details?.toModel(),
             date = json.date,
             allPairs = json.allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),

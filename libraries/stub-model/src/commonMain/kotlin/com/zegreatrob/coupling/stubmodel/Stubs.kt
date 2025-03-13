@@ -97,7 +97,7 @@ fun Instant.roundToMillis(): Instant = Instant.fromEpochMilliseconds(toEpochMill
 
 var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
-    id = stubPairAssignmentId(),
+    id = PairAssignmentDocumentId.new(),
     date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes).roundToMillis(),
     pairs = notEmptyListOf(
         PinnedCouplingPair(
@@ -108,8 +108,6 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
     discordMessageId = uuidString(),
     slackMessageId = uuidString(),
 ).also { pairAssignmentDocumentCounter++ }
-
-fun stubPairAssignmentId() = PairAssignmentDocumentId(uuidString())
 
 fun uuidString() = Uuid.random().toString()
 

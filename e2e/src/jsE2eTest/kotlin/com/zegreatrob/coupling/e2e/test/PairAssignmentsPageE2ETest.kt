@@ -36,7 +36,6 @@ import kotlinx.datetime.toInstant
 import kotools.types.collection.notEmptyListOf
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
-import kotlin.uuid.Uuid
 
 @Suppress("unused")
 class PairAssignmentsPageE2ETest {
@@ -171,7 +170,7 @@ class PairAssignmentsPageE2ETest {
             }
             private val pairAssignmentDocument by lazy {
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${Uuid.random()}"),
+                    id = PairAssignmentDocumentId.new(),
                     date = LocalDateTime(2015, 5, 30, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(emptySet()),

@@ -68,7 +68,7 @@ class HistoryPageE2ETest {
             ).onEach { sdk.fire(SavePairAssignmentsCommand(party.id, it)) }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: NotEmptyList<CouplingPair>) = PairAssignmentDocument(
-                PairAssignmentDocumentId("${Clock.System.now().toEpochMilliseconds()}-HistoryPageE2ETest-$number"),
+                PairAssignmentDocumentId.new(),
                 Clock.System.now(),
                 pairs.map { it.withPins(emptySet()) },
             )

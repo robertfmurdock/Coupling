@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.server.action.player
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.stubmodel.record
-import com.zegreatrob.coupling.stubmodel.stubPairAssignmentId
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
@@ -31,7 +31,7 @@ class RecentTimesPairedQueryTest {
             .map { pairAssignmentDocument(index = it) }
 
         fun NotEmptyList<CouplingPair>.pairAssignmentDocument(index: Int = 0) = PairAssignmentDocument(
-            id = stubPairAssignmentId(),
+            id = PairAssignmentDocumentId.new(),
             date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())
                 .plus(index.minutes),
             pairs = withPins(),
