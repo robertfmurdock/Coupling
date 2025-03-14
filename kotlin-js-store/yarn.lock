@@ -155,10 +155,10 @@
     "@smithy/util-utf8" "^4.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.758.0":
-  version "3.758.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.758.0.tgz#5a09df4fd676a88912f8e221f50964ba250d3bed"
-  integrity sha512-ZdVVCvmQ4wlV22HgYZKndIYNKkFfTLi8PIOF5rOkqthgYRTfVzKajrVbYebCs5jMDTk73LPLl2Ze/EYBEHKlBA==
+"@aws-sdk/client-dynamodb@3.767.0":
+  version "3.767.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.767.0.tgz#93674371e48c32706838750b96fba71d3acd33cf"
+  integrity sha512-uoZFUnQr9jhxPdhPz0o4/1osstDXdteOIw8tNRTe3JKK9eIWAG3YrVv9wfJPxEFUGvntUe+anvdiy+8ycKmsYQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -722,13 +722,13 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.758.0":
-  version "3.758.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.758.0.tgz#beaa8f9b1ffe78a332e90ef277e5c750e688899a"
-  integrity sha512-lkxh7nkFMHY2zbPxhGQz7hVA43yRPu+ERrSiRu7I11arAOz/MJlt7MjHmt0B8x7x6isF1utNixkU28HKh9hgWQ==
+"@aws-sdk/lib-dynamodb@3.767.0":
+  version "3.767.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.767.0.tgz#007c6b806614b1a390c66120960017b9d881011f"
+  integrity sha512-Vl93kIcntUzVdnJZf1VgHhtkue8Xk6pVK3L5hoc90z2RUlqLyl279+LiK8lE5xYaiRTxoCu+BI0dxSp0F1G8YQ==
   dependencies:
     "@aws-sdk/core" "3.758.0"
-    "@aws-sdk/util-dynamodb" "3.758.0"
+    "@aws-sdk/util-dynamodb" "3.767.0"
     "@smithy/core" "^3.1.5"
     "@smithy/smithy-client" "^4.1.6"
     "@smithy/types" "^4.1.0"
@@ -943,10 +943,10 @@
     "@smithy/types" "^2.3.1"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.758.0":
-  version "3.758.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.758.0.tgz#e68d19a83b875b8ac963b242fb46855495e7981d"
-  integrity sha512-JjBbhJLajilyMWJ/z82bYgIMj9XGISZ/QMYSpNBdzGFRmL1AL9s6NwLB6FuquRvpY9Lo3Y5vwEbedqdZPIrRFg==
+"@aws-sdk/util-dynamodb@3.767.0":
+  version "3.767.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.767.0.tgz#ae557a32d6c84421f77262f1f1267bccb43c07cb"
+  integrity sha512-/unz0bnrEc6XyVFai4drJipigb2B2NdK9Hku5V7Tq3a98YQtDvi5aLdWFt3pte38FqKW4snU1v15sbl3ZH1i5A==
   dependencies:
     tslib "^2.6.2"
 
@@ -3465,12 +3465,12 @@
     "@graphql-tools/utils" "^10.6.2"
     tslib "^2.4.0"
 
-"@graphql-tools/merge@^9.0.23":
-  version "9.0.23"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.0.23.tgz#5623f6175bf8379a8255867622a132c2ce66d6ee"
-  integrity sha512-uxBS6zoP+qIorU8Z6mU8F+z24NRyCk1QcFYs8vx5NiZpaJRWM3KOmnixED2fAaq2RIQxrm9aA0EHckLKMhf/jA==
+"@graphql-tools/merge@^9.0.24":
+  version "9.0.24"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.0.24.tgz#1f366e85588894cb496bd1c332be7665db143df2"
+  integrity sha512-NzWx/Afl/1qHT3Nm1bghGG2l4jub28AdvtG11PoUlmjcIjnFBJMv4vqL0qnxWe8A82peWo4/TkVdjJRLXwgGEw==
   dependencies:
-    "@graphql-tools/utils" "^10.8.5"
+    "@graphql-tools/utils" "^10.8.6"
     tslib "^2.4.0"
 
 "@graphql-tools/merge@^9.0.3":
@@ -3555,13 +3555,13 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/schema@^10.0.22":
-  version "10.0.22"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.0.22.tgz#ee6a31eaae80fb4b69fcf39eeaa0402ff4f4e21e"
-  integrity sha512-MBojGs0eUpWysG6Rvupplz1n8L/Uv7Lp9ZyTXK7F04k3QIaFGA5zW/6mwPaZ0T+gQyIwLjrIYP0M4vkVJr8Btg==
+"@graphql-tools/schema@^10.0.23":
+  version "10.0.23"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.0.23.tgz#d8865e96f37a04ca43303d7024add7edbe0c5ed4"
+  integrity sha512-aEGVpd1PCuGEwqTXCStpEkmheTHNdMayiIKH1xDWqYp9i8yKv9FRDgkGrY4RD8TNxnf7iII+6KOBGaJ3ygH95A==
   dependencies:
-    "@graphql-tools/merge" "^9.0.23"
-    "@graphql-tools/utils" "^10.8.5"
+    "@graphql-tools/merge" "^9.0.24"
+    "@graphql-tools/utils" "^10.8.6"
     tslib "^2.4.0"
 
 "@graphql-tools/schema@^10.0.3":
@@ -3668,10 +3668,10 @@
     dset "^3.1.4"
     tslib "^2.4.0"
 
-"@graphql-tools/utils@^10.8.5":
-  version "10.8.5"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-10.8.5.tgz#f1813a94312ec2f828e9eff0218d0f34424f6f32"
-  integrity sha512-Z9auGRZpUEkUtBtMb4etw2JmdBcNYOQ5JXEH9+Vpcr2jvQ1IzUCqLsBnn88dNyLZV+L0CiTDfOAvz6Gqefowww==
+"@graphql-tools/utils@^10.8.6":
+  version "10.8.6"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-10.8.6.tgz#69ef29e408a27919108b2b2227fe8b465acf9e5c"
+  integrity sha512-Alc9Vyg0oOsGhRapfL3xvqh1zV8nKoFUdtLhXX7Ki4nClaIJXckrA86j+uxEuG3ic6j4jlM1nvcWXRn/71AVLQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@whatwg-node/promise-helpers" "^1.0.0"
@@ -7516,10 +7516,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@134.0.2:
-  version "134.0.2"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-134.0.2.tgz#a9ccfbb4e1f3398c3289e755ddec657ed8158ccf"
-  integrity sha512-r1yIHP0Lo61CdFGjZXITSY2ZGYBS5B/qwOs8NMm0r31qnyS4MAuSmMiIiZKhu+ThxfcT8zPrGPGT6RmM0LWljQ==
+chromedriver@134.0.3:
+  version "134.0.3"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-134.0.3.tgz#185a52526c193cc7ceb0a27d1266858f0f65f0fd"
+  integrity sha512-pRS401K3VRJMhFrK4NNceVE6xdoNOHC0P3sBylkLOb5p4MfrbXkjiCCipXoBD8jvui76t44FS5/taoVQNz9XUg==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
