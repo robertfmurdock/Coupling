@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.repository.memory
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlinx.datetime.Clock
@@ -26,7 +27,7 @@ class MemoryPinRepository(
         .groupBy { (data) -> data.pin.id }
         .map { it.value.last() }
 
-    override suspend fun deletePin(partyId: PartyId, pinId: NotBlankString) = recordWithId(partyId, pinId)?.data
+    override suspend fun deletePin(partyId: PartyId, pinId: PinId) = recordWithId(partyId, pinId)?.data
         .deleteRecord()
 
     private fun PartyElement<Pin>?.deleteRecord() = if (this == null) {
@@ -36,6 +37,6 @@ class MemoryPinRepository(
         true
     }
 
-    private fun recordWithId(partyId: PartyId, pinId: NotBlankString) = partyId.recordList()
+    private fun recordWithId(partyId: PartyId, pinId: PinId) = partyId.recordList()
         .find { (data) -> data.pin.id == pinId }
 }

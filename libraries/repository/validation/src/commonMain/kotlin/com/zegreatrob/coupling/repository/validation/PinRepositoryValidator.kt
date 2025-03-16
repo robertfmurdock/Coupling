@@ -1,16 +1,15 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.datetime.Clock
-import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.hours
-import kotlin.uuid.Uuid
 
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, PartyContext<R>> {
 
@@ -57,9 +56,8 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
     fun deleteWillFailWhenPinDoesNotExist() = repositorySetup.with(
         object : PartyContextMint<R>() {
         }.bind(),
-    ) {
-    } exercise {
-        repository.deletePin(partyId, "${Uuid.random()}".toNotBlankString().getOrThrow())
+    ) exercise {
+        repository.deletePin(partyId, PinId.new())
     } verify { result ->
         result.assertIsEqualTo(false)
     }

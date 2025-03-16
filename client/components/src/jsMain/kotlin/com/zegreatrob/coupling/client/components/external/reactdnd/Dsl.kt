@@ -30,7 +30,7 @@ val DndProvider: ElementType<DnDProvideProps> = FC { props ->
 
 fun <T> useDrag(
     itemType: String,
-    itemId: Any,
+    itemId: String,
     endCallback: (itemId: String, dropResult: Json?) -> Unit = { _, _ -> },
 ): DragDropValueContent<T> {
     if (js("global.IS_JSDOM") == true) {

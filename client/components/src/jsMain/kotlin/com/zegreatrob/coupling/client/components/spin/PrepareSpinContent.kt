@@ -14,13 +14,13 @@ import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import js.objects.jso
-import kotools.types.text.NotBlankString
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML.br
@@ -48,9 +48,9 @@ external interface PrepareSpinContentProps : Props {
     var party: PartyDetails
     var playerSelections: List<Pair<Player, Boolean>>
     var pins: List<Pin>
-    var pinSelections: List<NotBlankString>
+    var pinSelections: List<PinId>
     var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-    var selectPin: (NotBlankString, Boolean) -> Unit
+    var selectPin: (PinId, Boolean) -> Unit
     var onSpin: (() -> Unit)?
 }
 
@@ -165,8 +165,8 @@ private fun ChildrenBuilder.batchSelectButton(
 }
 
 private fun ChildrenBuilder.pinSelector(
-    pinSelections: List<NotBlankString>,
-    selectPin: (NotBlankString, Boolean) -> Unit,
+    pinSelections: List<PinId>,
+    selectPin: (PinId, Boolean) -> Unit,
     pins: List<Pin>,
 ) = Flipper {
     flipKey = pinSelections.generateFlipKey()
@@ -212,21 +212,21 @@ private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Un
     children()
 }
 
-private fun List<Pin>.selectByIds(pinSelections: List<NotBlankString?>) = filter { pinSelections.contains(it.id) }
+private fun List<Pin>.selectByIds(pinSelections: List<PinId?>) = filter { pinSelections.contains(it.id) }
 
-private fun List<Pin>.removeByIds(pinSelections: List<NotBlankString?>) = filterNot { pinSelections.contains(it.id) }
+private fun List<Pin>.removeByIds(pinSelections: List<PinId?>) = filterNot { pinSelections.contains(it.id) }
 
 private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = Flipped {
-    flipId = pin.id.toString()
-    key = pin.id.toString()
+    flipId = pin.id.value.toString()
+    key = pin.id.value.toString()
     div {
-        key = pin.id.toString()
+        key = pin.id.value.toString()
         css { display = Display.inlineBlock }
         PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick)
     }
 }
 
-private fun List<NotBlankString?>.generateFlipKey() = joinToString(",") { it.toString() }
+private fun List<PinId>.generateFlipKey() = joinToString(",") { it.value.toString() }
 
 private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = CouplingButton {
     sizeRuleSet = supersize

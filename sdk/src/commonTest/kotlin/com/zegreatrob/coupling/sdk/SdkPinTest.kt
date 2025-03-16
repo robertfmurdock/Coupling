@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -18,9 +19,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
-import kotools.types.text.toNotBlankString
 import kotlin.test.Test
-import kotlin.uuid.Uuid
 
 class SdkPinTest {
 
@@ -61,7 +60,7 @@ class SdkPinTest {
 
     @Test
     fun whenPinDoesNotExistDeleteWillDoNothing() = partySetup() exercise {
-        runCatching { sdk.fire(DeletePinCommand(party.id, "${Uuid.random()}".toNotBlankString().getOrThrow())) }
+        runCatching { sdk.fire(DeletePinCommand(party.id, PinId.new())) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)

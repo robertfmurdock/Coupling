@@ -19,7 +19,7 @@ generates:
         ID: String
         PairAssignmentDocumentId: PairAssignmentDocumentIdString
         PartyId: PartyIdString
-        PinId: kotools.types.text.NotBlankString
+        PinId: PinIdString
         PlayerId: PlayerIdString
         SecretId: SecretIdString
         UserId: kotools.types.text.NotBlankString

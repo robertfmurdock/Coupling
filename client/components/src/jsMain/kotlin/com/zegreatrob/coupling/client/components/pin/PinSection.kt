@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -17,7 +18,7 @@ external interface PinSectionProps : Props {
     var pinList: List<Pin>
     var scale: PinButtonScale?
     var className: ClassName?
-    var endCallback: ((String, Json?) -> Unit)?
+    var endCallback: ((PinId, Json?) -> Unit)?
 }
 
 @ReactFunc

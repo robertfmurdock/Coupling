@@ -58,14 +58,14 @@ class PrepareSpinTest {
     }) exercise {
         user.click(
             wrapper.container.querySelector(".$selectedPinsClass")
-                ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
+                ?.querySelectorAll("[data-pin-button=\"${firstPin.id.value}\"]")
                 ?.asList()
                 ?.map { it as? HTMLElement }
                 ?.firstOrNull(),
         )
     } verify {
         wrapper.container.querySelector(".$deselectedPinsClass")
-            ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+            ?.querySelectorAll("[data-pin-button='${firstPin.id.value}']")
             ?.asList()
             ?.map { it as? HTMLElement }
             ?.firstOrNull()
@@ -84,14 +84,14 @@ class PrepareSpinTest {
         }
     }) exercise {
         wrapper.container.querySelector(".$selectedPinsClass")
-            ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
+            ?.querySelectorAll("[data-pin-button=\"${firstPin.id.value}\"]")
             ?.asList()
             ?.map { it as? HTMLElement }
             ?.forEach { user.click(it) }
     } verify {
         reactTestingLibrary.waitFor {
             wrapper.container.querySelector(".$deselectedPinsClass")
-                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+                ?.querySelectorAll("[data-pin-button='${firstPin.id.value}']")
                 ?.asList()
                 ?.map { it as? HTMLElement }
                 ?.size
@@ -113,21 +113,21 @@ class PrepareSpinTest {
     }) {
         user.click(
             render.container.querySelector(".$selectedPinsClass")
-                ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
+                ?.querySelectorAll("[data-pin-button=\"${firstPin.id.value}\"]")
                 ?.asList()
                 ?.firstNotNullOf { it as? HTMLElement }!!,
         )
     } exercise {
         user.click(
             render.container.querySelector(".$deselectedPinsClass")
-                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+                ?.querySelectorAll("[data-pin-button='${firstPin.id.value}']")
                 ?.asList()
                 ?.map { it as? HTMLElement }
                 ?.first(),
         )
     } verify {
         render.container.querySelector(".$selectedPinsClass")
-            ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+            ?.querySelectorAll("[data-pin-button='${firstPin.id.value}']")
             ?.asList()
             ?.map { it as? HTMLElement }
             ?.firstOrNull()

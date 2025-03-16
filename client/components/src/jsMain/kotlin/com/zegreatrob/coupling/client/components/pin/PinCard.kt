@@ -76,7 +76,7 @@ private fun ChildrenBuilder.optionalLink(
 ) {
     if (shouldLink) {
         Link {
-            to = "/${partyId.value}/pin/${pin.id}"
+            to = "/${partyId.value}/pin/${pin.id.value}"
             handler()
         }
     } else {

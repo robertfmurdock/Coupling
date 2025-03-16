@@ -16,12 +16,12 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
-import kotools.types.text.toNotBlankString
 import popper.core.Placement
 import web.cssom.ClassName
 import kotlin.uuid.Uuid
@@ -56,7 +56,7 @@ private val players = listOf(
 )
 
 private val pins = listOf(
-    Pin(id = "${Uuid.random()}".toNotBlankString().getOrThrow(), name = "watchman", icon = "eye"),
+    Pin(id = PinId.new(), name = "watchman", icon = "eye"),
 )
 
 private val pairAssignments = PairAssignmentDocument(

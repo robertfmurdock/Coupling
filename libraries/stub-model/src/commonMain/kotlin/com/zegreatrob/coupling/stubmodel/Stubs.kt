@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
@@ -83,7 +84,7 @@ fun stubPlayer() = Player(
 fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()
 
 var pinCounter = 1
-fun stubPin() = Pin(uuidString().toNotBlankString().getOrThrow(), "pin $pinCounter", "icon time", stubPinTarget())
+fun stubPin() = Pin(PinId.new(), "pin $pinCounter", "icon time", stubPinTarget())
     .also { pinCounter++ }
 
 var pinTargetCounter = 1

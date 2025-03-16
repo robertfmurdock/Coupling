@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.repository.discord.DiscordAccessGet
@@ -35,7 +36,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
-import kotools.types.text.NotBlankString
 
 interface ServerSpinCommandDispatcher<out D> :
     SpinCommand.Dispatcher,
@@ -129,7 +129,7 @@ interface ServerSpinCommandDispatcher<out D> :
     private fun selectedPlayersMap(players: List<Player>, playerIds: NotEmptyList<PlayerId>) = playerIds.toList()
         .associateWith { id -> players.find { player -> player.id == id } }
 
-    private fun filterSelectedPins(pins: List<Pin>, pinIds: List<NotBlankString>) = pins.filter { pinIds.contains(it.id) }
+    private fun filterSelectedPins(pins: List<Pin>, pinIds: List<PinId>) = pins.filter { pinIds.contains(it.id) }
 
     private suspend fun PartyIntegration.sendMessage(pairs: PairAssignmentDocument, partyId: PartyId): String? {
         val team = slackTeam ?: return null

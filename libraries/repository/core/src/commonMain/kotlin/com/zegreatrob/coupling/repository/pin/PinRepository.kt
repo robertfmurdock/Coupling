@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import kotools.types.text.NotBlankString
+import com.zegreatrob.coupling.model.pin.PinId
 
 interface PinRepository :
     PinSave,
@@ -20,5 +20,5 @@ interface PinSave {
 }
 
 interface PinDelete {
-    suspend fun deletePin(partyId: PartyId, pinId: NotBlankString): Boolean
+    suspend fun deletePin(partyId: PartyId, pinId: PinId): Boolean
 }

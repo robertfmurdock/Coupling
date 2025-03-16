@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.client.components.visuallyHidden
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
@@ -47,7 +48,11 @@ external interface PartyCardProps : Props {
     var boost: Boost?
 }
 
-private val boostPin = Pin(id = "fake".toNotBlankString().getOrThrow(), name = "Boost!", icon = "fa-bolt-lightning")
+private val boostPin = Pin(
+    id = PinId("fake".toNotBlankString().getOrThrow()),
+    name = "Boost!",
+    icon = "fa-bolt-lightning",
+)
 
 @ReactFunc
 val PartyCard by nfc<PartyCardProps> { props ->

@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlinx.datetime.Clock
@@ -47,8 +48,8 @@ class DynamoPinRepository private constructor(override val userId: NotBlankStrin
         return toRecord(partyId.with(pin))
     }
 
-    override suspend fun deletePin(partyId: PartyId, pinId: NotBlankString) = performDelete(
-        pinId.toString(),
+    override suspend fun deletePin(partyId: PartyId, pinId: PinId) = performDelete(
+        pinId.value.toString(),
         partyId,
         now(),
         { toRecord() },

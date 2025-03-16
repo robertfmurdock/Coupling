@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.ClientDispatcher
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.couplingSdk
@@ -27,9 +28,9 @@ external interface PageProps : Props {
 }
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-val PageProps.partyId: PartyId? get() = pathParams["partyId"]?.let(NotBlankString::createOrNull)?.let { PartyId(it) }
-val PageProps.playerId: PlayerId? get() = pathParams["playerId"]?.toNotBlankString()?.getOrNull()?.let { PlayerId(it) }
-val PageProps.pinId: String? get() = pathParams["pinId"]
+val PageProps.partyId: PartyId? get() = pathParams["partyId"]?.let(NotBlankString::createOrNull)?.let(::PartyId)
+val PageProps.playerId: PlayerId? get() = pathParams["playerId"]?.toNotBlankString()?.getOrNull()?.let(::PlayerId)
+val PageProps.pinId: PinId? get() = pathParams["pinId"]?.toNotBlankString()?.getOrNull()?.let(::PinId)
 
 interface Commander {
     fun tracingCannon(traceId: Uuid): DispatcherPipeCannon<CouplingSdkDispatcher>

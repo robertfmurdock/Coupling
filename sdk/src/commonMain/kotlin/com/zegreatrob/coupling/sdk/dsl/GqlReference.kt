@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.json.GqlUserDetails
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.SecretId
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.PlayerId
 import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
@@ -66,7 +67,7 @@ object GqlReference {
     )
 
     private val pinData = GqlPin(
-        id = notBlank,
+        id = PinId(notBlank),
         name = "",
         icon = "",
     )
@@ -153,7 +154,7 @@ object GqlReference {
     )
 
     val pinRecord = GqlPinDetails(
-        id = notBlank,
+        id = PinId(notBlank),
         name = "",
         icon = "",
         partyId = PartyId(notBlank),

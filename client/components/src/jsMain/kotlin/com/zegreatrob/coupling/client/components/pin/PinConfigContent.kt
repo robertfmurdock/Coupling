@@ -80,7 +80,7 @@ val PinConfigContent by nfc<PinConfigContentProps> { (party, boost, pin, pinList
 }
 
 private fun ChildrenBuilder.pinBag(party: PartyDetails, pinList: List<Pin>) = div {
-    pinList.map { pin -> PinCard(party.id, pin, key = pin.id.toString()) }
+    pinList.map { pin -> PinCard(party.id, pin, key = pin.id.value.toString()) }
 }
 
 private fun ChildrenBuilder.pinConfigForm(

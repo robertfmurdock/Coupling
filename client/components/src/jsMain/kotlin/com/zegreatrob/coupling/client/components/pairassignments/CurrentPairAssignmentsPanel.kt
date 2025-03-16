@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -85,7 +86,7 @@ private fun ChildrenBuilder.pairAssignmentList(
             swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: PlayerId ->
                 setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
             },
-            pinDropFunc = { pinId: String, targetId: String ->
+            pinDropFunc = { pinId: PinId, targetId: String ->
                 setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, targetId))
             },
             key = "$index",
@@ -93,7 +94,7 @@ private fun ChildrenBuilder.pairAssignmentList(
     }
 }
 
-private fun PairAssignmentDocument.copyWithDroppedPin(pinId: String, pairId: String): PairAssignmentDocument {
+private fun PairAssignmentDocument.copyWithDroppedPin(pinId: PinId, pairId: String): PairAssignmentDocument {
     val droppedPair = pairs.toList().find { it.toPair().pairId == pairId }
     return if (droppedPair != null) {
         copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
@@ -102,12 +103,12 @@ private fun PairAssignmentDocument.copyWithDroppedPin(pinId: String, pairId: Str
     }
 }
 
-private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) = pairAssignments
+private fun findDroppedPin(id: PinId, pairAssignments: PairAssignmentDocument) = pairAssignments
     .pairs
     .toList()
     .map(PinnedCouplingPair::pins)
     .flatten()
-    .first { it.id.toString() == id }
+    .first { it.id == id }
 
 private fun NotEmptyList<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
     when {

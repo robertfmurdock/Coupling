@@ -10,11 +10,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import kotools.types.collection.toNotEmptyList
-import kotools.types.text.NotBlankString
 import react.Props
 import react.router.useNavigate
 import react.useState
@@ -39,7 +39,7 @@ val PrepareSpin by nfc<PrepareSpinProps> { (party, players, currentPairsDoc, pin
         pins = pins,
         pinSelections = pinSelections,
         setPlayerSelections = setPlayerSelections::invoke,
-        selectPin = { pinId: NotBlankString, selected: Boolean ->
+        selectPin = { pinId: PinId, selected: Boolean ->
             setPinSelections { if (selected) it + pinId else it - pinId }
         },
         onSpin = if (selectedPlayerIds == null) {

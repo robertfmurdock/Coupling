@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.callsign.CallSign
@@ -48,7 +49,7 @@ import web.html.HTMLElement
 import kotlin.js.Json
 import kotlin.js.json
 
-typealias PinMoveCallback = (String, String) -> Unit
+typealias PinMoveCallback = (PinId, String) -> Unit
 
 val tiltLeft = (-8).deg
 val tiltRight = 8.deg
@@ -72,7 +73,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
     )
     val pinDroppableRef = useRef<HTMLElement>(null)
     drop(pinDroppableRef)
-    val onPinDropEnd: ((String, Json?) -> Unit)? = { pinId: String, data: Json? ->
+    val onPinDropEnd: ((PinId, Json?) -> Unit)? = { pinId: PinId, data: Json? ->
         pinMoveCallback?.invoke(pinId, data?.get("dropTargetId").toString()) ?: Unit
     }.takeIf { canDrag }
 

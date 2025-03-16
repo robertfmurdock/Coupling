@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSpinButton
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
@@ -32,7 +33,7 @@ class PrepareToSpinPageE2ETest {
         private val pinPartySetup: TestTemplate<FullPartyData> = e2eSetup.extend(beforeAll = {
             val party = buildFunkyParty()
             val players = (1..5).map(Companion::buildPlayer)
-            val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest".toNotBlankString().getOrThrow(), name = "e2e-pin")
+            val pin = Pin(PinId.new(), name = "e2e-pin")
             val sdk = sdk.await().apply {
                 fire(SavePartyCommand(party))
                 players.forEach { fire(SavePlayerCommand(party.id, it)) }

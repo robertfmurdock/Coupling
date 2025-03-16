@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.e2e.test.webdriverio.WAIT_TO_BE_PRESENT_DURATION
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
@@ -24,8 +25,8 @@ object PinConfigPage : ByRole by TestingLibraryBrowser {
         waitForLoad()
     }
 
-    suspend fun goTo(partyId: PartyId, pinId: String?) {
-        WebdriverBrowser.setLocation("/${partyId.value}/pin/$pinId")
+    suspend fun goTo(partyId: PartyId, pinId: PinId) {
+        WebdriverBrowser.setLocation("/${partyId.value}/pin/${pinId.value}")
         waitForLoad()
     }
 

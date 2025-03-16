@@ -58,7 +58,7 @@ val PinButton by nfc<PinButtonProps> { props ->
     val showTooltip = props.showTooltip ?: true
     div {
         val pin = props.pin
-        asDynamic()["data-pin-button"] = "${pin.id}"
+        asDynamic()["data-pin-button"] = "${pin.id.value}"
         css(ClassName(props.className ?: "")) {
             pinButtonStyles()
             scaledStyles(scale)

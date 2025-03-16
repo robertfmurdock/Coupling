@@ -11,11 +11,11 @@ import com.zegreatrob.coupling.e2e.test.webdriverio.WAIT_TO_BE_PRESENT_DURATION
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
-import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -24,7 +24,7 @@ class PinConfigE2ETest {
     companion object {
 
         private fun randomPin(nameExt: String = "") = Pin(
-            id = "${randomInt()}-pin".toNotBlankString().getOrThrow(),
+            id = PinId.new(),
             icon = "icon-${randomInt()}",
             name = "name-${randomInt()}-$nameExt",
         )
@@ -103,7 +103,7 @@ class PinConfigE2ETest {
         ) {
             sdk.fire(SavePinCommand(party.id, pin))
         } exercise {
-            PinConfigPage.goTo(party.id, pin.id.toString())
+            PinConfigPage.goTo(party.id, pin.id)
         } verify {
             with(PinConfigPage) {
                 getNameTextField().attribute("value")
@@ -120,7 +120,7 @@ class PinConfigE2ETest {
             }.attachParty(),
         ) {
             sdk.fire(SavePinCommand(party.id, pin))
-            PinConfigPage.goTo(party.id, pin.id.toString())
+            PinConfigPage.goTo(party.id, pin.id)
         } exercise {
             retireButton().click()
             WebdriverBrowser.acceptAlert()

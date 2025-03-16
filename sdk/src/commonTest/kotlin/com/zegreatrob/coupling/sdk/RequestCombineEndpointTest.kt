@@ -10,12 +10,12 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.coroutineScope
-import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -33,7 +33,7 @@ class RequestCombineEndpointTest {
                     callSignNoun = "Sauce",
                 ),
             )
-            val pinsToSave = listOf(Pin(Uuid.random().toString().toNotBlankString().getOrThrow(), "1"))
+            val pinsToSave = listOf(Pin(PinId.new(), "1"))
         }
     }) {
         sdk.fire(SavePartyCommand(party))
