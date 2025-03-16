@@ -17,7 +17,7 @@ generates:
         Duration: kotlin.time.Duration
         Float: Double
         ID: String
-        PairAssignmentDocumentId: kotools.types.text.NotBlankString
+        PairAssignmentDocumentId: PairAssignmentDocumentIdString
         PartyId: PartyIdString
         PinId: kotools.types.text.NotBlankString
         PlayerId: PlayerIdString

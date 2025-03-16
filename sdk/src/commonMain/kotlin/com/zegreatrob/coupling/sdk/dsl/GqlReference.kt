@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.json.GqlPinnedPlayer
 import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.PlayerId
 import kotlinx.datetime.Instant
@@ -84,9 +85,8 @@ object GqlReference {
         players = listOf(pinnedPlayer),
         pins = listOf(pinData),
     )
-    private val pairAssignmentDocumentId = notBlank
     val pairAssignmentRecord = GqlPairAssignmentDocumentDetails(
-        id = pairAssignmentDocumentId,
+        id = PairAssignmentDocumentId(notBlank),
         date = Instant.DISTANT_PAST,
         pairs = listOf(pinnedCouplingPair),
         partyId = PartyId(notBlank),

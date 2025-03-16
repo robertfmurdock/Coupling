@@ -3,16 +3,14 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.with
 import kotools.types.collection.toNotEmptyList
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairAssignmentDocumentDetails(
     partyId = data.partyId,
-    id = data.element.id.value,
+    id = data.element.id,
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable).toList(),
     discordMessageId = data.element.discordMessageId,
@@ -23,7 +21,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairAssignmentDocu
 )
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
-    id = id.value.toString(),
+    id = id,
     date = date,
     pairs = pairs.map(PinnedCouplingPair::toSerializable),
     discordMessageId = discordMessageId,
@@ -34,7 +32,7 @@ fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
 fun GqlPairAssignmentDocumentDetails.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
     partyId.with(
         PairAssignmentDocument(
-            id = PairAssignmentDocumentId(NotBlankString.create(id)),
+            id = id,
             date = date,
             pairs = pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrThrow(),
             discordMessageId = discordMessageId,

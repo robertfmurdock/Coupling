@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
@@ -42,7 +43,7 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
                 existingPlayer
             } else {
                 val atIndex = email.indexOf("@")
-                com.zegreatrob.coupling.model.player.defaultPlayer.copy(
+                defaultPlayer.copy(
                     PlayerId(NotBlankString.create("-1")),
                     name = email.substring(0, atIndex),
                     email = email,

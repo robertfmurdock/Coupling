@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlPairAssignment
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 
 class PairAssignmentQueryBuilder : QueryBuilder<GqlPairAssignment> {
     override var output: GqlPairAssignment = GqlPairAssignment(
-        documentId = "-".toNotBlankString().getOrThrow(),
+        documentId = PairAssignmentDocumentId("-".toNotBlankString().getOrThrow()),
         allPairs = null,
         date = null,
         details = null,

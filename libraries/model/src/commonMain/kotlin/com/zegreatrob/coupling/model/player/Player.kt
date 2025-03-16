@@ -5,15 +5,7 @@ import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyElement
 import kotools.types.text.NotBlankString
-import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
-import kotlin.uuid.Uuid
-
-data class PlayerId(val value: NotBlankString) {
-    companion object {
-        fun new() = PlayerId(Uuid.random().toString().toNotBlankString().getOrThrow())
-    }
-}
 
 data class Player(
     val id: PlayerId,

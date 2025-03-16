@@ -2,19 +2,17 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @Serializable
 data class JsonPairAssignmentDocument(
-    val id: String,
+    val id: PairAssignmentDocumentIdString,
     val date: Instant,
     val pairs: NotEmptyList<GqlPinnedPair>,
     val discordMessageId: String? = null,
@@ -23,7 +21,7 @@ data class JsonPairAssignmentDocument(
 
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = GqlSavePairAssignmentsInput(
     partyId = partyId,
-    pairAssignmentsId = element.id.value,
+    pairAssignmentsId = element.id,
     date = element.date,
     pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),
     discordMessageId = element.discordMessageId,
@@ -32,7 +30,7 @@ fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = GqlSaveP
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
-    id = PairAssignmentDocumentId(NotBlankString.create(id)),
+    id = id,
     date = date,
     pairs = pairs.map(GqlPinnedPair::toModel),
     discordMessageId = discordMessageId,
@@ -41,7 +39,7 @@ fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlSavePairAssignmentsInput.toModel() = PairAssignmentDocument(
-    id = PairAssignmentDocumentId(NotBlankString.create(pairAssignmentsId)),
+    id = pairAssignmentsId,
     date = date,
     pairs = pairs.map(GqlPinnedPairInput::toModel).toNotEmptyList().getOrThrow(),
     discordMessageId = discordMessageId,
