@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.model.Message
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
@@ -24,7 +25,7 @@ object DispatcherProviders {
 
     suspend fun authorizedPartyDispatcher(
         context: CouplingContext,
-        partyId: String,
+        partyId: PartyId,
     ) = context.commandDispatcher.authorizedPartyIdDispatcher(partyId).let { if (it.isAuthorized()) it else null }
 
     fun <E, I> prereleaseCommand(): GraphQLDispatcherProvider<E, I, PrereleaseDispatcher> = { request, entity, args ->

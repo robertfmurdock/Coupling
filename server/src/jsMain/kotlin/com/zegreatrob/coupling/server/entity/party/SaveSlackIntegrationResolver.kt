@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val saveSlackIntegrationResolver = dispatch(
-    dispatcherFunc = requiredInput { request, _, args -> authorizedPartyDispatcher(request, args.partyId) },
+    dispatcherFunc = requiredInput { request, _, args -> authorizedPartyDispatcher(request, PartyId(args.partyId)) },
     commandFunc = requiredInput { _: JsonNull, input: GqlSaveSlackIntegrationInput -> input.toCommand() },
     fireFunc = ::perform,
     toSerializable = VoidResult::toJson,

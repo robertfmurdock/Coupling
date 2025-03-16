@@ -20,7 +20,7 @@ fun GqlBoostDetails.toModelRecord(): Record<Boost> = Record(
 
 fun Record<Boost>.toSerializable() = GqlBoostDetails(
     userId = data.userId,
-    partyIds = data.partyIds.map(PartyId::value).map(NotBlankString::toString),
+    partyIds = data.partyIds.map(PartyId::value),
     expirationDate = data.expirationDate,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,

@@ -133,11 +133,11 @@ class CommandDispatcher(
 
     private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
 
-    suspend fun authorizedPartyIdDispatcher(partyId: String): CurrentPartyDispatcher {
+    suspend fun authorizedPartyIdDispatcher(partyId: PartyId): CurrentPartyDispatcher {
         val preexistingJob = authorizedPartyIdDispatcherJob
         return preexistingJob?.await()
             ?: scope.async {
-                CurrentPartyDispatcher(PartyId(partyId), this@CommandDispatcher)
+                CurrentPartyDispatcher(partyId, this@CommandDispatcher)
             }.also {
                 authorizedPartyIdDispatcherJob = it
             }.await()

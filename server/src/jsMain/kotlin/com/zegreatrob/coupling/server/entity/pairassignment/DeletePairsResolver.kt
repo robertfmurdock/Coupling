@@ -15,7 +15,7 @@ val deletePairsResolver = dispatch(
     dispatcherFunc = requiredInput { request, _, args ->
         authorizedPartyDispatcher(
             request,
-            args.partyId,
+            PartyId(args.partyId),
         )
     },
     commandFunc = requiredInput { _: JsonNull, entity: GqlDeletePairAssignmentsInput -> entity.toModel() },
@@ -25,7 +25,7 @@ val deletePairsResolver = dispatch(
 
 private fun GqlDeletePairAssignmentsInput.toModel(): DeletePairAssignmentsCommand? {
     return DeletePairAssignmentsCommand(
-        partyId = PartyId(partyId.toNotBlankString().getOrNull() ?: return null),
+        partyId = PartyId(partyId),
         pairAssignmentDocumentId = PairAssignmentDocumentId(
             pairAssignmentsId.toNotBlankString().getOrNull() ?: return null,
         ),

@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
 import kotlinx.datetime.Instant
+import kotools.types.text.toNotBlankString
 import kotlin.time.Duration
 
 object GqlReference {
@@ -80,11 +81,12 @@ object GqlReference {
         players = listOf(pinnedPlayer),
         pins = listOf(pinData),
     )
+    private val partyId = "-".toNotBlankString().getOrThrow()
     val pairAssignmentRecord = GqlPairAssignmentDocumentDetails(
         id = "",
         date = Instant.DISTANT_PAST,
         pairs = listOf(pinnedCouplingPair),
-        partyId = "",
+        partyId = partyId,
         discordMessageId = "",
         slackMessageId = "",
         modifyingUserEmail = "",
@@ -100,7 +102,7 @@ object GqlReference {
     )
     val secretRecord = GqlPartySecret(
         id = "",
-        partyId = "",
+        partyId = partyId,
         modifyingUserEmail = "",
         isDeleted = false,
         description = "",
@@ -117,7 +119,7 @@ object GqlReference {
         story = "",
         link = "",
         participantEmails = listOf(""),
-        partyId = "",
+        partyId = partyId,
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
@@ -131,7 +133,7 @@ object GqlReference {
         commitCount = 1,
     )
     val partyRecord = GqlPartyDetails(
-        id = "",
+        id = partyId,
         pairingRule = 0,
         badgesEnabled = false,
         defaultBadgeName = "",
@@ -165,7 +167,7 @@ object GqlReference {
         callSignNoun = "",
         imageURL = "",
         avatarType = GqlAvatarType.Retro,
-        partyId = "",
+        partyId = partyId,
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,

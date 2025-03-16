@@ -23,5 +23,5 @@ fun ContributionReport.toJson() = GqlContributionReport(
     count = count,
     medianCycleTime = medianCycleTime,
     withCycleTimeCount = withCycleTimeCount,
-    partyId = partyId?.value?.toString(),
+    partyId = partyId?.value,
 )

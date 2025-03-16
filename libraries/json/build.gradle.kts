@@ -27,12 +27,13 @@ kotlin {
 
 dependencies {
     commonMainApi(project(":libraries:model"))
+    commonMainImplementation("io.ktor:ktor-client-content-negotiation")
+    commonMainImplementation("io.ktor:ktor-client-core")
+    commonMainImplementation("io.ktor:ktor-client-logging")
+    commonMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    commonMainImplementation("io.ktor:ktor-client-core")
-    commonMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
-    commonMainImplementation("io.ktor:ktor-client-content-negotiation")
-    commonMainImplementation("io.ktor:ktor-client-logging")
+    commonMainImplementation("org.kotools:types-kotlinx-serialization")
 
     commonTestImplementation(project(":libraries:test-logging"))
     commonTestImplementation(project(":libraries:stub-model"))

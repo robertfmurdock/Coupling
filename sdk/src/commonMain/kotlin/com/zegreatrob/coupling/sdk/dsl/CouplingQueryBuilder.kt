@@ -42,7 +42,7 @@ class CouplingQueryBuilder : BuilderWithInput() {
 
     fun party(id: PartyId, block: PartyQueryBuilder.() -> Unit) = mergeToParent(
         queryKey = "party",
-        inputSettings = InputSettings(GqlPartyInput(id.value.toString()), "partyInput", "PartyInput"),
+        inputSettings = InputSettings(GqlPartyInput(id.value), "partyInput", "PartyInput"),
         child = PartyQueryBuilder()
             .also(block),
     )

@@ -15,13 +15,14 @@ import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.playerRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.secretRecord
 import kotlinx.serialization.json.JsonElement
+import kotools.types.text.toNotBlankString
 import kotlin.time.Duration
 
 class PartyQueryBuilder :
     BuilderWithInput(),
     QueryBuilder<GqlParty> {
     override var output: GqlParty = GqlParty(
-        id = "",
+        id = "-".toNotBlankString().getOrThrow(),
         boost = null,
         contributionReport = null,
         currentPairAssignmentDocument = null,

@@ -15,6 +15,7 @@ generates:
         ID: String
         DateTimeISO: kotlinx.datetime.Instant
         Duration: kotlin.time.Duration
+        PartyId: kotools.types.text.NotBlankString
         Float: Double
       typesPrefix: Gql
       omitJvmStatic: true

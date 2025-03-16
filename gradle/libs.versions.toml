@@ -13,6 +13,8 @@ org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime
 org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.8.0"
 org-junit-junit-bom = "org.junit:junit-bom:5.12.1"
 org-kotools-types = "org.kotools:types:5.0.0"
+org-kotools-types-kotlinx-serialization = "org.kotools:types-kotlinx-serialization:5.0.0"
+
 org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 
 [plugins]

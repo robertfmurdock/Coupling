@@ -1,8 +1,9 @@
 scalar DateTimeISO
 scalar Duration
+scalar PartyId
 
 type PartyDetails {
-    id: ID!
+    id: PartyId!
     name: String
     email: String
     pairingRule: Int
@@ -55,7 +56,7 @@ type PinDetails {
 
 type PlayerDetails {
     id: ID!
-    partyId: ID!
+    partyId: PartyId!
     name: String!
     email: String!
     badge: String
@@ -104,7 +105,7 @@ type PinnedPair {
 
 type PairAssignmentDocumentDetails {
     id: ID!
-    partyId: ID!
+    partyId: PartyId!
     date: DateTimeISO!
     pairs: [PinnedPair!]!
     discordMessageId: String
@@ -116,7 +117,7 @@ type PairAssignmentDocumentDetails {
 
 type PartySecret {
     id: ID!
-    partyId: String!
+    partyId: PartyId!
     description: String!
     createdTimestamp: DateTimeISO!
     lastUsedTimestamp: DateTimeISO
@@ -127,7 +128,7 @@ type PartySecret {
 
 type BoostDetails {
     userId: ID!
-    partyIds: [ID!]!
+    partyIds: [PartyId!]!
     expirationDate: DateTimeISO!
     modifyingUserEmail: String!
     timestamp: DateTimeISO!
@@ -149,7 +150,7 @@ type Contribution {
     link: String
     name: String
     participantEmails: [String!]!
-    partyId: String
+    partyId: PartyId
     semver: String
     story: String
     modifyingUserEmail: String!
@@ -158,7 +159,7 @@ type Contribution {
 }
 
 type Party {
-    id: ID!
+    id: PartyId!
     details: PartyDetails
     integration: PartyIntegration
     pinList: [PinDetails!]
@@ -211,7 +212,7 @@ input PinInput {
 }
 
 input SpinInput {
-    partyId: ID!
+    partyId: PartyId!
     playerIds: [ID!]!
     pinIds: [ID!]!
 }
@@ -221,38 +222,38 @@ type SpinOutput {
 }
 
 input DeletePartyInput {
-    partyId: ID!
+    partyId: PartyId!
 }
 input DeletePinInput {
-    partyId: ID!
+    partyId: PartyId!
     pinId: ID!
 }
 
 input DeletePlayerInput {
-    partyId: ID!
+    partyId: PartyId!
     playerId: ID!
 }
 
 input DeletePairAssignmentsInput {
-    partyId: ID!
+    partyId: PartyId!
     pairAssignmentsId: ID!
 }
 
 input SavePinInput {
-    partyId: ID!
+    partyId: PartyId!
     pinId: ID
     icon: String!
     name: String!
 }
 
 input SaveSlackIntegrationInput {
-    partyId: ID!
+    partyId: PartyId!
     team: String!
     channel: String!
 }
 
 input SavePartyInput {
-    partyId: ID!
+    partyId: PartyId!
     name: String
     email: String
     pairingRule: Int
@@ -265,7 +266,7 @@ input SavePartyInput {
 }
 
 input SavePlayerInput {
-    partyId: ID!
+    partyId: PartyId!
     playerId: ID!
     name: String!
     email: String!
@@ -278,7 +279,7 @@ input SavePlayerInput {
 }
 
 input SavePairAssignmentsInput {
-    partyId: ID!
+    partyId: PartyId!
     pairAssignmentsId: ID!
     date: DateTimeISO!
     pairs: [PinnedPairInput!]!
@@ -334,11 +335,11 @@ input GlobalStatsInput {
 }
 
 input PartyInput {
-    partyId: ID!
+    partyId: PartyId!
 }
 
 type Pair {
-    partyId: ID
+    partyId: PartyId
     players: [PlayerDetails!]
     count: Int
     spinsSinceLastPaired: Int
@@ -348,7 +349,7 @@ type Pair {
 }
 
 type ContributionReport {
-    partyId: ID
+    partyId: PartyId
     contributions: [Contribution!]
     count: Int
     medianCycleTime: Duration
@@ -399,7 +400,7 @@ type Mutation {
 }
 
 input SaveContributionInput {
-    partyId: ID!
+    partyId: PartyId!
     contributionList: [ContributionInput]!
 }
 
@@ -422,7 +423,7 @@ input ContributionInput {
 }
 
 input ClearContributionsInput {
-    partyId: ID!
+    partyId: PartyId!
 }
 
 input GrantSlackAccessInput {
@@ -432,12 +433,12 @@ input GrantSlackAccessInput {
 
 input GrantDiscordAccessInput {
     code: String!
-    partyId: ID!
+    partyId: PartyId!
     guildId: String!
 }
 
 input CreateSecretInput {
-    partyId: ID!
+    partyId: PartyId!
     description: String!
 }
 
@@ -450,6 +451,6 @@ type SecretToken {
 }
 
 input DeleteSecretInput {
-    partyId: ID!
+    partyId: PartyId!
     secretId: ID!
 }

@@ -21,7 +21,7 @@ interface SdkSpin :
 }
 
 fun SpinCommand.spinInput() = GqlSpinInput(
-    partyId = partyId.value.toString(),
+    partyId = partyId.value,
     playerIds = playerIds.toList().map { it.value.toString() },
     pinIds = pinIds,
 )

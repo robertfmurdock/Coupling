@@ -51,7 +51,7 @@ fun PartyDetails.toSerializable() = JsonPartyDetails(
 )
 
 fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
-    id = data.id.value.toString(),
+    id = data.id.value,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
     defaultBadgeName = data.defaultBadgeName,

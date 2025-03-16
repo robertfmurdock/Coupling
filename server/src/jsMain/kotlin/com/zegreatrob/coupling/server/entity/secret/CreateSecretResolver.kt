@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val createSecretResolver = dispatch(
-    dispatcherFunc = requiredInput { request, _, args -> authorizedPartyDispatcher(request, args.partyId) },
+    dispatcherFunc = requiredInput { request, _, args -> authorizedPartyDispatcher(request, PartyId(args.partyId)) },
     commandFunc = requiredInput { _: JsonNull, input: GqlCreateSecretInput -> input.toCommand() },
     fireFunc = ::perform,
     toSerializable = { it?.toModel() },

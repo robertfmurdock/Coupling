@@ -19,7 +19,7 @@ interface SdkSaveContributionCommandDispatcher :
 }
 
 private fun SaveContributionCommand.saveContributionInput() = GqlSaveContributionInput(
-    partyId = partyId.value.toString(),
+    partyId = partyId.value,
     contributionList = contributionList.map(ContributionInput::toJson),
 )
 

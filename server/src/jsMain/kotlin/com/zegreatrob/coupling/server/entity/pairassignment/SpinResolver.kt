@@ -18,7 +18,7 @@ val spinResolver: Resolver = dispatch(
     dispatcherFunc = requiredInput { request, _, args ->
         authorizedPartyDispatcher(
             context = request,
-            partyId = args.partyId,
+            partyId = PartyId(args.partyId),
         )
     },
     commandFunc = requiredInput { _: JsonNull, args: GqlSpinInput -> args.command() },

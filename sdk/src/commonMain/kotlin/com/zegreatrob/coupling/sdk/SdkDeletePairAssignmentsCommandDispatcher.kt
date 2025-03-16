@@ -13,7 +13,7 @@ interface SdkDeletePairAssignmentsCommandDispatcher :
     override suspend fun perform(command: DeletePairAssignmentsCommand) = with(command) {
         doQuery(
             Mutation.deletePairAssignments,
-            GqlDeletePairAssignmentsInput(partyId.value.toString(), pairAssignmentDocumentId.value.toString()),
+            GqlDeletePairAssignmentsInput(partyId.value, pairAssignmentDocumentId.value.toString()),
             "deletePairAssignments",
         ) { it: Boolean? -> it }
             .let { it == true }

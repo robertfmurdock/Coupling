@@ -14,7 +14,7 @@ val deleteSecretResolver = dispatch(
     dispatcherFunc = requiredInput { request, _, args ->
         DispatcherProviders.authorizedPartyDispatcher(
             context = request,
-            partyId = args.partyId,
+            partyId = PartyId(args.partyId),
         )
     },
     commandFunc = requiredInput { _: JsonNull, args: GqlDeleteSecretInput ->

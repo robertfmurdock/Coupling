@@ -13,7 +13,7 @@ val deletePinResolver = dispatch(
     dispatcherFunc = requiredInput { request, _: JsonNull, args: GqlDeletePinInput ->
         authorizedPartyDispatcher(
             context = request,
-            partyId = args.partyId,
+            partyId = PartyId(args.partyId),
         )
     },
     commandFunc = requiredInput { _, input -> input.toCommand() },

@@ -29,6 +29,7 @@ dependencies {
         api(libs.io.github.oshai.kotlin.logging)
         api(libs.org.jetbrains.kotlinx.kotlinx.datetime)
         api(libs.org.kotools.types)
+        api(libs.org.kotools.types.kotlinx.serialization)
         api(libs.org.slf4j.slf4j.simple)
     }
 }

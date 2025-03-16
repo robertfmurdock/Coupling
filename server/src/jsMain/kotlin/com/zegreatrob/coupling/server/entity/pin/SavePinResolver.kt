@@ -15,7 +15,7 @@ val savePinResolver = dispatch(
     dispatcherFunc = requiredInput { request, _: JsonNull, args: GqlSavePinInput ->
         authorizedPartyDispatcher(
             context = request,
-            partyId = args.partyId,
+            partyId = PartyId(args.partyId),
         )
     },
     commandFunc = requiredInput { _, input -> input.toCommand() },

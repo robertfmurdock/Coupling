@@ -22,7 +22,7 @@ interface SdkCreateSecretCommandDispatcher :
         .createSecret
 
     private fun createSecretInput(command: CreateSecretCommand) = GqlCreateSecretInput(
-        partyId = command.partyId.value.toString(),
+        partyId = command.partyId.value,
         description = command.description,
     )
 }

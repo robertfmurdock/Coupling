@@ -12,7 +12,7 @@ import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairAssignmentDocumentDetails(
-    partyId = data.partyId.value.toString(),
+    partyId = data.partyId.value,
     id = data.element.id.value.toString(),
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable).toList(),
