@@ -42,7 +42,7 @@ val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { props
                 }
                 contributions.forEach { contribution ->
                     ContributionCard(
-                        key = contribution.id,
+                        key = contribution.id.toString(),
                         partyId = party.id,
                         contribution = contribution,
                         players = players,

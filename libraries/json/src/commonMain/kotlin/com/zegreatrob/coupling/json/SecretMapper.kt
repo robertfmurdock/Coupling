@@ -23,7 +23,7 @@ fun GqlPartySecret.toModel(): PartyRecord<Secret>? {
 }
 
 fun PartyRecord<Secret>.toSerializable() = GqlPartySecret(
-    id = data.element.id.value.toString(),
+    id = data.element.id.value,
     createdTimestamp = data.element.createdTimestamp,
     lastUsedTimestamp = data.element.lastUsedTimestamp,
     description = data.element.description,

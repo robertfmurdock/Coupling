@@ -22,7 +22,7 @@ interface SdkBoost :
 
     override suspend fun perform(command: DeleteBoostCommand) = deleteIt().let { VoidResult.Accepted }
 
-    private fun ApplyBoostCommand.saveBoostInput() = GqlSaveBoostInput(partyId.value.toString())
+    private fun ApplyBoostCommand.saveBoostInput() = GqlSaveBoostInput(partyId.value)
 
     private suspend fun deleteIt() {
         performQuery(buildJsonObject { put("query", Mutation.deleteBoost) })

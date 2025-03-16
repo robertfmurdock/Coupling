@@ -17,6 +17,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
+import kotools.types.text.toNotBlankString
 import react.ReactNode
 import kotlin.test.Test
 
@@ -63,7 +64,7 @@ fun stubContributionReport(contributions: List<Contribution>) = ContributionRepo
         partyRecord(
             partyId = stubPartyId(),
             data = it,
-            modifyingUserEmail = "",
+            modifyingUserEmail = "-".toNotBlankString().getOrThrow(),
         )
     },
 )

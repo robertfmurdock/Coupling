@@ -9,7 +9,7 @@ import kotlinx.datetime.Clock
 import kotools.types.text.NotBlankString
 
 class MemoryPinRepository(
-    override val userId: String,
+    override val userId: NotBlankString,
     override val clock: Clock,
     private val recordBackend: RecordBackend<PartyElement<Pin>> = SimpleRecordBackend(),
 ) : PinRepository,

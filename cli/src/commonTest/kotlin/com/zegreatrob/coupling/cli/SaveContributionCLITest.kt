@@ -20,6 +20,7 @@ import com.zegreatrob.tools.digger.json.toJsonString
 import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
 import kotlin.uuid.Uuid
@@ -61,7 +62,7 @@ class SaveContributionCLITest {
                     partyId = partyId,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = sourceContribution.firstCommit,
+                            contributionId = sourceContribution.firstCommit.toNotBlankString().getOrThrow(),
                             participantEmails = sourceContribution.authors.toSet(),
                             hash = sourceContribution.lastCommit,
                             dateTime = sourceContribution.dateTime,

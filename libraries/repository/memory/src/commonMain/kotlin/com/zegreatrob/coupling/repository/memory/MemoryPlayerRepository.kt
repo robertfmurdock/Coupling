@@ -10,9 +10,10 @@ import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
 
 class MemoryPlayerRepository(
-    override val userId: String,
+    override val userId: NotBlankString,
     override val clock: Clock,
     private val recordBackend: RecordBackend<PartyElement<Player>> = SimpleRecordBackend(),
 ) : PlayerEmailRepository,

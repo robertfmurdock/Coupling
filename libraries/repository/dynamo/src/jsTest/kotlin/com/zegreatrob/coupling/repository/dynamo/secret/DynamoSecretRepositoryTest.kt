@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -33,7 +34,7 @@ class DynamoSecretRepositoryTest {
             stubSecret(),
         )
     }) {
-        repository = DynamoSecretRepository("userId", MagicClock())
+        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
     } exercise {
         partyId.with(secrets).forEach { repository.save(it) }
     } verifyWithWait {
@@ -52,7 +53,7 @@ class DynamoSecretRepositoryTest {
             stubSecret(),
         )
     }) {
-        repository = DynamoSecretRepository("userId", MagicClock())
+        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
     } exercise {
         partyId.with(secrets).forEach {
             repository.save(it)
@@ -71,7 +72,7 @@ class DynamoSecretRepositoryTest {
         val partyId = stubPartyId()
         lateinit var repository: DynamoSecretRepository
     }) {
-        repository = DynamoSecretRepository("userId", MagicClock())
+        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
     } exercise {
         repository.deleteSecret(partyId, SecretId.new())
     } verify { result ->
@@ -83,7 +84,7 @@ class DynamoSecretRepositoryTest {
         val partyId = stubPartyId()
         lateinit var repository: DynamoSecretRepository
     }) {
-        repository = DynamoSecretRepository("userId", MagicClock())
+        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
     } exercise {
         repository.getSecrets(partyId)
     } verify { result ->
@@ -143,11 +144,11 @@ class DynamoSecretRepositoryTest {
         val partyId = stubPartyId()
         lateinit var repository: DynamoSecretRepository
         val records = listOf(
-            partyRecord(partyId, stubSecret(), uuidString(), false, now().minus(3.months)),
-            partyRecord(partyId, stubSecret(), uuidString(), true, now().minus(2.years)),
+            partyRecord(partyId, stubSecret(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months)),
+            partyRecord(partyId, stubSecret(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
         )
     }) {
-        repository = DynamoSecretRepository("userId", MagicClock())
+        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
     } exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verifyWithWait {

@@ -29,9 +29,16 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.decodeFromDynamic
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import kotlin.js.Json
 
-val user = UserDetails("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet(), null)
+val user = UserDetails(
+    "IMPORT_USER".toNotBlankString().getOrThrow(),
+    "robert.f.murdock@gmail.com".toNotBlankString().getOrThrow(),
+    emptySet(),
+    null,
+)
 
 private val logger = KotlinLogging.logger("import")
 
@@ -111,7 +118,7 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
 }
 
 class DynamoRepositoryCatalog private constructor(
-    override val userId: String,
+    override val userId: NotBlankString,
     override val clock: Clock,
     val partyRepository: DynamoPartyRepository,
     val playerRepository: DynamoPlayerRepository,
@@ -122,7 +129,7 @@ class DynamoRepositoryCatalog private constructor(
     ClockProvider {
 
     companion object {
-        suspend operator fun invoke(userEmail: String, clock: Clock): DynamoRepositoryCatalog {
+        suspend operator fun invoke(userEmail: NotBlankString, clock: Clock): DynamoRepositoryCatalog {
             val partyRepository = DynamoPartyRepository(userEmail, clock)
             val playerRepository = DynamoPlayerRepository(userEmail, clock)
             val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)

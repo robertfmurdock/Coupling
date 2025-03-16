@@ -20,6 +20,7 @@ import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotools.types.text.toNotBlankString
 import kotlin.time.Duration
 
 data class ContributionContext(val partyId: PartyId, val env: String)
@@ -70,7 +71,7 @@ class SaveContribution(
                     )
                 } else {
                     ContributionInput(
-                        contributionId = contributionId,
+                        contributionId = contributionId.toNotBlankString().getOrThrow(),
                         participantEmails = participantEmail.toSet(),
                         hash = hash,
                         dateTime = dateTime.ifBlank { null }?.let(Instant.Companion::parse),
@@ -152,7 +153,7 @@ private fun Contribution.contributionInput(
     link: String?,
     label: String?,
 ) = ContributionInput(
-    contributionId = firstCommit,
+    contributionId = firstCommit.toNotBlankString().getOrThrow(),
     participantEmails = authors.toSet(),
     hash = lastCommit,
     dateTime = dateTime,

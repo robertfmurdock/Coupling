@@ -9,7 +9,7 @@ import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
-    id = player.id.value.toString(),
+    id = player.id.value,
     name = player.name,
     email = player.email,
     badge = "${player.badge}",

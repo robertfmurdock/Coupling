@@ -13,6 +13,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class ServerPairCountQueryDispatcherTest {
@@ -28,7 +29,7 @@ class ServerPairCountQueryDispatcherTest {
                 stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(player2).withPins())),
                 stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(player1, player3).withPins())),
                 stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(player1).withPins())),
-            ).map { PartyRecord(partyId.with(it), "", false, Instant.DISTANT_PAST) }
+            ).map { PartyRecord(partyId.with(it), "-".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
         }
     }) exercise {
         perform(PairCountQuery(partyId, CouplingPair.Single(player1)))

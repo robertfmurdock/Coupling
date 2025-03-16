@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.secretRepository
 import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.datetime.Clock
+import kotools.types.text.toNotBlankString
 import kotlin.uuid.Uuid
 
 fun userLoadingMiddleware(): Handler = { request, _, next ->
@@ -44,7 +45,7 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
 }
 
 private suspend fun userFromSecret(partyId: PartyId, secretId: SecretId): UserDetails? {
-    val secretUserId = secretId.value.toString()
+    val secretUserId = secretId.value
     val secretRepository = secretRepository(secretUserId)
     return if (!secretRepository.secretIsNotDeleted(partyId, secretId)) {
         null
@@ -61,7 +62,7 @@ private suspend fun userFromSecret(partyId: PartyId, secretId: SecretId): UserDe
 }
 
 private suspend fun authCannon(userEmail: Any?, traceId: Uuid) = ActionCannon(
-    UserDataService.authActionDispatcher("$userEmail", traceId),
+    UserDataService.authActionDispatcher("$userEmail".toNotBlankString().getOrThrow(), traceId),
     LoggingActionPipe(traceId),
 )
 

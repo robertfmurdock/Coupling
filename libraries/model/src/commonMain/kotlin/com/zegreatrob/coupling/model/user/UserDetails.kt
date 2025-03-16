@@ -4,9 +4,10 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
+import kotools.types.text.NotBlankString
 
 data class User(
-    val id: String,
+    val id: NotBlankString,
     val details: UserDetails?,
     val boost: Record<Boost>?,
     val subscription: SubscriptionDetails?,
@@ -20,8 +21,8 @@ data class SubscriptionDetails(
 )
 
 data class UserDetails(
-    val id: String,
-    val email: String,
+    val id: NotBlankString,
+    val email: NotBlankString,
     val authorizedPartyIds: Set<PartyId>,
     val stripeCustomerId: String?,
 )

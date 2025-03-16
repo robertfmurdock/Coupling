@@ -74,6 +74,7 @@ import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotools.types.text.NotBlankString
 import kotlin.js.json
 import kotlin.uuid.Uuid
 
@@ -176,7 +177,7 @@ class CurrentPartyDispatcher(
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
     CannonProvider<CurrentPartyDispatcher> {
-    override val userId: String get() = commandDispatcher.userId
+    override val userId: NotBlankString get() = commandDispatcher.userId
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
@@ -186,7 +187,7 @@ class CurrentPartyDispatcher(
 
     private suspend fun userIsAlsoPlayer() = players()
         .map { it.email }
-        .contains(currentUser.email)
+        .contains(currentUser.email.toString())
 
     private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)

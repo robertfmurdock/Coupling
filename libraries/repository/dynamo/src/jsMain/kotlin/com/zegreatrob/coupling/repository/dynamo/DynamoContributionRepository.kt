@@ -11,12 +11,13 @@ import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.time.Duration
 
-class DynamoContributionRepository private constructor(override val userId: String, override val clock: Clock) :
+class DynamoContributionRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
     ContributionRepository,
     RecordSyntax,
     DynamoRecordJsonMapping,
@@ -35,14 +36,14 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             }
     }
 
-    private suspend fun delete(partyId: PartyId, contributionIds: List<String>) {
+    private suspend fun delete(partyId: PartyId, contributionIds: List<NotBlankString>) {
         queryForItemList(
             json(
                 "TableName" to prefixedTableName,
                 "ScanIndexForward" to false,
                 "ExpressionAttributeValues" to json(
                     ":tribeId" to partyId.value.toString(),
-                    ":contributionIds" to contributionIds.toTypedArray(),
+                    ":contributionIds" to contributionIds.map { it.toString() }.toTypedArray(),
                 ),
                 "KeyConditionExpression" to "tribeId = :tribeId",
                 "FilterExpression" to "contains(:contributionIds, id)",
@@ -72,7 +73,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
     }+${data.element.id}"
 
     private fun PartyElement<Contribution>.toJson() = json(
-        "id" to element.id,
+        "id" to element.id.toString(),
         "tribeId" to partyId.value.toString(),
         "dateTime" to element.dateTime?.isoWithMillis(),
         "ease" to element.ease,
@@ -135,7 +136,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
 
     private fun Json.toContribution(): Contribution? {
         return Contribution(
-            id = getDynamoStringValue("id") ?: return null,
+            id = getDynamoStringValue("id")?.toNotBlankString()?.getOrNull() ?: return null,
             createdAt = getDynamoDateTimeValue("createdAt") ?: Instant.DISTANT_PAST,
             dateTime = getDynamoDateTimeValue("dateTime"),
             hash = getDynamoStringValue("hash"),

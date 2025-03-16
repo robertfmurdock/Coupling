@@ -21,6 +21,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
 
@@ -75,7 +76,7 @@ class RecentTimesPairedQueryTest {
         )
         override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-            history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+            history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
         }
         val partyId = stubPartyId()
     }) exercise {
@@ -94,7 +95,7 @@ class RecentTimesPairedQueryTest {
             val partyId = stubPartyId()
             override val playerRepository = PlayerListGet { pair.asArray().map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -112,7 +113,7 @@ class RecentTimesPairedQueryTest {
                 pair.asArray().plus(stubPlayer()).map { record(partyId, it) }
             }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -129,7 +130,7 @@ class RecentTimesPairedQueryTest {
             val partyId = stubPartyId()
             override val playerRepository = PlayerListGet { stubPlayers(4).map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -144,7 +145,7 @@ class RecentTimesPairedQueryTest {
             val partyId = stubPartyId()
             override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -159,7 +160,7 @@ class RecentTimesPairedQueryTest {
             val partyId = stubPartyId()
             override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, history.maxByOrNull { it.date }!!.id))
@@ -175,7 +176,7 @@ class RecentTimesPairedQueryTest {
             val partyId = stubPartyId()
             override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -209,7 +210,7 @@ class RecentTimesPairedQueryTest {
             ).mapIndexed { index, pairing -> pairing.pairAssignmentDocument(index) }
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -234,7 +235,7 @@ class RecentTimesPairedQueryTest {
                 .shuffled()
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -253,7 +254,7 @@ class RecentTimesPairedQueryTest {
                 .plus(expectedPairing)
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -289,7 +290,7 @@ class RecentTimesPairedQueryTest {
                 .plus(expectedPairing)
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -313,7 +314,7 @@ class RecentTimesPairedQueryTest {
             val history = goodRotation + absenteeRotation + goodRotation + goodRotation + goodRotation
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
@@ -335,7 +336,7 @@ class RecentTimesPairedQueryTest {
             val history = goodRotation + absenteeRotation + absenteeRotation + goodRotation + absenteeRotation
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                history.map { Record(PartyElement(partyId, it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
             }
         }) exercise {
             perform(RecentTimesPairedQuery(stubPartyId(), pair, null))

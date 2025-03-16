@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.hours
 
@@ -26,7 +27,7 @@ class PairContributionQueryTest {
         )
         val partyId = stubPartyId()
         val expectedContribution =
-            partyRecord(partyId, stubContribution().copy(participantEmails = setOf(targetEmail)), "")
+            partyRecord(partyId, stubContribution().copy(participantEmails = setOf(targetEmail)), "-".toNotBlankString().getOrThrow())
         override val contributionRepository = ContributionGet { listOf(expectedContribution) }
     }) exercise {
         perform(PairContributionQuery(partyId, pair, null))
@@ -46,7 +47,7 @@ class PairContributionQueryTest {
         )
         val partyId = stubPartyId()
         val contribution =
-            partyRecord(partyId, stubContribution().copy(participantEmails = setOf(targetEmail, notTargetEmail)), "")
+            partyRecord(partyId, stubContribution().copy(participantEmails = setOf(targetEmail, notTargetEmail)), "-".toNotBlankString().getOrThrow())
         override val contributionRepository = ContributionGet { listOf(contribution) }
     }) exercise {
         perform(PairContributionQuery(partyId, pair))
@@ -74,7 +75,7 @@ class PairContributionQueryTest {
                 dateTime = null,
             ),
         )
-        override val contributionRepository = ContributionGet { contributions.map { partyRecord(partyId, it, "") } }
+        override val contributionRepository = ContributionGet { contributions.map { partyRecord(partyId, it, "-".toNotBlankString().getOrThrow()) } }
     }) exercise {
         perform(PairContributionQuery(partyId, pair, window = 3.hours))
     } verify { result ->

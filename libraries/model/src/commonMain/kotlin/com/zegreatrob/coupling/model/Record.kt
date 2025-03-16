@@ -4,10 +4,11 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotools.types.text.NotBlankString
 
 data class Record<T>(
     val data: T,
-    val modifyingUserId: String,
+    val modifyingUserId: NotBlankString?,
     val isDeleted: Boolean,
     val timestamp: Instant,
 )
@@ -19,7 +20,7 @@ typealias PartyRecord<T> = Record<PartyElement<T>>
 fun <T> partyRecord(
     partyId: PartyId,
     data: T,
-    modifyingUserEmail: String,
+    modifyingUserEmail: NotBlankString,
     isDeleted: Boolean = false,
     timestamp: Instant = Clock.System.now(),
 ) = PartyRecord(PartyElement(partyId, data), modifyingUserEmail, isDeleted, timestamp)

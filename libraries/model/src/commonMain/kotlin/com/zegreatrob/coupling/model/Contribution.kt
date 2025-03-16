@@ -2,10 +2,11 @@ package com.zegreatrob.coupling.model
 
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
+import kotools.types.text.NotBlankString
 import kotlin.time.Duration
 
 data class Contribution(
-    val id: String,
+    val id: NotBlankString,
     val createdAt: Instant,
     val dateTime: Instant?,
     val hash: String?,
@@ -24,7 +25,7 @@ data class Contribution(
 )
 
 data class ContributionInput(
-    val contributionId: String,
+    val contributionId: NotBlankString,
     val participantEmails: Set<String>,
     val hash: String? = null,
     val dateTime: Instant? = null,

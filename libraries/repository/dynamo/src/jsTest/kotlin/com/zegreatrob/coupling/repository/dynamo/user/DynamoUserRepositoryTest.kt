@@ -23,6 +23,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotools.types.text.toNotBlankString
 import kotlin.js.json
 import kotlin.test.Ignore
 import kotlin.test.Test
@@ -38,8 +39,8 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
         val clock = MagicClock()
-        val userId = "${Uuid.random()}"
-        val user = UserDetails(userId, "${Uuid.random()}", emptySet(), uuidString())
+        val userId = "${Uuid.random()}".toNotBlankString().getOrThrow()
+        val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), uuidString())
         val repository = DynamoUserRepository(userId, clock)
         SharedContextData(repository, clock, user)
     })
@@ -48,8 +49,8 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     @Test
     @Ignore
     fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object {
-        val userId = "${Uuid.random()}"
-        val user = UserDetails(userId, "${Uuid.random()}", emptySet(), null)
+        val userId = "${Uuid.random()}".toNotBlankString().getOrThrow()
+        val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), null)
         lateinit var repository: DynamoUserRepository
     }) {
         repository = DynamoUserRepository(userId, Clock.System)
@@ -59,7 +60,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                     repository.saveRawRecord(
                         Record(
                             data = user.copy(authorizedPartyIds = setOf(PartyId("party-$number"))),
-                            modifyingUserId = "",
+                            modifyingUserId = null,
                             isDeleted = false,
                             timestamp = now().minus(1.days).plus(number.seconds),
                         ),
@@ -73,7 +74,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         )
     } exercise {
         measureTimedValue {
-            repository.getUsersWithEmail(user.email)
+            repository.getUsersWithEmail(user.email.toString())
         }
     } verify { (result, duration) ->
         val user = result.first().data
@@ -113,8 +114,8 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         buildRepository { context ->
             object : Context by context {
                 val records = listOf(
-                    Record(stubUserDetails(), uuidString(), false, now().minus(3.months)),
-                    Record(stubUserDetails(), uuidString(), true, now().minus(2.years)),
+                    Record(stubUserDetails(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months)),
+                    Record(stubUserDetails(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
                 )
             }
         },
@@ -131,16 +132,16 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         buildRepository { context ->
             object : Context by context, DynamoUserJsonMapping by context.repository {
                 override val clock: MagicClock = context.clock
-                override val userId = uuidString()
-                val record = Record(stubUserDetails(), uuidString(), false, now().minus(3.months))
+                override val userId = uuidString().toNotBlankString().getOrThrow()
+                val record = Record(stubUserDetails(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months))
             }
         },
     ) {
         DynamoUserRepository.performPutItem(
             record.recordJson().add(
                 json(
-                    "id" to record.data.id,
-                    "email" to record.data.email,
+                    "id" to record.data.id.toString(),
+                    "email" to record.data.email.toString(),
                     "stripeCustomerId" to record.data.stripeCustomerId,
                     "authorizedTribeIds" to record.data.authorizedPartyIds.map { it.value.toString() }
                         .plus(null)

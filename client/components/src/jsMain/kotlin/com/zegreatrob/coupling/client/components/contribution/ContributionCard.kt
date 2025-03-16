@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import kotools.types.text.NotBlankString
 import react.ChildrenBuilder
 import react.Fragment
 import react.Props
@@ -107,7 +108,8 @@ val ContributionCard by nfc<ContributionCardProps> { props ->
     }
 }
 
-fun String.asShortId() = substring(0, 7)
+fun NotBlankString.asShortId() = toString().substring(0, 7)
+fun String.asShortId() = toString().substring(0, 7)
 
 private fun <T> ChildrenBuilder.showOptionalProperty(attributeName: String, value: T?) {
     value?.let {

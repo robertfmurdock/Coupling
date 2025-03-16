@@ -11,7 +11,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoLiveInfoRepository private constructor(override val userId: String, override val clock: Clock) :
+class DynamoLiveInfoRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
     LiveInfoRepository,
     DynamoPlayerJsonMapping {
 
@@ -89,7 +89,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
             MainScope().async { ensureTableExists() }
         }
 
-        suspend operator fun invoke(userId: String, clock: Clock) = DynamoLiveInfoRepository(userId, clock)
+        suspend operator fun invoke(userId: NotBlankString, clock: Clock) = DynamoLiveInfoRepository(userId, clock)
             .also { ensure.await() }
 
         override val createTableParams: Json

@@ -26,7 +26,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     ) exercise {
         repository.save(userWithEmail)
     } verifyWithWait {
-        repository.getUsersWithEmail(userWithEmail.email)
+        repository.getUsersWithEmail(userWithEmail.email.toString())
             .map { it.data }
             .assertIsEqualTo(listOf(userWithEmail))
     }

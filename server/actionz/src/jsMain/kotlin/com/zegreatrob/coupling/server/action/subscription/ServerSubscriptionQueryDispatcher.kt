@@ -10,7 +10,7 @@ interface ServerSubscriptionQueryDispatcher :
 
     val subscriptionRepository: SubscriptionRepository
 
-    override suspend fun perform(query: SubscriptionQuery): SubscriptionDetails? = subscriptionRepository.findSubscriptionDetails(currentUser.email)
+    override suspend fun perform(query: SubscriptionQuery): SubscriptionDetails? = subscriptionRepository.findSubscriptionDetails(currentUser.email.toString())
 }
 
 fun interface SubscriptionRepository {

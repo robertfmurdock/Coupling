@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.coupling.server.action.contribution.PartyIdContributionsTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @ActionMint
@@ -59,7 +60,7 @@ data class PairListQuery(val partyId: PartyId) {
         ) = partyRecord(
             partyId = query.partyId,
             defaultPlayer.copy(id = PlayerId(NotBlankString.create(email)), email = email),
-            "",
+            "-".toNotBlankString().getOrThrow(),
         )
     }
 }

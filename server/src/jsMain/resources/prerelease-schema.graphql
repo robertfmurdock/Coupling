@@ -1,11 +1,13 @@
 scalar DateTimeISO
+scalar UserId
+scalar PartyId
 
 type User {
     subscription: SubscriptionDetails
 }
 
 type BoostDetails {
-    userId: ID!
+    userId: UserId!
 }
 
 type SubscriptionDetails {
@@ -16,7 +18,7 @@ type SubscriptionDetails {
 }
 
 input SaveBoostInput {
-    partyId: ID!
+    partyId: PartyId!
 }
 
 type Mutation {

@@ -13,7 +13,7 @@ class SdkUserTest {
         sdk().fire(graphQuery { user { details() } })
     } verify { result: CouplingQueryResult? ->
         result?.user?.details.let {
-            it?.email.assertIsEqualTo(PRIMARY_AUTHORIZED_USER_NAME)
+            it?.email.toString().assertIsEqualTo(PRIMARY_AUTHORIZED_USER_NAME)
             it?.id.assertIsNotEqualTo(null)
             it?.authorizedPartyIds.assertIsNotEqualTo(null)
         }

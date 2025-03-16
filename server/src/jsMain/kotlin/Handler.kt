@@ -36,6 +36,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
+import kotools.types.text.toNotBlankString
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
@@ -191,7 +192,12 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
 }
 
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
-    UserDetails("websocket", "websocket", emptySet(), null),
+    UserDetails(
+        "websocket".toNotBlankString().getOrThrow(),
+        "websocket".toNotBlankString().getOrThrow(),
+        emptySet(),
+        null,
+    ),
     this,
     Uuid.random(),
 )

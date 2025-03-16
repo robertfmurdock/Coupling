@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserIdProvider
+import kotools.types.text.toNotBlankString
 import kotlin.uuid.Uuid
 
 object FindOrCreateUserAction : SimpleSuspendResultAction<FindOrCreateUserActionDispatcher, UserDetails> {
@@ -21,12 +22,12 @@ interface FindOrCreateUserActionDispatcher :
         ?: getFirstUserWithEmail()
         ?: newUser()
 
-    private suspend inline fun getFirstUserWithEmail() = userRepository.getUsersWithEmail(userId)
+    private suspend inline fun getFirstUserWithEmail() = userRepository.getUsersWithEmail(userId.toString())
         .firstOrNull()
         ?.data
 
     private suspend fun newUser() = UserDetails(
-        id = "${Uuid.random()}",
+        id = "${Uuid.random()}".toNotBlankString().getOrThrow(),
         email = userId,
         authorizedPartyIds = emptySet(),
         stripeCustomerId = null,

@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class DynamoSlackRepositoryTest {
@@ -22,7 +23,7 @@ class DynamoSlackRepositoryTest {
             slackBotUserId = uuidString(),
         )
         lateinit var repository: DynamoSlackRepository
-        val userEmail = uuidString()
+        val userEmail = uuidString().toNotBlankString().getOrThrow()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
     }) {
         repository = DynamoSlackRepository(userEmail, clock)

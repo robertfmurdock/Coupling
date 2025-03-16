@@ -13,6 +13,7 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.test.fail
 import kotlin.uuid.Uuid
@@ -22,7 +23,7 @@ class FindOrCreateUserActionTest {
     @Test
     fun whenUserDoesNotAlreadyExistWillCreate() = asyncSetup(object : FindOrCreateUserActionDispatcher, UserRepository {
         override val userRepository = this
-        override val userId = "test@test.tes"
+        override val userId = "test@test.tes".toNotBlankString().getOrThrow()
 
         override suspend fun getUser(): Nothing? = null
         override suspend fun getUsersWithEmail(email: String): List<Record<UserDetails>> = emptyList()
@@ -41,10 +42,10 @@ class FindOrCreateUserActionTest {
     fun whenUserWithEmailAsIdExistsWillUseExistingUser() = asyncSetup(
         object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
-            override val userId = "test@test.tes"
+            override val userId = "test@test.tes".toNotBlankString().getOrThrow()
 
-            val expectedUser = UserDetails("${Uuid.random()}", userId, setOf(PartyId("Best party")), null)
-            override suspend fun getUser() = Record(expectedUser, "", false, Clock.System.now())
+            val expectedUser = UserDetails("${Uuid.random()}".toNotBlankString().getOrThrow(), userId, setOf(PartyId("Best party")), null)
+            override suspend fun getUser() = Record(expectedUser, null, false, Clock.System.now())
             override suspend fun getUsersWithEmail(email: String): List<Record<UserDetails>> = emptyList()
             override suspend fun save(user: UserDetails) = fail("Should not save")
         },
@@ -58,11 +59,11 @@ class FindOrCreateUserActionTest {
     fun whenUserWithEmailAndDifferentIdExistsWillUseExistingUser() = asyncSetup(object :
         FindOrCreateUserActionDispatcher, UserRepository {
         override val userRepository = this
-        override val userId = "test@test.tes"
+        override val userId = "test@test.tes".toNotBlankString().getOrThrow()
 
-        val expectedUser = UserDetails("${Uuid.random()}", userId, setOf(PartyId("Best party")), null)
+        val expectedUser = UserDetails("${Uuid.random()}".toNotBlankString().getOrThrow(), userId, setOf(PartyId("Best party")), null)
         override suspend fun getUser(): Nothing? = null
-        override suspend fun getUsersWithEmail(email: String): List<Record<UserDetails>> = listOf(Record(expectedUser, "", false, Clock.System.now()))
+        override suspend fun getUsersWithEmail(email: String): List<Record<UserDetails>> = listOf(Record(expectedUser, null, false, Clock.System.now()))
 
         override suspend fun save(user: UserDetails) = fail("Should not save")
     }) exercise {

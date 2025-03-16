@@ -44,13 +44,13 @@ object GqlReference {
     val user = GqlUserDetails(
         authorizedPartyIds = emptyList(),
         email = "",
-        id = "",
+        id = notBlank,
     )
     val boost = GqlBoostDetails(
-        userId = "",
+        userId = notBlank,
         partyIds = emptyList(),
         expirationDate = Instant.DISTANT_PAST,
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_FUTURE,
     )
@@ -67,7 +67,7 @@ object GqlReference {
         icon = "",
     )
     private val pinnedPlayer = GqlPinnedPlayer(
-        id = "",
+        id = notBlank,
         name = "",
         email = "",
         badge = "",
@@ -91,21 +91,21 @@ object GqlReference {
         partyId = partyId,
         discordMessageId = "",
         slackMessageId = "",
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
     val integrationRecord = GqlPartyIntegration(
         slackTeam = "",
         slackChannel = "",
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
     val secretRecord = GqlPartySecret(
-        id = "",
+        id = notBlank,
         partyId = partyId,
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         description = "",
         lastUsedTimestamp = Instant.DISTANT_PAST,
@@ -113,7 +113,7 @@ object GqlReference {
         timestamp = Instant.DISTANT_PAST,
     )
     val contributionRecord = GqlContribution(
-        id = "",
+        id = notBlank,
         createdAt = Instant.DISTANT_FUTURE,
         dateTime = Instant.DISTANT_PAST,
         hash = "",
@@ -122,7 +122,7 @@ object GqlReference {
         link = "",
         participantEmails = listOf(""),
         partyId = partyId,
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
         label = "",
@@ -145,7 +145,7 @@ object GqlReference {
         callSignsEnabled = false,
         animationsEnabled = false,
         animationSpeed = 0.0,
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
@@ -155,7 +155,7 @@ object GqlReference {
         name = "",
         icon = "",
         partyId = partyId,
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
@@ -170,7 +170,7 @@ object GqlReference {
         imageURL = "",
         avatarType = GqlAvatarType.Retro,
         partyId = partyId,
-        modifyingUserEmail = "",
+        modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
         unvalidatedEmails = emptyList(),

@@ -113,8 +113,8 @@ fun uuidString() = Uuid.random().toString()
 
 var userCounter = 1
 fun stubUserDetails() = UserDetails(
-    id = uuidString(),
-    email = "$userCounter-${uuidString()}@gmail.com",
+    id = uuidString().toNotBlankString().getOrThrow(),
+    email = "$userCounter-${uuidString()}@gmail.com".toNotBlankString().getOrThrow(),
     authorizedPartyIds = setOf(stubPartyId()),
     stripeCustomerId = uuidString(),
 ).also { userCounter++ }
@@ -125,13 +125,13 @@ fun stubPinnedCouplingPair() = PinnedCouplingPair(notEmptyListOf(stubPinnedPlaye
 
 fun <E> record(partyId: PartyId, element: E) = Record(
     PartyElement(partyId, element),
-    "test",
+    "test".toNotBlankString().getOrThrow(),
     false,
     Instant.DISTANT_PAST,
 )
 
 fun stubContribution() = Contribution(
-    id = uuidString(),
+    id = uuidString().toNotBlankString().getOrThrow(),
     createdAt = Clock.System.now().minus((1..2).random().days),
     dateTime = Clock.System.now().minus((1..8).random().days),
     hash = uuidString(),
@@ -150,7 +150,7 @@ fun stubContribution() = Contribution(
 )
 
 fun stubContributionInput() = ContributionInput(
-    contributionId = uuidString(),
+    contributionId = uuidString().toNotBlankString().getOrThrow(),
     participantEmails = setOf(uuidString()),
     hash = uuidString(),
     dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),

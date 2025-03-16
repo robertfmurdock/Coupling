@@ -20,6 +20,8 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import kotlin.js.json
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
@@ -75,8 +77,8 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
             object : Context by context {
                 val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(partyId, stubPlayer(), uuidString(), false, now().minus(3.months)),
-                    partyRecord(partyId, stubPlayer(), uuidString(), true, now().minus(2.years)),
+                    partyRecord(partyId, stubPlayer(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months)),
+                    partyRecord(partyId, stubPlayer(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
                 )
             }
         },
@@ -93,7 +95,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         buildRepository { context ->
             object : Context by context, DynamoRecordJsonMapping {
                 val partyId = stubPartyId()
-                override val userId: String = "test user"
+                override val userId: NotBlankString = "test user".toNotBlankString().getOrThrow()
             }
         },
     ) {
@@ -118,7 +120,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         buildRepository { context ->
             object : Context by context, DynamoRecordJsonMapping {
                 val partyId = stubPartyId()
-                override val userId: String = "test user"
+                override val userId: NotBlankString = "test user".toNotBlankString().getOrThrow()
             }
         },
     ) {

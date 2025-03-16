@@ -23,7 +23,6 @@ import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import kotools.types.text.toNotBlankString
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
@@ -107,9 +106,9 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                 }
                 PlayerCard(
                     defaultPlayer.copy(
-                        id = PlayerId(user.id.toNotBlankString().getOrThrow()),
-                        name = user.email,
-                        email = user.email,
+                        id = PlayerId(user.id),
+                        name = user.email.toString(),
+                        email = user.email.toString(),
                     ),
                 )
             }

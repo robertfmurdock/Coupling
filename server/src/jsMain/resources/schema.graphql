@@ -4,6 +4,9 @@ scalar PartyId
 scalar PlayerId
 scalar PairAssignmentDocumentId
 scalar PinId
+scalar UserId
+scalar SecretId
+scalar ContributionId
 
 type PartyDetails {
     id: PartyId!
@@ -16,7 +19,7 @@ type PartyDetails {
     callSignsEnabled: Boolean
     animationsEnabled: Boolean
     animationSpeed: Float
-    modifyingUserEmail: String
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO
     isDeleted: Boolean
 }
@@ -24,19 +27,19 @@ type PartyDetails {
 type PartyIntegration {
     slackTeam: String
     slackChannel: String
-    modifyingUserEmail: String!
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
 
 type User {
-    id: ID!
+    id: UserId!
     details: UserDetails
     boost: BoostDetails
 }
 
 type UserDetails {
-    id: ID!
+    id: UserId!
     email: String!
     authorizedPartyIds: [String]!
 }
@@ -52,7 +55,7 @@ type PinDetails {
     partyId: PartyId!
     icon: String!
     name: String!
-    modifyingUserEmail: String!
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -68,7 +71,7 @@ type PlayerDetails {
     imageURL: String
     avatarType: AvatarType
     unvalidatedEmails: [String]!
-    modifyingUserEmail: String!
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -89,7 +92,7 @@ enum AvatarType {
 }
 
 type PinnedPlayer {
-    id: ID!
+    id: PlayerId!
     name: String!
     email: String!
     badge: String
@@ -113,27 +116,27 @@ type PairAssignmentDocumentDetails {
     pairs: [PinnedPair!]!
     discordMessageId: String
     slackMessageId: String
-    modifyingUserEmail: String!
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
 
 type PartySecret {
-    id: ID!
+    id: SecretId!
     partyId: PartyId!
     description: String!
     createdTimestamp: DateTimeISO!
     lastUsedTimestamp: DateTimeISO
-    modifyingUserEmail: String!
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
 
 type BoostDetails {
-    userId: ID!
+    userId: UserId!
     partyIds: [PartyId!]!
     expirationDate: DateTimeISO!
-    modifyingUserEmail: String!
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -147,7 +150,7 @@ type Contribution {
     firstCommit: String
     firstCommitDateTime: DateTimeISO
     hash: String
-    id: ID!
+    id: ContributionId!
     integrationDateTime: DateTimeISO
     label: String
     link: String
@@ -156,7 +159,7 @@ type Contribution {
     partyId: PartyId
     semver: String
     story: String
-    modifyingUserEmail: String!
+    modifyingUserEmail: UserId
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -408,7 +411,7 @@ input SaveContributionInput {
 }
 
 input ContributionInput {
-    contributionId: ID!
+    contributionId: ContributionId!
     hash: String
     dateTime: DateTimeISO
     ease: Int

@@ -22,6 +22,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
@@ -34,7 +35,7 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val contributionInputs = generateSequence {
             ContributionInput(
-                contributionId = uuidString(),
+                contributionId = uuidString().toNotBlankString().getOrThrow(),
                 participantEmails = setOf(uuidString(), uuidString(), uuidString()),
                 hash = uuidString(),
                 dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
@@ -92,7 +93,7 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val contributionInputs = generateSequence {
             ContributionInput(
-                contributionId = uuidString(),
+                contributionId = uuidString().toNotBlankString().getOrThrow(),
                 participantEmails = setOf(uuidString(), uuidString(), uuidString()),
                 hash = uuidString(),
                 dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),

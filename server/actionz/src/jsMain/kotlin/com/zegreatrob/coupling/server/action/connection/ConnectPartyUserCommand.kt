@@ -24,7 +24,7 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
 
         suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
             partyId.getAuthorizationData()?.let { (_, players) ->
-                CouplingConnection(connectionId, partyId, userPlayer(players, currentUser.email))
+                CouplingConnection(connectionId, partyId, userPlayer(players, currentUser.email.toString()))
                     .also { it.save() }
                     .let { partyId.loadConnections() }
                     .let { it to couplingSocketMessage(it, null) }

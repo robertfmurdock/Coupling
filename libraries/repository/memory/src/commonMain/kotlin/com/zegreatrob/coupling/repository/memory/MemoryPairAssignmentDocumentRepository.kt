@@ -8,9 +8,10 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
 
 class MemoryPairAssignmentDocumentRepository(
-    override val userId: String,
+    override val userId: NotBlankString,
     override val clock: Clock,
     private val recordBackend: RecordBackend<PartyElement<PairAssignmentDocument>> = SimpleRecordBackend(),
 ) : PairAssignmentDocumentRepository,

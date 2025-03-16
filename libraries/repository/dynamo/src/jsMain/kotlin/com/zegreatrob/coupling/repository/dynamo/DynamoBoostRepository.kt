@@ -11,10 +11,11 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoBoostRepository private constructor(override val userId: String, override val clock: Clock) :
+class DynamoBoostRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
     ExtendedBoostRepository,
     DynamoBoostJsonMapping,
     RecordSyntax {
@@ -33,7 +34,7 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
             MainScope().async { ensureTableExists() }
         }
 
-        suspend operator fun invoke(userId: String, clock: Clock) = DynamoBoostRepository(userId, clock)
+        suspend operator fun invoke(userId: NotBlankString, clock: Clock) = DynamoBoostRepository(userId, clock)
             .also { ensure.await() }
 
         override val createTableParams = json(
@@ -111,7 +112,7 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
 
     private fun tribeKey(partyId: PartyId) = "tribe-${partyId.value}"
 
-    private fun userKey(userId: String) = "user-$userId"
+    private fun userKey(userId: NotBlankString) = "user-$userId"
 
     private fun queryParams(id: String) = json(
         "TableName" to prefixedTableName,

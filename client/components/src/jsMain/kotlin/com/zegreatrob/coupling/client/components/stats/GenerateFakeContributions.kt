@@ -29,6 +29,7 @@ import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotools.types.collection.toNotEmptyList
+import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
@@ -63,7 +64,7 @@ suspend fun generateFakeContributions(
                     partyRecord(
                         partyId = PartyId(""),
                         data = it,
-                        modifyingUserEmail = "",
+                        modifyingUserEmail = "-".toNotBlankString().getOrThrow(),
                     )
                 },
                 medianCycleTime = contributions.getOrNull(contributions.size / 2)?.cycleTime,
@@ -162,7 +163,7 @@ private fun beginningOfWindow(selectedWindow: GqlContributionWindow) = selectedW
 }
 
 private fun LocalDateTime.toFakeContribution() = Contribution(
-    id = "${Uuid.random()}",
+    id = "${Uuid.random()}".toNotBlankString().getOrThrow(),
     createdAt = Clock.System.now(),
     dateTime = toInstant(TimeZone.currentSystemDefault()),
     hash = null,

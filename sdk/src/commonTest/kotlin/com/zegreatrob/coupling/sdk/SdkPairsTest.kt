@@ -20,6 +20,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 
@@ -60,7 +61,7 @@ class SdkPairsTest {
                     partyId = party.id,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = uuidString(),
+                            contributionId = uuidString().toNotBlankString().getOrThrow(),
                             participantEmails = mob.map { it.email }.toSet(),
                             commitCount = null,
                             name = null,
@@ -73,7 +74,7 @@ class SdkPairsTest {
                     partyId = party.id,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = uuidString(),
+                            contributionId = uuidString().toNotBlankString().getOrThrow(),
                             participantEmails = mob.take(1).map { it.email }.toSet(),
                             commitCount = null,
                             name = null,
@@ -106,7 +107,7 @@ class SdkPairsTest {
                     partyId = party.id,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = uuidString(),
+                            contributionId = uuidString().toNotBlankString().getOrThrow(),
                             participantEmails = mob.map { it.additionalEmails.first().uppercase() }.toSet(),
                             commitCount = null,
                             name = null,

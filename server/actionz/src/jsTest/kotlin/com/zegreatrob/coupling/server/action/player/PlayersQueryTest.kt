@@ -14,6 +14,7 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -39,7 +40,7 @@ class PlayersQueryTest {
 
     private fun toRecord(it: Player, authorizedPartyId: PartyId) = Record(
         authorizedPartyId.with(it),
-        "${Uuid.random()}@email.com",
+        "${Uuid.random()}@email.com".toNotBlankString().getOrThrow(),
         false,
         Clock.System.now(),
     )

@@ -7,9 +7,10 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
 
 class MemoryPartyRepository(
-    override val userId: String,
+    override val userId: NotBlankString,
     override val clock: Clock = Clock.System,
     private val recordBackend: RecordBackend<PartyDetails> = SimpleRecordBackend(),
     private val integrationRecordBackend: RecordBackend<PartyElement<PartyIntegration>> = SimpleRecordBackend(),

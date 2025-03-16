@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
 import kotlin.uuid.Uuid
 
 interface RepositoryCatalog {
@@ -40,15 +41,15 @@ private suspend fun repositoryCatalog(user: UserDetails): RepositoryCatalog = if
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
 
-private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(userId, memoryBackend, Clock.System)
+private fun memoryRepositoryCatalog(userId: NotBlankString) = MemoryRepositoryCatalog(userId, memoryBackend, Clock.System)
 
-suspend fun userRepository(userId: String): UserRepository = if (useInMemory()) {
+suspend fun userRepository(userId: NotBlankString): UserRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).userRepository
 } else {
     DynamoUserRepository(userId, Clock.System)
 }
 
-suspend fun secretRepository(userId: String): SecretRepository = if (useInMemory()) {
+suspend fun secretRepository(userId: NotBlankString): SecretRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).secretRepository
 } else {
     DynamoSecretRepository(userId, Clock.System)

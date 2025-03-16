@@ -29,6 +29,7 @@ import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class SavePairAssignmentDocumentCommandTest {
@@ -42,7 +43,7 @@ class SavePairAssignmentDocumentCommandTest {
         val party = stubPartyDetails()
         override val liveInfoRepository: LiveInfoRepository get() = TODO("Not yet implemented")
         override suspend fun PartyId.loadConnections(): List<CouplingConnection> = emptyList()
-        override val partyRepository = MemoryPartyRepository("", Clock.System)
+        override val partyRepository = MemoryPartyRepository("-".toNotBlankString().getOrThrow(), Clock.System)
         override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = null
 
         val pairAssignmentDocument = party.id.with(

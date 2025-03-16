@@ -15,7 +15,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoDiscordRepository private constructor(override val userId: String, override val clock: Clock) :
+class DynamoDiscordRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
     RecordSyntax,
     DynamoRecordJsonMapping,
     UserIdProvider,

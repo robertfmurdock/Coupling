@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.encodeToDynamic
+import kotools.types.text.NotBlankString
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -93,7 +94,7 @@ private suspend fun outputUsers(repositoryCatalog: DynamoRepositoryCatalog) {
 }
 
 class DynamoRepositoryCatalog private constructor(
-    override val userId: String,
+    override val userId: NotBlankString,
     override val clock: Clock,
     val partyRepository: DynamoPartyRepository,
     val playerRepository: DynamoPlayerRepository,
@@ -104,7 +105,7 @@ class DynamoRepositoryCatalog private constructor(
     ClockProvider {
 
     companion object {
-        suspend operator fun invoke(userEmail: String, clock: Clock): DynamoRepositoryCatalog {
+        suspend operator fun invoke(userEmail: NotBlankString, clock: Clock): DynamoRepositoryCatalog {
             val partyRepository = DynamoPartyRepository(userEmail, clock)
             val playerRepository = DynamoPlayerRepository(userEmail, clock)
             val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)

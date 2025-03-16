@@ -12,6 +12,7 @@ generates:
       withTypes: true
       strictScalars: true
       scalars:
+        ContributionId: kotools.types.text.NotBlankString
         DateTimeISO: kotlinx.datetime.Instant
         Duration: kotlin.time.Duration
         Float: Double
@@ -20,6 +21,8 @@ generates:
         PartyId: kotools.types.text.NotBlankString
         PinId: kotools.types.text.NotBlankString
         PlayerId: kotools.types.text.NotBlankString
+        SecretId: kotools.types.text.NotBlankString
+        UserId: kotools.types.text.NotBlankString
       typesPrefix: Gql
       omitJvmStatic: true
       serializable: true

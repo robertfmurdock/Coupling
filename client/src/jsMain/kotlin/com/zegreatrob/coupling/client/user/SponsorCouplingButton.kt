@@ -34,13 +34,13 @@ val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
         div { +"You will be billed next on $nextBillDate." }
         div {
             a {
-                href = stripeAdminUrl(props.stripeAdminCode, props.user.email)
+                href = stripeAdminUrl(props.stripeAdminCode, props.user.email.toString())
                 +"Click here to administrate your subscription."
             }
         }
     } else if (showSubscriptionLink) {
         a {
-            href = stripePurchaseUrl(props.stripePurchaseCode, props.user.email)
+            href = stripePurchaseUrl(props.stripePurchaseCode, props.user.email.toString())
             +"Click for ongoing sponsorship via subscription."
         }
     } else {

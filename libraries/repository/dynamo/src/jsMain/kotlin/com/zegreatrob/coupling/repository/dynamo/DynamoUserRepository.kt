@@ -11,11 +11,12 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoUserRepository private constructor(override val userId: String, override val clock: Clock) :
+class DynamoUserRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
     UserRepository,
     UserIdProvider,
     DynamoUserJsonMapping,
@@ -34,7 +35,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
             MainScope().async { ensureTableExists() }
         }
 
-        suspend operator fun invoke(userId: String, clock: Clock) = DynamoUserRepository(userId, clock)
+        suspend operator fun invoke(userId: NotBlankString, clock: Clock) = DynamoUserRepository(userId, clock)
             .also { ensure.await() }
 
         override val createTableParams: Json
@@ -94,7 +95,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
 
     override suspend fun save(user: UserDetails) = logAsync("saveUser") { saveRawRecord(user.toRecord()) }
 
-    override suspend fun getUser() = logAsync("getUser") { queryAllRecords(queryParams(userId)) }
+    override suspend fun getUser() = logAsync("getUser") { queryAllRecords(queryParams(userId.toString())) }
         .sortByRecordTimestamp()
         .lastOrNull()
         ?.toUserRecord()
@@ -130,8 +131,8 @@ class DynamoUserRepository private constructor(override val userId: String, over
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
     private fun emailIdRecordToUser(json: Json) = UserDetails(
-        json["user_id"].toString(),
-        json["email"].toString(),
+        json["user_id"].toString().toNotBlankString().getOrThrow(),
+        json["email"].toString().toNotBlankString().getOrThrow(),
         json["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(NotBlankString::createOrNull)?.let(::PartyId) }
@@ -159,9 +160,9 @@ class DynamoUserRepository private constructor(override val userId: String, over
     }.let { }
 
     private fun Record<UserDetails>.asEmailIdDynamoJson() = json(
-        "id" to emailId(data.email),
-        "user_id" to data.id,
-        "email" to data.email,
+        "id" to emailId(data.email.toString()),
+        "user_id" to data.id.toString(),
+        "email" to data.email.toString(),
         "stripeCustomerId" to data.stripeCustomerId,
         "authorizedTribeIds" to data.authorizedPartyIds.map { it.value.toString() }.toTypedArray(),
     )

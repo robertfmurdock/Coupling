@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.server.external.stream.Readable
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.promise
+import kotools.types.text.toNotBlankString
 import web.http.fetch
 
 val indexHtmlPromise
@@ -74,7 +75,14 @@ private fun Express.injectVariablesForClient() = """<script>
 """.trimIndent()
 
 fun healthRoute(): Handler = { request, response, _ ->
-    request.setUser(UserDetails("HealthCheck", "", emptySet(), null))
+    request.setUser(
+        UserDetails(
+            "HealthCheck".toNotBlankString().getOrThrow(),
+            "-".toNotBlankString().getOrThrow(),
+            emptySet(),
+            null,
+        ),
+    )
     request.scope.launch {
         request.commandDispatcher()
     }.invokeOnCompletion { error ->

@@ -13,7 +13,7 @@ import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 
-class DynamoPinRepository private constructor(override val userId: String, override val clock: Clock) :
+class DynamoPinRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
     PinRepository,
     UserIdProvider,
     DynamoPinJsonMapping,

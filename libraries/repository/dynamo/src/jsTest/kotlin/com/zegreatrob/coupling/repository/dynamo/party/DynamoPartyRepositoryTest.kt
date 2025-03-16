@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -64,8 +65,8 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
     fun canSaveRawRecord() = repositorySetup.with(
         object : PartyMint() {
             val records = listOf(
-                Record(stubPartyDetails(), uuidString(), false, now().minus(3.months)),
-                Record(stubPartyDetails(), uuidString(), true, now().minus(2.years)),
+                Record(stubPartyDetails(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months)),
+                Record(stubPartyDetails(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
             )
         }.bind(),
     ) exercise {

@@ -20,6 +20,7 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -65,8 +66,8 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
             object : Context by context {
                 val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(partyId, stubPin(), uuidString(), false, now().minus(3.months)),
-                    partyRecord(partyId, stubPin(), uuidString(), true, now().minus(2.years)),
+                    partyRecord(partyId, stubPin(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months)),
+                    partyRecord(partyId, stubPin(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
                 )
             }
         },

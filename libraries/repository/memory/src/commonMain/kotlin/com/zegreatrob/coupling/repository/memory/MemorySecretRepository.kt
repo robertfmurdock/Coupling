@@ -8,9 +8,11 @@ import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.repository.secret.SecretRepository
 import kotlinx.datetime.Clock
+import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 
 class MemorySecretRepository(
-    override val userId: String = "test-user",
+    override val userId: NotBlankString = "test-user".toNotBlankString().getOrThrow(),
     override val clock: Clock = Clock.System,
     private val recordBackend: RecordBackend<PartyElement<Secret>> = SimpleRecordBackend(),
 ) : SecretRepository,

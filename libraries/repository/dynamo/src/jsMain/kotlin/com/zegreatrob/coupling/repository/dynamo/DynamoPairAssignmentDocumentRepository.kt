@@ -15,7 +15,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 
 class DynamoPairAssignmentDocumentRepository private constructor(
-    override val userId: String,
+    override val userId: NotBlankString,
     override val clock: Clock,
 ) : PairAssignmentDocumentRepository,
     UserIdProvider,
