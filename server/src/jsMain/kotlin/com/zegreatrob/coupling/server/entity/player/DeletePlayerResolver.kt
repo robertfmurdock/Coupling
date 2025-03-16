@@ -3,12 +3,10 @@ package com.zegreatrob.coupling.server.entity.player
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.perform
 import com.zegreatrob.coupling.json.GqlDeletePlayerInput
-import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 val deletePlayerResolver = dispatch(
@@ -24,4 +22,4 @@ val deletePlayerResolver = dispatch(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-private fun GqlDeletePlayerInput.toCommand() = DeletePlayerCommand(partyId, PlayerId(NotBlankString.create(playerId)))
+private fun GqlDeletePlayerInput.toCommand() = DeletePlayerCommand(partyId, playerId)

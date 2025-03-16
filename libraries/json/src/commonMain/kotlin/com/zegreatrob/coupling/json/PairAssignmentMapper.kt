@@ -4,13 +4,12 @@ import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.player.PlayerId
 import kotools.types.collection.toNotEmptyList
 import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PairAssignment.toSerializable() = GqlPairAssignment(
-    playerIds = playerIds?.map(PlayerId::value),
+    playerIds = playerIds,
     documentId = documentId?.value,
     date = date,
     allPairs = allPairs?.map(PinnedCouplingPair::toSerializable)?.toList(),
@@ -20,7 +19,7 @@ fun PairAssignment.toSerializable() = GqlPairAssignment(
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPairAssignment.toModel() = PairAssignment(
-    playerIds = playerIds?.map { PlayerId(NotBlankString.create(it)) },
+    playerIds = playerIds,
     documentId = documentId?.let { PairAssignmentDocumentId(NotBlankString.create(it)) },
     date = date,
     allPairs = allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),

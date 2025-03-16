@@ -4,13 +4,11 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<Player>.toSerializable() = GqlPlayerDetails(
-    id = data.element.id.value,
+    id = data.element.id,
     name = data.element.name,
     email = data.element.email,
     badge = "${data.element.badge}",
@@ -27,7 +25,7 @@ fun PartyRecord<Player>.toSerializable() = GqlPlayerDetails(
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlSavePlayerInput.toModel(): Player = Player(
-    id = PlayerId(NotBlankString.create(playerId)),
+    id = playerId,
     badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
     name = name,
     email = email,
@@ -42,7 +40,7 @@ fun GqlSavePlayerInput.toModel(): Player = Player(
 fun GqlPlayerDetails.toModel(): PartyRecord<Player> = PartyRecord(
     partyId.with(
         Player(
-            id = PlayerId(NotBlankString.create(id)),
+            id = id,
             badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
             name = name,
             email = email,

@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.model.player.emails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -43,7 +42,6 @@ import web.cssom.scale
 import web.cssom.translate
 import web.cssom.url
 import web.html.HTMLElement
-import kotlin.uuid.Uuid
 
 external interface ContributionCardHeaderProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
@@ -60,7 +58,7 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
     val contributionPlayerList = contribution.participantEmails.map { email ->
         props.players.find { it.emails.contains(email) }
             ?: defaultPlayer.copy(
-                id = PlayerId(NotBlankString.create("${Uuid.random()}")),
+                id = PlayerId.new(),
                 name = email.substringBefore("@"),
                 email = email,
             )

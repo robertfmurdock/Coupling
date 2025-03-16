@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.PlayerId
 import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import kotlin.time.Duration
@@ -68,7 +69,7 @@ object GqlReference {
         icon = "",
     )
     private val pinnedPlayer = GqlPinnedPlayer(
-        id = notBlank,
+        id = PlayerId(notBlank),
         name = "",
         email = "",
         badge = "",
@@ -161,7 +162,7 @@ object GqlReference {
     )
 
     val playerRecord = GqlPlayerDetails(
-        id = notBlank,
+        id = PlayerId(notBlank),
         name = "",
         email = "",
         badge = "",

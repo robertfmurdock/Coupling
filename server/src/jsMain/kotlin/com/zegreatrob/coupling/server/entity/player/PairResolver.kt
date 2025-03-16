@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
 import com.zegreatrob.coupling.server.action.player.perform
@@ -23,7 +22,7 @@ val pairResolve = dispatch(
     commandFunc = requiredInput { party: GqlParty, input: GqlPairInput ->
         PairQuery(
             party.id,
-            input.playerIdList.map(::PlayerId).toSet(),
+            input.playerIdList.toSet(),
         )
     },
     fireFunc = ::perform,

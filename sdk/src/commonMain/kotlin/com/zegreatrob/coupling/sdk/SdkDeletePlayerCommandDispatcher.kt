@@ -14,7 +14,7 @@ interface SdkDeletePlayerCommandDispatcher :
     override suspend fun perform(command: DeletePlayerCommand) = with(command) {
         doQuery(
             Mutation.deletePlayer,
-            GqlDeletePlayerInput(partyId = partyId, playerId = playerId.value),
+            GqlDeletePlayerInput(partyId = partyId, playerId = playerId),
             "deletePlayer",
         ) { it: Boolean? -> it }
             ?.voidResult()

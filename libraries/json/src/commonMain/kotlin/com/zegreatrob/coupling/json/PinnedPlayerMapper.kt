@@ -3,13 +3,11 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
-    id = player.id.value,
+    id = player.id,
     name = player.name,
     email = player.email,
     badge = "${player.badge}",
@@ -22,7 +20,7 @@ fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
 )
 
 fun PinnedPlayer.toSerializableInput() = GqlPinnedPlayerInput(
-    id = player.id.value,
+    id = player.id,
     name = player.name,
     email = player.email,
     badge = "${player.badge}",
@@ -37,7 +35,7 @@ fun PinnedPlayer.toSerializableInput() = GqlPinnedPlayerInput(
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPinnedPlayer.toModel() = PinnedPlayer(
     player = Player(
-        id = PlayerId(NotBlankString.create(id)),
+        id = id,
         badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
         name = name,
         email = email,
@@ -53,7 +51,7 @@ fun GqlPinnedPlayer.toModel() = PinnedPlayer(
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPinnedPlayerInput.toModel() = PinnedPlayer(
     player = Player(
-        id = PlayerId(NotBlankString.create(id)),
+        id = id,
         badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
         name = name,
         email = email,

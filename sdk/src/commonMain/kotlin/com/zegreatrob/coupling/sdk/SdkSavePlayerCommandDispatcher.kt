@@ -21,7 +21,7 @@ interface SdkSavePlayerCommandDispatcher :
 
 fun PartyElement<Player>.input() = GqlSavePlayerInput(
     partyId = partyId,
-    playerId = element.id.value,
+    playerId = element.id,
     name = element.name,
     email = element.email,
     badge = "${element.badge}",

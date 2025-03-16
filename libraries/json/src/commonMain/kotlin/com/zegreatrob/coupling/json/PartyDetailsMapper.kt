@@ -3,14 +3,8 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.defaultParty
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
@@ -103,24 +97,4 @@ fun GqlPartyDetails.toModelRecord(): Record<PartyDetails>? {
         isDeleted = isDeleted ?: return null,
         timestamp = timestamp ?: return null,
     )
-}
-
-typealias PartyIdString =
-    @Serializable(PartyIdSerializer::class)
-    PartyId
-
-object PartyIdSerializer : KSerializer<PartyId> {
-    private val delegateSerializer = NotBlankString.serializer()
-
-    override val descriptor = SerialDescriptor(
-        serialName = "com.zegreatrob.coupling.model.party.PartyId",
-        original = delegateSerializer.descriptor,
-    )
-
-    override fun serialize(
-        encoder: Encoder,
-        value: PartyId,
-    ) = delegateSerializer.serialize(encoder, value.value)
-
-    override fun deserialize(decoder: Decoder): PartyId = PartyId(delegateSerializer.deserialize(decoder))
 }
