@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.player.PlayerId
 import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
@@ -104,7 +105,7 @@ object GqlReference {
         timestamp = Instant.DISTANT_PAST,
     )
     val secretRecord = GqlPartySecret(
-        id = notBlank,
+        id = SecretId(notBlank),
         partyId = PartyId(notBlank),
         modifyingUserEmail = notBlank,
         isDeleted = false,

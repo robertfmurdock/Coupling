@@ -21,7 +21,7 @@ generates:
         PartyId: PartyIdString
         PinId: kotools.types.text.NotBlankString
         PlayerId: PlayerIdString
-        SecretId: kotools.types.text.NotBlankString
+        SecretId: SecretIdString
         UserId: kotools.types.text.NotBlankString
       typesPrefix: Gql
       omitJvmStatic: true
