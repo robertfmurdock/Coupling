@@ -12,7 +12,7 @@ generates:
       withTypes: true
       strictScalars: true
       scalars:
-        ContributionId: kotools.types.text.NotBlankString
+        ContributionId: ContributionIdString
         DateTimeISO: kotlinx.datetime.Instant
         Duration: kotlin.time.Duration
         Float: Double

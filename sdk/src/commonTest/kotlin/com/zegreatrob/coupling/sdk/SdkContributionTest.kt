@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.stats.halfwayValue
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.elements
@@ -22,7 +23,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
@@ -35,7 +35,7 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val contributionInputs = generateSequence {
             ContributionInput(
-                contributionId = uuidString().toNotBlankString().getOrThrow(),
+                contributionId = ContributionId.new(),
                 participantEmails = setOf(uuidString(), uuidString(), uuidString()),
                 hash = uuidString(),
                 dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
@@ -93,7 +93,7 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val contributionInputs = generateSequence {
             ContributionInput(
-                contributionId = uuidString().toNotBlankString().getOrThrow(),
+                contributionId = ContributionId.new(),
                 participantEmails = setOf(uuidString(), uuidString(), uuidString()),
                 hash = uuidString(),
                 dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),

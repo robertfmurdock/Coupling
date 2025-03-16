@@ -42,7 +42,7 @@ external interface ContributionCardProps : Props {
 @ReactFunc
 val ContributionCard by nfc<ContributionCardProps> { props ->
     val contribution = props.contribution
-    val shortId = contribution.id.asShortId()
+    val shortId = contribution.id.value.asShortId()
 
     div {
         css {

@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.cli.cliScope
 import com.zegreatrob.coupling.cli.withSdk
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
@@ -71,7 +72,7 @@ class SaveContribution(
                     )
                 } else {
                     ContributionInput(
-                        contributionId = contributionId.toNotBlankString().getOrThrow(),
+                        contributionId = ContributionId(contributionId.toNotBlankString().getOrThrow()),
                         participantEmails = participantEmail.toSet(),
                         hash = hash,
                         dateTime = dateTime.ifBlank { null }?.let(Instant.Companion::parse),
@@ -153,7 +154,7 @@ private fun Contribution.contributionInput(
     link: String?,
     label: String?,
 ) = ContributionInput(
-    contributionId = firstCommit.toNotBlankString().getOrThrow(),
+    contributionId = ContributionId(firstCommit.toNotBlankString().getOrThrow()),
     participantEmails = authors.toSet(),
     hash = lastCommit,
     dateTime = dateTime,

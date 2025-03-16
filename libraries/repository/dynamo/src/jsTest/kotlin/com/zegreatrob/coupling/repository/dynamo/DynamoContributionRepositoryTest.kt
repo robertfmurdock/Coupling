@@ -39,7 +39,7 @@ class DynamoContributionRepositoryTest {
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyId.with(elementList = contributions)
-                .sortedByDescending { "${it.element.integrationDateTime} ${it.element.id}" }
+                .sortedByDescending { "${it.element.integrationDateTime} ${it.element.id.value}" }
                 .map {
                     Record(
                         data = it,
@@ -70,7 +70,7 @@ class DynamoContributionRepositoryTest {
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyId.with(elementList = contributions)
-                .sortedByDescending { "${it.element.integrationDateTime} ${it.element.id}" }
+                .sortedByDescending { "${it.element.integrationDateTime} ${it.element.id.value}" }
                 .map {
                     Record(
                         data = it,
@@ -102,7 +102,7 @@ class DynamoContributionRepositoryTest {
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyId.with(elementList = contributions)
-                .sortedByDescending { "${it.element.dateTime} ${it.element.id}" }
+                .sortedByDescending { "${it.element.dateTime} ${it.element.id.value}" }
                 .map {
                     Record(
                         data = it,
@@ -195,7 +195,7 @@ class DynamoContributionRepositoryTest {
         result.elements.size.assertIsEqualTo(expectedContributions.size)
 
         result.elements.assertIsEqualTo(
-            expectedContributions.sortedByDescending { "${it.integrationDateTime} ${it.id}" },
+            expectedContributions.sortedByDescending { "${it.integrationDateTime} ${it.id.value}" },
         )
     }
 
@@ -224,7 +224,7 @@ class DynamoContributionRepositoryTest {
     } verify { result: List<PartyRecord<Contribution>> ->
         result.elements.size.assertIsEqualTo(expectedContributions.size)
         result.elements.assertIsEqualTo(
-            expectedContributions.sortedByDescending { "${it.dateTime} ${it.id}" },
+            expectedContributions.sortedByDescending { "${it.dateTime} ${it.id.value}" },
         )
     }
 

@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.json.GqlPinnedPlayer
 import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.SecretId
@@ -116,7 +117,7 @@ object GqlReference {
         timestamp = Instant.DISTANT_PAST,
     )
     val contributionRecord = GqlContribution(
-        id = notBlank,
+        id = ContributionId(notBlank),
         createdAt = Instant.DISTANT_FUTURE,
         dateTime = Instant.DISTANT_PAST,
         hash = "",

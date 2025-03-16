@@ -118,7 +118,7 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
                     }
                     filteredContributions.forEach { contribution ->
                         ContributionCard(
-                            key = contribution.id.toString(),
+                            key = contribution.id.value.toString(),
                             partyId = party.id,
                             contribution = contribution,
                             players = props.players,

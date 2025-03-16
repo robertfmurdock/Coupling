@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.stubmodel
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -132,7 +133,7 @@ fun <E> record(partyId: PartyId, element: E) = Record(
 )
 
 fun stubContribution() = Contribution(
-    id = uuidString().toNotBlankString().getOrThrow(),
+    id = ContributionId.new(),
     createdAt = Clock.System.now().minus((1..2).random().days),
     dateTime = Clock.System.now().minus((1..8).random().days),
     hash = uuidString(),
@@ -151,7 +152,7 @@ fun stubContribution() = Contribution(
 )
 
 fun stubContributionInput() = ContributionInput(
-    contributionId = uuidString().toNotBlankString().getOrThrow(),
+    contributionId = ContributionId.new(),
     participantEmails = setOf(uuidString()),
     hash = uuidString(),
     dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),

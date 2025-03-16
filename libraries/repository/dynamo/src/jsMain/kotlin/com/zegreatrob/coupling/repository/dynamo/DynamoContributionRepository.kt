@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionQueryParams
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -36,14 +37,14 @@ class DynamoContributionRepository private constructor(override val userId: NotB
             }
     }
 
-    private suspend fun delete(partyId: PartyId, contributionIds: List<NotBlankString>) {
+    private suspend fun delete(partyId: PartyId, contributionIds: List<ContributionId>) {
         queryForItemList(
             json(
                 "TableName" to prefixedTableName,
                 "ScanIndexForward" to false,
                 "ExpressionAttributeValues" to json(
                     ":tribeId" to partyId.value.toString(),
-                    ":contributionIds" to contributionIds.map { it.toString() }.toTypedArray(),
+                    ":contributionIds" to contributionIds.map { it.value.toString() }.toTypedArray(),
                 ),
                 "KeyConditionExpression" to "tribeId = :tribeId",
                 "FilterExpression" to "contains(:contributionIds, id)",
@@ -70,10 +71,10 @@ class DynamoContributionRepository private constructor(override val userId: NotB
 
     private fun PartyRecord<Contribution>.sortKeyWithDateTimeFirst() = "${
         (data.element.integrationDateTime ?: data.element.dateTime)?.isoWithMillis()?.let { "dT$it" } ?: timestamp
-    }+${data.element.id}"
+    }+${data.element.id.value}"
 
     private fun PartyElement<Contribution>.toJson() = json(
-        "id" to element.id.toString(),
+        "id" to element.id.value.toString(),
         "tribeId" to partyId.value.toString(),
         "dateTime" to element.dateTime?.isoWithMillis(),
         "ease" to element.ease,
@@ -96,7 +97,7 @@ class DynamoContributionRepository private constructor(override val userId: NotB
         params.performDynamoQuery()
     }
         .mapNotNull { toRecord(it) }
-        .sortedByDescending { "${it.data.element.integrationDateTime ?: it.data.element.dateTime} ${it.data.element.id}" }
+        .sortedByDescending { "${it.data.element.integrationDateTime ?: it.data.element.dateTime} ${it.data.element.id.value}" }
 
     private suspend fun ContributionQueryParams.performDynamoQuery() = queryForItemList(
         contributionListQuery(partyId, window, limit),
@@ -136,7 +137,7 @@ class DynamoContributionRepository private constructor(override val userId: NotB
 
     private fun Json.toContribution(): Contribution? {
         return Contribution(
-            id = getDynamoStringValue("id")?.toNotBlankString()?.getOrNull() ?: return null,
+            id = getDynamoStringValue("id")?.toNotBlankString()?.getOrNull()?.let(::ContributionId) ?: return null,
             createdAt = getDynamoDateTimeValue("createdAt") ?: Instant.DISTANT_PAST,
             dateTime = getDynamoDateTimeValue("dateTime"),
             hash = getDynamoStringValue("hash"),

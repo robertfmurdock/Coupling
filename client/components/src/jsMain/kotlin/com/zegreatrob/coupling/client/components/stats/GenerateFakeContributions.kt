@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.map
@@ -33,7 +34,6 @@ import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
-import kotlin.uuid.Uuid
 
 private val random = Random(10)
 
@@ -163,7 +163,7 @@ private fun beginningOfWindow(selectedWindow: GqlContributionWindow) = selectedW
 }
 
 private fun LocalDateTime.toFakeContribution() = Contribution(
-    id = "${Uuid.random()}".toNotBlankString().getOrThrow(),
+    id = ContributionId.new(),
     createdAt = Clock.System.now(),
     dateTime = toInstant(TimeZone.currentSystemDefault()),
     hash = null,

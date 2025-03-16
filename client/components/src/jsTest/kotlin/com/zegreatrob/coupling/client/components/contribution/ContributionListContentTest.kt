@@ -36,7 +36,7 @@ class ContributionListContentTest {
         )
     } verify {
         contributions.forEach { contribution ->
-            screen.getByText(contribution.id.asShortId())
+            screen.getByText(contribution.id.value.asShortId())
                 .assertIsNotEqualTo(null)
         }
     }
@@ -69,13 +69,13 @@ class ContributionListContentTest {
         val labelFilterComboBox = screen.getByRole("combobox", RoleOptions(name = "Label Filter"))
         actor.selectOptions(labelFilterComboBox, "2")
     } verify {
-        screen.queryByText(expectedContribution1.id.asShortId())
+        screen.queryByText(expectedContribution1.id.value.asShortId())
             .assertIsNotEqualTo(null)
-        screen.queryByText(expectedContribution2.id.asShortId())
+        screen.queryByText(expectedContribution2.id.value.asShortId())
             .assertIsNotEqualTo(null)
-        screen.queryByText(excludedContribution1.id.asShortId())
+        screen.queryByText(excludedContribution1.id.value.asShortId())
             .assertIsEqualTo(null)
-        screen.queryByText(excludedContribution2.id.asShortId())
+        screen.queryByText(excludedContribution2.id.value.asShortId())
             .assertIsEqualTo(null)
     }
 }

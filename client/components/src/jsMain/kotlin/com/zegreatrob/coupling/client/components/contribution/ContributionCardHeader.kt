@@ -54,7 +54,7 @@ external interface ContributionCardHeaderProps : Props {
 @ReactFunc
 val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
     val (partyId, contribution, players) = props
-    val shortId = contribution.id.asShortId()
+    val shortId = contribution.id.value.asShortId()
     val contributionPlayerList = contribution.participantEmails.map { email ->
         props.players.find { it.emails.contains(email) }
             ?: defaultPlayer.copy(

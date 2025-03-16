@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommandWrapper
 import com.zegreatrob.coupling.cli.party.ContributionContext
 import com.zegreatrob.coupling.cli.party.SaveContribution
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.stubmodel.stubPartyId
@@ -62,7 +63,9 @@ class SaveContributionCLITest {
                     partyId = partyId,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = sourceContribution.firstCommit.toNotBlankString().getOrThrow(),
+                            contributionId = ContributionId(
+                                sourceContribution.firstCommit.toNotBlankString().getOrThrow(),
+                            ),
                             participantEmails = sourceContribution.authors.toSet(),
                             hash = sourceContribution.lastCommit,
                             dateTime = sourceContribution.dateTime,

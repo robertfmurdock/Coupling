@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
@@ -15,12 +16,10 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
-import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
-import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 
@@ -61,7 +60,7 @@ class SdkPairsTest {
                     partyId = party.id,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = uuidString().toNotBlankString().getOrThrow(),
+                            contributionId = ContributionId.new(),
                             participantEmails = mob.map { it.email }.toSet(),
                             commitCount = null,
                             name = null,
@@ -74,7 +73,7 @@ class SdkPairsTest {
                     partyId = party.id,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = uuidString().toNotBlankString().getOrThrow(),
+                            contributionId = ContributionId.new(),
                             participantEmails = mob.take(1).map { it.email }.toSet(),
                             commitCount = null,
                             name = null,
@@ -107,7 +106,7 @@ class SdkPairsTest {
                     partyId = party.id,
                     contributionList = listOf(
                         ContributionInput(
-                            contributionId = uuidString().toNotBlankString().getOrThrow(),
+                            contributionId = ContributionId.new(),
                             participantEmails = mob.map { it.additionalEmails.first().uppercase() }.toSet(),
                             commitCount = null,
                             name = null,
