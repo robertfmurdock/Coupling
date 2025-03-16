@@ -20,7 +20,7 @@ fun GqlPartyStats.toModel() = PartyStats(
 
 fun PartyStats.toJson() = GqlPartyStats(
     name = name,
-    id = id.value.toString(),
+    id = id.value,
     playerCount = playerCount,
     appliedPinCount = appliedPinCount,
     uniquePinCount = uniquePinCount,

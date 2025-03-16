@@ -47,8 +47,8 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         return toRecord(partyId.with(pin))
     }
 
-    override suspend fun deletePin(partyId: PartyId, pinId: String) = performDelete(
-        pinId,
+    override suspend fun deletePin(partyId: PartyId, pinId: NotBlankString) = performDelete(
+        pinId.toString(),
         partyId,
         now(),
         { toRecord() },

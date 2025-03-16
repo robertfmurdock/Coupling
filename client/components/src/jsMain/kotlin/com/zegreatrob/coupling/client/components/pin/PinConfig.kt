@@ -48,7 +48,7 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
         null
     } else {
         dispatchFunc {
-            fire(DeletePinCommand(party.id, pin.id.toString()))
+            fire(DeletePinCommand(party.id, pin.id))
             setRedirectUrl(party.id.pinListPath())
         }.requireConfirmation("Are you sure you want to delete this pin?")
     }

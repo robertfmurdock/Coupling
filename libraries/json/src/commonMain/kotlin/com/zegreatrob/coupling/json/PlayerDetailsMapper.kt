@@ -11,7 +11,7 @@ import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<Player>.toSerializable() = GqlPlayerDetails(
-    id = data.element.id.value.toString(),
+    id = data.element.id.value,
     name = data.element.name,
     email = data.element.email,
     badge = "${data.element.badge}",

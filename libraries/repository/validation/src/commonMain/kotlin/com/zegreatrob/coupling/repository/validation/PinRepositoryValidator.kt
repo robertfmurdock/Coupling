@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.datetime.Clock
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.hours
 import kotlin.uuid.Uuid
@@ -43,7 +44,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
         partyId.with(pins).forEach {
             repository.save(it)
         }
-        repository.deletePin(partyId, pins[1].id.toString())
+        repository.deletePin(partyId, pins[1].id)
     } verifyWithWait {
         repository.getPins(partyId).map { it.data.pin }
             .assertContains(pins[0])
@@ -58,7 +59,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
         }.bind(),
     ) {
     } exercise {
-        repository.deletePin(partyId, "${Uuid.random()}")
+        repository.deletePin(partyId, "${Uuid.random()}".toNotBlankString().getOrThrow())
     } verify { result ->
         result.assertIsEqualTo(false)
     }

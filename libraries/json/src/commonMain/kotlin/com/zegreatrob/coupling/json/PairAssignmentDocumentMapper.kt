@@ -23,7 +23,7 @@ data class JsonPairAssignmentDocument(
 
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = GqlSavePairAssignmentsInput(
     partyId = partyId.value,
-    pairAssignmentsId = element.id.value.toString(),
+    pairAssignmentsId = element.id.value,
     date = element.date,
     pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),
     discordMessageId = element.discordMessageId,

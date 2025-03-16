@@ -7,7 +7,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun Contributor.toJson() = GqlContributor(
     email = email,
-    playerId = playerId?.value?.toString(),
+    playerId = playerId?.value,
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)

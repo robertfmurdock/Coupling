@@ -18,14 +18,13 @@ import com.zegreatrob.coupling.server.entity.boost.adapt
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
-import kotools.types.text.toNotBlankString
 
 val pairResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
     commandFunc = requiredInput { party: GqlParty, input: GqlPairInput ->
         PairQuery(
             PartyId(party.id),
-            input.playerIdList.map { PlayerId(it.toNotBlankString().getOrNull() ?: return@requiredInput null) }.toSet(),
+            input.playerIdList.map(::PlayerId).toSet(),
         )
     },
     fireFunc = ::perform,

@@ -21,11 +21,12 @@ import kotools.types.text.toNotBlankString
 import kotlin.time.Duration
 
 object GqlReference {
+    private val notBlank = "-".toNotBlankString().getOrThrow()
     val globalStats = GqlGlobalStats(
         parties = listOf(
             GqlPartyStats(
                 name = "",
-                id = "",
+                id = notBlank,
                 playerCount = 0,
                 appliedPinCount = 0,
                 uniquePinCount = 0,
@@ -61,7 +62,7 @@ object GqlReference {
     )
 
     private val pinData = GqlPin(
-        id = "",
+        id = notBlank,
         name = "",
         icon = "",
     )
@@ -81,9 +82,10 @@ object GqlReference {
         players = listOf(pinnedPlayer),
         pins = listOf(pinData),
     )
-    private val partyId = "-".toNotBlankString().getOrThrow()
+    private val partyId = notBlank
+    private val pairAssignmentDocumentId = notBlank
     val pairAssignmentRecord = GqlPairAssignmentDocumentDetails(
-        id = "",
+        id = pairAssignmentDocumentId,
         date = Instant.DISTANT_PAST,
         pairs = listOf(pinnedCouplingPair),
         partyId = partyId,
@@ -149,17 +151,17 @@ object GqlReference {
     )
 
     val pinRecord = GqlPinDetails(
-        id = "",
+        id = notBlank,
         name = "",
         icon = "",
-        partyId = "",
+        partyId = partyId,
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
 
     val playerRecord = GqlPlayerDetails(
-        id = "",
+        id = notBlank,
         name = "",
         email = "",
         badge = "",

@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pin.PinRepository
+import kotools.types.text.NotBlankString
 
 class CompoundPinRepository(val repository1: PinRepository, val repository2: PinRepository) : PinRepository by repository1 {
 
@@ -11,7 +12,7 @@ class CompoundPinRepository(val repository1: PinRepository, val repository2: Pin
         it.save(partyPin)
     }
 
-    override suspend fun deletePin(partyId: PartyId, pinId: String) = repository1.deletePin(partyId, pinId).also {
+    override suspend fun deletePin(partyId: PartyId, pinId: NotBlankString) = repository1.deletePin(partyId, pinId).also {
         repository2.deletePin(partyId, pinId)
     }
 }

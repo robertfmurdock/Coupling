@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.json.GqlSpinInput
+import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
@@ -22,6 +23,6 @@ interface SdkSpin :
 
 fun SpinCommand.spinInput() = GqlSpinInput(
     partyId = partyId.value,
-    playerIds = playerIds.toList().map { it.value.toString() },
+    playerIds = playerIds.toList().map(PlayerId::value),
     pinIds = pinIds,
 )

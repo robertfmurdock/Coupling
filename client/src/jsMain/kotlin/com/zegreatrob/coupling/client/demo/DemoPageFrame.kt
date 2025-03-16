@@ -154,7 +154,7 @@ private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
         party = party,
         playerSelections = players,
         pins = pins,
-        pinSelections = pins.map(Pin::id).map { it.toString() },
+        pinSelections = pins.map(Pin::id),
         setPlayerSelections = {},
         selectPin = { _, _ -> },
         onSpin = {},

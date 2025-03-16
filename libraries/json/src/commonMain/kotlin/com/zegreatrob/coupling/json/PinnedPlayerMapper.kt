@@ -22,7 +22,7 @@ fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
 )
 
 fun PinnedPlayer.toSerializableInput() = GqlPinnedPlayerInput(
-    id = player.id.value.toString(),
+    id = player.id.value,
     name = player.name,
     email = player.email,
     badge = "${player.badge}",

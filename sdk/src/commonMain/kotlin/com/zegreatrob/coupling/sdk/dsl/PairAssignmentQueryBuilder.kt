@@ -2,10 +2,11 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlPairAssignment
 import kotlinx.datetime.Instant
+import kotools.types.text.toNotBlankString
 
 class PairAssignmentQueryBuilder : QueryBuilder<GqlPairAssignment> {
     override var output: GqlPairAssignment = GqlPairAssignment(
-        documentId = "",
+        documentId = "-".toNotBlankString().getOrThrow(),
         allPairs = null,
         date = null,
         details = null,

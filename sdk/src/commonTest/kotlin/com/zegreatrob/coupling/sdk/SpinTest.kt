@@ -185,7 +185,7 @@ class SpinTest {
         fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.fire(SpinCommand(party.id, players.map { it.id }, listOf(pin.id.toString())))
+            sdk.fire(SpinCommand(party.id, players.map { it.id }, listOf(pin.id)))
         } verifyAnd { result ->
             result.assertIsEqualTo(SpinCommand.Result.Success)
             queryCurrentPairs(party.id, sdk)

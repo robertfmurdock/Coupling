@@ -10,8 +10,8 @@ import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PairAssignment.toSerializable() = GqlPairAssignment(
-    playerIds = playerIds?.map { it.value.toString() },
-    documentId = documentId?.value?.toString(),
+    playerIds = playerIds?.map(PlayerId::value),
+    documentId = documentId?.value,
     date = date,
     allPairs = allPairs?.map(PinnedCouplingPair::toSerializable)?.toList(),
     details = details?.toSerializable(),

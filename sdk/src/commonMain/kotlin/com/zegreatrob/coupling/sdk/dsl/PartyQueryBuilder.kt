@@ -73,7 +73,7 @@ class PartyQueryBuilder :
         .output
         .addToQuery(
             "pair",
-            InputSettings(GqlPairInput(playerIds.map { it.value.toString() }.toList()), "pairInput", "PairInput"),
+            InputSettings(GqlPairInput(playerIds.map { it.value }.toList()), "pairInput", "PairInput"),
         )
 
     fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()

@@ -12,11 +12,14 @@ generates:
       withTypes: true
       strictScalars: true
       scalars:
-        ID: String
         DateTimeISO: kotlinx.datetime.Instant
         Duration: kotlin.time.Duration
-        PartyId: kotools.types.text.NotBlankString
         Float: Double
+        ID: String
+        PairAssignmentDocumentId: kotools.types.text.NotBlankString
+        PartyId: kotools.types.text.NotBlankString
+        PinId: kotools.types.text.NotBlankString
+        PlayerId: kotools.types.text.NotBlankString
       typesPrefix: Gql
       omitJvmStatic: true
       serializable: true

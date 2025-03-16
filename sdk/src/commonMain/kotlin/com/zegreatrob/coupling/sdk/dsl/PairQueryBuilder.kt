@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.GqlContributor
 import com.zegreatrob.coupling.json.GqlPair
 import kotlinx.serialization.json.JsonElement
+import kotools.types.text.toNotBlankString
 
 class PairQueryBuilder :
     BuilderWithInput(),
@@ -51,5 +52,5 @@ class PairQueryBuilder :
 class ContributorQueryBuilder : QueryBuilder<GqlContributor> {
     override var output: GqlContributor = GqlContributor(playerId = null, email = null)
     fun email() = also { output = output.copy(email = "") }
-    fun playerId() = also { output = output.copy(playerId = "") }
+    fun playerId() = also { output = output.copy(playerId = "-".toNotBlankString().getOrThrow()) }
 }

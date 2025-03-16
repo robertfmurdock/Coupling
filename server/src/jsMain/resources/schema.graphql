@@ -1,6 +1,9 @@
 scalar DateTimeISO
 scalar Duration
 scalar PartyId
+scalar PlayerId
+scalar PairAssignmentDocumentId
+scalar PinId
 
 type PartyDetails {
     id: PartyId!
@@ -39,14 +42,14 @@ type UserDetails {
 }
 
 type Pin {
-    id: ID!
+    id: PinId!
     icon: String
     name: String
 }
 
 type PinDetails {
-    id: ID!
-    partyId: ID!
+    id: PinId!
+    partyId: PartyId!
     icon: String!
     name: String!
     modifyingUserEmail: String!
@@ -55,7 +58,7 @@ type PinDetails {
 }
 
 type PlayerDetails {
-    id: ID!
+    id: PlayerId!
     partyId: PartyId!
     name: String!
     email: String!
@@ -104,7 +107,7 @@ type PinnedPair {
 }
 
 type PairAssignmentDocumentDetails {
-    id: ID!
+    id: PairAssignmentDocumentId!
     partyId: PartyId!
     date: DateTimeISO!
     pairs: [PinnedPair!]!
@@ -178,11 +181,11 @@ type Party {
 
 type Contributor {
     email: String
-    playerId: ID
+    playerId: PlayerId
 }
 
 input PairInput {
-    playerIdList: [ID!]!
+    playerIdList: [PlayerId!]!
 }
 
 input ContributionsInput {
@@ -195,7 +198,7 @@ enum ContributionWindow {
 }
 
 input PlayerInput {
-    id: ID!
+    id: PlayerId!
     name: String
     email: String
     badge: String
@@ -206,15 +209,15 @@ input PlayerInput {
 }
 
 input PinInput {
-    id: ID!
+    id: PinId!
     icon: String
     name: String
 }
 
 input SpinInput {
     partyId: PartyId!
-    playerIds: [ID!]!
-    pinIds: [ID!]!
+    playerIds: [PlayerId!]!
+    pinIds: [PinId!]!
 }
 
 type SpinOutput {
@@ -226,22 +229,22 @@ input DeletePartyInput {
 }
 input DeletePinInput {
     partyId: PartyId!
-    pinId: ID!
+    pinId: PinId!
 }
 
 input DeletePlayerInput {
     partyId: PartyId!
-    playerId: ID!
+    playerId: PlayerId!
 }
 
 input DeletePairAssignmentsInput {
     partyId: PartyId!
-    pairAssignmentsId: ID!
+    pairAssignmentsId: PairAssignmentDocumentId!
 }
 
 input SavePinInput {
     partyId: PartyId!
-    pinId: ID
+    pinId: PinId
     icon: String!
     name: String!
 }
@@ -267,7 +270,7 @@ input SavePartyInput {
 
 input SavePlayerInput {
     partyId: PartyId!
-    playerId: ID!
+    playerId: PlayerId!
     name: String!
     email: String!
     badge: String
@@ -280,7 +283,7 @@ input SavePlayerInput {
 
 input SavePairAssignmentsInput {
     partyId: PartyId!
-    pairAssignmentsId: ID!
+    pairAssignmentsId: PairAssignmentDocumentId!
     date: DateTimeISO!
     pairs: [PinnedPairInput!]!
     discordMessageId: String
@@ -293,7 +296,7 @@ input PinnedPairInput {
 }
 
 input PinnedPlayerInput {
-    id: ID!
+    id: PlayerId!
     name: String!
     email: String!
     badge: String
@@ -316,7 +319,7 @@ type GlobalStats {
 
 type PartyStats {
     name: String!
-    id: ID!
+    id: PartyId!
     playerCount: Int!
     appliedPinCount: Int!
     uniquePinCount: Int!
@@ -358,8 +361,8 @@ type ContributionReport {
 }
 
 type PairAssignment {
-    playerIds: [ID!]
-    documentId: ID
+    playerIds: [PlayerId!]
+    documentId: PairAssignmentDocumentId
     details: PairAssignmentDocumentDetails
     date: DateTimeISO
     allPairs: [PinnedPair]
