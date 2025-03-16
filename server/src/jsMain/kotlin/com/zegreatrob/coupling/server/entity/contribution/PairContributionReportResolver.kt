@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.action.contribution.PairContributionQuery
 import com.zegreatrob.coupling.server.action.contribution.perform
 import com.zegreatrob.coupling.server.express.route.CouplingContext
@@ -14,7 +13,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 private val pairContributionQueryFunc = lambda@{ data: GqlPair, input: GqlContributionsInput? ->
     val model = data.toModel()
-    val partyId = data.partyId?.let { PartyId(it) } ?: return@lambda null
+    val partyId = data.partyId ?: return@lambda null
     val players = model.players?.elements ?: return@lambda null
     PairContributionQuery(
         partyId = partyId,

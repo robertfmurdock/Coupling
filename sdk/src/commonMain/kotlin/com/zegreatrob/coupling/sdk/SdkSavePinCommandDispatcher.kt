@@ -21,7 +21,7 @@ interface SdkSavePinCommandDispatcher :
 }
 
 private fun PartyElement<Pin>.savePinInput() = GqlSavePinInput(
-    partyId = partyId.value,
+    partyId = partyId,
     pinId = element.id,
     icon = element.icon,
     name = element.name,

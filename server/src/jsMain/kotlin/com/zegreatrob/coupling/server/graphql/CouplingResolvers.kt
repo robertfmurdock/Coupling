@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.GqlPartyInput
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
@@ -82,7 +81,7 @@ fun couplingResolvers() = json(
                             spinsUntilFullRotation = null,
                         )
                     }
-                if (DispatcherProviders.authorizedPartyDispatcher(r, PartyId(jsonParty.id)) != null) {
+                if (DispatcherProviders.authorizedPartyDispatcher(r, jsonParty.id) != null) {
                     jsonParty.let { kotlinx.serialization.json.Json.encodeToDynamic(it) }
                 } else {
                     null

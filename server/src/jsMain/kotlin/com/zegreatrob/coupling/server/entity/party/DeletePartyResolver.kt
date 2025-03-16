@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.entity.party
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.json.GqlDeletePartyInput
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
@@ -14,10 +13,10 @@ val deletePartyResolver: Resolver = dispatch(
     dispatcherFunc = requiredInput { request, _, args ->
         authorizedPartyDispatcher(
             context = request,
-            partyId = PartyId(args.partyId),
+            partyId = args.partyId,
         )
     },
-    commandFunc = requiredInput { _: JsonNull, input: GqlDeletePartyInput -> DeletePartyCommand(PartyId(input.partyId)) },
+    commandFunc = requiredInput { _: JsonNull, input: GqlDeletePartyInput -> DeletePartyCommand(input.partyId) },
     fireFunc = ::perform,
     toSerializable = { true },
 )

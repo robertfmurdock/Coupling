@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.action.pairassignmentdocument.perform
 import com.zegreatrob.coupling.json.GqlDeletePairAssignmentsInput
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatch
@@ -14,7 +13,7 @@ val deletePairsResolver = dispatch(
     dispatcherFunc = requiredInput { request, _, args ->
         authorizedPartyDispatcher(
             request,
-            PartyId(args.partyId),
+            args.partyId,
         )
     },
     commandFunc = requiredInput { _: JsonNull, entity: GqlDeletePairAssignmentsInput -> entity.toModel() },
@@ -23,6 +22,6 @@ val deletePairsResolver = dispatch(
 )
 
 private fun GqlDeletePairAssignmentsInput.toModel(): DeletePairAssignmentsCommand? = DeletePairAssignmentsCommand(
-    partyId = PartyId(partyId),
+    partyId = partyId,
     pairAssignmentDocumentId = PairAssignmentDocumentId(pairAssignmentsId),
 )

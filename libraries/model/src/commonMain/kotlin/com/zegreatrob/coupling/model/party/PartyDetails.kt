@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.model.party
 
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 data class PartyDetails(
@@ -23,4 +22,4 @@ data class PartyIntegration(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-val defaultParty = PartyDetails(PartyId(NotBlankString.create("DEFAULT")))
+val defaultParty = PartyDetails(PartyId("DEFAULT"))

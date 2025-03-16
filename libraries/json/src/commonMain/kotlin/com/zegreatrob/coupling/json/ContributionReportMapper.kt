@@ -3,8 +3,6 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.party.PartyId
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
@@ -14,7 +12,7 @@ fun GqlContributionReport.toModel() = ContributionReport(
     medianCycleTime = medianCycleTime,
     withCycleTimeCount = withCycleTimeCount,
     contributors = contributors?.map(GqlContributor::toModel),
-    partyId = partyId?.let(NotBlankString::create)?.let(::PartyId),
+    partyId = partyId,
 )
 
 fun ContributionReport.toJson() = GqlContributionReport(
@@ -23,5 +21,5 @@ fun ContributionReport.toJson() = GqlContributionReport(
     count = count,
     medianCycleTime = medianCycleTime,
     withCycleTimeCount = withCycleTimeCount,
-    partyId = partyId?.value,
+    partyId = partyId,
 )

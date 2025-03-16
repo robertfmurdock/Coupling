@@ -18,7 +18,7 @@ generates:
         Float: Double
         ID: String
         PairAssignmentDocumentId: kotools.types.text.NotBlankString
-        PartyId: kotools.types.text.NotBlankString
+        PartyId: PartyIdString
         PinId: kotools.types.text.NotBlankString
         PlayerId: kotools.types.text.NotBlankString
         SecretId: kotools.types.text.NotBlankString

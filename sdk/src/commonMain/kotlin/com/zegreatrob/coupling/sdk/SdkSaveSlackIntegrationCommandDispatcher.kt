@@ -20,6 +20,6 @@ interface SdkSaveSlackIntegrationCommandDispatcher :
     private fun SaveSlackIntegrationCommand.saveSlackIntegrationInput() = GqlSaveSlackIntegrationInput(
         team = team,
         channel = channel,
-        partyId = partyId.value,
+        partyId = partyId,
     )
 }

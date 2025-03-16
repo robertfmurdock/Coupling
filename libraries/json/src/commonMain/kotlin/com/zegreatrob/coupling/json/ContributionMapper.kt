@@ -2,10 +2,7 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
-import kotools.types.text.NotBlankString
-import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<Contribution>.toJson() = GqlContribution(
     id = data.element.id,
@@ -22,7 +19,7 @@ fun PartyRecord<Contribution>.toJson() = GqlContribution(
     participantEmails = data.element.participantEmails.toList(),
     integrationDateTime = data.element.integrationDateTime,
     cycleTime = data.element.cycleTime,
-    partyId = data.partyId.value,
+    partyId = data.partyId,
     name = data.element.name,
     commitCount = data.element.commitCount,
     modifyingUserEmail = modifyingUserId,
@@ -30,9 +27,8 @@ fun PartyRecord<Contribution>.toJson() = GqlContribution(
     timestamp = timestamp,
 )
 
-@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlContribution.toModel() = PartyRecord(
-    data = PartyId(NotBlankString.create(id)).with(
+    data = partyId.with(
         Contribution(
             id = id,
             createdAt = createdAt,

@@ -5,13 +5,17 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.defaultParty
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlSavePartyInput.toModel() = PartyDetails(
-    id = PartyId(NotBlankString.create(partyId)),
+    id = partyId,
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled ?: defaultParty.badgesEnabled,
     defaultBadgeName = defaultBadgeName ?: defaultParty.defaultBadgeName,
@@ -25,7 +29,7 @@ fun GqlSavePartyInput.toModel() = PartyDetails(
 
 @Serializable
 data class JsonPartyDetails(
-    val id: String,
+    val id: PartyIdString,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
     val defaultBadgeName: String = "Default",
@@ -38,7 +42,7 @@ data class JsonPartyDetails(
 )
 
 fun PartyDetails.toSerializable() = JsonPartyDetails(
-    id = id.value.toString(),
+    id = id,
     pairingRule = PairingRule.toValue(pairingRule),
     badgesEnabled = badgesEnabled,
     defaultBadgeName = defaultBadgeName,
@@ -51,7 +55,7 @@ fun PartyDetails.toSerializable() = JsonPartyDetails(
 )
 
 fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
-    id = data.id.value,
+    id = data.id,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
     defaultBadgeName = data.defaultBadgeName,
@@ -68,15 +72,15 @@ fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPartyDetails.toModel(): PartyDetails = PartyDetails(
-    id = PartyId(NotBlankString.create(id)),
+    id = id,
     pairingRule = PairingRule.fromValue(pairingRule),
     defaultBadgeName = defaultBadgeName,
     alternateBadgeName = alternateBadgeName,
     email = email,
     name = name,
-    badgesEnabled = badgesEnabled ?: false,
-    callSignsEnabled = callSignsEnabled ?: false,
-    animationEnabled = animationsEnabled ?: true,
+    badgesEnabled = badgesEnabled == true,
+    callSignsEnabled = callSignsEnabled == true,
+    animationEnabled = animationsEnabled != false,
     animationSpeed = animationSpeed ?: 1.0,
 )
 
@@ -84,19 +88,39 @@ fun GqlPartyDetails.toModel(): PartyDetails = PartyDetails(
 fun GqlPartyDetails.toModelRecord(): Record<PartyDetails>? {
     return Record(
         data = PartyDetails(
-            id = PartyId(NotBlankString.create(id)),
+            id = id,
             pairingRule = PairingRule.fromValue(pairingRule),
             defaultBadgeName = defaultBadgeName,
             alternateBadgeName = alternateBadgeName,
             email = email,
             name = name,
-            badgesEnabled = badgesEnabled ?: false,
-            callSignsEnabled = callSignsEnabled ?: false,
-            animationEnabled = animationsEnabled ?: true,
+            badgesEnabled = badgesEnabled == true,
+            callSignsEnabled = callSignsEnabled == true,
+            animationEnabled = animationsEnabled != false,
             animationSpeed = animationSpeed ?: 1.0,
         ),
         modifyingUserId = modifyingUserEmail ?: return null,
         isDeleted = isDeleted ?: return null,
         timestamp = timestamp ?: return null,
     )
+}
+
+typealias PartyIdString =
+    @Serializable(PartyIdSerializer::class)
+    PartyId
+
+object PartyIdSerializer : KSerializer<PartyId> {
+    private val delegateSerializer = NotBlankString.serializer()
+
+    override val descriptor = SerialDescriptor(
+        serialName = "com.zegreatrob.coupling.model.party.PartyId",
+        original = delegateSerializer.descriptor,
+    )
+
+    override fun serialize(
+        encoder: Encoder,
+        value: PartyId,
+    ) = delegateSerializer.serialize(encoder, value.value)
+
+    override fun deserialize(decoder: Decoder): PartyId = PartyId(delegateSerializer.deserialize(decoder))
 }

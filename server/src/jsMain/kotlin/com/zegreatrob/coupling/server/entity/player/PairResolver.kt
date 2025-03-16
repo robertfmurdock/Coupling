@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
@@ -23,7 +22,7 @@ val pairResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
     commandFunc = requiredInput { party: GqlParty, input: GqlPairInput ->
         PairQuery(
-            PartyId(party.id),
+            party.id,
             input.playerIdList.map(::PlayerId).toSet(),
         )
     },
@@ -34,7 +33,7 @@ val pairCountResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
-        val partyId = PartyId(data.partyId ?: return@dispatch null)
+        val partyId = data.partyId ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
         PairCountQuery(
             partyId = partyId,

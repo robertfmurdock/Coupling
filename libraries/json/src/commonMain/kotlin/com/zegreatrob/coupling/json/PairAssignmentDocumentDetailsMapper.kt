@@ -5,14 +5,13 @@ import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import kotools.types.collection.toNotEmptyList
 import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairAssignmentDocumentDetails(
-    partyId = data.partyId.value,
+    partyId = data.partyId,
     id = data.element.id.value,
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable).toList(),
@@ -33,7 +32,7 @@ fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPairAssignmentDocumentDetails.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
-    PartyId(NotBlankString.create(partyId)).with(
+    partyId.with(
         PairAssignmentDocument(
             id = PairAssignmentDocumentId(NotBlankString.create(id)),
             date = date,

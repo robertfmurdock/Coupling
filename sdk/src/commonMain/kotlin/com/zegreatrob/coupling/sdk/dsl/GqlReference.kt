@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.json.GqlPinnedPlayer
 import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
+import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import kotlin.time.Duration
@@ -26,7 +27,7 @@ object GqlReference {
         parties = listOf(
             GqlPartyStats(
                 name = "",
-                id = notBlank,
+                id = PartyId(notBlank),
                 playerCount = 0,
                 appliedPinCount = 0,
                 uniquePinCount = 0,
@@ -82,13 +83,12 @@ object GqlReference {
         players = listOf(pinnedPlayer),
         pins = listOf(pinData),
     )
-    private val partyId = notBlank
     private val pairAssignmentDocumentId = notBlank
     val pairAssignmentRecord = GqlPairAssignmentDocumentDetails(
         id = pairAssignmentDocumentId,
         date = Instant.DISTANT_PAST,
         pairs = listOf(pinnedCouplingPair),
-        partyId = partyId,
+        partyId = PartyId(notBlank),
         discordMessageId = "",
         slackMessageId = "",
         modifyingUserEmail = notBlank,
@@ -104,7 +104,7 @@ object GqlReference {
     )
     val secretRecord = GqlPartySecret(
         id = notBlank,
-        partyId = partyId,
+        partyId = PartyId(notBlank),
         modifyingUserEmail = notBlank,
         isDeleted = false,
         description = "",
@@ -121,7 +121,7 @@ object GqlReference {
         story = "",
         link = "",
         participantEmails = listOf(""),
-        partyId = partyId,
+        partyId = PartyId(notBlank),
         modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
@@ -135,7 +135,7 @@ object GqlReference {
         commitCount = 1,
     )
     val partyRecord = GqlPartyDetails(
-        id = partyId,
+        id = PartyId(notBlank),
         pairingRule = 0,
         badgesEnabled = false,
         defaultBadgeName = "",
@@ -154,7 +154,7 @@ object GqlReference {
         id = notBlank,
         name = "",
         icon = "",
-        partyId = partyId,
+        partyId = PartyId(notBlank),
         modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
@@ -169,7 +169,7 @@ object GqlReference {
         callSignNoun = "",
         imageURL = "",
         avatarType = GqlAvatarType.Retro,
-        partyId = partyId,
+        partyId = PartyId(notBlank),
         modifyingUserEmail = notBlank,
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,

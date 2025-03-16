@@ -20,6 +20,6 @@ interface SdkDeletePinCommandDispatcher :
 
 private fun passThrough(it: Boolean?): Boolean? = it
 private fun deletePinInput(partyId: PartyId, pinId: NotBlankString) = GqlDeletePinInput(
-    partyId = partyId.value,
+    partyId = partyId,
     pinId = pinId,
 )

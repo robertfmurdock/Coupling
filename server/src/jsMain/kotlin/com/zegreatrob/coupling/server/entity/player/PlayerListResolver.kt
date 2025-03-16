@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
@@ -28,14 +27,14 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val playerListResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> data.id.let(::PartyId).let { PlayersQuery(it) } },
+    commandFunc = { data, _ -> PlayersQuery(data.id) },
     fireFunc = ::perform,
     toSerializable = { it.map(Record<PartyElement<Player>>::toSerializable) },
 )
 
 val spinsUntilFullRotationResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> data.id.let(::PartyId).let { SpinsUntilFullRotationQuery(it) } },
+    commandFunc = { data, _ -> SpinsUntilFullRotationQuery(data.id) },
     fireFunc = ::perform,
     toSerializable = { it },
 )
@@ -44,7 +43,7 @@ val pairAssignmentHistoryResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
-        val partyId = PartyId(data.partyId ?: return@dispatch null)
+        val partyId = data.partyId ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
         PairAssignmentHistoryQuery(
             partyId = partyId,
@@ -89,7 +88,7 @@ val spinsSinceLastPairedResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
-        val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
+        val partyId = data.partyId ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
         SpinsSinceLastPairedQuery(
             partyId = partyId,
@@ -104,7 +103,7 @@ val pairHeatResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
-        val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
+        val partyId = data.partyId ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
         RecentTimesPairedQuery(
             partyId = partyId,

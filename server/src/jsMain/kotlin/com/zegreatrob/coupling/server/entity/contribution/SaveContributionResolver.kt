@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.json.GqlContributionInput
 import com.zegreatrob.coupling.json.GqlSaveContributionInput
 import com.zegreatrob.coupling.model.ContributionInput
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders
 import com.zegreatrob.coupling.server.graphql.dispatch
@@ -19,7 +18,7 @@ val saveContributionResolver = dispatch(
 )
 
 private fun GqlSaveContributionInput.toCommand() = SaveContributionCommand(
-    partyId = PartyId(partyId),
+    partyId = partyId,
     contributionList = contributionList.map(GqlContributionInput::contributionInput),
 )
 

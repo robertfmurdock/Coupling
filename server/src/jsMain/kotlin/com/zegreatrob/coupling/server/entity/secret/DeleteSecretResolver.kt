@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.entity.secret
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.action.secret.perform
 import com.zegreatrob.coupling.json.GqlDeleteSecretInput
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders
@@ -14,7 +13,7 @@ val deleteSecretResolver = dispatch(
     dispatcherFunc = requiredInput { request, _, args ->
         DispatcherProviders.authorizedPartyDispatcher(
             context = request,
-            partyId = PartyId(args.partyId),
+            partyId = args.partyId,
         )
     },
     commandFunc = requiredInput { _: JsonNull, args: GqlDeleteSecretInput ->
@@ -26,7 +25,7 @@ val deleteSecretResolver = dispatch(
 
 fun GqlDeleteSecretInput.toModel(): DeleteSecretCommand? {
     return DeleteSecretCommand(
-        PartyId(partyId),
+        partyId,
         SecretId(secretId) ?: return null,
     )
 }

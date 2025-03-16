@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.perform
 import com.zegreatrob.coupling.json.GqlGrantDiscordAccessInput
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.entity.toJson
 import com.zegreatrob.coupling.server.external.graphql.Resolver
@@ -19,4 +18,4 @@ val grantDiscordAccessResolver: Resolver = dispatch(
     toSerializable = VoidResult::toJson,
 )
 
-private fun GqlGrantDiscordAccessInput.command() = GrantDiscordAccessCommand(code, guildId, PartyId(partyId))
+private fun GqlGrantDiscordAccessInput.command() = GrantDiscordAccessCommand(code, guildId, partyId)

@@ -16,4 +16,4 @@ interface SdkClearContributionCommandDispatcher :
     }
 }
 
-private fun ClearContributionsCommand.clearContributionInput() = GqlClearContributionsInput(partyId = partyId.value)
+private fun ClearContributionsCommand.clearContributionInput() = GqlClearContributionsInput(partyId = partyId)

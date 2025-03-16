@@ -156,7 +156,7 @@ type Contribution {
     link: String
     name: String
     participantEmails: [String!]!
-    partyId: PartyId
+    partyId: PartyId!
     semver: String
     story: String
     modifyingUserEmail: UserId
@@ -247,7 +247,7 @@ input DeletePairAssignmentsInput {
 
 input SavePinInput {
     partyId: PartyId!
-    pinId: PinId
+    pinId: PinId!
     icon: String!
     name: String!
 }
