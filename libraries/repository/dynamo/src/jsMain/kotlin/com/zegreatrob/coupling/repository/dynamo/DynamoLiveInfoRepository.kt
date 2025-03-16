@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -11,7 +12,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoLiveInfoRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
+class DynamoLiveInfoRepository private constructor(override val userId: UserId, override val clock: Clock) :
     LiveInfoRepository,
     DynamoPlayerJsonMapping {
 
@@ -89,7 +90,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: NotBlank
             MainScope().async { ensureTableExists() }
         }
 
-        suspend operator fun invoke(userId: NotBlankString, clock: Clock) = DynamoLiveInfoRepository(userId, clock)
+        suspend operator fun invoke(userId: UserId, clock: Clock) = DynamoLiveInfoRepository(userId, clock)
             .also { ensure.await() }
 
         override val createTableParams: Json

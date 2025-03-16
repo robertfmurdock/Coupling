@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
@@ -15,7 +16,6 @@ import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 import kotlin.uuid.Uuid
 
 interface RepositoryCatalog {
@@ -41,15 +41,15 @@ private suspend fun repositoryCatalog(user: UserDetails): RepositoryCatalog = if
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
 
-private fun memoryRepositoryCatalog(userId: NotBlankString) = MemoryRepositoryCatalog(userId, memoryBackend, Clock.System)
+private fun memoryRepositoryCatalog(userId: UserId) = MemoryRepositoryCatalog(userId, memoryBackend, Clock.System)
 
-suspend fun userRepository(userId: NotBlankString): UserRepository = if (useInMemory()) {
+suspend fun userRepository(userId: UserId): UserRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).userRepository
 } else {
     DynamoUserRepository(userId, Clock.System)
 }
 
-suspend fun secretRepository(userId: NotBlankString): SecretRepository = if (useInMemory()) {
+suspend fun secretRepository(userId: UserId): SecretRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).secretRepository
 } else {
     DynamoSecretRepository(userId, Clock.System)

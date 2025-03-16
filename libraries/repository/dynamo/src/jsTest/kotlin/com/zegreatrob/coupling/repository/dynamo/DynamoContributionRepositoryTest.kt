@@ -6,14 +6,13 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.stubmodel.stubContribution
 import com.zegreatrob.coupling.stubmodel.stubPartyId
-import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
-import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
@@ -24,14 +23,14 @@ class DynamoContributionRepositoryTest {
     fun canSaveAndLoadContributionByPartyId() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val contributions = generateSequence { stubContribution() }
             .take(3)
             .toList()
         val unrelatedContribution = stubContribution()
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
     } exercise {
         repository.save(partyId.with(element = contributions))
         repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
@@ -43,7 +42,7 @@ class DynamoContributionRepositoryTest {
                 .map {
                     Record(
                         data = it,
-                        modifyingUserId = userEmail,
+                        modifyingUserId = userId.value,
                         isDeleted = false,
                         timestamp = clock.now(),
                     )
@@ -55,14 +54,14 @@ class DynamoContributionRepositoryTest {
     fun contributionsAreOrderedByIntegrationDateTime() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val contributions = generateSequence { stubContribution() }
             .take(8)
             .toList()
         val unrelatedContribution = stubContribution()
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
     } exercise {
         repository.save(partyId.with(element = contributions))
         repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
@@ -74,7 +73,7 @@ class DynamoContributionRepositoryTest {
                 .map {
                     Record(
                         data = it,
-                        modifyingUserId = userEmail,
+                        modifyingUserId = userId.value,
                         isDeleted = false,
                         timestamp = clock.now(),
                     )
@@ -86,7 +85,7 @@ class DynamoContributionRepositoryTest {
     fun contributionsAreOrderedByDateTimeWhenNoIntegrationDateTimeIsAvailable() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val contributions = generateSequence { stubContribution() }
             .take(8)
@@ -94,7 +93,7 @@ class DynamoContributionRepositoryTest {
             .toList()
         val unrelatedContribution = stubContribution()
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
     } exercise {
         repository.save(partyId.with(element = contributions))
         repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
@@ -106,7 +105,7 @@ class DynamoContributionRepositoryTest {
                 .map {
                     Record(
                         data = it,
-                        modifyingUserId = userEmail,
+                        modifyingUserId = userId.value,
                         isDeleted = false,
                         timestamp = clock.now(),
                     )
@@ -118,12 +117,12 @@ class DynamoContributionRepositoryTest {
     fun canSaveOverContributionWithSameIDWithDifferentValues() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val contribution1 = stubContribution()
         val contributionUpdated = stubContribution().copy(id = contribution1.id)
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
         repository.save(partyId.with(element = listOf(contribution1)))
         repository.save(partyId.with(element = listOf(contributionUpdated)))
     } exercise {
@@ -136,7 +135,7 @@ class DynamoContributionRepositoryTest {
     fun givenManyNullsCanStillSaveAndLoadContribution() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val contributions = listOf(
             stubContribution().copy(
@@ -153,7 +152,7 @@ class DynamoContributionRepositoryTest {
         val partyContributions = partyId.with(elementList = contributions)
         val unrelatedContribution = stubContribution()
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
     } exercise {
         repository.save(partyId.with(element = contributions))
         repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
@@ -164,7 +163,7 @@ class DynamoContributionRepositoryTest {
                 .map {
                     Record(
                         data = it,
-                        modifyingUserId = userEmail,
+                        modifyingUserId = userId.value,
                         isDeleted = false,
                         timestamp = clock.now(),
                     )
@@ -176,7 +175,7 @@ class DynamoContributionRepositoryTest {
     fun loadCanFilterByDurationWindowBasedOnIntegrationDateTime() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val expectedContributions = generateSequence {
             stubContribution().copy(integrationDateTime = clock.now())
@@ -187,7 +186,7 @@ class DynamoContributionRepositoryTest {
         val outsideContribution = stubContribution().copy(integrationDateTime = clock.now() - (window + 2.minutes))
         val allContributions = (expectedContributions + outsideContribution).shuffled()
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
     } exercise {
         repository.save(partyId.with(element = allContributions))
         repository.get(ContributionQueryParams(partyId, window, null))
@@ -203,7 +202,7 @@ class DynamoContributionRepositoryTest {
     fun loadCanFilterByDurationWindowBasedOnDateTimeWhenNoIntegrationDateTimeAvailable() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val expectedContributions = generateSequence {
             stubContribution().copy(integrationDateTime = null, dateTime = clock.now())
@@ -217,7 +216,7 @@ class DynamoContributionRepositoryTest {
         )
         val allContributions = (expectedContributions + outsideContribution).shuffled()
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
     } exercise {
         repository.save(partyId.with(element = allContributions))
         repository.get(ContributionQueryParams(partyId, window, null))
@@ -232,14 +231,14 @@ class DynamoContributionRepositoryTest {
     fun clearingContributionsWillMakeThemNoLongerRetrievable() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
-        val userEmail = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
         val contributions = generateSequence { stubContribution() }
             .take(40)
             .toList()
         val unrelatedContribution = stubContribution()
     }) {
-        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository = DynamoContributionRepository.invoke(userId, clock)
     } exercise {
         repository.save(partyId.with(element = contributions))
         repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))

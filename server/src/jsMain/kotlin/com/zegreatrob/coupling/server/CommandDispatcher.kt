@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
@@ -74,7 +75,6 @@ import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import kotools.types.text.NotBlankString
 import kotlin.js.json
 import kotlin.uuid.Uuid
 
@@ -177,7 +177,7 @@ class CurrentPartyDispatcher(
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
     CannonProvider<CurrentPartyDispatcher> {
-    override val userId: NotBlankString get() = commandDispatcher.userId
+    override val userId: UserId get() = commandDispatcher.userId
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null

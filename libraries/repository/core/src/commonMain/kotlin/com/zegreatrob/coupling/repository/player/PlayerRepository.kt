@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
+import kotools.types.text.NotBlankString
 
 interface PlayerRepository :
     PlayerListGet,
@@ -33,5 +34,5 @@ interface PlayerListGetDeleted {
 }
 
 interface PlayerListGetByEmail {
-    suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<PlayerId>>
+    suspend fun getPlayerIdsByEmail(email: NotBlankString): List<PartyElement<PlayerId>>
 }

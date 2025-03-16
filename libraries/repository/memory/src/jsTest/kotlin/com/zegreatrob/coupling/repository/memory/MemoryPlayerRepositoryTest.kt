@@ -15,7 +15,7 @@ class MemoryPlayerRepositoryTest : PlayerEmailRepositoryValidator<MemoryPlayerRe
             override val partyId = stubPartyId()
             override val user = stubUserDetails()
             override val clock = MagicClock()
-            override val repository = MemoryPlayerRepository(user.email, clock)
+            override val repository = MemoryPlayerRepository(user.id, clock)
         }
     })
 }

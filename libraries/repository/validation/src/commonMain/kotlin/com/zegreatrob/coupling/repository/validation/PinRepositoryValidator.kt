@@ -83,7 +83,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
         result.size.assertIsEqualTo(1)
         result.first().apply {
             timestamp.assertIsEqualTo(clock.currentTime)
-            modifyingUserId.assertIsEqualTo(user.email)
+            modifyingUserId.assertIsEqualTo(user.id.value)
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.zegreatrob.coupling.model.user
 
-import kotools.types.text.NotBlankString
-
 interface UserIdProvider {
-    val userId: NotBlankString
+    val userId: UserId
 }
 
 interface CurrentUserProvider {
@@ -13,7 +11,7 @@ interface CurrentUserProvider {
 interface CurrentUserIdProvider :
     CurrentUserProvider,
     UserIdProvider {
-    override val userId get() = currentUser.email
+    override val userId get() = UserId(currentUser.email)
 }
 
 interface AuthorizedPartyIdsProvider : CurrentUserProvider {

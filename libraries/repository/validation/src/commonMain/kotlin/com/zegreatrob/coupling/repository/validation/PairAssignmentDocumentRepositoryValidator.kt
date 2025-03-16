@@ -73,7 +73,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         result.size.assertIsEqualTo(1)
         result.first().apply {
             timestamp.assertIsEqualTo(clock.currentTime)
-            modifyingUserId.assertIsEqualTo(user.email)
+            modifyingUserId.assertIsEqualTo(user.id.value)
         }
     }
 

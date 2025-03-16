@@ -7,7 +7,7 @@ import kotlinx.datetime.Instant
 import kotools.types.text.NotBlankString
 
 data class User(
-    val id: NotBlankString,
+    val id: UserId,
     val details: UserDetails?,
     val boost: Record<Boost>?,
     val subscription: SubscriptionDetails?,
@@ -21,7 +21,7 @@ data class SubscriptionDetails(
 )
 
 data class UserDetails(
-    val id: NotBlankString,
+    val id: UserId,
     val email: NotBlankString,
     val authorizedPartyIds: Set<PartyId>,
     val stripeCustomerId: String?,

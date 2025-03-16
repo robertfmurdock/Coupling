@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoDBSyntax
 import com.zegreatrob.coupling.repository.dynamo.DynamoDbProvider
@@ -22,9 +23,8 @@ import com.zegreatrob.coupling.repository.dynamo.RecordSyntax
 import com.zegreatrob.coupling.repository.secret.SecretDelete
 import com.zegreatrob.coupling.repository.secret.SecretRepository
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 
-class DynamoSecretRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
+class DynamoSecretRepository private constructor(override val userId: UserId, override val clock: Clock) :
     DynamoSecretJsonMapping,
     SecretRepository,
     SecretDelete,

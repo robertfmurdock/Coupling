@@ -84,7 +84,7 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                                 id = inputId
                                 type = InputType.text
                                 disabled = true
-                                value = user.id
+                                value = user.id.value.toString()
                                 autoFocus = true
                             }
                         }
@@ -106,7 +106,7 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                 }
                 PlayerCard(
                     defaultPlayer.copy(
-                        id = PlayerId(user.id),
+                        id = PlayerId(user.id.value),
                         name = user.email.toString(),
                         email = user.email.toString(),
                     ),

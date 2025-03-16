@@ -26,7 +26,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     ) exercise {
         repository.save(userWithEmail)
     } verifyWithWait {
-        repository.getUsersWithEmail(userWithEmail.email.toString())
+        repository.getUsersWithEmail(userWithEmail.email)
             .map { it.data }
             .assertIsEqualTo(listOf(userWithEmail))
     }
@@ -56,7 +56,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
         repository.save(updatedUser)
     } verifyWithWait {
         val result = repository.getUser() ?: fail()
-        result.modifyingUserId.assertIsEqualTo(user.id)
+        result.modifyingUserId.assertIsEqualTo(user.id.value)
         result.timestamp.assertIsEqualTo(clock.currentTime)
     }
 

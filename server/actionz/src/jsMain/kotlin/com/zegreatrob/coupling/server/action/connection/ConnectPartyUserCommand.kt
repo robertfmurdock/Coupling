@@ -25,7 +25,7 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
 
         suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
             partyId.getAuthorizationData()?.let { (_, players) ->
-                CouplingConnection(connectionId, partyId, userPlayer(players, currentUser.email.toString()))
+                CouplingConnection(connectionId, partyId, userPlayer(players, currentUser.email))
                     .also { it.save() }
                     .let { partyId.loadConnections() }
                     .let { it to couplingSocketMessage(it, null) }
@@ -36,17 +36,17 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
             .valueOrNull()
 
         @OptIn(ExperimentalKotoolsTypesApi::class)
-        private fun userPlayer(players: List<Player>, email: String): Player {
-            val existingPlayer = players.find { it.matches(email) }
+        private fun userPlayer(players: List<Player>, email: NotBlankString): Player {
+            val existingPlayer = players.find { it.matches(email.toString()) }
 
             return if (existingPlayer != null) {
                 existingPlayer
             } else {
-                val atIndex = email.indexOf("@")
+                val atIndex = email.toString().indexOf("@")
                 defaultPlayer.copy(
                     PlayerId(NotBlankString.create("-1")),
-                    name = email.substring(0, atIndex),
-                    email = email,
+                    name = email.toString().substring(0, atIndex),
+                    email = email.toString(),
                 )
             }
         }

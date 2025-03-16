@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.secret.SecretRepository
 import com.zegreatrob.coupling.server.UserDataService
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
@@ -46,14 +47,14 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
 
 private suspend fun userFromSecret(partyId: PartyId, secretId: SecretId): UserDetails? {
     val secretUserId = secretId.value
-    val secretRepository = secretRepository(secretUserId)
+    val secretRepository = secretRepository(UserId(secretUserId))
     return if (!secretRepository.secretIsNotDeleted(partyId, secretId)) {
         null
     } else {
         secretRepository.save(SecretUsed(partyId, secretId, Clock.System.now()))
 
         UserDetails(
-            id = secretUserId,
+            id = UserId(secretUserId),
             email = secretUserId,
             authorizedPartyIds = setOf(partyId),
             stripeCustomerId = null,
@@ -62,7 +63,7 @@ private suspend fun userFromSecret(partyId: PartyId, secretId: SecretId): UserDe
 }
 
 private suspend fun authCannon(userEmail: Any?, traceId: Uuid) = ActionCannon(
-    UserDataService.authActionDispatcher("$userEmail".toNotBlankString().getOrThrow(), traceId),
+    UserDataService.authActionDispatcher(UserId("$userEmail".toNotBlankString().getOrThrow()), traceId),
     LoggingActionPipe(traceId),
 )
 

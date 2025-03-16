@@ -57,7 +57,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
         repository.loadParties()
     } verifyAnd { result ->
         result.first { it.data.id == party.id }.apply {
-            modifyingUserId.assertIsEqualTo(user.email)
+            modifyingUserId.assertIsEqualTo(user.id.value)
             timestamp.assertIsEqualTo(clock.currentTime)
         }
     } teardown {
@@ -81,7 +81,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
         result?.data
             .assertIsEqualTo(partyIntegration)
         result!!.apply {
-            modifyingUserId.assertIsEqualTo(user.email)
+            modifyingUserId.assertIsEqualTo(user.id.value)
             timestamp.assertIsEqualTo(clock.currentTime)
         }
         repository.getDetails(partyId)?.data

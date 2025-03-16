@@ -7,6 +7,7 @@ scalar PinId
 scalar UserId
 scalar SecretId
 scalar ContributionId
+scalar Email
 
 type PartyDetails {
     id: PartyId!
@@ -19,7 +20,7 @@ type PartyDetails {
     callSignsEnabled: Boolean
     animationsEnabled: Boolean
     animationSpeed: Float
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO
     isDeleted: Boolean
 }
@@ -27,7 +28,7 @@ type PartyDetails {
 type PartyIntegration {
     slackTeam: String
     slackChannel: String
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -55,7 +56,7 @@ type PinDetails {
     partyId: PartyId!
     icon: String!
     name: String!
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -71,7 +72,7 @@ type PlayerDetails {
     imageURL: String
     avatarType: AvatarType
     unvalidatedEmails: [String]!
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -116,7 +117,7 @@ type PairAssignmentDocumentDetails {
     pairs: [PinnedPair!]!
     discordMessageId: String
     slackMessageId: String
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -127,7 +128,7 @@ type PartySecret {
     description: String!
     createdTimestamp: DateTimeISO!
     lastUsedTimestamp: DateTimeISO
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -136,7 +137,7 @@ type BoostDetails {
     userId: UserId!
     partyIds: [PartyId!]!
     expirationDate: DateTimeISO!
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }
@@ -159,7 +160,7 @@ type Contribution {
     partyId: PartyId!
     semver: String
     story: String
-    modifyingUserEmail: UserId
+    modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
 }

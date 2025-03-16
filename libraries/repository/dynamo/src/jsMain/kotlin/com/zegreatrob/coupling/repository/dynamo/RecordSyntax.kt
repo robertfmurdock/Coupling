@@ -7,5 +7,5 @@ import com.zegreatrob.coupling.model.user.UserIdProvider
 interface RecordSyntax :
     UserIdProvider,
     ClockProvider {
-    fun <T> T.toRecord() = Record(this, userId, false, now())
+    fun <T> T.toRecord() = Record(this, userId.value, false, now())
 }

@@ -21,7 +21,7 @@ interface DynamoRecordJsonMapping :
 
     fun recordJson(timestamp: Instant) = json(
         "timestamp" to timestamp.isoWithMillis(),
-        "modifyingUserEmail" to userId.toString(),
+        "modifyingUserEmail" to userId.value.toString(),
     )
 
     fun <T> Json.toRecord(data: T) = Record(

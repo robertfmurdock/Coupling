@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.validation.LiveInfoRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
@@ -19,7 +20,7 @@ class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoR
                 MemoryLiveInfoRepository(),
                 MagicClock(),
                 UserDetails(
-                    "${Uuid.random()}".toNotBlankString().getOrThrow(),
+                    UserId.new(),
                     "${Uuid.random()}@mail.com".toNotBlankString().getOrThrow(),
                     emptySet(),
                     null,

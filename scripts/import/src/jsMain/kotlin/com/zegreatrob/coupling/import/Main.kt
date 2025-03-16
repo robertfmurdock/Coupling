@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
@@ -29,12 +30,11 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.decodeFromDynamic
-import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import kotlin.js.Json
 
 val user = UserDetails(
-    "IMPORT_USER".toNotBlankString().getOrThrow(),
+    UserId("IMPORT_USER".toNotBlankString().getOrThrow()),
     "robert.f.murdock@gmail.com".toNotBlankString().getOrThrow(),
     emptySet(),
     null,
@@ -45,7 +45,7 @@ private val logger = KotlinLogging.logger("import")
 fun main() {
     KotlinLoggingConfiguration.logLevel = Level.WARN
     MainScope().launch {
-        val catalog = DynamoRepositoryCatalog(user.email, Clock.System)
+        val catalog = DynamoRepositoryCatalog(user.id, Clock.System)
 
         val reader = inputReader()
         reader.onNewLine { line ->
@@ -118,7 +118,7 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
 }
 
 class DynamoRepositoryCatalog private constructor(
-    override val userId: NotBlankString,
+    override val userId: UserId,
     override val clock: Clock,
     val partyRepository: DynamoPartyRepository,
     val playerRepository: DynamoPlayerRepository,
@@ -129,7 +129,7 @@ class DynamoRepositoryCatalog private constructor(
     ClockProvider {
 
     companion object {
-        suspend operator fun invoke(userEmail: NotBlankString, clock: Clock): DynamoRepositoryCatalog {
+        suspend operator fun invoke(userEmail: UserId, clock: Clock): DynamoRepositoryCatalog {
             val partyRepository = DynamoPartyRepository(userEmail, clock)
             val playerRepository = DynamoPlayerRepository(userEmail, clock)
             val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)

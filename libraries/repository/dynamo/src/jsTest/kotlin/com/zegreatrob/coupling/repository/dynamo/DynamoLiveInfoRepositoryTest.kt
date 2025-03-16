@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.validation.LiveInfoRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
@@ -13,7 +14,7 @@ import kotools.types.text.toNotBlankString
 class DynamoLiveInfoRepositoryTest : LiveInfoRepositoryValidator<DynamoLiveInfoRepository> {
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoLiveInfoRepository>>(sharedSetup = {
         val clock = MagicClock()
-        val userId = uuidString().toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val user = UserDetails(userId, uuidString().toNotBlankString().getOrThrow(), emptySet(), uuidString())
         val repository = DynamoLiveInfoRepository(userId, clock)
         SharedContextData(repository, clock, user)

@@ -5,5 +5,5 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 
 interface UserPlayerIdsSyntax : UserIdProvider {
     val playerRepository: PlayerListGetByEmail
-    suspend fun getUserPlayerIds() = playerRepository.getPlayerIdsByEmail(userId.toString())
+    suspend fun getUserPlayerIds() = playerRepository.getPlayerIdsByEmail(userId.value)
 }

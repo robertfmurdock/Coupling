@@ -168,7 +168,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
         result.size.assertIsEqualTo(1)
         result.first().apply {
             timestamp.assertIsCloseToNow()
-            modifyingUserId.assertIsEqualTo(user.email)
+            modifyingUserId.assertIsEqualTo(user.id.value)
         }
     }
 
@@ -187,7 +187,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
             result.first().apply {
                 isDeleted.assertIsEqualTo(true)
                 timestamp.assertIsCloseToNow()
-                modifyingUserId.assertIsEqualTo(user.email)
+                modifyingUserId.assertIsEqualTo(user.id.value)
             }
         }
     }

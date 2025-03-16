@@ -21,8 +21,8 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
             val clock = MagicClock()
             val stubUser = stubUserDetails()
 
-            val repository1 = MemoryPinRepository(stubUser.email, clock)
-            val repository2 = MemoryPinRepository(stubUser.email, clock)
+            val repository1 = MemoryPinRepository(stubUser.id, clock)
+            val repository2 = MemoryPinRepository(stubUser.id, clock)
 
             val compoundRepo = CompoundPinRepository(repository1, repository2)
 

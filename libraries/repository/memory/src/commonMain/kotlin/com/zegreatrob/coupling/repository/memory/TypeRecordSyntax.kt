@@ -10,14 +10,14 @@ interface TypeRecordSyntax<T> :
 
     fun T.record() = Record(
         data = this,
-        modifyingUserId = userId,
+        modifyingUserId = userId.value,
         isDeleted = false,
         timestamp = now(),
     )
 
     fun T.deletionRecord() = Record(
         data = this,
-        modifyingUserId = userId,
+        modifyingUserId = userId.value,
         isDeleted = true,
         timestamp = now(),
     )

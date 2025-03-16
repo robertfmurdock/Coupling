@@ -40,7 +40,7 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
         asyncTestTemplate<PartyContext<DynamoPairAssignmentDocumentRepository>>(sharedSetup = {
             val clock = MagicClock()
             val user = stubUserDetails()
-            PartyContextData(DynamoPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
+            PartyContextData(DynamoPairAssignmentDocumentRepository(user.id, clock), stubPartyId(), clock, user)
         })
 
     @Test
@@ -66,9 +66,9 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
         repository.deleteIt(partyId, pairAssignmentDocument.id)
     } verifyWithWait {
         repository.getRecords(partyId)
-            .assertContains(Record(partyId.with(pairAssignmentDocument), user.email, false, initialSaveTime))
-            .assertContains(Record(partyId.with(updatedPairAssignmentDocument), user.email, false, updatedSaveTime))
-            .assertContains(Record(partyId.with(updatedPairAssignmentDocument), user.email, true, updatedSaveTime2))
+            .assertContains(Record(partyId.with(pairAssignmentDocument), user.id.value, false, initialSaveTime))
+            .assertContains(Record(partyId.with(updatedPairAssignmentDocument), user.id.value, false, updatedSaveTime))
+            .assertContains(Record(partyId.with(updatedPairAssignmentDocument), user.id.value, true, updatedSaveTime2))
     }
 
     @Test
@@ -77,8 +77,20 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
             object : Context by context {
                 val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months)),
-                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
+                    partyRecord(
+                        partyId,
+                        stubPairAssignmentDoc(),
+                        uuidString().toNotBlankString().getOrThrow(),
+                        false,
+                        now().minus(3.months),
+                    ),
+                    partyRecord(
+                        partyId,
+                        stubPairAssignmentDoc(),
+                        uuidString().toNotBlankString().getOrThrow(),
+                        true,
+                        now().minus(2.years),
+                    ),
                 )
             }
         },
@@ -91,9 +103,7 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
     }
 
     private fun <T> buildRepository(setupContext: (Context) -> T): suspend (Unit) -> T = {
-        buildRepository(setupContext) { user, clock ->
-            DynamoPairAssignmentDocumentRepository(user.email, clock)
-        }.invoke()
+        buildRepository(setupContext) { user, clock -> DynamoPairAssignmentDocumentRepository(user.id, clock) }.invoke()
     }
 }
 

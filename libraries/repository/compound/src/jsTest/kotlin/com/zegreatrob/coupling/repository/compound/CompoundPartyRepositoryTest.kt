@@ -21,8 +21,8 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
             val stubUser = stubUserDetails()
             val clock = MagicClock()
 
-            val repository1 = MemoryPartyRepository(stubUser.email, clock)
-            val repository2 = MemoryPartyRepository(stubUser.email, clock)
+            val repository1 = MemoryPartyRepository(stubUser.id, clock)
+            val repository2 = MemoryPartyRepository(stubUser.id, clock)
 
             val compoundRepo = CompoundPartyRepository(repository1, repository2)
             SharedContextData(compoundRepo, clock, stubUser)
@@ -32,8 +32,8 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
     fun saveWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUserDetails()
 
-        val repository1 = MemoryPartyRepository(stubUser.email, Clock.System)
-        val repository2 = MemoryPartyRepository(stubUser.email, Clock.System)
+        val repository1 = MemoryPartyRepository(stubUser.id, Clock.System)
+        val repository2 = MemoryPartyRepository(stubUser.id, Clock.System)
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
@@ -50,8 +50,8 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
     fun deleteWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUserDetails()
 
-        val repository1 = MemoryPartyRepository(stubUser.email, Clock.System)
-        val repository2 = MemoryPartyRepository(stubUser.email, Clock.System)
+        val repository1 = MemoryPartyRepository(stubUser.id, Clock.System)
+        val repository2 = MemoryPartyRepository(stubUser.id, Clock.System)
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 

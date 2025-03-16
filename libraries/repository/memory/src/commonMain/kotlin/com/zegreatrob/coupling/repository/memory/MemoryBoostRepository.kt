@@ -3,12 +3,12 @@ package com.zegreatrob.coupling.repository.memory
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 
 class MemoryBoostRepository(
-    override val userId: NotBlankString,
+    override val userId: UserId,
     override val clock: Clock,
     private val recordBackend: RecordBackend<Boost> = SimpleRecordBackend(),
 ) : TypeRecordSyntax<Boost>,

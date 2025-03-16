@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessGet
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
@@ -43,7 +44,7 @@ class SavePairAssignmentDocumentCommandTest {
         val party = stubPartyDetails()
         override val liveInfoRepository: LiveInfoRepository get() = TODO("Not yet implemented")
         override suspend fun PartyId.loadConnections(): List<CouplingConnection> = emptyList()
-        override val partyRepository = MemoryPartyRepository("-".toNotBlankString().getOrThrow(), Clock.System)
+        override val partyRepository = MemoryPartyRepository(UserId("-".toNotBlankString().getOrThrow()), Clock.System)
         override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = null
 
         val pairAssignmentDocument = party.id.with(

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.ClockProvider
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
@@ -23,10 +24,9 @@ import com.zegreatrob.coupling.repository.secret.SecretRepository
 import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 
 class DynamoRepositoryCatalog private constructor(
-    override val userId: NotBlankString,
+    override val userId: UserId,
     override val clock: Clock,
     override val partyRepository: PartyRepository,
     override val playerRepository: PlayerEmailRepository,
@@ -42,7 +42,7 @@ class DynamoRepositoryCatalog private constructor(
     UserIdProvider,
     ClockProvider {
     companion object {
-        suspend operator fun invoke(userId: NotBlankString, clock: Clock) = DynamoRepositoryCatalog(
+        suspend operator fun invoke(userId: UserId, clock: Clock) = DynamoRepositoryCatalog(
             userId,
             clock,
             DynamoPartyRepository(userId, clock),

@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlinx.datetime.Clock
@@ -14,7 +15,7 @@ import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 
-class DynamoPinRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
+class DynamoPinRepository private constructor(override val userId: UserId, override val clock: Clock) :
     PinRepository,
     UserIdProvider,
     DynamoPinJsonMapping,

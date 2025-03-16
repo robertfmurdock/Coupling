@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.dynamo.now
 import com.zegreatrob.coupling.repository.dynamo.pairs.months
 import com.zegreatrob.coupling.repository.dynamo.pairs.years
@@ -34,7 +35,7 @@ class DynamoSecretRepositoryTest {
             stubSecret(),
         )
     }) {
-        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
+        repository = DynamoSecretRepository(UserId.new(), MagicClock())
     } exercise {
         partyId.with(secrets).forEach { repository.save(it) }
     } verifyWithWait {
@@ -53,7 +54,7 @@ class DynamoSecretRepositoryTest {
             stubSecret(),
         )
     }) {
-        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
+        repository = DynamoSecretRepository(UserId.new(), MagicClock())
     } exercise {
         partyId.with(secrets).forEach {
             repository.save(it)
@@ -72,7 +73,7 @@ class DynamoSecretRepositoryTest {
         val partyId = stubPartyId()
         lateinit var repository: DynamoSecretRepository
     }) {
-        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
+        repository = DynamoSecretRepository(UserId.new(), MagicClock())
     } exercise {
         repository.deleteSecret(partyId, SecretId.new())
     } verify { result ->
@@ -84,7 +85,7 @@ class DynamoSecretRepositoryTest {
         val partyId = stubPartyId()
         lateinit var repository: DynamoSecretRepository
     }) {
-        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
+        repository = DynamoSecretRepository(UserId.new(), MagicClock())
     } exercise {
         repository.getSecrets(partyId)
     } verify { result ->
@@ -99,7 +100,7 @@ class DynamoSecretRepositoryTest {
         lateinit var repository: DynamoSecretRepository
         val secret = stubSecret()
     }) {
-        repository = DynamoSecretRepository(user.email, clock)
+        repository = DynamoSecretRepository(user.id, clock)
     } exercise {
         clock.currentTime = now().plus(4.hours)
         repository.save(partyId.with(secret))
@@ -108,7 +109,7 @@ class DynamoSecretRepositoryTest {
         result.size.assertIsEqualTo(1)
         result.first().apply {
             timestamp.assertIsEqualTo(clock.currentTime)
-            modifyingUserId.assertIsEqualTo(user.email)
+            modifyingUserId.assertIsEqualTo(user.id.value)
         }
     }
 
@@ -124,7 +125,7 @@ class DynamoSecretRepositoryTest {
         val updatedSaveTime = initialSaveTime.plus(2.hours)
         val updatedSaveTime2 = initialSaveTime.plus(4.hours)
     }) {
-        repository = DynamoSecretRepository(user.email, clock)
+        repository = DynamoSecretRepository(user.id, clock)
     } exercise {
         clock.currentTime = initialSaveTime
         repository.save(partyId.with(secret))
@@ -134,9 +135,9 @@ class DynamoSecretRepositoryTest {
         repository.deleteSecret(partyId, secret.id)
     } verifyWithWait {
         repository.getSecretRecords(partyId)
-            .assertContains(Record(partyId.with(secret), user.email, false, initialSaveTime))
-            .assertContains(Record(partyId.with(updatedSecret), user.email, false, updatedSaveTime))
-            .assertContains(Record(partyId.with(updatedSecret), user.email, true, updatedSaveTime2))
+            .assertContains(Record(partyId.with(secret), user.id.value, false, initialSaveTime))
+            .assertContains(Record(partyId.with(updatedSecret), user.id.value, false, updatedSaveTime))
+            .assertContains(Record(partyId.with(updatedSecret), user.id.value, true, updatedSaveTime2))
     }
 
     @Test
@@ -148,7 +149,7 @@ class DynamoSecretRepositoryTest {
             partyRecord(partyId, stubSecret(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
         )
     }) {
-        repository = DynamoSecretRepository("userId".toNotBlankString().getOrThrow(), MagicClock())
+        repository = DynamoSecretRepository(UserId.new(), MagicClock())
     } exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verifyWithWait {

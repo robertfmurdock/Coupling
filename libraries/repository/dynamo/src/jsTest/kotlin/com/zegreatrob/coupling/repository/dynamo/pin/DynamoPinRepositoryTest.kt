@@ -31,7 +31,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     override val repositorySetup = asyncTestTemplate<PartyContext<DynamoPinRepository>>(sharedSetup = {
         val clock = MagicClock()
         val user = stubUserDetails()
-        PartyContextData(DynamoPinRepository(user.email, clock), stubPartyId(), clock, user)
+        PartyContextData(DynamoPinRepository(user.id, clock), stubPartyId(), clock, user)
     })
 
     @Test
@@ -55,9 +55,9 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
         repository.deletePin(partyId, pin.id)
     } verifyWithWait {
         repository.getPinRecords(partyId)
-            .assertContains(Record(partyId.with(pin), user.email, false, initialSaveTime))
-            .assertContains(Record(partyId.with(updatedPin), user.email, false, updatedSaveTime))
-            .assertContains(Record(partyId.with(updatedPin), user.email, true, updatedSaveTime2))
+            .assertContains(Record(partyId.with(pin), user.id.value, false, initialSaveTime))
+            .assertContains(Record(partyId.with(updatedPin), user.id.value, false, updatedSaveTime))
+            .assertContains(Record(partyId.with(updatedPin), user.id.value, true, updatedSaveTime2))
     }
 
     @Test
@@ -82,5 +82,5 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
 private typealias Context = RepositoryContext<DynamoPinRepository>
 
 private fun <T> buildRepository(setupContext: (Context) -> T): suspend (Unit) -> T = {
-    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPinRepository(user.email, clock) }()
+    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPinRepository(user.id, clock) }()
 }

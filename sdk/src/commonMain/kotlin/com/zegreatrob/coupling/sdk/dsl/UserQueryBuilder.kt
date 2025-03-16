@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlUser
+import com.zegreatrob.coupling.model.user.UserId
 import kotools.types.text.toNotBlankString
 
 class UserQueryBuilder : QueryBuilder<GqlUser> {
     override var output: GqlUser = GqlUser(
-        id = "-".toNotBlankString().getOrThrow(),
+        id = UserId("-".toNotBlankString().getOrThrow()),
         boost = null,
         details = null,
         subscription = null,

@@ -23,6 +23,7 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
@@ -115,7 +116,7 @@ fun uuidString() = Uuid.random().toString()
 
 var userCounter = 1
 fun stubUserDetails() = UserDetails(
-    id = uuidString().toNotBlankString().getOrThrow(),
+    id = UserId.new(),
     email = "$userCounter-${uuidString()}@gmail.com".toNotBlankString().getOrThrow(),
     authorizedPartyIds = setOf(stubPartyId()),
     stripeCustomerId = uuidString(),

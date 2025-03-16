@@ -30,7 +30,7 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoPartyRepository>>(sharedSetup = {
         val user = stubUserDetails()
         val clock = MagicClock()
-        val repository = DynamoPartyRepository(user.email, clock)
+        val repository = DynamoPartyRepository(user.id, clock)
         SharedContextData(repository, clock, user)
     })
 
@@ -52,10 +52,10 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
         repository.deleteIt(altParty.id)
     } verifyWithWaitAnd {
         repository.getPartyRecords()
-            .assertContains(Record(tribe, user.email, false, initialSaveTime))
-            .assertContains(Record(altParty, user.email, false, initialSaveTime))
-            .assertContains(Record(updatedParty, user.email, false, updatedSaveTime))
-            .assertContains(Record(altParty, user.email, true, updatedSaveTime))
+            .assertContains(Record(tribe, user.id.value, false, initialSaveTime))
+            .assertContains(Record(altParty, user.id.value, false, initialSaveTime))
+            .assertContains(Record(updatedParty, user.id.value, false, updatedSaveTime))
+            .assertContains(Record(altParty, user.id.value, true, updatedSaveTime))
     } teardown {
         repository.deleteIt(tribe.id)
         repository.deleteIt(altParty.id)

@@ -22,8 +22,8 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
             val clock = MagicClock()
             val stubUser = stubUserDetails()
 
-            val repository1 = MemoryPlayerRepository(stubUser.email, clock)
-            val repository2 = MemoryPlayerRepository(stubUser.email, clock)
+            val repository1 = MemoryPlayerRepository(stubUser.id, clock)
+            val repository2 = MemoryPlayerRepository(stubUser.id, clock)
 
             val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
@@ -40,8 +40,8 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     fun saveWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUserDetails()
 
-        val repository1 = MemoryPlayerRepository(stubUser.email, Clock.System)
-        val repository2 = MemoryPlayerRepository(stubUser.email, Clock.System)
+        val repository1 = MemoryPlayerRepository(stubUser.id, Clock.System)
+        val repository2 = MemoryPlayerRepository(stubUser.id, Clock.System)
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
@@ -58,8 +58,8 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     fun deleteWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUserDetails()
 
-        val repository1 = MemoryPlayerRepository(stubUser.email, Clock.System)
-        val repository2 = MemoryPlayerRepository(stubUser.email, Clock.System)
+        val repository1 = MemoryPlayerRepository(stubUser.id, Clock.System)
+        val repository2 = MemoryPlayerRepository(stubUser.id, Clock.System)
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 

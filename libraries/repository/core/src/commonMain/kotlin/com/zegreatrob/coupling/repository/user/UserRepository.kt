@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.repository.user
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.UserDetails
+import kotools.types.text.NotBlankString
 
 interface UserRepository :
     UserGet,
@@ -17,5 +18,5 @@ interface UserGet {
 }
 
 interface UserGetByEmail {
-    suspend fun getUsersWithEmail(email: String): List<Record<UserDetails>>
+    suspend fun getUsersWithEmail(email: NotBlankString): List<Record<UserDetails>>
 }

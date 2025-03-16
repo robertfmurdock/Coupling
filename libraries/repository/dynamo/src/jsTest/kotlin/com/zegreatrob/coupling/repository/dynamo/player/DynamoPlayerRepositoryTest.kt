@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo.player
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
@@ -20,7 +21,6 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import kotlin.js.json
 import kotlin.test.Test
@@ -33,7 +33,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     override val repositorySetup = asyncTestTemplate<PartyContext<DynamoPlayerRepository>>(sharedSetup = {
         val user = stubUserDetails()
         val clock = MagicClock()
-        val repo = DynamoPlayerRepository(user.email, clock)
+        val repo = DynamoPlayerRepository(user.id, clock)
         object : PartyContext<DynamoPlayerRepository> {
             override val partyId = stubPartyId()
             override val clock = clock
@@ -66,9 +66,9 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         repository.getPlayerRecords(partyId)
     } verify { result ->
         result
-            .assertContains(Record(partyId.with(player), user.email, false, initialSaveTime))
-            .assertContains(Record(partyId.with(updatedPlayer), user.email, false, updatedSaveTime))
-            .assertContains(Record(partyId.with(updatedPlayer), user.email, true, updatedSaveTime2))
+            .assertContains(Record(partyId.with(player), user.id.value, false, initialSaveTime))
+            .assertContains(Record(partyId.with(updatedPlayer), user.id.value, false, updatedSaveTime))
+            .assertContains(Record(partyId.with(updatedPlayer), user.id.value, true, updatedSaveTime2))
     }
 
     @Test
@@ -95,7 +95,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         buildRepository { context ->
             object : Context by context, DynamoRecordJsonMapping {
                 val partyId = stubPartyId()
-                override val userId: NotBlankString = "test user".toNotBlankString().getOrThrow()
+                override val userId: UserId = UserId.new()
             }
         },
     ) {
@@ -120,7 +120,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         buildRepository { context ->
             object : Context by context, DynamoRecordJsonMapping {
                 val partyId = stubPartyId()
-                override val userId: NotBlankString = "test user".toNotBlankString().getOrThrow()
+                override val userId: UserId = UserId.new()
             }
         },
     ) {
@@ -144,5 +144,5 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
 private typealias Context = RepositoryContext<DynamoPlayerRepository>
 
 private fun <T> buildRepository(setupContext: (Context) -> T): suspend (Unit) -> T = {
-    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPlayerRepository(user.email, clock) }()
+    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPlayerRepository(user.id, clock) }()
 }

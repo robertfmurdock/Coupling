@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -14,7 +15,6 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import kotlinx.datetime.Instant
-import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class BoostConfigurationTest {
@@ -24,7 +24,7 @@ class BoostConfigurationTest {
         val subscription = SubscriptionDetails(null, null, true, null)
         val parties = stubParties(4)
         val boostedParty = parties.random()
-        val boost = Boost("user".toNotBlankString().getOrThrow(), setOf(boostedParty.id), Instant.DISTANT_FUTURE)
+        val boost = Boost(UserId.new(), setOf(boostedParty.id), Instant.DISTANT_FUTURE)
     }) exercise {
         render {
             BoostConfiguration(

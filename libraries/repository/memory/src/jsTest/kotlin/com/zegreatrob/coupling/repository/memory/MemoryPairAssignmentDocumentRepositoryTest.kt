@@ -15,6 +15,6 @@ class MemoryPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
         asyncTestTemplate<PartyContext<MemoryPairAssignmentDocumentRepository>>(sharedSetup = {
             val clock = MagicClock()
             val user = stubUserDetails()
-            PartyContextData(MemoryPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
+            PartyContextData(MemoryPairAssignmentDocumentRepository(user.id, clock), stubPartyId(), clock, user)
         })
 }

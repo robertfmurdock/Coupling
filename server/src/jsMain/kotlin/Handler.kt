@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.DeleteConnectionCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.PostToConnectionCommand
@@ -193,7 +194,7 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
 
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     UserDetails(
-        "websocket".toNotBlankString().getOrThrow(),
+        UserId("websocket".toNotBlankString().getOrThrow()),
         "websocket".toNotBlankString().getOrThrow(),
         emptySet(),
         null,

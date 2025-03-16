@@ -5,12 +5,12 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.pin.pin
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 
 class MemoryPinRepository(
-    override val userId: NotBlankString,
+    override val userId: UserId,
     override val clock: Clock,
     private val recordBackend: RecordBackend<PartyElement<Pin>> = SimpleRecordBackend(),
 ) : PinRepository,

@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -14,8 +15,8 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     @Test
     fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val email = "test-${Uuid.random()}@zegreatrob.com"
-            val player = stubPlayer().copy(email = email)
+            val email = "test-${Uuid.random()}@zegreatrob.com".toNotBlankString().getOrThrow()
+            val player = stubPlayer().copy(email = email.toString())
             val redHerring = stubPlayer().copy(email = "something else")
             val updatedPlayer = player.copy(name = "Besto")
         }.bind(),
@@ -33,8 +34,8 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val email = "test-${Uuid.random()}@zegreatrob.com"
-            val player = stubPlayer().copy(email = email)
+            val email = "test-${Uuid.random()}@zegreatrob.com".toNotBlankString().getOrThrow()
+            val player = stubPlayer().copy(email = email.toString())
             val updatedPlayer = player.copy(name = "Besto", email = "something else ")
         }.bind(),
     ) exercise {
@@ -48,8 +49,8 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val email = "test-${Uuid.random()}@zegreatrob.com"
-            val player = stubPlayer().copy(email = email)
+            val email = "test-${Uuid.random()}@zegreatrob.com".toNotBlankString().getOrThrow()
+            val player = stubPlayer().copy(email = email.toString())
         }.bind(),
     ) exercise {
         repository.save(partyId.with(player))

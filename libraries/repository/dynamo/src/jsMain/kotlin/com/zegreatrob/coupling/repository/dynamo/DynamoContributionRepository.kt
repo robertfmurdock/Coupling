@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import kotlinx.datetime.Clock
@@ -18,7 +19,7 @@ import kotlin.js.Json
 import kotlin.js.json
 import kotlin.time.Duration
 
-class DynamoContributionRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
+class DynamoContributionRepository private constructor(override val userId: UserId, override val clock: Clock) :
     ContributionRepository,
     RecordSyntax,
     DynamoRecordJsonMapping,

@@ -15,6 +15,7 @@ generates:
         ContributionId: ContributionIdString
         DateTimeISO: kotlinx.datetime.Instant
         Duration: kotlin.time.Duration
+        Email: kotools.types.text.NotBlankString
         Float: Double
         ID: String
         PairAssignmentDocumentId: PairAssignmentDocumentIdString
@@ -22,7 +23,7 @@ generates:
         PinId: PinIdString
         PlayerId: PlayerIdString
         SecretId: SecretIdString
-        UserId: kotools.types.text.NotBlankString
+        UserId: UserIdString
       typesPrefix: Gql
       omitJvmStatic: true
       serializable: true

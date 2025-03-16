@@ -10,7 +10,7 @@ import kotools.types.text.toNotBlankString
 
 @Serializable
 data class JsonUserRecord(
-    val id: String,
+    val id: UserIdString,
     val email: String,
     val authorizedPartyIds: Set<String>,
     val modifyingUserEmail: String,
@@ -19,7 +19,7 @@ data class JsonUserRecord(
 )
 
 fun Record<UserDetails>.toSerializable() = JsonUserRecord(
-    id = data.id.toString(),
+    id = data.id,
     email = data.email.toString(),
     authorizedPartyIds = data.authorizedPartyIds.map(PartyId::value).map(NotBlankString::toString).toSet(),
     modifyingUserEmail = modifyingUserId?.toString() ?: "",
@@ -29,7 +29,7 @@ fun Record<UserDetails>.toSerializable() = JsonUserRecord(
 
 fun JsonUserRecord.toModel() = Record(
     data = UserDetails(
-        id = id.toNotBlankString().getOrThrow(),
+        id = id,
         email = email.toNotBlankString().getOrThrow(),
         authorizedPartyIds = authorizedPartyIds.map(::PartyId).toSet(),
         stripeCustomerId = null,

@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 import kotlin.js.Json
 
-class DynamoPartyRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
+class DynamoPartyRepository private constructor(override val userId: UserId, override val clock: Clock) :
     PartyRepository,
     DynamoRecordJsonMapping,
     UserIdProvider,

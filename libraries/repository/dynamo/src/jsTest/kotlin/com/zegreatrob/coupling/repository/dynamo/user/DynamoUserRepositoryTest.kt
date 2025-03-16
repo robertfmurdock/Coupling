@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo.user
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
@@ -39,7 +40,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
         val clock = MagicClock()
-        val userId = "${Uuid.random()}".toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), uuidString())
         val repository = DynamoUserRepository(userId, clock)
         SharedContextData(repository, clock, user)
@@ -49,7 +50,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     @Test
     @Ignore
     fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object {
-        val userId = "${Uuid.random()}".toNotBlankString().getOrThrow()
+        val userId = UserId.new()
         val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), null)
         lateinit var repository: DynamoUserRepository
     }) {
@@ -74,7 +75,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         )
     } exercise {
         measureTimedValue {
-            repository.getUsersWithEmail(user.email.toString())
+            repository.getUsersWithEmail(user.email)
         }
     } verify { (result, duration) ->
         val user = result.first().data
@@ -104,9 +105,9 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         repository.getUserRecords()
     } verify { result ->
         result
-            .assertContains(Record(user, user.id, false, initialSaveTime))
-            .assertContains(Record(altUser, user.id, false, initialSaveTime))
-            .assertContains(Record(updatedUser, user.id, false, updatedSaveTime))
+            .assertContains(Record(user, user.id.value, false, initialSaveTime))
+            .assertContains(Record(altUser, user.id.value, false, initialSaveTime))
+            .assertContains(Record(updatedUser, user.id.value, false, updatedSaveTime))
     }
 
     @Test
@@ -132,7 +133,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         buildRepository { context ->
             object : Context by context, DynamoUserJsonMapping by context.repository {
                 override val clock: MagicClock = context.clock
-                override val userId = uuidString().toNotBlankString().getOrThrow()
+                override val userId = UserId.new()
                 val record = Record(stubUserDetails(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months))
             }
         },
@@ -140,7 +141,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         DynamoUserRepository.performPutItem(
             record.recordJson().add(
                 json(
-                    "id" to record.data.id.toString(),
+                    "id" to record.data.id.value.toString(),
                     "email" to record.data.email.toString(),
                     "stripeCustomerId" to record.data.stripeCustomerId,
                     "authorizedTribeIds" to record.data.authorizedPartyIds.map { it.value.toString() }

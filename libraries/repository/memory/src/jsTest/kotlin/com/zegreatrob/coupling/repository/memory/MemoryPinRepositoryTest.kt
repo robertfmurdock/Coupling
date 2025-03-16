@@ -14,6 +14,6 @@ class MemoryPinRepositoryTest : PinRepositoryValidator<MemoryPinRepository> {
     override val repositorySetup = asyncTestTemplate<PartyContext<MemoryPinRepository>>(sharedSetup = {
         val user = stubUserDetails()
         val clock = MagicClock()
-        PartyContextData(MemoryPinRepository(user.email, clock), stubPartyId(), clock, user)
+        PartyContextData(MemoryPinRepository(user.id, clock), stubPartyId(), clock, user)
     })
 }

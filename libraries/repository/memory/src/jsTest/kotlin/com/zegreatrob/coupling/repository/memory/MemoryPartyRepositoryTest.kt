@@ -12,7 +12,7 @@ class MemoryPartyRepositoryTest : PartyRepositoryValidator<MemoryPartyRepository
     override val repositorySetup = asyncTestTemplate<SharedContext<MemoryPartyRepository>>(sharedSetup = {
         val clock = MagicClock()
         val user = stubUserDetails()
-        val repo = MemoryPartyRepository(user.email, clock)
+        val repo = MemoryPartyRepository(user.id, clock)
         SharedContextData(repo, clock, user)
     })
 }

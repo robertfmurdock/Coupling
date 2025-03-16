@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.datetime.Clock
@@ -15,7 +16,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoPlayerRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
+class DynamoPlayerRepository private constructor(override val userId: UserId, override val clock: Clock) :
     PlayerEmailRepository,
     UserIdProvider,
     DynamoPlayerJsonMapping,
@@ -129,9 +130,9 @@ class DynamoPlayerRepository private constructor(override val userId: NotBlankSt
         .mapNotNull { it.toPlayerRecord() }
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
-    override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<PlayerId>> = logAsync("getPlayerIdsByEmail") {
+    override suspend fun getPlayerIdsByEmail(email: NotBlankString): List<PartyElement<PlayerId>> = logAsync("getPlayerIdsByEmail") {
         val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
-            queryAllRecords(emailQueryParams(email))
+            queryAllRecords(emailQueryParams(email.toString()))
                 .mapNotNull { it.getDynamoStringValue("id") }
                 .toSet()
         }
@@ -140,7 +141,7 @@ class DynamoPlayerRepository private constructor(override val userId: NotBlankSt
                 .sortByRecordTimestamp()
                 .groupBy { it.getDynamoStringValue("id") }
                 .map { it.value.last() }
-                .filter { it["email"] == email && it["isDeleted"] != true }
+                .filter { it["email"] == email.toString() && it["isDeleted"] != true }
                 .map {
                     PartyId(NotBlankString.create(it.getDynamoStringValue("tribeId") ?: ""))
                         .with(PlayerId(NotBlankString.create(it.getDynamoStringValue("id") ?: "")))

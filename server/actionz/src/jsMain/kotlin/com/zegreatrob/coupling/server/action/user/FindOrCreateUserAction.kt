@@ -3,9 +3,8 @@ package com.zegreatrob.coupling.server.action.user
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
-import kotools.types.text.toNotBlankString
-import kotlin.uuid.Uuid
 
 object FindOrCreateUserAction : SimpleSuspendResultAction<FindOrCreateUserActionDispatcher, UserDetails> {
     override val performFunc = link(FindOrCreateUserActionDispatcher::perform)
@@ -22,13 +21,13 @@ interface FindOrCreateUserActionDispatcher :
         ?: getFirstUserWithEmail()
         ?: newUser()
 
-    private suspend inline fun getFirstUserWithEmail() = userRepository.getUsersWithEmail(userId.toString())
+    private suspend inline fun getFirstUserWithEmail() = userRepository.getUsersWithEmail(userId.value)
         .firstOrNull()
         ?.data
 
     private suspend fun newUser() = UserDetails(
-        id = "${Uuid.random()}".toNotBlankString().getOrThrow(),
-        email = userId,
+        id = UserId.new(),
+        email = userId.value,
         authorizedPartyIds = emptySet(),
         stripeCustomerId = null,
     )

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import js.objects.Object.Companion.assign
 import js.objects.jso
@@ -11,11 +12,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoBoostRepository private constructor(override val userId: NotBlankString, override val clock: Clock) :
+class DynamoBoostRepository private constructor(override val userId: UserId, override val clock: Clock) :
     ExtendedBoostRepository,
     DynamoBoostJsonMapping,
     RecordSyntax {
@@ -34,7 +34,7 @@ class DynamoBoostRepository private constructor(override val userId: NotBlankStr
             MainScope().async { ensureTableExists() }
         }
 
-        suspend operator fun invoke(userId: NotBlankString, clock: Clock) = DynamoBoostRepository(userId, clock)
+        suspend operator fun invoke(userId: UserId, clock: Clock) = DynamoBoostRepository(userId, clock)
             .also { ensure.await() }
 
         override val createTableParams = json(
@@ -112,7 +112,7 @@ class DynamoBoostRepository private constructor(override val userId: NotBlankStr
 
     private fun tribeKey(partyId: PartyId) = "tribe-${partyId.value}"
 
-    private fun userKey(userId: NotBlankString) = "user-$userId"
+    private fun userKey(userId: UserId) = "user-${userId.value}"
 
     private fun queryParams(id: String) = json(
         "TableName" to prefixedTableName,

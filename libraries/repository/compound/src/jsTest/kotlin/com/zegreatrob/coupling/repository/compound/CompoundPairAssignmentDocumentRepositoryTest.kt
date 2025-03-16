@@ -21,8 +21,8 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
             val stubUser = stubUserDetails()
             val clock = MagicClock()
 
-            val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, clock)
-            val repository2 = MemoryPairAssignmentDocumentRepository(stubUser.email, clock)
+            val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.id, clock)
+            val repository2 = MemoryPairAssignmentDocumentRepository(stubUser.id, clock)
 
             val compoundRepo = CompoundPairAssignmentDocumentRepository(repository1, repository2)
 
