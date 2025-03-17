@@ -1,18 +1,16 @@
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
-import kotools.types.text.toNotBlankString
 
 fun UserDetails.toSerializable() = GqlUserDetails(
     id = id,
-    email = email.toString(),
-    authorizedPartyIds = authorizedPartyIds.map { it.value.toString() },
+    email = email,
+    authorizedPartyIds = authorizedPartyIds.toList(),
 )
 
 fun GqlUserDetails.toModel() = UserDetails(
     id = id,
-    email = email.toNotBlankString().getOrThrow(),
-    authorizedPartyIds = authorizedPartyIds.map(::PartyId).toSet(),
+    email = email,
+    authorizedPartyIds = authorizedPartyIds.toSet(),
     stripeCustomerId = null,
 )

@@ -1,13 +1,13 @@
+scalar ContributionId
 scalar DateTimeISO
 scalar Duration
-scalar PartyId
-scalar PlayerId
-scalar PairAssignmentDocumentId
-scalar PinId
-scalar UserId
-scalar SecretId
-scalar ContributionId
 scalar Email
+scalar PairAssignmentDocumentId
+scalar PartyId
+scalar PinId
+scalar PlayerId
+scalar SecretId
+scalar UserId
 
 type PartyDetails {
     id: PartyId!
@@ -41,8 +41,8 @@ type User {
 
 type UserDetails {
     id: UserId!
-    email: String!
-    authorizedPartyIds: [String]!
+    email: Email!
+    authorizedPartyIds: [PartyId!]!
 }
 
 type Pin {

@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.PlayerId
+import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotlinx.coroutines.async
@@ -15,6 +16,7 @@ object PartyListQuery {
     interface Dispatcher :
         UserAuthenticatedPartyIdSyntax,
         UserPlayerIdsSyntax,
+        CurrentUserProvider,
         PartyRecordSyntax {
 
         suspend fun perform(query: PartyListQuery) = getPartiesAndUserPlayerIds()
@@ -24,7 +26,7 @@ object PartyListQuery {
             .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
 
         private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
-            async { getPartyRecords() } to async { getUserPlayerIds() }
+            async { getPartyRecords() } to async { getUserPlayerIds(currentUser.email) }
         }
 
         private fun Pair<List<Record<PartyDetails>>, List<PartyElement<PlayerId>>>.onlyAuthenticatedParties() = let { (partyRecords, players) ->

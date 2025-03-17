@@ -11,7 +11,7 @@ interface CurrentUserProvider {
 interface CurrentUserIdProvider :
     CurrentUserProvider,
     UserIdProvider {
-    override val userId get() = UserId(currentUser.email)
+    override val userId get() = currentUser.id
 }
 
 interface AuthorizedPartyIdsProvider : CurrentUserProvider {

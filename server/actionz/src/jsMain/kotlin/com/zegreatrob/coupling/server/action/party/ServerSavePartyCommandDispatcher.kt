@@ -50,7 +50,7 @@ interface ServerSavePartyCommandDispatcher :
     private suspend fun SavePartyCommand.getPartyAndUserPlayerIds() = coroutineScope {
         await(
             async { party.id.get() },
-            async { getUserPlayerIds() },
+            async { getUserPlayerIds(currentUser.email) },
         )
     }
 

@@ -27,7 +27,7 @@ data class UserIsAuthorizedWithDataAction(val partyId: PartyId) : SimpleSuspendR
         suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.doWork().successResult()
 
         private suspend fun UserIsAuthorizedWithDataAction.doWork(): Pair<PartyDetails, List<Player>>? {
-            val contains = getUserPlayerIds()
+            val contains = getUserPlayerIds(currentUser.email)
                 .authenticatedPartyIds()
                 .contains(partyId)
 
