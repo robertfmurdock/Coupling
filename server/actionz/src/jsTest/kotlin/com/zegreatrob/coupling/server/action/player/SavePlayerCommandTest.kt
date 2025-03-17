@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -21,7 +22,7 @@ class SavePlayerCommandTest {
     fun willSaveToRepository() = asyncSetup(object : ServerSavePlayerCommandDispatcher {
         override val currentPartyId = PartyId("woo")
         val player = stubPlayer().copy(
-            badge = 1,
+            badge = Badge.Default,
             name = "Tim",
             email = "tim@tim.meat",
             callSignAdjective = "Spicy",

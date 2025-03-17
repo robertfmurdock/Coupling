@@ -9,7 +9,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 
 data class Player(
     val id: PlayerId,
-    val badge: Int,
+    val badge: Badge,
     val name: String,
     val email: String,
     val callSignAdjective: String,
@@ -28,7 +28,7 @@ val Player.emails get() = listOf(email) + additionalEmails
 @OptIn(ExperimentalKotoolsTypesApi::class)
 val defaultPlayer = Player(
     id = PlayerId(NotBlankString.create("DEFAULT")),
-    badge = Badge.Default.value,
+    badge = Badge.Default,
     name = "",
     email = "",
     callSignAdjective = "",

@@ -134,7 +134,7 @@ class PlayerConfigTest {
         )
     } verify { wrapper ->
         wrapper.baseElement
-            .querySelectorAll("select[name='badge'] [value='${Badge.Default.value}']")
+            .querySelectorAll("select[name='badge'] [value='${Badge.Default.name}']")
             .length
             .assertIsEqualTo(1)
     }
@@ -142,7 +142,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = stubPlayer().copy(badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate)
     }) exercise {
         render(
             RouterProvider.create {
@@ -160,7 +160,7 @@ class PlayerConfigTest {
         )
     } verify { wrapper ->
         wrapper.baseElement
-            .querySelectorAll("select[name='badge'] [value='${Badge.Alternate.value}']")
+            .querySelectorAll("select[name='badge'] [value='${Badge.Alternate.name}']")
             .length
             .assertIsEqualTo(1)
     }
@@ -258,7 +258,7 @@ class PlayerConfigTest {
     @Test
     fun submitWillSaveAndReload() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = stubPlayer().copy(name = "", badge = Badge.Default.value)
+        val player = stubPlayer().copy(name = "", badge = Badge.Default)
         val reloaderSpy = SpyData<Unit, Unit>()
         val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
@@ -293,7 +293,7 @@ class PlayerConfigTest {
         }
         val pathSetterSpy = SpyData<String, Unit>()
         val party = PartyDetails(PartyId("party"))
-        val player = stubPlayer().copy(badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate)
         val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {
@@ -335,7 +335,7 @@ class PlayerConfigTest {
     @Test
     fun whenPlayerIsNotInPlayerListRetireButtonIsDisabled() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = stubPlayer().copy(badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate)
     }) exercise {
         render(
             TestRouter.create {
@@ -355,7 +355,7 @@ class PlayerConfigTest {
     @Test
     fun whenPlayerIsEditedRetireButtonRemainsEnabled() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = stubPlayer().copy(badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate)
         val actor = UserEvent.setup()
     }) {
         render(
@@ -381,7 +381,7 @@ class PlayerConfigTest {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
         val party = PartyDetails(PartyId("party"))
-        val player = stubPlayer().copy(badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate)
         val actor = UserEvent.setup()
         val stubDispatcher = StubDispatcher()
     }) {
@@ -408,7 +408,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = stubPlayer().copy(badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate)
         val actor = UserEvent.setup()
         val spy = SpyData<String, Boolean>().apply { spyWillReturn(true) }
         val confirmFunc: (message: String) -> Boolean = window::confirm
@@ -456,7 +456,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = stubPlayer().copy(badge = Badge.Alternate.value)
+        val player = stubPlayer().copy(badge = Badge.Alternate)
         val spy = SpyData<String, Boolean>().apply { spyWillReturn(true) }
         val confirmFunc: (message: String) -> Boolean = window::confirm
     }) {

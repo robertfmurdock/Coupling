@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
+import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.Instant
@@ -76,6 +77,7 @@ private fun JsonNode.toPin(): Pin? {
 
 private fun JsonNode.toPlayer() = defaultPlayer.copy(
     id = PlayerId(this["id"].textValue().toNotBlankString().getOrThrow()),
-    badge = this["badge"].intValue(),
+    badge = this["badge"].intValue().let { badge -> Badge.entries.firstOrNull { badge == it.value } }
+        ?: defaultPlayer.badge,
     name = this["name"].textValue(),
 )

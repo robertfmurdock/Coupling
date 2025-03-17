@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.json.GqlSavePlayerInput
+import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
@@ -24,7 +25,7 @@ fun PartyElement<Player>.input() = GqlSavePlayerInput(
     playerId = element.id,
     name = element.name,
     email = element.email,
-    badge = "${element.badge}",
+    badge = element.badge.toSerializable(),
     callSignAdjective = element.callSignAdjective,
     callSignNoun = element.callSignNoun,
     imageURL = element.imageURL,

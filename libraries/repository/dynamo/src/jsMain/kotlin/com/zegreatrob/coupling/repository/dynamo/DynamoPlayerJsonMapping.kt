@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.AvatarType
+import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
@@ -28,7 +29,7 @@ interface DynamoPlayerJsonMapping :
         "id" to id.value.toString(),
         "name" to name,
         "email" to email,
-        "badge" to badge,
+        "badge" to badge.value,
         "callSignAdjective" to callSignAdjective,
         "callSignNoun" to callSignNoun,
         "imageURL" to imageURL,
@@ -40,7 +41,9 @@ interface DynamoPlayerJsonMapping :
     fun Json.toPlayer() = getDynamoStringValue("id")?.let {
         Player(
             id = PlayerId(NotBlankString.create(it)),
-            badge = getDynamoNumberValue("badge")?.toInt() ?: defaultPlayer.badge,
+            badge = getDynamoNumberValue("badge")?.toInt()?.let {
+                Badge.entries.firstOrNull { badge -> badge.value == it }
+            } ?: defaultPlayer.badge,
             name = getDynamoStringValue("name") ?: "",
             email = getDynamoStringValue("email") ?: "",
             callSignAdjective = getDynamoStringValue("callSignAdjective") ?: "",

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlAvatarType
+import com.zegreatrob.coupling.json.GqlBadge
 import com.zegreatrob.coupling.json.GqlBoostDetails
 import com.zegreatrob.coupling.json.GqlContribution
 import com.zegreatrob.coupling.json.GqlGlobalStats
@@ -77,7 +78,7 @@ object GqlReference {
         id = PlayerId(notBlank),
         name = "",
         email = "",
-        badge = "",
+        badge = GqlBadge.Default,
         callSignAdjective = "",
         callSignNoun = "",
         imageURL = "",
@@ -169,7 +170,7 @@ object GqlReference {
         id = PlayerId(notBlank),
         name = "",
         email = "",
-        badge = "",
+        badge = GqlBadge.Default,
         callSignAdjective = "",
         callSignNoun = "",
         imageURL = "",

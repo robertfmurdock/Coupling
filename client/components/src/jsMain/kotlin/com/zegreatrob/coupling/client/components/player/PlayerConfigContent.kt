@@ -271,7 +271,7 @@ private fun ChildrenBuilder.badgeConfig(
     select {
         id = "badge"
         name = "badge"
-        this.value = "${player.badge}"
+        this.value = player.badge.name
         this.onChange = onChange
         defaultBadgeOption(party)
         altBadgeOption(party)
@@ -281,16 +281,16 @@ private fun ChildrenBuilder.badgeConfig(
 
 private fun ChildrenBuilder.altBadgeOption(party: PartyDetails) = option {
     id = "alt-badge-option"
-    key = "${Badge.Alternate.value}"
-    value = "${Badge.Alternate.value}"
+    key = Badge.Alternate.name
+    value = Badge.Alternate.name
     label = party.alternateBadgeName
     ariaLabel = "Alt Badge Option"
 }
 
 private fun ChildrenBuilder.defaultBadgeOption(party: PartyDetails) = option {
     id = "default-badge-option"
-    key = "${Badge.Default.value}"
-    value = "${Badge.Default.value}"
+    key = Badge.Default.name
+    value = Badge.Default.name
     label = party.defaultBadgeName
     ariaLabel = "Default Badge Option"
 }

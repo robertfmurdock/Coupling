@@ -254,12 +254,12 @@ class PlayerConfigPageE2ETest {
         } verify {
             PlayerConfigPage.defaultBadgeOption().isDisplayed()
                 .assertIsEqualTo(true)
-            WebdriverElement("option[value=\"1\"]")
+            WebdriverElement("option[value=\"Default\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 1")
             PlayerConfigPage.altBadgeOption().isDisplayed()
                 .assertIsEqualTo(true)
-            WebdriverElement("option[value=\"2\"]")
+            WebdriverElement("option[value=\"Alternate\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 2")
         }

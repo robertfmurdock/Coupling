@@ -20,6 +20,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
+import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserDetails
@@ -73,7 +74,7 @@ var playerCounter = 1
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun stubPlayer() = Player(
     id = PlayerId.new(),
-    badge = 1,
+    badge = Badge.Default,
     name = "Tim $playerCounter",
     email = "tim$playerCounter@tim.meat",
     callSignAdjective = "Spicy $playerCounter",

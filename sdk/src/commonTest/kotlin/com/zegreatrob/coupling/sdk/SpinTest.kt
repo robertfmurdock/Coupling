@@ -215,10 +215,10 @@ class SpinTest {
     }
 
     private fun fourPlayersTwoDefaultTwoAlternate() = notEmptyListOf(
-        stubPlayer().copy(badge = Badge.Default.value, name = "One"),
-        stubPlayer().copy(badge = Badge.Default.value, name = "Two"),
-        stubPlayer().copy(badge = Badge.Alternate.value, name = "Three"),
-        stubPlayer().copy(badge = Badge.Alternate.value, name = "Four"),
+        stubPlayer().copy(badge = Badge.Default, name = "One"),
+        stubPlayer().copy(badge = Badge.Default, name = "Two"),
+        stubPlayer().copy(badge = Badge.Alternate, name = "Three"),
+        stubPlayer().copy(badge = Badge.Alternate, name = "Four"),
     )
 
     companion object {

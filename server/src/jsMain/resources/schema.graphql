@@ -66,7 +66,7 @@ type PlayerDetails {
     partyId: PartyId!
     name: String!
     email: String!
-    badge: String
+    badge: Badge!
     callSignAdjective: String!
     callSignNoun: String!
     imageURL: String
@@ -75,6 +75,11 @@ type PlayerDetails {
     modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
+}
+
+enum Badge {
+    Default,
+    Alternate
 }
 
 enum AvatarType {
@@ -96,7 +101,7 @@ type PinnedPlayer {
     id: PlayerId!
     name: String!
     email: String!
-    badge: String
+    badge: Badge!
     avatarType: AvatarType
     callSignAdjective: String!
     callSignNoun: String!
@@ -277,7 +282,7 @@ input SavePlayerInput {
     playerId: PlayerId!
     name: String!
     email: String!
-    badge: String
+    badge: Badge!
     callSignAdjective: String!
     callSignNoun: String!
     imageURL: String
@@ -303,7 +308,7 @@ input PinnedPlayerInput {
     id: PlayerId!
     name: String!
     email: String!
-    badge: String
+    badge: Badge
     callSignAdjective: String!
     callSignNoun: String!
     imageURL: String

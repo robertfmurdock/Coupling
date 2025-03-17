@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.party.PairingRule
+import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
@@ -32,10 +33,10 @@ class CreatePairCandidateReportsActionTest {
         fun willReturnAllReportsForPlayersWithTheSameBadge() = asyncSetup(object :
             ScopeMint(),
             CreatePairCandidateReportsActionTestDispatcher {
-            val bill = stubPlayer().copy(name = "Bill", badge = 1)
-            val ted = stubPlayer().copy(name = "Ted", badge = 1)
-            val amadeus = stubPlayer().copy(name = "Mozart", badge = 1)
-            val shorty = stubPlayer().copy(name = "Napoleon", badge = 1)
+            val bill = stubPlayer().copy(name = "Bill", badge = Badge.Default)
+            val ted = stubPlayer().copy(name = "Ted", badge = Badge.Default)
+            val amadeus = stubPlayer().copy(name = "Mozart", badge = Badge.Default)
+            val shorty = stubPlayer().copy(name = "Napoleon", badge = Badge.Default)
 
             val players = notEmptyListOf(bill, ted, amadeus, shorty)
 
@@ -69,10 +70,10 @@ class CreatePairCandidateReportsActionTest {
             ScopeMint(),
             CreatePairCandidateReportsActionTestDispatcher {
             val history = emptyList<PairAssignmentDocument>()
-            val bill = stubPlayer().copy(name = "Bill", badge = 1)
-            val ted = stubPlayer().copy(name = "Ted", badge = 1)
-            val altAmadeus = stubPlayer().copy(name = "Mozart", badge = 2)
-            val altShorty = stubPlayer().copy(name = "Napoleon", badge = 2)
+            val bill = stubPlayer().copy(name = "Bill", badge = Badge.Default)
+            val ted = stubPlayer().copy(name = "Ted", badge = Badge.Default)
+            val altAmadeus = stubPlayer().copy(name = "Mozart", badge = Badge.Alternate)
+            val altShorty = stubPlayer().copy(name = "Napoleon", badge = Badge.Alternate)
             val players = notEmptyListOf(bill, ted, altAmadeus, altShorty)
 
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
@@ -103,7 +104,7 @@ class CreatePairCandidateReportsActionTest {
             ScopeMint(),
             CreatePairCandidateReportsActionTestDispatcher {
             val history = emptyList<PairAssignmentDocument>()
-            val bill = stubPlayer().copy(name = "Bill", badge = 1)
+            val bill = stubPlayer().copy(name = "Bill", badge = Badge.Default)
             val players = notEmptyListOf(bill)
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
             val gameSpin = GameSpin(players, history, PairingRule.PreferDifferentBadge)
@@ -123,10 +124,10 @@ class CreatePairCandidateReportsActionTest {
         ScopeMint(),
         CreatePairCandidateReportsActionTestDispatcher {
         val history = listOf<PairAssignmentDocument>()
-        val bill = stubPlayer().copy(name = "Bill", badge = 1)
-        val ted = stubPlayer().copy(name = "Ted", badge = 1)
-        val altAmadeus = stubPlayer().copy(name = "Mozart", badge = 2)
-        val altShorty = stubPlayer().copy(name = "Napoleon", badge = 2)
+        val bill = stubPlayer().copy(name = "Bill", badge = Badge.Default)
+        val ted = stubPlayer().copy(name = "Ted", badge = Badge.Default)
+        val altAmadeus = stubPlayer().copy(name = "Mozart", badge = Badge.Alternate)
+        val altShorty = stubPlayer().copy(name = "Napoleon", badge = Badge.Alternate)
         val players = notEmptyListOf(bill, ted, altAmadeus, altShorty)
 
         val billReport = PairCandidateReport(bill, emptyList(), NeverPaired)

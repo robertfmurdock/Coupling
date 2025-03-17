@@ -3,6 +3,7 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.player
@@ -49,7 +50,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
                 callSignNoun = "2",
                 imageURL = null,
                 avatarType = null,
-                badge = 0,
+                badge = Badge.Default,
                 additionalEmails = emptySet(),
             )
         }.bind(),
