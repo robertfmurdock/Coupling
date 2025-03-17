@@ -81,6 +81,7 @@ export const CouplingResponsiveLine = (props) => {
                 <YAxis
                     dataKey='y'
                     type="number"
+                    domain={props.yAxisDomain}
                 />
                 <Tooltip
                     labelFormatter={(value) => d3TimeFormat(format)(value)}

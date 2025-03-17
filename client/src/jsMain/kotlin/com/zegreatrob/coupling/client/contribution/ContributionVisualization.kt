@@ -53,8 +53,9 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
             },
         ) { (visualization, data) ->
             when (visualization) {
-                Visualization.LineOverTime -> PairFrequencyLineGraph(data, window)
-                Visualization.Heatmap -> PairFrequencyHeatMap(data, window, spinsUntilFullRotation)
+                Visualization.LineCountOverTime -> PairFrequencyLineGraph(data, window)
+                Visualization.PairFrequencyHeatmap -> PairFrequencyHeatMap(data, window, spinsUntilFullRotation)
+                Visualization.LineEaseOverTime -> EaseGraph(data, window)
                 Visualization.MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
                 Visualization.CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
             }

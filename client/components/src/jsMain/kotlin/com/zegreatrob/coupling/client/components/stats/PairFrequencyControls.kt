@@ -34,10 +34,11 @@ external interface PairFrequencyControlsProps : Props {
 }
 
 enum class Visualization {
-    LineOverTime,
-    Heatmap,
+    LineCountOverTime,
+    PairFrequencyHeatmap,
     MedianCycleTimeBarChart,
     CycleTimeBoxPlot,
+    LineEaseOverTime,
 }
 
 enum class FakeDataStyle {
@@ -54,7 +55,7 @@ data class VisualizationContext(
 @ReactFunc
 val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, selectedWindow, setWindow) ->
     val (fakeStyle, setFakeStyle) = useState<FakeDataStyle?>(null)
-    val (visualization, setVisualization) = useState(Visualization.Heatmap)
+    val (visualization, setVisualization) = useState(Visualization.PairFrequencyHeatmap)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
     val (fakeContributions, setFakeContributions) = useState<List<Pair<CouplingPair, ContributionReport>>>(emptyList())
@@ -90,7 +91,6 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                 css { display = Display.inlineBlock }
                 PairSelector(
                     pairs = allPairContributions.toMap()
-                        .filterValues { it.contributions?.isNotEmpty() == true }
                         .keys
                         .toList(),
                     selectedPairs = selectedPairs,
@@ -110,7 +110,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         }
                         div {
                             EnumSelector(
-                                default = Visualization.LineOverTime,
+                                default = visualization,
                                 onChange = setVisualization::invoke,
                                 label = ReactNode("Visualization Style"),
                                 backgroundColor = contributionContentBackgroundColor,

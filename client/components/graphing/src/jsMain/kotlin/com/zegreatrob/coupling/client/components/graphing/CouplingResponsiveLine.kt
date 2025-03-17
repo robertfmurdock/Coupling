@@ -14,6 +14,7 @@ external interface CouplingResponsiveLineProps : Props {
     var tooltip: (RechartsTooltipArgs) -> ReactNode
     var xMin: Date
     var xMax: Date
+    var yAxisDomain: Array<Any>?
 }
 
 external fun <T> require(@Suppress("unused") module: String): T

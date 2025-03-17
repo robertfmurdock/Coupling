@@ -62,7 +62,7 @@ suspend fun generateFakeContributions(
             pair to ContributionReport(
                 contributions = contributions.map {
                     partyRecord(
-                        partyId = PartyId(""),
+                        partyId = PartyId("-"),
                         data = it,
                         modifyingUserEmail = "-".toNotBlankString().getOrThrow(),
                     )
@@ -168,7 +168,7 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     dateTime = toInstant(TimeZone.currentSystemDefault()),
     hash = null,
     firstCommit = null,
-    ease = null,
+    ease = (1..5).random(),
     story = null,
     link = null,
     participantEmails = emptySet(),
