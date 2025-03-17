@@ -91,6 +91,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                 css { display = Display.inlineBlock }
                 PairSelector(
                     pairs = allPairContributions.toMap()
+                        .filterValues { it.contributions?.isNotEmpty() == true }
                         .keys
                         .toList(),
                     selectedPairs = selectedPairs,
