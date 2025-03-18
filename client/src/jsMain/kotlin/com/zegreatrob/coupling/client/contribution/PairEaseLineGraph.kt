@@ -56,11 +56,12 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
 
 fun dateContributionGroupToAverageEasePoint(it: Map.Entry<LocalDate?, List<Contribution>>): NivoPoint? {
     val date = it.key ?: return null
-    if (it.value.isEmpty()) return null
+    val easeValues = it.value.mapNotNull { it.ease }
+    if (easeValues.isEmpty()) return null
 
     return NivoPoint(
         x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
-        y = it.value.mapNotNull { it.ease }.average(),
+        y = easeValues.average(),
         context = it.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
     )
 }
