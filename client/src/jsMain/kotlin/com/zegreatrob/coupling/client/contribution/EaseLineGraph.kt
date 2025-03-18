@@ -60,7 +60,10 @@ val LineTooltip = FC<PropsWithValue<RechartsTooltipArgs>> { props ->
             borderRadius = 20.px
         }
         args.payload?.forEach { payload ->
-            div { +"${payload.name} - ${payload.value}" }
+            div {
+                key = payload.name.toString()
+                +"${payload.name} - ${payload.value}"
+            }
         }
         div { +args.labelFormatter(args.label) }
     }
