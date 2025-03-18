@@ -38,7 +38,8 @@ enum class Visualization {
     PairFrequencyHeatmap,
     MedianCycleTimeBarChart,
     CycleTimeBoxPlot,
-    LineEaseOverTime,
+    PairEaseLineOverTime,
+    AllEaseLineOverTime,
 }
 
 enum class FakeDataStyle {
