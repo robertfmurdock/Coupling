@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.contribution
 import com.zegreatrob.coupling.client.components.graphing.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.RechartsTooltipArgs
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
@@ -18,7 +19,9 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJSDate
 import kotlinx.datetime.toLocalDateTime
+import react.FC
 import react.Props
+import react.PropsWithValue
 import react.create
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
@@ -43,21 +46,23 @@ val EaseGraph by nfc<EaseGraphProps> { (data, window) ->
                 this.xMin = (Clock.System.now() - duration).toJSDate()
             }
             this.xMax = Clock.System.now().toJSDate()
-
-            tooltip = { args ->
-                div.create {
-                    css {
-                        backgroundColor = Color("rgb(0 0 0 / 14%)")
-                        padding = 10.px
-                        borderRadius = 20.px
-                    }
-                    args.payload?.forEach { payload ->
-                        div { +"${payload.name} - ${payload.value}" }
-                    }
-                    div { +"${args.label}" }
-                }
-            }
+            tooltip = { args -> LineTooltip.create { value = args } }
         }
+    }
+}
+
+val LineTooltip = FC<PropsWithValue<RechartsTooltipArgs>> { props ->
+    val args = props.value
+    div {
+        css {
+            backgroundColor = Color("rgb(0 0 0 / 14%)")
+            padding = 10.px
+            borderRadius = 20.px
+        }
+        args.payload?.forEach { payload ->
+            div { +"${payload.name} - ${payload.value}" }
+        }
+        div { +args.labelFormatter(args.label) }
     }
 }
 
@@ -72,6 +77,8 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
             ?.date
     }.mapNotNull {
         val date = it.key ?: return@mapNotNull null
+        if (it.value.isEmpty()) return@mapNotNull null
+
         NivoPoint(
             x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
             y = it.value.mapNotNull { it.ease }.average(),

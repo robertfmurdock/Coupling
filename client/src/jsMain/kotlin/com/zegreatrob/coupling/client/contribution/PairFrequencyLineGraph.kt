@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import emotion.react.css
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
@@ -20,9 +19,6 @@ import kotlinx.datetime.toJSDate
 import kotlinx.datetime.toLocalDateTime
 import react.Props
 import react.create
-import react.dom.html.ReactHTML.div
-import web.cssom.Color
-import web.cssom.px
 
 external interface PairFrequencyLineGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
@@ -42,20 +38,7 @@ val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) 
                 this.xMin = (Clock.System.now() - duration).toJSDate()
             }
             this.xMax = Clock.System.now().toJSDate()
-
-            tooltip = { args ->
-                div.create {
-                    css {
-                        backgroundColor = Color("rgb(0 0 0 / 14%)")
-                        padding = 10.px
-                        borderRadius = 20.px
-                    }
-                    args.payload?.forEach { payload ->
-                        div { +"${payload.name} - ${payload.value}" }
-                    }
-                    div { +"${args.label}" }
-                }
-            }
+            tooltip = { args -> LineTooltip.create { value = args } }
         }
     }
 }
