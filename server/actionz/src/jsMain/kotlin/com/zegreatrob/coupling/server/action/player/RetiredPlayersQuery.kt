@@ -5,12 +5,12 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.player.PartyRetiredPlayerRecordsSyntax
+import com.zegreatrob.coupling.repository.player.PartyIdRetiredPlayerRecordsTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class RetiredPlayersQuery(val partyId: PartyId) {
-    interface Dispatcher : PartyRetiredPlayerRecordsSyntax {
+    interface Dispatcher : PartyIdRetiredPlayerRecordsTrait {
         suspend fun perform(query: RetiredPlayersQuery): List<PartyRecord<Player>> = query.partyId.loadRetiredPlayerRecords()
             .groupBy { it.data.element.email }
             .flatMap {

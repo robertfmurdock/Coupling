@@ -8,9 +8,12 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import kotools.types.text.NotBlankString
 
 interface PlayerRepository :
-    PlayerListGet,
     PlayerSave,
     PlayerDelete,
+    PlayerGetRepository
+
+interface PlayerGetRepository :
+    PlayerListGet,
     PlayerListGetDeleted
 
 interface PlayerEmailRepository :

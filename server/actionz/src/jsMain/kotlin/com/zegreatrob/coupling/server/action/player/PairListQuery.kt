@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
@@ -14,8 +16,12 @@ import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.player.pairCombinations
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
+import com.zegreatrob.coupling.repository.player.PartyIdRetiredPlayerRecordsTrait
+import com.zegreatrob.coupling.repository.player.PlayerGetRepository
 import com.zegreatrob.coupling.server.action.contribution.PartyIdContributionsTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
@@ -24,10 +30,12 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 data class PairListQuery(val partyId: PartyId) {
     interface Dispatcher :
         PartyIdLoadPlayersTrait,
+        PartyIdRetiredPlayerRecordsTrait,
         PartyIdContributionsTrait {
+        override val playerRepository: PlayerGetRepository
+
         suspend fun perform(query: PairListQuery): List<PartyElement<PlayerPair>> {
-            val contributions = query.partyId.contributions().elements
-            val playerListData = query.partyId.loadPlayers()
+            val (contributions, playerListData) = loadData(query.partyId)
 
             val naturalPairCombinations = playerListData
                 .pairCombinations()
@@ -51,6 +59,14 @@ data class PairListQuery(val partyId: PartyId) {
                     PlayerPair(players = it.toList())
                 },
             )
+        }
+
+        private suspend fun loadData(partyId: PartyId): Pair<List<Contribution>, List<PartyRecord<Player>>> = coroutineScope {
+            val contributions = async { partyId.contributions().elements }
+            val playerListData = async { partyId.loadPlayers() }
+            val retiredPlayerListData = async { partyId.loadRetiredPlayerRecords() }
+
+            Pair(contributions.await(), playerListData.await() + retiredPlayerListData.await())
         }
 
         @OptIn(ExperimentalKotoolsTypesApi::class)
