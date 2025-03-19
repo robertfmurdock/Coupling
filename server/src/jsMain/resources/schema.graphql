@@ -455,7 +455,7 @@ input CreateSecretInput {
 }
 
 type SecretToken {
-    secretId: ID!
+    secretId: SecretId!
     description: String!,
     createdTimestamp: DateTimeISO!
     lastUsedTimestamp: DateTimeISO
@@ -464,5 +464,5 @@ type SecretToken {
 
 input DeleteSecretInput {
     partyId: PartyId!
-    secretId: ID!
+    secretId: SecretId!
 }

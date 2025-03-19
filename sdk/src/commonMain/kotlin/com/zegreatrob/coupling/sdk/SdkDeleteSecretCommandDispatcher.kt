@@ -15,5 +15,5 @@ interface SdkDeleteSecretCommandDispatcher :
     override suspend fun perform(command: DeleteSecretCommand) = doQuery(Mutation.deleteSecret, command.toInput()).parseMutationResult().toDomain().deleteSecret?.voidResult()
         ?: CommandResult.Unauthorized
 
-    private fun DeleteSecretCommand.toInput() = GqlDeleteSecretInput(partyId, secretId.value.toString())
+    private fun DeleteSecretCommand.toInput() = GqlDeleteSecretInput(partyId, secretId)
 }
