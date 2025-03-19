@@ -12,21 +12,21 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJSDate
-import kotlinx.datetime.toLocalDateTime
 import react.Props
 import react.create
 
-external interface PairFrequencyLineGraphProps : Props {
+external interface PairContributionsLineGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
 }
 
 @ReactFunc
-val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) ->
+val PairContributionsLineGraph by nfc<PairContributionsLineGraphProps> { (data, window) ->
     val duration = window.toModel()
 
     if (data.flatMap { it.second.contributions?.elements ?: emptyList() }.isNotEmpty()) {
@@ -48,16 +48,16 @@ private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, ContributionR
 
 private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>) = NivoLineData(
     couplingPair.joinToString("-") { it.name },
-    contributions.groupBy { contribution ->
-        contribution.dateTime
-            ?.toLocalDateTime(TimeZone.currentSystemDefault())
-            ?.date
-    }.mapNotNull {
-        val date = it.key ?: return@mapNotNull null
-        NivoPoint(
-            x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
-            y = it.value.size,
-            context = it.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
-        )
-    }.toTypedArray(),
+    contributions.groupBy(contributionsByDate)
+        .mapNotNull(::timeByContributionCountPoint)
+        .toTypedArray(),
 )
+
+fun timeByContributionCountPoint(entry: Map.Entry<LocalDate?, List<Contribution>>): NivoPoint? {
+    val date = entry.key ?: return null
+    return NivoPoint(
+        x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
+        y = entry.value.size,
+        context = entry.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
+    )
+}

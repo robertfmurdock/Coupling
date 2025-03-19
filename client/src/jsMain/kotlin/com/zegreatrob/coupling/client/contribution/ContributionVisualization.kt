@@ -6,7 +6,9 @@ import com.zegreatrob.coupling.client.components.stats.Visualization
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -53,20 +55,21 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
             },
         ) { (visualization, data) ->
             when (visualization) {
-                Visualization.LineCountOverTime -> PairFrequencyLineGraph(data, window)
+                Visualization.AllContributionsLineOverTime -> AllContributionsLineGraph(data.allContributions(), window)
+                Visualization.PairContributionsLineOverTime -> PairContributionsLineGraph(data, window)
                 Visualization.PairFrequencyHeatmap -> PairFrequencyHeatMap(data, window, spinsUntilFullRotation)
                 Visualization.PairEaseLineOverTime -> PairEaseLineGraph(data, window)
                 Visualization.MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
                 Visualization.CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
-                Visualization.AllEaseLineOverTime -> AllEaseLineGraph(
-                    data.flatMap {
-                        it.second.contributions?.map { it.data.element } ?: emptyList()
-                    },
-                    window,
-                )
+                Visualization.AllEaseLineOverTime -> AllEaseLineGraph(data.allContributions(), window)
             }
         }
     }
+}
+
+private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): List<Contribution> = flatMap {
+    it.second.contributions?.map<PartyRecord<Contribution>, Contribution> { it.data.element }
+        ?: emptyList<Contribution>()
 }
 
 fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updatedWindow: GqlContributionWindow? ->
@@ -83,6 +86,5 @@ fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updated
 
 private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
     val contributionReport = it.contributionReport ?: return@mapNotNull null
-    it.players?.elements?.toCouplingPair()
-        ?.let { pair -> pair to contributionReport }
+    it.players?.elements?.toCouplingPair()?.let { pair -> pair to contributionReport }
 }
