@@ -64,7 +64,6 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                 }
                 YAxis {
                     type = "number"
-                    dataKey = "y"
                 }
                 Legend {
                     width = "90%"
