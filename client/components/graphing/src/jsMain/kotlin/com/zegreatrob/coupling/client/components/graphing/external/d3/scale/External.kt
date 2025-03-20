@@ -17,7 +17,7 @@ external interface Scale {
 }
 
 external interface TimeScale {
-    fun domain(domain: Array<Long>): TimeScale
+    fun domain(domain: Array<Int>): TimeScale
     fun domain(): Array<Date>
     fun ticks(count: Number): Array<Date>
     fun range(range: Array<Any>): TimeScale

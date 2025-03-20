@@ -120,7 +120,7 @@ private fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
                 },
             )
         }
-    }.sortedBy { it.x }
+    }.sortedWith(comparator = { a, b -> a.x - b.x })
 
     val flattenedPoints = allPoints.groupBy { point -> point.x }
         .map { group ->

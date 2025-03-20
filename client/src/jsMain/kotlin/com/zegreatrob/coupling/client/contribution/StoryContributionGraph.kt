@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scal
 import com.zegreatrob.coupling.client.components.graphing.external.d3.timeformat.timeFormat
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Area
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.AreaChart
-import com.zegreatrob.coupling.client.components.graphing.external.recharts.CartesianGrid
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Legend
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
@@ -54,9 +53,6 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
             height = "100%"
             AreaChart {
                 this.data = points
-                CartesianGrid {
-                    strokeDasharray = "3 3"
-                }
                 XAxis {
                     dataKey = "x"
                     domain = timeScale.domain().map(js.date.Date::valueOf).toTypedArray()
@@ -93,7 +89,7 @@ private fun dateContributionCountByStory(
     dateContributions: List<Contribution>,
 ): LinePoint = Object.assign(
     jso<LinePoint> {
-        x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+        x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds().toInt()
     },
     dateContributions.groupBy(Contribution::story)
         .toList()

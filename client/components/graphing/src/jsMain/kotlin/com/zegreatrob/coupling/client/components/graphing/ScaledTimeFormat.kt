@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.graphing
 
-fun scaledTimeFormat(min: Long, max: Long): String {
+fun scaledTimeFormat(min: Int, max: Int): String {
     val range = max - min
     val hasMinutes = (range / (1000 * 60)) > 1
     val hasHours = (range / (1000 * 60 * 60)) > 1
