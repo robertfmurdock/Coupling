@@ -35,14 +35,14 @@ import web.cssom.Angle
 import kotlin.collections.component1
 import kotlin.collections.component2
 
-external interface PairFrequencyHeatMapProps : Props {
+external interface PairContributionsHeatMapProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
     var spinsUntilFullRotation: Int
 }
 
 @ReactFunc
-val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
+val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
     val getColor = useOrdinalColorScale(jso { scheme = "pastel1" }, "value")
     val (interpolator, setInterpolator) = useState<((Number) -> String)?>(null)
     useEffect {

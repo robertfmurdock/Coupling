@@ -11,6 +11,7 @@ import web.cssom.px
 val LineTooltip = FC<PropsWithValue<RechartsTooltipArgs>> { props ->
     val args = props.value
     div {
+        style
         css {
             backgroundColor = Color("rgb(0 0 0 / 14%)")
             padding = 10.px

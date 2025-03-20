@@ -2,7 +2,13 @@ package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.PairCycleTimeBarChart
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
-import com.zegreatrob.coupling.client.components.stats.Visualization
+import com.zegreatrob.coupling.client.components.stats.Visualization.AllContributionsLineOverTime
+import com.zegreatrob.coupling.client.components.stats.Visualization.AllEaseLineOverTime
+import com.zegreatrob.coupling.client.components.stats.Visualization.CycleTimeBoxPlot
+import com.zegreatrob.coupling.client.components.stats.Visualization.MedianCycleTimeBarChart
+import com.zegreatrob.coupling.client.components.stats.Visualization.PairContributionsLineOverTime
+import com.zegreatrob.coupling.client.components.stats.Visualization.PairEaseLineOverTime
+import com.zegreatrob.coupling.client.components.stats.Visualization.PairFrequencyHeatmap
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
@@ -55,13 +61,13 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
             },
         ) { (visualization, data) ->
             when (visualization) {
-                Visualization.AllContributionsLineOverTime -> AllContributionsLineGraph(data.allContributions(), window)
-                Visualization.PairContributionsLineOverTime -> PairContributionsLineGraph(data, window)
-                Visualization.PairFrequencyHeatmap -> PairFrequencyHeatMap(data, window, spinsUntilFullRotation)
-                Visualization.PairEaseLineOverTime -> PairEaseLineGraph(data, window)
-                Visualization.MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
-                Visualization.CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
-                Visualization.AllEaseLineOverTime -> AllEaseLineGraph(data.allContributions(), window)
+                AllContributionsLineOverTime -> AllContributionsLineGraph(data.allContributions(), window)
+                PairContributionsLineOverTime -> PairContributionsLineGraph(data, window)
+                PairFrequencyHeatmap -> PairContributionsHeatMap(data, window, spinsUntilFullRotation)
+                PairEaseLineOverTime -> PairEaseLineGraph(data, window)
+                MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
+                CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
+                AllEaseLineOverTime -> AllEaseLineGraph(data.allContributions(), window)
             }
         }
     }
