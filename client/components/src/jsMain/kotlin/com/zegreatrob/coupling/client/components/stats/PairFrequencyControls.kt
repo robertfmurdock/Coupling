@@ -39,6 +39,7 @@ enum class Visualization {
     PairFrequencyHeatmap,
     MedianCycleTimeBarChart,
     CycleTimeBoxPlot,
+    StoryContributionsOverTime,
     PairEaseLineOverTime,
     AllEaseLineOverTime,
 }

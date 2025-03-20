@@ -33,6 +33,12 @@ external interface LineChartProps : PropsWithChildren {
 
 external val LineChart: FC<LineChartProps>
 
+external interface AreaChartProps : PropsWithChildren {
+    var data: Array<LinePoint>
+    var margin: RechartsMargin
+}
+external val AreaChart: FC<AreaChartProps>
+
 external interface CartesianGridProps : Props {
     var strokeDasharray: String
 }
@@ -89,3 +95,13 @@ external interface YAxisProps : Props {
 }
 
 external val YAxis: FC<YAxisProps>
+
+external interface AreaProps : Props {
+    var type: String
+    var dataKey: String
+    var stackId: String
+    var stroke: Any
+    var fill: Any
+}
+
+external val Area: FC<AreaProps>

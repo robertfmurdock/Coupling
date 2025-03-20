@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.stats.Visualization.MedianCycle
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairContributionsLineOverTime
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairEaseLineOverTime
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairFrequencyHeatmap
+import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsOverTime
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
@@ -62,6 +63,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
         ) { (visualization, data) ->
             when (visualization) {
                 AllContributionsLineOverTime -> AllContributionsLineGraph(data.allContributions(), window)
+                StoryContributionsOverTime -> StoryContributionGraph(data.allContributions(), window)
                 PairContributionsLineOverTime -> PairContributionsLineGraph(data, window)
                 PairFrequencyHeatmap -> PairContributionsHeatMap(data, window, spinsUntilFullRotation)
                 PairEaseLineOverTime -> PairEaseLineGraph(data, window)

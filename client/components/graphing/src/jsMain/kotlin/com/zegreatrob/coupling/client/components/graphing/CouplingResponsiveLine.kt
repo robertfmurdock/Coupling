@@ -53,7 +53,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
     val lineIds = props.data.map(NivoLineData::id).toTypedArray()
     val myColor = scaleOrdinal().domain(lineIds).range(schemeCategory10)
     val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
-    val timeFormatter = timeFormat(calculatePrecision(xMinMillis, xMaxMillis))
+    val timeFormatter = timeFormat(scaledTimeFormat(xMinMillis, xMaxMillis))
 
     ResponsiveContainer {
         width = "100%"
@@ -105,22 +105,6 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
                 }
             }
         }
-    }
-}
-
-private fun calculatePrecision(min: Int, max: Int): String {
-    val range = max - min
-    val hasMinutes = (range / (1000 * 60)) > 1
-    val hasHours = (range / (1000 * 60 * 60)) > 1
-    val hasDays = (range / (1000 * 60 * 60 * 24)) > 1
-    val hasMonths = (range / (1000 * 60 * 60 * 24 * 30)) > 1
-
-    return when {
-        hasMonths -> "%y-%m-%d"
-        hasDays -> "%m-%d"
-        hasHours -> "%H:%M"
-        hasMinutes -> "%H:%M:%S"
-        else -> "%H:%M:%S.%L"
     }
 }
 
