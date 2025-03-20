@@ -23,7 +23,7 @@ external interface RechartsMargin {
 }
 
 external interface LinePoint {
-    var x: Int
+    var x: Double
 }
 
 external interface LineChartProps : PropsWithChildren {

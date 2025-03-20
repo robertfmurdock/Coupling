@@ -23,6 +23,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toJSDate
 import react.Props
 import web.cssom.WhiteSpace
 
@@ -89,7 +90,7 @@ private fun dateContributionCountByStory(
     dateContributions: List<Contribution>,
 ): LinePoint = Object.assign(
     jso<LinePoint> {
-        x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds().toInt()
+        x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate().getTime()
     },
     dateContributions.groupBy(Contribution::story)
         .toList()
