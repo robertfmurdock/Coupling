@@ -53,7 +53,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
     val lineIds = props.data.map(NivoLineData::id).toTypedArray()
     val myColor = scaleOrdinal().domain(lineIds).range(schemeCategory10)
     val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
-    val timeFormatter = timeFormat(calculatePrecision(xMaxMillis, xMinMillis))
+    val timeFormatter = timeFormat(calculatePrecision(xMinMillis, xMaxMillis))
 
     ResponsiveContainer {
         width = "100%"
