@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.24.3"
 org-jlleitschuh-gradle-ktlint = "11.0.0"

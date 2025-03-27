@@ -26,7 +26,7 @@ dependencies {
 val inputFile: String? by project
 
 tasks {
-    named("jsNodeRun", NodeJsExec::class) {
+    named("jsNodeProductionRun", NodeJsExec::class) {
         inputFile?.let {
             standardInput = file(it).inputStream()
         }

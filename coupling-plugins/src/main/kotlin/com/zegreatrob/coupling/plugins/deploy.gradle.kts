@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
     js {
-        moduleName = "Coupling-deploy-${project.name}"
+        outputModuleName = "Coupling-deploy-${project.name}"
         nodejs()
     }
 }

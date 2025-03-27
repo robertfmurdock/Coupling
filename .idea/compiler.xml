@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="Coupling.cli.main" target="20" />
+      <module name="Coupling.cli.test" target="20" />
       <module name="Coupling.client.graphing" target="20" />
     </bytecodeTargetLevel>
   </component>

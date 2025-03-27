@@ -34,7 +34,7 @@ dependencies {
 val outputFile: String? by project
 
 tasks {
-    named("jsNodeRun", NodeJsExec::class) {
+    named("jsNodeProductionRun", NodeJsExec::class) {
         outputFile?.let {
             standardOutput = file("${System.getProperty("user.dir")}/$it").outputStream()
         }
