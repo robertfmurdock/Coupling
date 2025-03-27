@@ -43,7 +43,7 @@ val cdnLookupConfiguration: Configuration by configurations.creating {
 val outputFile: String? by project
 
 tasks {
-    named("jsNodeRun", NodeJsExec::class) {
+    named("jsNodeProductionRun", NodeJsExec::class) {
         this.args("react")
         outputFile?.let {
             standardOutput = file("${System.getProperty("user.dir")}/$it").outputStream()

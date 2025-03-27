@@ -1,10 +1,14 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
 import com.zegreatrob.tools.tagger.ReleaseVersion
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
     application
     id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
+    distribution
 }
 
 application {
