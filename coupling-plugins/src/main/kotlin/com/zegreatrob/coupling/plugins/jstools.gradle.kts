@@ -55,8 +55,8 @@ tasks.withType(KotlinJsTest::class).configureEach {
     outputs.cacheIf { true }
 }
 
-rootProject.extensions.findByType(NodeJsEnvSpec::class.java).let {
-    if (it?.version?.get() != "22.13.0") {
-        it?.version = "22.13.0"
+afterEvaluate {
+    project.extensions.findByType(NodeJsEnvSpec::class.java).let {
+        it?.version = "23.9.0"
     }
 }

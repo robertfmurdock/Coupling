@@ -19,7 +19,6 @@ kotlin.sourceSets {
 }
 
 val appConfiguration: Configuration by configurations.creating {
-    extendsFrom(configurations["jsMainImplementation"])
     isCanBeConsumed = true
     isCanBeResolved = false
     attributes {

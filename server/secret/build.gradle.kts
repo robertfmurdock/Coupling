@@ -5,6 +5,8 @@ kotlin {
     js {
         outputModuleName = "Coupling-server-secret"
         nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
     }
 }
 
