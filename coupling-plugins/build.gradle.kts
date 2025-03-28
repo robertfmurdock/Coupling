@@ -57,9 +57,8 @@ tasks {
 }
 
 versionCatalogUpdate {
-    sortByKey.set(true)
+    sortByKey = true
     keep {
-        keepUnusedVersions.set(true)
-        keepUnusedLibraries.set(true)
+        keepUnusedVersions = true
     }
 }

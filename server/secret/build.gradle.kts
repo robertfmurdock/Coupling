@@ -3,8 +3,10 @@ plugins {
 }
 kotlin {
     js {
-        moduleName = "Coupling-server-secret"
+        outputModuleName = "Coupling-server-secret"
         nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
     }
 }
 

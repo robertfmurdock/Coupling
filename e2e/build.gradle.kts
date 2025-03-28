@@ -1,4 +1,6 @@
-import org.jetbrains.kotlin.gradle.plugin.usesPlatformOf
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -18,7 +20,7 @@ val appConfiguration: Configuration by configurations.creating {
     attributes {
         attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "server")
     }
-    usesPlatformOf(kotlin.js().compilations.getByName("e2eTest").target);
+//    usesPlatformOf(kotlin.js().compilations.getByName("e2eTest").target)
 }
 
 val testLoggingLib: Configuration by configurations.creating {

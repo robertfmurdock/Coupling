@@ -5,18 +5,19 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
-    application
     id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
     distribution
 }
 
-application {
-    mainClass.set("com.zegreatrob.coupling.cli.MainKt")
-}
-
 kotlin {
-    jvm { withJava() }
+    jvm {
+        binaries {
+            executable {
+                mainClass.set("com.zegreatrob.coupling.cli.MainKt")
+            }
+        }
+    }
     js {
         nodejs {
             useCommonJs()
