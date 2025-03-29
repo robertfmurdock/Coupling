@@ -56,8 +56,6 @@ dependencies {
     jsMainImplementation(npmConstrained("@aws-sdk/client-lambda"))
     jsMainImplementation(npmConstrained("@graphql-tools/schema"))
     jsMainImplementation(npmConstrained("@graphql-tools/stitch"))
-    jsMainImplementation(npmConstrained("body-parser"))
-    jsMainImplementation(npmConstrained("cookie-parser"))
     jsMainImplementation(npmConstrained("express"))
     jsMainImplementation(npmConstrained("express-jwt"))
     jsMainImplementation(npmConstrained("fs-extra"))

@@ -24,3 +24,6 @@ sealed external interface RouterParams {
 
 external fun static(path: String, options: Json): Handler
 external fun raw(json: Json): Handler
+
+external fun json(): Handler
+external fun urlencoded(config: Json): Handler

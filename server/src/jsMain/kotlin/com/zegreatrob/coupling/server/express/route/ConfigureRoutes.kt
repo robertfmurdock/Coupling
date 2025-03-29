@@ -1,10 +1,9 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.CommandDispatcher
-import com.zegreatrob.coupling.server.external.bodyparser.bodyParserJson
-import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.raw
+import com.zegreatrob.coupling.server.external.express.urlencoded
 import com.zegreatrob.coupling.server.external.graphql.http.createHandler
 import com.zegreatrob.coupling.server.graphql.unifiedSchema
 import js.objects.jso
@@ -23,7 +22,7 @@ fun Express.routes() {
         slackCommandResponse(),
     )
     all("/api/*", apiGuard())
-    use("/api/graphql", urlencoded(json("extended" to true)), bodyParserJson())
+    use("/api/graphql", urlencoded(json("extended" to true)), com.zegreatrob.coupling.server.external.express.json())
     use(
         "/api/graphql",
         createHandler(
