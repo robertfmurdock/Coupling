@@ -7,12 +7,16 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import popper.core.Modifier
+import popper.core.ModifierPhases
 import popper.core.Placement
+import popper.core.PositioningStrategy
 import popper.core.ReferenceElement
-import popper.core.modifier
 import popper.core.modifiers.Arrow
+import popper.core.modifiers.ArrowOptions
 import popper.core.modifiers.Offset
+import popper.core.modifiers.OffsetOptions
+import popper.core.modifiers.Padding
 import react.Props
 import react.ReactNode
 import react.RefObject
@@ -67,16 +71,28 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
     }
 }
 
-private fun popperOptions(arrowRef: RefObject<HTMLElement>): UsePopperOptions = jso {
-    placement = Placement.right
+private fun popperOptions(arrowRef: RefObject<HTMLElement>): UsePopperOptions = UsePopperOptions(
+    placement = Placement.right,
+    strategy = PositioningStrategy.absolute,
     modifiers = arrayOf(
-        Arrow.modifier {
-            this.options = jso {
-                this.element = arrowRef.current
-            }
-        },
-        Offset.modifier {
-            this.options = jso { offset = Offset(0.0, 10.0) }
-        },
-    )
-}
+        Modifier<ArrowOptions>(
+            name = Arrow,
+            options = ArrowOptions(
+                element = arrowRef.current,
+                padding = Padding(0.0),
+            ),
+            phase = ModifierPhases.main,
+            enabled = true,
+            fn = { null },
+            effect = { null },
+        ),
+        Modifier<OffsetOptions>(
+            name = Offset,
+            options = OffsetOptions.invoke(Offset(0, 10)),
+            phase = ModifierPhases.main,
+            enabled = true,
+            fn = { null },
+            effect = { null },
+        ),
+    ),
+)

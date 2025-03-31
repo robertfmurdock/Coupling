@@ -19,10 +19,15 @@ import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.ActionCannon
 import emotion.react.css
 import js.objects.jso
+import popper.core.Modifier
+import popper.core.ModifierPhases
+import popper.core.PositioningStrategy
 import popper.core.ReferenceElement
-import popper.core.modifier
 import popper.core.modifiers.Arrow
+import popper.core.modifiers.ArrowOptions
 import popper.core.modifiers.Offset
+import popper.core.modifiers.OffsetOptions
+import popper.core.modifiers.Padding
 import react.ChildrenBuilder
 import react.Props
 import react.RefObject
@@ -130,19 +135,31 @@ fun ChildrenBuilder.popperDiv(
     }
 }
 
-private fun popperOptions(arrowRef: RefObject<HTMLElement>, state: DemoAnimationState): UsePopperOptions = jso {
-    this.placement = state.placement
-    this.modifiers = arrayOf(
-        Arrow.modifier {
-            this.options = jso {
-                this.element = arrowRef.current
-            }
-        },
-        Offset.modifier {
-            this.options = jso { offset = Offset(0.0, 10.0) }
-        },
-    )
-}
+private fun popperOptions(arrowRef: RefObject<HTMLElement>, state: DemoAnimationState): UsePopperOptions = UsePopperOptions(
+    placement = state.placement,
+    strategy = PositioningStrategy.absolute,
+    modifiers = arrayOf(
+        Modifier<ArrowOptions>(
+            name = Arrow,
+            options = ArrowOptions(
+                element = arrowRef.current,
+                padding = Padding(0.0),
+            ),
+            phase = ModifierPhases.main,
+            enabled = true,
+            fn = { null },
+            effect = { null },
+        ),
+        Modifier<OffsetOptions>(
+            name = Offset,
+            options = OffsetOptions.invoke(Offset(0, 10)),
+            phase = ModifierPhases.main,
+            enabled = true,
+            fn = { null },
+            effect = { null },
+        ),
+    ),
+)
 
 private fun ChildrenBuilder.partyConfigFrame(state: MakeParty) {
     PartyConfigContent(party = state.party, boost = null, isNew = true, onChange = {}, onSave = {}, onDelete = {})
