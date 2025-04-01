@@ -137,7 +137,7 @@ fun ChildrenBuilder.popperDiv(
 
 private fun popperOptions(arrowRef: RefObject<HTMLElement>, state: DemoAnimationState): UsePopperOptions = UsePopperOptions(
     placement = state.placement,
-    strategy = PositioningStrategy.absolute,
+    strategy = PositioningStrategy.fixed,
     modifiers = arrayOf(
         Modifier<ArrowOptions>(
             name = Arrow,
