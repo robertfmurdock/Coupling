@@ -56,7 +56,7 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
     ) {
         div {
             css {
-                position = Position.fixed
+                position = Position.absolute
                 right = 1.em
             }
             CloseButton { onClose = { setMenuTarget(null) } }
