@@ -31,14 +31,20 @@ external interface DraggablePlayerProps : Props {
 }
 
 @ReactFunc
-val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) ->
+val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
+    val (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) = props
     DraggableThing(
         itemType = PLAYER_DRAG_ITEM_TYPE,
         itemId = pinnedPlayer.player.id.value.toString(),
         dropCallback = {},
         css = {},
         endCallback = { _, data ->
-            data?.get("dropTargetId")?.toString()?.toNotBlankString()?.getOrNull()?.let { PlayerId(it) }
+            val playerId: PlayerId? =
+                data?.get("dropTargetId")?.toString()
+                    ?.toNotBlankString()
+                    ?.getOrNull()
+                    ?.let { PlayerId(it) }
+            playerId?.let(onPlayerDrop)
         },
     ) { isOver: Boolean ->
         PlayerCard(
