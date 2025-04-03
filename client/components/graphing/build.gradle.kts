@@ -27,7 +27,7 @@ tasks {
 
 dependencies {
     jsMainImplementation("com.zegreatrob.jsmints:minreact")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion-styled")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     jsMainImplementation(npmConstrained("@nivo/bar"))

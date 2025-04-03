@@ -39,7 +39,7 @@ dependencies {
     jsMainImplementation("com.zegreatrob.jsmints:react-data-loader")
     jsMainImplementation("com.zegreatrob.testmints:action")
     jsMainImplementation("com.zegreatrob.testmints:action-async")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion-styled")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")

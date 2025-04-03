@@ -74,7 +74,7 @@ dependencies {
     jsMainImplementation("io.ktor:ktor-client-content-negotiation")
     jsMainImplementation("io.ktor:ktor-client-core")
     jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
-    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion-styled")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
