@@ -83,16 +83,12 @@ private fun popperOptions(arrowRef: RefObject<HTMLElement>): UsePopperOptions = 
             ),
             phase = ModifierPhases.main,
             enabled = true,
-            fn = { null },
-            effect = { null },
         ),
         Modifier<OffsetOptions>(
             name = Offset,
             options = OffsetOptions.invoke(Offset(0, 10)),
             phase = ModifierPhases.main,
             enabled = true,
-            fn = { null },
-            effect = { null },
         ),
     ),
 )

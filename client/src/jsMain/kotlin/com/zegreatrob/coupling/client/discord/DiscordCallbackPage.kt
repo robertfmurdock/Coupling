@@ -16,12 +16,12 @@ import react.router.dom.useSearchParams
 
 val DiscordCallbackPage by nfc<PageProps> { props ->
     val (urlSearchParams) = useSearchParams()
-    val code = urlSearchParams["code"]
-    val state = urlSearchParams["state"]
+    val code = urlSearchParams.get("code")
+    val state = urlSearchParams.get("state")
 
     val stateData = state?.parseUrlEncodedParameters()
     val partyId = stateData?.get("partyId")
-    val guildId = urlSearchParams["guild_id"]
+    val guildId = urlSearchParams.get("guild_id")
     InstallPageFrame {
         title = "Discord Install"
         if (code == null || state == null || guildId == null || partyId == null) {

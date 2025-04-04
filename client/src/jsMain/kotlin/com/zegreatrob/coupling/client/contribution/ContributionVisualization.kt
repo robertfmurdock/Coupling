@@ -84,7 +84,7 @@ fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updated
     setSearchParams({ previous ->
         previous.also {
             if (updatedWindow != null) {
-                previous["window"] = updatedWindow.name
+                previous.set("window", updatedWindow.name)
             } else {
                 previous.delete("window")
             }

@@ -23,8 +23,8 @@ import react.router.dom.useSearchParams
 
 val SlackCallbackPage by nfc<PageProps> { props ->
     val (urlSearchParams) = useSearchParams()
-    val code = urlSearchParams["code"]
-    val state = urlSearchParams["state"]
+    val code = urlSearchParams.get("code")
+    val state = urlSearchParams.get("state")
     InstallPageFrame {
         title = "Slack Install"
         if (code == null || state == null) {

@@ -17,7 +17,7 @@ private val loadingSequence by lazy { LoadingAnimationState.generateSequence() }
 
 val LoadingPage = FC {
     val (searchParams, setSearchParams) = useSearchParams()
-    val frameIndex = searchParams["frame"]?.toIntOrNull()
+    val frameIndex = searchParams.get("frame")?.toIntOrNull()
     val currentFrame = frameIndex?.let { loadingSequence.toList()[it] }
     if (currentFrame != null) {
         button {
@@ -36,7 +36,7 @@ val LoadingPage = FC {
 
 private fun setFrame(setSearchParams: SetURLSearchParams, frame: Int) {
     setSearchParams({ params ->
-        params["frame"] = "$frame"
+        params.set("frame", "$frame")
         params
     }, jso())
 }

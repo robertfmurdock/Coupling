@@ -35,7 +35,7 @@ import web.window.window
 val LoginChooser by nfc<Props> {
     val auth0Data = useAuth0Data()
     val (params) = useSearchParams()
-    val returnPath = params["path"] ?: ""
+    val returnPath = params.get("path") ?: ""
     val signInFunc = {
         auth0Data.loginWithRedirect(
             RedirectLoginOptions(

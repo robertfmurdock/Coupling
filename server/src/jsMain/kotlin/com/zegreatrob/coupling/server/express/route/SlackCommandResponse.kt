@@ -12,9 +12,9 @@ fun slackCommandResponse(): Handler = { request, response, _ ->
     val body = request.body as Buffer<*>
     val params = URLSearchParams(body.toString(encoding = BufferEncoding.utf8))
 
-    val slackTeam = params["team_id"] ?: ""
-    val slackChannel = params["channel_id"] ?: ""
-    val text = params["text"] ?: ""
+    val slackTeam = params.get("team_id") ?: ""
+    val slackChannel = params.get("channel_id") ?: ""
+    val text = params.get("text") ?: ""
 
     response.send(
         when (text) {
