@@ -1,6 +1,7 @@
 {
   "reject": [
     "entities",
+    "express",
     "mime",
     "read-pkg-up"
   ]
