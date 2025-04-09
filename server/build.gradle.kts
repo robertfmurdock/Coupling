@@ -34,8 +34,6 @@ val clientConfiguration: Configuration by configurations.creating {
     }
 }
 
-inline fun <reified T : Named> Project.namedAttribute(value: String) = objects.named(T::class.java, value)
-
 dependencies {
     clientConfiguration(project(":client"))
     jsMainImplementation(project("actionz"))
