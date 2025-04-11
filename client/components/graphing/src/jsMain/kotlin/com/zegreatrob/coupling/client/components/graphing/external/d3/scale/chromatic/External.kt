@@ -2,4 +2,4 @@
 
 package com.zegreatrob.coupling.client.components.graphing.external.d3.scale.chromatic
 
-external val schemeCategory10: dynamic
+external val schemeCategory10: Array<*>

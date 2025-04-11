@@ -68,7 +68,7 @@ sealed external interface NivoAxis {
 
 external interface AxisTickProps : Props {
     var tickIndex: Number
-    var value: dynamic
+    var value: String
     var format: ((Number) -> String)?
     var x: Number
     var y: Number
