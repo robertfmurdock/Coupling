@@ -722,10 +722,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.788.0":
-  version "3.788.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.788.0.tgz#fbc9c6ba21f86d69a4929321a96a1c0ad20a988c"
-  integrity sha512-GYs8E4agxy/uElb8eoZ9RVcF+w43wkVxAowq6VQ+Jpw2oH7pxwrkqG1mIJpoJGYLvic+tJO0pL4xLUI4ULeVTg==
+"@aws-sdk/lib-dynamodb@3.789.0":
+  version "3.789.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.789.0.tgz#21c70b5c15d63661f5ae8b31bbe2643da47243d2"
+  integrity sha512-ut3d1vaHLxZCh2rc6MwghTz4DxPPoCDP0GjRUsiysG3IHx97akUt2XwPrjNkot0/Hg4JJUZzl95QCjaIf/pUxg==
   dependencies:
     "@aws-sdk/core" "3.775.0"
     "@aws-sdk/util-dynamodb" "3.788.0"
@@ -5554,10 +5554,10 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.0.0.tgz#21b847c731aad01084cdf4b4e6a4c56063b29586"
-  integrity sha512-0AWkP+hoIXB5O34FGY7jh687ZPlOqLqMkJDkiSXcp4TaWWidnxjsZSp0xkjyAWbIz4+j1BFXDAK01Rqb7ceBRA==
+"@stripe/stripe-js@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.1.0.tgz#a0e7b928a3f46d515e8df7a3a66cf4f923b0a580"
+  integrity sha512-dORq+9fb+STvq9Woi7eupUJV2UcW3tP33yQvREI0NIPDKv6KOCg/tV6h/DH1zQn2clIH/WR7HHBpbNQzWAo+Kg==
 
 "@szmarczak/http-timer@^5.0.1":
   version "5.0.1"
