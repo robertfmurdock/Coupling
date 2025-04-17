@@ -191,9 +191,9 @@ class PlayerConfigTest {
             },
         )
     } exercise {
-        act { actor.click(addEmailButton()) }
-        act { actor.type(email2Input(), secondEmail) }
-        act { actor.click(screen.getByRole("button", RoleOptions(name = "Save"))) }
+        actor.click(addEmailButton())
+        actor.type(email2Input(), secondEmail)
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
             partyId = party.id,
