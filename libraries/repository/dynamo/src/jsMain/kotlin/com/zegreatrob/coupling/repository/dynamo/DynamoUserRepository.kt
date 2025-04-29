@@ -136,7 +136,7 @@ class DynamoUserRepository private constructor(override val userId: UserId, over
         json["email"].toString().toNotBlankString().getOrThrow(),
         json["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
-            .mapNotNull { it?.let(NotBlankString::createOrNull)?.let(::PartyId) }
+            .mapNotNull { it?.let(::PartyId) }
             .toSet(),
         json.getDynamoStringValue("stripeCustomerId"),
     )

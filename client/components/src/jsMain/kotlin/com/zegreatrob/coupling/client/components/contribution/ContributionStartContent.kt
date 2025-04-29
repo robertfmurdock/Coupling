@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.AlignItems
@@ -31,7 +31,7 @@ val ContributionStartContent by nfc<ContributionStartContentProps> {
                 textAlign = TextAlign.left
             }
             div {
-                dangerouslySetInnerHTML = jso { __html = parse(loadMarkdownString("ContributionStart")) }
+                dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("ContributionStart")) }
             }
         }
     }

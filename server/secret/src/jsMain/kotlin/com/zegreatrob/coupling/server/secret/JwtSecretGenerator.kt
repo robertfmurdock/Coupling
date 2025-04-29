@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.server.action.SecretGenerator
 import com.zegreatrob.coupling.server.secret.external.jose.SignJWT
 import js.objects.Record
-import js.objects.jso
 import js.objects.recordOf
+import js.objects.unsafeJso
 import js.typedarrays.Uint8Array
 import kotlinx.coroutines.await
 
@@ -21,7 +21,7 @@ interface JwtSecretGenerator : SecretGenerator {
         .setSubject(secret.partyId.value.toString())
         .setIssuedAt()
         .setIssuer(secretIssuer)
-        .setProtectedHeader(jso { alg = "HS256" })
+        .setProtectedHeader(unsafeJso { alg = "HS256" })
         .sign(TextEncoder().encode(secretSigningSecret))
         .await()
 

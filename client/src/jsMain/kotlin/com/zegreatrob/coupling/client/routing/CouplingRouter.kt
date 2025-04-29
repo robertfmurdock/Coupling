@@ -33,7 +33,7 @@ import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.FC
 import react.Props
 import react.create
@@ -61,9 +61,9 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, thirdParty
                 config.couplingRoute("/demo", "Demo", DemoPage),
                 config.couplingRoute("/loading", "Loading Test", LoadingPage),
             ).plus(routes(isSignedIn, config)),
-            opts = jso {
+            opts = unsafeJso {
                 basename = config.basename
-                future = jso {
+                future = unsafeJso {
                     this.asDynamic()["v7_startTransition"] = true
                     v7_relativeSplatPath = true
                 }
@@ -85,15 +85,15 @@ private fun routes(isSignedIn: Boolean, config: ClientConfig) = if (isSignedIn) 
     config.authenticatedRoutes()
 } else {
     arrayOf(redirectUnauthenticated())
-}.plus(jso<RouteObject> { element = LostRoute.create() })
+}.plus(unsafeJso<RouteObject> { element = LostRoute.create() })
 
-private fun redirectUnauthenticated(): RouteObject = jso {
+private fun redirectUnauthenticated(): RouteObject = unsafeJso {
     path = "*"
     element = RedirectUnauthenticated.create()
 }
 
 private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNull(
-    jso {
+    unsafeJso {
         path = "/"
         element = navigateToPartyList()
     },
@@ -106,7 +106,7 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/logout/", "Logout", Logout),
     couplingRoute("/graphiql/", "Graph IQL", GraphIQLPage),
     couplingRoute("/new-party/", "New Party", PartyConfigPage),
-    jso {
+    unsafeJso {
         path = "/:partyId"
         element = RedirectToCurrentPairs.create()
     },

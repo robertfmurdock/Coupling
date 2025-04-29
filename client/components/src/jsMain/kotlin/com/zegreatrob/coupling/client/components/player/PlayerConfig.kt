@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.router.Navigate
 import react.router.dom.usePrompt
@@ -44,7 +44,7 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
     usePrompt(
-        jso {
+        unsafeJso {
             `when` = updatedPlayer != player
             message = "You have unsaved data. Press OK to leave without saving."
         },

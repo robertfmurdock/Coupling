@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @ActionMint
@@ -44,7 +45,7 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
             } else {
                 val atIndex = email.toString().indexOf("@")
                 defaultPlayer.copy(
-                    PlayerId(NotBlankString.create("-1")),
+                    PlayerId("-1".toNotBlankString().getOrThrow()),
                     name = email.toString().substring(0, atIndex),
                     email = email.toString(),
                 )

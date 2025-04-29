@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
 import react.ChildrenBuilder
@@ -69,7 +69,7 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: RefObject<HTMLElement>) {
             sizeRuleSet = large
             colorRuleSet = white
             onClick = { ref.current?.copyToClipboardOnClick()?.invoke() }
-            buttonProps = jso {
+            buttonProps = unsafeJso {
                 tabIndex = -1
             }
             i { className = ClassName("fa fa-clipboard") }

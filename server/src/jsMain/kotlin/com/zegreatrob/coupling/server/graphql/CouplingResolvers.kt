@@ -45,7 +45,7 @@ import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.external.graphql.GraphQLScalarType
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 import kotlinx.serialization.json.decodeFromDynamic
@@ -148,7 +148,7 @@ fun couplingResolvers() = json(
 )
 
 private fun makeStringScalarType(name: String) = GraphQLScalarType<String>(
-    jso {
+    unsafeJso {
         this.name = name
         this.description = ""
         this.serialize = { "$it" }

@@ -22,7 +22,6 @@ import com.zegreatrob.coupling.server.action.contribution.PartyIdContributionsTr
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
@@ -75,7 +74,7 @@ data class PairListQuery(val partyId: PartyId) {
             email: String,
         ) = partyRecord(
             partyId = query.partyId,
-            defaultPlayer.copy(id = PlayerId(NotBlankString.create(email)), email = email),
+            defaultPlayer.copy(id = PlayerId(email.toNotBlankString().getOrThrow()), email = email),
             "-".toNotBlankString().getOrThrow(),
         )
     }

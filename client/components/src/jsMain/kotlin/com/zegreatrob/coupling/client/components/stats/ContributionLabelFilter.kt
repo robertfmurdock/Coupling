@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.stats
 import com.zegreatrob.coupling.client.components.contribution.contributionContentBackgroundColor
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.ReactNode
 import react.dom.events.ChangeEvent
@@ -22,7 +22,7 @@ val ContributionLabelFilter by nfc<ContributionLabelFilterProps> { props ->
     CouplingSelect {
         label = ReactNode("Label Filter")
         backgroundColor = contributionContentBackgroundColor
-        selectProps = jso {
+        selectProps = unsafeJso {
             value = selected
             disabled = allLabels.size <= 1
             onChange = { event -> setSelected(event.handlePlaceholder()) }

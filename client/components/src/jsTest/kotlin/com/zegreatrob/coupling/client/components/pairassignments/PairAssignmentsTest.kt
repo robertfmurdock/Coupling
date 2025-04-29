@@ -15,7 +15,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
@@ -60,7 +60,7 @@ class PairAssignmentsTest {
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ),
-            jso { wrapper = TestRouter },
+            unsafeJso { wrapper = TestRouter },
         )
     } verify {
         screen.findByText("Unpaired players")
@@ -97,7 +97,7 @@ class PairAssignmentsTest {
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ),
-            jso { wrapper = TestRouter },
+            unsafeJso { wrapper = TestRouter },
         )
     } verify {
         screen.findByText("Unpaired players")

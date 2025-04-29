@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import js.objects.ReadonlyRecord
 import kotlinx.browser.window
-import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import org.w3c.dom.get
@@ -28,7 +27,7 @@ external interface PageProps : Props {
 }
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-val PageProps.partyId: PartyId? get() = pathParams["partyId"]?.let(NotBlankString::createOrNull)?.let(::PartyId)
+val PageProps.partyId: PartyId? get() = pathParams["partyId"]?.let(::PartyId)
 val PageProps.playerId: PlayerId? get() = pathParams["playerId"]?.toNotBlankString()?.getOrNull()?.let(::PlayerId)
 val PageProps.pinId: PinId? get() = pathParams["pinId"]?.toNotBlankString()?.getOrNull()?.let(::PinId)
 

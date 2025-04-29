@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.server.external.express.raw
 import com.zegreatrob.coupling.server.external.express.urlencoded
 import com.zegreatrob.coupling.server.external.graphql.http.createHandler
 import com.zegreatrob.coupling.server.graphql.unifiedSchema
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.coroutines.CoroutineScope
 import kotlin.js.json
 
@@ -26,7 +26,7 @@ fun Express.routes() {
     use(
         "/api/graphql",
         createHandler(
-            jso {
+            unsafeJso {
                 schema = unifiedSchema()
                 context = { request -> CouplingContext(request.raw.scope, request.raw.commandDispatcher) }
             },

@@ -18,7 +18,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.Object
 import js.objects.Record
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
@@ -69,7 +69,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                 Legend {
                     width = "90%"
                     height = "7%"
-                    wrapperStyle = jso { whiteSpace = WhiteSpace.preWrap }
+                    wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
                 }
                 stories.forEach { story ->
                     Area {
@@ -89,7 +89,7 @@ private fun dateContributionCountByStory(
     date: LocalDate,
     dateContributions: List<Contribution>,
 ): LinePoint = Object.assign(
-    jso<LinePoint> {
+    unsafeJso<LinePoint> {
         x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate().getTime()
     },
     dateContributions.groupBy(Contribution::story)

@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 
@@ -70,5 +69,5 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         ?.let { json.toRecord(it) }
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
-    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
+    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
 }

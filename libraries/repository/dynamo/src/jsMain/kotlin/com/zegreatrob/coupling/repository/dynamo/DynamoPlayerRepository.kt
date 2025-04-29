@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.datetime.Clock
 import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
@@ -104,7 +105,7 @@ class DynamoPlayerRepository private constructor(override val userId: UserId, ov
     private fun Json.toPlayerRecord() = toPlayer()?.let { toRecord(PartyId().with(it)) }
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
-    private fun Json.PartyId() = PartyId(NotBlankString.create(this["tribeId"].unsafeCast<String>()))
+    private fun Json.PartyId() = PartyId((this["tribeId"].unsafeCast<String>()))
 
     override suspend fun save(partyPlayer: PartyElement<Player>) = saveRawRecord(
         partyPlayer.copyWithIdCorrection().toRecord(),
@@ -143,8 +144,8 @@ class DynamoPlayerRepository private constructor(override val userId: UserId, ov
                 .map { it.value.last() }
                 .filter { it["email"] == email.toString() && it["isDeleted"] != true }
                 .map {
-                    PartyId(NotBlankString.create(it.getDynamoStringValue("tribeId") ?: ""))
-                        .with(PlayerId(NotBlankString.create(it.getDynamoStringValue("id") ?: "")))
+                    PartyId(it.getDynamoStringValue("tribeId") ?: "")
+                        .with(PlayerId(it.getDynamoStringValue("id")?.toNotBlankString()?.getOrNull()!!))
                 }
         }
     }

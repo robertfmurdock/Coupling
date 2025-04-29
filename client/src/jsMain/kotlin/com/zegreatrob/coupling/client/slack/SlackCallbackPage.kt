@@ -14,7 +14,7 @@ import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.PropsWithValue
 import react.create
@@ -55,7 +55,7 @@ val SlackCallbackLoadContent by nfc<PropsWithValue<DataLoadState<VoidResult>>> {
 }
 
 val SlackInstallSuccess by nfc<Props> {
-    div { dangerouslySetInnerHTML = jso { __html = parse(loadMarkdownString("InstallSuccess")) } }
+    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("InstallSuccess")) } }
     ReturnToCouplingButton {
         to = "/parties"
     }

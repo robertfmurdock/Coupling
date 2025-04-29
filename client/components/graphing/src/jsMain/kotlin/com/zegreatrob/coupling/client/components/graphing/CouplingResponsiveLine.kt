@@ -19,7 +19,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxi
 import js.lazy.Lazy
 import js.objects.Object
 import js.objects.Record
-import js.objects.jso
+import js.objects.unsafeJso
 import react.FC
 import react.Props
 import react.ReactNode
@@ -59,7 +59,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
         width = "100%"
         height = "100%"
         LineChart {
-            margin = jso {
+            margin = unsafeJso {
                 bottom = 60
                 left = 40
                 right = 80
@@ -90,7 +90,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
             Legend {
                 width = "90%"
                 height = "7%"
-                wrapperStyle = jso { whiteSpace = WhiteSpace.preWrap }
+                wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
                 onClick = onLegendClick
             }
             lineIds.forEachIndexed { index, lineId ->
@@ -112,7 +112,7 @@ private fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
     val allPoints: List<LinePoint> = flatMap { line ->
         line.data.map { point ->
             Object.assign(
-                jso<LinePoint>(),
+                unsafeJso<LinePoint>(),
                 point,
                 Record {
                     this["x"] = (point.x as Date?)?.getTime()

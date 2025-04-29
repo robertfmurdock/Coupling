@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.browser.window
 import react.FC
 import react.Props
@@ -15,7 +15,7 @@ import react.router.useNavigate
 import react.router.useParams
 import react.useEffect
 
-fun ClientConfig.couplingRoute(path: String, title: String, rComponent: FC<PageProps>) = jso<RouteObject> {
+fun ClientConfig.couplingRoute(path: String, title: String, rComponent: FC<PageProps>) = unsafeJso<RouteObject> {
     this.path = path
     this.element = CouplingRoute.create(
         title = title,
@@ -47,7 +47,7 @@ val CouplingRoute by nfc<CouplingRouteProps> { props ->
         search = searchParams
         commander = MasterCommander {
             runCatching { auth0Data.getAccessTokenSilently() }
-                .onFailure { auth0Data.loginWithRedirect(jso()) }
+                .onFailure { auth0Data.loginWithRedirect(unsafeJso()) }
                 .getOrThrow()
         }
         config = props.config

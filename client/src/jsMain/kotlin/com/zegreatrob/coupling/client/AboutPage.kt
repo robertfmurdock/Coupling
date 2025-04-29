@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import kotools.types.text.toNotBlankString
 import react.Props
 import react.PropsWithChildren
@@ -32,7 +32,7 @@ import web.cssom.px
 val AboutPage by nfc<PageProps> {
     aboutPageContent {
         div {
-            dangerouslySetInnerHTML = jso {
+            dangerouslySetInnerHTML = unsafeJso {
                 __html =
                     parse(loadMarkdownString("About"))
             }

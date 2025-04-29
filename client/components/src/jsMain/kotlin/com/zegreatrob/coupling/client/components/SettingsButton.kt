@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.useState
@@ -21,7 +21,7 @@ val SettingsButton by nfc<PartyButtonProps> { props ->
             sizeRuleSet = large
             colorRuleSet = black
             onClick = { setShowDropDown(true) }
-            buttonProps = jso {
+            buttonProps = unsafeJso {
                 onMouseEnter = { setShowDropDown(true) }
             }
             css {

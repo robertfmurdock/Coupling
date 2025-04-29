@@ -11,17 +11,14 @@ import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
-import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
-import kotlin.uuid.Uuid
 
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, PartyContext<R>> {
 
@@ -43,7 +40,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val player = Player(
-                id = PlayerId(NotBlankString.create(uuidString())),
+                id = PlayerId.new(),
                 name = "",
                 email = "",
                 callSignAdjective = "1",
@@ -148,7 +145,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     @Test
     fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val playerId = PlayerId(NotBlankString.create("${Uuid.random()}"))
+            val playerId = PlayerId.new()
         }.bind(),
     ) exercise {
         repository.deletePlayer(partyId, playerId)

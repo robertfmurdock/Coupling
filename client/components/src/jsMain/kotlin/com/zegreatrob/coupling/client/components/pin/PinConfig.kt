@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.router.Navigate
 import react.router.dom.usePrompt
@@ -53,7 +53,7 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
         }.requireConfirmation("Are you sure you want to delete this pin?")
     }
     usePrompt(
-        jso {
+        unsafeJso {
             `when` = updatedPin != pin
             message = "You have unsaved data. Press OK to leave without saving."
         },

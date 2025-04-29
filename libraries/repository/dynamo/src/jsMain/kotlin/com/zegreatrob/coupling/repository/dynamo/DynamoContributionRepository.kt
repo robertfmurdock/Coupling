@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
@@ -158,7 +157,7 @@ class DynamoContributionRepository private constructor(override val userId: User
     }
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
-    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
+    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
 
     companion object :
         DynamoRepositoryCreatorSyntax<DynamoContributionRepository>(),

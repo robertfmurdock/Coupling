@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.external.reactpopup.popup
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.browser.localStorage
 import react.Props
 import react.create
@@ -79,7 +79,7 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
                 marginRight = 15.px
                 marginBottom = 15.px
             }
-            div { dangerouslySetInnerHTML = jso { __html = parse(recentInfoMd) } }
+            div { dangerouslySetInnerHTML = unsafeJso { __html = parse(recentInfoMd) } }
         }
     },
     contentStyle = json(

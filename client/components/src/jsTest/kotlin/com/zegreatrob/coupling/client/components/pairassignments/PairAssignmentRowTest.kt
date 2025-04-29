@@ -19,7 +19,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.Window
@@ -48,7 +48,7 @@ class PairAssignmentRowTest {
                 controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
-            jso { wrapper = TestRouter },
+            unsafeJso { wrapper = TestRouter },
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
@@ -78,7 +78,7 @@ class PairAssignmentRowTest {
                 controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
-            jso { wrapper = TestRouter },
+            unsafeJso { wrapper = TestRouter },
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))

@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import kotlin.js.json
 
@@ -27,13 +27,13 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
         props.data.mapNotNull { (pair, report) -> pair to (report.medianCycleTime ?: return@mapNotNull null) }
 
     val data = pairToCycleTime.map { (pair, cycleTime) ->
-        jso<dynamic> {
+        unsafeJso<dynamic> {
             this.pairId = pair.pairId
             value = cycleTime.inWholeMilliseconds
         }
     }.toTypedArray()
     val largestMobSize = pairToCycleTime.toMap().keys.largestMobSize()
-    val getColor = useOrdinalColorScale(jso { scheme = "pastel1" }, "value")
+    val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
     val couplingPairs = props.data.toMap().keys
     colorContext.Provider {
         this.value = getColor

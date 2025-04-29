@@ -15,7 +15,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import react.ReactNode
@@ -41,11 +41,11 @@ class CurrentPairAssignmentsPanelTest {
             RouterProvider.create {
                 router = createMemoryRouter(
                     arrayOf(
-                        jso {
+                        unsafeJso {
                             path = "/${party.id.value}/pairAssignments/current/"
                             element = ReactNode("current pairs")
                         },
-                        jso {
+                        unsafeJso {
                             path = "*"
                             element = CurrentPairAssignmentsPanel.create(
                                 party,
@@ -79,11 +79,11 @@ class CurrentPairAssignmentsPanelTest {
                 RouterProvider {
                     router = createMemoryRouter(
                         arrayOf(
-                            jso {
+                            unsafeJso {
                                 path = "/${party.id.value}/pairAssignments/current/"
                                 element = ReactNode("current pairs")
                             },
-                            jso {
+                            unsafeJso {
                                 path = "*"
                                 element = CurrentPairAssignmentsPanel.create(
                                     party,

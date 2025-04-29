@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.dom.useSearchParams
@@ -39,7 +39,7 @@ val LoginChooser by nfc<Props> {
     val signInFunc = {
         auth0Data.loginWithRedirect(
             RedirectLoginOptions(
-                appState = jso { returnTo = "${window.asDynamic()["basename"]}$returnPath" },
+                appState = unsafeJso { returnTo = "${window.asDynamic()["basename"]}$returnPath" },
             ),
         )
     }

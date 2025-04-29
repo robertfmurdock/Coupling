@@ -19,7 +19,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
-import js.objects.jso
+import js.objects.unsafeJso
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOptionElement
 import react.Fragment
@@ -35,7 +35,7 @@ class PartyConfigTest {
     fun willDefaultPartyThatIsMissingData() = asyncSetup(object {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             PartyConfig(party = party, boost = null, isNew = false, dispatchFunc = DispatchFunc { {} })
         }
     } verify {
@@ -70,11 +70,11 @@ class PartyConfigTest {
             RouterProvider.create {
                 router = createMemoryRouter(
                     routes = arrayOf(
-                        jso {
+                        unsafeJso {
                             path = "/parties/"
                             element = ReactNode("Parties!")
                         },
-                        jso {
+                        unsafeJso {
                             path = "*"
                             element = Fragment.create {
                                 PartyConfig(
@@ -104,7 +104,7 @@ class PartyConfigTest {
         val party = PartyDetails(stubPartyId())
         val stubDispatcher = StubDispatcher()
     }) {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             PartyConfig(party = party, boost = null, isNew = true, dispatchFunc = stubDispatcher.func())
         }
     } exercise {

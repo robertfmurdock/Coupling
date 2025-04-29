@@ -16,7 +16,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.jso
+import js.objects.unsafeJso
 import react.ReactNode
 import react.create
 import react.router.RouterProvider
@@ -38,7 +38,7 @@ class SlackConnectPageContentTest {
         val slackTeam = uuidString()
         val slackChannel = uuidString()
     }) {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             SlackConnectPageContent(
                 parties = parties,
                 slackTeam = slackTeam,
@@ -89,11 +89,11 @@ class SlackConnectPageContentTest {
             RouterProvider.create {
                 router = createMemoryRouter(
                     arrayOf(
-                        jso {
+                        unsafeJso {
                             path = "/${party.id.value}/pairAssignments/current/"
                             element = ReactNode("Party Time")
                         },
-                        jso {
+                        unsafeJso {
                             path = "*"
                             element = SlackConnectPageContent.create(
                                 parties = listOf(party),

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubSecret
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.coroutines.await
 import kotlin.random.Random
 import kotlin.test.Test
@@ -29,7 +29,7 @@ class SecretGeneratorTest {
         val token = jwtVerify(
             result,
             TextEncoder().encode(secretSigningSecret),
-            jso {
+            unsafeJso {
                 issuer = arrayOf(this@verify.secretIssuer)
                 subject = partyId.value.toString()
                 audience = arrayOf(this@verify.secretAudience)

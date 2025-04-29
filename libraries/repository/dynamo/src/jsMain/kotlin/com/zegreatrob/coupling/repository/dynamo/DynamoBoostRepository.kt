@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import js.objects.Object.Companion.assign
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -92,7 +92,7 @@ class DynamoBoostRepository private constructor(override val userId: UserId, ove
         }
     }
 
-    private fun copyWithDifferentPk(dynamoJson: Json, partyId: PartyId) = assign(jso(), dynamoJson).add(json("pk" to tribeKey(partyId)))
+    private fun copyWithDifferentPk(dynamoJson: Json, partyId: PartyId) = assign(unsafeJso(), dynamoJson).add(json("pk" to tribeKey(partyId)))
 
     private suspend fun allTribeCopiesToUpdate(boostRecord: Record<Boost>): Set<PartyId> {
         val previousRecord = getByPk(userKey(boostRecord.data.userId))

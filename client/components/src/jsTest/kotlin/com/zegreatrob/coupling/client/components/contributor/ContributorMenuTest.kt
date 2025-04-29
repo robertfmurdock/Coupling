@@ -17,7 +17,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.jso
+import js.objects.unsafeJso
 import kotools.types.text.toNotBlankString
 import react.ReactNode
 import react.create
@@ -37,11 +37,11 @@ class ContributorMenuTest {
             RouterProvider.create {
                 router = createMemoryRouter(
                     arrayOf(
-                        jso {
+                        unsafeJso {
                             path = partyId.with(contributor).playerConfigPath()
                             element = ReactNode("Success")
                         },
-                        jso {
+                        unsafeJso {
                             path = "*"
                             element = ContributorMenu.create(contributor, players, partyId, StubDispatcher().func())
                         },
@@ -63,7 +63,7 @@ class ContributorMenuTest {
     }) exercise {
         render(
             ContributorMenu.create(contributor, players, partyId, StubDispatcher().func()),
-            jso { wrapper = TestRouter },
+            unsafeJso { wrapper = TestRouter },
         )
     } verify {
         screen.findByText("Player Config").assertNotNull()

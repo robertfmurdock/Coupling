@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
-import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
@@ -27,7 +26,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
         this["email"].toString().toNotBlankString().getOrThrow(),
         this["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
-            .mapNotNull { it?.let(NotBlankString::createOrNull)?.let(::PartyId) }
+            .mapNotNull { it?.let(::PartyId) }
             .toSet(),
         getDynamoStringValue("stripeCustomerId"),
     )

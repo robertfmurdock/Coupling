@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
@@ -41,7 +41,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
         CouplingInput {
             label = ReactNode("Description")
             backgroundColor = partySecretBackgroundColor
-            inputProps = jso {
+            inputProps = unsafeJso {
                 type = InputType.text
                 onChange = { event -> description = event.target.value }
             }
@@ -69,7 +69,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
             CouplingInput {
                 label = ReactNode("Secret ID")
                 backgroundColor = partySecretBackgroundColor
-                inputProps = jso {
+                inputProps = unsafeJso {
                     type = InputType.text
                     disabled = true
                     value = createdSecret?.id?.value?.toString() ?: ""
@@ -80,7 +80,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
             CouplingInput {
                 label = ReactNode("Secret Value")
                 backgroundColor = partySecretBackgroundColor
-                inputProps = jso {
+                inputProps = unsafeJso {
                     type = InputType.text
                     disabled = true
                     value = secretValue

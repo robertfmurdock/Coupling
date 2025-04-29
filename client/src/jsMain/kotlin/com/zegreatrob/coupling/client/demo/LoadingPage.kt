@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.client.components.FrameRunner
-import js.objects.jso
+import js.objects.unsafeJso
 import react.FC
 import react.dom.html.ReactHTML.button
 import react.router.dom.SetURLSearchParams
@@ -38,7 +38,7 @@ private fun setFrame(setSearchParams: SetURLSearchParams, frame: Int) {
     setSearchParams({ params ->
         params.set("frame", "$frame")
         params
-    }, jso())
+    }, unsafeJso())
 }
 
 data class LoadingAnimationStateData(

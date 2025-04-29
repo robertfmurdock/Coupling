@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.model.party
 
 import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 data class PartyId(val value: NotBlankString)
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-fun PartyId(value: String) = PartyId(NotBlankString.create(value))
+fun PartyId(value: String) = PartyId(value.toNotBlankString().getOrThrow())
 
 data class PartyElement<T>(val partyId: PartyId, val element: T)
 

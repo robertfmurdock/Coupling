@@ -19,7 +19,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import kotlin.js.json
 
@@ -30,7 +30,7 @@ external interface PairCycleTimeBoxPlotProps : Props {
 
 @ReactFunc
 val PairCycleTimeBoxPlot by nfc<PairCycleTimeBoxPlotProps> { props ->
-    val getColor = useOrdinalColorScale(jso { scheme = "pastel1" }, "value")
+    val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
     val couplingPairs = props.data.toMap().keys
     colorContext.Provider {
         this.value = getColor
@@ -61,7 +61,7 @@ val PairCycleTimeBoxPlot by nfc<PairCycleTimeBoxPlotProps> { props ->
 
 private fun List<Pair<CouplingPair, ContributionReport>>.toCycleTimeData() = flatMap { (pair, report) ->
     report.contributions?.elements?.mapNotNull { contribution ->
-        jso<dynamic> {
+        unsafeJso<dynamic> {
             pairId = pair.pairId
             this.pair = pair
             value = contribution.cycleTime?.inWholeMilliseconds ?: return@mapNotNull null

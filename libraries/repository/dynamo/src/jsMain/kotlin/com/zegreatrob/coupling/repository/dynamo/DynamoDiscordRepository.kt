@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
@@ -33,7 +32,7 @@ class DynamoDiscordRepository private constructor(override val userId: UserId, o
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
     private fun Json.toRecord(): Record<PartyElement<DiscordTeamAccess>> {
-        val partyId = this["tribeId"].unsafeCast<String>().let(NotBlankString::create).let(::PartyId)
+        val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)
         return toRecord(partyId.with(toAccess()))
     }
 

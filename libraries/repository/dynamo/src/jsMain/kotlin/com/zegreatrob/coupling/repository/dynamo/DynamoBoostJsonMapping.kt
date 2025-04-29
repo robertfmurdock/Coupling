@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserId
 import kotlinx.datetime.Instant
-import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
@@ -29,7 +28,7 @@ interface DynamoBoostJsonMapping : DynamoRecordJsonMapping {
         UserId(this["userId"].toString().toNotBlankString().getOrThrow()),
         this["tribeIds"]
             .unsafeCast<Array<String?>>()
-            .mapNotNull { it?.let(NotBlankString::create)?.let(::PartyId) }
+            .mapNotNull { it?.let(::PartyId) }
             .toSet(),
         this["expirationDate"]?.toString()?.let { Instant.parse(it) } ?: Instant.DISTANT_PAST,
     )

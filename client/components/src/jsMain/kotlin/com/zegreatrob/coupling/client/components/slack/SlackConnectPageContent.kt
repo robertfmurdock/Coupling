@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
@@ -88,7 +88,7 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
             }
         }
     } else {
-        div { dangerouslySetInnerHTML = jso { __html = parse(loadMarkdownString("ConnectSuccess")) } }
+        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("ConnectSuccess")) } }
         ReturnToCouplingButton { to = "/${command.partyId.value}/pairAssignments/current/" }
     }
 }

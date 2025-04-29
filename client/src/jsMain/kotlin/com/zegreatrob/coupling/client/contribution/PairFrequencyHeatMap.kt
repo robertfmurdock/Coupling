@@ -25,7 +25,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.FC
 import react.Props
 import react.use
@@ -43,7 +43,7 @@ external interface PairContributionsHeatMapProps : Props {
 
 @ReactFunc
 val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
-    val getColor = useOrdinalColorScale(jso { scheme = "pastel1" }, "value")
+    val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
     val (interpolator, setInterpolator) = useState<((Number) -> String)?>(null)
     useEffect {
         val value = interpolatorAsync.await()

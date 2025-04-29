@@ -24,7 +24,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.router.dom.SetURLSearchParams
 
@@ -89,7 +89,7 @@ fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updated
                 previous.delete("window")
             }
         }
-    }, jso { })
+    }, unsafeJso { })
 }
 
 private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {

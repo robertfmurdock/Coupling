@@ -4,7 +4,7 @@ import csstype.Properties
 import csstype.PropertiesBuilder
 import emotion.css.ClassName
 import emotion.css.cx
-import js.objects.jso
+import js.objects.unsafeJso
 import react.FC
 import react.PropsWithChildren
 import react.PropsWithClassName
@@ -67,23 +67,23 @@ val buttonRuleset: PropertiesBuilder.() -> Unit = {
     }
 }
 
-val small: Properties = jso {
+val small: Properties = unsafeJso {
     fontSize = 11.px
 }
-val medium: Properties = jso {
+val medium: Properties = unsafeJso {
     fontSize = 13.px
     fontWeight = FontWeight.bold
     lineHeight = number(1.0)
 }
-val large: Properties = jso {
+val large: Properties = unsafeJso {
     fontSize = 14.px
     padding = Padding(8.px, 14.px, 9.px)
 }
-val supersize: Properties = jso {
+val supersize: Properties = unsafeJso {
     fontSize = 34.px
     padding = Padding(8.px, 14.px, 9.px)
 }
-val pink: Properties = jso<PropertiesBuilder>().apply {
+val pink: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#e22092")
     hover {
         backgroundColor = Color("#c81e82")
@@ -92,7 +92,7 @@ val pink: Properties = jso<PropertiesBuilder>().apply {
         backgroundColor = Color("#c81e82")
     }
 }
-val lightGreen: Properties = jso<PropertiesBuilder>().apply {
+val lightGreen: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#7fd8be")
     color = Color("#3e474c")
     textShadow = None.none
@@ -100,31 +100,31 @@ val lightGreen: Properties = jso<PropertiesBuilder>().apply {
         backgroundColor = Color("#68b39d")
     }
 }
-val green: Properties = jso<PropertiesBuilder>().apply {
+val green: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#42805e")
     hover {
         backgroundColor = Color("#29533d")
     }
 }
-val red: Properties = jso<PropertiesBuilder>().apply {
+val red: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#e62727")
     hover {
         backgroundColor = Color("#cf2525")
     }
 }
-val orange: Properties = jso<PropertiesBuilder>().apply {
+val orange: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#ff5c00")
     hover {
         backgroundColor = Color("#d45500")
     }
 }
-val blue: Properties = jso<PropertiesBuilder>().apply {
+val blue: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#345995")
     hover {
         backgroundColor = Color("#5188e1")
     }
 }
-val white: Properties = jso<PropertiesBuilder>().apply {
+val white: Properties = unsafeJso<PropertiesBuilder>().apply {
     buttonColorsWithFocus(
         backgroundColor = Color("#f3ffff"),
         color = Color("#3e474c"),
@@ -134,7 +134,7 @@ val white: Properties = jso<PropertiesBuilder>().apply {
         backgroundColor = Color("#cdd7d7")
     }
 }
-val yellow: Properties = jso<PropertiesBuilder>().apply {
+val yellow: Properties = unsafeJso<PropertiesBuilder>().apply {
     buttonColorsWithFocus(
         backgroundColor = Color("#eac435"),
         color = Color("#3e474c"),
@@ -155,7 +155,7 @@ private fun PropertiesBuilder.buttonColorsWithFocus(backgroundColor: Color, colo
     }
 }
 
-val black: Properties = jso<PropertiesBuilder>().apply {
+val black: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#222222")
     ":hover" {
         backgroundColor = Color("#333")

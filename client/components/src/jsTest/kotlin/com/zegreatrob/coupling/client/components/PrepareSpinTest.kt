@@ -21,7 +21,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.external.reactTestingLibrary
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotools.types.collection.toNotEmptyList
@@ -52,7 +52,7 @@ class PrepareSpinTest {
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = render(jso { wrapper = TestRouter }) {
+        val wrapper = render(unsafeJso { wrapper = TestRouter }) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) exercise {
@@ -79,7 +79,7 @@ class PrepareSpinTest {
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = render(jso { wrapper = TestRouter }) {
+        val wrapper = render(unsafeJso { wrapper = TestRouter }) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) exercise {
@@ -107,7 +107,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val render = render(jso { wrapper = TestRouter }) {
+        val render = render(unsafeJso { wrapper = TestRouter }) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) {
@@ -140,7 +140,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     } verify { result ->
@@ -170,7 +170,7 @@ class PrepareSpinTest {
             ),
             null,
         )
-        val result = render(jso { wrapper = TestRouter }) {
+        val result = render(unsafeJso { wrapper = TestRouter }) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
@@ -194,7 +194,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val user = UserEvent.setup()
         val currentPairs = null
-        val context = render(jso { wrapper = TestRouter }) {
+        val context = render(unsafeJso { wrapper = TestRouter }) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
@@ -218,7 +218,7 @@ class PrepareSpinTest {
             pairs = players.map { pairOf(it).withPins(emptySet()) },
             null,
         )
-        val context = render(jso { wrapper = TestRouter }) {
+        val context = render(unsafeJso { wrapper = TestRouter }) {
             PrepareSpin(party, players.toList(), currentPairs, emptyList(), { {} })
         }
     }) exercise {

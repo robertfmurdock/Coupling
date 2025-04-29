@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyElement
-import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 data class Player(
@@ -27,7 +27,7 @@ val Player.emails get() = listOf(email) + additionalEmails
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 val defaultPlayer = Player(
-    id = PlayerId(NotBlankString.create("DEFAULT")),
+    id = PlayerId("DEFAULT".toNotBlankString().getOrThrow()),
     badge = Badge.Default,
     name = "",
     email = "",

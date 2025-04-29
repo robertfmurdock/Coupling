@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.datetime.Clock
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
@@ -31,7 +30,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: UserId, 
                 ?.let { player ->
                     CouplingConnection(
                         it["id"].toString(),
-                        it["tribeId"].toString().let(NotBlankString::create).let(::PartyId),
+                        it["tribeId"].toString().let(::PartyId),
                         player,
                     )
                 }

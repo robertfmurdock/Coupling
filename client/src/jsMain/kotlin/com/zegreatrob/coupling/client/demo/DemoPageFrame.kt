@@ -18,7 +18,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.ActionCannon
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import popper.core.Modifier
 import popper.core.ModifierPhases
 import popper.core.PositioningStrategy
@@ -92,11 +92,11 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
             css { pointerEvents = None.none }
             when (state) {
                 is Start -> aboutPageContent {
-                    div { dangerouslySetInnerHTML = jso { __html = parse(state.text) } }
+                    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(state.text) } }
                 }
 
                 is ShowIntro -> aboutPageContent {
-                    div { dangerouslySetInnerHTML = jso { __html = parse(state.text) } }
+                    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(state.text) } }
                 }
 
                 is MakeParty -> partyConfigFrame(state)
@@ -128,7 +128,7 @@ fun ChildrenBuilder.popperDiv(
         arrowRef = arrowRef,
         popperInstance = popperInstance,
     ) {
-        div { dangerouslySetInnerHTML = jso { __html = parse(state.description) } }
+        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(state.description) } }
         if (state.showReturnButton) {
             returnToCouplingButton()
         }

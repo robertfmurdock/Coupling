@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h4
@@ -35,7 +35,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
     var boostedParty by useState { props.parties.firstOrNull { props.boost?.partyIds?.contains(it.id) == true } }
 
     if (subscription?.isActive == true) {
-        div { dangerouslySetInnerHTML = jso { __html = parse(loadMarkdownString("Boost")) } }
+        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("Boost")) } }
 
         h4 { +"Currently Boosting:" }
         p { +(boostedParty?.name ?: "No party") }

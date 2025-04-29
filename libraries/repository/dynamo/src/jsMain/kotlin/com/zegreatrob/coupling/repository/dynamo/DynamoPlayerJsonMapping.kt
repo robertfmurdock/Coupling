@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.player
-import kotools.types.text.NotBlankString
+import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
@@ -40,7 +40,7 @@ interface DynamoPlayerJsonMapping :
     @OptIn(ExperimentalKotoolsTypesApi::class)
     fun Json.toPlayer() = getDynamoStringValue("id")?.let {
         Player(
-            id = PlayerId(NotBlankString.create(it)),
+            id = PlayerId(it.toNotBlankString().getOrThrow()),
             badge = getDynamoNumberValue("badge")?.toInt()?.let {
                 Badge.entries.firstOrNull { badge -> badge.value == it }
             } ?: defaultPlayer.badge,

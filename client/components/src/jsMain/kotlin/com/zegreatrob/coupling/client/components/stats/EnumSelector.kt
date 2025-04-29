@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.jso
+import js.objects.unsafeJso
 import react.ChildrenBuilder
 import react.Props
 import react.ReactNode
@@ -28,7 +28,7 @@ val EnumSelector by nfc<EnumSelectorProps<Any>> { props ->
     CouplingSelect {
         label = props.label
         backgroundColor = props.backgroundColor
-        selectProps = jso {
+        selectProps = unsafeJso {
             +props.selectProps
             defaultValue = props.enumName(props.default)
             onChange = { event ->

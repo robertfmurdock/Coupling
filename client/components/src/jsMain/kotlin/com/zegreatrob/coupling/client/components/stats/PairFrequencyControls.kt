@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Fragment
 import react.Props
 import react.ReactNode
@@ -147,7 +147,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                                     },
                                     default = FakeDataStyle.RandomPairs,
                                     onChange = setFakeStyle::invoke,
-                                    selectProps = jso {
+                                    selectProps = unsafeJso {
                                         disabled = fakeStyle == null
                                     },
                                 )

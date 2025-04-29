@@ -15,7 +15,7 @@ import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import org.w3c.dom.HTMLElement
@@ -35,7 +35,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("1"), name = "Mathematica")
     }) exercise {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             PartyStatistics(
                 party = party,
                 players = players,
@@ -145,7 +145,7 @@ class PartyStatisticsTest {
             ),
         )
     }) exercise {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             PartyStatistics(party, players, pairs, 0, null)
         }
     } verify { wrapper ->
@@ -169,7 +169,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             PartyStatistics(party, players, emptyList(), 3, null)
         }
     } verify {
@@ -189,7 +189,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {
-        render(jso { wrapper = TestRouter }) {
+        render(unsafeJso { wrapper = TestRouter }) {
             PartyStatistics(party, players, emptyList(), 0, 2.days)
         }
     } verify {

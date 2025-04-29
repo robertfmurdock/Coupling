@@ -3,11 +3,9 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
 import kotools.types.collection.toNotEmptyList
-import kotools.types.text.NotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
@@ -18,7 +16,7 @@ fun GqlPair.toModel() = PlayerPair(
     recentTimesPaired = recentTimesPaired,
     pairAssignmentHistory = pairAssignmentHistory?.map { json ->
         PairAssignment(
-            documentId = json.documentId?.let { PairAssignmentDocumentId(NotBlankString.create(it)) },
+            documentId = json.documentId,
             details = json.details?.toModel(),
             date = json.date,
             allPairs = json.allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),

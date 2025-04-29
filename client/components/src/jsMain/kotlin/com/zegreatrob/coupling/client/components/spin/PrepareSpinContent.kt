@@ -20,7 +20,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML.br
@@ -232,7 +232,7 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = Co
     sizeRuleSet = supersize
     colorRuleSet = pink
     onClick = generateNewPairsFunc
-    buttonProps = jso {
+    buttonProps = unsafeJso {
         disabled = (generateNewPairsFunc == null)
     }
     className = ClassName {

@@ -25,7 +25,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.jso
+import js.objects.unsafeJso
 import kotlinx.browser.window
 import org.w3c.dom.Window
 import react.ChildrenBuilder
@@ -301,11 +301,11 @@ class PlayerConfigTest {
             RouterProvider.create {
                 router = createMemoryRouter(
                     arrayOf(
-                        jso {
+                        unsafeJso {
                             path = "/${party.id.value}/pairAssignments/current/"
                             element = ReactNode("Fin")
                         },
-                        jso {
+                        unsafeJso {
                             path = "*"
                             element = Fragment.create {
                                 PlayerConfig(
@@ -418,11 +418,11 @@ class PlayerConfigTest {
             RouterProvider.create {
                 router = createMemoryRouter(
                     arrayOf(
-                        jso {
+                        unsafeJso {
                             path = "elsewhere"
                             element = ReactNode("Elsewhere")
                         },
-                        jso {
+                        unsafeJso {
                             path = "*"
                             element = Fragment.create {
                                 Link {
@@ -486,7 +486,7 @@ class PlayerConfigTest {
 
 fun singleRouteRouter(block: ChildrenBuilder.() -> Unit) = createMemoryRouter(
     arrayOf(
-        jso {
+        unsafeJso {
             path = "*"
             this.element = Fragment.create(block)
         },

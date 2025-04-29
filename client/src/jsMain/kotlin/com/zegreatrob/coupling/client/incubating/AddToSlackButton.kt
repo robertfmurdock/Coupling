@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.incubating
 
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.jso
+import js.objects.unsafeJso
 import react.Props
 import react.dom.html.ReactHTML.a
 import react.dom.svg.ReactSVG.path
@@ -47,7 +47,7 @@ val AddToSlackButton by nfc<AddToSlackButtonProps> { props ->
         }
         svg {
             xmlns = "http://www.w3.org/2000/svg"
-            style = jso {
+            style = unsafeJso {
                 height = 24.px
                 width = 24.px
                 marginRight = 12.px
