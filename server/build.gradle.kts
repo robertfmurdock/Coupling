@@ -65,6 +65,7 @@ dependencies {
     jsMainImplementation(npmConstrained("minimist"))
     jsMainImplementation(npmConstrained("on-finished"))
     jsMainImplementation(npmConstrained("parse5"))
+    jsMainImplementation(npmConstrained("parse5-html-rewriting-stream"))
     jsMainImplementation(npmConstrained("stripe"))
 
     jsTestImplementation(project(":libraries:stub-model"))
