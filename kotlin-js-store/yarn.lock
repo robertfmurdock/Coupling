@@ -5444,17 +5444,17 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@stripe/react-stripe-js@^3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-3.6.0.tgz#af6b66c006eef97ed885815ae976fb74f0aa1bf4"
-  integrity sha512-zEnaUmTOsu7zhl3RWbZ0l1dRiad+QIbcAYzQfF+yYelURJowhAwesRHKWH+qGAIBEpkO6/VCLFHhVLH9DtPlnw==
+"@stripe/react-stripe-js@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-3.7.0.tgz#ebebf87718875be08c68b3412cab785d0e9064d6"
+  integrity sha512-PYls/2S9l0FF+2n0wHaEJsEU8x7CmBagiH7zYOsxbBlLIHEsqUIQ4MlIAbV9Zg6xwT8jlYdlRIyBTHmO3yM7kQ==
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.2.0.tgz#f5a256f27f946ccf9cc8c2cc4b34fc40079dbfca"
-  integrity sha512-BXlt6BsFE599yOATuz78FiW9z4SyipCH3j1SDyKWe/3OUBdhcOr/BWnBi1xrtcC2kfqrTJjgvfH2PTfMPRmbTw==
+"@stripe/stripe-js@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.3.0.tgz#7b295ff9ca5bccfd56c1291b78079ae2f14836cc"
+  integrity sha512-xnCyFIEI5SQnQrKkCxVj7nS5fWTZap+zuIGzmmxLMdlmgahFJaihK4zogqE8YyKKTLtrp/EldkEijSgtXsRVDg==
 
 "@szmarczak/http-timer@^5.0.1":
   version "5.0.1"
@@ -13899,10 +13899,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.14.1:
-  version "4.14.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.14.1.tgz#c9c611464f05fc27ece240cf1186038bf9fec208"
-  integrity sha512-y+ykV0WDxLGofMW9twYsToRoxwKifgKZ448WcMv1fLdh0itqH+Q9gay0dgj7WJ4kj+JXXqL9Efcb8dtN3dPwGw==
+serverless@^4.14.2:
+  version "4.14.2"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.14.2.tgz#c991777d736e653d7b660dba9454c17c1fdd0724"
+  integrity sha512-vTbZiAjvSfVLJI1IlMpAaOCiRYLNsPLMNRr/D/lA3ZNX+gf5+x2e1ywiLRV82/91njy4lwHO0h2ElMwBghH/Qg==
   dependencies:
     axios "^1.8.3"
     axios-proxy-builder "^0.1.2"
