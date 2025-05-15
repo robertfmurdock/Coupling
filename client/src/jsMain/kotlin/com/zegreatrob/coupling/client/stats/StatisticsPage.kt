@@ -14,7 +14,7 @@ val StatisticsPage = partyPageFunction { props, partyId ->
             party(partyId) {
                 details()
                 playerList()
-                pairs {
+                pairs(includeRetired = false) {
                     players()
                     spinsSinceLastPaired()
                     recentTimesPaired()
