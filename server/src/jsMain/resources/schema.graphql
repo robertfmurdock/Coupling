@@ -177,7 +177,7 @@ type Party {
     pinList: [PinDetails!]
     playerList: [PlayerDetails!]
     retiredPlayers: [PlayerDetails!]
-    pairs: [Pair!]
+    pairs(input: PairsInput): [Pair!]
     pairAssignmentDocumentList: [PairAssignmentDocumentDetails!]
     secretList: [PartySecret!]
     currentPairAssignmentDocument: PairAssignmentDocumentDetails
@@ -195,6 +195,10 @@ type Contributor {
 
 input PairInput {
     playerIdList: [PlayerId!]!
+}
+
+input PairsInput {
+    includeRetired: Boolean
 }
 
 input ContributionsInput {

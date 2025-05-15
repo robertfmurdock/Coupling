@@ -26,7 +26,7 @@ import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @ActionMint
-data class PairListQuery(val partyId: PartyId) {
+data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
     interface Dispatcher :
         PartyIdLoadPlayersTrait,
         PartyIdRetiredPlayerRecordsTrait,
@@ -34,7 +34,7 @@ data class PairListQuery(val partyId: PartyId) {
         override val playerRepository: PlayerGetRepository
 
         suspend fun perform(query: PairListQuery): List<PartyElement<PlayerPair>> {
-            val (contributions, playerListData) = loadData(query.partyId)
+            val (contributions, playerListData) = query.loadData()
 
             val naturalPairCombinations = playerListData
                 .pairCombinations()
@@ -60,10 +60,12 @@ data class PairListQuery(val partyId: PartyId) {
             )
         }
 
-        private suspend fun loadData(partyId: PartyId): Pair<List<Contribution>, List<PartyRecord<Player>>> = coroutineScope {
+        private suspend fun PairListQuery.loadData(): Pair<List<Contribution>, List<PartyRecord<Player>>> = coroutineScope {
             val contributions = async { partyId.contributions().elements }
             val playerListData = async { partyId.loadPlayers() }
-            val retiredPlayerListData = async { partyId.loadRetiredPlayerRecords() }
+            val retiredPlayerListData = async {
+                if (includeRetired == false) emptyList() else partyId.loadRetiredPlayerRecords()
+            }
 
             Pair(contributions.await(), playerListData.await() + retiredPlayerListData.await())
         }

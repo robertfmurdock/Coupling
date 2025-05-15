@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.action.player.DeletePlayerCommand
+import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.PartyRecord
@@ -44,6 +46,26 @@ class SdkPairsTest {
                     listOf(players[1], players[3]),
                     listOf(players[2], players[3]),
                 ).plus(players.map { listOf(it) }),
+            )
+    }
+
+    @Test
+    fun canExcludeDeletedPlayers() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(4)
+    }) {
+        savePartyStateWithFixedPlayerOrder(party, players, emptyList())
+        sdk().fire(DeletePlayerCommand(party.id, players[3].id))
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs(includeRetired = false) { players() } } })
+    } verify { result ->
+        result?.party?.pairs?.map { it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element) }
+            .assertIsEqualTo(
+                listOf(
+                    listOf(players[0], players[1]),
+                    listOf(players[0], players[2]),
+                    listOf(players[1], players[2]),
+                ).plus((players - players[3]).map { listOf(it) }),
             )
     }
 

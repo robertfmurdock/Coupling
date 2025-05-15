@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.json.GqlContributionReport
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.GqlPairInput
+import com.zegreatrob.coupling.json.GqlPairsInput
 import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.PlayerId
@@ -76,9 +77,15 @@ class PartyQueryBuilder :
             InputSettings(GqlPairInput(playerIds.toList()), "pairInput", "PairInput"),
         )
 
-    fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
+    fun pairs(includeRetired: Boolean? = true, block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
         .also(block)
-        .also { mergeToParent("pairs", it) }
+        .also {
+            mergeToParent(
+                "pairs",
+                inputSettings = InputSettings(GqlPairsInput(includeRetired), "pairsInput", "PairsInput"),
+                child = it,
+            )
+        }
 
     fun pinList() = also { output = output.copy(pinList = listOf(pinRecord)) }
     fun playerList() = also { output = output.copy(playerList = listOf(playerRecord)) }
