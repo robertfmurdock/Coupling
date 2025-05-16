@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -34,16 +34,17 @@ data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
         override val playerRepository: PlayerGetRepository
 
         suspend fun perform(query: PairListQuery): List<PartyElement<PlayerPair>> {
-            val (contributions, playerListData) = query.loadData()
+            val (contributions, playerListData, retiredPlayerListData) = query.loadData()
 
-            val naturalPairCombinations = playerListData
+            val allPlayerData = playerListData + retiredPlayerListData
+            val naturalPairCombinations = allPlayerData
                 .pairCombinations()
 
             val allContributionPairs: Set<Set<Record<PartyElement<Player>>>> =
                 contributions.mapNotNull { contribution ->
                     contribution.participantEmails
                         .map { email ->
-                            playerListData.find { it.data.player.matches(email) }
+                            allPlayerData.find { it.data.player.matches(email) }
                                 ?: placeholderPlayer(query, email)
                         }
                         .toSet().ifEmpty { null }
@@ -53,21 +54,32 @@ data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
                 naturalPairCombinations.mapNotNull { it.players?.toSet() }.toSet()
             val extraPairs = allContributionPairs - naturalPlayerSets
 
+            val filter: (PlayerPair) -> Boolean = if (query.includeRetired == true) {
+                ({ true })
+            } else {
+                ({ pair -> !pair.anyPlayersAreRetired(retiredPlayerListData) })
+            }
             return query.partyId.with(
-                naturalPairCombinations + extraPairs.map {
-                    PlayerPair(players = it.toList())
-                },
+                (
+                    naturalPairCombinations + extraPairs.map {
+                        PlayerPair(players = it.toList())
+                    }
+                    ).filter(filter),
             )
         }
 
-        private suspend fun PairListQuery.loadData(): Pair<List<Contribution>, List<PartyRecord<Player>>> = coroutineScope {
+        fun PlayerPair.anyPlayersAreRetired(
+            retiredPlayerListData: List<PartyRecord<Player>>,
+        ): Boolean = players?.map { it.element.id }?.any { playerId ->
+            retiredPlayerListData.any { it.data.player.id == playerId }
+        } == true
+
+        private suspend fun PairListQuery.loadData() = coroutineScope {
             val contributions = async { partyId.contributions().elements }
             val playerListData = async { partyId.loadPlayers() }
-            val retiredPlayerListData = async {
-                if (includeRetired == false) emptyList() else partyId.loadRetiredPlayerRecords()
-            }
+            val retiredPlayerListData = async { partyId.loadRetiredPlayerRecords() }
 
-            Pair(contributions.await(), playerListData.await() + retiredPlayerListData.await())
+            Triple(contributions.await(), playerListData.await(), retiredPlayerListData.await())
         }
 
         @OptIn(ExperimentalKotoolsTypesApi::class)

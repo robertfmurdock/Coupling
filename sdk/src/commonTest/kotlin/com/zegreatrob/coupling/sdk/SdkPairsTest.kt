@@ -113,6 +113,39 @@ class SdkPairsTest {
     }
 
     @Test
+    fun willExcludeDeletedPlayersInContributionFromContributionHistory() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(4)
+        val deletedPlayer = players[2]
+        val expectedPlayers = players - deletedPlayer
+    }) {
+        savePartyStateWithFixedPlayerOrder(party, players, emptyList())
+        sdk().fire(DeletePlayerCommand(party.id, deletedPlayer.id))
+        sdk().fire(
+            SaveContributionCommand(
+                partyId = party.id,
+                contributionList = listOf(
+                    ContributionInput(
+                        contributionId = ContributionId.new(),
+                        participantEmails = deletedPlayer.email.let(::setOf),
+                        commitCount = null,
+                        name = null,
+                    ),
+                ),
+            ),
+        )
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs(includeRetired = false) { players() } } })
+    } verify { result ->
+        result?.party?.pairs?.mapNotNull {
+            it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element)
+        }
+            ?.flatten()
+            ?.distinct()
+            .assertIsEqualTo(expectedPlayers)
+    }
+
+    @Test
     fun willIncludeMobsFromContributionHistoryViaAdditionalEmailsIgnoringCase() = asyncSetup(object {
         val party = stubPartyDetails()
         val player1 = stubPlayer().copy(additionalEmails = setOf("excellent.continuousexcellence.io"))
