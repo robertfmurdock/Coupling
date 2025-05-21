@@ -722,10 +722,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.812.0":
-  version "3.812.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.812.0.tgz#84010753f358566aa1f167a4b0ec8393dc095568"
-  integrity sha512-PT7VXRf0A6x46o9eQ/umxjs69vmk21ZHiHIuW1K57lOK9mc4zfM4cm9jY7xFQZi22p2qpp0OvQEvYfYkXbrhrQ==
+"@aws-sdk/lib-dynamodb@3.814.0":
+  version "3.814.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.814.0.tgz#a6996932e39443f66107b3ec384acc7c6faa897e"
+  integrity sha512-N79XYgy655bU9fqDcoRFzF9oNtpgTupiv5KodyLaf1oxaJOWXGR6n6dtu4HHOLpp3+WdX6JJi7aTJum/sfWDkw==
   dependencies:
     "@aws-sdk/core" "3.812.0"
     "@aws-sdk/util-dynamodb" "3.812.0"
@@ -4461,10 +4461,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.6.0.tgz#41dd6093d34652cddb5d5bdeee04eafc33826668"
   integrity sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==
 
-"@slack/bolt@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.3.0.tgz#b160065fa1cf1ac274ff6ec845db42c062148c01"
-  integrity sha512-PExCq+oLhSp72lKMkgYJ2gK5LaI639u3rvxiaMuFq6lWpF4uZ9RuoT2FLPbsdnpwUIIaJ5Cf/K/3Gw/wNCHDQg==
+"@slack/bolt@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.4.0.tgz#99f2123fe20101e2c4dece78bde3070c323b0316"
+  integrity sha512-FjGl1+hUo0w6ZSP2v3ZyjEkpGnA2t83Kz/Et2aEtIe8rRxrHd8R9CKShpd7BesuIcvqaz2eVe33YiKGohOiMKw==
   dependencies:
     "@slack/logger" "^4.0.0"
     "@slack/oauth" "^3.0.3"
@@ -4522,6 +4522,24 @@
   version "7.9.1"
   resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.9.1.tgz#bfbb2050fda3b09a33ab03eb490db39e354fde28"
   integrity sha512-qMcb1oWw3Y/KlUIVJhkI8+NcQXq1lNymwf+ewk93ggZsGd6iuz9ObQsOEbvlqlx1J+wd8DmIm3DORGKs0fcKdg==
+  dependencies:
+    "@slack/logger" "^4.0.0"
+    "@slack/types" "^2.9.0"
+    "@types/node" ">=18.0.0"
+    "@types/retry" "0.12.0"
+    axios "^1.8.3"
+    eventemitter3 "^5.0.1"
+    form-data "^4.0.0"
+    is-electron "2.2.2"
+    is-stream "^2"
+    p-queue "^6"
+    p-retry "^4"
+    retry "^0.13.1"
+
+"@slack/web-api@^7.9.2":
+  version "7.9.2"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.9.2.tgz#c996354f467d64c4d3c4e77ab55f42dcf98cf2d0"
+  integrity sha512-3HoDwV6+ZSTfV+DsbnUd82GlZY0a+DPXuHQHpxWTqgxjM3JWZyGiwR+ov3d2M16pWiMzA+l58UJ5lm1znGq0yA==
   dependencies:
     "@slack/logger" "^4.0.0"
     "@slack/types" "^2.9.0"
@@ -13875,10 +13893,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.14.3:
-  version "4.14.3"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.14.3.tgz#aa358473cf4d46e54055947656d65374c997a2e5"
-  integrity sha512-/Q3zW3RrP5abTQ2Uxg9M8JINNOjPWf+AlqfunhpMoEgFhq3Y/rp+qm+i5d7n2xjmXMzkEwrxAqA/UAqKNq7hjQ==
+serverless@^4.14.4:
+  version "4.14.4"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.14.4.tgz#61ef20223d0f9d3fb0a492b6dfec8700233c33a3"
+  integrity sha512-7vsUg6pxBVUZamk4S55IG8Z3Lj+0hE+T4ji+GLjF3knxYcrHK7eIJiLmzui4AQsnoiDuyOiRgY5OogreL8vLPA==
   dependencies:
     axios "^1.8.3"
     axios-proxy-builder "^0.1.2"
