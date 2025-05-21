@@ -26,6 +26,7 @@ import react.ReactNode
 import react.useState
 import web.cssom.WhiteSpace
 import kotlin.js.Date
+import kotlin.math.max
 
 external interface CouplingResponsiveLineProps : Props {
     var data: Array<NivoLineData>
@@ -125,7 +126,13 @@ private fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
     val flattenedPoints = allPoints.groupBy { point -> point.x }
         .map { group ->
             group.value.reduce { result, current ->
-                Object.assign(result, current)
+                Object.assign(
+                    result,
+                    current,
+                    Record<String, Double> {
+                        this["y"] = max(result.y, current.y)
+                    },
+                )
             }
         }
     return flattenedPoints.toTypedArray()

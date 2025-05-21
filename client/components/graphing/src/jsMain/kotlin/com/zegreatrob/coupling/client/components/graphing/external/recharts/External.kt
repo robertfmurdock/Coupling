@@ -24,6 +24,7 @@ external interface RechartsMargin {
 
 external interface LinePoint {
     var x: Double
+    var y: Double
 }
 
 external interface LineChartProps : PropsWithChildren {
