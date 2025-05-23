@@ -156,6 +156,7 @@ tasks {
 
     val browserProductionWebpack = named("jsBrowserProductionWebpack", KotlinWebpack::class) {
         dependsOn(lookupCdnUrls, jsProcessResources)
+        mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
         inputs.dir(jsProcessResources.map { it.destinationDir })
         inputs.file(File(project.projectDir, "cdn.settings.json"))
