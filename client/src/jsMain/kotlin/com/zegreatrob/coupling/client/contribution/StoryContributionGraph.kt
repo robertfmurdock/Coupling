@@ -5,7 +5,8 @@ import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scal
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleTime
 import com.zegreatrob.coupling.client.components.graphing.external.d3.timeformat.timeFormat
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Area
-import com.zegreatrob.coupling.client.components.graphing.external.recharts.AreaChart
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.Bar
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.ComposedChart
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Legend
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
@@ -54,7 +55,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
         ResponsiveContainer {
             width = "100%"
             height = "100%"
-            AreaChart {
+            ComposedChart {
                 this.data = points
                 XAxis {
                     dataKey = "x"
@@ -77,8 +78,17 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                 stories.forEach { story ->
                     val color = myColor(story)
                     Area {
-                        key = story
+                        key = "$story-area"
                         type = "monotone"
+                        dataKey = story
+                        stackId = "2"
+                        stroke = color
+                        fill = color
+                    }
+                    Bar {
+                        key = "$story-bar"
+                        type = "monotone"
+                        barSize = 2
                         dataKey = story
                         stackId = "1"
                         stroke = color

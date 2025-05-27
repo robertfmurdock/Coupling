@@ -3,6 +3,8 @@
 package com.zegreatrob.coupling.client.components.graphing.external.recharts
 
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.TimeScale
+import com.zegreatrob.coupling.client.components.graphing.external.nivo.RechartsTooltipPayload
+import js.array.ReadonlyArray
 import react.FC
 import react.Props
 import react.PropsWithChildren
@@ -39,6 +41,8 @@ external interface AreaChartProps : PropsWithChildren {
     var margin: RechartsMargin
 }
 external val AreaChart: FC<AreaChartProps>
+external val BarChart: FC<AreaChartProps>
+external val ComposedChart: FC<AreaChartProps>
 
 external interface CartesianGridProps : Props {
     var strokeDasharray: String
@@ -58,8 +62,10 @@ external interface LineProps : Props {
 external val Line: FC<LineProps>
 
 external interface TooltipProps : Props {
-    var labelFormatter: (value: Any) -> String
-    var content: ((RechartsTooltipArgs) -> ReactNode)?
+    var labelFormatter: (value: Any?) -> ReactNode
+    var content: ((TooltipProps) -> ReactNode)?
+    var payload: ReadonlyArray<RechartsTooltipPayload>?
+    var label: Any?
 }
 
 external val Tooltip: FC<TooltipProps>
@@ -68,7 +74,9 @@ external interface LegendProps : Props {
     var width: String
     var height: String
     var wrapperStyle: react.CSSProperties?
+    var content: ((LegendProps) -> ReactNode)?
     var onClick: (LegendEvent) -> Unit
+    var payload: ReadonlyArray<RechartsTooltipPayload>?
 }
 
 external interface LegendEvent {
@@ -104,5 +112,15 @@ external interface AreaProps : Props {
     var stroke: Any
     var fill: Any
 }
-
 external val Area: FC<AreaProps>
+
+external interface BarProps : Props {
+    var type: String
+    var barSize: Any
+    var dataKey: String
+    var stackId: String
+    var stroke: Any
+    var fill: Any
+}
+
+external val Bar: FC<BarProps>

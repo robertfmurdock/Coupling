@@ -11,9 +11,9 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.Lege
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Line
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LineChart
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
-import com.zegreatrob.coupling.client.components.graphing.external.recharts.RechartsTooltipArgs
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Tooltip
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.TooltipProps
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.XAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxis
 import js.lazy.Lazy
@@ -31,7 +31,7 @@ import kotlin.math.max
 external interface CouplingResponsiveLineProps : Props {
     var data: Array<NivoLineData>
     var legend: String
-    var tooltip: ((RechartsTooltipArgs) -> ReactNode)?
+    var tooltip: ((TooltipProps) -> ReactNode)?
     var xMin: Date
     var xMax: Date
     var yAxisDomain: Array<Any>?
@@ -85,7 +85,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
                 domain = props.yAxisDomain
             }
             Tooltip {
-                labelFormatter = timeFormatter
+                labelFormatter = { ReactNode(timeFormatter(it)) }
                 content = props.tooltip
             }
             Legend {

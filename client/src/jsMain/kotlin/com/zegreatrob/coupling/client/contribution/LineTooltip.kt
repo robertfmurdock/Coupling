@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.contribution
 
-import com.zegreatrob.coupling.client.components.graphing.external.recharts.RechartsTooltipArgs
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.TooltipProps
 import emotion.react.css
 import react.FC
 import react.PropsWithValue
@@ -8,7 +8,7 @@ import react.dom.html.ReactHTML.div
 import web.cssom.Color
 import web.cssom.px
 
-val LineTooltip = FC<PropsWithValue<RechartsTooltipArgs>> { props ->
+val LineTooltip = FC<PropsWithValue<TooltipProps>> { props ->
     val args = props.value
     div {
         style
