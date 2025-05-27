@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.core.JsString
 import js.objects.Object
 import js.objects.Record
 import js.objects.unsafeJso
@@ -37,15 +38,15 @@ external interface StoryContributionGraphProps : Props {
 @ReactFunc
 val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     val (data, window) = props
-    val points = data.groupBy(contributionsByDate)
-        .mapNotNull { group ->
-            val date = group.key ?: return@mapNotNull null
-            dateContributionCountByStory(date, group.value)
-        }
-        .sortedBy { it.x }
-        .toTypedArray()
+    val points = data.groupBy(contributionsByDate).mapNotNull { group ->
+        val date = group.key ?: return@mapNotNull null
+        dateContributionCountByStory(date, group.value)
+    }.sortedBy { it.x }.toTypedArray()
 
-    val stories = (points.flatMap { Object.keys(it).toList() }.distinct() - "x")
+    val stories =
+        points.mapIndexed { index, value -> Triple(points.getOrNull(index - 1), value, points.getOrNull(index + 1)) }
+            .flatMap { (prev, current, next) -> sortByIncludedInPreviousThenNextThanAlone(prev, current, next) }
+            .distinct() - "x"
     val xMinMillis = points.minOf { it.x }
     val xMaxMillis = points.maxOf { it.x }
     val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
@@ -100,6 +101,29 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     }
 }
 
+private fun sortByIncludedInPreviousThenNextThanAlone(
+    prev: LinePoint?,
+    current: LinePoint,
+    next: LinePoint?,
+): List<JsString> {
+    val previousStories = prev?.let { Object.keys(prev).toSet() } ?: emptySet()
+    val nextStories = next?.let { Object.keys(next).toSet() } ?: emptySet()
+    val currentStories = Object.keys(current).toList()
+    return currentStories.sortedWith { a, b ->
+        if (previousStories.contains(a)) {
+            -1
+        } else if (previousStories.contains(b)) {
+            1
+        } else if (nextStories.contains(a)) {
+            -1
+        } else if (nextStories.contains(b)) {
+            1
+        } else {
+            0
+        }
+    }
+}
+
 private fun dateContributionCountByStory(
     date: LocalDate,
     dateContributions: List<Contribution>,
@@ -107,8 +131,7 @@ private fun dateContributionCountByStory(
     unsafeJso<LinePoint> {
         x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate().getTime()
     },
-    dateContributions.groupBy(Contribution::story)
-        .toList()
+    dateContributions.groupBy(Contribution::story).toList()
         .fold(Record<String, Int>()) { record, (story, storyContributions) ->
             if (story == null) {
                 record
