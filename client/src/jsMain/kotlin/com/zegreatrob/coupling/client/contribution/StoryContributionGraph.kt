@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.Area
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Legend
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.Tooltip
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.XAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxis
 import com.zegreatrob.coupling.client.components.graphing.scaledTimeFormat
@@ -39,10 +40,11 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
         .mapNotNull { group ->
             val date = group.key ?: return@mapNotNull null
             dateContributionCountByStory(date, group.value)
-        }.toTypedArray()
+        }
+        .sortedBy { it.x }
+        .toTypedArray()
 
-    val stories = data.mapNotNull { contribution -> contribution.story }.distinct()
-
+    val stories = (points.flatMap { Object.keys(it).toList() }.distinct() - "x")
     val xMinMillis = points.minOf { it.x }
     val xMaxMillis = points.maxOf { it.x }
     val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
@@ -66,18 +68,21 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                 YAxis {
                     type = "number"
                 }
+                Tooltip {}
                 Legend {
                     width = "90%"
                     height = "7%"
                     wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
                 }
                 stories.forEach { story ->
+                    val color = myColor(story)
                     Area {
+                        key = story
                         type = "monotone"
                         dataKey = story
                         stackId = "1"
-                        stroke = myColor(story)
-                        fill = myColor(story)
+                        stroke = color
+                        fill = color
                     }
                 }
             }
