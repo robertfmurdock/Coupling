@@ -5,7 +5,7 @@
     "@aws-sdk/client-dynamodb": "3.817.0",
     "@aws-sdk/client-lambda": "~3.817.0",
     "@aws-sdk/lib-dynamodb": "3.817.0",
-    "@babel/core": "^7.27.1",
+    "@babel/core": "^7.27.3",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-react": "^7.27.1",
     "@graphql-codegen/cli": "^5.0.6",
