@@ -175,7 +175,7 @@ class PlayerConfigTest {
         )
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
-        val secondEmail = uuidString()
+        val secondEmail = uuidString().take(10)
     }) {
         render(
             RouterProvider.create {
@@ -190,9 +190,9 @@ class PlayerConfigTest {
                 }
             },
         )
-    } exercise {
         actor.click(addEmailButton())
         actor.type(email2Input(), secondEmail)
+    } exercise {
         actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
