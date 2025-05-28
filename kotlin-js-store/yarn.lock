@@ -5493,10 +5493,10 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.3.0.tgz#7b295ff9ca5bccfd56c1291b78079ae2f14836cc"
-  integrity sha512-xnCyFIEI5SQnQrKkCxVj7nS5fWTZap+zuIGzmmxLMdlmgahFJaihK4zogqE8YyKKTLtrp/EldkEijSgtXsRVDg==
+"@stripe/stripe-js@^7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.3.1.tgz#f57af650477205a939e21a6c7e45a764d17d3d7c"
+  integrity sha512-pTzb864TQWDRQBPLgSPFRoyjSDUqpCkbEgTzpsjiTjGz1Z5SxZNXJek28w1s6Dyry4CyW4/Izj5jHE/J9hCJYQ==
 
 "@szmarczak/http-timer@^5.0.1":
   version "5.0.1"
@@ -7463,10 +7463,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@136.0.3:
-  version "136.0.3"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-136.0.3.tgz#70c25ce4f0fc7969355e745e6702224e0845710d"
-  integrity sha512-bE27WxCr8Fd12ZFvRWbkWgTvm9MF+le59U6MlxejO9bC9bPHp+IQfttsDMXThb05/M+/FOx8x2/0mQ50zG0kDg==
+chromedriver@137.0.0:
+  version "137.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-137.0.0.tgz#e850723305e4f04e17fdd91257e4eff7c47890e3"
+  integrity sha512-RyyIQOXaDfCc0IZrGx9EpNYCepvJca+fvreJqFgNaWBLIzLj5UInn85mWMecborYCBMtRhMZuxwNuzNXgoCIFg==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
@@ -13916,10 +13916,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.14.4:
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.14.4.tgz#61ef20223d0f9d3fb0a492b6dfec8700233c33a3"
-  integrity sha512-7vsUg6pxBVUZamk4S55IG8Z3Lj+0hE+T4ji+GLjF3knxYcrHK7eIJiLmzui4AQsnoiDuyOiRgY5OogreL8vLPA==
+serverless@^4.15.1:
+  version "4.15.1"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.15.1.tgz#224468da451055182c981ee3ced8ee372556cbb8"
+  integrity sha512-GNb4v+bg/U7DxjgIq8P/aVa7SlU31KFaplgpvzQzr3/GV19xb43LKjorgN0H5CFMGz44ormiHm3/VVjzhxuB5w==
   dependencies:
     axios "^1.8.3"
     axios-proxy-builder "^0.1.2"
