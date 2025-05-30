@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.core.JsString
 import js.objects.Object
 import js.objects.Record
 import js.objects.unsafeJso
@@ -27,6 +28,7 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJSDate
 import react.Props
+import react.create
 import web.cssom.WhiteSpace
 
 external interface StoryContributionGraphProps : Props {
@@ -48,23 +50,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
             .sortedWith { l, r -> l.first.compareTo(r.first) }
 
     val stories = (points.flatMap { Object.keys(it).toList() }.distinct() - "x")
-        .sortedWith { a, b ->
-            val minAIndex = sortedContributionsByDate.indexOfFirst { it.second.any { it.story == a } }
-            val minA = sortedContributionsByDate[minAIndex]
-            val maxA = sortedContributionsByDate.subList(minAIndex, sortedContributionsByDate.size)
-                .indexOfFirst { it.second.all { it.story != a } } + minAIndex
-            val minBIndex = sortedContributionsByDate.indexOfFirst { it.second.any { it.story == b } }
-            val minB = sortedContributionsByDate[minBIndex]
-            val maxB = sortedContributionsByDate.subList(minBIndex, sortedContributionsByDate.size)
-                .indexOfFirst { it.second.all { it.story != b } } + minBIndex
-            if (minA.first.compareTo(minB.first) != 0) {
-                minA.first.compareTo(minB.first)
-            } else if (maxA.compareTo(maxB) != 0) {
-                maxB.compareTo(maxA)
-            } else {
-                0
-            }
-        }
+        .sortedWith { a, b -> preferLargerRangeWithEarlierTimes(sortedContributionsByDate, a, b) }
     val xMinMillis = points.minOf { it.x }
     val xMaxMillis = points.maxOf { it.x }
     val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
@@ -88,11 +74,26 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                 YAxis {
                     type = "number"
                 }
-                Tooltip {}
+                Tooltip {
+                    content = { props ->
+                        Tooltip.create {
+                            +props
+                            content = null
+                            payload = props.payload?.filterIndexed { index, _ -> index % 2 == 0 }?.toTypedArray()
+                        }
+                    }
+                }
                 Legend {
                     width = "90%"
                     height = "7%"
                     wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
+                    content = { props ->
+                        Legend.create {
+                            +props
+                            content = null
+                            payload = props.payload?.filterIndexed { index, _ -> index % 2 == 0 }?.toTypedArray()
+                        }
+                    }
                 }
                 stories.forEach { story ->
                     val color = myColor(story)
@@ -119,6 +120,32 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     }
 }
 
+private fun preferLargerRangeWithEarlierTimes(
+    sortedContributionsByDate: List<Pair<LocalDate, List<Contribution>>>,
+    a: JsString,
+    b: JsString,
+): Int {
+    val (minA, maxA) = contiguousRange(sortedContributionsByDate, a)
+    val (minB, maxB) = contiguousRange(sortedContributionsByDate, b)
+    return if (minA.compareTo(minB) != 0) {
+        minA.compareTo(minB)
+    } else if (maxA.compareTo(maxB) != 0) {
+        maxB.compareTo(maxA)
+    } else {
+        0
+    }
+}
+
+private fun contiguousRange(
+    sortedContributionsByDate: List<Pair<LocalDate, List<Contribution>>>,
+    story: JsString,
+): Pair<Int, Int> {
+    val minIndex = sortedContributionsByDate.indexOfFirst { it.second.any { it.story == story } }
+    val maxIndex = sortedContributionsByDate.subList(minIndex, sortedContributionsByDate.size)
+        .indexOfFirst { it.second.all { it.story != story } } + minIndex
+    return Pair(minIndex, maxIndex)
+}
+
 private fun dateContributionCountByStory(
     date: LocalDate,
     dateContributions: List<Contribution>,
@@ -127,11 +154,11 @@ private fun dateContributionCountByStory(
         x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate().getTime()
     },
     dateContributions.groupBy(Contribution::story).toList()
-        .fold(Record<String, Int>()) { record, (story, storyContributions) ->
+        .fold(Record<String, Double>()) { record, (story, storyContributions) ->
             if (story == null) {
                 record
             } else {
-                record.apply { set(story, storyContributions.size) }
+                record.apply { set(story, storyContributions.size.toDouble()) }
             }
         },
 )
