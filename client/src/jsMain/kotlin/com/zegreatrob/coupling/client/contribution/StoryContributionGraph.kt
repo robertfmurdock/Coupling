@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.contribution
 
-import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.chromatic.schemeCategory10
+import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.chromatic.schemePaired
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleOrdinal
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleTime
 import com.zegreatrob.coupling.client.components.graphing.external.d3.timeformat.timeFormat
@@ -30,6 +30,7 @@ import kotlinx.datetime.toJSDate
 import react.Props
 import react.create
 import web.cssom.WhiteSpace
+import kotlin.math.max
 
 external interface StoryContributionGraphProps : Props {
     var data: List<Contribution>
@@ -55,7 +56,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     val xMaxMillis = points.maxOf { it.x }
     val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
     val timeFormatter = timeFormat(scaledTimeFormat(xMinMillis, xMaxMillis))
-    val myColor = scaleOrdinal().domain(stories.toTypedArray()).range(schemeCategory10)
+    val myColor = scaleOrdinal().domain(stories.toTypedArray()).range(schemePaired)
     if (points.isNotEmpty()) {
         ResponsiveContainer {
             width = "100%"
@@ -132,7 +133,7 @@ private fun preferLargerRangeWithEarlierTimes(
     } else if (maxA.compareTo(maxB) != 0) {
         maxB.compareTo(maxA)
     } else {
-        0
+        (maxA - minA) - (maxB - minB)
     }
 }
 
@@ -140,10 +141,11 @@ private fun contiguousRange(
     sortedContributionsByDate: List<Pair<LocalDate, List<Contribution>>>,
     story: JsString,
 ): Pair<Int, Int> {
-    val minIndex = sortedContributionsByDate.indexOfFirst { it.second.any { it.story == story } }
-    val maxIndex = sortedContributionsByDate.subList(minIndex, sortedContributionsByDate.size)
-        .indexOfFirst { it.second.all { it.story != story } } + minIndex
-    return Pair(minIndex, maxIndex)
+    val minIndex =
+        sortedContributionsByDate.indexOfFirst { it.second.any { it.story == story || it.story?.contains(story) == true } }
+    val maxIndex = sortedContributionsByDate.subList(minIndex + 1, sortedContributionsByDate.size)
+        .indexOfFirst { it.second.all { it.story != story && it.story?.contains(story) == false } }
+    return Pair(minIndex, max(minIndex, if (maxIndex < 0) sortedContributionsByDate.size else maxIndex + minIndex))
 }
 
 private fun dateContributionCountByStory(
@@ -158,7 +160,15 @@ private fun dateContributionCountByStory(
             if (story == null) {
                 record
             } else {
-                record.apply { set(story, storyContributions.size.toDouble()) }
+                val stories = story.allDistinctStories()
+                stories.forEach { storyName ->
+                    val previousEntries = record[storyName].unsafeCast<Double?>() ?: 0.0
+                    val total = storyContributions.size.toDouble() / stories.size + previousEntries
+                    record[storyName] = total
+                }
+                record
             }
         },
 )
+
+private fun String.allDistinctStories(): List<String> = split(",").map { it.trim() }
