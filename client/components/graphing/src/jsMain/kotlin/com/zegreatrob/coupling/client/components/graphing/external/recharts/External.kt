@@ -63,6 +63,7 @@ external val Line: FC<LineProps>
 
 external interface TooltipProps : Props {
     var labelFormatter: (value: Any?) -> ReactNode
+    var formatter: (value: Any?) -> ReactNode
     var content: ((TooltipProps) -> ReactNode)?
     var payload: ReadonlyArray<RechartsTooltipPayload>?
     var label: Any?

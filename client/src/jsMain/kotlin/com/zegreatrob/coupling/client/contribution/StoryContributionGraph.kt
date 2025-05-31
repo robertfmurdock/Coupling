@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.core.JsString
+import js.core.toPrecision
 import js.objects.Object
 import js.objects.Record
 import js.objects.unsafeJso
@@ -28,6 +29,7 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJSDate
 import react.Props
+import react.ReactNode
 import react.create
 import web.cssom.WhiteSpace
 import kotlin.math.max
@@ -35,15 +37,16 @@ import kotlin.math.max
 external interface StoryContributionGraphProps : Props {
     var data: List<Contribution>
     var window: GqlContributionWindow
+    var byPercent: Boolean
 }
 
 @ReactFunc
 val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
-    val (data, window) = props
+    val (data, window, byPercent) = props
     val contributionsByDate = data.groupBy(contributionsByDate)
     val points = contributionsByDate.mapNotNull { group ->
         val date = group.key ?: return@mapNotNull null
-        dateContributionCountByStory(date, group.value)
+        dateContributionCountByStory(date, group.value, byPercent)
     }.sortedBy { it.x }.toTypedArray()
 
     val sortedContributionsByDate =
@@ -66,8 +69,6 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                 XAxis {
                     dataKey = "x"
                     domain = timeScale.domain().map(js.date.Date::valueOf).toTypedArray()
-                    scale = timeScale
-                    type = "number"
                     ticks = timeScale.ticks(5).map(js.date.Date::valueOf).toTypedArray()
                     tickFormatter = timeFormatter
                     fontSize = 12
@@ -76,6 +77,8 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                     type = "number"
                 }
                 Tooltip {
+                    labelFormatter = { ReactNode(timeFormatter(it)) }
+                    formatter = { ReactNode(it.unsafeCast<Double>().toPrecision(3)) }
                     content = { props ->
                         Tooltip.create {
                             +props
@@ -109,7 +112,9 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                     Bar {
                         key = "$story-bar"
                         type = "monotone"
-                        barSize = 2
+                        if (!byPercent) {
+                            barSize = 2
+                        }
                         dataKey = story
                         stackId = "1"
                         stroke = color
@@ -151,6 +156,7 @@ private fun contiguousRange(
 private fun dateContributionCountByStory(
     date: LocalDate,
     dateContributions: List<Contribution>,
+    byPercent: Boolean,
 ): LinePoint = Object.assign(
     unsafeJso<LinePoint> {
         x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate().getTime()
@@ -163,10 +169,16 @@ private fun dateContributionCountByStory(
                 val stories = story.allDistinctStories()
                 stories.forEach { storyName ->
                     val previousEntries = record[storyName].unsafeCast<Double?>() ?: 0.0
-                    val total = storyContributions.size.toDouble() / stories.size + previousEntries
+                    val total = previousEntries + (storyContributions.size.toDouble() / stories.size)
                     record[storyName] = total
                 }
                 record
+            }
+        }.also { record ->
+            if (byPercent) {
+                val stories = Object.keys(record)
+                val total = stories.sumOf { key: String -> record[key].unsafeCast<Double>() }
+                stories.forEach { key -> record[key] = record[key].unsafeCast<Double>() / total }
             }
         },
 )

@@ -40,6 +40,7 @@ enum class Visualization {
     MedianCycleTimeBarChart,
     CycleTimeBoxPlot,
     StoryContributionsOverTime,
+    StoryContributionsPercentOverTime,
     PairEaseLineOverTime,
     AllEaseLineOverTime,
 }
