@@ -119,7 +119,7 @@ class AdjustDatasetForHeatMapTest {
 
         val emptyList: Map<Set<Player>, List<Contribution>> = emptyMap()
     }) exercise {
-        emptyList.toNivoHeatmapSettings(window, 1)
+        emptyList.toNivoHeatmapSettings(window, 1) { it.size }
     } verify { (max) ->
         max.assertIsEqualTo(workdaysPerWeek * excellentIntegrationsPerDay)
     }
@@ -133,7 +133,7 @@ class AdjustDatasetForHeatMapTest {
 
         val emptyList: Map<Set<Player>, List<Contribution>> = emptyMap()
     }) exercise {
-        emptyList.toNivoHeatmapSettings(window, 1)
+        emptyList.toNivoHeatmapSettings(window, 1) { it.size }
     } verify { (max) ->
         max.assertIsEqualTo(workdaysPerWeek * excellentIntegrationsPerDay * weeksInMonth)
     }
@@ -147,7 +147,7 @@ class AdjustDatasetForHeatMapTest {
 
         val emptyList: Map<Set<Player>, List<Contribution>> = emptyMap()
     }) exercise {
-        emptyList.toNivoHeatmapSettings(window, 1)
+        emptyList.toNivoHeatmapSettings(window, 1) { it.size }
     } verify { (max) ->
         max.assertIsEqualTo(workdaysPerWeek * excellentIntegrationsPerDay * weeksInQuarter)
     }
@@ -161,7 +161,7 @@ class AdjustDatasetForHeatMapTest {
 
         val emptyList: Map<Set<Player>, List<Contribution>> = emptyMap()
     }) exercise {
-        emptyList.toNivoHeatmapSettings(window, 1)
+        emptyList.toNivoHeatmapSettings(window, 1) { it.size }
     } verify { (max) ->
         max.assertIsEqualTo(workdaysPerWeek * excellentIntegrationsPerDay * weeksInYear)
     }
@@ -177,7 +177,7 @@ class AdjustDatasetForHeatMapTest {
             setOf(stubPlayer()) to listOf(stubContribution().copy(dateTime = Clock.System.now() - (365 * 3).days)),
         )
     }) exercise {
-        emptyList.toNivoHeatmapSettings(window, 1)
+        emptyList.toNivoHeatmapSettings(window, 1) { it.size }
     } verify { (max) ->
         max.assertIsEqualTo(workdaysPerWeek * excellentIntegrationsPerDay * weeksInThreeYears)
     }
@@ -194,7 +194,7 @@ class AdjustDatasetForHeatMapTest {
             setOf(stubPlayer()) to listOf(stubContribution().copy(dateTime = Clock.System.now() - (365 * 3).days)),
         )
     }) exercise {
-        emptyList.toNivoHeatmapSettings(window, spinsUntilFullRotation)
+        emptyList.toNivoHeatmapSettings(window, spinsUntilFullRotation) { it.size }
     } verify { (max) ->
         max.assertIsEqualTo(workdaysPerWeek * excellentIntegrationsPerDay * weeksInThreeYears / spinsUntilFullRotation)
     }

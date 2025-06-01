@@ -51,6 +51,7 @@ private const val EXCELLENT_CONTRIBUTIONS_PER_DAY = 4
 fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
     window: GqlContributionWindow,
     spinsUntilFullRotation: Int,
+    yConverter: (List<Contribution>) -> Number,
 ): Pair<Int, Array<NivoHeatMapData>> {
     val players = keys.flatten().toSet()
 
@@ -60,9 +61,10 @@ fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
         NivoHeatMapData(
             id = pairOf(player1).pairId,
             data = players.map { player2 ->
+                val contributions = this[setOf(player1, player2)]
                 NivoPoint(
                     x = pairOf(player2).pairId,
-                    y = this[setOf(player1, player2)]?.size,
+                    y = contributions?.let(yConverter),
                 )
             }.toTypedArray(),
         )

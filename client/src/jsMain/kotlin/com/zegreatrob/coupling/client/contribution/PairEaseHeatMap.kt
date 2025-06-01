@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.core.toPrecision
 import js.objects.unsafeJso
 import react.Props
 import react.useEffect
@@ -25,14 +26,14 @@ import react.useState
 import kotlin.collections.component1
 import kotlin.collections.component2
 
-external interface PairContributionsHeatMapProps : Props {
+external interface PairEaseHeatMapProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
     var spinsUntilFullRotation: Int
 }
 
 @ReactFunc
-val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
+val PairEaseHeatMap by nfc<PairEaseHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
     val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
     val (interpolator, setInterpolator) = useState<((Number) -> String)?>(null)
     useEffect {
@@ -44,12 +45,13 @@ val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributi
     val inclusiveContributions = adjustDatasetForHeatMap(
         contributionData.toMap().mapValues { (_, report) -> report.contributions?.elements ?: emptyList() },
     )
-    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(
+    val (_, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(
         window,
         spinsUntilFullRotation,
-        yConverter = { it.size },
+        { it.mapNotNull { it.ease }.average() },
     )
     val allSolos = contributionData.toMap().keys.flatten().map { pairOf(it) }.toSet()
+    val maxEase = 5
     colorContext.Provider {
         this.value = getColor
         pairContext {
@@ -57,7 +59,7 @@ val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributi
             ResponsiveHeatMap {
                 legend = "Pair Commits"
                 this.data = data
-                colors = { datum -> interpolator(datum.value.toDouble() / max) }
+                colors = { datum -> interpolator(datum.value.toDouble() / maxEase) }
                 emptyColor = interpolator(0)
                 margin = NivoChartMargin(
                     top = 65,
@@ -65,6 +67,7 @@ val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributi
                     bottom = 60,
                     left = 90,
                 )
+                valueFormat = { it.toPrecision(2) }
                 tooltip = CouplingHeatmapTooltip
                 axisLeft = NivoAxis(
                     tickSize = 5,

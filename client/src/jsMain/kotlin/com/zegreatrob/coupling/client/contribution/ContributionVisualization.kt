@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.components.stats.Visualization.AllEaseLine
 import com.zegreatrob.coupling.client.components.stats.Visualization.CycleTimeBoxPlot
 import com.zegreatrob.coupling.client.components.stats.Visualization.MedianCycleTimeBarChart
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairContributionsLineOverTime
+import com.zegreatrob.coupling.client.components.stats.Visualization.PairEaseHeatmap
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairEaseLineOverTime
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairFrequencyHeatmap
 import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsOverTime
@@ -68,6 +69,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
                 StoryContributionsPercentOverTime -> StoryContributionGraph(data.allContributions(), window, true)
                 PairContributionsLineOverTime -> PairContributionsLineGraph(data, window)
                 PairFrequencyHeatmap -> PairContributionsHeatMap(data, window, spinsUntilFullRotation)
+                PairEaseHeatmap -> PairEaseHeatMap(data, window, spinsUntilFullRotation)
                 PairEaseLineOverTime -> PairEaseLineGraph(data, window)
                 MedianCycleTimeBarChart -> PairCycleTimeBarChart(data, window)
                 CycleTimeBoxPlot -> PairCycleTimeBoxPlot(data, window)
