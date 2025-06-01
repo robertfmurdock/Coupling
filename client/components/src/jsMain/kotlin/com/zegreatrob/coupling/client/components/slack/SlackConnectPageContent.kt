@@ -29,6 +29,7 @@ import react.router.dom.Link
 import react.router.dom.LinkProps
 import react.useMemo
 import react.useState
+import web.dom.ElementId
 import kotlin.uuid.Uuid
 
 external interface SlackConnectPageContentProps : Props {
@@ -57,12 +58,13 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
             div {
                 Editor {
                     li {
+                        val elementId = ElementId(partySelectId)
                         label {
-                            htmlFor = partySelectId
+                            htmlFor = elementId
                             +"Party"
                         }
                         select {
-                            id = partySelectId
+                            id = elementId
                             name = "party"
                             value = command.partyId.value
                             onChange = { command = command.copy(partyId = PartyId(it.target.value)) }

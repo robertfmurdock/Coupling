@@ -5,6 +5,7 @@ import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.useState
+import web.dom.ElementId
 import web.html.InputType
 import kotlin.js.Json
 import kotlin.js.json
@@ -47,13 +48,13 @@ fun ChildrenBuilder.configInput(
     autoFocus: Boolean? = false,
 ) {
     label {
-        htmlFor = id
+        htmlFor = ElementId(id)
         +labelText
     }
     input {
         this.ariaLabel = labelText
         this.name = name
-        this.id = id
+        this.id = ElementId(id)
         this.type = type
         this.value = value
         this.placeholder = placeholder
