@@ -59,7 +59,7 @@ val PairEaseHeatMap by nfc<PairEaseHeatMapProps> { (contributionData, window, sp
             ResponsiveHeatMap {
                 legend = "Pair Commits"
                 this.data = data
-                colors = { datum -> interpolator(datum.value.toDouble() / maxEase) }
+                colors = { datum -> interpolator((datum.value.toDouble() - 0.5) / maxEase) }
                 emptyColor = interpolator(0)
                 margin = NivoChartMargin(
                     top = 65,
