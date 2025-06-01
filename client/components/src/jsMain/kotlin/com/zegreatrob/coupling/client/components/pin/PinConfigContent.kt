@@ -31,6 +31,7 @@ import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.px
+import web.dom.ElementId
 import web.html.InputType
 
 external interface PinConfigContentProps : Props {
@@ -138,12 +139,13 @@ private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
 }
 
 private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*>) -> Unit) {
+    val elementId = ElementId("pinTarget")
     label {
-        htmlFor = "pinTarget"
+        htmlFor = elementId
         +"Target"
     }
     select {
-        id = "pinTarget"
+        id = elementId
         name = "target"
         this.value = ""
         this.onChange = onChange

@@ -31,6 +31,7 @@ import react.dom.html.ReactHTML.li
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.number
+import web.dom.ElementId
 import web.html.InputType
 import kotlin.uuid.Uuid
 
@@ -75,13 +76,14 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                     Editor {
                         li {
                             val inputId = Uuid.random().toString()
+                            val elementId = ElementId(inputId)
                             label {
                                 +"User Id"
-                                htmlFor = inputId
+                                htmlFor = elementId
                             }
                             input {
                                 name = "id"
-                                id = inputId
+                                id = elementId
                                 type = InputType.text
                                 disabled = true
                                 value = user.id.value.toString()
@@ -90,13 +92,14 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                         }
                         li {
                             val inputId = Uuid.random().toString()
+                            val elementId = ElementId(inputId)
                             label {
                                 +"User Email"
-                                htmlFor = inputId
+                                htmlFor = elementId
                             }
                             input {
                                 name = "email"
-                                id = inputId
+                                id = elementId
                                 type = InputType.text
                                 disabled = true
                                 value = user.email

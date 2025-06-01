@@ -43,6 +43,7 @@ import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.number
 import web.cssom.px
+import web.dom.ElementId
 import web.html.InputType
 
 val playerConfigContentClassName = ClassName("player-config-content")
@@ -236,7 +237,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             onChange = onChange,
             list = "callSignAdjectiveOptions",
         )
-        datalist { id = "callSignAdjectiveOptions" }
+        datalist { id = ElementId("callSignAdjectiveOptions") }
         span { +"I feel the need..." }
     }
     li {
@@ -249,7 +250,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             onChange = onChange,
             list = "callSignNounOptions",
         )
-        datalist { id = "callSignNounOptions" }
+        datalist { id = ElementId("callSignNounOptions") }
         span { +"... the need for speed!" }
     }
 }
@@ -264,12 +265,13 @@ private fun ChildrenBuilder.badgeConfig(
             display = Display.inlineBlock
         }
     }
+    val elementId = ElementId("badge")
     label {
-        htmlFor = "badge"
+        htmlFor = elementId
         +"Badge"
     }
     select {
-        id = "badge"
+        id = elementId
         name = "badge"
         this.value = player.badge.name
         this.onChange = onChange
@@ -280,7 +282,7 @@ private fun ChildrenBuilder.badgeConfig(
 }
 
 private fun ChildrenBuilder.altBadgeOption(party: PartyDetails) = option {
-    id = "alt-badge-option"
+    id = ElementId("alt-badge-option")
     key = Badge.Alternate.name
     value = Badge.Alternate.name
     label = party.alternateBadgeName
@@ -288,7 +290,7 @@ private fun ChildrenBuilder.altBadgeOption(party: PartyDetails) = option {
 }
 
 private fun ChildrenBuilder.defaultBadgeOption(party: PartyDetails) = option {
-    id = "default-badge-option"
+    id = ElementId("default-badge-option")
     key = Badge.Default.name
     value = Badge.Default.name
     label = party.defaultBadgeName
@@ -304,12 +306,13 @@ private fun ChildrenBuilder.avatarTypeConfig(
             display = Display.inlineBlock
         }
     }
+    val elementId = ElementId("avatarType")
     label {
-        htmlFor = "avatarType"
+        htmlFor = elementId
         +"Avatar Type"
     }
     select {
-        id = "avatarType"
+        id = elementId
         name = "avatarType"
         this.value = player.avatarType?.name ?: ""
         this.onChange = onChange
@@ -319,7 +322,7 @@ private fun ChildrenBuilder.avatarTypeConfig(
         }
         AvatarType.entries.forEach { avatarType ->
             option {
-                id = avatarType.name
+                id = ElementId(avatarType.name)
                 key = avatarType.name
                 value = avatarType.name
                 this.label = avatarType.name

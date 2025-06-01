@@ -26,6 +26,7 @@ import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.number
+import web.dom.ElementId
 import web.html.InputType
 
 external interface PartyConfigContentProps : Props {
@@ -129,12 +130,13 @@ private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEven
 }
 
 private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: ChangeEventHandler<*>) {
+    val elementId = ElementId("animation-speed")
     label {
-        htmlFor = "animation-speed"
+        htmlFor = elementId
         +"Animation Speed"
     }
     select {
-        id = "animation-speed"
+        id = elementId
         name = "animationSpeed"
         this.value = "${party.animationSpeed}"
         this.onChange = onChange
@@ -150,12 +152,13 @@ private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: 
 }
 
 private fun ChildrenBuilder.pairingRuleSelect(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) {
+    val elementId = ElementId("pairing-rule")
     label {
-        htmlFor = "pairing-rule"
+        htmlFor = elementId
         +"Pairing Rule"
     }
     select {
-        id = "pairing-rule"
+        id = elementId
         name = "pairingRule"
         this.value = "${PairingRule.toValue(party.pairingRule)}"
         this.onChange = { event -> onChange(event) }
