@@ -11,7 +11,7 @@
     "@graphql-codegen/cli": "^5.0.6",
     "@graphql-codegen/kotlin": "^3.0.2",
     "@graphql-tools/schema": "^10.0.23",
-    "@graphql-tools/stitch": "^9.4.23",
+    "@graphql-tools/stitch": "^9.4.24",
     "@graphql-codegen/java-common": "^3.0.1",
     "@graphql-codegen/plugin-helpers": "^5.1.0",
     "@graphql-codegen/visitor-plugin-common": "5.8.0",
