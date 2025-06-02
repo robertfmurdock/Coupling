@@ -47,7 +47,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     val points = contributionsByDate.mapNotNull { group ->
         val date = group.key ?: return@mapNotNull null
         dateContributionCountByStory(date, group.value, byPercent)
-    }.sortedBy { it.x }.toTypedArray()
+    }.sortedBy { it.x.unsafeCast<Double>() }.toTypedArray()
 
     val sortedContributionsByDate =
         contributionsByDate.entries.mapNotNull { Pair(it.key ?: return@mapNotNull null, it.value) }
@@ -55,8 +55,8 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
 
     val stories = (points.flatMap { Object.keys(it).toList() }.distinct() - "x")
         .sortedWith { a, b -> preferLargerRangeWithEarlierTimes(sortedContributionsByDate, a, b) }
-    val xMinMillis = points.minOf { it.x }
-    val xMaxMillis = points.maxOf { it.x }
+    val xMinMillis = points.minOf { it.x.unsafeCast<Double>() }
+    val xMaxMillis = points.maxOf { it.x.unsafeCast<Double>() }
     val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
     val timeFormatter = timeFormat(scaledTimeFormat(xMinMillis, xMaxMillis))
     val myColor = scaleOrdinal().domain(stories.toTypedArray()).range(schemePaired)

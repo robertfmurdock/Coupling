@@ -48,7 +48,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
         }
     }
     val flattenedPoints = props.data.translateToLineChart()
-    val xValues = flattenedPoints.map { it.x }
+    val xValues = flattenedPoints.map { it.x.unsafeCast<Double>() }
     val xMaxMillis = xValues.max()
     val xMinMillis = xValues.min()
     val lineIds = props.data.map(NivoLineData::id).toTypedArray()
@@ -109,7 +109,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
     }
 }
 
-private fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
+fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
     val allPoints: List<LinePoint> = flatMap { line ->
         line.data.map { point ->
             Object.assign(
@@ -121,7 +121,7 @@ private fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
                 },
             )
         }
-    }.sortedBy { it.x }
+    }.sortedBy { it.x.unsafeCast<Double>() }
 
     val flattenedPoints = allPoints.groupBy { point -> point.x }
         .map { group ->

@@ -25,8 +25,9 @@ external interface RechartsMargin {
 }
 
 external interface LinePoint {
-    var x: Double
+    var x: Any
     var y: Double
+    var z: Any
 }
 
 external interface LineChartProps : PropsWithChildren {
@@ -35,6 +36,11 @@ external interface LineChartProps : PropsWithChildren {
 }
 
 external val LineChart: FC<LineChartProps>
+
+external interface ScatterChartProps : PropsWithChildren {
+    var margin: RechartsMargin
+}
+external val ScatterChart: FC<ScatterChartProps>
 
 external interface AreaChartProps : PropsWithChildren {
     var data: Array<LinePoint>
@@ -60,6 +66,18 @@ external interface LineProps : Props {
 }
 
 external val Line: FC<LineProps>
+
+external interface ScatterProps : Props {
+    var connectNulls: Boolean?
+    var type: String
+    var data: Array<LinePoint>
+    var dataKey: String
+    var hide: Boolean?
+    var stroke: Any
+    var labelFormatter: (value: Any) -> String
+}
+
+external val Scatter: FC<ScatterProps>
 
 external interface TooltipProps : Props {
     var labelFormatter: (value: Any?) -> ReactNode
@@ -91,6 +109,8 @@ external interface XAxisProps : Props {
     var domain: Array<*>
     var scale: TimeScale
     var type: String
+    var name: String
+    var interval: Any
     var ticks: Array<*>
     var tickFormatter: (value: Any) -> String
     var fontSize: Number
@@ -100,11 +120,22 @@ external val XAxis: FC<XAxisProps>
 
 external interface YAxisProps : Props {
     var dataKey: String
+    var name: String
     var type: String
     var domain: Array<Any>?
 }
 
 external val YAxis: FC<YAxisProps>
+
+external interface ZAxisProps : Props {
+    var dataKey: String
+    var name: String
+    var type: String
+    var domain: Array<Any>?
+    var range: Array<Any>?
+}
+
+external val ZAxis: FC<ZAxisProps>
 
 external interface AreaProps : Props {
     var type: String

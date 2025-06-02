@@ -42,6 +42,7 @@ enum class Visualization {
     CycleTimeBoxPlot,
     StoryContributionsOverTime,
     StoryContributionsPercentOverTime,
+    StoryEaseGraph,
     PairEaseLineOverTime,
     AllEaseLineOverTime,
 }
