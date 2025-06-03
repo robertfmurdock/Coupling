@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.Line
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Scatter
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ScatterChart
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.TickProps
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Tooltip
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.XAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxis
@@ -14,8 +15,13 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.core.toPrecision
 import js.objects.unsafeJso
+import react.FC
 import react.Props
+import react.ReactNode
+import react.dom.svg.ReactSVG.g
+import react.dom.svg.ReactSVG.text
 
 external interface StoryEaseGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
@@ -29,8 +35,20 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
         .flatMap { it.second.contributions?.elements ?: emptyList() }
         .distinctBy { it.id }
     val rawStoryContributions = allContributions.groupBy { it.story }
-    val storyContributions = rawStoryContributions.filter { it.key?.contains(",") == false }
-    val splitContributions = rawStoryContributions.filter { it.key?.contains(",") == true }
+
+    val splitContributions = rawStoryContributions.flatMap {
+        if (it.key?.contains(",") == true) {
+            it.key?.split(",")?.map { story -> story to it.value } ?: emptyList()
+        } else {
+            emptyList()
+        }
+    }.toMap()
+
+    val storyContributions = rawStoryContributions.filter { it.key?.contains(",") == false }.toMutableMap()
+
+    splitContributions.forEach { (story, contributions) ->
+        storyContributions[story] = contributions + storyContributions[story].orEmpty()
+    }
 
     if (pairsToReports.flatMap { it.second.contributions?.elements ?: emptyList() }.isEmpty()) {
         return@nfc
@@ -50,14 +68,38 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
                 dataKey = "x"
                 name = "story"
                 interval = 0
+                tick = FC<TickProps> { props ->
+                    g {
+                        transform = "translate(${props.x},${props.y})"
+                        text {
+                            x = 0.0
+                            y = 0.0
+                            dy = 4.0
+                            fill = "#666"
+                            transform = "rotate(-70)"
+                            textAnchor = "end"
+                            +props.payload.value?.toString()
+                        }
+                    }
+                }
             }
             YAxis {
                 type = "number"
                 dataKey = "y"
+                ticks = arrayOf(1, 2, 3, 4, 5)
                 name = "ease"
                 domain = arrayOf(0, "dataMax")
             }
             Tooltip {
+                formatter = { value, name ->
+                    ReactNode(
+                        if (name == "ease") {
+                            value.unsafeCast<Double>().toPrecision(3)
+                        } else {
+                            value.toString()
+                        },
+                    )
+                }
             }
             ZAxis {
                 type = "number"

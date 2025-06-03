@@ -40,12 +40,14 @@ external val LineChart: FC<LineChartProps>
 external interface ScatterChartProps : PropsWithChildren {
     var margin: RechartsMargin
 }
+
 external val ScatterChart: FC<ScatterChartProps>
 
 external interface AreaChartProps : PropsWithChildren {
     var data: Array<LinePoint>
     var margin: RechartsMargin
 }
+
 external val AreaChart: FC<AreaChartProps>
 external val BarChart: FC<AreaChartProps>
 external val ComposedChart: FC<AreaChartProps>
@@ -81,7 +83,7 @@ external val Scatter: FC<ScatterProps>
 
 external interface TooltipProps : Props {
     var labelFormatter: (value: Any?) -> ReactNode
-    var formatter: (value: Any?) -> ReactNode
+    var formatter: (value: Any?, name: Any?) -> ReactNode
     var content: ((TooltipProps) -> ReactNode)?
     var payload: ReadonlyArray<RechartsTooltipPayload>?
     var label: Any?
@@ -104,6 +106,12 @@ external interface LegendEvent {
 
 external val Legend: FC<LegendProps>
 
+external interface TickProps : Props {
+    var x: Double
+    var y: Double
+    var payload: RechartsTooltipPayload
+}
+
 external interface XAxisProps : Props {
     var dataKey: String
     var domain: Array<*>
@@ -112,6 +120,7 @@ external interface XAxisProps : Props {
     var name: String
     var interval: Any
     var ticks: Array<*>
+    var tick: FC<TickProps>
     var tickFormatter: (value: Any) -> String
     var fontSize: Number
 }
@@ -123,6 +132,8 @@ external interface YAxisProps : Props {
     var name: String
     var type: String
     var domain: Array<Any>?
+    var interval: Any
+    var ticks: Array<Any>?
 }
 
 external val YAxis: FC<YAxisProps>
@@ -144,6 +155,7 @@ external interface AreaProps : Props {
     var stroke: Any
     var fill: Any
 }
+
 external val Area: FC<AreaProps>
 
 external interface BarProps : Props {

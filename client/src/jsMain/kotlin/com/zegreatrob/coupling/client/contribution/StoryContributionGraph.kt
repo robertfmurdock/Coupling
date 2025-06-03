@@ -78,7 +78,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                 }
                 Tooltip {
                     labelFormatter = { ReactNode(timeFormatter(it)) }
-                    formatter = { ReactNode(it.unsafeCast<Double>().toPrecision(3)) }
+                    formatter = { value, _ -> ReactNode(value.unsafeCast<Double>().toPrecision(3)) }
                     content = { props ->
                         Tooltip.create {
                             +props
