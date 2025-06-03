@@ -7484,10 +7484,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@137.0.0:
-  version "137.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-137.0.0.tgz#e850723305e4f04e17fdd91257e4eff7c47890e3"
-  integrity sha512-RyyIQOXaDfCc0IZrGx9EpNYCepvJca+fvreJqFgNaWBLIzLj5UInn85mWMecborYCBMtRhMZuxwNuzNXgoCIFg==
+chromedriver@137.0.1:
+  version "137.0.1"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-137.0.1.tgz#a7c1eeb0c0b091a1e2505b384b4df8aaceb133fb"
+  integrity sha512-H4amLfsU3zubwD9X7me9Ajd8z3+MARfJ90gLV6PEKdad0Jgmh3fAGnCuz8Ew8yeuoSJ5ycb/vGEvyqgGVFAjJQ==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
@@ -14429,10 +14429,10 @@ strip-json-comments@3.1.1, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stripe@^18.2.0:
-  version "18.2.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-18.2.0.tgz#5a599d482b421a28196f90b31451f7ecb0d408c7"
-  integrity sha512-RpOaGh5CLs3SYeVXw1CIQZNwPVADBJtgNyUgu+ZkIvu3u4pkZvNrlKr+WaLoNjSPQWef0dikxDS2AKHBl/l3bg==
+stripe@^18.2.1:
+  version "18.2.1"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-18.2.1.tgz#9e9681079d39850b8fed0469a8b898fdd2ce5c00"
+  integrity sha512-GwB1B7WSwEBzW4dilgyJruUYhbGMscrwuyHsPUmSRKrGHZ5poSh2oU9XKdii5BFVJzXHn35geRvGJ6R8bYcp8w==
   dependencies:
     qs "^6.11.0"
 
