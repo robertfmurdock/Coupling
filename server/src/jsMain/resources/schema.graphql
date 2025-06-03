@@ -207,7 +207,7 @@ input ContributionsInput {
 }
 
 enum ContributionWindow {
-    All, Year, Quarter, Month, Week
+    All, Year, HalfYear, Quarter, Month, Week
 }
 
 input PlayerInput {
