@@ -2,7 +2,7 @@
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.19.0"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.0.3"
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.5.14"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.5.17"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.2.25"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.7.23"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:7.0.7"
