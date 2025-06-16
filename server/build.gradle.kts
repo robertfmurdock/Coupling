@@ -95,11 +95,12 @@ tasks {
             compileProductionExecutableKotlinJs,
             "jsProductionExecutableCompileSync",
         )
-        mustRunAfter(clean)
+        mustRunAfter(clean, ":kotlinStoreYarnLock")
         inputs.dir(jsProcessResources.map { it.destinationDir.path })
         inputs.file(compileProductionExecutableKotlinJs.map { compileTask ->
             compileTask.destinationDirectory.file(compileTask.compilerOptions.moduleName.map { "$it.js" })
         })
+        inputs.file(rootProject.layout.projectDirectory.file("kotlin-js-store/yarn.lock"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
