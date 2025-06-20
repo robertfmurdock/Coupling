@@ -256,10 +256,10 @@
     "@smithy/util-waiter" "^3.1.5"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.830.0":
-  version "3.830.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.830.0.tgz#4dbd23dbe2ae980060f52bc7173dab2a390c9dce"
-  integrity sha512-rdZPFteEN4Tw8vNVKh5rwPhf2zJz3cazx2gf1NSB8+GtleefY6bsAqyOQueSMSkE6fGZw7kmaPJBvWDxzMX4nQ==
+"@aws-sdk/client-lambda@~3.833.0":
+  version "3.833.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.833.0.tgz#eeafc1a3bf0a2a0094d05b1a904bf77fd7193b46"
+  integrity sha512-m56p1MB+/t+QFfZZzQoqlVcITn8PRYa7yzvuO2LbR9YsQ97uZyVCu970RAPSkW6/SjyWTUvXtQw3x/1KITcrvw==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -4619,10 +4619,10 @@
     p-retry "^4"
     retry "^0.13.1"
 
-"@slack/web-api@^7.9.2":
-  version "7.9.2"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.9.2.tgz#c996354f467d64c4d3c4e77ab55f42dcf98cf2d0"
-  integrity sha512-3HoDwV6+ZSTfV+DsbnUd82GlZY0a+DPXuHQHpxWTqgxjM3JWZyGiwR+ov3d2M16pWiMzA+l58UJ5lm1znGq0yA==
+"@slack/web-api@^7.9.3":
+  version "7.9.3"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.9.3.tgz#50d914900314771288961a8f626bf7d6485d58e6"
+  integrity sha512-xjnoldVJyoUe61Ltqjr2UVYBolcsTpp5ottqzSI3l41UCaJgHSHIOpGuYps+nhLFvDfGGpDGUeQ7BWiq3+ypqA==
   dependencies:
     "@slack/logger" "^4.0.0"
     "@slack/types" "^2.9.0"
@@ -8952,11 +8952,6 @@ entities@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-6.0.0.tgz#09c9e29cb79b0a6459a9b9db9efb418ac5bb8e51"
   integrity sha512-aKstq2TDOndCn4diEyp9Uq/Flu2i1GlLkc6XIDQSDMuaFE3OPW5OphLCyQ5SpSJZTb4reN+kTcYru5yIfXoRPw==
-
-entities@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/entities/-/entities-6.0.1.tgz#c28c34a43379ca7f61d074130b2f5f7020a30694"
-  integrity sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==
 
 env-paths@^2.2.1:
   version "2.2.1"
