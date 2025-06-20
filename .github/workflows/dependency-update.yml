@@ -42,7 +42,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           labels: autorebase:opt-in
           delete-branch: true
-      - name: Enable Pull Request Automerge
+      - name: Enable Pull Request Auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
         run: gh pr merge --rebase --auto "${{ steps.cpr.outputs.pull-request-number }}"
         env:

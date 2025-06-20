@@ -71,7 +71,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "6215634+robertfmurdock@users.noreply.github.com"
       - uses: testspace-com/setup-testspace@v1
-        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           domain: robertfmurdock
       - name: Setup Node

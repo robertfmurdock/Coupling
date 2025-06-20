@@ -23,13 +23,17 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '20'
-      - uses: burrunan/gradle-cache-action@v1
-        name: Update Deps
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
+          cache-read-only: true
           gradle-version: current
-          arguments: wrapper --distribution-type all
+      - name: Update Deps
+        run: gradle wrapper --distribution-type all
+      - name: Clean
+        run: gradle clean
       - name: Update Yarn Lock
-        run: ./gradlew kotlinUpgradeYarnLock --scan
+        run: gradle kotlinUpgradeYarnLock --scan
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
@@ -38,10 +42,8 @@ jobs:
           commit-message: "[patch] ${{github.workflow}}"
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: true
-      - name: Enable Pull Request Automerge
+      - name: Enable Pull Request Auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.COUPLING_PAT }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: rebase
+        run: gh pr merge --rebase --auto "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.COUPLING_PAT }}
