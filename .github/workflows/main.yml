@@ -70,9 +70,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "6215634+robertfmurdock@users.noreply.github.com"
-      - uses: testspace-com/setup-testspace@v1
-        with:
-          domain: robertfmurdock
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -100,7 +97,3 @@ jobs:
           name: test-output
           path: |
             build/test-output/
-      - name: Push result to Testspace server
-        if: ${{ github.ref == 'refs/heads/master' && always() }}
-        run: |
-          testspace $(find . -path *test-results* -name *.xml)
