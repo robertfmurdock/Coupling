@@ -5,7 +5,6 @@ Coupling ![Build](https://github.com/robertfmurdock/Coupling/actions/workflows/m
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/robertfmurdock/Coupling?label=Release)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/robertfmurdock/coupling)
-![Testspace tests](https://img.shields.io/testspace/passed/robertfmurdock/robertfmurdock:Coupling/master)
 
 This is a web application that will automatically assign pairs.
 
