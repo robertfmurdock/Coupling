@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.client.components.FrameRunner
+import js.array.component1
+import js.array.component2
 import js.objects.unsafeJso
 import react.FC
 import react.dom.html.ReactHTML.button

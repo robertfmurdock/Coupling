@@ -14,6 +14,7 @@ import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
+import js.array.component1
 import js.objects.unsafeJso
 import react.Props
 import react.PropsWithValue

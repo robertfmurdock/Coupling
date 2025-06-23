@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.array.component1
 import js.objects.unsafeJso
 import react.Props
 import react.dom.html.ReactHTML.div
