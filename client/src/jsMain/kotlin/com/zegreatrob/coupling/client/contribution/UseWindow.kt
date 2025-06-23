@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.json.GqlContributionWindow
+import js.array.component1
+import js.array.component2
 import react.router.dom.useSearchParams
 
 fun useWindow(defaultWindow: GqlContributionWindow): Pair<GqlContributionWindow, (GqlContributionWindow?) -> Unit> {

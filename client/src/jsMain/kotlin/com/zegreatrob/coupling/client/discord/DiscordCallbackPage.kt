@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoader
 import io.ktor.http.parseUrlEncodedParameters
+import js.array.component1
+import js.array.component2
 import react.Fragment
 import react.create
 import react.dom.html.ReactHTML.div
