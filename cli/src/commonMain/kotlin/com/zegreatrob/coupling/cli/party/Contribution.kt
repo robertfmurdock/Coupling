@@ -17,7 +17,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.tools.digger.json.ContributionParser
-import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -98,16 +97,6 @@ class SaveContribution(
     }
 }
 
-private fun CliktCommand.cycleTimeFromFirstCommit(contribution: Contribution, now: Instant): Duration? {
-    val firstCommitDateTime = contribution.firstCommitDateTime
-    return if (firstCommitDateTime == null) {
-        echo("Warning: could not calculate cycle time from missing firstCommitDateTime")
-        null
-    } else {
-        (contribution.tagDateTime ?: now) - firstCommitDateTime
-    }
-}
-
 expect fun loadFile(path: String): String?
 
 interface ContributionCliCommand {
@@ -115,58 +104,3 @@ interface ContributionCliCommand {
     val label: String
     val link: String
 }
-
-class BatchContribution(
-    private val clock: Clock,
-) : CliktCommand(name = "batch"),
-    ContributionCliCommand {
-    private val file by option().default("")
-    override val label by option().default("")
-    override val link by option().default("")
-    private val cycleTimeFromFirstCommit by option().flag()
-    override fun run() {
-        val inputJson = loadFile(file) ?: error("Could not load file")
-        val contributions = ContributionParser.parseContributions(inputJson.trim())
-        val contributionContext = currentContext.findObject<ContributionContext>()
-        val partyId = contributionContext!!.partyId
-        val inputs = contributions.map { contribution ->
-            contribution.contributionInput(
-                link = link.takeIf(String::isNotBlank),
-                label = label.takeIf(String::isNotBlank),
-                cycleTime = if (cycleTimeFromFirstCommit) {
-                    cycleTimeFromFirstCommit(contribution, clock.now())
-                } else {
-                    null
-                },
-            )
-        }
-        val commands = inputs.chunked(100).map { SaveContributionCommand(partyId = partyId, contributionList = it) }
-        withSdk(cliScope, contributionContext.env, ::echo) { sdk ->
-            commands.forEach { command ->
-                sdk.fire(command)
-            }
-        }
-    }
-}
-
-private fun Contribution.contributionInput(
-    cycleTime: Duration?,
-    link: String?,
-    label: String?,
-) = ContributionInput(
-    contributionId = ContributionId(firstCommit.toNotBlankString().getOrThrow()),
-    participantEmails = authors.toSet(),
-    hash = lastCommit,
-    dateTime = dateTime,
-    ease = ease,
-    story = storyId?.ifBlank { null },
-    link = link,
-    semver = semver,
-    label = label ?: this@contributionInput.label,
-    firstCommit = firstCommit,
-    firstCommitDateTime = firstCommitDateTime,
-    cycleTime = cycleTime,
-    commitCount = commitCount,
-    name = tagName,
-    integrationDateTime = tagDateTime,
-)
