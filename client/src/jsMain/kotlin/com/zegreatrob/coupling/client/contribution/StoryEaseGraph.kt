@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.XAxi
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ZAxis
 import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -31,24 +32,7 @@ external interface StoryEaseGraphProps : Props {
 @ReactFunc
 val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
     val (pairsToReports, window) = props
-    val allContributions = pairsToReports
-        .flatMap { it.second.contributions?.elements ?: emptyList() }
-        .distinctBy { it.id }
-    val rawStoryContributions = allContributions.groupBy { it.story }
-
-    val splitContributions = rawStoryContributions.flatMap {
-        if (it.key?.contains(",") == true) {
-            it.key?.split(",")?.map { story -> story to it.value } ?: emptyList()
-        } else {
-            emptyList()
-        }
-    }.toMap()
-
-    val storyContributions = rawStoryContributions.filter { it.key?.contains(",") == false }.toMutableMap()
-
-    splitContributions.forEach { (story, contributions) ->
-        storyContributions[story] = contributions + storyContributions[story].orEmpty()
-    }
+    var storyContributions = pairsToReports.contributionsByStory()
 
     if (pairsToReports.flatMap { it.second.contributions?.elements ?: emptyList() }.isEmpty()) {
         return@nfc
@@ -109,9 +93,9 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
                 domain = arrayOf(0, 50)
             }
             Scatter {
-                data = storyContributions.mapNotNull { (story, contributions) ->
+                data = storyContributions.map { (story, contributions) ->
                     unsafeJso<LinePoint> {
-                        x = story ?: return@mapNotNull null
+                        x = story
                         y = contributions.mapNotNull { it.ease }.average()
                         z = contributions.size
                     }
@@ -119,4 +103,28 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
             }
         }
     }
+}
+
+fun List<Pair<CouplingPair, ContributionReport>>.contributionsByStory(): Map<String, List<Contribution>> {
+    val allContributions = flatMap { it.second.contributions?.elements ?: emptyList() }
+        .distinctBy { it.id }
+    val rawStoryContributions: Map<String, List<Contribution>> =
+        allContributions.groupBy { it.story }
+            .mapNotNull { (key, value) -> if (key != null) key to value else null }
+            .toMap()
+
+    val splitContributions = rawStoryContributions.flatMap {
+        if (it.key.contains(",") == true) {
+            it.key.split(",").map { story -> story to it.value }
+        } else {
+            emptyList()
+        }
+    }.toMap()
+
+    var storyContributions = rawStoryContributions.filter { it.key.contains(",") == false }.toMutableMap()
+
+    splitContributions.forEach { (story, contributions) ->
+        storyContributions[story] = contributions + storyContributions[story].orEmpty()
+    }
+    return storyContributions.filter { it.value.isNotEmpty() }
 }
