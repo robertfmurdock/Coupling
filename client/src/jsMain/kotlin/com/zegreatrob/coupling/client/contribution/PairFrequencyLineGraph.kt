@@ -11,14 +11,14 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toJSDate
 import react.Props
 import react.create
+import kotlin.time.Clock
+import kotlin.time.toJSDate
 
 external interface PairContributionsLineGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>

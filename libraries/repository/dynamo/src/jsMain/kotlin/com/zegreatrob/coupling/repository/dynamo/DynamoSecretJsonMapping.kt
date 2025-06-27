@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.with
-import kotlinx.datetime.Instant
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Instant
 
 interface DynamoSecretJsonMapping : PartyIdDynamoRecordJsonMapping {
 

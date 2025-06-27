@@ -12,8 +12,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class ServerSaveBoostCommandTest {
 

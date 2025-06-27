@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.user.UserId
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 abstract class DynamoRepositoryCreatorSyntax<T> : DynamoCreateTableSyntax {
 

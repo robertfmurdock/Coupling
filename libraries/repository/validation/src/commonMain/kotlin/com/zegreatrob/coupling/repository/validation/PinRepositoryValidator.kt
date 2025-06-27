@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
 
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, PartyContext<R>> {

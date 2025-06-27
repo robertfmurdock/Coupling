@@ -19,11 +19,13 @@ import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.tools.digger.json.toJsonString
 import com.zegreatrob.tools.digger.model.Contribution
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlinx.datetime.toDeprecatedInstant
+import kotlinx.datetime.toStdlibInstant
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 class SaveContributionCLITest {
@@ -34,13 +36,13 @@ class SaveContributionCLITest {
             lastCommit = "${Uuid.random()}",
             firstCommit = "${Uuid.random()}",
             authors = listOf("${Uuid.random()}"),
-            dateTime = Clock.System.now(),
+            dateTime = Clock.System.now().toDeprecatedInstant(),
             ease = 7,
             storyId = "${Uuid.random()}",
             semver = "${Uuid.random()}",
             label = "${Uuid.random()}",
-            firstCommitDateTime = Clock.System.now() - 20.minutes,
-            tagDateTime = Clock.System.now() - 15.minutes,
+            firstCommitDateTime = (Clock.System.now() - 20.minutes).toDeprecatedInstant(),
+            tagDateTime = (Clock.System.now() - 15.minutes).toDeprecatedInstant(),
             tagName = "${Uuid.random()}",
             commitCount = 134,
         )
@@ -68,17 +70,17 @@ class SaveContributionCLITest {
                             ),
                             participantEmails = sourceContribution.authors.toSet(),
                             hash = sourceContribution.lastCommit,
-                            dateTime = sourceContribution.dateTime,
+                            dateTime = sourceContribution.dateTime?.toStdlibInstant(),
                             ease = sourceContribution.ease,
                             story = sourceContribution.storyId,
                             link = linkOverride,
                             semver = sourceContribution.semver,
                             label = labelOverride,
                             firstCommit = sourceContribution.firstCommit,
-                            firstCommitDateTime = sourceContribution.firstCommitDateTime,
+                            firstCommitDateTime = sourceContribution.firstCommitDateTime?.toStdlibInstant(),
                             cycleTime = expectedCycleTime,
                             commitCount = sourceContribution.commitCount,
-                            integrationDateTime = sourceContribution.tagDateTime,
+                            integrationDateTime = sourceContribution.tagDateTime?.toStdlibInstant(),
                             name = sourceContribution.tagName,
                         ),
                     ),
@@ -96,12 +98,12 @@ class SaveContributionCLITest {
             lastCommit = "${Uuid.random()}",
             firstCommit = "${Uuid.random()}",
             authors = listOf("${Uuid.random()}"),
-            dateTime = dateTime,
+            dateTime = dateTime.toDeprecatedInstant(),
             ease = 7,
             storyId = "${Uuid.random()}",
             semver = "${Uuid.random()}",
             label = "${Uuid.random()}",
-            firstCommitDateTime = firstCommitDateTime,
+            firstCommitDateTime = firstCommitDateTime.toDeprecatedInstant(),
             tagName = "${Uuid.random()}",
             tagDateTime = null,
             commitCount = 3214,
@@ -140,14 +142,14 @@ class SaveContributionCLITest {
             lastCommit = "${Uuid.random()}",
             firstCommit = "${Uuid.random()}",
             authors = listOf("${Uuid.random()}"),
-            dateTime = dateTime,
+            dateTime = dateTime.toDeprecatedInstant(),
             ease = 7,
             storyId = "${Uuid.random()}",
             semver = "${Uuid.random()}",
             label = "${Uuid.random()}",
-            firstCommitDateTime = firstCommitDateTime,
+            firstCommitDateTime = firstCommitDateTime.toDeprecatedInstant(),
             tagName = "${Uuid.random()}",
-            tagDateTime = tagDateTime,
+            tagDateTime = tagDateTime.toDeprecatedInstant(),
             commitCount = 3214,
         )
         val partyId = stubPartyId()
@@ -174,13 +176,13 @@ class SaveContributionCLITest {
             lastCommit = "${Uuid.random()}",
             firstCommit = "${Uuid.random()}",
             authors = listOf("${Uuid.random()}"),
-            dateTime = Clock.System.now(),
+            dateTime = Clock.System.now().toDeprecatedInstant(),
             ease = 7,
             storyId = "${Uuid.random()}",
             semver = "${Uuid.random()}",
             label = "${Uuid.random()}",
             firstCommitDateTime = null,
-            tagDateTime = Clock.System.now().plus(43.minutes),
+            tagDateTime = Clock.System.now().plus(43.minutes).toDeprecatedInstant(),
             tagName = "Bill",
             commitCount = 654,
         )

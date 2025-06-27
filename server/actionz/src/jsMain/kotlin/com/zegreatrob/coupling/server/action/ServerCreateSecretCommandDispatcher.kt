@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.secret.SecretSave
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
     val secretRepository: SecretSave

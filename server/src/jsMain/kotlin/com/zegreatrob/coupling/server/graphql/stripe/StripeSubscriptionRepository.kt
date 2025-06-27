@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.server.action.subscription.SubscriptionRepository
 import com.zegreatrob.coupling.server.external.stripe.StripeCustomer
 import js.objects.unsafeJso
 import kotlinx.coroutines.await
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 class StripeSubscriptionRepository : SubscriptionRepository {
     override suspend fun findSubscriptionDetails(email: String): SubscriptionDetails? {

@@ -5,6 +5,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import js.import.importAsync
+import js.promise.await
 import kotlinx.browser.document
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async

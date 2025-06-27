@@ -21,6 +21,7 @@ import react.dom.html.ReactHTML.i
 import react.useState
 import web.cssom.ClassName
 import web.html.InputType
+import web.html.text
 import web.navigator.navigator
 import web.prompts.alert
 

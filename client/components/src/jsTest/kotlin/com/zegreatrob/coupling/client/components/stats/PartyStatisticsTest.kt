@@ -16,12 +16,12 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import js.objects.unsafeJso
-import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 class PartyStatisticsTest {
 

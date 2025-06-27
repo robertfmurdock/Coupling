@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.tools.digger.json.ContributionParser
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class BatchContribution(
     private val scope: CoroutineScope = cliScope,

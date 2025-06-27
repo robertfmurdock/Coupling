@@ -11,10 +11,10 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
+import kotlin.time.Instant
 
 class ServerPairCountQueryDispatcherTest {
     @Test

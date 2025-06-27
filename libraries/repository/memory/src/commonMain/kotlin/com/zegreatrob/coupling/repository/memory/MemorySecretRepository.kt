@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.secret.SecretRepository
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class MemorySecretRepository(
     override val userId: UserId = UserId.new(),

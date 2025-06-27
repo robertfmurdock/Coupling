@@ -11,8 +11,8 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class DynamoDiscordRepositoryTest {
 

@@ -21,7 +21,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import kotlinx.datetime.toJSDate
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -33,6 +32,7 @@ import web.cssom.WhiteSpace
 import web.cssom.number
 import web.cssom.px
 import kotlin.time.Duration
+import kotlin.time.toJSDate
 
 @JsModule("date-fns/formatDistance")
 external val formatDistanceModule: dynamic

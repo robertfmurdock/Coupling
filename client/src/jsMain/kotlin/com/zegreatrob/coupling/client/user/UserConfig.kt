@@ -33,6 +33,7 @@ import web.cssom.Display
 import web.cssom.number
 import web.dom.ElementId
 import web.html.InputType
+import web.html.text
 import kotlin.uuid.Uuid
 
 external interface UserConfigProps<D> : Props where D : GraphQuery.Dispatcher, D : ApplyBoostCommand.Dispatcher {

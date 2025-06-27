@@ -11,7 +11,6 @@ import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.DataLoaderTools
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
-import com.zegreatrob.react.dataloader.ReloadFunc
 import com.zegreatrob.react.dataloader.ResolvedState
 import com.zegreatrob.testmints.action.async.SuspendAction
 import react.Props
@@ -22,7 +21,7 @@ import react.useCallback
 
 external interface CouplingQueryProps<R> : Props {
     var query: SuspendAction<ClientDispatcher, R?>
-    var children: (ReloadFunc, DispatchFunc<ClientDispatcher>, R) -> ReactNode?
+    var children: (() -> Unit, DispatchFunc<ClientDispatcher>, R) -> ReactNode?
     var commander: Commander
 }
 

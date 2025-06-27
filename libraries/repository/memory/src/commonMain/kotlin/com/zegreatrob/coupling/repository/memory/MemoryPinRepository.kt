@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class MemoryPinRepository(
     override val userId: UserId,

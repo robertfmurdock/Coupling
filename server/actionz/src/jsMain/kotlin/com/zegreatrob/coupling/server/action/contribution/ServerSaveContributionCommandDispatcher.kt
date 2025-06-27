@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.contribution.ContributionSave
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 interface ServerSaveContributionCommandDispatcher : SaveContributionCommand.Dispatcher {
     val contributionRepository: ContributionSave

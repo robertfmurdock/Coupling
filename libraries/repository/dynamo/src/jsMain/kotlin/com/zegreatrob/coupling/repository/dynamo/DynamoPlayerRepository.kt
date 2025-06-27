@@ -10,12 +10,12 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import kotlinx.datetime.Clock
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Clock
 
 class DynamoPlayerRepository private constructor(override val userId: UserId, override val clock: Clock) :
     PlayerEmailRepository,

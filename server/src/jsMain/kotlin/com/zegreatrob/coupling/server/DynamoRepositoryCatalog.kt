@@ -23,7 +23,7 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.secret.SecretRepository
 import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class DynamoRepositoryCatalog private constructor(
     override val userId: UserId,

@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.test.fail
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
 interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, SharedContext<R>> {

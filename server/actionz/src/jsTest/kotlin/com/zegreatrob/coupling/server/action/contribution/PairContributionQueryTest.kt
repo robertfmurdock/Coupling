@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Clock
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
 
 class PairContributionQueryTest {

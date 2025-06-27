@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserId
-import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Instant
 
 interface DynamoBoostJsonMapping : DynamoRecordJsonMapping {
 

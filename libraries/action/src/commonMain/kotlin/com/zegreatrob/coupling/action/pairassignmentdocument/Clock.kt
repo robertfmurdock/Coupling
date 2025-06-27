@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.action.pairassignmentdocument
 
+import kotlin.time.Clock
+
 interface Clock {
-    fun currentDate() = kotlinx.datetime.Clock.System.now()
+    fun currentDate() = Clock.System.now()
 }

@@ -24,9 +24,9 @@ import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserId
-import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 object GqlReference {
     private val notBlank = "-".toNotBlankString().getOrThrow()

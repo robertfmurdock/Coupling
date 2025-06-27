@@ -13,9 +13,9 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Clock
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.uuid.Uuid
 
 class PlayersQueryTest {

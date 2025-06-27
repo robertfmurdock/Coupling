@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import kotlinx.datetime.Clock
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
+import kotlin.time.Clock
 
 class DynamoPinRepository private constructor(override val userId: UserId, override val clock: Clock) :
     PinRepository,

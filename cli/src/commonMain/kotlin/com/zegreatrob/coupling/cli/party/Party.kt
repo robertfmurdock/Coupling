@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.cli.party
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 private class Party : CliktCommand() {
     override fun run() {

@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import kotlinx.datetime.Instant
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.test.Test
+import kotlin.time.Instant
 
 class PairDocumentTest {
 

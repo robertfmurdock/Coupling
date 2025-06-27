@@ -10,10 +10,10 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
-import kotlinx.datetime.Clock
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Clock
 
 class DynamoDiscordRepository private constructor(override val userId: UserId, override val clock: Clock) :
     RecordSyntax,

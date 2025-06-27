@@ -6,6 +6,7 @@ import react.Props
 import react.dom.html.ReactHTML.a
 import web.cssom.em
 import web.window.WindowTarget
+import web.window._blank
 
 val gravatarLink by nfc<Props> {
     a {

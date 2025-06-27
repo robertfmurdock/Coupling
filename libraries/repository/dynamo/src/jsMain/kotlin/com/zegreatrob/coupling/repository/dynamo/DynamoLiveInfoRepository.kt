@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
-import kotlinx.datetime.Clock
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Clock
 
 class DynamoLiveInfoRepository private constructor(override val userId: UserId, override val clock: Clock) :
     LiveInfoRepository,

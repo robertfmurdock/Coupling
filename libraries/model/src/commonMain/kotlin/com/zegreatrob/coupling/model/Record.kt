@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.model
 
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotools.types.text.NotBlankString
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 data class Record<T>(
     val data: T,
@@ -22,7 +22,8 @@ fun <T> partyRecord(
     data: T,
     modifyingUserEmail: NotBlankString,
     isDeleted: Boolean = false,
-    timestamp: Instant = Clock.System.now(),
+    timestamp: Instant =
+        Clock.System.now(),
 ) = PartyRecord(PartyElement(partyId, data), modifyingUserEmail, isDeleted, timestamp)
 
 val <T> PartyRecord<T>.element get() = this.data.element

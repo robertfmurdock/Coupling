@@ -12,11 +12,11 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import kotlinx.datetime.Clock
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlin.time.Clock
 
 class CreatePairCandidateReportActionTest {
 

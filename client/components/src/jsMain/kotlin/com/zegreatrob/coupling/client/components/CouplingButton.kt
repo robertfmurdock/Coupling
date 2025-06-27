@@ -33,6 +33,7 @@ import web.cssom.rgb
 import web.cssom.url
 import web.html.ButtonType
 import web.html.HTMLButtonElement
+import web.html.button
 
 val buttonRuleset: PropertiesBuilder.() -> Unit = {
     backgroundImage = url(pngPath("overlay"))

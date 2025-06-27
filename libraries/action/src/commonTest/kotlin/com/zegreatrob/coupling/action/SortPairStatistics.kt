@@ -12,9 +12,9 @@ import com.zegreatrob.coupling.model.player.toPairCombinations
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
+import kotlin.time.Instant
 
 class SortPairStatistics {
     fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)

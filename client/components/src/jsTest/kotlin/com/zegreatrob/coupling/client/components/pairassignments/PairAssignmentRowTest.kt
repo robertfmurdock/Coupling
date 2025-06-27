@@ -20,11 +20,11 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
-import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.Window
 import kotlin.js.json
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class PairAssignmentRowTest {
 

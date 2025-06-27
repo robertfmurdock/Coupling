@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.testlogging
 
 import com.zegreatrob.coupling.logging.initializeLogging
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Suppress("unused")
 @JsName("JasmineJsonLoggingReporter")

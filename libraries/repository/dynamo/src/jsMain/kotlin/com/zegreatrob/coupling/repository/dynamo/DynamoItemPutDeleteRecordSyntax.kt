@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import kotlinx.datetime.Instant
 import kotlin.js.Json
+import kotlin.time.Instant
 
 interface DynamoItemPutDeleteRecordSyntax :
     DynamoDatatypeSyntax,

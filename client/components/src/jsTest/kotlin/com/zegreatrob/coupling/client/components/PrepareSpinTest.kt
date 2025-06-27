@@ -22,13 +22,13 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.external.reactTestingLibrary
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
-import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotools.types.collection.toNotEmptyList
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class PrepareSpinTest {
 

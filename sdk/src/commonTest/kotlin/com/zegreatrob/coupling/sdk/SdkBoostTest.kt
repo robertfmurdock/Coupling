@@ -12,8 +12,8 @@ import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.datetime.Instant
 import kotlin.test.Test
+import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 class SdkBoostTest {

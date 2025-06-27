@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 interface ClockProvider {
     val clock: Clock

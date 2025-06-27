@@ -1,5 +1,5 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 fun now() = Clock.System.now()

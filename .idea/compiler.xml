@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="20">
       <module name="Coupling.cli.main" target="20" />
       <module name="Coupling.cli.test" target="20" />
       <module name="Coupling.client.graphing" target="20" />
+      <module name="jsmints-plugins.plugins" target="17" />
+      <module name="jsmints-plugins.plugins.functionalTest" target="17" />
+      <module name="jsmints-plugins.plugins.main" target="17" />
+      <module name="jsmints-plugins.plugins.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

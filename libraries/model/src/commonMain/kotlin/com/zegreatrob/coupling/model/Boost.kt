@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.model
 
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserId
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 data class Boost(
     val userId: UserId,

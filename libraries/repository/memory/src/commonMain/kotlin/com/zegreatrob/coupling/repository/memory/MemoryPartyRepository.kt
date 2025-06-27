@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.party.PartyRepository
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class MemoryPartyRepository(
     override val userId: UserId,

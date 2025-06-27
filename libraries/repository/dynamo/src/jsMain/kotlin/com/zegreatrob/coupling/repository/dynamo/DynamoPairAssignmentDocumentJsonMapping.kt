@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyElement
-import kotlinx.datetime.Instant
 import kotools.types.collection.toNotEmptyList
 import kotools.types.text.toNotBlankString
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Instant
 
 interface DynamoPairAssignmentDocumentJsonMapping :
     PartyIdDynamoRecordJsonMapping,

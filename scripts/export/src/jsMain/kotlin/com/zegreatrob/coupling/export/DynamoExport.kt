@@ -25,11 +25,11 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Clock
 
 fun exportWithDynamo() {
     MainScope().launch {
