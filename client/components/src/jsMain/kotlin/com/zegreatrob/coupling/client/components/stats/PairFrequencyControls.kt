@@ -25,6 +25,7 @@ import web.cssom.Display
 import web.cssom.WhiteSpace
 import web.cssom.px
 import web.html.InputType
+import web.html.checkbox
 
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, ContributionReport>>

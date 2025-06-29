@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class DynamoSlackRepositoryTest {
 

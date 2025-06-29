@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.model.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.PlayerId
-import kotlinx.datetime.Instant
 import kotools.types.collection.NotEmptyList
+import kotlin.time.Instant
 
 data class PairAssignment(
     val playerIds: List<PlayerId>? = null,

@@ -19,10 +19,10 @@ import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
-import kotlinx.datetime.Clock
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.time.Clock
 
 @Suppress("unused")
 class HistoryPageE2ETest {

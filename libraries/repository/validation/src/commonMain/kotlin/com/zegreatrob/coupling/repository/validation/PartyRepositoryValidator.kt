@@ -9,8 +9,8 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyIntegration
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
 interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {

@@ -22,7 +22,6 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.testmints.action.DispatcherPipeCannon
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -32,6 +31,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotools.types.collection.toNotEmptyList
 import kotools.types.text.toNotBlankString
 import kotlin.random.Random
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 

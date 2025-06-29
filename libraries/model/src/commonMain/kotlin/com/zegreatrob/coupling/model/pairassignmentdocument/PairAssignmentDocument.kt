@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
-import kotlinx.datetime.Instant
 import kotools.types.collection.NotEmptyList
+import kotlin.time.Instant
 
 data class PairAssignmentDocument(
     val id: PairAssignmentDocumentId,

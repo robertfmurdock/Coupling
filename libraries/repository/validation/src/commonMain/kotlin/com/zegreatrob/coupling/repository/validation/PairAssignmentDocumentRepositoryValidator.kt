@@ -10,8 +10,8 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 

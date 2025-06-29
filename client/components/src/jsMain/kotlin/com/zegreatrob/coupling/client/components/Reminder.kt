@@ -4,8 +4,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.browser.localStorage
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import react.useEffect
@@ -19,8 +17,10 @@ import web.cssom.Position
 import web.cssom.em
 import web.cssom.integer
 import web.cssom.px
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 external interface ReminderProps : PropsWithChildren {
     var id: String

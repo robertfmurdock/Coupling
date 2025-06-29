@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.repository.memory
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.user.UserRepository
-import kotlinx.datetime.Clock
 import kotools.types.text.NotBlankString
+import kotlin.time.Clock
 
 class MemoryUserRepository(
     override val userId: UserId,

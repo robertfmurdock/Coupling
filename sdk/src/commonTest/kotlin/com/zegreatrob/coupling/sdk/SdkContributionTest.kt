@@ -21,12 +21,12 @@ import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlin.random.Random
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 
 class SdkContributionTest {
 

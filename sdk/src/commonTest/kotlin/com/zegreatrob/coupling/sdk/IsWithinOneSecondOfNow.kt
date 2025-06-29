@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
 import kotlin.time.DurationUnit
+import kotlin.time.Instant
 
 fun Instant.isWithinOneSecondOfNow() {
     val timeSpan = Clock.System.now() - this

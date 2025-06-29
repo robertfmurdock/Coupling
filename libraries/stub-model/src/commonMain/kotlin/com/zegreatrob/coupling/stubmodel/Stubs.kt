@@ -25,15 +25,15 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.random.Random
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 fun stubParties(number: Int) = generateSequence(::stubPartyDetails).take(number).toList()

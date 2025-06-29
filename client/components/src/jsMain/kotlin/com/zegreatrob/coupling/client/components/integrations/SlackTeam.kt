@@ -5,6 +5,7 @@ import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import web.dom.ElementId
 import web.html.InputType
+import web.html.text
 
 fun ChildrenBuilder.slackTeam(slackTeam: String?) {
     label {

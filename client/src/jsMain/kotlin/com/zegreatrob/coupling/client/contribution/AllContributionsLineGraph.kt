@@ -7,10 +7,10 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import kotlinx.datetime.Clock
-import kotlinx.datetime.toJSDate
 import react.Props
 import react.create
+import kotlin.time.Clock
+import kotlin.time.toJSDate
 
 external interface AllContributionsLineGraphProps : Props {
     var data: List<Contribution>

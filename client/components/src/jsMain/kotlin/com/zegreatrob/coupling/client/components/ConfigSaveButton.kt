@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.components
 import js.objects.unsafeJso
 import react.ChildrenBuilder
 import web.html.ButtonType
+import web.html.submit
 
 fun ChildrenBuilder.configSaveButton(isSaving: Boolean) = CouplingButton {
     sizeRuleSet = supersize

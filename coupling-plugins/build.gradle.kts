@@ -31,7 +31,6 @@ dependencies {
     implementation(libs.com.github.ben.manes.gradle.versions.plugin)
     implementation(libs.org.apache.logging.log4j.log4j.core)
     implementation(libs.org.apache.logging.log4j.log4j.iostreams)
-    implementation(libs.org.jetbrains.kotlin.kotlin.stdlib)
     implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     implementation(libs.org.jmailen.gradle.kotlinter.gradle)
     implementation(libs.org.slf4j.slf4j.api)

@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
 import org.kotools.types.ExperimentalKotoolsTypesApi
+import kotlin.time.Instant
 
 @Serializable
 data class JsonPairAssignmentDocument(

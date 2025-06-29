@@ -28,6 +28,8 @@ import web.cssom.Display
 import web.cssom.number
 import web.dom.ElementId
 import web.html.InputType
+import web.html.checkbox
+import web.html.text
 
 external interface PartyConfigContentProps : Props {
     var party: PartyDetails

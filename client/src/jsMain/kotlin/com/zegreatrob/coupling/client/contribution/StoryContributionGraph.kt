@@ -27,12 +27,12 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toJSDate
 import react.Props
 import react.ReactNode
 import react.create
 import web.cssom.WhiteSpace
 import kotlin.math.max
+import kotlin.time.toJSDate
 
 external interface StoryContributionGraphProps : Props {
     var data: List<Contribution>

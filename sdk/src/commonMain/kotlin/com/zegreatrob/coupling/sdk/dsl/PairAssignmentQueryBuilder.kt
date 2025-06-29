@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlPairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
+import kotlin.time.Instant
 
 class PairAssignmentQueryBuilder : QueryBuilder<GqlPairAssignment> {
     override var output: GqlPairAssignment = GqlPairAssignment(

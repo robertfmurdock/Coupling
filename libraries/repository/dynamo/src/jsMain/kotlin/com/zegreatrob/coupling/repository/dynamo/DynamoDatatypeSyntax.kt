@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Instant
 
 interface DynamoDatatypeSyntax {
 
@@ -17,8 +18,8 @@ interface DynamoDatatypeSyntax {
         "${year}${padMonth}${padDay}${padHour}${padMinute}$padSecond"
     } + ".$padMillis"
 
-    val LocalDateTime.padMonth get() = "$monthNumber".padStart(2, '0')
-    val LocalDateTime.padDay get() = "$dayOfMonth".padStart(2, '0')
+    val LocalDateTime.padMonth get() = "${month.number}".padStart(2, '0')
+    val LocalDateTime.padDay get() = "$day".padStart(2, '0')
     val LocalDateTime.padHour get() = "$hour".padStart(2, '0')
     val LocalDateTime.padMinute get() = "$minute".padStart(2, '0')
     val LocalDateTime.padSecond get() = "$second".padStart(2, '0')
@@ -29,7 +30,7 @@ interface DynamoDatatypeSyntax {
             LocalDateTime(
                 year = it.slice(0..3).toInt(),
                 month = it.slice(4..5).toInt().let { monthNumber -> Month.entries[monthNumber - 1] },
-                dayOfMonth = it.slice(6..7).toInt(),
+                day = it.slice(6..7).toInt(),
                 hour = it.slice(8..9).toInt(),
                 minute = it.slice(10..11).toInt(),
                 second = it.slice(12..13).toInt(),

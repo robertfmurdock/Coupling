@@ -9,9 +9,10 @@ import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
+import js.coroutines.promise
+import js.promise.await
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.promise
 import kotools.types.text.toNotBlankString
 import web.http.fetch
 

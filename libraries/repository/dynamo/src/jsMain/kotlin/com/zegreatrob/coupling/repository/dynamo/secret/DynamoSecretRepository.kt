@@ -22,7 +22,7 @@ import com.zegreatrob.coupling.repository.dynamo.PartyIdDynamoItemListGetSyntax
 import com.zegreatrob.coupling.repository.dynamo.RecordSyntax
 import com.zegreatrob.coupling.repository.secret.SecretDelete
 import com.zegreatrob.coupling.repository.secret.SecretRepository
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class DynamoSecretRepository private constructor(override val userId: UserId, override val clock: Clock) :
     DynamoSecretJsonMapping,

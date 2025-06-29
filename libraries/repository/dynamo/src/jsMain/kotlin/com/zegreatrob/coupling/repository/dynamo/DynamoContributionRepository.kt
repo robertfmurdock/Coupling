@@ -10,13 +10,13 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 class DynamoContributionRepository private constructor(override val userId: UserId, override val clock: Clock) :
     ContributionRepository,

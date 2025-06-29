@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.logging
 
 import io.github.oshai.kotlinlogging.Formatter
 import io.github.oshai.kotlinlogging.KLoggingEvent
-import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
+import kotlin.time.Clock
 
 data object JsonFormatter : Formatter {
 

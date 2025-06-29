@@ -33,6 +33,7 @@ import web.cssom.VerticalAlign
 import web.cssom.px
 import web.dom.ElementId
 import web.html.InputType
+import web.html.text
 
 external interface PinConfigContentProps : Props {
     var party: PartyDetails

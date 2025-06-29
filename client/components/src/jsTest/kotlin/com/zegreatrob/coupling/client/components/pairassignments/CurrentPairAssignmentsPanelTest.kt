@@ -16,13 +16,13 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
-import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import react.ReactNode
 import react.create
 import react.router.RouterProvider
 import react.router.createMemoryRouter
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class CurrentPairAssignmentsPanelTest {
 

@@ -11,8 +11,8 @@ import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.uuid.Uuid
 

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.model
 
 import com.zegreatrob.coupling.model.party.PartyId
-import kotlinx.datetime.Instant
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 data class Contribution(
     val id: ContributionId,

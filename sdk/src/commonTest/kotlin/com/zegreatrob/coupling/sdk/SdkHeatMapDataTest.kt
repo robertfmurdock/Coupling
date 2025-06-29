@@ -12,9 +12,9 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class SdkHeatMapDataTest {
 

@@ -20,9 +20,9 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
-import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
 class SdkPairsTest {

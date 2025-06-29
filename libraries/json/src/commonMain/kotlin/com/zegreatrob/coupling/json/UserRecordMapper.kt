@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
+import kotlin.time.Instant
 
 @Serializable
 data class JsonUserRecord(

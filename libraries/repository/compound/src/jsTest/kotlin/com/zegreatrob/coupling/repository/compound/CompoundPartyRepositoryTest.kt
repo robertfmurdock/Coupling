@@ -11,8 +11,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyRepository> {
 

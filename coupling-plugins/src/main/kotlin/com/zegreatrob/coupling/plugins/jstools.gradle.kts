@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
@@ -24,6 +25,8 @@ kotlin {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         allWarningsAsErrors = true
+        languageVersion.set(KotlinVersion.KOTLIN_2_2)
+//        apiVersion.set(KotlinVersion.KOTLIN_2_2)
     }
     sourceSets {
         all {

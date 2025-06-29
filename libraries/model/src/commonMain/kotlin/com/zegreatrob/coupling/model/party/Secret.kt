@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model.party
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 data class Secret(
     val id: SecretId,

@@ -18,6 +18,7 @@ import react.dom.html.ReactHTML.label
 import web.cssom.Angle
 import web.cssom.px
 import web.html.InputType
+import web.html.checkbox
 
 external interface PairSelectorProps : Props {
     var pairs: List<CouplingPair>

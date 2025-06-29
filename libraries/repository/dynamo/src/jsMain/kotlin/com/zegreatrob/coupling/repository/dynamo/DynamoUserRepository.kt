@@ -10,12 +10,12 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Clock
 
 class DynamoUserRepository private constructor(override val userId: UserId, override val clock: Clock) :
     UserRepository,

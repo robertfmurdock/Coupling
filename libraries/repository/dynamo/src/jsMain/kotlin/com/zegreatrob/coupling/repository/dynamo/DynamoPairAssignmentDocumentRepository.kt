@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import kotlinx.datetime.Clock
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
+import kotlin.time.Clock
 
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userId: UserId,

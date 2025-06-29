@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.UserIdProvider
-import kotlinx.datetime.Instant
 import kotools.types.text.toNotBlankString
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Instant
 
 interface DynamoRecordJsonMapping :
     DynamoDatatypeSyntax,

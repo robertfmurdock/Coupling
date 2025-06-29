@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -24,6 +23,7 @@ import kotools.types.collection.notEmptyListOf
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 
 class RecentTimesPairedQueryTest {
 

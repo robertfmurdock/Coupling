@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.player.Player
-import kotlinx.datetime.Instant
 import kotlin.math.floor
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 data class PairReport(val pair: CouplingPair.Double, val timeSinceLastPair: TimeResult)
 

@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.action
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.io.File
 import kotlin.math.roundToInt
 import kotlin.test.Ignore
 import kotlin.test.Test
+import kotlin.time.Instant
 
 class StatsProcessingTest {
 

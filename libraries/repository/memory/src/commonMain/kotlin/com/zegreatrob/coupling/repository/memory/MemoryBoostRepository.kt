@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class MemoryBoostRepository(
     override val userId: UserId,

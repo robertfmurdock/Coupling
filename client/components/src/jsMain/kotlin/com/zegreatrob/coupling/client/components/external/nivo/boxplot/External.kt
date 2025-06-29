@@ -10,7 +10,7 @@ import react.ComponentType
 import react.Props
 
 external interface ResponsiveBoxPlotProps : Props {
-    var data: Array<dynamic>
+    var data: Array<Any>
     var minValue: Number
     var maxValue: Number
     var width: Number

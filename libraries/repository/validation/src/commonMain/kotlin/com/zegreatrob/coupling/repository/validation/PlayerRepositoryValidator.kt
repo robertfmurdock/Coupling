@@ -13,12 +13,12 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, PartyContext<R>> {
 
