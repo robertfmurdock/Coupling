@@ -19,6 +19,7 @@ import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.h4
 import react.dom.html.ReactHTML.i
 import react.useState
+import web.clipboard.writeText
 import web.cssom.ClassName
 import web.html.InputType
 import web.html.text
