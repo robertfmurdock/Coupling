@@ -7553,10 +7553,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@138.0.3:
-  version "138.0.3"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-138.0.3.tgz#f7044948174c3aa09ce1883946fccda6a97bf21c"
-  integrity sha512-RKcfzbUthmQzFmy91F9StQQwNZ72khp3febF/RntpkDKhhCkwor0cgop00diwzAVSUq1s2e8B54Iema9FQnynw==
+chromedriver@138.0.4:
+  version "138.0.4"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-138.0.4.tgz#dfb2af48e8deddd97bd77bbce68e4a4356bb6346"
+  integrity sha512-bz67FCiCTCdzUil2DdNVUhLdrOJ7Xws5z0dlSXKTPiLPpVJVWsQR0NXnsZcMX3FPRpmr1qP18hLp+hyeVUJgjw==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.7.4"
@@ -14018,10 +14018,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.17.1:
-  version "4.17.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.17.1.tgz#6090f7c94a4ac3a331ec07adfee38cb0c1b1aea7"
-  integrity sha512-NzNzDtlAUt0nBf7keDYa/pC7qOO172oxbTqHIlylx9vBlrBU4lZQ772Bl+sdjvRjEfBf84K7GE4RXyFS4cXJxQ==
+serverless@^4.17.2:
+  version "4.17.2"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.17.2.tgz#ca1a5ddef1cce8e02afbe02aa26c3aa9371593ed"
+  integrity sha512-mEtjk/43D+OvrROLP/gzeoy3RtrowMIPs1ahota7uuvxAjO3RVJcWIl1oAZXuoQIbAapRaXU+ZZYCrhHJxRF4g==
   dependencies:
     axios "^1.8.3"
     axios-proxy-builder "^0.1.2"
