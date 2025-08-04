@@ -16,7 +16,6 @@ import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.tools.digger.json.toJsonString
 import com.zegreatrob.tools.digger.model.Contribution
-import kotlinx.datetime.toDeprecatedInstant
 import kotlin.test.Test
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
@@ -35,12 +34,12 @@ class BatchContributionCLITest {
             lastCommit = "${Uuid.random()}",
             firstCommit = "${Uuid.random()}",
             authors = listOf("${Uuid.random()}"),
-            dateTime = dateTime.toDeprecatedInstant(),
+            dateTime = dateTime,
             ease = 7,
             storyId = "${Uuid.random()}",
             semver = "${Uuid.random()}",
             label = "${Uuid.random()}",
-            firstCommitDateTime = firstCommitDateTime.toDeprecatedInstant(),
+            firstCommitDateTime = firstCommitDateTime,
             tagName = "${Uuid.random()}",
             tagDateTime = null,
             commitCount = 3214,
@@ -79,14 +78,14 @@ class BatchContributionCLITest {
             lastCommit = "${Uuid.random()}",
             firstCommit = "${Uuid.random()}",
             authors = listOf("${Uuid.random()}"),
-            dateTime = dateTime.toDeprecatedInstant(),
+            dateTime = dateTime,
             ease = 7,
             storyId = "${Uuid.random()}",
             semver = "${Uuid.random()}",
             label = "${Uuid.random()}",
-            firstCommitDateTime = firstCommitDateTime.toDeprecatedInstant(),
+            firstCommitDateTime = firstCommitDateTime,
             tagName = "${Uuid.random()}",
-            tagDateTime = tagDateTime.toDeprecatedInstant(),
+            tagDateTime = tagDateTime,
             commitCount = 3214,
         )
         val partyId = stubPartyId()
@@ -113,13 +112,13 @@ class BatchContributionCLITest {
             lastCommit = "${Uuid.random()}",
             firstCommit = "${Uuid.random()}",
             authors = listOf("${Uuid.random()}"),
-            dateTime = Clock.System.now().toDeprecatedInstant(),
+            dateTime = Clock.System.now(),
             ease = 7,
             storyId = "${Uuid.random()}",
             semver = "${Uuid.random()}",
             label = "${Uuid.random()}",
             firstCommitDateTime = null,
-            tagDateTime = Clock.System.now().plus(43.minutes).toDeprecatedInstant(),
+            tagDateTime = Clock.System.now().plus(43.minutes),
             tagName = "Bill",
             commitCount = 654,
         )
