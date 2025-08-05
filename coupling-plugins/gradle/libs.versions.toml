@@ -15,13 +15,11 @@ org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:
 org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:2.2.0"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
-# @pin
-org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.1.1"
+org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.2.0"
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.17"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.52.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.0"
 org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:2.2.0"
-# @pin
-org-jmailen-kotlinter = "org.jmailen.kotlinter:5.1.1"
+org-jmailen-kotlinter = "org.jmailen.kotlinter:5.2.0"
