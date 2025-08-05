@@ -1,3 +1,7 @@
+
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.testmints.action-mint")
@@ -26,10 +30,10 @@ dependencies {
     "jsTestImplementation"("org.jetbrains.kotlin:kotlin-test-annotations-common")
 }
 tasks {
-    "formatKotlinJsMain" {
+    withType<FormatTask> {
         dependsOn("kspKotlinJs")
     }
-    "lintKotlinJsMain" {
+    withType<LintTask> {
         dependsOn("kspKotlinJs")
     }
 }

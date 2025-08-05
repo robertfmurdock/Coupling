@@ -1,6 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
@@ -51,22 +53,10 @@ tasks {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
         useJUnitPlatform()
     }
-    "formatKotlinCommonMain" {
+    withType<FormatTask> {
         dependsOn("kspCommonMainKotlinMetadata")
     }
-    "formatKotlinJsMain" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "formatKotlinJsTest" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "lintKotlinCommonMain" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "lintKotlinJsMain" {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    "lintKotlinJsTest" {
+    withType<LintTask> {
         dependsOn("kspCommonMainKotlinMetadata")
     }
     withType(KotlinCompilationTask::class).configureEach {

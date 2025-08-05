@@ -1,3 +1,7 @@
+
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+
 plugins {
     id("com.zegreatrob.jsmints.plugins.minreact")
     id("com.zegreatrob.jsmints.plugins.wrapper")
@@ -17,10 +21,10 @@ kotlin {
 }
 
 tasks {
-    formatKotlinJsMain {
+    withType<FormatTask> {
         dependsOn("kspKotlinJs")
     }
-    lintKotlinJsMain {
+    withType<LintTask> {
         dependsOn("kspKotlinJs")
     }
 }

@@ -13354,10 +13354,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recharts@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.1.0.tgz#8c97bc3b9d21c844052220c88d37d9913947342d"
-  integrity sha512-NqAqQcGBmLrfDs2mHX/bz8jJCQtG2FeXfE0GqpZmIuXIjkpIwj8sd9ad0WyvKiBKPd8ZgNG0hL85c8sFDwascw==
+recharts@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.1.1.tgz#7fd57c8945ceb172d0b6dd03f335722348088b68"
+  integrity sha512-PVA2gdAiTPaPj+56BV5qVfkuPxhqXBhWKnu7r+7WYsczCWHkSrZcE224GLOAWjUMj+cYTkYfGYV2WC2qdJtvcQ==
   dependencies:
     "@reduxjs/toolkit" "1.x.x || 2.x.x"
     clsx "^2.1.1"
