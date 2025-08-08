@@ -4,13 +4,14 @@
   "AZURE_AD_CLIENT_ID": "",
   "AZURE_AD_CLIENT_SECRET": "",
   "CLIENT_BASENAME": "",
+  "DISCORD_CLIENT_ID": "fake",
+  "DISCORD_CLIENT_SECRET": "fake",
   "DYNAMO_PREFIX": "local-",
   "ENABLE_PRERELEASE_FEATURES": "true",
+  "NEW_RELIC_API_KEY": "fake",
   "SECRET_SIGNING_SECRET": "temporary",
   "SLACK_CLIENT_ID": "fake",
   "SLACK_CLIENT_SECRET": "fake",
   "SLACK_SIGNING_SECRET": "fake",
-  "DISCORD_CLIENT_ID": "fake",
-  "DISCORD_CLIENT_SECRET": "fake",
   "WEBSOCKET_HOST": "socket.local"
 }

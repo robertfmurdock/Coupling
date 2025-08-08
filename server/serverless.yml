@@ -11,9 +11,15 @@ package:
     - 'node_modules/node-fetch/**'
     - 'build/executable/**'
 plugins:
+  - serverless-newrelic-lambda-layers
   - serverless-offline
   - serverless-prune-plugin
 custom:
+  newRelic:
+    accountId: 4279933
+    apiKey: 494643332b38fdf1f0b17d4001836990FFFFNRAL
+    apiKey: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):NEW_RELIC_API_KEY, env:NEW_RELIC_API_KEY, ssm:/new_relic_api_key}
+    enableFunctionLogs: true
   serverless-offline:
     allowCache: true
     useInProcess: true

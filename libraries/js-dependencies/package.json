@@ -81,6 +81,7 @@
     "serverless-offline": "^14.4.0",
     "serverless-offline-ssm": "^6.2.0",
     "serverless-prune-plugin": "^2.1.0",
+    "serverless-newrelic-lambda-layers": "^5.9.0",
     "source-map-loader": "^5.0.0",
     "stripe": "^18.4.0",
     "style-loader": "^4.0.0",

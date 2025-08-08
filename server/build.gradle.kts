@@ -76,6 +76,7 @@ dependencies {
     jsTestImplementation(npmConstrained("serverless-offline"))
     jsTestImplementation(npmConstrained("serverless-offline-ssm"))
     jsTestImplementation(npmConstrained("serverless-prune-plugin"))
+    jsTestImplementation(npmConstrained("serverless-newrelic-lambda-layers"))
 }
 
 tasks {
