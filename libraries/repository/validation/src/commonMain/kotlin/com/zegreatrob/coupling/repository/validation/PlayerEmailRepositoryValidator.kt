@@ -32,6 +32,23 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     }
 
     @Test
+    fun getPlayersForEmailsWillIncludeAdditionalEmails() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val email = "test-${Uuid.random()}@zegreatrob.com".toNotBlankString().getOrThrow()
+            val player = stubPlayer().copy(email = "alt", additionalEmails = setOf(email.toString()))
+            val redHerring = stubPlayer().copy(email = "something else")
+        }.bind(),
+    ) exercise {
+        with(repository) {
+            save(partyId.with(player))
+            save(partyId.with(redHerring))
+        }
+    } verifyWithWait {
+        repository.getPlayerIdsByEmail(email)
+            .assertIsEqualTo(listOf(partyId.with(player.id)), "Could not find by email <$email>")
+    }
+
+    @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val email = "test-${Uuid.random()}@zegreatrob.com".toNotBlankString().getOrThrow()

@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
@@ -132,22 +134,48 @@ class DynamoPlayerRepository private constructor(override val userId: UserId, ov
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
     override suspend fun getPlayerIdsByEmail(email: NotBlankString): List<PartyElement<PlayerId>> = logAsync("getPlayerIdsByEmail") {
-        val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
-            queryAllRecords(emailQueryParams(email.toString()))
-                .mapNotNull { it.getDynamoStringValue("id") }
-                .toSet()
-        }
+        val playerIdsWithEmail = getPlayerIdsWithEmail(email)
         logAsync("recordsWithIds") {
             scanAllRecords(playerIdScanParams(playerIdsWithEmail))
                 .sortByRecordTimestamp()
                 .groupBy { it.getDynamoStringValue("id") }
                 .map { it.value.last() }
-                .filter { it["email"] == email.toString() && it["isDeleted"] != true }
+                .filter {
+                    (
+                        it["email"] == email.toString() || it["unvalidatedEmails"].unsafeCast<Array<*>>()
+                            .contains(email.toString())
+                        ) && it["isDeleted"] != true
+                }
                 .map {
                     PartyId(it.getDynamoStringValue("tribeId") ?: "")
                         .with(PlayerId(it.getDynamoStringValue("id")?.toNotBlankString()?.getOrNull()!!))
                 }
         }
+    }
+
+    private suspend fun getPlayerIdsWithEmail(email: NotBlankString): Set<String> = coroutineScope {
+        val exactMatches = async {
+            logAsync("playerIdsWithEmail") {
+                queryAllRecords(emailQueryParams(email.toString()))
+                    .mapNotNull { it.getDynamoStringValue("id") }
+                    .toSet()
+            }
+        }
+        val additionalMatches = async {
+            logAsync("playerIdsWithAdditionalEmails") {
+                scanAllRecords(
+                    json(
+                        "TableName" to prefixedTableName,
+                        "ExpressionAttributeValues" to json(":email" to email.toString()),
+                        "FilterExpression" to "contains (unvalidatedEmails, :email)",
+                    ),
+                )
+                    .mapNotNull { it.getDynamoStringValue("id") }
+                    .toSet()
+            }
+        }
+
+        exactMatches.await() + additionalMatches.await()
     }
 
     private fun playerIdScanParams(recordTribePlayerIds: Set<String>) = json(

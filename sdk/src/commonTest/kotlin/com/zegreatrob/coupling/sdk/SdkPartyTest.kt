@@ -115,6 +115,19 @@ class SdkPartyTest {
     }
 
     @Test
+    fun getWillReturnAnyPartyThatHasPlayerWithGivenEmailInAdditionalSection() = setupWithPlayerMatchingUserTwoSdks {
+        with(altSdk()) {
+            fire(SavePartyCommand(party))
+            fire(SavePlayerCommand(party.id, stubPlayer().copy(additionalEmails = setOf(PRIMARY_AUTHORIZED_USER_NAME))))
+        }
+    } exercise {
+        sdk().fire(graphQuery { partyList { details() } })?.partyList ?: emptyList()
+    } verify { result ->
+        result.map { it.details?.data }
+            .assertContains(party)
+    }
+
+    @Test
     fun getWillNotReturnPartyIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
         with(altSdk()) {
             fire(SavePartyCommand(party))
