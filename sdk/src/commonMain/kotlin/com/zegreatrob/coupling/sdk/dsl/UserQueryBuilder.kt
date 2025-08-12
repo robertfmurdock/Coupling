@@ -10,6 +10,7 @@ class UserQueryBuilder : QueryBuilder<GqlUser> {
         boost = null,
         details = null,
         subscription = null,
+        players = null,
     )
 
     fun details() = also { output = output.copy(details = GqlReference.user) }
