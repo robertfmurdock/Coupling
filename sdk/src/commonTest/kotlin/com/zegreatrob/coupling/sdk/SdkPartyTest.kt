@@ -88,19 +88,26 @@ class SdkPartyTest {
     }
 
     @Test
-    fun partyThatHasOwnerAsPlayerOnlyShowsUpOnce() = asyncSetup(object {
+    fun partyThatHasOwnerAsPlayerOnlyShowsUpOnceInList() = asyncSetup(object {
         val party = stubPartyDetails()
         val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_NAME)
     }) {
         sdk().fire(SavePartyCommand(party))
         sdk().fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
     } exercise {
-        sdk().fire(graphQuery { partyList { details() } })?.partyList
+        sdk().fire(
+            graphQuery {
+                partyList { details() }
+                party(party.id) {}
+            },
+        )
     } verify { result ->
-        result?.filter { it.id == party.id }
+        result?.partyList
+            ?.filter { it.id == party.id }
             ?.map { it.accessType }
             ?.distinct()
             .assertIsEqualTo(listOf(AccessType.Owner))
+        result?.party?.accessType.assertIsEqualTo(AccessType.Owner)
     }
 
     private fun List<Party>.parties() = mapNotNull { it.details?.data }

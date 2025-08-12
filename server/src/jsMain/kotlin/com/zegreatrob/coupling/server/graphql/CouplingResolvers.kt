@@ -62,10 +62,17 @@ fun couplingResolvers() = json(
         "partyList" to partyListResolve,
         "party" to { _: Json, args: Json, r: CouplingContext, _: Json ->
             MainScope().promise {
-                val jsonParty = kotlinx.serialization.json.Json.decodeFromDynamic<GqlPartyInput>(args["input"])
-                    .let {
+                val input = kotlinx.serialization.json.Json.decodeFromDynamic<GqlPartyInput>(args["input"])
+                val dispatcher = DispatcherProviders.authorizedPartyDispatcher(r, input.partyId)
+                if (dispatcher != null) {
+                    kotlinx.serialization.json.Json.encodeToDynamic(
                         GqlParty(
-                            id = it.partyId,
+                            id = input.partyId,
+                            accessType = if (dispatcher.currentUser.authorizedPartyIds.contains(input.partyId)) {
+                                GqlAccessType.Owner
+                            } else {
+                                GqlAccessType.Player
+                            },
                             boost = null,
                             contributionReport = null,
                             currentPairAssignmentDocument = null,
@@ -79,12 +86,10 @@ fun couplingResolvers() = json(
                             playerList = null,
                             retiredPlayers = null,
                             secretList = null,
-                            accessType = GqlAccessType.Player,
                             spinsUntilFullRotation = null,
-                        )
-                    }
-                if (DispatcherProviders.authorizedPartyDispatcher(r, jsonParty.id) != null) {
-                    jsonParty.let { kotlinx.serialization.json.Json.encodeToDynamic(it) }
+                        ),
+
+                    )
                 } else {
                     null
                 }
