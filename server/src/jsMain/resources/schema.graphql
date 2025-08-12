@@ -172,6 +172,7 @@ type Contribution {
 
 type Party {
     id: PartyId!
+    accessType: AccessType!
     details: PartyDetails
     integration: PartyIntegration
     pinList: [PinDetails!]
@@ -186,6 +187,10 @@ type Party {
     boost: BoostDetails
     contributionReport(input: ContributionsInput): ContributionReport
     pair(input: PairInput) : Pair
+}
+
+enum AccessType {
+    Owner, Player
 }
 
 type Contributor {

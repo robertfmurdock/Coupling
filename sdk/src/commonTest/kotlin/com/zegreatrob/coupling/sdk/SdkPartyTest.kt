@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.model.AccessType
 import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -73,12 +74,33 @@ class SdkPartyTest {
     @Test
     fun saveMultipleThenGetListWillReturnSavedParties() = asyncSetup(object {
         val parties = stubParties(3)
+        val partyIds = parties.map { it.id }
     }) {
         parties.forEach { sdk().fire(SavePartyCommand(it)) }
     } exercise {
         sdk().fire(graphQuery { partyList { details() } })?.partyList
     } verify { result ->
         result?.parties().assertContainsAll(parties)
+        result?.filter { partyIds.contains(it.id) }
+            ?.map { it.accessType }
+            ?.distinct()
+            .assertIsEqualTo(listOf(AccessType.Owner))
+    }
+
+    @Test
+    fun partyThatHasOwnerAsPlayerOnlyShowsUpOnce() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_NAME)
+    }) {
+        sdk().fire(SavePartyCommand(party))
+        sdk().fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
+    } exercise {
+        sdk().fire(graphQuery { partyList { details() } })?.partyList
+    } verify { result ->
+        result?.filter { it.id == party.id }
+            ?.map { it.accessType }
+            ?.distinct()
+            .assertIsEqualTo(listOf(AccessType.Owner))
     }
 
     private fun List<Party>.parties() = mapNotNull { it.details?.data }
@@ -112,6 +134,8 @@ class SdkPartyTest {
     } verify { result ->
         result.map { it.details?.data }
             .assertContains(party)
+        result.first { it.details?.data == party }.accessType
+            .assertIsEqualTo(AccessType.Player)
     }
 
     @Test

@@ -12,6 +12,7 @@ import kotlin.time.Duration
 
 data class Party(
     val id: PartyId? = null,
+    var accessType: AccessType? = null,
     val details: Record<PartyDetails>? = null,
     val integration: Record<PartyIntegration>? = null,
     val pinList: List<PartyRecord<Pin>>? = null,
@@ -27,6 +28,11 @@ data class Party(
     val spinsUntilFullRotation: Int? = null,
     val contributionReport: ContributionReport? = null,
 )
+
+enum class AccessType {
+    Owner,
+    Player,
+}
 
 data class ContributionReport(
     val partyId: PartyId? = null,

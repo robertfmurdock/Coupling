@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.json
 
+import com.zegreatrob.coupling.model.AccessType
 import com.zegreatrob.coupling.model.Party
 
 fun GqlParty.toModel() = Party(
     id = id,
+    accessType = accessType.toModel(),
     details = details?.toModelRecord(),
     integration = integration?.toModelRecord(),
     pinList = pinList?.mapNotNull(GqlPinDetails::toModel),
@@ -19,3 +21,8 @@ fun GqlParty.toModel() = Party(
     medianSpinDuration = medianSpinDuration,
     spinsUntilFullRotation = spinsUntilFullRotation,
 )
+
+fun GqlAccessType.toModel() = when (this) {
+    GqlAccessType.Owner -> AccessType.Owner
+    GqlAccessType.Player -> AccessType.Player
+}

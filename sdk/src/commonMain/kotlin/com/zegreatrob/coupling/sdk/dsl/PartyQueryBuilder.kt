@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlAccessType
 import com.zegreatrob.coupling.json.GqlContributionReport
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.GqlContributionsInput
@@ -24,6 +25,7 @@ class PartyQueryBuilder :
     QueryBuilder<GqlParty> {
     override var output: GqlParty = GqlParty(
         id = PartyId("-"),
+        accessType = GqlAccessType.Player,
         boost = null,
         contributionReport = null,
         currentPairAssignmentDocument = null,

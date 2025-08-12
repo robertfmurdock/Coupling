@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.graphql
 
+import com.zegreatrob.coupling.json.GqlAccessType
 import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
@@ -78,6 +79,7 @@ fun couplingResolvers() = json(
                             playerList = null,
                             retiredPlayers = null,
                             secretList = null,
+                            accessType = GqlAccessType.Player,
                             spinsUntilFullRotation = null,
                         )
                     }
