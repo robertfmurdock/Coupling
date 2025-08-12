@@ -37,12 +37,7 @@ type User {
     id: UserId!
     details: UserDetails
     boost: BoostDetails
-    players: [UserPlayer!]
-}
-
-type UserPlayer {
-    partyId: PartyId
-    details: PlayerDetails
+    players: [PlayerDetails!]
 }
 
 type UserDetails {
