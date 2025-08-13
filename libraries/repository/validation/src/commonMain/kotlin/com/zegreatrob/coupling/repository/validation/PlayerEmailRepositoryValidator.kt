@@ -27,8 +27,9 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             save(partyId.with(updatedPlayer))
         }
     } verifyWithWait {
-        repository.getPlayerIdsByEmail(email)
-            .assertIsEqualTo(listOf(partyId.with(player.id)), "Could not find by email <$email>")
+        repository.getPlayersByEmail(email)
+            .map { it.data }
+            .assertIsEqualTo(listOf(partyId.with(updatedPlayer)), "Could not find by email <$email>")
     }
 
     @Test
@@ -44,8 +45,9 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             save(partyId.with(redHerring))
         }
     } verifyWithWait {
-        repository.getPlayerIdsByEmail(email)
-            .assertIsEqualTo(listOf(partyId.with(player.id)), "Could not find by email <$email>")
+        repository.getPlayersByEmail(email)
+            .map { it.data }
+            .assertIsEqualTo(listOf(partyId.with(player)), "Could not find by email <$email>")
     }
 
     @Test
@@ -59,7 +61,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         repository.save(partyId.with(player))
         repository.save(partyId.with(updatedPlayer))
     } verifyWithWait {
-        repository.getPlayerIdsByEmail(email)
+        repository.getPlayersByEmail(email)
             .assertIsEqualTo(emptyList())
     }
 
@@ -73,7 +75,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         repository.save(partyId.with(player))
         repository.deletePlayer(partyId, player.id)
     } verifyWithWait {
-        repository.getPlayerIdsByEmail(email)
+        repository.getPlayersByEmail(email)
             .assertIsEqualTo(emptyList())
     }
 }

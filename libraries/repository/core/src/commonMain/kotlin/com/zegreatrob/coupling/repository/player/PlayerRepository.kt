@@ -37,5 +37,5 @@ interface PlayerListGetDeleted {
 }
 
 interface PlayerListGetByEmail {
-    suspend fun getPlayerIdsByEmail(email: NotBlankString): List<PartyElement<PlayerId>>
+    suspend fun getPlayersByEmail(email: NotBlankString): List<PartyRecord<Player>>
 }

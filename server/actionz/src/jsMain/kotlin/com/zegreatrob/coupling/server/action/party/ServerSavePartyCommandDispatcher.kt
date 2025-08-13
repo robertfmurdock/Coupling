@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.server.action.party
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.player.PlayerId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.await
@@ -50,11 +50,11 @@ interface ServerSavePartyCommandDispatcher :
     private suspend fun SavePartyCommand.getPartyAndUserPlayerIds() = coroutineScope {
         await(
             async { party.id.get() },
-            async { getUserPlayerIds(currentUser.email) },
+            async { getUserPlayers(currentUser.email) },
         )
     }
 
-    private fun shouldSave(partyId: PartyId, loadedParty: PartyDetails?, playerList: List<PartyElement<PlayerId>>) = loadedParty.partyIsNew() ||
+    private fun shouldSave(partyId: PartyId, loadedParty: PartyDetails?, playerList: List<PartyRecord<Player>>) = loadedParty.partyIsNew() ||
         playerList.authenticatedPartyIds().contains(partyId)
 
     private fun PartyDetails?.partyIsNew() = this == null

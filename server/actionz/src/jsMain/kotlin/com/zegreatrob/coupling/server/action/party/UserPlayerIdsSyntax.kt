@@ -6,5 +6,5 @@ import kotools.types.text.NotBlankString
 
 interface UserPlayerIdsSyntax : UserIdProvider {
     val playerRepository: PlayerListGetByEmail
-    suspend fun getUserPlayerIds(email: NotBlankString) = playerRepository.getPlayerIdsByEmail(email)
+    suspend fun getUserPlayers(email: NotBlankString) = playerRepository.getPlayersByEmail(email)
 }

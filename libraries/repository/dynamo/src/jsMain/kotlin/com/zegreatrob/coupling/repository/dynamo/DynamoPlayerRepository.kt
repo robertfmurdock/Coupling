@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -13,7 +12,6 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotools.types.text.NotBlankString
-import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
 import kotlin.js.json
@@ -129,14 +127,14 @@ class DynamoPlayerRepository private constructor(override val userId: UserId, ov
         { asDynamoJson() },
     )
 
-    override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> = partyId.queryForDeletedItemList()
+    override suspend fun getDeleted(partyId: PartyId): List<PartyRecord<Player>> = partyId.queryForDeletedItemList()
         .mapNotNull { it.toPlayerRecord() }
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
-    override suspend fun getPlayerIdsByEmail(email: NotBlankString): List<PartyElement<PlayerId>> = logAsync("getPlayerIdsByEmail") {
-        val playerIdsWithEmail = getPlayerIdsWithEmail(email)
+    override suspend fun getPlayersByEmail(email: NotBlankString): List<PartyRecord<Player>> = logAsync("getPlayerIdsByEmail") {
+        val playersWithEmail = getPlayerIdsWithEmail(email)
         logAsync("recordsWithIds") {
-            scanAllRecords(playerIdScanParams(playerIdsWithEmail))
+            scanAllRecords(playerIdScanParams(playersWithEmail))
                 .sortByRecordTimestamp()
                 .groupBy { it.getDynamoStringValue("id") }
                 .map { it.value.last() }
@@ -146,10 +144,7 @@ class DynamoPlayerRepository private constructor(override val userId: UserId, ov
                             .contains(email.toString())
                         ) && it["isDeleted"] != true
                 }
-                .map {
-                    PartyId(it.getDynamoStringValue("tribeId") ?: "")
-                        .with(PlayerId(it.getDynamoStringValue("id")?.toNotBlankString()?.getOrNull()!!))
-                }
+                .mapNotNull { it.toPlayerRecord() }
         }
     }
 

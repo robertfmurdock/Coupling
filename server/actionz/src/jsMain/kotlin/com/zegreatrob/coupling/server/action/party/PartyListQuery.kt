@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.action.party
 
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.player.PlayerId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
@@ -20,23 +20,23 @@ object PartyListQuery {
         CurrentUserProvider,
         PartyRecordSyntax {
 
-        suspend fun perform(query: PartyListQuery): PartyListResult = getPartiesAndUserPlayerIds()
+        suspend fun perform(query: PartyListQuery): PartyListResult = getPartiesAndUserPlayers()
             .onlyAuthenticatedParties()
 
-        private suspend fun getPartiesAndUserPlayerIds() = getPartiesAndPlayersDeferred()
+        private suspend fun getPartiesAndUserPlayers() = getPartiesAndPlayersDeferred()
             .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
 
         private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
-            async { getPartyRecords() } to async { getUserPlayerIds(currentUser.email) }
+            async { getPartyRecords() } to async { getUserPlayers(currentUser.email) }
         }
 
-        private fun Pair<List<Record<PartyDetails>>, List<PartyElement<PlayerId>>>.onlyAuthenticatedParties() = let { (partyRecords, playerIds) ->
+        private fun Pair<List<Record<PartyDetails>>, List<PartyRecord<Player>>>.onlyAuthenticatedParties() = let { (partyRecords, playerRecords) ->
             val ownedParties = partyRecords.filter(authorizedPartyIds().allowFilter())
             PartyListResult(
                 ownedParties = ownedParties,
                 playerParties = (partyRecords - ownedParties)
                     .filter(
-                        playerIds.map { it.partyId }.toSet().allowFilter(),
+                        playerRecords.map { it.data.partyId }.toSet().allowFilter(),
                     ),
             )
         }

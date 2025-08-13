@@ -13,7 +13,7 @@ data class UserIsAuthorizedAction(val partyId: PartyId) : SimpleSuspendResultAct
         UserAuthenticatedPartyIdSyntax,
         UserPlayerIdsSyntax {
 
-        suspend fun perform(action: UserIsAuthorizedAction) = getUserPlayerIds(currentUser.email)
+        suspend fun perform(action: UserIsAuthorizedAction) = getUserPlayers(currentUser.email)
             .authenticatedPartyIds()
             .contains(action.partyId)
             .successResult()
