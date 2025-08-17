@@ -25,7 +25,7 @@ interface ServerSavePartyCommandDispatcher :
     UserAuthenticatedPartyIdSyntax,
     PartyIdGetSyntax,
     PartySaveSyntax,
-    UserPlayerIdsSyntax,
+    UserPlayersSyntax,
     UserSaveSyntax,
     CurrentUserProvider {
 
@@ -50,7 +50,7 @@ interface ServerSavePartyCommandDispatcher :
     private suspend fun SavePartyCommand.getPartyAndUserPlayerIds() = coroutineScope {
         await(
             async { party.id.get() },
-            async { getUserPlayers(currentUser.email) },
+            async { currentUser.getPlayers() },
         )
     }
 

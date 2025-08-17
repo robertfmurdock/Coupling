@@ -15,4 +15,5 @@ fun GqlUser.toModel() = User(
     details = details?.toModel(),
     boost = boost?.toModelRecord(),
     subscription = subscription?.toModel(),
+    players = players?.map { it.toModel() },
 )

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlUser
 import com.zegreatrob.coupling.model.user.UserId
+import com.zegreatrob.coupling.sdk.dsl.GqlReference.playerRecord
 import kotools.types.text.toNotBlankString
 
 class UserQueryBuilder : QueryBuilder<GqlUser> {
@@ -16,4 +17,5 @@ class UserQueryBuilder : QueryBuilder<GqlUser> {
     fun details() = also { output = output.copy(details = GqlReference.user) }
     fun boost() = also { output = output.copy(boost = GqlReference.boost) }
     fun subscription() = also { output = output.copy(subscription = GqlReference.subscription) }
+    fun players() = also { output = output.copy(players = listOf(playerRecord)) }
 }

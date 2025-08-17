@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.action.party
 
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
-import kotools.types.text.NotBlankString
 
-interface UserPlayerIdsSyntax : UserIdProvider {
+interface UserPlayersSyntax : UserIdProvider {
     val playerRepository: PlayerListGetByEmail
-    suspend fun getUserPlayers(email: NotBlankString) = playerRepository.getPlayersByEmail(email)
+    suspend fun UserDetails.getPlayers() = playerRepository.getPlayersByEmail(email)
 }

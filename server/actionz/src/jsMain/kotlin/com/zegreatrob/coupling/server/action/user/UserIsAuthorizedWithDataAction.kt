@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.server.action.party.UserAuthenticatedPartyIdSyntax
-import com.zegreatrob.coupling.server.action.party.UserPlayerIdsSyntax
+import com.zegreatrob.coupling.server.action.party.UserPlayersSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -19,7 +19,7 @@ data class UserIsAuthorizedWithDataAction(val partyId: PartyId) : SimpleSuspendR
 
     interface Dispatcher :
         UserAuthenticatedPartyIdSyntax,
-        UserPlayerIdsSyntax,
+        UserPlayersSyntax,
         PartyIdGetSyntax,
         PartyPlayersSyntax {
         override val playerRepository: PlayerEmailRepository
@@ -27,7 +27,7 @@ data class UserIsAuthorizedWithDataAction(val partyId: PartyId) : SimpleSuspendR
         suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.doWork().successResult()
 
         private suspend fun UserIsAuthorizedWithDataAction.doWork(): Pair<PartyDetails, List<Player>>? {
-            val contains = getUserPlayers(currentUser.email)
+            val contains = currentUser.getPlayers()
                 .authenticatedPartyIds()
                 .contains(partyId)
 

@@ -57,6 +57,7 @@ import com.zegreatrob.coupling.server.action.player.ServerPairCountQueryDispatch
 import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSpinsSinceLastPairedQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.SpinsUntilFullRotationQuery
+import com.zegreatrob.coupling.server.action.player.UserPlayersQuery
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
@@ -114,6 +115,7 @@ interface ICommandDispatcher :
     TraceIdProvider,
     UserDispatcher,
     UserIsAuthorizedWithDataAction.Dispatcher,
+    UserPlayersQuery.Dispatcher,
     UserQuery.Dispatcher
 
 class CommandDispatcher(

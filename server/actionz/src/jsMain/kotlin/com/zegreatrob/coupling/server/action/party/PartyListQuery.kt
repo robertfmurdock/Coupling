@@ -16,7 +16,7 @@ object PartyListQuery {
 
     interface Dispatcher :
         UserAuthenticatedPartyIdSyntax,
-        UserPlayerIdsSyntax,
+        UserPlayersSyntax,
         CurrentUserProvider,
         PartyRecordSyntax {
 
@@ -27,7 +27,7 @@ object PartyListQuery {
             .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
 
         private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
-            async { getPartyRecords() } to async { getUserPlayers(currentUser.email) }
+            async { getPartyRecords() } to async { currentUser.getPlayers() }
         }
 
         private fun Pair<List<Record<PartyDetails>>, List<PartyRecord<Player>>>.onlyAuthenticatedParties() = let { (partyRecords, playerRecords) ->

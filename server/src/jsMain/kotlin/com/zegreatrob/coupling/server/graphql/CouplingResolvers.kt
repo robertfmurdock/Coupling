@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
+import com.zegreatrob.coupling.server.entity.boost.userPlayerListResolve
 import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
 import com.zegreatrob.coupling.server.entity.contribution.pairContributionReportResolver
 import com.zegreatrob.coupling.server.entity.contribution.partyContributionReportResolver
@@ -151,6 +152,7 @@ fun couplingResolvers() = json(
     ),
     "User" to json(
         "boost" to userBoostResolver,
+        "players" to userPlayerListResolve,
     ),
 )
 

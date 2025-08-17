@@ -16,4 +16,5 @@ val userResolve = dispatch(
     toSerializable = ::toJson,
 )
 
-private fun toJson(records: UserDetails) = records.let { User(it.id, details = it, subscription = null, boost = null) }.toSerializable()
+private fun toJson(records: UserDetails) = records.let { User(it.id, details = it, subscription = null, players = null, boost = null) }
+    .toSerializable()
