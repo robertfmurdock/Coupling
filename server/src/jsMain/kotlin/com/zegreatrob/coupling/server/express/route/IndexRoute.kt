@@ -83,6 +83,7 @@ fun healthRoute(): Handler = { request, response, _ ->
             "-".toNotBlankString().getOrThrow(),
             emptySet(),
             null,
+            null,
         ),
     )
     request.scope.launch {

@@ -24,6 +24,7 @@ class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoR
                     "${Uuid.random()}@mail.com".toNotBlankString().getOrThrow(),
                     emptySet(),
                     null,
+                    null,
                 ),
             )
         })

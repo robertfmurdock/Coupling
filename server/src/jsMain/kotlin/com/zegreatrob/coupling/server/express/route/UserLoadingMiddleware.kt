@@ -58,6 +58,7 @@ private suspend fun userFromSecret(partyId: PartyId, secretId: SecretId): UserDe
             email = secretUserId,
             authorizedPartyIds = setOf(partyId),
             stripeCustomerId = null,
+            connectSecretId = null,
         )
     }
 }

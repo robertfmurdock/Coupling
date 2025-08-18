@@ -38,6 +38,7 @@ val user = UserDetails(
     "robert.f.murdock@gmail.com".toNotBlankString().getOrThrow(),
     emptySet(),
     null,
+    null,
 )
 
 private val logger = KotlinLogging.logger("import")

@@ -11,6 +11,7 @@ val user = UserDetails(
     "robert.f.murdock@gmail.com".toNotBlankString().getOrThrow(),
     emptySet(),
     null,
+    null,
 )
 
 fun main() {

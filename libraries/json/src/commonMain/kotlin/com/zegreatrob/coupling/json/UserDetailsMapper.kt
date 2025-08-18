@@ -13,4 +13,5 @@ fun GqlUserDetails.toModel() = UserDetails(
     email = email,
     authorizedPartyIds = authorizedPartyIds.toSet(),
     stripeCustomerId = null,
+    connectSecretId = null,
 )

@@ -198,6 +198,7 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
         "websocket".toNotBlankString().getOrThrow(),
         emptySet(),
         null,
+        null,
     ),
     this,
     Uuid.random(),

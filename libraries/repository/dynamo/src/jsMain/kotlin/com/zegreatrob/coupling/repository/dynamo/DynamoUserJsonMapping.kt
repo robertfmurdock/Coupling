@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
 import kotools.types.text.toNotBlankString
@@ -16,8 +17,9 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
     fun UserDetails.asDynamoJson() = json(
         "id" to id.value.toString(),
         "email" to email.toString(),
-        "stripeCustomerId" to stripeCustomerId,
         "authorizedTribeIds" to authorizedPartyIds.map { it.value.toString() }.toTypedArray(),
+        "stripeCustomerId" to stripeCustomerId,
+        "connectSecretId" to connectSecretId?.value?.toString(),
     )
 
     @OptIn(ExperimentalKotoolsTypesApi::class)
@@ -29,6 +31,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
             .mapNotNull { it?.let(::PartyId) }
             .toSet(),
         getDynamoStringValue("stripeCustomerId"),
+        getDynamoStringValue("connectSecretId")?.let(::SecretId),
     )
 
     fun Json.toUserRecord() = toRecord(

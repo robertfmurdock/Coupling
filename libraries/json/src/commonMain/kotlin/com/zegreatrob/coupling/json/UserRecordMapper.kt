@@ -33,6 +33,7 @@ fun JsonUserRecord.toModel() = Record(
         email = email.toNotBlankString().getOrThrow(),
         authorizedPartyIds = authorizedPartyIds.map(::PartyId).toSet(),
         stripeCustomerId = null,
+        connectSecretId = null,
     ),
     modifyingUserId = modifyingUserEmail.toNotBlankString().getOrNull(),
     isDeleted = isDeleted,

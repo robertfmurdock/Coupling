@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.player.Player
 import kotools.types.text.NotBlankString
 import kotlin.time.Instant
@@ -28,4 +29,5 @@ data class UserDetails(
     val email: NotBlankString,
     val authorizedPartyIds: Set<PartyId>,
     val stripeCustomerId: String?,
+    var connectSecretId: SecretId?,
 )

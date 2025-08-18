@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
@@ -139,6 +140,7 @@ class DynamoUserRepository private constructor(override val userId: UserId, over
             .mapNotNull { it?.let(::PartyId) }
             .toSet(),
         json.getDynamoStringValue("stripeCustomerId"),
+        json.getDynamoStringValue("connectSecretId")?.let(::SecretId),
     )
 
     private fun queryParams(id: String) = json(
@@ -166,6 +168,7 @@ class DynamoUserRepository private constructor(override val userId: UserId, over
         "email" to data.email.toString(),
         "stripeCustomerId" to data.stripeCustomerId,
         "authorizedTribeIds" to data.authorizedPartyIds.map { it.value.toString() }.toTypedArray(),
+        "connectSecretId" to data.connectSecretId?.value?.toString(),
     )
 
     private fun emailId(email: NotBlankString) = "EMAIL-$email"

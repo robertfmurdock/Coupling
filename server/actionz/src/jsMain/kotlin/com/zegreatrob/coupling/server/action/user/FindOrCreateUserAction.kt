@@ -30,6 +30,7 @@ interface FindOrCreateUserActionDispatcher :
         email = userId.value,
         authorizedPartyIds = emptySet(),
         stripeCustomerId = null,
+        connectSecretId = null,
     )
         .apply { save() }
 }

@@ -41,7 +41,8 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
         val clock = MagicClock()
         val userId = UserId.new()
-        val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), uuidString())
+        val user =
+            UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), uuidString(), null)
         val repository = DynamoUserRepository(userId, clock)
         SharedContextData(repository, clock, user)
     })
@@ -51,7 +52,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     @Ignore
     fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object {
         val userId = UserId.new()
-        val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), null)
+        val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), null, null)
         lateinit var repository: DynamoUserRepository
     }) {
         repository = DynamoUserRepository(userId, Clock.System)
@@ -115,7 +116,12 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         buildRepository { context ->
             object : Context by context {
                 val records = listOf(
-                    Record(stubUserDetails(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months)),
+                    Record(
+                        stubUserDetails(),
+                        uuidString().toNotBlankString().getOrThrow(),
+                        false,
+                        now().minus(3.months),
+                    ),
                     Record(stubUserDetails(), uuidString().toNotBlankString().getOrThrow(), true, now().minus(2.years)),
                 )
             }
@@ -134,7 +140,12 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
             object : Context by context, DynamoUserJsonMapping by context.repository {
                 override val clock: MagicClock = context.clock
                 override val userId = UserId.new()
-                val record = Record(stubUserDetails(), uuidString().toNotBlankString().getOrThrow(), false, now().minus(3.months))
+                val record = Record(
+                    stubUserDetails(),
+                    uuidString().toNotBlankString().getOrThrow(),
+                    false,
+                    now().minus(3.months),
+                )
             }
         },
     ) {
@@ -144,6 +155,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                     "id" to record.data.id.value.toString(),
                     "email" to record.data.email.toString(),
                     "stripeCustomerId" to record.data.stripeCustomerId,
+                    "connectSecretId" to record.data.connectSecretId?.value?.toString(),
                     "authorizedTribeIds" to record.data.authorizedPartyIds.map { it.value.toString() }
                         .plus(null)
                         .toTypedArray(),
