@@ -11,6 +11,7 @@ fun UserDetails.toSerializable() = GqlUserDetails(
 fun GqlUserDetails.toModel() = UserDetails(
     id = id,
     email = email,
+    connectedEmails = emptySet(),
     authorizedPartyIds = authorizedPartyIds.toSet(),
     stripeCustomerId = null,
     connectSecretId = null,

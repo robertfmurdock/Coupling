@@ -23,6 +23,7 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import kotlin.js.json
 import kotlin.test.Ignore
@@ -42,7 +43,14 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         val clock = MagicClock()
         val userId = UserId.new()
         val user =
-            UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), uuidString(), null)
+            UserDetails(
+                userId,
+                "${Uuid.random()}".toNotBlankString().getOrThrow(),
+                emptySet(),
+                emptySet(),
+                uuidString(),
+                null,
+            )
         val repository = DynamoUserRepository(userId, clock)
         SharedContextData(repository, clock, user)
     })
@@ -52,7 +60,8 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     @Ignore
     fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object {
         val userId = UserId.new()
-        val user = UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), null, null)
+        val user =
+            UserDetails(userId, "${Uuid.random()}".toNotBlankString().getOrThrow(), emptySet(), emptySet(), null, null)
         lateinit var repository: DynamoUserRepository
     }) {
         repository = DynamoUserRepository(userId, Clock.System)
@@ -154,6 +163,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                 json(
                     "id" to record.data.id.value.toString(),
                     "email" to record.data.email.toString(),
+                    "connectedEmails" to record.data.connectedEmails.map(NotBlankString::toString).toTypedArray(),
                     "stripeCustomerId" to record.data.stripeCustomerId,
                     "connectSecretId" to record.data.connectSecretId?.value?.toString(),
                     "authorizedTribeIds" to record.data.authorizedPartyIds.map { it.value.toString() }

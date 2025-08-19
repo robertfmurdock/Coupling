@@ -28,6 +28,7 @@ interface FindOrCreateUserActionDispatcher :
     private suspend fun newUser() = UserDetails(
         id = UserId.new(),
         email = userId.value,
+        connectedEmails = emptySet(),
         authorizedPartyIds = emptySet(),
         stripeCustomerId = null,
         connectSecretId = null,

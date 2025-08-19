@@ -135,6 +135,10 @@ class DynamoUserRepository private constructor(override val userId: UserId, over
     private fun emailIdRecordToUser(json: Json) = UserDetails(
         UserId(json["user_id"].toString().toNotBlankString().getOrThrow()),
         json["email"].toString().toNotBlankString().getOrThrow(),
+        json["connectedEmails"]
+            .unsafeCast<Array<String?>?>()
+            ?.mapNotNull { it?.toNotBlankString()?.getOrNull() }
+            ?.toSet() ?: emptySet(),
         json["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(::PartyId) }
@@ -168,6 +172,7 @@ class DynamoUserRepository private constructor(override val userId: UserId, over
         "email" to data.email.toString(),
         "stripeCustomerId" to data.stripeCustomerId,
         "authorizedTribeIds" to data.authorizedPartyIds.map { it.value.toString() }.toTypedArray(),
+        "connectedEmails" to data.connectedEmails.map(NotBlankString::toString).toTypedArray(),
         "connectSecretId" to data.connectSecretId?.value?.toString(),
     )
 

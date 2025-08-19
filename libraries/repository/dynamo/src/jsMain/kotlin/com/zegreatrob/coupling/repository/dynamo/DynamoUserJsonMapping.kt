@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
+import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.js.Json
@@ -17,6 +18,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
     fun UserDetails.asDynamoJson() = json(
         "id" to id.value.toString(),
         "email" to email.toString(),
+        "connectedEmails" to connectedEmails.map(NotBlankString::toString).toTypedArray(),
         "authorizedTribeIds" to authorizedPartyIds.map { it.value.toString() }.toTypedArray(),
         "stripeCustomerId" to stripeCustomerId,
         "connectSecretId" to connectSecretId?.value?.toString(),
@@ -26,6 +28,10 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
     fun Json.toUser() = UserDetails(
         UserId(this["id"].toString().toNotBlankString().getOrThrow()),
         this["email"].toString().toNotBlankString().getOrThrow(),
+        this["connectedEmails"]
+            .unsafeCast<Array<String?>?>()
+            ?.mapNotNull { it?.toNotBlankString()?.getOrNull() }
+            ?.toSet() ?: emptySet(),
         this["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(::PartyId) }

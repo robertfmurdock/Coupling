@@ -31,6 +31,7 @@ fun JsonUserRecord.toModel() = Record(
     data = UserDetails(
         id = id,
         email = email.toNotBlankString().getOrThrow(),
+        connectedEmails = emptySet(),
         authorizedPartyIds = authorizedPartyIds.map(::PartyId).toSet(),
         stripeCustomerId = null,
         connectSecretId = null,

@@ -36,6 +36,7 @@ import kotlin.time.Clock
 val user = UserDetails(
     UserId("IMPORT_USER".toNotBlankString().getOrThrow()),
     "robert.f.murdock@gmail.com".toNotBlankString().getOrThrow(),
+    connectedEmails = emptySet(),
     emptySet(),
     null,
     null,

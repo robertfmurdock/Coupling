@@ -196,6 +196,7 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     UserDetails(
         UserId("websocket".toNotBlankString().getOrThrow()),
         "websocket".toNotBlankString().getOrThrow(),
+        connectedEmails = emptySet(),
         emptySet(),
         null,
         null,

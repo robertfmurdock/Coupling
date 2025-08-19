@@ -119,6 +119,7 @@ var userCounter = 1
 fun stubUserDetails() = UserDetails(
     id = UserId.new(),
     email = "$userCounter-${uuidString()}@gmail.com".toNotBlankString().getOrThrow(),
+    connectedEmails = setOf("$userCounter-${uuidString()}@gmail.com".toNotBlankString().getOrThrow()),
     authorizedPartyIds = setOf(stubPartyId()),
     stripeCustomerId = uuidString(),
     connectSecretId = SecretId(uuidString()),

@@ -22,6 +22,7 @@ class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoR
                 UserDetails(
                     UserId.new(),
                     "${Uuid.random()}@mail.com".toNotBlankString().getOrThrow(),
+                    connectedEmails = emptySet(),
                     emptySet(),
                     null,
                     null,

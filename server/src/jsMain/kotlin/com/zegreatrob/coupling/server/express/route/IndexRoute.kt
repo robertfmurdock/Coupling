@@ -81,6 +81,7 @@ fun healthRoute(): Handler = { request, response, _ ->
         UserDetails(
             UserId("HealthCheck".toNotBlankString().getOrThrow()),
             "-".toNotBlankString().getOrThrow(),
+            connectedEmails = emptySet(),
             emptySet(),
             null,
             null,

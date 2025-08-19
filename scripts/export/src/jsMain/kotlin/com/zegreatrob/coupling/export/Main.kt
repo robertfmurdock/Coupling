@@ -9,6 +9,7 @@ import kotools.types.text.toNotBlankString
 val user = UserDetails(
     UserId("EXPORT_USER".toNotBlankString().getOrThrow()),
     "robert.f.murdock@gmail.com".toNotBlankString().getOrThrow(),
+    connectedEmails = emptySet(),
     emptySet(),
     null,
     null,

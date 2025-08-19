@@ -27,6 +27,7 @@ data class SubscriptionDetails(
 data class UserDetails(
     val id: UserId,
     val email: NotBlankString,
+    val connectedEmails: Set<NotBlankString>,
     val authorizedPartyIds: Set<PartyId>,
     val stripeCustomerId: String?,
     var connectSecretId: SecretId?,
