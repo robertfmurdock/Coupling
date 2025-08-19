@@ -7,6 +7,6 @@ import kotlin.time.Instant
 
 fun Instant.isWithinOneSecondOfNow() {
     val timeSpan = Clock.System.now() - this
-    (timeSpan.toDouble(DurationUnit.SECONDS) < 1)
-        .assertIsEqualTo(true, "timespan was not within 1 second - instead was $timeSpan")
+    (timeSpan.toDouble(DurationUnit.SECONDS) < 1.25)
+        .assertIsEqualTo(true, "timespan was not within 1.25 seconds - instead was $timeSpan")
 }

@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
 import com.zegreatrob.coupling.action.user.fire
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -53,6 +54,21 @@ class SdkUserTest {
         result?.let { (secret, token) ->
             token.assertIsNotEqualTo("")
             secret.description.assertIsEqualTo("Single-use user connection secret")
+        }
+    }
+
+    @Test
+    fun newConnectUserSecretHasListedId() = asyncSetup(object {
+        var createResult: Pair<Secret, String>? = null
+    }) {
+        createResult = sdk().fire(CreateConnectUserSecretCommand)
+    } exercise {
+        sdk().fire(graphQuery { user { details() } })
+    } verify { result ->
+        createResult.assertIsNotEqualTo(null)
+        createResult?.let { (secret, token) ->
+            result?.user?.details?.connectSecretId
+                .assertIsEqualTo(secret.id)
         }
     }
 }

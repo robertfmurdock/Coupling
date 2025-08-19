@@ -43,6 +43,7 @@ type User {
 type UserDetails {
     id: UserId!
     email: Email!
+    connectSecretId: SecretId
     authorizedPartyIds: [PartyId!]!
 }
 
