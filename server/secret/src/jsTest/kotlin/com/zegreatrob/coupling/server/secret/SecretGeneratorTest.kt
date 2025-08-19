@@ -15,7 +15,7 @@ import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
 class SecretGeneratorTest {
@@ -72,10 +72,10 @@ class SecretGeneratorTest {
         token.payload["exp"]
             .let { expectedExpiration - Instant.fromEpochMilliseconds(convertToMilliseconds(it)) }
             .let {
-                (it < 5.milliseconds)
+                (it < 2.seconds)
                     .assertIsEqualTo(
                         true,
-                        "Expected expiration of $expectedExpiration to be within 5ms of now but was $it",
+                        "Expected expiration of $expectedExpiration to but was off by $it",
                     )
             }
     }

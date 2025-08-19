@@ -28,7 +28,7 @@ interface JwtSecretGenerator : SecretGenerator {
     override suspend fun createSecret(secret: Pair<UserId, SecretId>): String = jwt(
         secret.first.value,
         secret.second,
-        "3h",
+        "2h",
     )
 
     private suspend fun jwt(subject: NotBlankString, secretId: SecretId, exp: String?): String = SignJWT(customClaims(secretId))
