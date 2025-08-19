@@ -18,7 +18,6 @@ import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
-import com.zegreatrob.coupling.server.action.PartySecretGenerator
 import com.zegreatrob.coupling.server.action.ServerCreateSecretCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerPartyBoostQueryDispatcher
@@ -62,6 +61,7 @@ import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.action.subscription.ServerSubscriptionQueryDispatcher
+import com.zegreatrob.coupling.server.action.user.ServerCreateConnectUserSecretCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
@@ -84,6 +84,7 @@ interface ICommandDispatcher :
     AwsSocketCommunicator,
     ConnectionsQuery.Dispatcher,
     ContributorPlayerQuery.Dispatcher,
+    ServerCreateConnectUserSecretCommandDispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
     GlobalStatsQuery.Dispatcher,
@@ -116,7 +117,9 @@ interface ICommandDispatcher :
     UserDispatcher,
     UserIsAuthorizedWithDataAction.Dispatcher,
     UserPlayersQuery.Dispatcher,
-    UserQuery.Dispatcher
+    UserQuery.Dispatcher {
+    override val secretGenerator: JwtSecretHandler
+}
 
 class CommandDispatcher(
     override val currentUser: UserDetails,
@@ -130,7 +133,11 @@ class CommandDispatcher(
     BroadcastAction.Dispatcher<ICommandDispatcher>,
     ConnectPartyUserCommand.Dispatcher<ICommandDispatcher> {
     override val cannon: ActionCannon<ICommandDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
-
+    override val secretGenerator = object : JwtSecretHandler {
+        override val secretIssuer: String = Config.publicUrl
+        override val secretAudience = "${Config.publicUrl}/api"
+        override val secretSigningSecret: String = Config.secretSigningSecret
+    }
     override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
     override val discordRepository: DiscordRepository by lazy { clientDiscordRepository() }
 
@@ -182,6 +189,7 @@ class CurrentPartyDispatcher(
     override val userId: UserId get() = commandDispatcher.userId
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
+
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
     private suspend fun userIsAuthorized(partyId: PartyId) = currentUser.authorizedPartyIds.contains(partyId) ||
@@ -193,12 +201,6 @@ class CurrentPartyDispatcher(
 
     private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
-
-    override val secretGenerator: PartySecretGenerator = object : JwtSecretHandler {
-        override val secretIssuer: String = Config.publicUrl
-        override val secretAudience = "${Config.publicUrl}/api"
-        override val secretSigningSecret: String = Config.secretSigningSecret
-    }
 }
 
 fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(

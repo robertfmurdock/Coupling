@@ -22,6 +22,7 @@ class KtorCouplingSdkDispatcher(
 ) : CouplingSdkDispatcher,
     SdkBoost,
     SdkCreateSecretCommandDispatcher,
+    SdkCreateConnectUserSecretCommand,
     SdkDeletePairAssignmentsCommandDispatcher,
     SdkDeletePartyCommandDispatcher,
     SdkDeletePinCommandDispatcher,

@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
+import com.zegreatrob.coupling.action.user.fire
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -40,5 +42,17 @@ class SdkUserTest {
         (result?.user?.players ?: emptyList())
             .elements
             .assertContains(player)
+    }
+
+    @Test
+    fun canCreateConnectUserSecret() = asyncSetup(object {
+    }) exercise {
+        sdk().fire(CreateConnectUserSecretCommand)
+    } verify { result ->
+        result.assertIsNotEqualTo(null)
+        result?.let { (secret, token) ->
+            token.assertIsNotEqualTo("")
+            secret.description.assertIsEqualTo("Single-use user connection secret")
+        }
     }
 }

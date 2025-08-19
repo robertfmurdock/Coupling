@@ -39,6 +39,7 @@ import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.player.savePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.spinsSinceLastPairedResolve
 import com.zegreatrob.coupling.server.entity.player.spinsUntilFullRotationResolve
+import com.zegreatrob.coupling.server.entity.secret.createConnectUserSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.createSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.deleteSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.secretListResolve
@@ -101,6 +102,7 @@ fun couplingResolvers() = json(
     ),
     "Mutation" to json(
         "createSecret" to createSecretResolver,
+        "createConnectUserSecret" to createConnectUserSecretResolver,
         "deletePairAssignments" to deletePairsResolver,
         "deleteParty" to deletePartyResolver,
         "deletePin" to deletePinResolver,

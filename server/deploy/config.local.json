@@ -6,7 +6,7 @@
   "CLIENT_BASENAME": "",
   "DYNAMO_PREFIX": "local-",
   "ENABLE_PRERELEASE_FEATURES": "true",
-  "SECRET_SIGNING_SECRET": "temporary",
+  "SECRET_SIGNING_SECRET": "temporary-temporary-temporary-temporary-temporary-temporary",
   "SLACK_CLIENT_ID": "fake",
   "SLACK_CLIENT_SECRET": "fake",
   "SLACK_SIGNING_SECRET": "fake",
