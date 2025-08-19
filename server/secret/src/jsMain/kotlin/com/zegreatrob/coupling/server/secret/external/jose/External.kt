@@ -13,7 +13,7 @@ external class SignJWT(jwt: dynamic) {
     fun setIssuer(issuer: String): SignJWT
     fun setAudience(audience: String): SignJWT
     fun setSubject(audience: String): SignJWT
-    fun setExpirationTime(audience: String): SignJWT
+    fun setExpirationTime(exp: String): SignJWT
     fun sign(secret: Uint8Array<*>): Promise<String>
 }
 
