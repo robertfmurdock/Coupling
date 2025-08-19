@@ -4,8 +4,11 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.user.UserId
-import com.zegreatrob.coupling.server.action.SecretGenerator
+import com.zegreatrob.coupling.server.action.PartySecretGenerator
+import com.zegreatrob.coupling.server.action.SecretValidator
+import com.zegreatrob.coupling.server.action.UserSecretGenerator
 import com.zegreatrob.coupling.server.secret.external.jose.SignJWT
+import com.zegreatrob.coupling.server.secret.external.jose.jwtVerify
 import js.objects.Record
 import js.objects.recordOf
 import js.objects.unsafeJso
@@ -13,7 +16,10 @@ import js.typedarrays.Uint8Array
 import kotlinx.coroutines.await
 import kotools.types.text.NotBlankString
 
-interface JwtSecretGenerator : SecretGenerator {
+interface JwtSecretHandler :
+    PartySecretGenerator,
+    UserSecretGenerator,
+    SecretValidator {
 
     val secretIssuer: String
     val secretSigningSecret: String
@@ -44,6 +50,22 @@ interface JwtSecretGenerator : SecretGenerator {
     private fun customClaims(secretId: SecretId): Record<String, String> = recordOf(
         "https://zegreatrob.com/secret-id" to secretId.value.toString(),
     )
+
+    override suspend fun validateSubject(secret: String): String? = try {
+        jwtVerify(
+            token = secret,
+            secret = TextEncoder().encode(secretSigningSecret),
+            options = unsafeJso {
+                audience = arrayOf(secretAudience)
+                issuer = arrayOf(secretIssuer)
+            },
+        )
+            .await()
+            .payload
+            .sub
+    } catch (_: Throwable) {
+        null
+    }
 }
 
 external class TextEncoder {

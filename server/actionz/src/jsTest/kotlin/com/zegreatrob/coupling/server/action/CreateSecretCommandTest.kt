@@ -23,7 +23,7 @@ class CreateSecretCommandTest {
         val spy = SpyData<PartyElement<Secret>, String>().apply {
             spyWillReturn(expectedSecretToken)
         }
-        override val secretGenerator = SecretGenerator(spy::spyFunction)
+        override val secretGenerator = PartySecretGenerator(spy::spyFunction)
         val partyId = stubPartyId()
         val description = uuidString()
     }) exercise {

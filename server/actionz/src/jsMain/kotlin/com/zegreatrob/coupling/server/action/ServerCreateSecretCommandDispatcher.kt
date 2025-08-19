@@ -10,7 +10,7 @@ import kotlin.time.Clock
 
 interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
     val secretRepository: SecretSave
-    val secretGenerator: SecretGenerator
+    val secretGenerator: PartySecretGenerator
 
     override suspend fun perform(command: CreateSecretCommand): Pair<Secret, String> = command.partySecret()
         .save()

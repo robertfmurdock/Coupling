@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
-import com.zegreatrob.coupling.server.action.SecretGenerator
+import com.zegreatrob.coupling.server.action.PartySecretGenerator
 import com.zegreatrob.coupling.server.action.ServerCreateSecretCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerPartyBoostQueryDispatcher
@@ -69,7 +69,7 @@ import com.zegreatrob.coupling.server.entity.party.PartyDispatcher
 import com.zegreatrob.coupling.server.entity.party.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
+import com.zegreatrob.coupling.server.secret.JwtSecretHandler
 import com.zegreatrob.coupling.server.secret.ServerDeleteSecretCommandDispatcher
 import com.zegreatrob.coupling.server.slack.FetchSlackRepository
 import com.zegreatrob.testmints.action.ActionCannon
@@ -194,7 +194,7 @@ class CurrentPartyDispatcher(
     private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
 
-    override val secretGenerator: SecretGenerator = object : JwtSecretGenerator {
+    override val secretGenerator: PartySecretGenerator = object : JwtSecretHandler {
         override val secretIssuer: String = Config.publicUrl
         override val secretAudience = "${Config.publicUrl}/api"
         override val secretSigningSecret: String = Config.secretSigningSecret
