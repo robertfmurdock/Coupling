@@ -15,7 +15,7 @@ interface ServerCreateConnectUserSecretCommandDispatcher :
 
     override suspend fun perform(command: CreateConnectUserSecretCommand): Pair<Secret, String>? {
         val secretId = SecretId.new()
-        val token = secretGenerator.createSecret(currentUser.id to secretId)
+        val token = secretGenerator.createSecret(currentUser.email to secretId)
         currentUser.copy(connectSecretId = secretId)
             .save()
         return Secret(

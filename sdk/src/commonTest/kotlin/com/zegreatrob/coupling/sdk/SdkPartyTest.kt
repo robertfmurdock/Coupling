@@ -90,7 +90,7 @@ class SdkPartyTest {
     @Test
     fun partyThatHasOwnerAsPlayerOnlyShowsUpOnceInList() = asyncSetup(object {
         val party = stubPartyDetails()
-        val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_NAME)
+        val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_EMAIL)
     }) {
         sdk().fire(SavePartyCommand(party))
         sdk().fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
@@ -122,7 +122,7 @@ class SdkPartyTest {
             object {
                 suspend fun altSdk() = altAuthorizedSdkDeferred.await()
                 val party = PartyDetails(PartyId(Uuid.random().toString()), name = "party-from-endpoint-tests")
-                val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_NAME)
+                val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_EMAIL)
             }
         },
         sharedTeardown = {
@@ -149,7 +149,7 @@ class SdkPartyTest {
     fun getWillReturnAnyPartyThatHasPlayerWithGivenEmailInAdditionalSection() = setupWithPlayerMatchingUserTwoSdks {
         with(altSdk()) {
             fire(SavePartyCommand(party))
-            fire(SavePlayerCommand(party.id, stubPlayer().copy(additionalEmails = setOf(PRIMARY_AUTHORIZED_USER_NAME))))
+            fire(SavePlayerCommand(party.id, stubPlayer().copy(additionalEmails = setOf(PRIMARY_AUTHORIZED_USER_EMAIL))))
         }
     } exercise {
         sdk().fire(graphQuery { partyList { details() } })?.partyList ?: emptyList()

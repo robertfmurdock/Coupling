@@ -13,12 +13,14 @@ import com.zegreatrob.testmints.async.asyncSetup
 import js.objects.recordOf
 import js.objects.unsafeJso
 import kotlinx.coroutines.await
+import kotools.types.text.toNotBlankString
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
+import kotlin.uuid.Uuid
 
 class JwtSecretHandlerTest {
 
@@ -54,18 +56,18 @@ class JwtSecretHandlerTest {
         override val secretIssuer: String = "test-issuer"
         override val secretAudience: String = "https://test.coupling.zegreatrob.com"
         override val secretSigningSecret: String = testSecretSigningSecret
-        val userId = UserId.new()
+        val userEmail = Uuid.Companion.random().toString().toNotBlankString().getOrThrow()
         val secretId = SecretId.new()
         val expectedExpiration = Clock.System.now().plus(2.hours)
     }) exercise {
-        createSecret(Pair(userId, secretId))
+        createSecret(Pair(userEmail, secretId))
     } verify { result ->
         val token = jwtVerify(
             result,
             TextEncoder().encode(secretSigningSecret),
             unsafeJso {
                 issuer = arrayOf(this@verify.secretIssuer)
-                subject = userId.value.toString()
+                subject = userEmail.toString()
                 audience = arrayOf(this@verify.secretAudience)
             },
         ).await()
@@ -87,13 +89,14 @@ class JwtSecretHandlerTest {
         override val secretIssuer: String = "test-issuer"
         override val secretAudience: String = "https://test.coupling.zegreatrob.com"
         override val secretSigningSecret: String = testSecretSigningSecret
-        val userId = UserId.new()
+        val userEmail = Uuid.Companion.random().toString().toNotBlankString().getOrThrow()
         val secretId = SecretId.new()
     }) exercise {
-        val token = createSecret(Pair(userId, secretId))
+        val token = createSecret(Pair(userEmail, secretId))
         validateSubject(token)
-    } verify { subject ->
-        subject.assertIsEqualTo(userId.value.toString())
+    } verify { result ->
+        result?.first.assertIsEqualTo(secretId)
+        result?.second.assertIsEqualTo(userEmail.toString())
     }
 
     @Test
@@ -101,12 +104,12 @@ class JwtSecretHandlerTest {
         override val secretIssuer: String = "test-issuer"
         override val secretAudience: String = "https://test.coupling.zegreatrob.com"
         override val secretSigningSecret: String = testSecretSigningSecret
-        val userId = UserId.new()
+        val userEmail = Uuid.Companion.random().toString().toNotBlankString().getOrThrow()
         val secretId = SecretId.new()
     }) exercise {
         val token = SignJWT(recordOf("https://zegreatrob.com/secret-id" to secretId.value.toString()))
             .setAudience(secretAudience)
-            .setSubject(userId.value.toString())
+            .setSubject(userEmail.toString())
             .setIssuedAt()
             .setExpirationTime("-5 minutes")
             .setIssuer(secretIssuer)

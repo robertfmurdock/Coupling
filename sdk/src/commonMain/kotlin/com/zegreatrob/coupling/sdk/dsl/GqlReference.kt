@@ -53,6 +53,7 @@ object GqlReference {
         authorizedPartyIds = emptyList(),
         email = notBlank,
         id = UserId(notBlank),
+        connectedEmails = emptyList(),
         connectSecretId = SecretId(notBlank),
     )
     val boost = GqlBoostDetails(

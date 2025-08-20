@@ -20,9 +20,12 @@ import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.action.user.ConnectUserCommand
 import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
+import com.zegreatrob.coupling.action.user.DisconnectUserCommand
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 
 interface CouplingSdkDispatcher :
+    ApplyBoostCommand.Dispatcher,
+    ClearContributionsCommand.Dispatcher,
     CreateConnectUserSecretCommand.Dispatcher,
     CreateSecretCommand.Dispatcher,
     ConnectUserCommand.Dispatcher,
@@ -31,13 +34,12 @@ interface CouplingSdkDispatcher :
     DeletePartyCommand.Dispatcher,
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
-    ApplyBoostCommand.Dispatcher,
+    DisconnectUserCommand.Dispatcher,
     DeleteSecretCommand.Dispatcher,
     GrantDiscordAccessCommand.Dispatcher,
     GrantSlackAccessCommand.Dispatcher,
     GraphQuery.Dispatcher,
     SaveContributionCommand.Dispatcher,
-    ClearContributionsCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,

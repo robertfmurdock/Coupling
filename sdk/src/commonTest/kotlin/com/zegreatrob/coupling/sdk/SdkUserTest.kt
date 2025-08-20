@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.action.user.ConnectUserCommand
 import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
+import com.zegreatrob.coupling.action.user.DisconnectUserCommand
 import com.zegreatrob.coupling.action.user.fire
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.elements
@@ -16,6 +17,7 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
 class SdkUserTest {
@@ -25,7 +27,7 @@ class SdkUserTest {
         sdk().fire(graphQuery { user { details() } })
     } verify { result: CouplingQueryResult? ->
         result?.user?.details.let {
-            it?.email.toString().assertIsEqualTo(PRIMARY_AUTHORIZED_USER_NAME)
+            it?.email.toString().assertIsEqualTo(PRIMARY_AUTHORIZED_USER_EMAIL)
             it?.id.assertIsNotEqualTo(null)
             it?.authorizedPartyIds.assertIsNotEqualTo(null)
         }
@@ -34,7 +36,7 @@ class SdkUserTest {
     @Test
     fun userQueryCanIncludeAllAssociatedPlayers() = asyncSetup(object {
         val party = stubPartyDetails()
-        val player = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_NAME)
+        val player = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_EMAIL)
     }) {
         sdk().fire(SavePartyCommand(party))
         sdk().fire(SavePlayerCommand(party.id, player))
@@ -84,7 +86,43 @@ class SdkUserTest {
     } verify { result: Boolean? ->
         result.assertIsEqualTo(false)
         sdk().fire(graphQuery { user { details() } })
-            ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(ALT_AUTHORIZED_USER_NAME)
-            .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_NAME to not be connected.")
+            ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(ALT_AUTHORIZED_USER_EMAIL)
+            .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_EMAIL to not be connected.")
+    }
+
+    @Test
+    fun canConnectUser() = asyncSetup(object {
+        lateinit var token: String
+    }) {
+        token = sdk().fire(CreateConnectUserSecretCommand)?.second ?: ""
+    } exercise {
+        altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
+    } verifyAnd { result: Boolean? ->
+        result.assertIsEqualTo(true)
+        altAuthorizedSdkDeferred.await().fire(graphQuery { user { details() } })
+            ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(PRIMARY_AUTHORIZED_USER_EMAIL)
+            .assertIsEqualTo(true, "Expected $PRIMARY_AUTHORIZED_USER_EMAIL to be connected.")
+        sdk().fire(graphQuery { user { details() } })
+            ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(ALT_AUTHORIZED_USER_EMAIL)
+            .assertIsEqualTo(true, "Expected $ALT_AUTHORIZED_USER_EMAIL to be connected.")
+    } teardown {
+        sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
+    }
+
+    @Test
+    fun canDisconnectUser() = asyncSetup(object {
+        lateinit var token: String
+    }) {
+        token = sdk().fire(CreateConnectUserSecretCommand)?.second ?: ""
+        altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
+    } exercise {
+        sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
+    } verify {
+        altAuthorizedSdkDeferred.await().fire(graphQuery { user { details() } })
+            ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(PRIMARY_AUTHORIZED_USER_EMAIL)
+            .assertIsEqualTo(false, "Expected $PRIMARY_AUTHORIZED_USER_EMAIL not to be connected.")
+        sdk().fire(graphQuery { user { details() } })
+            ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(ALT_AUTHORIZED_USER_EMAIL)
+            .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_EMAIL not to be connected.")
     }
 }

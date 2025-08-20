@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkConnectUserCommandCommand :
+interface SdkConnectUserCommandDispatcher :
     ConnectUserCommand.Dispatcher,
     GqlTrait {
     override suspend fun perform(command: ConnectUserCommand) = doQuery(Mutation.connectUser, GqlConnectUserInput(command.token))

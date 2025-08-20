@@ -11,6 +11,7 @@ object Mutation {
     val createSecret by GqlFileLoader
     val createConnectUserSecret by GqlFileLoader
     val connectUser by GqlFileLoader
+    val disconnectUser by GqlFileLoader
     val saveSlackIntegration by GqlFileLoader
     val deleteSecret by GqlFileLoader
     val savePlayer by GqlFileLoader

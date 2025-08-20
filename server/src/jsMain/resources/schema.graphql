@@ -44,6 +44,7 @@ type UserDetails {
     id: UserId!
     email: Email!
     connectSecretId: SecretId
+    connectedEmails: [Email!]!
     authorizedPartyIds: [PartyId!]!
 }
 
@@ -418,6 +419,7 @@ type Mutation {
     deleteSecret(input: DeleteSecretInput!) : Boolean
     createConnectUserSecret : SecretToken
     connectUser(input: ConnectUserInput!) : Boolean
+    disconnectUser(input: DisconnectUserInput!) : Boolean
     saveContribution(input: SaveContributionInput!): Boolean
     clearContributions(input: ClearContributionsInput!): Boolean
     grantSlackAccess(input: GrantSlackAccessInput!): Boolean
@@ -482,4 +484,8 @@ input DeleteSecretInput {
 
 input ConnectUserInput {
     secretToken: String!
+}
+
+input DisconnectUserInput {
+    email: Email!
 }

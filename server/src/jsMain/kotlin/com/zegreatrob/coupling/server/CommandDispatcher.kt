@@ -63,6 +63,7 @@ import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.action.subscription.ServerSubscriptionQueryDispatcher
 import com.zegreatrob.coupling.server.action.user.ServerConnectUserCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.ServerCreateConnectUserSecretCommandDispatcher
+import com.zegreatrob.coupling.server.action.user.ServerDisconnectUserCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
@@ -87,6 +88,7 @@ interface ICommandDispatcher :
     ContributorPlayerQuery.Dispatcher,
     ServerCreateConnectUserSecretCommandDispatcher,
     ServerConnectUserCommandDispatcher,
+    ServerDisconnectUserCommandDispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
     GlobalStatsQuery.Dispatcher,

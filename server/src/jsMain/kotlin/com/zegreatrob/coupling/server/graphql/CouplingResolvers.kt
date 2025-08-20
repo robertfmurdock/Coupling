@@ -43,6 +43,7 @@ import com.zegreatrob.coupling.server.entity.secret.connectUserResolver
 import com.zegreatrob.coupling.server.entity.secret.createConnectUserSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.createSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.deleteSecretResolver
+import com.zegreatrob.coupling.server.entity.secret.disconnectUserResolver
 import com.zegreatrob.coupling.server.entity.secret.secretListResolve
 import com.zegreatrob.coupling.server.entity.slackaccess.grantSlackAccessResolver
 import com.zegreatrob.coupling.server.entity.user.userResolve
@@ -105,6 +106,7 @@ fun couplingResolvers() = json(
         "createSecret" to createSecretResolver,
         "createConnectUserSecret" to createConnectUserSecretResolver,
         "connectUser" to connectUserResolver,
+        "disconnectUser" to disconnectUserResolver,
         "deletePairAssignments" to deletePairsResolver,
         "deleteParty" to deletePartyResolver,
         "deletePin" to deletePinResolver,

@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.server.secret
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.SecretId
-import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.server.action.PartySecretGenerator
 import com.zegreatrob.coupling.server.action.SecretValidator
 import com.zegreatrob.coupling.server.action.UserSecretGenerator
 import com.zegreatrob.coupling.server.secret.external.jose.SignJWT
+import com.zegreatrob.coupling.server.secret.external.jose.get
 import com.zegreatrob.coupling.server.secret.external.jose.jwtVerify
 import js.objects.Record
 import js.objects.recordOf
@@ -31,8 +31,8 @@ interface JwtSecretHandler :
         exp = null,
     )
 
-    override suspend fun createSecret(secret: Pair<UserId, SecretId>): String = jwt(
-        secret.first.value,
+    override suspend fun createSecret(secret: Pair<NotBlankString, SecretId>): String = jwt(
+        secret.first,
         secret.second,
         "2h",
     )
@@ -51,7 +51,7 @@ interface JwtSecretHandler :
         "https://zegreatrob.com/secret-id" to secretId.value.toString(),
     )
 
-    override suspend fun validateSubject(secret: String): String? = try {
+    override suspend fun validateSubject(secret: String): Pair<SecretId, String>? = try {
         jwtVerify(
             token = secret,
             secret = TextEncoder().encode(secretSigningSecret),
@@ -62,7 +62,15 @@ interface JwtSecretHandler :
         )
             .await()
             .payload
-            .sub
+            .let {
+                Pair(
+                    first = it["https://zegreatrob.com/secret-id"]
+                        ?.toString()
+                        ?.let(::SecretId)
+                        ?: return null,
+                    second = it.sub,
+                )
+            }
     } catch (_: Throwable) {
         null
     }

@@ -1,0 +1,3 @@
+mutation disconnectUser($input: DisconnectUserInput!) {
+    disconnectUser(input: $input)
+}

@@ -11,7 +11,7 @@ interface SdkContext : SdkProviderSyntax {
 val asyncSetup = asyncTestTemplate<SdkContext>(beforeAll = {
     val sdk = sdk()
     object : SdkContext {
-        override val username = PRIMARY_AUTHORIZED_USER_NAME
+        override val username = PRIMARY_AUTHORIZED_USER_EMAIL
         override val sdk = sdk
     }
 })
