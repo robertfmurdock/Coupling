@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.action.user.ConnectUserCommand
 import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
 import com.zegreatrob.coupling.action.user.fire
 import com.zegreatrob.coupling.model.CouplingQueryResult
@@ -66,9 +67,24 @@ class SdkUserTest {
         sdk().fire(graphQuery { user { details() } })
     } verify { result ->
         createResult.assertIsNotEqualTo(null)
-        createResult?.let { (secret, token) ->
+        createResult?.let { (secret) ->
             result?.user?.details?.connectSecretId
                 .assertIsEqualTo(secret.id)
         }
+    }
+
+    @Test
+    fun whenANewerSecretExistsConnectUserSecretCannotBeUsedToConnectUser() = asyncSetup(object {
+        lateinit var firstToken: String
+    }) {
+        firstToken = sdk().fire(CreateConnectUserSecretCommand)?.second ?: ""
+    } exercise {
+        sdk().fire(CreateConnectUserSecretCommand)
+        altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(firstToken))
+    } verify { result: Boolean? ->
+        result.assertIsEqualTo(false)
+        sdk().fire(graphQuery { user { details() } })
+            ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(ALT_AUTHORIZED_USER_NAME)
+            .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_NAME to not be connected.")
     }
 }

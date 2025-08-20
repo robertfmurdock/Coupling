@@ -10,6 +10,7 @@ object Mutation {
     val saveParty by GqlFileLoader
     val createSecret by GqlFileLoader
     val createConnectUserSecret by GqlFileLoader
+    val connectUser by GqlFileLoader
     val saveSlackIntegration by GqlFileLoader
     val deleteSecret by GqlFileLoader
     val savePlayer by GqlFileLoader

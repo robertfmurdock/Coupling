@@ -18,12 +18,14 @@ import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
+import com.zegreatrob.coupling.action.user.ConnectUserCommand
 import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 
 interface CouplingSdkDispatcher :
     CreateConnectUserSecretCommand.Dispatcher,
     CreateSecretCommand.Dispatcher,
+    ConnectUserCommand.Dispatcher,
     DeleteBoostCommand.Dispatcher,
     DeletePairAssignmentsCommand.Dispatcher,
     DeletePartyCommand.Dispatcher,

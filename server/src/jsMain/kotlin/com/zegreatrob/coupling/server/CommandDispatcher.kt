@@ -61,6 +61,7 @@ import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.action.subscription.ServerSubscriptionQueryDispatcher
+import com.zegreatrob.coupling.server.action.user.ServerConnectUserCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.ServerCreateConnectUserSecretCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserQuery
@@ -85,6 +86,7 @@ interface ICommandDispatcher :
     ConnectionsQuery.Dispatcher,
     ContributorPlayerQuery.Dispatcher,
     ServerCreateConnectUserSecretCommandDispatcher,
+    ServerConnectUserCommandDispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
     GlobalStatsQuery.Dispatcher,

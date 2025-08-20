@@ -1,0 +1,3 @@
+mutation connectUser($input: ConnectUserInput!) {
+    connectUser(input: $input)
+}
