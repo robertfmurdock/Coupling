@@ -125,4 +125,20 @@ class SdkUserTest {
             ?.user?.details?.connectedEmails?.map { it.toString() }?.contains(ALT_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_EMAIL not to be connected.")
     }
+
+    @Test
+    fun afterConnectionCanSeePartiesAssociatedWithConnectedUser() = asyncSetup(object {
+        val party = stubPartyDetails()
+    }) {
+        sdk().fire(SavePartyCommand(party))
+        val token = sdk().fire(CreateConnectUserSecretCommand)?.second ?: ""
+        altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
+    } exercise {
+        altAuthorizedSdkDeferred.await().fire(graphQuery { party(party.id) { details() } })
+    } verifyAnd { result: CouplingQueryResult? ->
+        result?.party?.details?.data
+            .assertIsEqualTo(party)
+    } teardown {
+        sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
+    }
 }

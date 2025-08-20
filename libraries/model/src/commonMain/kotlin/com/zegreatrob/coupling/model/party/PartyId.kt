@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.model.party
 
+import com.zegreatrob.coupling.model.user.UserDetails
 import kotools.types.text.NotBlankString
 import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi

@@ -78,6 +78,8 @@ import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlin.js.json
 import kotlin.uuid.Uuid
 
@@ -194,9 +196,23 @@ class CurrentPartyDispatcher(
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
 
-    private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
+    private suspend fun PartyId.validateAuthorized() = if (currentUserIsAuthorized()) {
+        this
+    } else {
+        null
+    }
 
-    private suspend fun userIsAuthorized(partyId: PartyId) = currentUser.authorizedPartyIds.contains(partyId) ||
+    private suspend fun PartyId.currentUserIsAuthorized(): Boolean = listOf(currentUser)
+        .plus(currentUser.loadConnectedUsers())
+        .any { it.userIsAuthorized(this) }
+
+    private suspend fun UserDetails.loadConnectedUsers() = coroutineScope {
+        connectedEmails.map { async { userRepository.getUsersWithEmail(it).firstOrNull()?.data } }
+            .awaitAll()
+            .filterNotNull()
+    }
+
+    private suspend fun UserDetails.userIsAuthorized(partyId: PartyId) = authorizedPartyIds.contains(partyId) ||
         userIsAlsoPlayer()
 
     private suspend fun userIsAlsoPlayer() = players()
