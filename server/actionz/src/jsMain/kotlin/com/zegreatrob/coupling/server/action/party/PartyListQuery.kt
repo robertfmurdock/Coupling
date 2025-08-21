@@ -31,6 +31,7 @@ object PartyListQuery {
         }
 
         private suspend fun Pair<List<Record<PartyDetails>>, List<PartyRecord<Player>>>.onlyAuthenticatedParties() = let { (partyRecords, playerRecords) ->
+            println("players $playerRecords")
             val ownedParties = partyRecords.filter(authorizedPartyIds().allowFilter())
             PartyListResult(
                 ownedParties = ownedParties,

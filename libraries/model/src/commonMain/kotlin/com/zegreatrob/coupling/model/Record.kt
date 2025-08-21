@@ -22,8 +22,7 @@ fun <T> partyRecord(
     data: T,
     modifyingUserEmail: NotBlankString,
     isDeleted: Boolean = false,
-    timestamp: Instant =
-        Clock.System.now(),
+    timestamp: Instant = Clock.System.now(),
 ) = PartyRecord(PartyElement(partyId, data), modifyingUserEmail, isDeleted, timestamp)
 
 val <T> PartyRecord<T>.element get() = this.data.element

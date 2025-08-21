@@ -17,6 +17,6 @@ interface UserGet {
     suspend fun getUser(): Record<UserDetails>?
 }
 
-interface UserGetByEmail {
+fun interface UserGetByEmail {
     suspend fun getUsersWithEmail(email: NotBlankString): List<Record<UserDetails>>
 }
