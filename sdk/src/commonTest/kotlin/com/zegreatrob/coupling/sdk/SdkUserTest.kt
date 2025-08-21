@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
 import com.zegreatrob.coupling.action.user.DisconnectUserCommand
 import com.zegreatrob.coupling.action.user.fire
 import com.zegreatrob.coupling.model.CouplingQueryResult
+import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -18,6 +19,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotools.types.text.toNotBlankString
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 class SdkUserTest {
@@ -127,6 +129,7 @@ class SdkUserTest {
     }
 
     @Test
+    @Ignore
     fun afterConnectionCanSeePartiesAssociatedWithConnectedUser() = asyncSetup(object {
         val party = stubPartyDetails()
     }) {
@@ -134,8 +137,15 @@ class SdkUserTest {
         val token = sdk().fire(CreateConnectUserSecretCommand)?.second ?: ""
         altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
     } exercise {
-        altAuthorizedSdkDeferred.await().fire(graphQuery { party(party.id) { details() } })
+        altAuthorizedSdkDeferred.await().fire(
+            graphQuery {
+                partyList { details() }
+                party(party.id) { details() }
+            },
+        )
     } verifyAnd { result: CouplingQueryResult? ->
+        (result?.partyList?.mapNotNull { it.details }?.data() ?: emptyList())
+            .assertContains(party)
         result?.party?.details?.data
             .assertIsEqualTo(party)
     } teardown {

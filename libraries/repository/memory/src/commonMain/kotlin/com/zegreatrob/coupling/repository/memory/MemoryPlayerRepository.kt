@@ -47,9 +47,9 @@ class MemoryPlayerRepository(
     override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> = partyId.players()
         .filter { it.isDeleted }
 
-    override suspend fun getPlayersByEmail(email: NotBlankString) = records
+    override suspend fun getPlayersByEmail(emails: List<NotBlankString>) = records
         .groupBy { it.data.player.id }
         .map { it.value.last() }
         .filterNot(Record<*>::isDeleted)
-        .filter { it.data.element.matches(email.toString()) }
+        .filter { emails.any { email -> it.data.element.matches(email.toString()) } }
 }

@@ -27,7 +27,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             save(partyId.with(updatedPlayer))
         }
     } verifyWithWait {
-        repository.getPlayersByEmail(email)
+        repository.getPlayersByEmail(listOf(email))
             .map { it.data }
             .assertIsEqualTo(listOf(partyId.with(updatedPlayer)), "Could not find by email <$email>")
     }
@@ -45,9 +45,53 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             save(partyId.with(redHerring))
         }
     } verifyWithWait {
-        repository.getPlayersByEmail(email)
+        repository.getPlayersByEmail(listOf(email))
             .map { it.data }
             .assertIsEqualTo(listOf(partyId.with(player)), "Could not find by email <$email>")
+    }
+
+    @Test
+    fun getPlayersForEmailsWillSearchForAllEmailsGiven() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val players = listOf(
+                stubPlayer().copy(email = "test1-${Uuid.random()}@zegreatrob.com"),
+                stubPlayer().copy(email = "test2-${Uuid.random()}@zegreatrob.com"),
+                stubPlayer().copy(email = "test3-${Uuid.random()}@zegreatrob.com"),
+            )
+            val emails = players.mapNotNull { it.email.toNotBlankString().getOrNull() }
+        }.bind(),
+    ) {
+        with(repository) { players.forEach { save(partyId.with(it)) } }
+    } exercise {
+        repository.getPlayersByEmail(emails)
+    } verifyWithWait { result ->
+        result
+            .map { it.data.element }
+            .sortedBy { it.email }
+            .assertIsEqualTo(players, "Could not find by multiple emails")
+    }
+
+    @Test
+    fun getPlayersForEmailsWillSearchForAllEmailsGivenInAdditionalSection() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val players = listOf(
+                stubPlayer().copy(additionalEmails = setOf("test1-${Uuid.random()}@zegreatrob.com")),
+                stubPlayer().copy(additionalEmails = setOf("test2-${Uuid.random()}@zegreatrob.com")),
+                stubPlayer().copy(additionalEmails = setOf("test3-${Uuid.random()}@zegreatrob.com")),
+            )
+            val emails = players.flatMap {
+                it.additionalEmails.mapNotNull { email -> email.toNotBlankString().getOrNull() }
+            }
+        }.bind(),
+    ) {
+        with(repository) { players.forEach { save(partyId.with(it)) } }
+    } exercise {
+        repository.getPlayersByEmail(emails)
+    } verifyWithWait { result ->
+        result
+            .map { it.data.element }
+            .sortedBy { it.additionalEmails.toString() }
+            .assertIsEqualTo(players, "Could not find by multiple emails")
     }
 
     @Test
@@ -61,7 +105,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         repository.save(partyId.with(player))
         repository.save(partyId.with(updatedPlayer))
     } verifyWithWait {
-        repository.getPlayersByEmail(email)
+        repository.getPlayersByEmail(listOf(email))
             .assertIsEqualTo(emptyList())
     }
 
@@ -75,7 +119,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         repository.save(partyId.with(player))
         repository.deletePlayer(partyId, player.id)
     } verifyWithWait {
-        repository.getPlayersByEmail(email)
+        repository.getPlayersByEmail(listOf(email))
             .assertIsEqualTo(emptyList())
     }
 }
