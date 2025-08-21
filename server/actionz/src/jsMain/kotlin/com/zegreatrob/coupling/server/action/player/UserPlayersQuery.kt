@@ -9,6 +9,6 @@ object UserPlayersQuery {
     interface Dispatcher :
         CurrentUserProvider,
         UserPlayersSyntax {
-        suspend fun perform(query: UserPlayersQuery) = currentUser.getPlayers()
+        suspend fun perform(query: UserPlayersQuery) = currentUser.loadPlayers()
     }
 }

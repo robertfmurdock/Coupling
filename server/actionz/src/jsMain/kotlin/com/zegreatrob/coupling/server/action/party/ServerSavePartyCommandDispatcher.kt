@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.model.user.UserDetails
@@ -22,7 +21,7 @@ import kotlin.coroutines.coroutineContext
 
 interface ServerSavePartyCommandDispatcher :
     SavePartyCommand.Dispatcher,
-    UserAuthenticatedPartyIdSyntax,
+    CurrentConnectedUsersProvider,
     PartyIdGetSyntax,
     PartySaveSyntax,
     UserPlayersSyntax,
@@ -31,8 +30,12 @@ interface ServerSavePartyCommandDispatcher :
 
     override val partyRepository: PartyRepository
 
-    override suspend fun perform(command: SavePartyCommand) = command.isAuthorizedToSave()
-        .whenAuthorized { command.savePartyAndUser() }
+    override suspend fun perform(command: SavePartyCommand) = if (command.isAuthorizedToSave()) {
+        command.savePartyAndUser()
+        VoidResult.Accepted
+    } else {
+        CommandResult.Unauthorized
+    }
 
     private suspend fun SavePartyCommand.savePartyAndUser() = withContext(coroutineContext) {
         launch { party.save() }
@@ -44,31 +47,18 @@ interface ServerSavePartyCommandDispatcher :
 
     private suspend fun UserDetails.saveIfUserChanged() = if (this != currentUser) save() else Unit
 
-    private suspend fun SavePartyCommand.isAuthorizedToSave() = getPartyAndUserPlayerIds()
-        .let { (loadedParty, players) -> shouldSave(party.id, loadedParty, players) }
-
-    private suspend fun SavePartyCommand.getPartyAndUserPlayerIds() = coroutineScope {
-        await(
-            async { party.id.get() },
-            async { currentUser.getPlayers() },
-        )
+    private suspend fun SavePartyCommand.isAuthorizedToSave(): Boolean {
+        val (connectedUsers, loadedParty, players) = coroutineScope {
+            await(
+                async { loadCurrentConnectedUsers() },
+                async { party.id.get() },
+                async { currentUser.loadPlayers() },
+            )
+        }
+        return loadedParty.partyIsNew() || authorizedPartyIds(connectedUsers, players).contains(party.id)
     }
 
-    private suspend fun shouldSave(
-        partyId: PartyId,
-        loadedParty: PartyDetails?,
-        playerList: List<PartyRecord<Player>>,
-    ) = loadedParty.partyIsNew() ||
-        playerList.authenticatedPartyIds().contains(partyId)
+    private fun authorizedPartyIds(users: List<UserDetails>, players: List<PartyRecord<Player>>) = players.map { it.data.partyId } + users.flatMap { it.authorizedPartyIds }
 
     private fun PartyDetails?.partyIsNew() = this == null
-
-    private suspend fun Boolean.whenAuthorized(block: suspend () -> Unit) = let {
-        if (it) {
-            block()
-            VoidResult.Accepted
-        } else {
-            CommandResult.Unauthorized
-        }
-    }
 }

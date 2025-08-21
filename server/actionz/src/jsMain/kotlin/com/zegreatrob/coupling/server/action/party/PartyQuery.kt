@@ -6,9 +6,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class PartyQuery(val partyId: PartyId) {
-    interface Dispatcher :
-        UserAuthenticatedPartyIdSyntax,
-        PartyIdLoadSyntax {
+    interface Dispatcher : PartyIdLoadSyntax {
         suspend fun perform(query: PartyQuery) = query.partyId.load()
     }
 }

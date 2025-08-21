@@ -36,26 +36,22 @@ class PartyListQueryTest {
             .copy(connectedEmails = setOf(connectedUser.email))
         override val userId = currentUser.id
         override val userRepository = UserGetByEmail {
-            listOfNotNull(
-                if (it == connectedUser.email) {
-                    connectedUser.inRecord()
-                } else {
-                    null
-                },
-            )
+            if (it == connectedUser.email) {
+                listOf(connectedUser.inRecord())
+            } else {
+                emptyList()
+            }
         }
         val expectedParty = stubPartyDetails()
         val expectedPartyRecord = expectedParty.inRecord()
         val player = stubPlayer().copy(email = connectedUser.email.toString())
         override val partyRepository = PartyListGet { listOf(expectedPartyRecord) }
         override val playerRepository = PlayerListGetByEmail {
-            listOfNotNull(
-                if (it.map(NotBlankString::toString).contains(player.email)) {
-                    expectedParty.id.with(player).inRecord()
-                } else {
-                    null
-                },
-            )
+            if (it.map(NotBlankString::toString).contains(player.email)) {
+                listOf(expectedParty.id.with(player).inRecord())
+            } else {
+                emptyList()
+            }
         }
     }) exercise {
         perform(PartyListQuery)

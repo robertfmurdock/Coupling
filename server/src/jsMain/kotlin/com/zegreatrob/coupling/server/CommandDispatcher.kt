@@ -19,7 +19,6 @@ import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.A
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
 import com.zegreatrob.coupling.server.action.ServerCreateSecretCommandDispatcher
-import com.zegreatrob.coupling.server.action.UserConnectedUsersSyntax
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerPartyBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
@@ -41,6 +40,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSpinCommandDispatcher
+import com.zegreatrob.coupling.server.action.party.CurrentConnectedUsersProvider
 import com.zegreatrob.coupling.server.action.party.PartyIntegrationQuery
 import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
@@ -190,7 +190,7 @@ class CurrentPartyDispatcher(
     ServerDeletePartyCommandDispatcher,
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
-    UserConnectedUsersSyntax,
+    CurrentConnectedUsersProvider,
     CannonProvider<CurrentPartyDispatcher> {
     override val userId: UserId get() = commandDispatcher.userId
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
@@ -202,16 +202,14 @@ class CurrentPartyDispatcher(
         null
     }
 
-    private suspend fun PartyId.currentUserIsAuthorized(): Boolean = listOf(currentUser)
-        .plus(currentUser.connectedUsers())
+    private suspend fun PartyId.currentUserIsAuthorized(): Boolean = loadCurrentConnectedUsers()
         .any { it.userIsAuthorized(this) }
 
-    private suspend fun UserDetails.userIsAuthorized(partyId: PartyId) = authorizedPartyIds.contains(partyId) ||
-        userIsAlsoPlayer()
+    private suspend fun UserDetails.userIsAuthorized(partyId: PartyId) = authorizedPartyIds.contains(partyId) || userIsAlsoPlayer()
 
-    private suspend fun userIsAlsoPlayer() = players()
+    private suspend fun UserDetails.userIsAlsoPlayer() = players()
         .map { it.email }
-        .contains(currentUser.email.toString())
+        .contains(email.toString())
 
     private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)

@@ -15,7 +15,7 @@ import kotlinx.coroutines.coroutineScope
 object PartyListQuery {
 
     interface Dispatcher :
-        UserAuthenticatedPartyIdSyntax,
+        CurrentConnectedUsersProvider,
         UserPlayersSyntax,
         CurrentUserProvider,
         PartyRecordSyntax {
@@ -27,12 +27,15 @@ object PartyListQuery {
             .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
 
         private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
-            async { getPartyRecords() } to async { currentUser.getPlayers() }
+            async { getPartyRecords() } to async { currentUser.loadPlayers() }
         }
 
         private suspend fun Pair<List<Record<PartyDetails>>, List<PartyRecord<Player>>>.onlyAuthenticatedParties() = let { (partyRecords, playerRecords) ->
-            println("players $playerRecords")
-            val ownedParties = partyRecords.filter(authorizedPartyIds().allowFilter())
+            val ownedParties = partyRecords.filter(
+                loadCurrentConnectedUsers()
+                    .flatMap { it.authorizedPartyIds }
+                    .toSet().allowFilter(),
+            )
             PartyListResult(
                 ownedParties = ownedParties,
                 playerParties = (partyRecords - ownedParties)
