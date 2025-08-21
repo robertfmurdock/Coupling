@@ -30,7 +30,7 @@ object PartyListQuery {
             async { getPartyRecords() } to async { currentUser.getPlayers() }
         }
 
-        private fun Pair<List<Record<PartyDetails>>, List<PartyRecord<Player>>>.onlyAuthenticatedParties() = let { (partyRecords, playerRecords) ->
+        private suspend fun Pair<List<Record<PartyDetails>>, List<PartyRecord<Player>>>.onlyAuthenticatedParties() = let { (partyRecords, playerRecords) ->
             val ownedParties = partyRecords.filter(authorizedPartyIds().allowFilter())
             PartyListResult(
                 ownedParties = ownedParties,

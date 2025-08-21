@@ -19,7 +19,6 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotools.types.text.toNotBlankString
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class SdkUserTest {
@@ -129,7 +128,6 @@ class SdkUserTest {
     }
 
     @Test
-    @Ignore
     fun afterConnectionCanSeePartiesAssociatedWithConnectedUser() = asyncSetup(object {
         val party = stubPartyDetails()
     }) {

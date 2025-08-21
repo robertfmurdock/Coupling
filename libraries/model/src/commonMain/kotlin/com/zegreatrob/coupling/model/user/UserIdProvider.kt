@@ -13,7 +13,3 @@ interface CurrentUserIdProvider :
     UserIdProvider {
     override val userId get() = currentUser.id
 }
-
-interface AuthorizedPartyIdsProvider : CurrentUserProvider {
-    fun authorizedPartyIds() = currentUser.authorizedPartyIds
-}

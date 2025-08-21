@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.A
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
 import com.zegreatrob.coupling.server.action.ServerCreateSecretCommandDispatcher
+import com.zegreatrob.coupling.server.action.UserConnectedUsersSyntax
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerPartyBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
@@ -78,8 +79,6 @@ import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlin.js.json
 import kotlin.uuid.Uuid
 
@@ -191,6 +190,7 @@ class CurrentPartyDispatcher(
     ServerDeletePartyCommandDispatcher,
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
+    UserConnectedUsersSyntax,
     CannonProvider<CurrentPartyDispatcher> {
     override val userId: UserId get() = commandDispatcher.userId
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
@@ -203,14 +203,8 @@ class CurrentPartyDispatcher(
     }
 
     private suspend fun PartyId.currentUserIsAuthorized(): Boolean = listOf(currentUser)
-        .plus(currentUser.loadConnectedUsers())
+        .plus(currentUser.connectedUsers())
         .any { it.userIsAuthorized(this) }
-
-    private suspend fun UserDetails.loadConnectedUsers() = coroutineScope {
-        connectedEmails.map { async { userRepository.getUsersWithEmail(it).firstOrNull()?.data } }
-            .awaitAll()
-            .filterNotNull()
-    }
 
     private suspend fun UserDetails.userIsAuthorized(partyId: PartyId) = authorizedPartyIds.contains(partyId) ||
         userIsAlsoPlayer()
