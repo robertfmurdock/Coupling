@@ -97,7 +97,7 @@ class SdkPinTest {
             .map { it.data.pin }
             .assertContains(this.pins[0])
             .assertContains(this.pins[2])
-            .size
+            ?.size
             .assertIsEqualTo(2)
     }
 

@@ -48,7 +48,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
         repository.getPins(partyId).map { it.data.pin }
             .assertContains(pins[0])
             .assertContains(pins[2])
-            .size
+            ?.size
             .assertIsEqualTo(2)
     }
 
