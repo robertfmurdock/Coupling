@@ -4634,6 +4634,17 @@
     jsonwebtoken "^9"
     lodash.isstring "^4"
 
+"@slack/oauth@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@slack/oauth/-/oauth-3.0.4.tgz#4dc5d7de81b90aa714b09e9a6158ff9dfdac1639"
+  integrity sha512-+8H0g7mbrHndEUbYCP7uYyBCbwqmm3E6Mo3nfsDvZZW74zKk1ochfH/fWSvGInYNCVvaBUbg3RZBbTp0j8yJCg==
+  dependencies:
+    "@slack/logger" "^4"
+    "@slack/web-api" "^7.10.0"
+    "@types/jsonwebtoken" "^9"
+    "@types/node" ">=18"
+    jsonwebtoken "^9"
+
 "@slack/socket-mode@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@slack/socket-mode/-/socket-mode-2.0.4.tgz#ce6155e3e69aa6d43b1ea76a4f01431f7e7599c2"
@@ -5599,17 +5610,17 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^3.9.1":
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-3.9.1.tgz#666a3a574f940035b3b75aeb1071df4cdd039c61"
-  integrity sha512-t5KZiu7jkUTHOx0adGSlSj4xPpFSvW6BsgIRQHNXqhHeYBH0mpddVUZsO33WM1m6Vyd1Wl96JoBhwEsw8jMHTQ==
+"@stripe/react-stripe-js@^3.9.2":
+  version "3.9.2"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-3.9.2.tgz#30cac3f51c5d681bcf4025ed4b9b1dfc55d5887d"
+  integrity sha512-urAZek4LrnHWfk4WYXItOiX+6xyxjcn0SkhBDoysXphLkUt92UWCd5+NlomhVqaLo98XiUQGZRiRcL8HOHZ8Jw==
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^7.8.0":
-  version "7.8.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.8.0.tgz#01390d31030f04b64a7ff13adcccbafd615c7b77"
-  integrity sha512-DNXRfYUgkZlrniQORbA/wH8CdFRhiBSE0R56gYU0V5vvpJ9WZwvGrz9tBAZmfq2aTgw6SK7mNpmTizGzLWVezw==
+"@stripe/stripe-js@^7.9.0":
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-7.9.0.tgz#d60a9f921138b95a74dd65ace866b7113a77d60a"
+  integrity sha512-ggs5k+/0FUJcIgNY08aZTqpBTtbExkJMYMLSMwyucrhtWexVOEY1KJmhBsxf+E/Q15f5rbwBpj+t0t2AW2oCsQ==
 
 "@szmarczak/http-timer@^5.0.1":
   version "5.0.1"
