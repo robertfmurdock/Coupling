@@ -18,9 +18,9 @@ val UserPage by nfc<PageProps> {
     ) { reload, dispatcher, result ->
         UserConfig(
             user = result.user?.details,
-            subscription = result.user?.subscription,
             partyList = result.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data) ?: emptyList(),
             dispatcher = dispatcher,
+            subscription = null,
             prereleaseUserConfig = null,
             reload = reload,
         )

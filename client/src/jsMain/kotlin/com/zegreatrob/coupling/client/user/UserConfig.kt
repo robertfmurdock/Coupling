@@ -23,6 +23,7 @@ import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
@@ -80,34 +81,27 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                     }
                     Editor {
                         li {
-                            val inputId = Uuid.random().toString()
-                            val elementId = ElementId(inputId)
-                            label {
-                                +"User Id"
-                                htmlFor = elementId
-                            }
-                            input {
-                                name = "id"
-                                id = elementId
-                                type = InputType.text
-                                disabled = true
-                                value = user.id.value.toString()
+                            LabeledInput {
+                                label = "User Id"
+                                inputName = "id"
+                                inputValue = user.id.value.toString()
                                 autoFocus = true
                             }
                         }
                         li {
-                            val inputId = Uuid.random().toString()
-                            val elementId = ElementId(inputId)
-                            label {
-                                +"User Email"
-                                htmlFor = elementId
+                            LabeledInput {
+                                label = "User Email"
+                                inputName = "email"
+                                inputValue = user.email.toString()
                             }
-                            input {
-                                name = "email"
-                                id = elementId
-                                type = InputType.text
-                                disabled = true
-                                value = user.email
+                        }
+                        user.connectedEmails.forEachIndexed { index, connectedEmail ->
+                            li {
+                                LabeledInput {
+                                    label = "Connected Email ${index + 1}"
+                                    inputName = "email"
+                                    inputValue = connectedEmail.toString()
+                                }
                             }
                         }
                     }
@@ -147,5 +141,29 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                 }
             }
         }
+    }
+}
+
+external interface LabeledInputProps : Props {
+    var label: String
+    var inputName: String
+    var inputValue: String
+    var autoFocus: Boolean?
+}
+
+val LabeledInput = FC<LabeledInputProps> { props ->
+    val inputId = Uuid.random().toString()
+    val elementId = ElementId(inputId)
+    label {
+        +props.label
+        htmlFor = elementId
+    }
+    input {
+        name = props.inputName
+        id = elementId
+        type = InputType.text
+        disabled = true
+        value = props.inputValue
+        autoFocus = props.autoFocus
     }
 }
