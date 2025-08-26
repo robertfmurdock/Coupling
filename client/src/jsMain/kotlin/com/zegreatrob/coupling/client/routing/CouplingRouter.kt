@@ -29,6 +29,7 @@ import com.zegreatrob.coupling.client.slack.SlackCallbackPage
 import com.zegreatrob.coupling.client.slack.SlackConnectPage
 import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.user.Logout
+import com.zegreatrob.coupling.client.user.PrereleaseUserPage
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.ReactFunc
@@ -98,9 +99,9 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
         element = navigateToPartyList()
     },
     if (prereleaseMode) {
-        couplingRoute("/user", "User", UserPage)
+        couplingRoute("/user", "User", PrereleaseUserPage)
     } else {
-        null
+        couplingRoute("/user", "User", UserPage)
     },
     couplingRoute("/parties/", "Party List", PartyListPage),
     couplingRoute("/logout/", "Logout", Logout),

@@ -41,11 +41,15 @@ external interface UserConfigProps<D> : Props where D : GraphQuery.Dispatcher, D
     var subscription: SubscriptionDetails?
     var partyList: List<PartyDetails>
     var dispatcher: DispatchFunc<D>
-    var stripeAdminCode: String
-    var stripePurchaseCode: String
-    var boost: Boost?
+    var prereleaseUserConfig: PrereleaseUserConfig?
     var reload: () -> Unit
 }
+
+data class PrereleaseUserConfig(
+    var stripeAdminCode: String,
+    var stripePurchaseCode: String,
+    var boost: Boost?,
+)
 
 @ReactFunc
 val UserConfig by nfc<UserConfigProps<*>> { props ->
@@ -122,22 +126,25 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                     PartyCard(party = party, size = 50)
                 }
             }
-            div {
-                SponsorCouplingButton(
-                    user = user,
-                    subscription = subscription,
-                    stripeAdminCode = props.stripeAdminCode,
-                    stripePurchaseCode = props.stripePurchaseCode,
-                )
-            }
-            div {
-                BoostConfiguration(
-                    subscription = subscription,
-                    boost = props.boost,
-                    parties = props.partyList,
-                    dispatchFunc = dispatcher,
-                    reload = props.reload,
-                )
+            val prereleaseUserConfig = props.prereleaseUserConfig
+            if (prereleaseUserConfig != null) {
+                div {
+                    SponsorCouplingButton(
+                        user = user,
+                        subscription = subscription,
+                        stripeAdminCode = prereleaseUserConfig.stripeAdminCode,
+                        stripePurchaseCode = prereleaseUserConfig.stripePurchaseCode,
+                    )
+                }
+                div {
+                    BoostConfiguration(
+                        subscription = subscription,
+                        boost = prereleaseUserConfig.boost,
+                        parties = props.partyList,
+                        dispatchFunc = dispatcher,
+                        reload = props.reload,
+                    )
+                }
             }
         }
     }

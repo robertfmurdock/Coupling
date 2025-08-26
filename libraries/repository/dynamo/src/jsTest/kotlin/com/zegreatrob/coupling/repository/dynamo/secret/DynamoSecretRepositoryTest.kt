@@ -64,7 +64,7 @@ class DynamoSecretRepositoryTest {
         repository.getSecrets(partyId).map { it.data.element }
             .assertContains(secrets[0])
             .assertContains(secrets[2])
-            ?.size
+            .size
             .assertIsEqualTo(2)
     }
 
