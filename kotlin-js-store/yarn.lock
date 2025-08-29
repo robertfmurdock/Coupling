@@ -155,10 +155,10 @@
     "@smithy/util-utf8" "^4.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.876.0":
-  version "3.876.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.876.0.tgz#ec7c40fad9697a49c8c489492e9afa327062c1ec"
-  integrity sha512-Qnh1hsdQpPTe7xnfQbC5XI7qfge/0i0krbJEu4fDs5GXVrSQj4JhQ4Xyxg/cYHsb/GsJs4qfTPPsUh4nEogExQ==
+"@aws-sdk/client-dynamodb@3.878.0":
+  version "3.878.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.878.0.tgz#c781f643a5b888a81f1f7a4ab8ca475cef4d0db5"
+  integrity sha512-Y7pBfIPUlUhKf9A2ihUW8lkaAE1GftDbNRZwMhtX0CK10Q4A9efe4VRMzj0BQdJVwSnkDZvLudnLJfXpBoEMaQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -726,13 +726,13 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.876.0":
-  version "3.876.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.876.0.tgz#f5c07eadcb81041044d3dcfd94045e1a6dd86628"
-  integrity sha512-F579ZxpVcRlkf77pE93Hpvadr5UZFmJdG77Qch+rvd//y1wqlFuRtoJ6oUIACrfYd59WJ0CByr6ET6sko7d+5g==
+"@aws-sdk/lib-dynamodb@3.878.0":
+  version "3.878.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.878.0.tgz#75b9835fa222a5d976bffc87279b0484591e3d41"
+  integrity sha512-Fm5zs95oh+FzP8MRvsK/5yKs+E8u1BaeYg+tw2WIwzvWHuo/3Hfs2YGRzCvqNgHWf7WIuPgwU5GLCECNAWvfJg==
   dependencies:
     "@aws-sdk/core" "3.876.0"
-    "@aws-sdk/util-dynamodb" "3.876.0"
+    "@aws-sdk/util-dynamodb" "3.878.0"
     "@smithy/core" "^3.8.0"
     "@smithy/smithy-client" "^4.4.10"
     "@smithy/types" "^4.3.2"
@@ -948,10 +948,10 @@
     "@smithy/types" "^2.3.1"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.876.0":
-  version "3.876.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.876.0.tgz#a3b5e48ad9810871b1d16a67fb42f3fe662493f2"
-  integrity sha512-/GAD9ZNJBa58YC7wRxH4jv6gOvQSr2LDRogU/ieU9Kb77ay0pxjmzDGk6RixhvWYmN05QUWxghk9fPLhEy24rQ==
+"@aws-sdk/util-dynamodb@3.878.0":
+  version "3.878.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.878.0.tgz#6357bf6d065f45e5c28f1ce97797fb6b5f6d7928"
+  integrity sha512-YEoDb/sZlPjZ9KNjSS/OqywoyBAdAuHamiv21nQpHul30HBsEWbR8zsrcdSg7KCFigYz2RIga0IdSn1IKT+YSA==
   dependencies:
     tslib "^2.6.2"
 
@@ -11259,10 +11259,10 @@ jose@^5.7.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.3.tgz#6eba1ee3f70b42891f0e1883fe0084a46dbbe02c"
   integrity sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==
 
-jose@^6.0.13:
-  version "6.0.13"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.0.13.tgz#078563b07e9ab82f0ea6922eca589041e8278a22"
-  integrity sha512-Yms4GpbmdANamS51kKK6w4hRlKx8KTxbWyAAKT/MhUMtqbIqh5mb2HjhTNUbk7TFL8/MBB5zWSDohL7ed4k/UA==
+jose@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.1.0.tgz#96285365689d16f2845a353964d2284bf19f464c"
+  integrity sha512-TTQJyoEoKcC1lscpVDCSsVgYzUDg/0Bt3WE//WiTPK6uOCQC2KZS4MpugbMWt/zyjkopgZoXhZuCi00gLudfUA==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
@@ -14656,10 +14656,10 @@ strip-json-comments@3.1.1, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stripe@^18.4.0:
-  version "18.4.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-18.4.0.tgz#1c0d5a7ed168f1ecd0f4a80d1e947e615d3eb841"
-  integrity sha512-LKFeDnDYo4U/YzNgx2Lc9PT9XgKN0JNF1iQwZxgkS4lOw5NunWCnzyH5RhTlD3clIZnf54h7nyMWkS8VXPmtTQ==
+stripe@^18.5.0:
+  version "18.5.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-18.5.0.tgz#4da5f51c45d5443f6cbf398392ffe12f94b809d6"
+  integrity sha512-Hp+wFiEQtCB0LlNgcFh5uVyKznpDjzyUZ+CNVEf+I3fhlYvh7rZruIg+jOwzJRCpy0ZTPMjlzm7J2/M2N6d+DA==
   dependencies:
     qs "^6.11.0"
 
