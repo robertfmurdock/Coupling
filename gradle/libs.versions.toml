@@ -21,7 +21,7 @@ com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.12"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.52.0"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:1.8.4"
-com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:1.8.4"
+com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:1.8.7"
 io-github-turansky-seskar = "io.github.turansky.seskar:4.14.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.0"
 
