@@ -23,7 +23,7 @@ val mapper = ObjectMapper()
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 actual fun loadJsonPartySetup(fileResource: String): PartySetup {
-    val fileJson = mapper.readTree(PartySetup::class.java.classLoader.getResource(fileResource))
+    val fileJson = mapper.readTree(PartySetup::class.java.classLoader.getResourceAsStream(fileResource))
 
     val partyJson = fileJson["party"]
 
