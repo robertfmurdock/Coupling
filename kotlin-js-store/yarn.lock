@@ -14115,10 +14115,10 @@ serve-static@^2.1.0:
     parseurl "^1.3.3"
     send "^1.0.0"
 
-serverless-http@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/serverless-http/-/serverless-http-3.2.0.tgz#68acc7735f7c876733c04f038ee20f31f5ebfc9b"
-  integrity sha512-QvSyZXljRLIGqwcJ4xsKJXwkZnAVkse1OajepxfjkBXV0BMvRS5R546Z4kCBI8IygDzkQY0foNPC/rnipaE9pQ==
+serverless-http@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/serverless-http/-/serverless-http-4.0.0.tgz#2838ed6cbd23095cdd409ff0ec00c62ec929daf1"
+  integrity sha512-KKl9h1+VApX9y2vHsVMogf906UXBwO3FDYiWPzqS0mCjEEx4Sx91JrssbWA7RN43HBuxrtoh8MkocZPvjyGnLg==
 
 serverless-offline-ssm@^6.2.0:
   version "6.2.0"
