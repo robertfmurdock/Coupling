@@ -2,7 +2,11 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
 kotlin {
-    js { nodejs() }
+    js {
+        nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
+    }
 }
 dependencies {
     "jsMainApi"(project(":libraries:repository:core"))

@@ -5,6 +5,8 @@ plugins {
 kotlin {
     js {
         nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
     }
 }
 
