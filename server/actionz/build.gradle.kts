@@ -1,4 +1,3 @@
-
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
 
@@ -7,7 +6,11 @@ plugins {
     id("com.zegreatrob.testmints.action-mint")
 }
 kotlin {
-    js { nodejs() }
+    js {
+        nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
+    }
 }
 dependencies {
     "jsMainApi"(project(":libraries:repository:core"))
