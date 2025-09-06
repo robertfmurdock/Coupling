@@ -6,16 +6,22 @@ import com.zegreatrob.coupling.server.external.graphql.tools.schema.makeExecutab
 import com.zegreatrob.coupling.server.external.graphql.tools.schema.mergeSchemas
 import kotlin.js.json
 
+@JsModule("schema.graphql")
+external val schema: String
+
+@JsModule("prerelease-schema.graphql")
+external val prereleaseSchema: String
+
 fun couplingSchema() = makeExecutableSchema(
     json(
-        "typeDefs" to "${js("require('schema.graphql')").default}",
+        "typeDefs" to schema,
         "resolvers" to couplingResolvers(),
     ),
 )
 
 fun prereleaseSchema() = makeExecutableSchema(
     json(
-        "typeDefs" to "${js("require('prerelease-schema.graphql')").default}",
+        "typeDefs" to prereleaseSchema,
         "resolvers" to prereleaseResolvers(),
     ),
 )

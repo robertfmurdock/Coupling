@@ -9,7 +9,8 @@ plugins {
 
 kotlin.js {
     nodejs()
-    useCommonJs()
+    useEsModules()
+    compilerOptions { target = "es2015" }
 }
 
 kotlin.sourceSets {
@@ -73,6 +74,7 @@ dependencies {
     jsTestImplementation("com.zegreatrob.testmints:minassert")
     jsTestImplementation("com.zegreatrob.testmints:standard")
     jsTestImplementation(npmConstrained("serverless"))
+    jsTestImplementation(npmConstrained("serverless-http"))
     jsTestImplementation(npmConstrained("serverless-offline"))
     jsTestImplementation(npmConstrained("serverless-offline-ssm"))
     jsTestImplementation(npmConstrained("serverless-prune-plugin"))
@@ -98,7 +100,7 @@ tasks {
         mustRunAfter(clean, ":kotlinStoreYarnLock")
         inputs.dir(jsProcessResources.map { it.destinationDir.path })
         inputs.file(compileProductionExecutableKotlinJs.map { compileTask ->
-            compileTask.destinationDirectory.file(compileTask.compilerOptions.moduleName.map { "$it.js" })
+            compileTask.destinationDirectory.file(compileTask.compilerOptions.moduleName.map { "$it.mjs" })
         })
         inputs.file(rootProject.layout.projectDirectory.file("kotlin-js-store/yarn.lock"))
         inputs.file(file("webpack.config.js"))

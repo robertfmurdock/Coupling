@@ -31,6 +31,7 @@ import com.zegreatrob.coupling.server.external.awssdk.clientlambda.InvokeCommand
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.LambdaClient
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.express
+import com.zegreatrob.coupling.server.external.serverless.http.serverlessHttp
 import com.zegreatrob.minjson.at
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -51,7 +52,7 @@ private val app by lazy {
 @JsName("serverless")
 fun serverless(event: dynamic, context: dynamic): dynamic {
     event.path = if (event.path.unsafeCast<String?>() == "") "/" else event.path
-    return js("require('serverless-http')")(app)(event, context)
+    return serverlessHttp(app)(event, context)
 }
 
 private val websocketApp by lazy {
@@ -90,7 +91,7 @@ private val websocketApp by lazy {
 @Suppress("unused")
 @JsExport
 @JsName("serverlessSocketConnect")
-fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('serverless-http')")(
+fun serverlessSocketConnect(event: dynamic, context: dynamic) = serverlessHttp(
     websocketApp,
     json(
         "request" to { request: dynamic, e: dynamic ->
