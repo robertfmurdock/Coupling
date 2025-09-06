@@ -12,6 +12,8 @@ plugins {
 kotlin {
     js {
         nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
         compilations.named("test") {
             packageJson {
                 customField("mocha", mapOf("require" to "global-jsdom/register"))
