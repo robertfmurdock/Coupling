@@ -22,10 +22,10 @@ external interface PartyBrowserProps : Props {
 val PartyBrowser by nfc<PartyBrowserProps> { (party, boost) ->
     div {
         css {
-            whiteSpace = WhiteSpace.normal
-            display = Display.block
+            whiteSpace = WhiteSpace.Companion.normal
+            display = Display.Companion.block
             margin = 5.px
-            textAlign = TextAlign.left
+            textAlign = TextAlign.Companion.left
         }
         ConfigHeader(party = party, boost = boost) {
             +(party.name ?: "")

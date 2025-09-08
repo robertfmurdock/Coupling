@@ -67,7 +67,7 @@ val PrepareSpinContent by nfc<PrepareSpinContentProps> { props ->
                     if (onSpin == null) {
                         span {
                             css {
-                                position = Position.absolute
+                                position = Position.Companion.absolute
                                 width = 12.em
                             }
                             +"Please tap a player to include them before spinning."
@@ -107,15 +107,15 @@ val PrepareSpinContent by nfc<PrepareSpinContentProps> { props ->
 
 private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit) = div {
     css {
-        display = Display.flex
+        display = Display.Companion.flex
         borderSpacing = 5.px
-        borderCollapse = BorderCollapse.separate
+        borderCollapse = BorderCollapse.Companion.separate
     }
     children()
 }
 
 val playerSelectorClass = ClassName {
-    display = Display.inlineBlock
+    display = Display.Companion.inlineBlock
     flex = number(1.0)
     margin = 5.px
     borderRadius = 20.px
@@ -131,8 +131,8 @@ private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Un
 
 private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit) = div {
     css {
-        display = Display.inlineFlex
-        flexDirection = FlexDirection.column
+        display = Display.Companion.inlineFlex
+        flexDirection = FlexDirection.Companion.column
         margin = (5.px)
         borderRadius = 20.px
         padding = (5.px)
@@ -171,8 +171,8 @@ private fun ChildrenBuilder.pinSelector(
 ) = Flipper {
     flipKey = pinSelections.generateFlipKey()
     css {
-        display = Display.flex
-        flexDirection = FlexDirection.column
+        display = Display.Companion.flex
+        flexDirection = FlexDirection.Companion.column
         flex = number(1.0)
     }
     selectedPinsDiv {
@@ -221,7 +221,7 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
     key = pin.id.value.toString()
     div {
         key = pin.id.value.toString()
-        css { display = Display.inlineBlock }
+        css { display = Display.Companion.inlineBlock }
         PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick)
     }
 }
@@ -239,7 +239,7 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = Co
         marginBottom = 10.px
         animationName = ident("pulsate")
         animationDuration = 2.s
-        animationIterationCount = AnimationIterationCount.infinite
+        animationIterationCount = AnimationIterationCount.Companion.infinite
     }
     +"Spin!"
 }
@@ -252,7 +252,7 @@ private fun ChildrenBuilder.selectablePlayerCardList(
         key = player.id.value.toString()
         css {
             paddingBottom = 30.px
-            display = Display.inlineBlock
+            display = Display.Companion.inlineBlock
         }
         +playerCard(player, isSelected, setPlayerSelections, playerSelections)
     }
@@ -266,9 +266,9 @@ private fun playerCard(
 ) = PlayerCard.create(
     player,
     className = ClassName {
-        transitionProperty = TransitionProperty.all
+        transitionProperty = TransitionProperty.Companion.all
         transitionDuration = 0.25.s
-        transitionTimingFunction = TransitionTimingFunction.easeOut
+        transitionTimingFunction = TransitionTimingFunction.Companion.easeOut
     },
     onClick = {
         setPlayerSelections(

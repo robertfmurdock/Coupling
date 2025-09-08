@@ -13,11 +13,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
 import react.Props
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.h4
-import react.dom.html.ReactHTML.option
-import react.dom.html.ReactHTML.p
-import react.dom.html.ReactHTML.select
+import react.dom.html.ReactHTML
 import react.useState
 
 external interface BoostConfigurationProps : Props {
@@ -35,12 +31,12 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
     var boostedParty by useState { props.parties.firstOrNull { props.boost?.partyIds?.contains(it.id) == true } }
 
     if (subscription?.isActive == true) {
-        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("Boost")) } }
+        ReactHTML.div { dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("Boost")) } }
 
-        h4 { +"Currently Boosting:" }
-        p { +(boostedParty?.name ?: "No party") }
+        ReactHTML.h4 { +"Currently Boosting:" }
+        ReactHTML.p { +(boostedParty?.name ?: "No party") }
 
-        select {
+        ReactHTML.select {
             name = "party"
             value = boostedParty?.id?.value ?: ""
             onChange = { event ->
@@ -48,7 +44,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
             }
 
             if (boostedParty == null) {
-                option {
+                ReactHTML.option {
                     key = "placeholder"
                     value = ""
                     label = "Select a party to boost"
@@ -57,7 +53,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
 
             props.parties.forEach { party ->
                 val partyName = party.name
-                option {
+                ReactHTML.option {
                     key = party.id.value.toString()
                     value = party.id.value
                     label = partyName
