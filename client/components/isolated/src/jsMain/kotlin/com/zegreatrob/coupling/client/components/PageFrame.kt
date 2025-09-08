@@ -4,7 +4,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithChildren
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Display
@@ -22,17 +22,17 @@ external interface PageFrameProps : PropsWithChildren {
 
 @ReactFunc
 val PageFrame by nfc<PageFrameProps> { props ->
-    div {
+    ReactHTML.div {
         css(props.className) {
             padding = Padding(0.px, 25.px, 25.px, 25.px)
-            borderStyle = LineStyle.solid
+            borderStyle = LineStyle.Companion.solid
             borderTopWidth = 2.px
             borderBottomWidth = 2.px
             borderLeftWidth = 12.px
             borderRightWidth = 12.px
             borderRadius = 82.px
             margin = Margin(0.px, 20.px)
-            display = Display.inlineBlock
+            display = Display.Companion.inlineBlock
             minHeight = 100.vh
             this.borderColor = props.borderColor
             this.backgroundColor = props.backgroundColor

@@ -32,6 +32,7 @@ tasks {
 dependencies {
     jsMainApi(project("external"))
     jsMainApi(project("graphing"))
+    jsMainApi(project("isolated"))
     jsMainImplementation(project(":libraries:action"))
     jsMainImplementation(project(":libraries:json"))
     jsMainImplementation(project(":libraries:model"))

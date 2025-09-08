@@ -5,7 +5,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.browser.localStorage
 import react.PropsWithChildren
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import react.useEffect
 import react.useState
 import web.cssom.Color
@@ -39,25 +39,25 @@ val Reminder by nfc<ReminderProps> { props ->
             .let(setLastTimeSeen::invoke)
     }
     if (lastTimeSeen == null || (lastTimeSeen.timeSinceThen() > 14.days)) {
-        div {
+        ReactHTML.div {
             css {
                 background = Color("#333333eb")
-                color = NamedColor.white
-                fontWeight = FontWeight.bold
+                color = NamedColor.Companion.white
+                fontWeight = FontWeight.Companion.bold
                 padding = Padding(4.px, 8.px)
                 borderRadius = 20.px
                 zIndex = integer(200)
-                display = Display.inlineBlock
-                position = Position.relative
+                display = Display.Companion.inlineBlock
+                position = Position.Companion.relative
             }
-            div {
+            ReactHTML.div {
                 css {
-                    position = Position.absolute
+                    position = Position.Companion.absolute
                     right = 1.em
                 }
                 CloseButton { this.onClose = onClose }
             }
-            div {
+            ReactHTML.div {
                 css {
                     paddingTop = 1.em
                     paddingBottom = 0.5.em
@@ -71,6 +71,6 @@ val Reminder by nfc<ReminderProps> { props ->
 private fun Instant.timeSinceThen(): Duration = Clock.System.now() - this
 
 private fun lastTimeReminderShown(reminderId: String): Instant? = localStorage.getItem(reminderId.localStorageKey())
-    ?.let(Instant::parse)
+    ?.let(Instant.Companion::parse)
 
 private fun String.localStorageKey(): String = "coupling:reminder:$this"
