@@ -88,22 +88,22 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
                                     h4 { +"90%" }
                                     +"${cycleTimes.quantile(0.9)}"
                                 }
-//                                div {
-//                                    h4 { +"75%" }
-//                                    +"${cycleTimes.quantile(0.75, d3Array)}"
-//                                }
-//                                div {
-//                                    h4 { +"50% (Median)" }
-//                                    +"${cycleTimes.quantile(0.5, d3Array)}"
-//                                }
-//                                div {
-//                                    h4 { +"25%" }
-//                                    +"${cycleTimes.quantile(0.25, d3Array)}"
-//                                }
-//                                div {
-//                                    h4 { +"10%" }
-//                                    +"${cycleTimes.quantile(0.10, d3Array)}"
-//                                }
+                                div {
+                                    h4 { +"75%" }
+                                    +"${cycleTimes.quantile(0.75)}"
+                                }
+                                div {
+                                    h4 { +"50% (Median)" }
+                                    +"${cycleTimes.quantile(0.5)}"
+                                }
+                                div {
+                                    h4 { +"25%" }
+                                    +"${cycleTimes.quantile(0.25)}"
+                                }
+                                div {
+                                    h4 { +"10%" }
+                                    +"${cycleTimes.quantile(0.10)}"
+                                }
                             }
                         }
                     }

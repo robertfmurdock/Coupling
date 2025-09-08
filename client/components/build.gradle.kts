@@ -10,8 +10,9 @@ plugins {
 
 kotlin {
     js {
-        useCommonJs()
         nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
         compilations.named("test") {
             packageJson {
                 customField("mocha", mapOf("require" to "global-jsdom/register"))
@@ -32,7 +33,6 @@ tasks {
 dependencies {
     jsMainApi(project("external"))
     jsMainApi(project("graphing"))
-    jsMainApi(project("isolated"))
     jsMainImplementation(project(":libraries:action"))
     jsMainImplementation(project(":libraries:json"))
     jsMainImplementation(project(":libraries:model"))
