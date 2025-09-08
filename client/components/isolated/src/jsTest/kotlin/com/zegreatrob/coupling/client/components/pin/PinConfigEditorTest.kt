@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.pin
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
-import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
+import com.zegreatrob.coupling.client.components.assertNotNull
 import com.zegreatrob.coupling.client.components.player.singleRouteRouter
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId

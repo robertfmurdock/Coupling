@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import react.router.dom.Link
 import web.cssom.BackgroundRepeat
 import web.cssom.Border
@@ -40,27 +40,27 @@ val PinCard by nfc<PinCardProps> { props ->
     val shouldLink = props.shouldLink ?: true
     val pin = props.pin
     optionalLink(shouldLink, props.partyId, pin) {
-        div {
+        ReactHTML.div {
             css {
-                position = Position.relative
-                clear = Clear.both
-                display = Display.inlineBlock
-                overflow = Overflow.hidden
-                border = Border(3.px, LineStyle.outset, NamedColor.black)
+                position = Position.Companion.relative
+                clear = Clear.Companion.both
+                display = Display.Companion.inlineBlock
+                overflow = Overflow.Companion.hidden
+                border = Border(3.px, LineStyle.Companion.outset, NamedColor.Companion.black)
                 backgroundColor = Color("#E0DCD2FF")
                 backgroundImage = url(pngPath("overlay"))
-                backgroundRepeat = BackgroundRepeat.repeatX
-                textAlign = TextAlign.center
-                textDecoration = None.none
+                backgroundRepeat = BackgroundRepeat.Companion.repeatX
+                textAlign = TextAlign.Companion.center
+                textDecoration = None.Companion.none
                 borderRadius = 6.px
                 boxShadow = BoxShadow(1.px, 2.px, 2.px, rgb(0, 0, 0, 0.6))
-                color = NamedColor.black
+                color = NamedColor.Companion.black
                 margin = Margin(0.px, 2.px, 0.px, 2.px)
                 top = 0.px
                 padding = 2.px
             }
             PinButton(pin, PinButtonScale.Small, showTooltip = false)
-            div {
+            ReactHTML.div {
                 className = ClassName("pin-name")
                 +pin.name
             }
