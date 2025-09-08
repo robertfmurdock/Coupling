@@ -15,7 +15,7 @@ import emotion.react.css
 import react.ChildrenBuilder
 import react.Fragment
 import react.Props
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import web.cssom.Display
 import web.cssom.Position
 import web.cssom.Visibility
@@ -34,7 +34,7 @@ val SpinAnimationPanel by nfc<SpinAnimationPanelProps> { (party, rosteredPairAss
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
-    div {
+    ReactHTML.div {
         PairAssignmentsHeader(pairAssignments)
         assignedPairs(party, revealedPairs)
         playerSpotlight(shownPlayer)
@@ -42,21 +42,21 @@ val SpinAnimationPanel by nfc<SpinAnimationPanelProps> { (party, rosteredPairAss
     }
 }
 
-private fun ChildrenBuilder.assignedPairs(party: PartyDetails, revealedPairs: List<PinnedCouplingPair>) = div {
+private fun ChildrenBuilder.assignedPairs(party: PartyDetails, revealedPairs: List<PinnedCouplingPair>) = ReactHTML.div {
     asDynamic()["data-testid"] = "assigned-pairs"
     revealedPairs.forEachIndexed { index, it -> AssignedPair(party, it, false, key = "$index") }
 }
 
 val playerSpotlightStyles = ClassName {
-    position = Position.relative
+    position = Position.Companion.relative
     "> div" {
-        position = Position.absolute
+        position = Position.Companion.absolute
         zIndex = integer(1)
         transform = translate((-50).pct, (-50).pct)
     }
 }
 
-private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
+private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = ReactHTML.div {
     className = playerSpotlightStyles
 
     if (shownPlayer != null) {
@@ -66,10 +66,10 @@ private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
     }
 }
 
-private fun ChildrenBuilder.placeholderPlayerCard() = div {
+private fun ChildrenBuilder.placeholderPlayerCard() = ReactHTML.div {
     css {
-        visibility = Visibility.hidden
-        display = Display.inlineBlock
+        visibility = Visibility.Companion.hidden
+        display = Display.Companion.inlineBlock
     }
     flippedPlayer(placeholderPlayer)
 }
@@ -77,13 +77,13 @@ private fun ChildrenBuilder.placeholderPlayerCard() = div {
 private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) = Flipped {
     flipId = player.id.value.toString()
     this.key = key ?: ""
-    div {
-        css { display = Display.inlineBlock }
+    ReactHTML.div {
+        css { display = Display.Companion.inlineBlock }
         PlayerCard(player)
     }
 }
 
-private fun ChildrenBuilder.playerRoster(players: List<Player>) = div {
+private fun ChildrenBuilder.playerRoster(players: List<Player>) = ReactHTML.div {
     asDynamic()["data-testid"] = "player-roster"
     players.forEach { player ->
         Fragment {

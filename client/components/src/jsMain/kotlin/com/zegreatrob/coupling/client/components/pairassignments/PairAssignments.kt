@@ -89,7 +89,7 @@ val DndProviderLoading by nfc<DndProviderLoadingProps> { props ->
         is EmptyState -> div { +"Preparing component" }
         is PendingState -> div { +"Pending component" }
         is ResolvedState -> state.result?.let {
-            DndProvider {
+            com.zegreatrob.coupling.client.components.external.reactdnd.DndProvider {
                 backend = it.html5Backend
                 +props.children
             }

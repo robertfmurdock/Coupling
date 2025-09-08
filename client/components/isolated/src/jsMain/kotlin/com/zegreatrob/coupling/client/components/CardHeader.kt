@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.external.fitty.fitty
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithClassName
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import react.raw.useLayoutEffectRaw
 import react.useRef
 import web.cssom.AlignItems
@@ -40,23 +40,23 @@ val CardHeader by nfc<CardHeaderProps> { props ->
         headerContainerRef.current?.fitContent(size);
         {}
     }, emptyArray())
-    div {
+    ReactHTML.div {
         css(props.className) {
             margin = Margin((size * 0.02).px, 0.px)
             height = (size * 0.33).px
-            verticalAlign = VerticalAlign.top
-            overflow = Overflow.visible
-            display = Display.flex
-            alignItems = AlignItems.center
-            flexDirection = FlexDirection.column
-            position = Position.relative
+            verticalAlign = VerticalAlign.Companion.top
+            overflow = Overflow.Companion.visible
+            display = Display.Companion.flex
+            alignItems = AlignItems.Companion.center
+            flexDirection = FlexDirection.Companion.column
+            position = Position.Companion.relative
             transform = scale(1.1)
             perspective = 10.em
         }
-        div {
+        ReactHTML.div {
             css {
-                position = Position.absolute
-                overflow = Overflow.hidden
+                position = Position.Companion.absolute
+                overflow = Overflow.Companion.hidden
                 borderRadius = (size / 10).px
                 top = 0.px
                 left = 0.px
@@ -65,23 +65,23 @@ val CardHeader by nfc<CardHeaderProps> { props ->
                 transform = rotatex(20.deg)
                 backgroundColor = rgb(255, 255, 255, 0.4)
                 backgroundImage = url(pngPath("overlay"))
-                backgroundRepeat = BackgroundRepeat.repeatX
-                borderStyle = LineStyle.hidden
+                backgroundRepeat = BackgroundRepeat.Companion.repeatX
+                borderStyle = LineStyle.Companion.hidden
                 borderColor = Color("#00000054")
                 borderWidth = 1.px
-                fontWeight = FontWeight.bold
+                fontWeight = FontWeight.Companion.bold
             }
         }
-        div {
+        ReactHTML.div {
             css {
                 height = (size * 0.33).px
                 zIndex = integer(100)
             }
             ref = headerContainerRef
-            div {
+            ReactHTML.div {
                 css {
-                    display = Display.flex
-                    alignItems = AlignItems.center
+                    display = Display.Companion.flex
+                    alignItems = AlignItems.Companion.center
                     height = (size * 0.33).px
                 }
                 +props.headerContent.ifBlank { "Unknown" }

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.player
 
-import com.zegreatrob.coupling.client.components.encodeURIComponent
 import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarUrl
 import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
@@ -12,11 +11,12 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import js.uri.encodeURIComponent
 import react.ChildrenBuilder
 import react.Props
 import react.create
 import react.dom.events.MouseEvent
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.img
 import react.useCallback
 import web.cssom.Angle
@@ -62,16 +62,16 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
     val size = props.size ?: 100
     val tilt = props.tilt ?: 0.deg
     val deselected = props.deselected == true
-    div {
+    ReactHTML.div {
         css(className) {
             playerCardStyles(tilt, deselected)
-            "img" { display = Display.block }
+            "img" { display = Display.Companion.block }
             playerCardRuleSet(size)
         }
         asDynamic()["data-player-id"] = player.id.value.toString()
         asDynamic()["data-selected"] = "${!deselected}"
         this.onClick = onClickFunc
-        div {
+        ReactHTML.div {
             css {
                 margin = ((size * 0.02).px)
                 perspective = 15.em
@@ -83,16 +83,16 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
 }
 
 private fun PropertiesBuilder.playerCardStyles(tilt: Angle, deselected: Boolean) {
-    position = Position.relative
-    clear = Clear.both
-    display = Display.inlineBlock
-    overflow = Overflow.visible
-    border = Border(3.px, LineStyle.outset, Color("#dab8018f"))
+    position = Position.Companion.relative
+    clear = Clear.Companion.both
+    display = Display.Companion.inlineBlock
+    overflow = Overflow.Companion.visible
+    border = Border(3.px, LineStyle.Companion.outset, Color("#dab8018f"))
     backgroundImage = url(pngPath("overlay"))
-    backgroundRepeat = BackgroundRepeat.repeatX
-    textAlign = TextAlign.center
-    textDecoration = None.none
-    color = NamedColor.black
+    backgroundRepeat = BackgroundRepeat.Companion.repeatX
+    textAlign = TextAlign.Companion.center
+    textDecoration = None.Companion.none
+    color = NamedColor.Companion.black
     margin = Margin(0.px, 2.px, 0.px, 2.px)
     transitionDuration = 0.25.s
     transform = rotate(tilt)
@@ -102,7 +102,7 @@ private fun PropertiesBuilder.playerCardStyles(tilt: Angle, deselected: Boolean)
         backgroundColor = Color("#ca6363")
     } else {
         top = 0.px
-        backgroundColor = NamedColor.darkseagreen
+        backgroundColor = NamedColor.Companion.darkseagreen
     }
 }
 
@@ -114,7 +114,7 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
     borderWidth = (sizeInEm * 0.04).em
     borderRadius = (sizeInEm * 0.08).em
     boxShadow = BoxShadow((sizeInEm * 0.02).em, (sizeInEm * 0.04).em, (sizeInEm * 0.04).em, rgb(0, 0, 0, 0.6))
-    flex = Flex(number(0.0), number(0.0), Auto.auto)
+    flex = Flex(number(0.0), number(0.0), Auto.Companion.auto)
 }
 
 fun Int.inCouplingEm(): Double = this / 14.0

@@ -23,8 +23,7 @@ import react.ChildrenBuilder
 import react.Fragment
 import react.Props
 import react.ReactNode
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import react.useRef
 import web.cssom.Angle
 import web.cssom.BackgroundRepeat
@@ -80,21 +79,21 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
     val playerCard = playerCardComponent(canDrag, swapCallback)
 
     DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { }) {
-        span {
+        ReactHTML.span {
             asDynamic()["data-assigned-pair"] = pair.toPair().pairId
             css {
                 padding = 5.px
-                display = Display.inlineFlex
+                display = Display.Companion.inlineFlex
                 margin = Margin(0.px, 2.px, 0.px, 2.px)
-                position = Position.relative
+                position = Position.Companion.relative
                 perspective = 10.em
-                flexDirection = FlexDirection.column
+                flexDirection = FlexDirection.Companion.column
             }
             ref = pinDroppableRef
 
-            div {
+            ReactHTML.div {
                 css {
-                    position = Position.absolute
+                    position = Position.Companion.absolute
                     top = 0.px
                     left = 0.px
                     right = 0.px
@@ -102,23 +101,23 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
                     transform = rotatex(15.deg)
                     borderWidth = 3.px
                     borderRadius = 40.px
-                    borderStyle = LineStyle.hidden
-                    borderColor = NamedColor.dimgray
+                    borderStyle = LineStyle.Companion.hidden
+                    borderColor = NamedColor.Companion.dimgray
                     margin = 10.px
                     backgroundColor = if (pinIsOver) {
                         Color("#cff8ff")
                     } else {
-                        NamedColor.aliceblue
+                        NamedColor.Companion.aliceblue
                     }
                     flexGrow = number(1.0)
                 }
             }
-            div {
+            ReactHTML.div {
                 if (party.callSignsEnabled) {
                     callSign(callSign)
                 }
             }
-            div {
+            ReactHTML.div {
                 pair.pinnedPlayers.toList().forEachIndexed { index, player ->
                     Fragment {
                         key = player.player.id.value.toString()
@@ -133,20 +132,20 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
 }
 
 private fun ChildrenBuilder.callSign(callSign: CallSign) {
-    span {
+    ReactHTML.span {
         asDynamic()["data-call-sign"] = ""
         css {
-            position = Position.relative
-            fontSize = FontSize.large
+            position = Position.Companion.relative
+            fontSize = FontSize.Companion.large
             padding = 8.px
             backgroundColor = Color("#c9d6bab8")
             backgroundImage = url(pngPath("overlay"))
-            backgroundRepeat = BackgroundRepeat.repeatX
+            backgroundRepeat = BackgroundRepeat.Companion.repeatX
             borderRadius = 15.px
             borderWidth = 1.px
-            borderStyle = LineStyle.dotted
-            borderColor = NamedColor.black
-            fontWeight = FontWeight.bold
+            borderStyle = LineStyle.Companion.dotted
+            borderColor = NamedColor.Companion.black
+            fontWeight = FontWeight.Companion.bold
             zIndex = integer(10)
         }
         +"${callSign.adjective} ${callSign.noun}"
@@ -176,11 +175,11 @@ private fun playerCardComponent(
 private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNode) = Flipped {
     flipId = player.id.value.toString()
     this.key = player.id.value.toString()
-    div {
+    ReactHTML.div {
         css {
-            display = Display.inlineBlock
+            display = Display.Companion.inlineBlock
             if (player.id.value.toString().contains("?")) {
-                visibility = Visibility.hidden
+                visibility = Visibility.Companion.hidden
             }
         }
         +handler()

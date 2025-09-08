@@ -9,7 +9,7 @@ import kotlin.js.Promise
 external class DnDBackend
 
 val reactDndHtml5BackendPromise = if (js("global.IS_JSDOM") == true) {
-    Promise.resolve(unsafeJso<ReactDndHtml5BackendModule> {})
+    Promise.Companion.resolve(unsafeJso<ReactDndHtml5BackendModule> {})
 } else {
     js("import(\"react-dnd-html5-backend\")")
 }

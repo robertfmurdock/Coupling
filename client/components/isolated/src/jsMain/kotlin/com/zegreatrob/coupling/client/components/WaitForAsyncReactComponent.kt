@@ -15,7 +15,8 @@ import react.Fragment
 import react.Props
 import react.ReactNode
 import react.create
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
+import kotlin.let
 
 fun <T : Props> ChildrenBuilder.waitForAsyncReactComponent(
     getComponent: () -> ElementType<T>?,
@@ -38,12 +39,12 @@ val AsyncReactComponent by nfc<AsyncReactComponentProps<Props>> { props ->
     val state = props.state
     val useComponent = props.useComponent
     when (state) {
-        is EmptyState -> div { +"Preparing component" }
-        is PendingState -> div { +"Pending component" }
+        is EmptyState -> ReactHTML.div { +"Preparing component" }
+        is PendingState -> ReactHTML.div { +"Pending component" }
         is ResolvedState ->
             state.result
                 ?.let { +useComponent(it) }
-                ?: div { +"Error finding component." }
+                ?: ReactHTML.div { +"Error finding component." }
     }
 }
 

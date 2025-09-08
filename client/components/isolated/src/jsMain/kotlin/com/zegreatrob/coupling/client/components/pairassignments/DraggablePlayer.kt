@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalKotoolsTypesApi::class)
-
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.client.components.player.PlayerCard
@@ -9,7 +7,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import kotools.types.text.toNotBlankString
-import org.kotools.types.ExperimentalKotoolsTypesApi
 import react.Props
 import web.cssom.Angle
 import web.cssom.AnimationIterationCount
@@ -53,22 +50,22 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
             className = ClassName {
                 if (zoomOnHover) {
                     hover {
-                        transitionProperty = TransitionProperty.all
-                        transitionTimingFunction = TransitionTimingFunction.easeIn
+                        transitionProperty = TransitionProperty.Companion.all
+                        transitionTimingFunction = TransitionTimingFunction.Companion.easeIn
                         transitionDuration = 0.2.s
                         transform = rotate(0.deg)
                         animationDuration = 0.5.s
                         animationName = ident("twitch")
                         animationDelay = 0.2.s
-                        animationIterationCount = AnimationIterationCount.infinite
+                        animationIterationCount = AnimationIterationCount.Companion.infinite
                     }
                 }
 
                 if (isOver) {
-                    backgroundColor = NamedColor.orange
+                    backgroundColor = NamedColor.Companion.orange
                     animationDuration = 0.25.s
                     animationName = ident("wiggle")
-                    animationIterationCount = AnimationIterationCount.infinite
+                    animationIterationCount = AnimationIterationCount.Companion.infinite
                 }
             },
             key = pinnedPlayer.player.id.value.toString(),

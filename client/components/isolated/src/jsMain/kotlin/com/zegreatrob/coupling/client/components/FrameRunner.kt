@@ -8,6 +8,7 @@ import react.ReactNode
 import react.useEffectOnce
 import react.useState
 import kotlin.math.round
+import kotlin.sequences.forEach
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)

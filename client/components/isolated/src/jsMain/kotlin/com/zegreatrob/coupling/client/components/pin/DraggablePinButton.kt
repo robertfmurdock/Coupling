@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotools.types.text.toNotBlankString
 import react.Props
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import react.useRef
 import web.cssom.AnimationIterationCount
 import web.cssom.Display
@@ -45,16 +45,16 @@ val DraggablePinButton by nfc<DraggablePinButtonProps> { props ->
 
     drag(draggableRef)
 
-    span {
+    ReactHTML.span {
         ref = draggableRef
         css {
-            display = Display.inlineBlock
+            display = Display.Companion.inlineBlock
             transitionDuration = 0.4.s
-            transitionProperty = TransitionProperty.all
-            transitionTimingFunction = TransitionTimingFunction.easeIn
+            transitionProperty = TransitionProperty.Companion.all
+            transitionTimingFunction = TransitionTimingFunction.Companion.easeIn
             animationDuration = 0.25.s
             animationName = ident("pulsate")
-            animationIterationCount = AnimationIterationCount.infinite
+            animationIterationCount = AnimationIterationCount.Companion.infinite
         }
         PinButton(pin = pin, scale = scale, showTooltip = true)
     }

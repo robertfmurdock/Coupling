@@ -8,8 +8,7 @@ import csstype.PropertiesBuilder
 import emotion.react.css
 import react.Props
 import react.ReactNode
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import react.useRef
 import web.cssom.Display
 import web.html.HTMLElement
@@ -41,7 +40,7 @@ val DraggableThing by nfc<DraggableThingProps> { props ->
     )
     drag(drop(draggableRef))
 
-    span {
+    ReactHTML.span {
         css(props.css)
         ref = draggableRef
         +handler(isOver)
@@ -68,8 +67,8 @@ val DroppableThing by nfc<DroppableThingProps> { (itemType, dropCallback, handle
     )
     drop(draggableRef)
 
-    div {
-        css { display = Display.inlineBlock }
+    ReactHTML.div {
+        css { display = Display.Companion.inlineBlock }
         ref = draggableRef
         +handler(isOver)
     }

@@ -6,7 +6,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import web.cssom.ClassName
 import web.cssom.Position
 import web.cssom.pct
@@ -27,10 +27,10 @@ val PinSection by nfc<PinSectionProps> { props ->
     val scale = props.scale ?: PinButtonScale.Small
     val endCallback = props.endCallback
     val className = props.className ?: ClassName("")
-    div {
+    ReactHTML.div {
         css(className) {
             marginLeft = -(pinList.size * 12 * scale.factor).px
-            position = Position.absolute
+            position = Position.Companion.absolute
             bottom = 10.px
             left = 50.pct
         }

@@ -33,9 +33,11 @@ tasks {
 
 dependencies {
     jsMainImplementation("com.zegreatrob.jsmints:minreact")
+    jsMainImplementation("com.zegreatrob.jsmints:react-data-loader")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion-styled")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+    jsMainImplementation(project(":client:components:external"))
     jsMainImplementation(project(":libraries:model"))
     jsMainImplementation(project(":libraries:action"))
 

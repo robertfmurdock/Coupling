@@ -22,8 +22,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import react.ChildrenBuilder
 import react.Props
+import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.span
 import react.useCallback
 import web.cssom.Auto
 import web.cssom.BackgroundRepeat
@@ -93,15 +93,15 @@ private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = CouplingButt
 
 private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
     document.pairs.toList().mapIndexed { index, pair ->
-        span {
+        ReactHTML.span {
             css {
-                border = Border(3.px, LineStyle.double, NamedColor.dimgray)
-                backgroundColor = NamedColor.aliceblue
+                border = Border(3.px, LineStyle.Companion.double, NamedColor.Companion.dimgray)
+                backgroundColor = NamedColor.Companion.aliceblue
                 padding = 5.px
-                display = Display.inlineBlock
+                display = Display.Companion.inlineBlock
                 borderRadius = 40.px
                 margin = Margin(0.px, 2.px, 0.px, 2.px)
-                position = Position.relative
+                position = Position.Companion.relative
             }
             key = "$index"
             pair.pinnedPlayers.toList().map(::showPlayer)
@@ -116,41 +116,41 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
     }
 }
 
-private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
+private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = ReactHTML.span {
     css {
-        width = Auto.auto
-        height = Auto.auto
-        position = Position.relative
-        clear = Clear.both
-        display = Display.inlineBlock
-        overflow = Overflow.hidden
-        border = Border(3.px, LineStyle.outset, NamedColor.gold)
-        backgroundColor = NamedColor.darkseagreen
+        width = Auto.Companion.auto
+        height = Auto.Companion.auto
+        position = Position.Companion.relative
+        clear = Clear.Companion.both
+        display = Display.Companion.inlineBlock
+        overflow = Overflow.Companion.hidden
+        border = Border(3.px, LineStyle.Companion.outset, NamedColor.Companion.gold)
+        backgroundColor = NamedColor.Companion.darkseagreen
         backgroundImage = url(pngPath("overlay"))
-        backgroundRepeat = BackgroundRepeat.repeatX
+        backgroundRepeat = BackgroundRepeat.Companion.repeatX
         padding = 6.px
-        textAlign = TextAlign.center
-        textDecoration = None.none
+        textAlign = TextAlign.Companion.center
+        textDecoration = None.Companion.none
         borderRadius = 6.px
         boxShadow = BoxShadow(0.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
-        color = NamedColor.black
+        color = NamedColor.Companion.black
         margin = Margin(0.px, 2.px, 0.px, 2.px)
     }
     key = pinnedPlayer.player.id.value.toString()
     div {
         css {
-            backgroundColor = NamedColor.darkcyan
+            backgroundColor = NamedColor.Companion.darkcyan
             backgroundImage = url(pngPath("overlay"))
-            backgroundRepeat = BackgroundRepeat.repeatX
+            backgroundRepeat = BackgroundRepeat.Companion.repeatX
             asDynamic()["margin-before"] = "6px"
             asDynamic()["margin-after"] = "6px"
             borderRadius = 15.px
-            fontWeight = FontWeight.bold
+            fontWeight = FontWeight.Companion.bold
         }
         +pinnedPlayer.player.name
     }
 }
 
-fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
+fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.Companion.currentSystemDefault()).dateText()
 
 private fun LocalDateTime.dateText() = "$date - $time"
