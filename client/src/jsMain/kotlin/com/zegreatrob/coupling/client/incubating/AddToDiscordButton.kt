@@ -70,7 +70,8 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
                             parameters.append("scope", "webhook.incoming")
                             parameters.append(
                                 "state",
-                                Parameters.build { append("partyId", selectedParty?.value?.toString() ?: "") }.formUrlEncode(),
+                                Parameters.build { append("partyId", selectedParty?.value?.toString() ?: "") }
+                                    .formUrlEncode(),
                             )
                         }.toString()
                         CouplingButton {

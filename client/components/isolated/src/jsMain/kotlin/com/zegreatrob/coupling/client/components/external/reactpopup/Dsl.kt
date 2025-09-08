@@ -15,18 +15,19 @@ fun popup(
     contentStyle: Json? = null,
     onOpen: () -> Unit = {},
     onClose: () -> Unit = {},
-) = default.create {
-    this.modal = modal
-    this.on = on
-    this.open = open
-    this.trigger = { isOpen -> trigger(isOpen) }
-    this.contentStyle = contentStyle
-    this.onOpen = onOpen
-    this.onClose = onClose
-    +Fragment.create(handler)
-}.also {
-    loadDefaultCss()
-}
+) = Popup
+    .create {
+        this.modal = modal
+        this.on = on
+        this.open = open
+        this.trigger = { isOpen -> trigger(isOpen) }
+        this.contentStyle = contentStyle
+        this.onOpen = onOpen
+        this.onClose = onClose
+        +Fragment.create(handler)
+    }.also {
+        loadDefaultCss()
+    }
 
 private fun loadDefaultCss() {
     if (js("global.IS_JSDOM") != true) {

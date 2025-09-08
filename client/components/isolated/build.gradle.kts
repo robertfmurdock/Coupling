@@ -42,6 +42,7 @@ dependencies {
     jsMainImplementation(project(":client:components:graphing"))
     jsMainImplementation(project(":libraries:model"))
     jsMainImplementation(project(":libraries:action"))
+    jsMainImplementation(project(":libraries:json"))
 
     jsTestImplementation(project(":libraries:stub-model"))
     jsTestImplementation(project(":libraries:test-action"))

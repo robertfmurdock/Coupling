@@ -44,11 +44,11 @@ val NotificationButton by nfc<Props> {
         setSeenNotification(true)
     }
     span {
-        css { position = Position.Companion.relative }
+        css { position = Position.relative }
         span {
             css {
-                float = Float.Companion.left
-                position = Position.Companion.absolute
+                float = Float.left
+                position = Position.absolute
                 top = (-5).px
                 right = (-80).px
             }
@@ -69,11 +69,11 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
         div {
             css {
                 fontSize = 14.px
-                fontWeight = FontWeight.Companion.normal
-                verticalAlign = VerticalAlign.Companion.baseline
+                fontWeight = FontWeight.normal
+                verticalAlign = VerticalAlign.baseline
                 borderRadius = 20.px
                 "*" {
-                    verticalAlign = VerticalAlign.Companion.baseline
+                    verticalAlign = VerticalAlign.baseline
                 }
                 marginLeft = 15.px
                 marginRight = 15.px
@@ -96,22 +96,22 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
 private fun notificationButton(open: Boolean, seenNotification: Boolean) = div.create {
     css {
         val buttonSize = if (seenNotification) 50.px else 75.px
-        backgroundColor = if (seenNotification) NamedColor.Companion.darkcyan else NamedColor.Companion.crimson
+        backgroundColor = if (seenNotification) NamedColor.darkcyan else NamedColor.crimson
         if (!seenNotification) {
             animationName = ident("pulsate")
-            animationIterationCount = AnimationIterationCount.Companion.infinite
+            animationIterationCount = AnimationIterationCount.infinite
             animationDuration = 0.75.s
         }
-        color = if (open) NamedColor.Companion.darkgray else NamedColor.Companion.white
+        color = if (open) NamedColor.darkgray else NamedColor.white
         height = buttonSize
         width = buttonSize
-        display = Display.Companion.flex
-        borderColor = NamedColor.Companion.black
+        display = Display.flex
+        borderColor = NamedColor.black
         borderRadius = 40.px
-        textAlign = TextAlign.Companion.center
-        verticalAlign = VerticalAlign.Companion.middle
-        justifyContent = JustifyContent.Companion.center
-        alignItems = AlignItems.Companion.center
+        textAlign = TextAlign.center
+        verticalAlign = VerticalAlign.middle
+        justifyContent = JustifyContent.center
+        alignItems = AlignItems.center
     }
     i { className = ClassName("fa fa-exclamation-circle ${if (seenNotification) "" else "fa-2x"}") }
 }

@@ -8,7 +8,7 @@ import react.PropsWithClassName
 import react.ReactNode
 import kotlin.js.Json
 
-external val default: ElementType<PopupProps>
+external val Popup: ElementType<PopupProps>
 
 external interface PopupProps :
     PropsWithClassName,
