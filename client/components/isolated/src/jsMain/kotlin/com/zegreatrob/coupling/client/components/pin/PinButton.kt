@@ -8,9 +8,7 @@ import csstype.PropertiesBuilder
 import emotion.react.css
 import react.Props
 import react.dom.events.MouseEvent
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.i
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import react.useCallback
 import web.cssom.BackgroundRepeat
 import web.cssom.ClassName
@@ -56,7 +54,7 @@ val PinButton by nfc<PinButtonProps> { props ->
     val onClickCallback: (MouseEvent<*, *>) -> Unit = useCallback { props.onClick?.invoke() }
     val scale = props.scale ?: PinButtonScale.Normal
     val showTooltip = props.showTooltip ?: true
-    div {
+    ReactHTML.div {
         val pin = props.pin
         asDynamic()["data-pin-button"] = "${pin.id.value}"
         css(ClassName(props.className ?: "")) {
@@ -66,58 +64,58 @@ val PinButton by nfc<PinButtonProps> { props ->
         onClick = onClickCallback
 
         if (showTooltip) {
-            span {
+            ReactHTML.span {
                 this.className = tooltipStyles
                 +(props.tooltipMessage ?: pin.name)
             }
         }
-        i { this.className = ClassName("${scale.faTag} ${targetIcon(pin)}") }
+        ReactHTML.i { this.className = ClassName("${scale.faTag} ${targetIcon(pin)}") }
     }
 }
 
 private val tooltipStyles = emotion.css.ClassName {
-    visibility = Visibility.hidden
-    position = Position.absolute
+    visibility = Visibility.Companion.hidden
+    position = Position.Companion.absolute
     padding = Padding(5.px, 8.px)
     borderRadius = 15.px
     zIndex = integer(1)
     bottom = 125.pct
     left = 50.pct
     transform = translatex((-50).pct)
-    backgroundRepeat = BackgroundRepeat.repeatX
+    backgroundRepeat = BackgroundRepeat.Companion.repeatX
     backgroundImage = url(pngPath("overlay"))
     backgroundColor = Color("#222222")
     color = Color("#fff")
-    display = Display.inlineBlock
-    lineHeight = Length.normal
-    fontSize = FontSize.larger
-    whiteSpace = WhiteSpace.nowrap
+    display = Display.Companion.inlineBlock
+    lineHeight = Length.Companion.normal
+    fontSize = FontSize.Companion.larger
+    whiteSpace = WhiteSpace.Companion.nowrap
     after {
         content = string("''")
-        position = Position.absolute
+        position = Position.Companion.absolute
         top = 96.pct
         left = 50.pct
         marginLeft = (-5).px
         borderWidth = 5.px
-        borderStyle = LineStyle.solid
+        borderStyle = LineStyle.Companion.solid
         borderTopColor = Color("#222222")
-        borderRightColor = NamedColor.transparent
-        borderLeftColor = NamedColor.transparent
-        borderBottomColor = NamedColor.transparent
+        borderRightColor = NamedColor.Companion.transparent
+        borderLeftColor = NamedColor.Companion.transparent
+        borderBottomColor = NamedColor.Companion.transparent
     }
 }
 
 private fun PropertiesBuilder.pinButtonStyles() {
-    display = Display.inlineBlock
-    backgroundColor = NamedColor.white
-    borderStyle = LineStyle.double
-    borderColor = NamedColor.black
-    textAlign = TextAlign.center
-    position = Position.relative
+    display = Display.Companion.inlineBlock
+    backgroundColor = NamedColor.Companion.white
+    borderStyle = LineStyle.Companion.double
+    borderColor = NamedColor.Companion.black
+    textAlign = TextAlign.Companion.center
+    position = Position.Companion.relative
     hover {
         tooltipStyles {
-            visibility = Visibility.visible
-            position = Position.absolute
+            visibility = Visibility.Companion.visible
+            position = Position.Companion.absolute
             zIndex = integer(1)
         }
     }

@@ -9,7 +9,7 @@ import react.FC
 import react.PropsWithChildren
 import react.PropsWithClassName
 import react.dom.html.ButtonHTMLAttributes
-import react.dom.html.ReactHTML.button
+import react.dom.html.ReactHTML
 import web.cssom.AlignItems
 import web.cssom.AnimationPlayState
 import web.cssom.BackgroundRepeat
@@ -19,7 +19,7 @@ import web.cssom.Color
 import web.cssom.Cursor
 import web.cssom.Display
 import web.cssom.FontWeight
-import web.cssom.LineStyle.Companion.solid
+import web.cssom.LineStyle
 import web.cssom.Margin
 import web.cssom.NamedColor
 import web.cssom.None
@@ -37,19 +37,19 @@ import web.html.button
 
 val buttonRuleset: PropertiesBuilder.() -> Unit = {
     backgroundImage = url(pngPath("overlay"))
-    backgroundRepeat = BackgroundRepeat.repeatX
+    backgroundRepeat = BackgroundRepeat.Companion.repeatX
 
-    display = Display.inlineFlex
-    alignItems = AlignItems.center
+    display = Display.Companion.inlineFlex
+    alignItems = AlignItems.Companion.center
     padding = Padding(5.px, 10.px, 6.px)
-    color = NamedColor.white
-    textDecoration = None.none
+    color = NamedColor.Companion.white
+    textDecoration = None.Companion.none
     borderRadius = 6.px
     boxShadow = BoxShadow(offsetX = 0.px, offsetY = 1.px, blurRadius = 3.px, color = rgb(0, 0, 0, 0.6))
     textShadow = TextShadow(0.px, (-1).px, 1.px, rgb(0, 0, 0, 0.25))
-    border = Border(1.px, solid, rgb(0, 0, 0, 0.25))
-    position = Position.relative
-    cursor = Cursor.pointer
+    border = Border(1.px, LineStyle.Companion.solid, rgb(0, 0, 0, 0.25))
+    position = Position.Companion.relative
+    cursor = Cursor.Companion.pointer
     asDynamic()["text-fill-color"] = "initial"
     asDynamic()["text-stroke-width"] = "initial"
     asDynamic()["text-stroke-color"] = "initial"
@@ -60,11 +60,11 @@ val buttonRuleset: PropertiesBuilder.() -> Unit = {
     }
 
     visited {
-        borderBottom = Border(1.px, solid, rgb(0, 0, 0, 0.25))
+        borderBottom = Border(1.px, LineStyle.Companion.solid, rgb(0, 0, 0, 0.25))
     }
 
     disabled {
-        animationPlayState = AnimationPlayState.paused
+        animationPlayState = AnimationPlayState.Companion.paused
     }
 }
 
@@ -73,7 +73,7 @@ val small: Properties = unsafeJso {
 }
 val medium: Properties = unsafeJso {
     fontSize = 13.px
-    fontWeight = FontWeight.bold
+    fontWeight = FontWeight.Companion.bold
     lineHeight = number(1.0)
 }
 val large: Properties = unsafeJso {
@@ -96,7 +96,7 @@ val pink: Properties = unsafeJso<PropertiesBuilder>().apply {
 val lightGreen: Properties = unsafeJso<PropertiesBuilder>().apply {
     backgroundColor = Color("#7fd8be")
     color = Color("#3e474c")
-    textShadow = None.none
+    textShadow = None.Companion.none
     hover {
         backgroundColor = Color("#68b39d")
     }
@@ -130,7 +130,7 @@ val white: Properties = unsafeJso<PropertiesBuilder>().apply {
         backgroundColor = Color("#f3ffff"),
         color = Color("#3e474c"),
     )
-    textShadow = None.none
+    textShadow = None.Companion.none
     ":hover" {
         backgroundColor = Color("#cdd7d7")
     }
@@ -140,7 +140,7 @@ val yellow: Properties = unsafeJso<PropertiesBuilder>().apply {
         backgroundColor = Color("#eac435"),
         color = Color("#3e474c"),
     )
-    textShadow = None.none
+    textShadow = None.Companion.none
     ":hover" {
         backgroundColor = Color("#cbaa2d")
     }
@@ -150,7 +150,7 @@ private fun PropertiesBuilder.buttonColorsWithFocus(backgroundColor: Color, colo
     this.backgroundColor = backgroundColor
     this.color = color
     focus {
-        outlineColor = NamedColor.transparent
+        outlineColor = NamedColor.Companion.transparent
         outlineWidth = 2.px
         outlineOffset = 2.px
     }
@@ -177,14 +177,14 @@ val CouplingButton = FC<CouplingButtonProps> { props ->
     val colorRuleSet = props.colorRuleSet ?: black
     val onClick = props.onClick ?: {}
 
-    button {
-        type = ButtonType.button
+    ReactHTML.button {
+        type = ButtonType.Companion.button
         +props.buttonProps
         this.onClick = { onClick() }
         className = cx(
             this.className,
             ClassName {
-                "*" { verticalAlign = VerticalAlign.middle }
+                "*" { verticalAlign = VerticalAlign.Companion.middle }
                 buttonRuleset()
                 +sizeRuleSet
                 +colorRuleSet
