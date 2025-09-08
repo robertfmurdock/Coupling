@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.components.contribution
 import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.TestRouter
+import com.zegreatrob.coupling.client.components.assertNotNull
 import com.zegreatrob.coupling.client.components.create
-import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo

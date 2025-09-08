@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.TestRouter
-import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
+import com.zegreatrob.coupling.client.components.assertNotNull
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.stubmodel.stubPartyId

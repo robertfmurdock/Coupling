@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -106,9 +105,4 @@ class CurrentPairAssignmentsPanelTest {
             .assertIsEqualTo(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
         screen.getByText("current pairs")
     }
-}
-
-fun <T> T?.assertNotNull(callback: (T) -> Unit = {}) {
-    this.assertIsNotEqualTo(null)
-    callback(this!!)
 }

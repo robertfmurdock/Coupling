@@ -80,8 +80,3 @@ class ReminderTest {
             .assertIsEqualTo(null)
     }
 }
-
-fun <T> T?.assertNotNull(callback: (T) -> Unit = {}) {
-    this.assertIsNotEqualTo(null)
-    callback(this!!)
-}
