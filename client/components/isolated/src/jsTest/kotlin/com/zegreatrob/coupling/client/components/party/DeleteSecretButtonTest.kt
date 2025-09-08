@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubSecret
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import kotlin.test.Test
 
@@ -18,11 +17,11 @@ class DeleteSecretButtonTest {
         val partyId = stubPartyId()
         val secret = stubSecret()
         val dispatcher = StubDispatcher()
-        val actor = UserEvent.setup()
+        val actor = UserEvent.Companion.setup()
     }) {
-        render { DeleteSecretButton(partyId, secret, dispatcher.func(), {}) }
+        TestingLibraryReact.render { DeleteSecretButton(partyId, secret, dispatcher.func(), {}) }
     } exercise {
-        actor.click(screen.findByRole("button"))
+        actor.click(TestingLibraryReact.screen.findByRole("button"))
     } verify {
         dispatcher.receivedActions
             .assertIsEqualTo(listOf(DeleteSecretCommand(partyId, secret.id)))

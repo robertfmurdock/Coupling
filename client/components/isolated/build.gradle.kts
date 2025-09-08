@@ -37,6 +37,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     jsMainImplementation(project(":libraries:model"))
+    jsMainImplementation(project(":libraries:action"))
 
     jsTestImplementation(project(":libraries:stub-model"))
     jsTestImplementation(project(":libraries:test-action"))
