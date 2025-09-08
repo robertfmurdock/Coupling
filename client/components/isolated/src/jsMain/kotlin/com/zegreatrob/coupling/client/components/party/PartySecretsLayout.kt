@@ -11,8 +11,7 @@ import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.hr
+import react.dom.html.ReactHTML
 import web.cssom.Color
 
 @ReactFunc
@@ -36,13 +35,13 @@ val PartySecretLayout by nfc<PartySecretsLayoutProps<*>> { props ->
         ConfigHeader(party = party, boost = props.boost) {
             +"Party Secrets"
         }
-        div {
+        ReactHTML.div {
             if (props.secrets.isEmpty()) {
                 NoSecretsView()
             } else {
                 SecretView(party.id, props.secrets, dispatcher, props.reload)
             }
-            hr()
+            ReactHTML.hr()
             CreateSecretPanel(party.id, dispatcher)
         }
     }

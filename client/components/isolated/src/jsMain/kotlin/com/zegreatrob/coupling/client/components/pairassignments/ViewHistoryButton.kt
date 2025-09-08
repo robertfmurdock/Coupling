@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.lightGreen
 import com.zegreatrob.coupling.model.party.PartyDetails
 import react.ChildrenBuilder
-import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML
 import react.router.dom.Link
 import web.cssom.ClassName
 
@@ -16,7 +16,7 @@ fun ChildrenBuilder.viewHistoryButton(party: PartyDetails) = Link {
     CouplingButton {
         sizeRuleSet = large
         colorRuleSet = lightGreen
-        i { this.className = ClassName("fa fa-history") }
+        ReactHTML.i { this.className = ClassName("fa fa-history") }
         +" History!"
     }
 }

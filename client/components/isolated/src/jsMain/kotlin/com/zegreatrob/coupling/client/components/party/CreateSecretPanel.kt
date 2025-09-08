@@ -14,10 +14,7 @@ import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
 import react.Props
 import react.ReactNode
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.h2
-import react.dom.html.ReactHTML.h4
-import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML
 import react.useState
 import web.clipboard.writeText
 import web.cssom.ClassName
@@ -37,14 +34,14 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
     var description by useState("")
     var secretValue by useState("")
     var createdSecret by useState<Secret?>(null)
-    div {
-        h2 { +"Need another secret?" }
-        h4 { +"Enter a description, and then hit the create button." }
+    ReactHTML.div {
+        ReactHTML.h2 { +"Need another secret?" }
+        ReactHTML.h4 { +"Enter a description, and then hit the create button." }
         CouplingInput {
             label = ReactNode("Description")
             backgroundColor = partySecretBackgroundColor
             inputProps = unsafeJso {
-                type = InputType.text
+                type = InputType.Companion.text
                 onChange = { event -> description = event.target.value }
             }
         }
@@ -61,29 +58,29 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
                     secretValue = result?.second ?: ""
                 }
             }
-            i { className = ClassName("fa fa-plus") }
+            ReactHTML.i { className = ClassName("fa fa-plus") }
             +"Create New Secret"
         }
 
-        h4 { +"Your secret value will show up in the value box below." }
+        ReactHTML.h4 { +"Your secret value will show up in the value box below." }
         +"Copy it quick! This will be your only chance to see it."
-        div {
+        ReactHTML.div {
             CouplingInput {
                 label = ReactNode("Secret ID")
                 backgroundColor = partySecretBackgroundColor
                 inputProps = unsafeJso {
-                    type = InputType.text
+                    type = InputType.Companion.text
                     disabled = true
                     value = createdSecret?.id?.value?.toString() ?: ""
                 }
             }
         }
-        div {
+        ReactHTML.div {
             CouplingInput {
                 label = ReactNode("Secret Value")
                 backgroundColor = partySecretBackgroundColor
                 inputProps = unsafeJso {
-                    type = InputType.text
+                    type = InputType.Companion.text
                     disabled = true
                     value = secretValue
                 }
@@ -96,7 +93,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
                         navigator.clipboard.writeText(secretValue)
                     }
                 }
-                i { className = ClassName("fa fa-clipboard") }
+                ReactHTML.i { className = ClassName("fa fa-clipboard") }
                 +"Copy Secret Value"
             }
         }

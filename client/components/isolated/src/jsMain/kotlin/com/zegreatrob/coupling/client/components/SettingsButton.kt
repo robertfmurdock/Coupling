@@ -4,8 +4,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import js.objects.unsafeJso
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML
 import react.useState
 import web.cssom.ClassName
 import web.cssom.Padding
@@ -15,7 +14,7 @@ import web.cssom.px
 val SettingsButton by nfc<PartyButtonProps> { props ->
     val (showDropDown, setShowDropDown) = useState(false)
 
-    div {
+    ReactHTML.div {
         onMouseLeave = { setShowDropDown(false) }
         CouplingButton {
             sizeRuleSet = large
@@ -31,7 +30,7 @@ val SettingsButton by nfc<PartyButtonProps> { props ->
                     margin = 0.px
                 }
             }
-            i { css(ClassName("fa fa-cog")) {} }
+            ReactHTML.i { css(ClassName("fa fa-cog")) {} }
         }
         if (showDropDown) {
             CouplingDropDown {

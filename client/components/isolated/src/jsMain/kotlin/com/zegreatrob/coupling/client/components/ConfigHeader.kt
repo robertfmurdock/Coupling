@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.coupling.client.components.PartyNavigation
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.party.PartySelectButton
 import com.zegreatrob.coupling.model.Boost
@@ -8,9 +9,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithChildren
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.h1
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import web.cssom.AlignItems
 import web.cssom.AlignSelf
 import web.cssom.Display
@@ -34,20 +33,20 @@ external interface ConfigHeaderProps : PropsWithChildren {
 @ReactFunc
 val ConfigHeader by nfc<ConfigHeaderProps> { props ->
     val party = props.party
-    div {
+    ReactHTML.div {
         css {
-            textAlign = TextAlign.left
+            textAlign = TextAlign.Companion.left
             margin = 5.px
         }
-        div {
+        ReactHTML.div {
             css {
-                display = Display.grid
+                display = Display.Companion.grid
                 gridTemplateColumns = repeat(6, 1.fr)
-                flexDirection = FlexDirection.row
-                alignItems = AlignItems.center
-                whiteSpace = WhiteSpace.nowrap
+                flexDirection = FlexDirection.Companion.row
+                alignItems = AlignItems.Companion.center
+                whiteSpace = WhiteSpace.Companion.nowrap
             }
-            div {
+            ReactHTML.div {
                 css {
                     gridColumn = integer(1)
                     gridRowStart = integer(1)
@@ -55,44 +54,44 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                 }
                 PartyCard(party = party, size = 75, boost = props.boost)
             }
-            div {
+            ReactHTML.div {
                 css {
                     gridColumnStart = integer(2)
                     gridColumnEnd = integer(7)
                     gridRow = integer(1)
                 }
-                h1 {
+                ReactHTML.h1 {
                     css {
-                        display = Display.flex
-                        flexDirection = FlexDirection.column
-                        alignItems = AlignItems.center
+                        display = Display.Companion.flex
+                        flexDirection = FlexDirection.Companion.column
+                        alignItems = AlignItems.Companion.center
                         marginLeft = 15.px
-                        textDecoration = TextDecoration.underline
+                        textDecoration = TextDecoration.Companion.underline
                         flexGrow = number(2.0)
                     }
-                    div {
+                    ReactHTML.div {
                         css {
-                            display = Display.inlineBlock
+                            display = Display.Companion.inlineBlock
                             marginLeft = 15.px
-                            textDecoration = TextDecoration.underline
+                            textDecoration = TextDecoration.Companion.underline
                             flexGrow = number(2.0)
-                            alignSelf = AlignSelf.stretch
-                            "*" { verticalAlign = VerticalAlign.middle }
+                            alignSelf = AlignSelf.Companion.stretch
+                            "*" { verticalAlign = VerticalAlign.Companion.middle }
                         }
-                        div {
+                        ReactHTML.div {
                             css {
-                                display = Display.flex
-                                alignItems = AlignItems.baseline
+                                display = Display.Companion.flex
+                                alignItems = AlignItems.Companion.baseline
                             }
-                            span {
+                            ReactHTML.span {
                                 css { flexGrow = number(2.0) }
                                 +props.children
                             }
-                            span {
+                            ReactHTML.span {
                                 css {
                                     margin = Margin(0.px, 20.px)
-                                    alignItems = AlignItems.baseline
-                                    alignSelf = AlignSelf.stretch
+                                    alignItems = AlignItems.Companion.baseline
+                                    alignSelf = AlignSelf.Companion.stretch
                                 }
                                 PartySelectButton()
                                 LogoutButton()

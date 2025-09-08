@@ -19,8 +19,6 @@ import kotools.types.text.toNotBlankString
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 import web.cssom.AnimationIterationCount
 import web.cssom.Auto
@@ -61,7 +59,7 @@ val PartyCard by nfc<PartyCardProps> { props ->
     Link {
         to = party.id.currentPairsPath()
         visuallyHidden { +"Party Home Page" }
-        span {
+        ReactHTML.span {
             css {
                 staticCardStyles()
                 partyCardCss(size)
@@ -69,7 +67,7 @@ val PartyCard by nfc<PartyCardProps> { props ->
             asDynamic()["data-party-id"] = party.id.value
             ariaHidden = true
 
-            div {
+            ReactHTML.div {
                 css { margin = ((size * 0.02).px) }
                 PartyCardHeader(party, size)
                 props.boost?.let { boostIndicator(it) }
@@ -80,14 +78,14 @@ val PartyCard by nfc<PartyCardProps> { props ->
 }
 
 private fun ChildrenBuilder.boostIndicator(boost: Boost) {
-    span {
+    ReactHTML.span {
         css {
-            float = Float.right
+            float = Float.Companion.right
             zIndex = integer(100)
-            position = Position.relative
+            position = Position.Companion.relative
             animationName = ident("pulsate")
             animationDuration = 0.75.s
-            animationIterationCount = AnimationIterationCount.infinite
+            animationIterationCount = AnimationIterationCount.Companion.infinite
             hover {
                 animationDuration = 0.25.s
             }
@@ -105,14 +103,14 @@ private fun ChildrenBuilder.boostPinButton(boost: Boost) {
 }
 
 private fun PropertiesBuilder.staticCardStyles() {
-    display = Display.inlineBlock
-    borderStyle = LineStyle.outset
+    display = Display.Companion.inlineBlock
+    borderStyle = LineStyle.Companion.outset
     borderColor = Color("#f5f5f5")
-    backgroundColor = NamedColor.lightsteelblue
-    textAlign = TextAlign.center
-    textDecoration = None.none
+    backgroundColor = NamedColor.Companion.lightsteelblue
+    textAlign = TextAlign.Companion.center
+    textDecoration = None.Companion.none
     boxShadow = BoxShadow(0.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
-    color = NamedColor.black
+    color = NamedColor.Companion.black
     margin = Margin(0.px, 2.px, 4.px, 2.px)
 
     "img" {
@@ -127,7 +125,7 @@ private fun PropertiesBuilder.partyCardCss(size: Int) {
     height = (size * 1.4).px
     borderWidth = (size * 0.01).px
     borderRadius = (size * 10.0 / 150).px
-    flex = Flex(number(0.0), number(0.0), Auto.auto)
+    flex = Flex(number(0.0), number(0.0), Auto.Companion.auto)
 }
 
 val noPartyImagePath = pngPath("parties/no-party")

@@ -5,7 +5,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Instant
 
-private val dateTimeFormat = LocalDateTime.Format {
+private val dateTimeFormat = LocalDateTime.Companion.Format {
     hour()
     chars(":")
     minute()
@@ -19,4 +19,4 @@ private val dateTimeFormat = LocalDateTime.Format {
     day()
 }
 
-fun Instant.format() = dateTimeFormat.format(toLocalDateTime(TimeZone.currentSystemDefault()))
+fun Instant.format() = dateTimeFormat.format(toLocalDateTime(TimeZone.Companion.currentSystemDefault()))

@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.blue
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.model.party.PartyDetails
 import react.ChildrenBuilder
-import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML
 import react.router.dom.Link
 import web.cssom.ClassName
 
@@ -17,7 +17,7 @@ fun ChildrenBuilder.statisticsButton(party: PartyDetails) = Link {
         sizeRuleSet = large
         colorRuleSet = blue
 
-        i { this.className = ClassName("fa fa-database") }
+        ReactHTML.i { this.className = ClassName("fa fa-database") }
         +" Statistics!"
     }
 }

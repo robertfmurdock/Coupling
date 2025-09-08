@@ -7,10 +7,9 @@ import com.zegreatrob.coupling.stubmodel.stubSecret
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
+import js.globals.globalThis
 import org.w3c.dom.HTMLInputElement
 import kotlin.test.Test
 
@@ -19,12 +18,12 @@ class CreateSecretPanelTest {
     fun givenNoDescriptionClickWillNotFireCreateCommand() = asyncSetup(object {
         val partyId = stubPartyId()
         val dispatcher = StubDispatcher()
-        val actor = UserEvent.setup()
+        val actor = UserEvent.Companion.setup()
     }) {
-        js.globals.globalThis["alert"] = {}
-        render { CreateSecretPanel(partyId, dispatcher.func()) }
+        globalThis["alert"] = {}
+        TestingLibraryReact.render { CreateSecretPanel(partyId, dispatcher.func()) }
     } exercise {
-        actor.click(screen.findByRole("button", RoleOptions("Create New Secret")))
+        actor.click(TestingLibraryReact.screen.findByRole("button", RoleOptions("Create New Secret")))
     } verify {
         dispatcher.receivedActions
             .assertIsEqualTo(emptyList())
@@ -35,12 +34,12 @@ class CreateSecretPanelTest {
         val partyId = stubPartyId()
         val dispatcher = StubDispatcher()
         val description = "We represent the lolly-pop kids!"
-        val actor = UserEvent.setup()
+        val actor = UserEvent.Companion.setup()
     }) {
-        render { CreateSecretPanel(partyId, dispatcher.func()) }
+        TestingLibraryReact.render { CreateSecretPanel(partyId, dispatcher.func()) }
     } exercise {
-        actor.type(screen.findByLabelText("Description"), description)
-        actor.click(screen.findByRole("button", RoleOptions("Create New Secret")))
+        actor.type(TestingLibraryReact.screen.findByLabelText("Description"), description)
+        actor.click(TestingLibraryReact.screen.findByRole("button", RoleOptions("Create New Secret")))
     } verify {
         dispatcher.receivedActions
             .assertIsEqualTo(listOf(CreateSecretCommand(partyId, description)))
@@ -51,20 +50,20 @@ class CreateSecretPanelTest {
         val partyId = stubPartyId()
         val dispatcher = StubDispatcher.Channel()
         val description = "We represent the lolly-pop kids!"
-        val actor = UserEvent.setup()
+        val actor = UserEvent.Companion.setup()
         val expectedSecret = stubSecret()
         val expectedSecretValue = "Don't tell nobody!"
     }) {
-        render { CreateSecretPanel(partyId, dispatcher.func()) }
-        actor.type(screen.findByLabelText("Description"), description)
+        TestingLibraryReact.render { CreateSecretPanel(partyId, dispatcher.func()) }
+        actor.type(TestingLibraryReact.screen.findByLabelText("Description"), description)
     } exercise {
-        actor.click(screen.findByRole("button", RoleOptions("Create New Secret")))
-        act {
+        actor.click(TestingLibraryReact.screen.findByRole("button", RoleOptions("Create New Secret")))
+        TestingLibraryReact.act {
             dispatcher.onActionReturn(Pair(expectedSecret, expectedSecretValue))
         }
     } verify {
-        val idInput = screen.getByLabelText("Secret ID") as HTMLInputElement
-        val valueInput = screen.getByLabelText("Secret Value") as HTMLInputElement
+        val idInput = TestingLibraryReact.screen.getByLabelText("Secret ID") as HTMLInputElement
+        val valueInput = TestingLibraryReact.screen.getByLabelText("Secret Value") as HTMLInputElement
         valueInput.value.assertIsEqualTo(expectedSecretValue)
         idInput.value.assertIsEqualTo(expectedSecret.id.value.toString())
     }

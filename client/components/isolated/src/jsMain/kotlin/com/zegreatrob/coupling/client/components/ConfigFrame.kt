@@ -16,7 +16,7 @@ external interface ConfigFrameProps :
 val ConfigFrame by nfc<ConfigFrameProps> { props ->
     PageFrame(
         className = props.className,
-        borderColor = props.borderColor ?: NamedColor.black,
+        borderColor = props.borderColor ?: NamedColor.Companion.black,
         backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)"),
     ) {
         +props.children

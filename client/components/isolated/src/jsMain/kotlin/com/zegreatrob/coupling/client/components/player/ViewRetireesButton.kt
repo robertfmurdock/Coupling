@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.yellow
 import com.zegreatrob.coupling.model.party.PartyDetails
 import react.ChildrenBuilder
-import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML
 import react.router.dom.Link
 import web.cssom.ClassName
 
@@ -16,7 +16,7 @@ fun ChildrenBuilder.viewRetireesButton(party: PartyDetails) = Link {
     CouplingButton {
         sizeRuleSet = large
         colorRuleSet = yellow
-        i { this.className = ClassName("fa fa-user-slash") }
+        ReactHTML.i { this.className = ClassName("fa fa-user-slash") }
         +" Retirees!"
     }
 }

@@ -7,10 +7,7 @@ import react.Props
 import react.PropsWithChildren
 import react.ReactNode
 import react.dom.html.InputHTMLAttributes
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.input
-import react.dom.html.ReactHTML.label
-import react.dom.html.ReactHTML.select
+import react.dom.html.ReactHTML
 import react.dom.html.SelectHTMLAttributes
 import web.cssom.BackgroundColor
 import web.cssom.Border
@@ -36,12 +33,12 @@ external interface CouplingSelectProps : PropsWithChildren {
 
 val CouplingSelect = FC<CouplingSelectProps> { props ->
     CouplingLabelWrapper(props.label, props.backgroundColor) {
-        select {
+        ReactHTML.select {
             css {
-                display = Display.block
-                outline = None.none
-                border = None.none
-                fontSize = FontSize.larger
+                display = Display.Companion.block
+                outline = None.Companion.none
+                border = None.Companion.none
+                fontSize = FontSize.Companion.larger
                 borderRadius = 0.41.em
                 width = "calc(100% - 0.7em)".unsafeCast<Width>()
                 padding = 0.35.em
@@ -59,24 +56,24 @@ external interface CouplingLabelWrapperProps : PropsWithChildren {
 
 @ReactFunc
 val CouplingLabelWrapper = FC<CouplingLabelWrapperProps> { props ->
-    div {
+    ReactHTML.div {
         css {
-            display = Display.block
+            display = Display.Companion.block
             margin = 1.17.em
             padding = 0.5.em
-            border = Border(0.1.em, LineStyle.solid, Color("rgb(100 50 50 / 10%)"))
+            border = Border(0.1.em, LineStyle.Companion.solid, Color("rgb(100 50 50 / 10%)"))
             marginBottom = 0.2.em
             borderRadius = 0.3.em
         }
-        label {
-            div {
+        ReactHTML.label {
+            ReactHTML.div {
                 css {
                     backgroundColor = props.backgroundColor
-                    display = Display.block
-                    float = Float.left
+                    display = Display.Companion.block
+                    float = Float.Companion.left
                     marginTop = (-1.05).em
                     padding = Padding(0.117.em, 0.29.em)
-                    overflow = Overflow.hidden
+                    overflow = Overflow.Companion.hidden
                     fontFamily = string("Arial, Helvetica, sans-serif")
                 }
                 +props.label
@@ -95,12 +92,12 @@ external interface CouplingInputProps : Props {
 @ReactFunc
 val CouplingInput = FC<CouplingInputProps> { props ->
     CouplingLabelWrapper(props.label, props.backgroundColor) {
-        input {
+        ReactHTML.input {
             css {
-                display = Display.block
-                outline = None.none
-                border = None.none
-                fontSize = FontSize.larger
+                display = Display.Companion.block
+                outline = None.Companion.none
+                border = None.Companion.none
+                fontSize = FontSize.Companion.larger
                 borderRadius = 0.41.em
                 width = "calc(100% - 0.7em)".unsafeCast<Width>()
                 padding = 0.35.em

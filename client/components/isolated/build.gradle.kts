@@ -37,7 +37,9 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion-styled")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
     jsMainImplementation(project(":client:components:external"))
+    jsMainImplementation(project(":client:components:graphing"))
     jsMainImplementation(project(":libraries:model"))
     jsMainImplementation(project(":libraries:action"))
 

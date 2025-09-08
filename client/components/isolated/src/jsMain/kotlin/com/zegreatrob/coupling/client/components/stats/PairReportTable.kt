@@ -13,8 +13,7 @@ import react.ChildrenBuilder
 import react.FC
 import react.Props
 import react.PropsWithChildren
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import react.useMemo
 import web.cssom.Angle
 import web.cssom.ClassName
@@ -34,11 +33,11 @@ external interface PairReportTableProps : Props {
 
 @ReactFunc
 val PairReportTable by nfc<PairReportTableProps> { (pairReports) ->
-    div {
+    ReactHTML.div {
         css {
-            display = Display.inlineBlock
-            textAlign = TextAlign.left
-            whiteSpace = WhiteSpace.normal
+            display = Display.Companion.inlineBlock
+            textAlign = TextAlign.Companion.left
+            whiteSpace = WhiteSpace.Companion.normal
         }
         pairReports.mapIndexed { index, pairReport ->
             PairReportView(pairReport, key = "$index")
@@ -52,21 +51,21 @@ external interface PairReportViewProps : Props {
 
 @ReactFunc
 val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
-    val tweak = useMemo { Random.nextInt(8).toDouble() }
+    val tweak = useMemo { Random.Default.nextInt(8).toDouble() }
     PairPanel {
         asDynamic()["data-pair-report"] = pairReport.pair.joinToString("-") { it.name }
         reportPlayerCard(pairReport.pair.player1, (-tweak).deg)
         reportPlayerCard(pairReport.pair.player2, (tweak).deg)
 
-        div {
+        ReactHTML.div {
             css {
-                display = Display.inlineBlock
-                verticalAlign = VerticalAlign.top
+                display = Display.Companion.inlineBlock
+                verticalAlign = VerticalAlign.Companion.top
                 margin = 8.px
             }
             StatsHeader { +"Stats" }
             StatLabel { +"Spins since last paired:" }
-            span {
+            ReactHTML.span {
                 className = ClassName("time-since-last-pairing")
                 asDynamic()["data-time-since-last-pair"] = ""
                 +pairReport.timeSinceLastPair.presentationString()
@@ -76,10 +75,10 @@ val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
 }
 
 val PairPanel = FC<PropsWithChildren> { props ->
-    div {
+    ReactHTML.div {
         css {
             borderWidth = 2.px
-            borderStyle = LineStyle.solid
+            borderStyle = LineStyle.Companion.solid
             borderColor = Color("#8e8e8e")
             borderRadius = 5.px
             backgroundColor = Color("#ffffff")
@@ -94,9 +93,9 @@ private fun TimeResult.presentationString() = when (this) {
     NeverPaired -> "Never Paired"
 }
 
-private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = div {
+private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = ReactHTML.div {
     css {
-        display = Display.inlineBlock
+        display = Display.Companion.inlineBlock
     }
     key = player.id.value.toString()
     PlayerCard(player, size = 50, tilt = tilt)

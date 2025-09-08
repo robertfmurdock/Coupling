@@ -2,8 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.nfc
 import react.Props
-import react.dom.html.ReactHTML.i
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import react.router.dom.Link
 import web.cssom.ClassName
 
@@ -15,8 +14,8 @@ val LogoutButton by nfc<Props> {
         CouplingButton {
             sizeRuleSet = large
             colorRuleSet = red
-            i { className = ClassName("fa fa-sign-out-alt") }
-            span { +"Sign Out" }
+            ReactHTML.i { className = ClassName("fa fa-sign-out-alt") }
+            ReactHTML.span { +"Sign Out" }
         }
     }
 }

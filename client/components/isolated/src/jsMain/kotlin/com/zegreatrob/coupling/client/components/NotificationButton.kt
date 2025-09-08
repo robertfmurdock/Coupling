@@ -44,11 +44,11 @@ val NotificationButton by nfc<Props> {
         setSeenNotification(true)
     }
     span {
-        css { position = Position.relative }
+        css { position = Position.Companion.relative }
         span {
             css {
-                float = Float.left
-                position = Position.absolute
+                float = Float.Companion.left
+                position = Position.Companion.absolute
                 top = (-5).px
                 right = (-80).px
             }
@@ -69,17 +69,20 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
         div {
             css {
                 fontSize = 14.px
-                fontWeight = FontWeight.normal
-                verticalAlign = VerticalAlign.baseline
+                fontWeight = FontWeight.Companion.normal
+                verticalAlign = VerticalAlign.Companion.baseline
                 borderRadius = 20.px
                 "*" {
-                    verticalAlign = VerticalAlign.baseline
+                    verticalAlign = VerticalAlign.Companion.baseline
                 }
                 marginLeft = 15.px
                 marginRight = 15.px
                 marginBottom = 15.px
             }
-            div { dangerouslySetInnerHTML = unsafeJso { __html = parse(recentInfoMd) } }
+            div {
+                dangerouslySetInnerHTML =
+                    unsafeJso { __html = parse(recentInfoMd) }
+            }
         }
     },
     contentStyle = json(
@@ -93,22 +96,22 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
 private fun notificationButton(open: Boolean, seenNotification: Boolean) = div.create {
     css {
         val buttonSize = if (seenNotification) 50.px else 75.px
-        backgroundColor = if (seenNotification) NamedColor.darkcyan else NamedColor.crimson
+        backgroundColor = if (seenNotification) NamedColor.Companion.darkcyan else NamedColor.Companion.crimson
         if (!seenNotification) {
             animationName = ident("pulsate")
-            animationIterationCount = AnimationIterationCount.infinite
+            animationIterationCount = AnimationIterationCount.Companion.infinite
             animationDuration = 0.75.s
         }
-        color = if (open) NamedColor.darkgray else NamedColor.white
+        color = if (open) NamedColor.Companion.darkgray else NamedColor.Companion.white
         height = buttonSize
         width = buttonSize
-        display = Display.flex
-        borderColor = NamedColor.black
+        display = Display.Companion.flex
+        borderColor = NamedColor.Companion.black
         borderRadius = 40.px
-        textAlign = TextAlign.center
-        verticalAlign = VerticalAlign.middle
-        justifyContent = JustifyContent.center
-        alignItems = AlignItems.center
+        textAlign = TextAlign.Companion.center
+        verticalAlign = VerticalAlign.Companion.middle
+        justifyContent = JustifyContent.Companion.center
+        alignItems = AlignItems.Companion.center
     }
     i { className = ClassName("fa fa-exclamation-circle ${if (seenNotification) "" else "fa-2x"}") }
 }

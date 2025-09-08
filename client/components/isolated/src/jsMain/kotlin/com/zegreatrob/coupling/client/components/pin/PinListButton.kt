@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.coupling.model.party.PartyDetails
 import react.ChildrenBuilder
-import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML
 import react.router.dom.Link
 import web.cssom.ClassName
 
@@ -16,7 +16,7 @@ fun ChildrenBuilder.pinListButton(party: PartyDetails) = Link {
     CouplingButton {
         sizeRuleSet = large
         colorRuleSet = white
-        i { this.className = ClassName("fa fa-peace") }
+        ReactHTML.i { this.className = ClassName("fa fa-peace") }
         +" Pin Bag!"
     }
 }

@@ -4,8 +4,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.LineStyle
@@ -23,30 +22,30 @@ external interface TeamStatisticsProps : Props {
 
 @ReactFunc
 val TeamStatistics by nfc<TeamStatisticsProps> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
-    div {
+    ReactHTML.div {
         css {
-            display = Display.inlineBlock
-            verticalAlign = VerticalAlign.top
+            display = Display.Companion.inlineBlock
+            verticalAlign = VerticalAlign.Companion.top
             margin = 8.px
             padding = 10.px
             borderWidth = 2.px
-            borderStyle = LineStyle.solid
+            borderStyle = LineStyle.Companion.solid
             borderColor = Color("#8e8e8e")
             borderRadius = 5.px
             backgroundColor = Color("#ffffff")
         }
         StatsHeader { +"Team Stats" }
-        div {
+        ReactHTML.div {
             StatLabel { +"Spins Until Full Rotation:" }
-            span { +"$spinsUntilFullRotation" }
+            ReactHTML.span { +"$spinsUntilFullRotation" }
         }
-        div {
+        ReactHTML.div {
             StatLabel { +"Number of Active Players:" }
-            span { +"$activePlayerCount" }
+            ReactHTML.span { +"$activePlayerCount" }
         }
-        div {
+        ReactHTML.div {
             StatLabel { +"Median Spin Duration:" }
-            span { +medianSpinDuration?.format() }
+            ReactHTML.span { +medianSpinDuration?.format() }
         }
     }
 }

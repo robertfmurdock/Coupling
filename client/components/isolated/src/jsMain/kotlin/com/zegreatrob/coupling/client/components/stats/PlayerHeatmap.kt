@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import react.Props
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 import react.useMemo
 import web.cssom.Display
 import web.cssom.TextAlign
@@ -21,7 +21,7 @@ val heatmapTopRowClass = ClassName {
 }
 
 val heatmapSideRow = ClassName {
-    display = Display.inlineBlock
+    display = Display.Companion.inlineBlock
 }
 
 external interface PlayerHeatmapProps : Props {
@@ -31,25 +31,25 @@ external interface PlayerHeatmapProps : Props {
 
 @ReactFunc
 val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
-    div {
+    ReactHTML.div {
         className = heatmapTopRowClass
-        div {
+        ReactHTML.div {
             css {
-                display = Display.inlineBlock
+                display = Display.Companion.inlineBlock
                 width = 62.px
             }
         }
         players.forEach { player -> TopRowPlayer(player, key = player.id.value.toString()) }
     }
-    div {
+    ReactHTML.div {
         className = heatmapSideRow
         players.forEach { player -> SidePlayer(player, key = player.id.value.toString()) }
     }
     Heatmap(
         heatmapData,
         ClassName {
-            display = Display.inlineBlock
-            verticalAlign = VerticalAlign.top
+            display = Display.Companion.inlineBlock
+            verticalAlign = VerticalAlign.Companion.top
         },
     )
 }
@@ -60,12 +60,12 @@ external interface TopRowPlayerProps : Props {
 
 @ReactFunc
 val TopRowPlayer by nfc<TopRowPlayerProps> { props ->
-    val tweak = useMemo { Random.nextInt(6).toDouble() - 3.0 }
-    div {
+    val tweak = useMemo { Random.Default.nextInt(6).toDouble() - 3.0 }
+    ReactHTML.div {
         css {
-            display = Display.inlineBlock
+            display = Display.Companion.inlineBlock
             width = 90.px
-            textAlign = TextAlign.center
+            textAlign = TextAlign.Companion.center
         }
         key = props.player.id.value.toString()
         PlayerCard(props.player, size = 50, tilt = tweak.deg)
@@ -78,13 +78,13 @@ external interface SidePlayerProps : Props {
 
 @ReactFunc
 val SidePlayer by nfc<SidePlayerProps> { props ->
-    val tweak = useMemo(props.player.id) { 1.5 - Random.nextInt(6).toDouble() }
-    div {
+    val tweak = useMemo(props.player.id) { 1.5 - Random.Default.nextInt(6).toDouble() }
+    ReactHTML.div {
         css {
-            display = Display.block
+            display = Display.Companion.block
             height = 90.px
             "> div" {
-                verticalAlign = VerticalAlign.middle
+                verticalAlign = VerticalAlign.Companion.middle
             }
         }
         key = props.player.id.value.toString()
