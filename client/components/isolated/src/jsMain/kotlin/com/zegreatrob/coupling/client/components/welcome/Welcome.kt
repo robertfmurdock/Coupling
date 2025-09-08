@@ -70,12 +70,12 @@ val Welcome by nfc<WelcomeProps> { props ->
 }
 
 private fun PropertiesBuilder.welcomeStyles() {
-    display = Display.inlineBlock
-    overflow = Overflow.hidden
+    display = Display.Companion.inlineBlock
+    overflow = Overflow.Companion.hidden
     paddingTop = 75.px
-    transitionProperty = TransitionProperty.all
+    transitionProperty = TransitionProperty.Companion.all
     transitionDuration = 4.s
-    transitionTimingFunction = TransitionTimingFunction.easeOut
+    transitionTimingFunction = TransitionTimingFunction.Companion.easeOut
     animationName = ident("curious-tilt")
     animationDuration = 4.s
     animationIterationCount = number(1.0)
@@ -118,11 +118,11 @@ private fun ChildrenBuilder.welcomeSplash(
     proverb: String,
 ) = span {
     css {
-        display = Display.inlineBlock
-        verticalAlign = VerticalAlign.top
+        display = Display.Companion.inlineBlock
+        verticalAlign = VerticalAlign.Companion.top
         borderRadius = 82.px
         padding = Padding(0.px, 42.px, 18.px)
-        border = Border(24.px, LineStyle.solid, NamedColor.darkorange)
+        border = Border(24.px, LineStyle.Companion.solid, NamedColor.Companion.darkorange)
         backgroundColor = Color("#faf0d2")
     }
     welcomeTitle(welcomeTitleRef)
@@ -133,14 +133,14 @@ private fun ChildrenBuilder.welcomeSplash(
 private fun ChildrenBuilder.welcomeProverb(proverb: String) {
     div {
         css {
-            display = Display.inlineBlock
+            display = Display.Companion.inlineBlock
             borderRadius = 15.px
             transform = rotate(0.deg)
             padding = 4.px
             marginTop = 20.px
             transitionDelay = 5.s
-            transitionProperty = TransitionProperty.all
-            transitionTimingFunction = TransitionTimingFunction.easeIn
+            transitionProperty = TransitionProperty.Companion.all
+            transitionTimingFunction = TransitionTimingFunction.Companion.easeIn
             transitionDuration = 1.s
         }
         +proverb
@@ -163,7 +163,7 @@ private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: RefObject<HTMLDivEleme
         marginTop = 0.5.em
         marginBottom = 0.4.em
         fontSize = 72.px
-        fontWeight = FontWeight.bold
+        fontWeight = FontWeight.Companion.bold
     }
     ref = welcomeTitleRef
     +"Coupling!"
@@ -172,12 +172,12 @@ private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: RefObject<HTMLDivEleme
 private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
     div {
         css {
-            display = Display.inlineFlex
+            display = Display.Companion.inlineFlex
         }
         val leftCardStyles = ClassName {
-            transitionProperty = TransitionProperty.all
+            transitionProperty = TransitionProperty.Companion.all
             transitionDuration = 0.25.s
-            transitionTimingFunction = TransitionTimingFunction.easeOut
+            transitionTimingFunction = TransitionTimingFunction.Companion.easeOut
             animationDuration = 4.s
             animationName = ident("slide-up-left")
             animationIterationCount = number(1.0)
@@ -185,9 +185,9 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
         }
         PlayerCard(pair.player1, leftCardStyles, size = 100, tilt = (-8).deg, key = "player-1")
         val rightCardStyles = ClassName {
-            transitionProperty = TransitionProperty.all
+            transitionProperty = TransitionProperty.Companion.all
             transitionDuration = 0.25.s
-            transitionTimingFunction = TransitionTimingFunction.easeOut
+            transitionTimingFunction = TransitionTimingFunction.Companion.easeOut
             animationDuration = 5.s
             animationName = ident("slide-up-right")
             animationIterationCount = number(1.0)
@@ -198,9 +198,9 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
 }
 
 private fun PropertiesBuilder.cardZoom() {
-    transitionProperty = TransitionProperty.all
+    transitionProperty = TransitionProperty.Companion.all
     transitionDuration = 0.4.s
-    transitionTimingFunction = TransitionTimingFunction.easeIn
+    transitionTimingFunction = TransitionTimingFunction.Companion.easeIn
     zIndex = integer(1)
     transform = "rotate(0deg) scale(1.5)".unsafeCast<TransformFunction>()
 }
@@ -209,13 +209,13 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
     css {
         paddingTop = 15.px
         paddingBottom = 50.px
-        display = Display.inlineBlock
+        display = Display.Companion.inlineBlock
         animationDuration = 2.s
         animationName = ident("pulsate")
-        animationIterationCount = AnimationIterationCount.infinite
+        animationIterationCount = AnimationIterationCount.Companion.infinite
 
         hover {
-            animationPlayState = AnimationPlayState.paused
+            animationPlayState = AnimationPlayState.Companion.paused
         }
     }
     if (showLoginChooser) {
@@ -228,10 +228,10 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
                 marginTop = 20.px
                 animationName = ident("pulsate")
                 animationDuration = 0.5.s
-                animationIterationCount = AnimationIterationCount.infinite
-                animationPlayState = AnimationPlayState.paused
+                animationIterationCount = AnimationIterationCount.Companion.infinite
+                animationPlayState = AnimationPlayState.Companion.paused
                 hover {
-                    animationPlayState = AnimationPlayState.running
+                    animationPlayState = AnimationPlayState.Companion.running
                 }
             }
             onClick = onEnterClick

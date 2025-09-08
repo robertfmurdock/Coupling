@@ -48,18 +48,18 @@ val LoginChooser by nfc<Props> {
         css {
             borderRadius = 82.px
             padding = Padding(18.px, 42.px)
-            border = Border(24.px, LineStyle.solid, Color("#e22092"))
-            position = Position.relative
-            clear = Clear.both
-            display = Display.block
-            overflow = Overflow.hidden
+            border = Border(24.px, LineStyle.Companion.solid, Color("#e22092"))
+            position = Position.Companion.relative
+            clear = Clear.Companion.both
+            display = Display.Companion.block
+            overflow = Overflow.Companion.hidden
             backgroundColor = Color("#ffccd8")
             backgroundImage = url(pngPath("overlay"))
-            backgroundRepeat = BackgroundRepeat.repeatX
-            textAlign = TextAlign.center
-            textDecoration = None.none
+            backgroundRepeat = BackgroundRepeat.Companion.repeatX
+            textAlign = TextAlign.Companion.center
+            textDecoration = None.Companion.none
             boxShadow = BoxShadow(1.px, 2.px, 2.px, rgb(0, 0, 0, 0.6))
-            color = NamedColor.black
+            color = NamedColor.Companion.black
             margin = Margin(0.px, 2.px, 0.px, 2.px)
             top = 0.px
         }

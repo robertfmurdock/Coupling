@@ -7,22 +7,22 @@ import web.dom.ElementId
 import web.html.InputType
 import web.html.text
 
-fun ChildrenBuilder.slackTeam(slackTeam: String?) {
+fun ChildrenBuilder.slackChannel(slackChannel: String?) {
     label {
-        this.htmlFor = ElementId("slack-team-id")
-        +"Slack Team ID"
+        this.htmlFor = ElementId("slack-channel-id")
+        +"Slack Channel ID"
     }
     input {
-        value = slackTeam
-        ariaLabel = "Slack Team ID"
-        this.name = "slackTeam"
-        id = ElementId("slack-team-id")
-        this.type = InputType.text
-        disabled = true
+        value = slackChannel
+        ariaLabel = "Slack Channel ID"
+        this.name = "slackChannel"
+        id = ElementId("slack-channel-id")
+        this.type = InputType.Companion.text
         placeholder = ""
         this.list = ""
         this.checked = false
         this.onChange = { }
         autoFocus = false
+        disabled = true
     }
 }

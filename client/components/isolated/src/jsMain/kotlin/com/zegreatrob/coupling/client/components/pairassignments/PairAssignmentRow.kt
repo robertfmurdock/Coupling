@@ -22,8 +22,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import react.ChildrenBuilder
 import react.Props
-import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 import react.useCallback
 import web.cssom.Auto
 import web.cssom.BackgroundRepeat
@@ -93,7 +93,7 @@ private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = CouplingButt
 
 private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
     document.pairs.toList().mapIndexed { index, pair ->
-        ReactHTML.span {
+        span {
             css {
                 border = Border(3.px, LineStyle.Companion.double, NamedColor.Companion.dimgray)
                 backgroundColor = NamedColor.Companion.aliceblue
@@ -116,7 +116,7 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
     }
 }
 
-private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = ReactHTML.span {
+private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     css {
         width = Auto.Companion.auto
         height = Auto.Companion.auto

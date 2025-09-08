@@ -26,13 +26,16 @@ import kotlin.test.Test
 class SlackConnectPageContentTest {
 
     private val saveButton get() = screen.getByRole("button", RoleOptions(name = "Save"))
-    private val returnButton get() = screen.queryByRole("button", RoleOptions(name = "Return to Coupling"))
+    private val returnButton get() = screen.queryByRole(
+        "button",
+        RoleOptions(name = "Return to Coupling"),
+    )
     private val partySelect get() = screen.getByLabelText("Party")
 
     @Test
     fun willSendSaveCommandOnSave() = asyncSetup(object {
         val stubber = StubDispatcher.Channel()
-        val actor = UserEvent.setup()
+        val actor = UserEvent.Companion.setup()
         val parties = stubParties(6)
         val targetParty = parties.random()
         val slackTeam = uuidString()
@@ -81,7 +84,7 @@ class SlackConnectPageContentTest {
 
     @Test
     fun afterSaveReturnButtonTakesYouToParty() = asyncSetup(object : ScopeMint() {
-        val actor = UserEvent.setup()
+        val actor = UserEvent.Companion.setup()
         val party = stubPartyDetails()
         val stubDispatcher = StubDispatcher.Channel()
     }) {
