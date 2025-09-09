@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import react.Props
-import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
 import react.useMemo
 import web.cssom.Display
 import web.cssom.TextAlign
@@ -31,9 +31,9 @@ external interface PlayerHeatmapProps : Props {
 
 @ReactFunc
 val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
-    ReactHTML.div {
+    div {
         className = heatmapTopRowClass
-        ReactHTML.div {
+        div {
             css {
                 display = Display.Companion.inlineBlock
                 width = 62.px
@@ -41,7 +41,7 @@ val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
         }
         players.forEach { player -> TopRowPlayer(player, key = player.id.value.toString()) }
     }
-    ReactHTML.div {
+    div {
         className = heatmapSideRow
         players.forEach { player -> SidePlayer(player, key = player.id.value.toString()) }
     }
@@ -61,7 +61,7 @@ external interface TopRowPlayerProps : Props {
 @ReactFunc
 val TopRowPlayer by nfc<TopRowPlayerProps> { props ->
     val tweak = useMemo { Random.Default.nextInt(6).toDouble() - 3.0 }
-    ReactHTML.div {
+    div {
         css {
             display = Display.Companion.inlineBlock
             width = 90.px
@@ -79,7 +79,7 @@ external interface SidePlayerProps : Props {
 @ReactFunc
 val SidePlayer by nfc<SidePlayerProps> { props ->
     val tweak = useMemo(props.player.id) { 1.5 - Random.Default.nextInt(6).toDouble() }
-    ReactHTML.div {
+    div {
         css {
             display = Display.Companion.block
             height = 90.px

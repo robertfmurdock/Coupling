@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.external.reactdnd
 
 import com.zegreatrob.coupling.client.components.external.reactdnd.dsl.DragDropValueContent
 import com.zegreatrob.coupling.client.components.waitForAsyncReactComponent
+import js.globals.globalThis
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
@@ -19,7 +20,7 @@ val reactDnd = MainScope().async {
 }
 
 val DndProvider: ElementType<DnDProvideProps> = FC { props ->
-    if (js("global.IS_JSDOM") == true) {
+    if (globalThis["IS_JSDOM"] == true) {
         +props.children
     } else {
         waitForAsyncReactComponent({ runCatching { reactDnd.getCompleted().dndProvider }.getOrNull() }) { component ->
@@ -33,7 +34,7 @@ fun <T> useDrag(
     itemId: String,
     endCallback: (itemId: String, dropResult: Json?) -> Unit = { _, _ -> },
 ): DragDropValueContent<T> {
-    if (js("global.IS_JSDOM") == true) {
+    if (globalThis["IS_JSDOM"] == true) {
         return DragDropValueContent(null.unsafeCast<T>()) {}
     }
     val results = reactDnd.getCompleted().useDrag(
@@ -59,7 +60,7 @@ fun <T> useDrop(
     drop: (Json) -> Json?,
     collect: (DragSourceMonitor) -> T,
 ): DragDropValueContent<T> {
-    if (js("global.IS_JSDOM") == true) {
+    if (globalThis["IS_JSDOM"] == true) {
         return DragDropValueContent(null.unsafeCast<T>()) {}
     }
 

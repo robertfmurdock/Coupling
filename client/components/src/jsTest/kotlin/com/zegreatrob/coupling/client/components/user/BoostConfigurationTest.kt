@@ -10,7 +10,9 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import kotlin.test.Test
 import kotlin.time.Instant
@@ -24,7 +26,7 @@ class BoostConfigurationTest {
         val boostedParty = parties.random()
         val boost = Boost(UserId.Companion.new(), setOf(boostedParty.id), Instant.Companion.DISTANT_FUTURE)
     }) exercise {
-        TestingLibraryReact.render {
+        render {
             BoostConfiguration(
                 subscription = subscription,
                 boost = boost,
@@ -34,11 +36,11 @@ class BoostConfigurationTest {
             )
         }
     } verify {
-        TestingLibraryReact.screen.findAllByText(boostedParty.name!!)
+        screen.findAllByText(boostedParty.name!!)
             .assertIsNotEqualTo(null, "Should show name of currently boosted party")
     }
 
-    private suspend fun partyCombobox() = TestingLibraryReact.screen.findByRole("combobox")
+    private suspend fun partyCombobox() = screen.findByRole("combobox")
 
     @Test
     fun willAllowSelectionOfAnyParty() = asyncSetup(object {
@@ -47,7 +49,7 @@ class BoostConfigurationTest {
         val boostedParty = parties.random()
         val actor = UserEvent.Companion.setup()
     }) {
-        TestingLibraryReact.render {
+        render {
             BoostConfiguration(
                 subscription = subscription,
                 boost = null,
@@ -59,13 +61,13 @@ class BoostConfigurationTest {
     } exercise {
         actor.selectOptions(partyCombobox(), boostedParty.id.value.toString())
     } verify {
-        TestingLibraryReact.within(partyCombobox())
+        within(partyCombobox())
             .getByRole("option", RoleOptions(selected = true))
             .getAttribute("value")
             .assertIsEqualTo(boostedParty.id.value.toString())
     }
 
-    private val boostButton get() = TestingLibraryReact.screen.getByRole("button", RoleOptions(name = "Apply Boost"))
+    private val boostButton get() = screen.getByRole("button", RoleOptions(name = "Apply Boost"))
 
     @Test
     fun selectingPartyAndPressingButtonWillApplyBoost() = asyncSetup(object {
@@ -75,7 +77,7 @@ class BoostConfigurationTest {
         val actor = UserEvent.Companion.setup()
         val dispatcher = StubDispatcher()
     }) {
-        TestingLibraryReact.render {
+        render {
             BoostConfiguration(
                 subscription = subscription,
                 boost = null,

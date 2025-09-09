@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.CouplingImages
+import com.zegreatrob.coupling.client.components.MarkdownContent
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.blue
 import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.large
-import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
@@ -33,8 +33,7 @@ val AboutPage by nfc<PageProps> {
     aboutPageContent {
         div {
             dangerouslySetInnerHTML = unsafeJso {
-                __html =
-                    parse(loadMarkdownString("About"))
+                __html = parse(MarkdownContent.content.aboutMd)
             }
         }
     }
@@ -88,18 +87,20 @@ private val backButton by nfc<Props> {
 
 private val playerHeader by nfc<Props> {
     div {
-        val rob by playerImage()
         PlayerCard(
-            defaultPlayer.copy(PlayerId("1".toNotBlankString().getOrThrow()), name = "RoB", imageURL = rob),
+            defaultPlayer.copy(
+                PlayerId("1".toNotBlankString().getOrThrow()),
+                name = "RoB",
+                imageURL = CouplingImages.images.robPng,
+            ),
             tilt = (-8).deg,
             key = "1",
         )
-        val autumn by playerImage()
         PlayerCard(
             defaultPlayer.copy(
                 PlayerId("2".toNotBlankString().getOrThrow()),
                 name = "Autumn",
-                imageURL = autumn,
+                imageURL = CouplingImages.images.autumnPng,
             ),
             tilt = 8.deg,
             key = "2",

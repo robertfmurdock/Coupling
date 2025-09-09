@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.pin.PinButtonScale
 import com.zegreatrob.coupling.client.components.pin.PinSection
-import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.red
 import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -126,7 +126,7 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
         overflow = Overflow.Companion.hidden
         border = Border(3.px, LineStyle.Companion.outset, NamedColor.Companion.gold)
         backgroundColor = NamedColor.Companion.darkseagreen
-        backgroundImage = url(pngPath("overlay"))
+        backgroundImage = url(CouplingImages.images.overlayPng)
         backgroundRepeat = BackgroundRepeat.Companion.repeatX
         padding = 6.px
         textAlign = TextAlign.Companion.center
@@ -140,7 +140,7 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     div {
         css {
             backgroundColor = NamedColor.Companion.darkcyan
-            backgroundImage = url(pngPath("overlay"))
+            backgroundImage = url(CouplingImages.images.overlayPng)
             backgroundRepeat = BackgroundRepeat.Companion.repeatX
             asDynamic()["margin-before"] = "6px"
             asDynamic()["margin-after"] = "6px"
@@ -151,6 +151,6 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     }
 }
 
-fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.Companion.currentSystemDefault()).dateText()
+fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
 
 private fun LocalDateTime.dateText() = "$date - $time"

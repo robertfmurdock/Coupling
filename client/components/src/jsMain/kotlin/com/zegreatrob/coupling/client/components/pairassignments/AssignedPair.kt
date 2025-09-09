@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.pin.PIN_DRAG_ITEM_TYPE
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.player.create
-import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
@@ -139,7 +139,7 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
             fontSize = FontSize.Companion.large
             padding = 8.px
             backgroundColor = Color("#c9d6bab8")
-            backgroundImage = url(pngPath("overlay"))
+            backgroundImage = url(CouplingImages.images.overlayPng)
             backgroundRepeat = BackgroundRepeat.Companion.repeatX
             borderRadius = 15.px
             borderWidth = 1.px

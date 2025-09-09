@@ -1,3 +1,5 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.Frame
@@ -7,8 +9,6 @@ import com.zegreatrob.coupling.client.components.party.partyConfigContentClassNa
 import com.zegreatrob.coupling.client.components.pin.pinConfigContentClassName
 import com.zegreatrob.coupling.client.components.player.playerConfigContentClassName
 import com.zegreatrob.coupling.client.components.spin.playerSelectorClass
-import com.zegreatrob.coupling.client.components.svgPath
-import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -20,24 +20,39 @@ import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotools.types.collection.notEmptyListOf
 import popper.core.Placement
 import web.cssom.ClassName
 import kotlin.time.Clock
 import kotlin.uuid.Uuid
 
+@JsModule("images/parties/simpsons.svg")
+private external val simpsonsSvg: String
+
 private val demoParty = PartyDetails(
     id = PartyId("${Uuid.random()}"),
     name = "The Simpsons",
-    imageURL = svgPath("parties/simpsons"),
+    imageURL = simpsonsSvg,
 )
 
-private val homer by playerImage()
-private val marge by playerImage()
-private val bart by playerImage()
-private val lisa by playerImage()
-private val maggie by playerImage()
-private val slh by playerImage()
+@JsModule("images/players/homer.png")
+private external val homer: String
+
+@JsModule("images/players/marge.png")
+private external val marge: String
+
+@JsModule("images/players/bart.png")
+private external val bart: String
+
+@JsModule("images/players/lisa.png")
+private external val lisa: String
+
+@JsModule("images/players/maggie.png")
+private external val maggie: String
+
+@JsModule("images/players/slh.png")
+private external val slh: String
 
 private val player1 = defaultPlayer.copy(id = PlayerId.new(), name = "Homer", imageURL = homer)
 private val player2 = defaultPlayer.copy(id = PlayerId.new(), name = "Marge", imageURL = marge)

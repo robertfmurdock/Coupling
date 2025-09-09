@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.pin
 
-import com.zegreatrob.coupling.client.components.pngPath
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
@@ -48,7 +48,7 @@ val PinCard by nfc<PinCardProps> { props ->
                 overflow = Overflow.Companion.hidden
                 border = Border(3.px, LineStyle.Companion.outset, NamedColor.Companion.black)
                 backgroundColor = Color("#E0DCD2FF")
-                backgroundImage = url(pngPath("overlay"))
+                backgroundImage = url(CouplingImages.images.overlayPng)
                 backgroundRepeat = BackgroundRepeat.Companion.repeatX
                 textAlign = TextAlign.Companion.center
                 textDecoration = None.Companion.none

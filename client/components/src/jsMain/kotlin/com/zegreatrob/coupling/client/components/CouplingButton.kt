@@ -36,7 +36,7 @@ import web.html.HTMLButtonElement
 import web.html.button
 
 val buttonRuleset: PropertiesBuilder.() -> Unit = {
-    backgroundImage = url(pngPath("overlay"))
+    backgroundImage = url(CouplingImages.images.overlayPng)
     backgroundRepeat = BackgroundRepeat.Companion.repeatX
 
     display = Display.Companion.inlineFlex

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.coupling.client.components.external.fitty.fitty
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import kotlinx.coroutines.DelicateCoroutinesApi
 import react.PropsWithClassName
 import react.dom.html.ReactHTML
 import react.raw.useLayoutEffectRaw
@@ -33,6 +34,7 @@ external interface CardHeaderProps : PropsWithClassName {
     var headerContent: String
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 val CardHeader by nfc<CardHeaderProps> { props ->
     val size = props.size
     val headerContainerRef = useRef<HTMLDivElement>(null)
@@ -64,7 +66,7 @@ val CardHeader by nfc<CardHeaderProps> { props ->
                 bottom = 0.px
                 transform = rotatex(20.deg)
                 backgroundColor = rgb(255, 255, 255, 0.4)
-                backgroundImage = url(pngPath("overlay"))
+                backgroundImage = url(CouplingImages.images.overlayPng)
                 backgroundRepeat = BackgroundRepeat.Companion.repeatX
                 borderStyle = LineStyle.Companion.hidden
                 borderColor = Color("#00000054")
@@ -90,7 +92,7 @@ val CardHeader by nfc<CardHeaderProps> { props ->
     }
 }
 
-private fun HTMLDivElement.fitContent(size: Int) = fitty(
+private fun HTMLDivElement.fitContent(size: Int): Unit = fitty(
     maxFontHeight = (size * 0.3),
     minFontHeight = (size * 0.10),
     multiLine = true,

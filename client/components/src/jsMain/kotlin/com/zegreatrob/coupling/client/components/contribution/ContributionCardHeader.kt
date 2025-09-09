@@ -2,10 +2,10 @@
 
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.format
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
@@ -89,7 +89,7 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
                 bottom = 0.px
                 transform = rotatex(20.deg)
                 backgroundColor = rgb(255, 255, 255, 0.4)
-                backgroundImage = url(pngPath("overlay"))
+                backgroundImage = url(CouplingImages.images.overlayPng)
                 backgroundRepeat = BackgroundRepeat.repeatX
                 borderStyle = LineStyle.hidden
                 borderColor = Color("#00000054")

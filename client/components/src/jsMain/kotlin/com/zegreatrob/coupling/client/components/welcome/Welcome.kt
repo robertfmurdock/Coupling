@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.welcome
 
 import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.external.fitty.fitty
 import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.player.PlayerCard
@@ -81,28 +82,21 @@ private fun PropertiesBuilder.welcomeStyles() {
     animationIterationCount = number(1.0)
 }
 
-val frodo by playerImage()
-val samwise by playerImage()
-val grayson by playerImage()
-val wayne by playerImage()
-val rosie by playerImage()
-val wendy by playerImage()
-
 private val candidates by lazy {
     listOf(
         WelcomeCardSet(
-            left = Card(name = "Frodo", imagePath = frodo),
-            right = Card(name = "Sam", imagePath = samwise),
+            left = Card(name = "Frodo", imagePath = CouplingImages.images.frodo),
+            right = Card(name = "Sam", imagePath = CouplingImages.images.samwise),
             proverb = "Together, climb mountains.",
         ),
         WelcomeCardSet(
-            left = Card(name = "Batman", imagePath = grayson),
-            right = Card(name = "Robin", imagePath = wayne),
+            left = Card(name = "Batman", imagePath = CouplingImages.images.grayson),
+            right = Card(name = "Robin", imagePath = CouplingImages.images.wayne),
             proverb = "Clean up the city, together.",
         ),
         WelcomeCardSet(
-            left = Card(name = "Rosie", imagePath = rosie),
-            right = Card(name = "Wendy", imagePath = wendy),
+            left = Card(name = "Rosie", imagePath = CouplingImages.images.rosie),
+            right = Card(name = "Wendy", imagePath = CouplingImages.images.wendy),
             proverb = "Team up. Get things done.",
         ),
     )

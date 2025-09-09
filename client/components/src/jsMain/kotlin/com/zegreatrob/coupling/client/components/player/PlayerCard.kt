@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components.player
 
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarUrl
 import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
-import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.thirdPartyAvatarsDisabledContext
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
@@ -88,7 +88,7 @@ private fun PropertiesBuilder.playerCardStyles(tilt: Angle, deselected: Boolean)
     display = Display.Companion.inlineBlock
     overflow = Overflow.Companion.visible
     border = Border(3.px, LineStyle.Companion.outset, Color("#dab8018f"))
-    backgroundImage = url(pngPath("overlay"))
+    backgroundImage = url(CouplingImages.images.overlayPng)
     backgroundRepeat = BackgroundRepeat.Companion.repeatX
     textAlign = TextAlign.Companion.center
     textDecoration = None.Companion.none
@@ -119,8 +119,6 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
 
 fun Int.inCouplingEm(): Double = this / 14.0
 
-val noPlayerImagePath = pngPath("players/autumn")
-
 private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = thirdPartyAvatarsDisabledContext.Consumer {
     children = { disabled ->
         img.create {
@@ -130,7 +128,7 @@ private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = thi
                 height = size.inCouplingEm().em
             }
             src = when {
-                disabled -> noPlayerImagePath
+                disabled -> CouplingImages.images.noPlayerImagePath
                 player.imageURL != null -> player.imageURL
                 player.avatarType != null -> player.getDirectAvatarImageUrl(size, player.avatarType!!)
                 else -> player.getGravatarSafeAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())

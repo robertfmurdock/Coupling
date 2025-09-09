@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.player.retired
 
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
@@ -43,7 +43,7 @@ val RetiredPlayers by nfc<RetiredPlayersProps> { (party, players) ->
                     margin = 10.px
                     fontSize = FontSize.xxLarge
                     backgroundRepeat = BackgroundRepeat.repeatX
-                    backgroundImage = url(pngPath("overlay"))
+                    backgroundImage = url(CouplingImages.images.overlayPng)
                     backgroundColor = NamedColor.lightcoral
                     asDynamic()["text-fill-color"] = Color("white")
                     asDynamic()["text-stroke-width"] = 1.5.px

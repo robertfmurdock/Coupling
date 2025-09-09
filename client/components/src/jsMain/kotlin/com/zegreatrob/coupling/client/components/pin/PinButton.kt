@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.pin
 
-import com.zegreatrob.coupling.client.components.pngPath
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -83,7 +83,7 @@ private val tooltipStyles = emotion.css.ClassName {
     left = 50.pct
     transform = translatex((-50).pct)
     backgroundRepeat = BackgroundRepeat.Companion.repeatX
-    backgroundImage = url(pngPath("overlay"))
+    backgroundImage = url(CouplingImages.images.overlayPng)
     backgroundColor = Color("#222222")
     color = Color("#fff")
     display = Display.Companion.inlineBlock

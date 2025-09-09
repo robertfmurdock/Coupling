@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.MarkdownContent
 import com.zegreatrob.coupling.client.components.external.marked.parse
-import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -31,7 +31,7 @@ val ContributionStartContent by nfc<ContributionStartContentProps> {
                 textAlign = TextAlign.left
             }
             div {
-                dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("ContributionStart")) }
+                dangerouslySetInnerHTML = unsafeJso { __html = parse(MarkdownContent.content.contributionStartMd) }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.external.reactdndhtml5backend
 
+import js.globals.globalThis
 import js.objects.unsafeJso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -8,7 +9,7 @@ import kotlin.js.Promise
 
 external class DnDBackend
 
-val reactDndHtml5BackendPromise = if (js("global.IS_JSDOM") == true) {
+val reactDndHtml5BackendPromise = if (globalThis["IS_JSDOM"] == true) {
     Promise.Companion.resolve(unsafeJso<ReactDndHtml5BackendModule> {})
 } else {
     js("import(\"react-dnd-html5-backend\")")

@@ -26,7 +26,7 @@ kotlin {
                 val profile: String? by project
                 if (!profile.isNullOrBlank()) {
                     this.args.add("--profile")
-                    val statsFilePath = project.layout.buildDirectory.file("/reports/stats.json").get().asFile.path
+                    val statsFilePath = project.layout.buildDirectory.file("reports/stats.json").get().asFile.absolutePath
                     this.args.add("--json=$statsFilePath")
                 }
             }

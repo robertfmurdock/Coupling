@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.components.party
 
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPath
 import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.components.pin.PinButton
 import com.zegreatrob.coupling.client.components.pin.PinButtonScale
-import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.visuallyHidden
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -18,7 +18,9 @@ import emotion.react.css
 import kotools.types.text.toNotBlankString
 import react.ChildrenBuilder
 import react.Props
-import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.img
+import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 import web.cssom.AnimationIterationCount
 import web.cssom.Auto
@@ -59,7 +61,7 @@ val PartyCard by nfc<PartyCardProps> { props ->
     Link {
         to = party.id.currentPairsPath()
         visuallyHidden { +"Party Home Page" }
-        ReactHTML.span {
+        span {
             css {
                 staticCardStyles()
                 partyCardCss(size)
@@ -67,7 +69,7 @@ val PartyCard by nfc<PartyCardProps> { props ->
             asDynamic()["data-party-id"] = party.id.value
             ariaHidden = true
 
-            ReactHTML.div {
+            div {
                 css { margin = ((size * 0.02).px) }
                 PartyCardHeader(party, size)
                 props.boost?.let { boostIndicator(it) }
@@ -78,7 +80,7 @@ val PartyCard by nfc<PartyCardProps> { props ->
 }
 
 private fun ChildrenBuilder.boostIndicator(boost: Boost) {
-    ReactHTML.span {
+    span {
         css {
             float = Float.Companion.right
             zIndex = integer(100)
@@ -128,10 +130,8 @@ private fun PropertiesBuilder.partyCardCss(size: Int) {
     flex = Flex(number(0.0), number(0.0), Auto.Companion.auto)
 }
 
-val noPartyImagePath = pngPath("parties/no-party")
-
 private fun ChildrenBuilder.partyGravatar(party: PartyDetails, size: Int) = if (party.imageURL != null) {
-    ReactHTML.img {
+    img {
         this.src = party.imageURL
         alt = "icon"
         this.width = size.toDouble()
@@ -141,7 +141,7 @@ private fun ChildrenBuilder.partyGravatar(party: PartyDetails, size: Int) = if (
     gravatarImage(
         email = party.email,
         alt = "party-img",
-        fallback = noPartyImagePath,
+        fallback = CouplingImages.images.noPartyImagePath,
         options = GravatarOptions(
             size = size,
             default = "identicon",

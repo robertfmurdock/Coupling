@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
+import com.zegreatrob.coupling.client.components.MarkdownContent
 import com.zegreatrob.coupling.client.components.external.marked.parse
-import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
@@ -13,7 +13,11 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
 import react.Props
-import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h4
+import react.dom.html.ReactHTML.option
+import react.dom.html.ReactHTML.p
+import react.dom.html.ReactHTML.select
 import react.useState
 
 external interface BoostConfigurationProps : Props {
@@ -31,12 +35,12 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
     var boostedParty by useState { props.parties.firstOrNull { props.boost?.partyIds?.contains(it.id) == true } }
 
     if (subscription?.isActive == true) {
-        ReactHTML.div { dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("Boost")) } }
+        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(MarkdownContent.content.boostMd) } }
 
-        ReactHTML.h4 { +"Currently Boosting:" }
-        ReactHTML.p { +(boostedParty?.name ?: "No party") }
+        h4 { +"Currently Boosting:" }
+        p { +(boostedParty?.name ?: "No party") }
 
-        ReactHTML.select {
+        select {
             name = "party"
             value = boostedParty?.id?.value ?: ""
             onChange = { event ->
@@ -44,7 +48,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
             }
 
             if (boostedParty == null) {
-                ReactHTML.option {
+                option {
                     key = "placeholder"
                     value = ""
                     label = "Select a party to boost"
@@ -53,7 +57,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
 
             props.parties.forEach { party ->
                 val partyName = party.name
-                ReactHTML.option {
+                option {
                     key = party.id.value.toString()
                     value = party.id.value
                     label = partyName

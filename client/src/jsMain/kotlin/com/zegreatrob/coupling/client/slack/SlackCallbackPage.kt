@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.fire
+import com.zegreatrob.coupling.client.components.MarkdownContent
 import com.zegreatrob.coupling.client.components.external.marked.parse
-import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.slack.ReturnToCouplingButton
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.nfc
@@ -56,7 +56,7 @@ val SlackCallbackLoadContent by nfc<PropsWithValue<DataLoadState<VoidResult>>> {
 }
 
 val SlackInstallSuccess by nfc<Props> {
-    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(loadMarkdownString("InstallSuccess")) } }
+    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(MarkdownContent.content.installSuccessMd) } }
     ReturnToCouplingButton {
         to = "/parties"
     }

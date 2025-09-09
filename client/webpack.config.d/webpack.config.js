@@ -10,7 +10,7 @@ const additionalResourcesPath = path.resolve(__dirname, '../../../../client/buil
 const fs = require('fs')
 
 let cdnFile = fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json'), {encoding: "UTF-8"});
-if(config.devServer) {
+if (config.devServer) {
     cdnFile = cdnFile.replaceAll('production', 'development')
 }
 
@@ -94,7 +94,8 @@ config.module.rules.push(
             {
                 loader: MiniCssExtractPlugin.loader,
                 options: {
-                    publicPath: ''
+                    publicPath: '',
+                    defaultExport: true,
                 }
             },
             {

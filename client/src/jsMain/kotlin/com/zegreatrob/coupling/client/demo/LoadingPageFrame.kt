@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.demo
 
+import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.components.player.PlayerCard
-import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
@@ -45,11 +45,17 @@ val LoadingPageFrame by nfc<LoadingPageFrameProps> { (state) ->
                 left = 50.pct
                 transform = translate((-50).pct, (-50).pct)
             }
-            val rob by playerImage()
-            val autumn by playerImage()
             val pair = pairOf(
-                player1 = defaultPlayer.copy(id = PlayerId.new(), name = "rob", imageURL = rob),
-                player2 = defaultPlayer.copy(id = PlayerId.new(), name = "autumn", imageURL = autumn),
+                player1 = defaultPlayer.copy(
+                    id = PlayerId.new(),
+                    name = "rob",
+                    imageURL = CouplingImages.images.robPng,
+                ),
+                player2 = defaultPlayer.copy(
+                    id = PlayerId.new(),
+                    name = "autumn",
+                    imageURL = CouplingImages.images.autumnPng,
+                ),
             )
             val data = state.data
             Flipper {

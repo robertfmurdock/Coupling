@@ -25,12 +25,4 @@ fun popup(
         this.onOpen = onOpen
         this.onClose = onClose
         +Fragment.create(handler)
-    }.also {
-        loadDefaultCss()
     }
-
-private fun loadDefaultCss() {
-    if (js("global.IS_JSDOM") != true) {
-        js("require('reactjs-popup/dist/index.css')")
-    }
-}
