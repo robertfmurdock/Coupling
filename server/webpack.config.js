@@ -26,7 +26,7 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.graphql$/i,
+                test: /\.graphqls$/i,
                 use: 'raw-loader',
                 include: resourcesPath,
             },

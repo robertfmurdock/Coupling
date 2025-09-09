@@ -42,6 +42,7 @@ class MasterCommander(private val getIdentityToken: suspend () -> String) : Comm
         getIdTokenFunc = getIdentityToken,
         httpClient = defaultClient(apiUrl(), traceId),
         pipe = LoggingActionPipe(traceId),
+        apolloClientUrl = apiUrl(),
     )
 }
 

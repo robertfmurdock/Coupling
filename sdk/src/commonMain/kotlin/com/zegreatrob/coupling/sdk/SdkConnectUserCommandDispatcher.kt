@@ -1,15 +1,18 @@
 package com.zegreatrob.coupling.sdk
 
+import com.example.ConnectUserMutation
+import com.example.type.ConnectUserInput
 import com.zegreatrob.coupling.action.user.ConnectUserCommand
-import com.zegreatrob.coupling.json.GqlConnectUserInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
-import com.zegreatrob.coupling.sdk.gql.Mutation
-import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkConnectUserCommandDispatcher :
     ConnectUserCommand.Dispatcher,
     GqlTrait {
-    override suspend fun perform(command: ConnectUserCommand) = doQuery(Mutation.connectUser, GqlConnectUserInput(command.token))
-        .parseMutationResult()
-        .connectUser
+    override suspend fun perform(command: ConnectUserCommand) = apolloMutation(
+        ConnectUserMutation(
+            ConnectUserInput(
+                command.token,
+            ),
+        ),
+    ).data?.connectUser
 }

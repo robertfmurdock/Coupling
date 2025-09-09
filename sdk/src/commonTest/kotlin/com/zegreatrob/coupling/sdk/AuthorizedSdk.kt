@@ -56,7 +56,7 @@ private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedPartie
     ?.forEach { fire(DeletePartyCommand(it)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> couplingSdk({ token }, buildClient(), LoggingActionPipe(Uuid.random())) }
+    .let { token -> couplingSdk({ token }, buildClient(), LoggingActionPipe(Uuid.random()), baseUrl.toString()) }
 
 suspend fun sdk(): ActionCannon<CouplingSdkDispatcher> = primaryAuthorizedSdkDeferred.await()
 
@@ -78,7 +78,7 @@ val generalPurposeClient = HttpClient {
 
 expect fun setupPlatformSpecificKtorSettings()
 
-private val baseUrl = Url("https://localhost/")
+val baseUrl = Url("https://localhost/")
 
 private val ktorLogger = KotlinLogging.logger("ktor")
 

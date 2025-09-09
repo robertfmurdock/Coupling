@@ -19,15 +19,6 @@ data class JsonPairAssignmentDocument(
     val slackMessageId: String? = null,
 )
 
-fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = GqlSavePairAssignmentsInput(
-    partyId = partyId,
-    pairAssignmentsId = element.id,
-    date = element.date,
-    pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),
-    discordMessageId = element.discordMessageId,
-    slackMessageId = element.slackMessageId,
-)
-
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     id = id,

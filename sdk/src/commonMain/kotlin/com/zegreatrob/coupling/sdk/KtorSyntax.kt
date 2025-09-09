@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.apollographql.apollo.ApolloClient
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
@@ -27,5 +28,6 @@ fun defaultClient(hostUrl: String, traceId: Uuid? = null) = HttpClient {
 
 interface KtorSyntax {
     val client: HttpClient
+    val apolloClient: ApolloClient
     suspend fun getIdToken(): String
 }

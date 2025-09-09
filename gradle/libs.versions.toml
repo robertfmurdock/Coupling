@@ -1,4 +1,8 @@
 [libraries]
+com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:4.3.3"
+com-apollographql-ktor-apollo-engine-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
+com-apollographql-adapters-apollo-adapters-core = "com.apollographql.adapters:apollo-adapters-core:0.7.0"
+com-apollographql-adapters-apollo-adapters-kotlinx-datetime = "com.apollographql.adapters:apollo-adapters-kotlinx-datetime:0.7.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.20.0"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.0.3"
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
@@ -16,8 +20,10 @@ org-kotools-types = { module = "org.kotools:types", version.ref = "org-kotools" 
 org-kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-serialization", version.ref = "org-kotools" }
 org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 
+
 [plugins]
 com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.12"
+com-apollographql-apollo = "com.apollographql.apollo:4.3.3"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.52.0"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:1.8.9"

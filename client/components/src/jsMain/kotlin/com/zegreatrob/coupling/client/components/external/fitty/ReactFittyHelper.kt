@@ -11,7 +11,7 @@ fun HTMLElement.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: B
     if (globalThis["IS_JSDOM"] == true) {
         return
     }
-    fitty.default(
+    fitty(
         this,
         json(
             "maxSize" to maxFontHeight,

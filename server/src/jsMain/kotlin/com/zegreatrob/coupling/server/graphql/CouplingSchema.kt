@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.server.external.graphql.tools.schema.makeExecutab
 import com.zegreatrob.coupling.server.external.graphql.tools.schema.mergeSchemas
 import kotlin.js.json
 
-@JsModule("schema.graphql")
+@JsModule("schema.graphqls")
 external val schema: String
 
-@JsModule("prerelease-schema.graphql")
+@JsModule("prerelease-schema.graphqls")
 external val prereleaseSchema: String
 
 fun couplingSchema() = makeExecutableSchema(
@@ -21,7 +21,7 @@ fun couplingSchema() = makeExecutableSchema(
 
 fun prereleaseSchema() = makeExecutableSchema(
     json(
-        "typeDefs" to prereleaseSchema,
+        "typeDefs" to arrayOf(schema, prereleaseSchema),
         "resolvers" to prereleaseResolvers(),
     ),
 )

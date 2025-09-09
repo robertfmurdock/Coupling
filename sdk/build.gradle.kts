@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.com.zegreatrob.tools.certifier)
+    alias(libs.plugins.com.apollographql.apollo)
     id("com.zegreatrob.coupling.plugins.jstools")
 }
 
@@ -10,11 +11,69 @@ kotlin {
     jvm()
 }
 
+apollo {
+    service("service") {
+        mapScalar(
+            "ContributionId",
+            "com.zegreatrob.coupling.json.ContributionIdString",
+            "com.zegreatrob.coupling.sdk.adapter.contributionAdapter"
+        )
+        mapScalar("DateTimeISO", "kotlin.time.Instant", "com.apollographql.adapter.core.KotlinInstantAdapter")
+        mapScalar("Duration", "kotlin.time.Duration", "com.zegreatrob.coupling.sdk.adapter.KotlinDurationAdapter")
+        mapScalar(
+            "Email",
+            "kotools.types.text.NotBlankString",
+            "com.zegreatrob.coupling.sdk.adapter.notBlankStringAdapter"
+        )
+        mapScalar("Float", "Double")
+        mapScalar("ID", "String")
+        mapScalar(
+            "PairAssignmentDocumentId",
+            "com.zegreatrob.coupling.json.PairAssignmentDocumentIdString",
+            "com.zegreatrob.coupling.sdk.adapter.pairAssignmentDocumentIdAdapter"
+        )
+        mapScalar(
+            "PartyId",
+            "com.zegreatrob.coupling.json.PartyIdString",
+            "com.zegreatrob.coupling.sdk.adapter.partyIdAdapter"
+        )
+        mapScalar(
+            "PinId",
+            "com.zegreatrob.coupling.json.PinIdString",
+            "com.zegreatrob.coupling.sdk.adapter.pinIdAdapter"
+        )
+        mapScalar(
+            "PlayerId",
+            "com.zegreatrob.coupling.json.PlayerIdString",
+            "com.zegreatrob.coupling.sdk.adapter.playerIdAdapter"
+        )
+        mapScalar(
+            "SecretId",
+            "com.zegreatrob.coupling.json.SecretIdString",
+            "com.zegreatrob.coupling.sdk.adapter.secretIdAdapter"
+        )
+        mapScalar(
+            "UserId",
+            "com.zegreatrob.coupling.json.UserIdString",
+            "com.zegreatrob.coupling.sdk.adapter.userIdAdapter"
+        )
+
+        packageName.set("com.example")
+        schemaFiles.from(
+            file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
+            file("../server/src/jsMain/resources/schema.graphqls"),
+        )
+    }
+}
+
 dependencies {
     "commonMainApi"(project(":libraries:action"))
     "commonMainApi"(project(":libraries:model"))
     "commonMainApi"(project(":libraries:json"))
     "commonMainImplementation"(project(":libraries:repository:core"))
+    "commonMainImplementation"("com.apollographql.adapters:apollo-adapters-core")
+    "commonMainImplementation"("com.apollographql.apollo:apollo-runtime")
+    "commonMainImplementation"("com.apollographql.ktor:apollo-engine-ktor")
     "commonMainImplementation"("io.ktor:ktor-client-content-negotiation")
     "commonMainImplementation"("io.ktor:ktor-client-core")
     "commonMainImplementation"("io.ktor:ktor-client-logging")

@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.sdk.gql
 
+import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.api.Mutation
 import com.zegreatrob.coupling.json.GqlQuery
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toDomain
@@ -11,6 +13,8 @@ interface GqlTrait {
     val performer: QueryPerformer
 
     suspend fun String.performQuery(): JsonElement = performer.doQuery(this)
+    suspend fun <D : Mutation.Data> apolloMutation(mutation: Mutation<D>): ApolloResponse<D> = performer.apolloMutation(mutation)
+
     suspend fun performQuery(body: JsonElement): JsonElement = performer.doQuery(body)
     suspend fun JsonElement.perform() = performQuery(this)
         .let { response ->

@@ -23,6 +23,10 @@ dependencies {
     api(platform(libs.org.jetbrains.kotlinx.kotlinx.serialization.bom))
     api(platform(libs.org.junit.junit.bom))
     constraints {
+        api(libs.com.apollographql.adapters.apollo.adapters.core)
+        api(libs.com.apollographql.adapters.apollo.adapters.kotlinx.datetime)
+        api(libs.com.apollographql.ktor.apollo.engine.ktor)
+        api(libs.com.apollographql.apollo.apollo.runtime)
         api(libs.com.fasterxml.jackson.core.jackson.databind)
         api(libs.com.github.ajalt.clikt.clikt)
         api(libs.com.lemonappdev.konsist)

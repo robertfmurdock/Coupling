@@ -1,21 +1,20 @@
 package com.zegreatrob.coupling.sdk
 
+import com.example.DeletePairAssignmentsMutation
+import com.example.type.DeletePairAssignmentsInput
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.voidResult
-import com.zegreatrob.coupling.json.GqlDeletePairAssignmentsInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
-import com.zegreatrob.coupling.sdk.gql.Mutation
-import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkDeletePairAssignmentsCommandDispatcher :
     DeletePairAssignmentsCommand.Dispatcher,
     GqlTrait {
     override suspend fun perform(command: DeletePairAssignmentsCommand) = with(command) {
-        doQuery(
-            Mutation.deletePairAssignments,
-            GqlDeletePairAssignmentsInput(partyId, pairAssignmentDocumentId),
-            "deletePairAssignments",
-        ) { it: Boolean? -> it }
+        apolloMutation(
+            DeletePairAssignmentsMutation(
+                DeletePairAssignmentsInput(partyId = partyId, pairAssignmentsId = pairAssignmentDocumentId),
+            ),
+        ).data?.deletePairAssignments
             .let { it == true }
             .voidResult()
     }

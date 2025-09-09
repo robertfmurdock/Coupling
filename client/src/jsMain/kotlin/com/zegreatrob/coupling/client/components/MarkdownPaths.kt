@@ -1,34 +1,30 @@
 package com.zegreatrob.coupling.client.components
 
 @JsModule("com/zegreatrob/coupling/client/ConnectSuccess.md")
-private external val connectSuccessMd: MarkdownModule
+private external val connectSuccessMd: String
 
 @JsModule("com/zegreatrob/coupling/client/ContributionStart.md")
-private external val contributionStartMd: MarkdownModule
+private external val contributionStartMd: String
 
 @JsModule("com/zegreatrob/coupling/client/Boost.md")
-private external val boostMd: MarkdownModule
+private external val boostMd: String
 
 @JsModule("com/zegreatrob/coupling/client/recent-info.md")
-private external val recentInfoMd: MarkdownModule
+private external val recentInfoMd: String
 
 @JsModule("com/zegreatrob/coupling/client/About.md")
-private external val aboutMd: MarkdownModule
+private external val aboutMd: String
 
 @JsModule("com/zegreatrob/coupling/client/InstallSuccess.md")
-private external val installSuccessMd: MarkdownModule
-
-external interface MarkdownModule {
-    val default: String
-}
+private external val installSuccessMd: String
 
 fun loadMarkdown() {
     MarkdownContent.content = MarkdownContent(
-        connectSuccessMd = connectSuccessMd.default,
-        contributionStartMd = contributionStartMd.default,
-        boostMd = boostMd.default,
-        recentInfoMd = recentInfoMd.default,
-        aboutMd = aboutMd.default,
-        installSuccessMd = installSuccessMd.default,
+        connectSuccessMd = connectSuccessMd,
+        contributionStartMd = contributionStartMd,
+        boostMd = boostMd,
+        recentInfoMd = recentInfoMd,
+        aboutMd = aboutMd,
+        installSuccessMd = installSuccessMd,
     )
 }

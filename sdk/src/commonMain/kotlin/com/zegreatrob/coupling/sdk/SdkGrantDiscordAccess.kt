@@ -1,25 +1,20 @@
 package com.zegreatrob.coupling.sdk
 
+import com.example.GrantDiscordAccessMutation
+import com.example.type.GrantDiscordAccessInput
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.json.GqlGrantDiscordAccessInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
-import com.zegreatrob.coupling.sdk.gql.Mutation
-import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkGrantDiscordAccess :
     GrantDiscordAccessCommand.Dispatcher,
     GqlTrait {
-    override suspend fun perform(command: GrantDiscordAccessCommand): VoidResult = doQuery(
-        mutation = Mutation.grantDiscordAccess,
-        input = command.grantDiscordAccessInput(),
-        resultName = "grantDiscordAccess",
-        toOutput = Boolean?::toVoidResult,
-    ) ?: CommandResult.Unauthorized
+    override suspend fun perform(command: GrantDiscordAccessCommand): VoidResult = apolloMutation(GrantDiscordAccessMutation(command.grantDiscordAccessInput()))
+        .data?.grantDiscordAccess?.toVoidResult() ?: CommandResult.Unauthorized
 }
 
-fun GrantDiscordAccessCommand.grantDiscordAccessInput() = GqlGrantDiscordAccessInput(
+fun GrantDiscordAccessCommand.grantDiscordAccessInput() = GrantDiscordAccessInput(
     code = code,
     partyId = partyId,
     guildId = guildId,

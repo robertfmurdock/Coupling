@@ -2,6 +2,8 @@
 
 package com.zegreatrob.coupling.sdk.gql
 
+import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.api.Mutation
 import com.zegreatrob.coupling.sdk.KtorSyntax
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -44,6 +46,11 @@ interface KtorQueryPerformer :
         }
         return result
     }
+
+    override suspend fun <D : Mutation.Data> apolloMutation(mutation: Mutation<D>): ApolloResponse<D> = apolloClient
+        .mutation(mutation)
+        .addHttpHeader("Authorization", "Bearer ${getIdToken()}")
+        .execute()
 
     override suspend fun get(path: String): JsonElement = client.get(path) {
         header("Authorization", "Bearer ${getIdToken()}")

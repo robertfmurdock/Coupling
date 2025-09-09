@@ -18,7 +18,8 @@ plugins {
 
 kotlin {
     js {
-        useCommonJs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
         browser {
             webpackTask {
                 dependsOn("additionalResources")

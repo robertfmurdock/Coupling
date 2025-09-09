@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.globals.globalThis
 import js.objects.unsafeJso
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
@@ -64,7 +65,7 @@ val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, se
 }
 
 private fun ChildrenBuilder.copyToClipboardButton(ref: RefObject<HTMLElement>) {
-    if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
+    if (globalThis["ClipboardItem"] != null) {
         CouplingButton {
             sizeRuleSet = large
             colorRuleSet = white

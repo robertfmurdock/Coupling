@@ -50,6 +50,7 @@ private fun actionCannon(
             }
         },
         pipe = LoggingActionPipe(Uuid.random()),
+        apolloClientUrl = environment.audienceHost(),
     )
     return sdk
 }

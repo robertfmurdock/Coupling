@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.ktor.ktorClient
 import com.zegreatrob.coupling.sdk.gql.KtorQueryPerformer
 import com.zegreatrob.coupling.sdk.gql.QueryPerformer
 import com.zegreatrob.testmints.action.ActionCannon
@@ -11,14 +13,23 @@ fun couplingSdk(
     getIdTokenFunc: suspend () -> String,
     httpClient: HttpClient,
     pipe: ActionPipe = ActionPipe,
+    apolloClientUrl: String,
 ) = DispatcherPipeCannon<CouplingSdkDispatcher>(
-    KtorCouplingSdkDispatcher(getIdTokenFunc, httpClient),
+    KtorCouplingSdkDispatcher(
+        getIdTokenFunc,
+        httpClient,
+        ApolloClient.Builder()
+            .serverUrl("${apolloClientUrl}api/graphql")
+            .ktorClient(httpClient)
+            .build(),
+    ),
     pipe = pipe,
 )
 
 class KtorCouplingSdkDispatcher(
     val getIdTokenFunc: suspend () -> String,
     httpClient: HttpClient,
+    apolloClient: ApolloClient,
 ) : CouplingSdkDispatcher,
     SdkBoost,
     SdkClearContributionCommandDispatcher,
@@ -41,10 +52,14 @@ class KtorCouplingSdkDispatcher(
     SdkSavePlayerCommandDispatcher,
     SdkSaveSlackIntegrationCommandDispatcher,
     SdkSpin {
-    override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient)
+    override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient, apolloClient)
 }
 
-class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) : KtorQueryPerformer {
+class StandardPartyGQLPerformer(
+    private val getIdTokenFunc: suspend () -> String,
+    httpClient: HttpClient,
+    override val apolloClient: ApolloClient,
+) : KtorQueryPerformer {
     override val client = httpClient
     override suspend fun getIdToken() = getIdTokenFunc.invoke()
 }

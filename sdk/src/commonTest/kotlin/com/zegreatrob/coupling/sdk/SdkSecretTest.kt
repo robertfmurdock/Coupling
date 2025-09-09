@@ -48,7 +48,7 @@ class SdkSecretTest {
             ?.elements
             .assertIsEqualTo(listOf(secret))
 
-        val tokenSdk = couplingSdk({ token }, buildClient())
+        val tokenSdk = couplingSdk({ token }, buildClient(), apolloClientUrl = "$baseUrl")
         tokenSdk.fire(graphQuery { party(party.id) { details() } })
             ?.party
             ?.details
@@ -64,7 +64,7 @@ class SdkSecretTest {
     }) {
         sdk().fire(SavePartyCommand(party))
         val (_, token) = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
-        tokenSdk = couplingSdk({ token }, buildClient())
+        tokenSdk = couplingSdk({ token }, buildClient(), apolloClientUrl = "$baseUrl")
     } exercise {
         tokenSdk.fire(graphQuery { party(party.id) { details() } })
         sdk().fire(graphQuery { party(party.id) { secretList() } })
@@ -101,7 +101,7 @@ class SdkSecretTest {
             ?.secretList
             ?.elements
             .assertIsEqualTo(emptyList())
-        val tokenSdk = couplingSdk({ token }, buildClient())
+        val tokenSdk = couplingSdk({ token }, buildClient(), apolloClientUrl = "$baseUrl")
         runCatching { tokenSdk.fire(graphQuery { party(party.id) { details() } }) }
             .exceptionOrNull()
             .assertIsNotEqualTo(null, "Expect this to fail")
@@ -121,7 +121,7 @@ class SdkSecretTest {
         sdk().fire(CreateSecretCommand(party1.id, secretDescription))
     } verify { result ->
         val (_, token) = result!!
-        val tokenSdk = couplingSdk({ token }, buildClient())
+        val tokenSdk = couplingSdk({ token }, buildClient(), apolloClientUrl = "$baseUrl")
         val queryResult: CouplingQueryResult? = tokenSdk.fire(
             graphQuery {
                 partyList { details() }

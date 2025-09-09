@@ -1,5 +1,3 @@
-@file:JsModule("react-use-websocket")
-
 package com.zegreatrob.coupling.client.components.external.reactwebsocket
 
 import org.w3c.dom.CloseEvent
@@ -10,8 +8,13 @@ import org.w3c.dom.WebSocket
 import org.w3c.dom.events.Event
 import kotlin.js.Json
 
-@JsName("default")
-external fun useWebSocket(url: String, options: UseWebSocketOptions): UseWebSocket
+@JsModule("react-use-websocket")
+external val reactUseWebsocketModule: ReactUseWebsocketModule
+
+external interface ReactUseWebsocketModule {
+    @JsName("default")
+    fun useWebSocket(url: String, options: UseWebSocketOptions): UseWebSocket
+}
 
 sealed external interface UseWebSocketOptions {
     var fromSocketIO: Boolean?

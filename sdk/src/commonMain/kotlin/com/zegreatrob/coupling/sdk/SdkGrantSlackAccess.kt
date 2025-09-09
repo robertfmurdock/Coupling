@@ -1,25 +1,20 @@
 package com.zegreatrob.coupling.sdk
 
+import com.example.GrantSlackAccessMutation
+import com.example.type.GrantSlackAccessInput
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.json.GqlGrantSlackAccessInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
-import com.zegreatrob.coupling.sdk.gql.Mutation
-import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkGrantSlackAccess :
     GrantSlackAccessCommand.Dispatcher,
     GqlTrait {
-    override suspend fun perform(command: GrantSlackAccessCommand): VoidResult = doQuery(
-        mutation = Mutation.grantSlackAccess,
-        input = command.grantSlackAccessInput(),
-        resultName = "grantSlackAccess",
-        toOutput = Boolean?::toVoidResult,
-    ) ?: CommandResult.Unauthorized
+    override suspend fun perform(command: GrantSlackAccessCommand): VoidResult = apolloMutation(GrantSlackAccessMutation(command.grantSlackAccessInput()))
+        .data?.grantSlackAccess?.toVoidResult() ?: CommandResult.Unauthorized
 }
 
-fun GrantSlackAccessCommand.grantSlackAccessInput() = GqlGrantSlackAccessInput(
+fun GrantSlackAccessCommand.grantSlackAccessInput() = GrantSlackAccessInput(
     code = code,
     state = state,
 )

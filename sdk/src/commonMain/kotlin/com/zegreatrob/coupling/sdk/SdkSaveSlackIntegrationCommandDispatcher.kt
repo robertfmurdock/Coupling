@@ -1,23 +1,20 @@
 package com.zegreatrob.coupling.sdk
 
+import com.example.SaveSlackIntegrationMutation
+import com.example.type.SaveSlackIntegrationInput
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
-import com.zegreatrob.coupling.json.GqlSaveSlackIntegrationInput
-import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
-import com.zegreatrob.coupling.sdk.gql.Mutation
-import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkSaveSlackIntegrationCommandDispatcher :
     SaveSlackIntegrationCommand.Dispatcher,
     GqlTrait {
 
-    override suspend fun perform(command: SaveSlackIntegrationCommand) = doQuery(Mutation.saveSlackIntegration, command.saveSlackIntegrationInput())
-        .parseMutationResult()
-        .toDomain()
-        .saveSlackIntegration
+    override suspend fun perform(command: SaveSlackIntegrationCommand) = apolloMutation(SaveSlackIntegrationMutation(command.saveSlackIntegrationInput()))
+        .data
+        ?.saveSlackIntegration
         .toVoidResult()
 
-    private fun SaveSlackIntegrationCommand.saveSlackIntegrationInput() = GqlSaveSlackIntegrationInput(
+    private fun SaveSlackIntegrationCommand.saveSlackIntegrationInput() = SaveSlackIntegrationInput(
         team = team,
         channel = channel,
         partyId = partyId,

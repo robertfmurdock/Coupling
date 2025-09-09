@@ -1,12 +1,8 @@
-scalar DateTimeISO
-scalar UserId
-scalar PartyId
-
-type User {
+extend type User {
     subscription: SubscriptionDetails
 }
 
-type BoostDetails {
+extend type BoostDetails {
     userId: UserId!
 }
 
@@ -21,12 +17,12 @@ input SaveBoostInput {
     partyId: PartyId!
 }
 
-type Mutation {
+extend type Mutation {
     saveBoost(input: SaveBoostInput!): Boolean
     deleteBoost: Boolean
 }
 
-type Configuration {
+extend type Configuration {
     stripeAdminCode: String
     stripePurchaseCode: String
 }
