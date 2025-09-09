@@ -5973,10 +5973,10 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-4.0.0.tgz#4f47d7711202a327ded4ac2f8f40d827e0e7c806"
-  integrity sha512-bsvABsGzdfXMD914fUNlse3QJMqQzOC1522KEO6lbYUAX6lgzqZ5h2vgVRqQc3hAIChukWfrVt9qpKzqn2JHpw==
+"@stripe/react-stripe-js@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-4.0.1.tgz#9ea5b8a51972e830aceee2d36f4f1dc1dac7ea0f"
+  integrity sha512-zEz3Ee3P5oG+Ed4LfZhaBUNiThhagJDLSL4buzIW52xuDflyS/GPdrYOdCkghAXUi4fVFATNb3AOsHWTwuUFwQ==
   dependencies:
     prop-types "^15.7.2"
 
@@ -13834,10 +13834,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recharts@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.1.2.tgz#44626509c6567ed8208d3347e915397d480bb3d2"
-  integrity sha512-vhNbYwaxNbk/IATK0Ki29k3qvTkGqwvCgyQAQ9MavvvBwjvKnMTswdbklJpcOAoMPN/qxF3Lyqob0zO+ZXkZ4g==
+recharts@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.2.0.tgz#6024d2f061d0c3297415c7a1bee5f26fe3be37d2"
+  integrity sha512-fX0xCgNXo6mag9wz3oLuANR+dUQM4uIlTYBGTGq9CBRgW/8TZPzqPGYs5NTt8aENCf+i1CI8vqxT1py8L/5J2w==
   dependencies:
     "@reduxjs/toolkit" "1.x.x || 2.x.x"
     clsx "^2.1.1"
