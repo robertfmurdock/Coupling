@@ -1,23 +1,24 @@
 package com.zegreatrob.coupling.sdk
 
-import com.example.SpinMutation
-import com.example.type.SpinInput
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
+import com.zegreatrob.coupling.sdk.schema.SpinMutation
+import com.zegreatrob.coupling.sdk.schema.type.SpinInput
 
 interface SdkSpin :
     SpinCommand.Dispatcher,
     GqlTrait {
 
-    override suspend fun perform(command: SpinCommand): SpinCommand.Result = apolloMutation(SpinMutation(command.spinInput()))
+    override suspend fun perform(command: SpinCommand): SpinCommand.Result = SpinMutation(command.spinInput())
+        .execute()
         .data
         ?.spin
         ?.let { SpinCommand.Result.Success }
         ?: CommandResult.Unauthorized
 }
 
-fun SpinCommand.spinInput() = SpinInput(
+internal fun SpinCommand.spinInput() = SpinInput(
     partyId = partyId,
     playerIds = playerIds.toList(),
     pinIds = pinIds,

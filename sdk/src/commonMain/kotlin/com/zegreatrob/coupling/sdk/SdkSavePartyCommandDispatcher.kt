@@ -1,19 +1,19 @@
 package com.zegreatrob.coupling.sdk
 
 import com.apollographql.apollo.api.Optional.Companion.presentIfNotNull
-import com.example.SavePartyMutation
-import com.example.type.SavePartyInput
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
+import com.zegreatrob.coupling.sdk.schema.SavePartyMutation
+import com.zegreatrob.coupling.sdk.schema.type.SavePartyInput
 
 interface SdkSavePartyCommandDispatcher :
     SavePartyCommand.Dispatcher,
     GqlTrait {
     override suspend fun perform(command: SavePartyCommand): VoidResult {
-        apolloMutation(SavePartyMutation(command.party.savePartyInput()))
+        SavePartyMutation(command.party.savePartyInput()).execute()
         return VoidResult.Accepted
     }
 }

@@ -58,11 +58,17 @@ apollo {
             "com.zegreatrob.coupling.sdk.adapter.userIdAdapter"
         )
 
-        packageName.set("com.example")
+        packageName.set("com.zegreatrob.coupling.sdk.schema")
         schemaFiles.from(
             file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
             file("../server/src/jsMain/resources/schema.graphqls"),
         )
+        generateAsInternal = true
+        introspection {
+            endpointUrl.set("https://localhost/graphql")
+            headers.put("api-key", "1234567890abcdef")
+            schemaFile.set(file("src/main/graphql/schema.graphqls"))
+        }
     }
 }
 

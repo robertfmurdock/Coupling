@@ -1,11 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.apollographql.apollo.api.Optional.Companion.presentIfNotNull
-import com.example.SavePairAssignmentsMutation
-import com.example.type.PinInput
-import com.example.type.PinnedPairInput
-import com.example.type.PinnedPlayerInput
-import com.example.type.SavePairAssignmentsInput
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.map
@@ -18,18 +13,23 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
+import com.zegreatrob.coupling.sdk.schema.SavePairAssignmentsMutation
+import com.zegreatrob.coupling.sdk.schema.type.PinInput
+import com.zegreatrob.coupling.sdk.schema.type.PinnedPairInput
+import com.zegreatrob.coupling.sdk.schema.type.PinnedPlayerInput
+import com.zegreatrob.coupling.sdk.schema.type.SavePairAssignmentsInput
 
 interface SdkSavePairAssignmentsCommandDispatcher :
     SavePairAssignmentsCommand.Dispatcher,
     GqlTrait {
 
     override suspend fun perform(command: SavePairAssignmentsCommand) = with(command) {
-        apolloMutation(SavePairAssignmentsMutation(partyId.with(pairAssignments).toSavePairAssignmentsInput()))
+        SavePairAssignmentsMutation(partyId.with(pairAssignments).toSavePairAssignmentsInput()).execute()
         VoidResult.Accepted
     }
 }
 
-fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
+internal fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
     partyId = partyId,
     pairAssignmentsId = element.id,
     date = element.date,
@@ -38,12 +38,12 @@ fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = SavePair
     slackMessageId = presentIfNotNull(element.slackMessageId),
 )
 
-fun PinnedCouplingPair.toSerializableInput() = PinnedPairInput(
+internal fun PinnedCouplingPair.toSerializableInput() = PinnedPairInput(
     players = pinnedPlayers.map(PinnedPlayer::toSerializableInput).toList(),
     pins = pins.map(Pin::toSerializableInput),
 )
 
-fun PinnedPlayer.toSerializableInput() = PinnedPlayerInput(
+internal fun PinnedPlayer.toSerializableInput() = PinnedPlayerInput(
     id = player.id,
     name = player.name,
     email = player.email,
@@ -56,14 +56,14 @@ fun PinnedPlayer.toSerializableInput() = PinnedPlayerInput(
     pins = pins.map(Pin::toSerializableInput),
 )
 
-fun Badge.toSerializable() = when (this) {
-    Badge.Default -> com.example.type.Badge.Default
-    Badge.Alternate -> com.example.type.Badge.Alternate
+internal fun Badge.toSerializable() = when (this) {
+    Badge.Default -> com.zegreatrob.coupling.sdk.schema.type.Badge.Default
+    Badge.Alternate -> com.zegreatrob.coupling.sdk.schema.type.Badge.Alternate
 }
 
-fun AvatarType.toSerializable() = name.let { com.example.type.AvatarType.safeValueOf(it) }
+internal fun AvatarType.toSerializable() = name.let { com.zegreatrob.coupling.sdk.schema.type.AvatarType.safeValueOf(it) }
 
-fun Pin.toSerializableInput() = PinInput(
+internal fun Pin.toSerializableInput() = PinInput(
     id = id,
     name = presentIfNotNull(name),
     icon = presentIfNotNull(icon),

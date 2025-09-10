@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.sdk
 
-import com.example.DisconnectUserMutation
-import com.example.type.DisconnectUserInput
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.user.DisconnectUserCommand
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
+import com.zegreatrob.coupling.sdk.schema.DisconnectUserMutation
+import com.zegreatrob.coupling.sdk.schema.type.DisconnectUserInput
 
 interface SdkDisconnectUserCommandDispatcher :
     DisconnectUserCommand.Dispatcher,
     GqlTrait {
-    override suspend fun perform(command: DisconnectUserCommand) = apolloMutation(DisconnectUserMutation(DisconnectUserInput(command.email)))
+    override suspend fun perform(command: DisconnectUserCommand) = DisconnectUserMutation(DisconnectUserInput(command.email)).execute()
         .data
         ?.disconnectUser
         .let { VoidResult.Accepted }

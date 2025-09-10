@@ -13,7 +13,7 @@ interface GqlTrait {
     val performer: QueryPerformer
 
     suspend fun String.performQuery(): JsonElement = performer.doQuery(this)
-    suspend fun <D : Mutation.Data> apolloMutation(mutation: Mutation<D>): ApolloResponse<D> = performer.apolloMutation(mutation)
+    suspend fun <D : Mutation.Data> Mutation<D>.execute(): ApolloResponse<D> = performer.apolloMutation(this)
 
     suspend fun performQuery(body: JsonElement): JsonElement = performer.doQuery(body)
     suspend fun JsonElement.perform() = performQuery(this)

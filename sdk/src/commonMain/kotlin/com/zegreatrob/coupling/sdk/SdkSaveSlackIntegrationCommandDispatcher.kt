@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.sdk
 
-import com.example.SaveSlackIntegrationMutation
-import com.example.type.SaveSlackIntegrationInput
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
+import com.zegreatrob.coupling.sdk.schema.SaveSlackIntegrationMutation
+import com.zegreatrob.coupling.sdk.schema.type.SaveSlackIntegrationInput
 
 interface SdkSaveSlackIntegrationCommandDispatcher :
     SaveSlackIntegrationCommand.Dispatcher,
     GqlTrait {
 
-    override suspend fun perform(command: SaveSlackIntegrationCommand) = apolloMutation(SaveSlackIntegrationMutation(command.saveSlackIntegrationInput()))
+    override suspend fun perform(command: SaveSlackIntegrationCommand) = SaveSlackIntegrationMutation(command.saveSlackIntegrationInput()).execute()
         .data
         ?.saveSlackIntegration
         .toVoidResult()
