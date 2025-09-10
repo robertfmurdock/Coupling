@@ -19,14 +19,14 @@ plugins {
 kotlin {
     jvmToolchain(20)
     js {
-        useCommonJs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
         binaries.executable()
     }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         allWarningsAsErrors = true
         languageVersion.set(KotlinVersion.KOTLIN_2_2)
-//        apiVersion.set(KotlinVersion.KOTLIN_2_2)
     }
     sourceSets {
         all {

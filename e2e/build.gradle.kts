@@ -20,7 +20,6 @@ val appConfiguration: Configuration by configurations.creating {
     attributes {
         attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "server")
     }
-//    usesPlatformOf(kotlin.js().compilations.getByName("e2eTest").target)
 }
 
 val testLoggingLib: Configuration by configurations.creating {

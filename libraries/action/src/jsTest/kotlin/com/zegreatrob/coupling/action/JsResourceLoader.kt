@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.action
 
-actual inline fun <reified T> loadResource(fileResource: String): T = require("./$fileResource")
+import node.buffer.BufferEncoding
+import node.fs.readFileSync
 
-external fun <T> require(module: String): T
+actual inline fun <reified T> loadResource(fileResource: String): T = JSON.parse(readFileSync("./kotlin/$fileResource", BufferEncoding.utf8))

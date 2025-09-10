@@ -4,7 +4,11 @@ plugins {
 }
 kotlin {
     jvm()
-    js { nodejs() }
+    js {
+        nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
+    }
 }
 
 dependencies {

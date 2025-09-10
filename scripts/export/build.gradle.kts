@@ -10,9 +10,9 @@ kotlin {
         nodejs {
             binaries.executable()
         }
-        useCommonJs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
     }
-
     sourceSets {
         all {
             languageSettings {

@@ -11,7 +11,11 @@ plugins {
 }
 
 kotlin {
-    js { nodejs { testTask { useMocha { timeout = "10s" } } } }
+    js {
+        nodejs { testTask { useMocha { timeout = "10s" } } }
+        useEsModules()
+        compilerOptions { target = "es2015" }
+    }
     jvm()
     sourceSets {
         commonMain {
@@ -38,9 +42,10 @@ dependencies {
     commonTestImplementation("com.zegreatrob.testmints:async")
     commonTestImplementation("com.zegreatrob.testmints:minassert")
 
+    "jsTestImplementation"("org.jetbrains.kotlin-wrappers:kotlin-node")
+
     "jvmMainImplementation"(kotlin("reflect"))
     "jvmMainImplementation"("com.fasterxml.jackson.core:jackson-databind")
-
 
     "jvmTestImplementation"(kotlin("reflect"))
     "jvmTestImplementation"("org.slf4j:slf4j-simple")
