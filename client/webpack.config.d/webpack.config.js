@@ -34,38 +34,6 @@ if (!config.resolve.modules) {
     config.resolve.modules = []
 }
 
-config.optimization = {
-    splitChunks: {
-        cacheGroups: {
-            vendor: {
-                test: /[\\/]node_modules[\\/]/,
-                name: 'vendor',
-                chunks: 'all',
-            },
-            couplingCore: {
-                test: /[\\/]kotlin[\\/](Coupling-client|Coupling-components|Coupling-model|Coupling-action)/,
-                name: 'coupling-core',
-                chunks: 'all',
-            },
-            kotlin: {
-                test: /[\\/]kotlin[\\/](kotlin-kotlin|korlibs)/,
-                name: 'kotlin',
-                chunks: 'all',
-            },
-            kotlinx: {
-                test: /[\\/]kotlin[\\/](kotlinx)/,
-                name: 'kotlinx',
-                chunks: 'all',
-            },
-            ktor: {
-                test: /[\\/]kotlin[\\/]ktor/,
-                name: 'ktor',
-                chunks: 'all',
-            },
-        },
-    },
-}
-
 const nodeModules = path.resolve(__dirname, '../../../../build/js/node_modules');
 config.resolve.modules.push(resourcesPath, additionalResourcesPath, nodeModules);
 config.resolve.fallback = {"assert": false};
