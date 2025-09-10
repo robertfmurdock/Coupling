@@ -13,7 +13,8 @@ import react.ChildrenBuilder
 import react.FC
 import react.Props
 import react.PropsWithChildren
-import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 import react.useMemo
 import web.cssom.Angle
 import web.cssom.ClassName
@@ -33,7 +34,7 @@ external interface PairReportTableProps : Props {
 
 @ReactFunc
 val PairReportTable by nfc<PairReportTableProps> { (pairReports) ->
-    ReactHTML.div {
+    div {
         css {
             display = Display.Companion.inlineBlock
             textAlign = TextAlign.Companion.left
@@ -57,7 +58,7 @@ val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
         reportPlayerCard(pairReport.pair.player1, (-tweak).deg)
         reportPlayerCard(pairReport.pair.player2, (tweak).deg)
 
-        ReactHTML.div {
+        div {
             css {
                 display = Display.Companion.inlineBlock
                 verticalAlign = VerticalAlign.Companion.top
@@ -65,7 +66,7 @@ val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
             }
             StatsHeader { +"Stats" }
             StatLabel { +"Spins since last paired:" }
-            ReactHTML.span {
+            span {
                 className = ClassName("time-since-last-pairing")
                 asDynamic()["data-time-since-last-pair"] = ""
                 +pairReport.timeSinceLastPair.presentationString()
@@ -75,7 +76,7 @@ val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
 }
 
 val PairPanel = FC<PropsWithChildren> { props ->
-    ReactHTML.div {
+    div {
         css {
             borderWidth = 2.px
             borderStyle = LineStyle.Companion.solid
@@ -93,7 +94,7 @@ private fun TimeResult.presentationString() = when (this) {
     NeverPaired -> "Never Paired"
 }
 
-private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = ReactHTML.div {
+private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = div {
     css {
         display = Display.Companion.inlineBlock
     }
