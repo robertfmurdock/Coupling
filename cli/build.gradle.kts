@@ -20,22 +20,14 @@ kotlin {
     }
     js {
         nodejs {
-            useCommonJs()
+            useEsModules()
+            compilerOptions { target = "es2015" }
             binaries.executable()
         }
         compilations {
             "main" {
                 packageJson {
                     customField("bin", mapOf("coupling" to "./kotlin/bin/coupling"))
-                    customField("type", "commonjs")
-                }
-            }
-            "test" {
-                compileTaskProvider {
-                    compilerOptions {
-                        target = "es5"
-                        freeCompilerArgs.add("-Xir-per-module")
-                    }
                 }
             }
         }
