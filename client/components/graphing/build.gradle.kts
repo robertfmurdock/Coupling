@@ -32,6 +32,8 @@ tasks {
 }
 
 dependencies {
+    jsMainImplementation(project(":libraries:json"))
+    jsMainImplementation(project(":libraries:model"))
     jsMainImplementation("com.zegreatrob.jsmints:minreact")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion-styled")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")

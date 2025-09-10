@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components.graphing.contribution
 
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
@@ -21,12 +21,26 @@ import js.objects.unsafeJso
 import react.FC
 import react.Props
 import react.ReactNode
-import react.dom.svg.ReactSVG.g
-import react.dom.svg.ReactSVG.text
+import react.dom.svg.ReactSVG
 
 external interface StoryEaseGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
     var window: GqlContributionWindow
+}
+
+val StoryEaseTick = FC<TickProps> { props ->
+    ReactSVG.g {
+        transform = "translate(${props.x},${props.y})"
+        ReactSVG.text {
+            x = 0.0
+            y = 0.0
+            dy = 4.0
+            fill = "#666"
+            transform = "rotate(-70)"
+            textAnchor = "end"
+            +props.payload.value?.toString()
+        }
+    }
 }
 
 @ReactFunc
@@ -52,20 +66,7 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
                 dataKey = "x"
                 name = "story"
                 interval = 0
-                tick = FC<TickProps> { props ->
-                    g {
-                        transform = "translate(${props.x},${props.y})"
-                        text {
-                            x = 0.0
-                            y = 0.0
-                            dy = 4.0
-                            fill = "#666"
-                            transform = "rotate(-70)"
-                            textAnchor = "end"
-                            +props.payload.value?.toString()
-                        }
-                    }
-                }
+                tick = StoryEaseTick
             }
             YAxis {
                 type = "number"
@@ -114,14 +115,14 @@ fun List<Pair<CouplingPair, ContributionReport>>.contributionsByStory(): Map<Str
             .toMap()
 
     val splitContributions = rawStoryContributions.flatMap {
-        if (it.key.contains(",") == true) {
+        if (it.key.contains(",")) {
             it.key.split(",").map { story -> story to it.value }
         } else {
             emptyList()
         }
     }.toMap()
 
-    var storyContributions = rawStoryContributions.filter { it.key.contains(",") == false }.toMutableMap()
+    val storyContributions = rawStoryContributions.filter { !it.key.contains(",") }.toMutableMap()
 
     splitContributions.forEach { (story, contributions) ->
         storyContributions[story] = contributions + storyContributions[story].orEmpty()

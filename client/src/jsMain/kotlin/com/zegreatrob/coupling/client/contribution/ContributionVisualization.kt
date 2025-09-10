@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.PairCycleTimeBarChart
+import com.zegreatrob.coupling.client.components.graphing.contribution.StoryEaseGraph
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
+import com.zegreatrob.coupling.client.components.stats.Visualization
 import com.zegreatrob.coupling.client.components.stats.Visualization.AllContributionsLineOverTime
 import com.zegreatrob.coupling.client.components.stats.Visualization.AllEaseLineOverTime
 import com.zegreatrob.coupling.client.components.stats.Visualization.CycleTimeBoxPlot
@@ -12,7 +14,6 @@ import com.zegreatrob.coupling.client.components.stats.Visualization.PairEaseLin
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairFrequencyHeatmap
 import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsOverTime
 import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsPercentOverTime
-import com.zegreatrob.coupling.client.components.stats.Visualization.StoryEaseGraph
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
@@ -68,7 +69,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
                 AllContributionsLineOverTime -> AllContributionsLineGraph(data.allContributions(), window)
                 StoryContributionsOverTime -> StoryContributionGraph(data.allContributions(), window, false)
                 StoryContributionsPercentOverTime -> StoryContributionGraph(data.allContributions(), window, true)
-                StoryEaseGraph -> StoryEaseGraph(data, window)
+                Visualization.StoryEaseGraph -> StoryEaseGraph(data, window)
                 PairContributionsLineOverTime -> PairContributionsLineGraph(data, window)
                 PairFrequencyHeatmap -> PairContributionsHeatMap(data, window, spinsUntilFullRotation)
                 PairEaseHeatmap -> PairEaseHeatMap(data, window, spinsUntilFullRotation)
