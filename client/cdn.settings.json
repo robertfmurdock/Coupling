@@ -2,5 +2,6 @@
   "react": "React",
   "react-dom/client": "ReactDOM",
   "html2canvas": "html2canvas",
-  "recharts": "Recharts"
+  "recharts": "Recharts",
+  "lodash": "Lodash"
 }
