@@ -13,22 +13,6 @@ import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
 
-val reactDndPromise = js("import(\"react-dnd\")")
-
-val reactDnd = MainScope().async {
-    reactDndPromise.unsafeCast<Promise<ReactDnd>>().await()
-}
-
-val DndProvider: ElementType<DnDProvideProps> = FC { props ->
-    if (globalThis["IS_JSDOM"] == true) {
-        +props.children
-    } else {
-        waitForAsyncReactComponent({ runCatching { reactDnd.getCompleted().dndProvider }.getOrNull() }) { component ->
-            component.create { +props }
-        }
-    }
-}
-
 fun <T> useDrag(
     itemType: String,
     itemId: String,
@@ -37,7 +21,7 @@ fun <T> useDrag(
     if (globalThis["IS_JSDOM"] == true) {
         return DragDropValueContent(null.unsafeCast<T>()) {}
     }
-    val results = reactDnd.getCompleted().useDrag(
+    val results = useDrag(
         json(
             "type" to itemType,
             "item" to json("id" to itemId),
@@ -64,7 +48,7 @@ fun <T> useDrop(
         return DragDropValueContent(null.unsafeCast<T>()) {}
     }
 
-    val results = reactDnd.getCompleted().useDrop(
+    val results = useDrop(
         json(
             "accept" to acceptItemType,
             "drop" to drop,

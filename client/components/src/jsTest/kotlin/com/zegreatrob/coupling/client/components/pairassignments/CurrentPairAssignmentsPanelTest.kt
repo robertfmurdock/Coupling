@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.external.reactdnd.dndProvider
+import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.html5Backend
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -73,8 +75,9 @@ class CurrentPairAssignmentsPanelTest {
         val stubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {
-        render(
-            Html5DndProvider.create {
+        render {
+            dndProvider {
+                backend = html5Backend
                 RouterProvider {
                     router = createMemoryRouter(
                         arrayOf(
@@ -95,8 +98,8 @@ class CurrentPairAssignmentsPanelTest {
                         ),
                     )
                 }
-            },
-        )
+            }
+        }
     } exercise {
         actor.click(screen.findByText("Cancel"))
         act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
