@@ -4,5 +4,6 @@
   "html2canvas": "html2canvas",
   "recharts": "Recharts",
   "lodash": "Lodash",
+  "@remix-run/router": "RemixRouter",
   "@js-joda/core": "Joda"
 }
