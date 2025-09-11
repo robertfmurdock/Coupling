@@ -7,15 +7,17 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-kotlin.js {
-    nodejs()
-    useEsModules()
-    compilerOptions { target = "es2015" }
-}
-
-kotlin.sourceSets {
-    getByName("jsMain") {
-        resources.srcDir("src/jsMain/javascript")
+kotlin {
+    js {
+        nodejs()
+        useEsModules()
+        compilerOptions { target = "es2015" }
+    }
+    sourceSets {
+        all { languageSettings.optIn("kotlin.js.ExperimentalWasmJsInterop") }
+        getByName("jsMain") {
+            resources.srcDir("src/jsMain/javascript")
+        }
     }
 }
 

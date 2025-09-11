@@ -19,6 +19,7 @@ kotlin {
             }
         }
     }
+    sourceSets { all { languageSettings.optIn("kotlin.js.ExperimentalWasmJsInterop") } }
 }
 
 tasks {

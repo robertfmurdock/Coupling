@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.4.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.883.0",
-    "@aws-sdk/client-dynamodb": "3.883.0",
-    "@aws-sdk/client-lambda": "~3.883.0",
-    "@aws-sdk/lib-dynamodb": "3.883.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.886.0",
+    "@aws-sdk/client-dynamodb": "3.886.0",
+    "@aws-sdk/client-lambda": "~3.886.0",
+    "@aws-sdk/lib-dynamodb": "3.886.0",
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
@@ -31,7 +31,7 @@
     "@stripe/react-stripe-js": "^4.0.2",
     "@stripe/stripe-js": "^7.9.0",
     "babel-loader": "^10.0.0",
-    "chromedriver": "140.0.0",
+    "chromedriver": "140.0.1",
     "core-js": "^3.45.1",
     "css-loader": "^7.1.2",
     "d3": "^7.9.0",

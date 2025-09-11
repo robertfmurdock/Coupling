@@ -18,7 +18,6 @@ import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.core.JsString
 import js.core.toPrecision
 import js.objects.Object
 import js.objects.Record

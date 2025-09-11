@@ -42,6 +42,7 @@ kotlin {
         }
     }
     sourceSets {
+        sourceSets { all { languageSettings.optIn("kotlin.js.ExperimentalWasmJsInterop") } }
         jsMain {
             resources.srcDir("src/jsMain/javascript")
             kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
