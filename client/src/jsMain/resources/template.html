@@ -21,6 +21,26 @@
 
     <script>var iosDragDropShim = {enableEnterLeave: true};</script>
 
+    <script type="importmap">
+        {
+          "imports":  <%= JSON.stringify(htmlWebpackPlugin.options.cdnImportMap) %>
+        }
+    </script>
+    <script type="module">
+        <% for (const key in htmlWebpackPlugin.options.cdnSettings) { %>
+            <% const value = htmlWebpackPlugin.options.cdnSettings[key] %>
+            import * as <%= value %> from "<%= key%>";
+            window['<%= value %>'] = <%= value %>;
+        <% } %>
+
+        <% if (htmlWebpackPlugin.options.window) { %>
+            <% for (var varName in htmlWebpackPlugin.options.window) { %>
+                window['<%=varName%>'] = <%= JSON.stringify(htmlWebpackPlugin.options.window[varName]) %>;
+            <% } %>
+        <% } %>
+
+    </script>
+
     <% if (htmlWebpackPlugin.options.window) { %>
     <script>
       <% for (var varName in htmlWebpackPlugin.options.window) { %>
@@ -28,10 +48,6 @@
       <% } %>
     </script>
     <% } %>
-
-    <% htmlWebpackPlugin.options.cdnContent.forEach( cdnEntry => { %>
-    <script defer="defer" src="<%=cdnEntry%>"></script>
-    <% }) %>
 
     <%= htmlWebpackPlugin.tags.headTags %>
 </head>

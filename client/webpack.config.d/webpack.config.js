@@ -20,8 +20,11 @@ const cdnResources = JSON.parse(
         .filter((line) => !line.includes("TRACE"))
         .join("\n")
 )
-
 const cdnSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/cdn.settings.json')))
+
+const cdnImportMap = Object.fromEntries(
+    Object.entries(cdnSettings).map(([key, value]) => [key, cdnResources[key]])
+);
 
 if (config.entry && config.entry.main) {
     config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
@@ -88,7 +91,10 @@ config.performance = {
     },
 }
 
-config.externals = {"cheerio": "window", "fs": "empty", ...cdnSettings}
+config.externals = {"cheerio": "window", "fs": "empty",
+'react-dom/client': 'ReactDOM',
+    ...cdnSettings
+}
 
 if (config.devServer) {
     config.devServer.port = 3001
@@ -116,7 +122,8 @@ config.plugins.push(
         devServer: config.devServer ? config.devServer.port : undefined,
         appMountClass: 'view-container',
         inject: false,
-        cdnContent: Object.values(cdnResources),
+        cdnSettings: cdnSettings,
+        cdnImportMap: cdnImportMap,
         window: config.devServer ? {
             expressEnv: "dev",
             inMemory: true,

@@ -36,6 +36,5 @@ tasks {
 }
 
 dependencies {
-    jsMainImplementation(npmConstrained("blueimp-md5"))
     jsMainImplementation(npmConstrained("react-flip-toolkit"))
 }

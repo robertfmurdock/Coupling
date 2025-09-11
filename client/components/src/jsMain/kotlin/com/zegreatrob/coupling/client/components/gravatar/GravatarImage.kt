@@ -1,14 +1,19 @@
 package com.zegreatrob.coupling.client.components.gravatar
 
-import com.zegreatrob.coupling.client.components.external.blueimp.md5.md5
+import org.kotlincrypto.hash.md.MD5
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML
 import web.cssom.ClassName
+
+private val md5 = MD5()
 
 fun gravatarUrl(email: String, options: GravatarOptions): String {
     val codedEmail = md5(email.lowercase().trim())
     return "https://www.gravatar.com/avatar/$codedEmail?default=${options.default}&s=${options.size}"
 }
+
+private fun md5(value: String): String = md5.digest(value.encodeToByteArray())
+    .toHexString()
 
 sealed external interface GravatarOptions {
     var default: String

@@ -1,5 +1,6 @@
 {
-  "blueimp-md5": "md5",
+  "react": "React",
+  "react-dom/client": "ReactDOM",
   "html2canvas": "html2canvas",
   "@emotion/css": "emotion"
 }

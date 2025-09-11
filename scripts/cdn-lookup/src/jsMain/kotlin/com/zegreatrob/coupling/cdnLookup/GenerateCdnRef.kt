@@ -38,8 +38,11 @@ suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = 
 
 private suspend fun lookupCdnUrl(lib: String): Pair<String, String> {
     val version = getVersionForLibrary(lib)
-    val filename = lookupCdnFilename(lib, version)
-    return lib to "https://cdn.jsdelivr.net/npm/$lib@$version/$filename"
+
+    val split = lib.indexOf("/")
+    val (module, submodule) = if (lib.startsWith("@") || split < 0) lib to "" else lib.substring(0, split) to lib.substring(split)
+
+    return lib to "https://esm.sh/$module@$version$submodule"
 }
 
 private suspend fun lookupCdnFilename(lib: String, version: String): String {

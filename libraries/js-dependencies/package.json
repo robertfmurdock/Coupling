@@ -31,7 +31,6 @@
     "@stripe/react-stripe-js": "^4.0.2",
     "@stripe/stripe-js": "^7.9.0",
     "babel-loader": "^10.0.0",
-    "blueimp-md5": "^2.19.0",
     "chromedriver": "140.0.0",
     "core-js": "^3.45.1",
     "css-loader": "^7.1.2",

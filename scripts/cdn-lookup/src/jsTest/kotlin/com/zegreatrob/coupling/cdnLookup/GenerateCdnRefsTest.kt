@@ -2,13 +2,11 @@ package com.zegreatrob.coupling.cdnLookup
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class GenerateCdnRefsTest {
 
     @Test
-    @Ignore
     fun generateRefWorks() = asyncSetup(object {
         val lib = "react"
         val cdnLibs = listOf(lib)
@@ -16,7 +14,7 @@ class GenerateCdnRefsTest {
         generateCdnRef(cdnLibs)
     } verify { result ->
         val version = getVersionForLibrary(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/react@$version/umd/react.production.min.js"
+        val expected = "https://esm.sh/react@$version"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 
@@ -28,7 +26,7 @@ class GenerateCdnRefsTest {
         generateCdnRef(cdnLibs)
     } verify { result ->
         val version = getVersionForLibrary(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/kotlin@$version/index.min.js"
+        val expected = "https://esm.sh/kotlin@$version"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 
@@ -40,7 +38,7 @@ class GenerateCdnRefsTest {
         generateCdnRef(cdnLibs)
     } verify { result ->
         val version = getVersionForLibrary(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/@auth0/auth0-react@$version/dist/auth0-react.min.js"
+        val expected = "https://esm.sh/@auth0/auth0-react@$version"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 }

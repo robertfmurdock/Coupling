@@ -22,6 +22,7 @@ dependencies {
     api(platform(libs.org.jetbrains.kotlinx.kotlinx.coroutines.bom))
     api(platform(libs.org.jetbrains.kotlinx.kotlinx.serialization.bom))
     api(platform(libs.org.junit.junit.bom))
+    api(platform(libs.org.kotlincrypto.hash.bom))
     constraints {
         api(libs.com.apollographql.adapters.apollo.adapters.core)
         api(libs.com.apollographql.adapters.apollo.adapters.kotlinx.datetime)
