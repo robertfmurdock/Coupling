@@ -2,5 +2,5 @@
   "react": "React",
   "react-dom/client": "ReactDOM",
   "html2canvas": "html2canvas",
-  "@emotion/css": "emotion"
+  "recharts": "Recharts"
 }

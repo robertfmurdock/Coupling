@@ -11,7 +11,6 @@ import web.cssom.FontSize
 import web.cssom.fr
 import web.cssom.px
 
-@Lazy
 val ContributionControlPanelFrame = FC<PropsWithChildren> { props ->
     div {
         css {
