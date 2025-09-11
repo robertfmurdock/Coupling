@@ -3,5 +3,6 @@
   "react-dom/client": "ReactDOM",
   "html2canvas": "html2canvas",
   "recharts": "Recharts",
-  "lodash": "Lodash"
+  "lodash": "Lodash",
+  "@js-joda/core": "Joda"
 }
