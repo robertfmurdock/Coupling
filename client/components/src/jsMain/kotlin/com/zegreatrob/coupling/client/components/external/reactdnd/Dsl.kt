@@ -1,16 +1,9 @@
 package com.zegreatrob.coupling.client.components.external.reactdnd
 
 import com.zegreatrob.coupling.client.components.external.reactdnd.dsl.DragDropValueContent
-import com.zegreatrob.coupling.client.components.waitForAsyncReactComponent
 import js.globals.globalThis
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.await
 import react.ElementType
-import react.FC
-import react.create
 import kotlin.js.Json
-import kotlin.js.Promise
 import kotlin.js.json
 
 fun <T> useDrag(
