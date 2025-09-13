@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContri
 import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsPercentOverTime
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
+import com.zegreatrob.coupling.components.client.contribution.StoryContributionGraph
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
@@ -64,6 +65,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
                 reload()
             },
         ) { (visualization, data) ->
+            println("rendering visualization")
             when (visualization) {
                 AllContributionsLineOverTime -> AllContributionsLineGraph(data.allContributions(), window)
                 StoryContributionsOverTime -> StoryContributionGraph(data.allContributions(), window, false)

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.model.Contribution
 import kotlinx.datetime.LocalDate

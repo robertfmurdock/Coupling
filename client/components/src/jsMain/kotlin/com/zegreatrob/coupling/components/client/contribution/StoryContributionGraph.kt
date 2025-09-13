@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.components.client.contribution
 
+import com.zegreatrob.coupling.client.components.contribution.contributionsByDate
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.chromatic.schemePaired
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleOrdinal
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleTime
@@ -19,6 +20,7 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.core.toPrecision
+import js.date.Date
 import js.lazy.Lazy
 import js.objects.Object
 import js.objects.Record
@@ -30,6 +32,7 @@ import kotlinx.datetime.toInstant
 import react.Props
 import react.ReactNode
 import react.create
+import react.dom.html.ReactHTML.div
 import web.cssom.WhiteSpace
 import kotlin.math.max
 import kotlin.time.toJSDate
@@ -50,76 +53,83 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
         dateContributionCountByStory(date, group.value, byPercent)
     }.sortedBy { it.x.unsafeCast<Double>() }.toTypedArray()
 
+    val entries = contributionsByDate.entries
+    val mapNotNull = entries.mapNotNull { Pair(it.key ?: return@mapNotNull null, it.value) }
     val sortedContributionsByDate =
-        contributionsByDate.entries.mapNotNull { Pair(it.key ?: return@mapNotNull null, it.value) }
+        mapNotNull
             .sortedWith { l, r -> l.first.compareTo(r.first) }
 
-    val stories = (points.flatMap { Object.keys(it).toList() }.distinct() - "x")
+    val stories = (points.flatMap { Object.Companion.keys(it).toList() }.distinct() - "x")
         .sortedWith { a, b -> preferLargerRangeWithEarlierTimes(sortedContributionsByDate, a, b) }
-    val xMinMillis = points.minOf { it.x.unsafeCast<Double>() }
-    val xMaxMillis = points.maxOf { it.x.unsafeCast<Double>() }
-    val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
-    val timeFormatter = timeFormat(scaledTimeFormat(xMinMillis, xMaxMillis))
-    val myColor = scaleOrdinal().domain(stories.toTypedArray()).range(schemePaired)
-    if (points.isNotEmpty()) {
-        ResponsiveContainer {
-            width = "100%"
-            height = "100%"
-            ComposedChart {
-                this.data = points
-                XAxis {
-                    dataKey = "x"
-                    domain = timeScale.domain().map(js.date.Date::valueOf).toTypedArray()
-                    ticks = timeScale.ticks(5).map(js.date.Date::valueOf).toTypedArray()
-                    tickFormatter = timeFormatter
-                    fontSize = 12
-                }
-                YAxis {
-                    type = "number"
-                }
-                Tooltip {
-                    labelFormatter = { ReactNode(timeFormatter(it)) }
-                    formatter = { value, _ -> ReactNode(value.unsafeCast<Double>().toPrecision(3)) }
-                    content = { props ->
-                        Tooltip.create {
-                            +props
-                            content = null
-                            payload = props.payload?.filterIndexed { index, _ -> index % 2 == 0 }?.toTypedArray()
+    val xMinMillis = points.minOfOrNull { it.x.unsafeCast<Double>() }
+    val xMaxMillis = points.maxOfOrNull { it.x.unsafeCast<Double>() }
+    div {
+        asDynamic()["data-testid"] = "contribution-graph"
+        if (points.isEmpty() || xMinMillis == null || xMaxMillis == null) {
+            return@div
+        } else {
+            val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
+            val timeFormatter = timeFormat(scaledTimeFormat(xMinMillis, xMaxMillis))
+            val myColor = scaleOrdinal().domain(stories.toTypedArray()).range(schemePaired)
+            ResponsiveContainer {
+                width = "100%"
+                height = "100%"
+                ComposedChart {
+                    this.data = points
+                    XAxis {
+                        dataKey = "x"
+                        domain = timeScale.domain().map(Date::valueOf).toTypedArray()
+                        ticks = timeScale.ticks(5).map(Date::valueOf).toTypedArray()
+                        tickFormatter = timeFormatter
+                        fontSize = 12
+                    }
+                    YAxis {
+                        type = "number"
+                    }
+                    Tooltip {
+                        labelFormatter = { ReactNode(timeFormatter(it)) }
+                        formatter = { value, _ -> ReactNode(value.unsafeCast<Double>().toPrecision(3)) }
+                        content = { props ->
+                            Tooltip.create {
+                                +props
+                                content = null
+                                payload = props.payload?.filterIndexed { index, _ -> index % 2 == 0 }?.toTypedArray()
+                            }
                         }
                     }
-                }
-                Legend {
-                    width = "90%"
-                    height = "7%"
-                    wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
-                    content = { props ->
-                        Legend.create {
-                            +props
-                            content = null
-                            payload = props.payload?.filterIndexed { index, _ -> index % 2 == 0 }?.toTypedArray()
+                    Legend {
+                        width = "90%"
+                        height = "7%"
+                        wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.Companion.preWrap }
+                        content = { props ->
+                            Legend.create {
+                                +props
+                                content = null
+                                payload = props.payload?.filterIndexed { index, _ -> index % 2 == 0 }?.toTypedArray()
+                            }
                         }
                     }
-                }
-                stories.forEach { story ->
-                    val color = myColor(story)
-                    Area {
-                        key = "$story-area"
-                        type = "monotone"
-                        dataKey = story
-                        stackId = "2"
-                        stroke = color
-                        fill = color
-                    }
-                    Bar {
-                        key = "$story-bar"
-                        type = "monotone"
-                        if (!byPercent) {
-                            barSize = 2
+                    stories.forEach { story ->
+                        val color = myColor(story)
+                        Area {
+                            key = "$story-area"
+                            type = "monotone"
+                            dataKey = story
+                            stackId = "2"
+                            stroke = color
+                            fill = color
                         }
-                        dataKey = story
-                        stackId = "1"
-                        stroke = color
-                        fill = color
+                        Bar {
+                            key = "$story-bar"
+                            type = "monotone"
+                            if (!byPercent) {
+                                barSize = 2
+                            }
+                            dataKey = story
+                            stackId = "1"
+                            stroke = color
+                            fill = color
+                        }
                     }
                 }
             }
@@ -158,9 +168,9 @@ private fun dateContributionCountByStory(
     date: LocalDate,
     dateContributions: List<Contribution>,
     byPercent: Boolean,
-): LinePoint = Object.assign(
+): LinePoint = Object.Companion.assign(
     unsafeJso<LinePoint> {
-        x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate().getTime()
+        x = date.atTime(0, 0).toInstant(TimeZone.Companion.currentSystemDefault()).toJSDate().getTime()
     },
     dateContributions.groupBy(Contribution::story).toList()
         .fold(Record<String, Double>()) { record, (story, storyContributions) ->
@@ -177,7 +187,7 @@ private fun dateContributionCountByStory(
             }
         }.also { record ->
             if (byPercent) {
-                val stories = Object.keys(record)
+                val stories = Object.Companion.keys(record)
                 val total = stories.sumOf { key: String -> record[key].unsafeCast<Double>() }
                 stories.forEach { key -> record[key] = record[key].unsafeCast<Double>() / total }
             }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.contribution
 
+import com.zegreatrob.coupling.client.components.contribution.contributionsByDate
 import com.zegreatrob.coupling.client.components.graphing.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
