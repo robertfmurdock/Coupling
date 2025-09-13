@@ -1,9 +1,12 @@
 {
   "react": "React",
   "react-dom/client": "ReactDOM",
+  "react-router": "ReactRouter",
+  "react-router-dom": "ReactRouterDom",
   "html2canvas": "html2canvas",
   "recharts": "Recharts",
   "react-dnd": "ReactDnd",
   "@remix-run/router": "RemixRouter",
+  "@auth0/auth0-react": "Auth0React",
   "@js-joda/core": "Joda"
 }
