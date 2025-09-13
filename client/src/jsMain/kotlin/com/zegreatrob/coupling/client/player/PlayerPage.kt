@@ -13,7 +13,9 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import js.lazy.Lazy
 
+@Lazy
 val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
     val playerId = props.playerId
     CouplingQuery(

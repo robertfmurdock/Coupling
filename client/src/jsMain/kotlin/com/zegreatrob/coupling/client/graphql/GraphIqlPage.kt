@@ -10,6 +10,7 @@ import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
 import emotion.react.css
+import js.lazy.Lazy
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.PropsWithValue
@@ -20,6 +21,7 @@ import web.cssom.vh
 
 private val graphQlUrl = "${WindowFunctions.window.location.origin}${window["basename"]}/api/graphql"
 
+@Lazy
 val GraphIQLPage by nfc<PageProps> {
     val auth0Data = useAuth0Data()
     div {

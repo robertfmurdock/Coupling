@@ -8,7 +8,9 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import js.lazy.Lazy
 
+@Lazy
 val HistoryPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,

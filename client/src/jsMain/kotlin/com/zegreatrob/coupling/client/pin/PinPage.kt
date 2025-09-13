@@ -8,7 +8,9 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import js.lazy.Lazy
 
+@Lazy
 val PinPage = partyPageFunction { props, partyId ->
     val pinId = props.pinId
     CouplingQuery(

@@ -39,16 +39,16 @@ class PartyConfigTest {
             PartyConfig(party = party, boost = null, isNew = false, dispatchFunc = DispatchFunc { {} })
         }
     } verify {
-        within(screen.getByLabelText("Pairing Rule"))
+        within(screen.findByLabelText("Pairing Rule"))
             .getByRole("option", RoleOptions(selected = true))
             .let { it as? HTMLOptionElement }
             ?.label
             .assertIsEqualTo("Prefer Longest Time")
-        screen.getByLabelText("Default Badge Name")
+        screen.findByLabelText("Default Badge Name")
             .let { it as? HTMLInputElement }
             ?.value
             .assertIsEqualTo("Default")
-        screen.getByLabelText("Alt Badge Name")
+        screen.findByLabelText("Alt Badge Name")
             .let { it as? HTMLInputElement }
             ?.value
             .assertIsEqualTo("Alternate")
@@ -90,7 +90,7 @@ class PartyConfigTest {
             },
         )
     } exercise {
-        fireEvent.submit(screen.getByRole("form"))
+        fireEvent.submit(screen.findByRole("form"))
         act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
     } verify { action ->
         action.assertIsEqualTo(SavePartyCommand(party))

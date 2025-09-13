@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import js.lazy.Lazy
 
+@Lazy
 val CurrentPairsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,

@@ -8,8 +8,10 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 import kotlin.uuid.Uuid
 
+@Lazy
 val PartyConfigPage by nfc<PageProps> { props ->
     val partyId = props.partyId
     if (partyId != null) {

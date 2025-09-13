@@ -3,9 +3,11 @@ package com.zegreatrob.coupling.client.demo
 import com.zegreatrob.coupling.client.components.FrameRunner
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 
 val demoSequence by lazy { DemoAnimationState.generateSequence() }
 
+@Lazy
 val DemoPage by nfc<PageProps> { props ->
     val frameIndex = props.search.get("frame")
     val currentFrame = frameIndex?.toIntOrNull()?.let { demoSequence.toList()[it] }

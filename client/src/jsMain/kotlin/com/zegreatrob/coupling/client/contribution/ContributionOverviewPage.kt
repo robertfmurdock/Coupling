@@ -8,7 +8,9 @@ import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import js.lazy.Lazy
 
+@Lazy
 val ContributionOverviewPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,

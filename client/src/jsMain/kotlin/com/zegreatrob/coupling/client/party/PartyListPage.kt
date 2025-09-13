@@ -4,7 +4,9 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 
+@Lazy
 val PartyListPage by nfc<PageProps> { props ->
     CouplingQuery(
         commander = props.commander,

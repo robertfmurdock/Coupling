@@ -8,7 +8,9 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import js.lazy.Lazy
 
+@Lazy
 val ContributionListPage = partyPageFunction { props, partyId ->
     val (window: GqlContributionWindow, setWindow) = useWindow(GqlContributionWindow.Week)
     CouplingQuery(

@@ -8,7 +8,9 @@ import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 
+@Lazy
 val PartySecretsPage by nfc<PageProps> { props ->
     val partyId = props.partyId
     if (partyId == null) {
