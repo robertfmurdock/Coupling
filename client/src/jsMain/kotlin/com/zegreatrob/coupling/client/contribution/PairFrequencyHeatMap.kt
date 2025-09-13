@@ -18,12 +18,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 import js.objects.unsafeJso
 import react.Props
 import react.useEffect
 import react.useState
-import kotlin.collections.component1
-import kotlin.collections.component2
 
 external interface PairContributionsHeatMapProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
@@ -32,6 +31,7 @@ external interface PairContributionsHeatMapProps : Props {
 }
 
 @ReactFunc
+@Lazy
 val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
     val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
     val (interpolator, setInterpolator) = useState<((Number) -> String)?>(null)

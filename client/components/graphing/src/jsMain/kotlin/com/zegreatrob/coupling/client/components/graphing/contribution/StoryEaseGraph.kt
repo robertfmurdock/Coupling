@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.core.toPrecision
+import js.lazy.Lazy
 import js.objects.unsafeJso
 import react.FC
 import react.Props
@@ -44,6 +45,7 @@ val StoryEaseTick = FC<TickProps> { props ->
 }
 
 @ReactFunc
+@Lazy
 val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
     val (pairsToReports, window) = props
     var storyContributions = pairsToReports.contributionsByStory()

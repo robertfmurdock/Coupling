@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 import react.Props
 import react.create
 import kotlin.time.Clock
@@ -17,6 +18,7 @@ external interface AllContributionsLineGraphProps : Props {
     var window: GqlContributionWindow
 }
 
+@Lazy
 @ReactFunc
 val AllContributionsLineGraph by nfc<AllContributionsLineGraphProps> { (data, window) ->
     val duration = window.toModel()

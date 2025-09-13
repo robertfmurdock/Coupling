@@ -19,7 +19,6 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
-import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -83,8 +82,8 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
 }
 
 private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): List<Contribution> = flatMap {
-    it.second.contributions?.map<PartyRecord<Contribution>, Contribution> { it.data.element }
-        ?: emptyList<Contribution>()
+    it.second.contributions?.elements
+        ?: emptyList()
 }
 
 fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updatedWindow: GqlContributionWindow? ->

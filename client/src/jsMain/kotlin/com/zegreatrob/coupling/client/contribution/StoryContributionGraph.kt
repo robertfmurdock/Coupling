@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.core.toPrecision
+import js.lazy.Lazy
 import js.objects.Object
 import js.objects.Record
 import js.objects.unsafeJso
@@ -40,6 +41,7 @@ external interface StoryContributionGraphProps : Props {
 }
 
 @ReactFunc
+@Lazy
 val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     val (data, window, byPercent) = props
     val contributionsByDate = data.groupBy(contributionsByDate)
