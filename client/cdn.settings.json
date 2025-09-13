@@ -3,7 +3,6 @@
   "react-dom/client": "ReactDOM",
   "html2canvas": "html2canvas",
   "recharts": "Recharts",
-  "lodash": "Lodash",
   "react-dnd": "ReactDnd",
   "@remix-run/router": "RemixRouter",
   "@js-joda/core": "Joda"
