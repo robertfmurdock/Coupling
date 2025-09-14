@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.components.client.contribution
+package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.client.components.contribution.contributionsByDate
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.chromatic.schemePaired
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleOrdinal
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleTime

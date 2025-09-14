@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.components.client.contribution.StoryContributionGraph
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.PairCycleTimeBarChart
+import com.zegreatrob.coupling.client.components.contribution.StoryContributionGraph
 import com.zegreatrob.coupling.client.components.graphing.contribution.StoryEaseGraph
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
 import com.zegreatrob.coupling.client.components.stats.Visualization
@@ -16,7 +17,6 @@ import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContri
 import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsPercentOverTime
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.components.client.contribution.StoryContributionGraph
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
