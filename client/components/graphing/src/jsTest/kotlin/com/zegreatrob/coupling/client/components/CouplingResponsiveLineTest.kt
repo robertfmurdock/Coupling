@@ -19,7 +19,7 @@ class CouplingResponsiveLineTest {
             }
         }
     } verify { result ->
-        screen.getByTestId("coupling-responsive-line")
+        screen.findByTestId("coupling-responsive-line")
             .assertIsNotEqualTo(null)
     }
 }
