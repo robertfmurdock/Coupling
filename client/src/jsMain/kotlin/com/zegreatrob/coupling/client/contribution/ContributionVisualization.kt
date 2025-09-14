@@ -65,7 +65,6 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
                 reload()
             },
         ) { (visualization, data) ->
-            println("rendering visualization")
             when (visualization) {
                 AllContributionsLineOverTime -> AllContributionsLineGraph(data.allContributions(), window)
                 StoryContributionsOverTime -> StoryContributionGraph(data.allContributions(), window, false)

@@ -23,6 +23,7 @@ import js.objects.unsafeJso
 import react.FC
 import react.Props
 import react.ReactNode
+import react.dom.html.ReactHTML.div
 import react.useState
 import web.cssom.WhiteSpace
 import kotlin.js.Date
@@ -49,60 +50,66 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
     }
     val flattenedPoints = props.data.translateToLineChart()
     val xValues = flattenedPoints.map { it.x.unsafeCast<Double>() }
-    val xMaxMillis = xValues.max()
-    val xMinMillis = xValues.min()
+    val xMaxMillis = xValues.maxOrNull()
+    val xMinMillis = xValues.minOrNull()
     val lineIds = props.data.map(NivoLineData::id).toTypedArray()
     val myColor = scaleOrdinal().domain(lineIds).range(schemeCategory10)
-    val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
-    val timeFormatter = timeFormat(scaledTimeFormat(xMinMillis, xMaxMillis))
+    div {
+        asDynamic()["data-testid"] = "coupling-responsive-line"
+        if (xMaxMillis == null || xMinMillis == null) {
+            return@div
+        }
 
-    ResponsiveContainer {
-        width = "100%"
-        height = "100%"
-        LineChart {
-            margin = unsafeJso {
-                bottom = 60
-                left = 40
-                right = 80
-                top = 20
-            }
-            data = flattenedPoints
-            CartesianGrid {
-                strokeDasharray = "3 3"
-            }
-            XAxis {
-                dataKey = "x"
-                domain = timeScale.domain().map(js.date.Date::valueOf).toTypedArray()
-                scale = timeScale
-                type = "number"
-                ticks = timeScale.ticks(5).map(js.date.Date::valueOf).toTypedArray()
-                tickFormatter = timeFormatter
-                fontSize = 12
-            }
-            YAxis {
-                type = "number"
-                dataKey = "y"
-                domain = props.yAxisDomain
-            }
-            Tooltip {
-                labelFormatter = { ReactNode(timeFormatter(it)) }
-                content = props.tooltip
-            }
-            Legend {
-                width = "90%"
-                height = "7%"
-                wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
-                onClick = onLegendClick
-            }
-            lineIds.forEachIndexed { index, lineId ->
-                Line {
-                    connectNulls = true
-                    key = lineId
-                    type = "monotone"
-                    dataKey = lineId
-                    hide = activeSeries.contains(lineId)
-                    stroke = myColor(index)
-                    labelFormatter = timeFormatter
+        val timeScale = scaleTime().domain(arrayOf(xMinMillis, xMaxMillis)).nice()
+        val timeFormatter = timeFormat(scaledTimeFormat(xMinMillis, xMaxMillis))
+        ResponsiveContainer {
+            width = "100%"
+            height = "100%"
+            LineChart {
+                margin = unsafeJso {
+                    bottom = 60
+                    left = 40
+                    right = 80
+                    top = 20
+                }
+                data = flattenedPoints
+                CartesianGrid {
+                    strokeDasharray = "3 3"
+                }
+                XAxis {
+                    dataKey = "x"
+                    domain = timeScale.domain().map(js.date.Date::valueOf).toTypedArray()
+                    scale = timeScale
+                    type = "number"
+                    ticks = timeScale.ticks(5).map(js.date.Date::valueOf).toTypedArray()
+                    tickFormatter = timeFormatter
+                    fontSize = 12
+                }
+                YAxis {
+                    type = "number"
+                    dataKey = "y"
+                    domain = props.yAxisDomain
+                }
+                Tooltip {
+                    labelFormatter = { ReactNode(timeFormatter(it)) }
+                    content = props.tooltip
+                }
+                Legend {
+                    width = "90%"
+                    height = "7%"
+                    wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
+                    onClick = onLegendClick
+                }
+                lineIds.forEachIndexed { index, lineId ->
+                    Line {
+                        connectNulls = true
+                        key = lineId
+                        type = "monotone"
+                        dataKey = lineId
+                        hide = activeSeries.contains(lineId)
+                        stroke = myColor(index)
+                        labelFormatter = timeFormatter
+                    }
                 }
             }
         }
