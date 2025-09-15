@@ -62,7 +62,7 @@ class ContributionVisualizationPageE2ETest {
     @Test
     fun noDataCanViewAllVisualizationsWithoutError() = e2eSetup(object {
         val party = stubPartyDetails()
-        val players = listOf(stubPlayer().copy(email = "rob@continuousexcellence.io"))
+        val players = listOf(stubPlayer())
         suspend fun styleSelector() = findByRole("combobox", RoleOptions(name = "Visualization Style"))
         suspend fun styleOptions() = within(styleSelector()).getAllByRole("option", RoleOptions())
     }) {
@@ -83,7 +83,7 @@ class ContributionVisualizationPageE2ETest {
     @Test
     fun oneContributionWithNullsCanViewAllVisualizationsWithoutError() = e2eSetup(object {
         val party = stubPartyDetails()
-        val players = listOf(stubPlayer().copy(email = "rob@continuousexcellence.io"))
+        val players = listOf(stubPlayer())
         suspend fun styleSelector() = findByRole("combobox", RoleOptions(name = "Visualization Style"))
         suspend fun timeSelector() = findByRole("combobox", RoleOptions(name = "Time Window"))
         suspend fun styleOptions() = within(styleSelector()).getAllByRole("option", RoleOptions())
