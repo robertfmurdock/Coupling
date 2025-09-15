@@ -29,10 +29,22 @@ external interface PairEaseLineGraphProps : Props {
 val PairEaseLineGraph by nfc<PairEaseLineGraphProps> { (data, window) ->
     val duration = window.toModel()
 
-    if (data.flatMap { it.second.contributions?.elements ?: emptyList() }.isNotEmpty()) {
+    if (data.isEmpty()) {
+        +"No pairs are selected."
+        return@nfc
+    }
+    val pairContributionsGroupedByDate = data
+        .map {
+            it.first to (it.second.contributions?.elements ?: emptyList()).groupBy(contributionsByDate)
+                .mapNotNull(::dateContributionGroupToAverageEasePoint)
+        }
+
+    if (pairContributionsGroupedByDate.flatMap { it.second }.isNotEmpty()) {
         CouplingResponsiveLine {
             legend = "Daily Ease Over Time"
-            this.data = easeLineData(data)
+            this.data = pairContributionsGroupedByDate
+                .map { (first, second) -> NivoLineData(first.joinToString("-") { it.name }, second.toTypedArray()) }
+                .toTypedArray()
             yAxisDomain = arrayOf(0, 5)
 
             if (duration != null) {
@@ -41,18 +53,10 @@ val PairEaseLineGraph by nfc<PairEaseLineGraphProps> { (data, window) ->
             this.xMax = Clock.System.now().toJSDate()
             tooltip = { args -> LineTooltip.create { value = args } }
         }
+    } else {
+        +"No ease data available for this period."
     }
 }
-
-private fun easeLineData(selectedPairs: List<Pair<CouplingPair, ContributionReport>>): Array<NivoLineData> = selectedPairs.map { pairContributionLine(it.first, it.second.contributions?.elements ?: emptyList()) }
-    .toTypedArray()
-
-private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>) = NivoLineData(
-    couplingPair.joinToString("-") { it.name },
-    contributions.groupBy(contributionsByDate)
-        .mapNotNull(::dateContributionGroupToAverageEasePoint)
-        .toTypedArray(),
-)
 
 fun dateContributionGroupToAverageEasePoint(it: Map.Entry<LocalDate?, List<Contribution>>): NivoPoint? {
     val date = it.key ?: return null

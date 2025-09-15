@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.graphing.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
-import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
@@ -27,8 +26,14 @@ val AllEaseLineGraph by nfc<AllEaseLineGraphProps> { (data, window) ->
     }
     if (points.isNotEmpty()) {
         CouplingResponsiveLine {
+            asDynamic()["data-testid"] = "all-ease-line-graph"
             legend = "All Ease Over Time"
-            this.data = arrayOf(pairContributionLine(points))
+            this.data = arrayOf(
+                NivoLineData(
+                    id = "All",
+                    data = points.toTypedArray(),
+                ),
+            )
             yAxisDomain = arrayOf(0, 5)
 
             if (duration != null) {
@@ -41,10 +46,3 @@ val AllEaseLineGraph by nfc<AllEaseLineGraphProps> { (data, window) ->
         +"No ease data available for this period."
     }
 }
-
-private fun pairContributionLine(
-    points: List<NivoPoint>,
-) = NivoLineData(
-    id = "All",
-    data = points.toTypedArray(),
-)
