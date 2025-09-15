@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.Tool
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.TooltipProps
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.XAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxis
+import emotion.react.css
 import js.lazy.Lazy
 import js.objects.Object
 import js.objects.Record
@@ -26,6 +27,7 @@ import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.useState
 import web.cssom.WhiteSpace
+import web.cssom.pct
 import kotlin.js.Date
 import kotlin.math.max
 
@@ -55,6 +57,10 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
     val lineIds = props.data.map(NivoLineData::id).toTypedArray()
     val myColor = scaleOrdinal().domain(lineIds).range(schemeCategory10)
     div {
+        css {
+            width = 100.pct
+            height = 100.pct
+        }
         asDynamic()["data-testid"] = "coupling-responsive-line"
         if (xMaxMillis == null || xMinMillis == null) {
             return@div
@@ -136,9 +142,7 @@ fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
                 Object.assign(
                     result,
                     current,
-                    Record<String, Double> {
-                        this["y"] = max(result.y, current.y)
-                    },
+                    Record { this["y"] = max(result.y, current.y) },
                 )
             }
         }

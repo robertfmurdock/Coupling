@@ -86,4 +86,8 @@ class ResizeObserver {
     @JsName("observe")
     fun observer() {
     }
+
+    @JsName("disconnect")
+    fun disconnect() {
+    }
 }
