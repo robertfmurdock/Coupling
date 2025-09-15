@@ -1,7 +1,5 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.client.components.contribution.LineTooltip
-import com.zegreatrob.coupling.client.components.contribution.contributionsByDate
 import com.zegreatrob.coupling.client.components.graphing.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
 import com.zegreatrob.coupling.json.GqlContributionWindow
@@ -24,11 +22,13 @@ external interface AllContributionsLineGraphProps : Props {
 @ReactFunc
 val AllContributionsLineGraph by nfc<AllContributionsLineGraphProps> { (data, window) ->
     val duration = window.toModel()
+    val points = data.groupBy(contributionsByDate)
+        .mapNotNull(::timeByContributionCountPoint)
 
-    if (data.isNotEmpty()) {
+    if (points.isNotEmpty()) {
         CouplingResponsiveLine {
             legend = "Contributions Over Time"
-            this.data = arrayOf(contributionLine(data))
+            this.data = arrayOf(NivoLineData("All", points.toTypedArray()))
 
             if (duration != null) {
                 this.xMin = (Clock.System.now() - duration).toJSDate()
@@ -36,12 +36,7 @@ val AllContributionsLineGraph by nfc<AllContributionsLineGraphProps> { (data, wi
             this.xMax = Clock.System.now().toJSDate()
             tooltip = { args -> LineTooltip.create { value = args } }
         }
+    } else {
+        +"No contributions with time data available for this period."
     }
 }
-
-private fun contributionLine(contributions: List<Contribution>) = NivoLineData(
-    "All",
-    contributions.groupBy(contributionsByDate)
-        .mapNotNull(::timeByContributionCountPoint)
-        .toTypedArray(),
-)

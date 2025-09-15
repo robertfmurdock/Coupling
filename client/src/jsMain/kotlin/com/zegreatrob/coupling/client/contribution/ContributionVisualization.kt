@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.PairCycleTimeBarChart
+import com.zegreatrob.coupling.client.components.contribution.AllContributionsLineGraph
 import com.zegreatrob.coupling.client.components.contribution.AllEaseLineGraph
+import com.zegreatrob.coupling.client.components.contribution.PairContributionsLineGraph
 import com.zegreatrob.coupling.client.components.contribution.PairEaseLineGraph
 import com.zegreatrob.coupling.client.components.contribution.StoryContributionGraph
 import com.zegreatrob.coupling.client.components.graphing.contribution.StoryEaseGraph
