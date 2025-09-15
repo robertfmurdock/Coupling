@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import emotion.react.css
 import js.core.toPrecision
 import js.date.Date
 import js.lazy.Lazy
@@ -33,6 +34,7 @@ import react.ReactNode
 import react.create
 import react.dom.html.ReactHTML.div
 import web.cssom.WhiteSpace
+import web.cssom.pct
 import kotlin.math.max
 import kotlin.time.toJSDate
 
@@ -63,6 +65,10 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     val xMinMillis = points.minOfOrNull { it.x.unsafeCast<Double>() }
     val xMaxMillis = points.maxOfOrNull { it.x.unsafeCast<Double>() }
     div {
+        css {
+            width = 100.pct
+            height = 100.pct
+        }
         asDynamic()["data-testid"] = "contribution-graph"
         if (points.isEmpty() || xMinMillis == null || xMaxMillis == null) {
             return@div
