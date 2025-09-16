@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.components.contribution.AllContributionsLi
 import com.zegreatrob.coupling.client.components.contribution.AllEaseLineGraph
 import com.zegreatrob.coupling.client.components.contribution.PairContributionsHeatMap
 import com.zegreatrob.coupling.client.components.contribution.PairContributionsLineGraph
+import com.zegreatrob.coupling.client.components.contribution.PairEaseHeatMap
 import com.zegreatrob.coupling.client.components.contribution.PairEaseLineGraph
 import com.zegreatrob.coupling.client.components.contribution.StoryContributionGraph
 import com.zegreatrob.coupling.client.components.graphing.contribution.StoryEaseGraph

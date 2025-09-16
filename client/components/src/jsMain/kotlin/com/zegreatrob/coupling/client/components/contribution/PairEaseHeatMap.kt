@@ -1,8 +1,7 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.PairTickMark
 import com.zegreatrob.coupling.client.components.colorContext
-import com.zegreatrob.coupling.client.components.contribution.CouplingHeatmapTooltip
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
@@ -13,6 +12,7 @@ import com.zegreatrob.coupling.client.components.pairContext
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
 import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -46,11 +46,16 @@ val PairEaseHeatMap by nfc<PairEaseHeatMapProps> { (contributionData, window, sp
     val inclusiveContributions = adjustDatasetForHeatMap(
         contributionData.toMap().mapValues { (_, report) -> report.contributions?.elements ?: emptyList() },
     )
+
+    if (inclusiveContributions.values.flatten().mapNotNull(Contribution::ease).isEmpty()) {
+        +"No ease data available for this period."
+        return@nfc
+    }
+
     val (_, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(
         window,
         spinsUntilFullRotation,
-        { it.mapNotNull { it.ease }.average() },
-    )
+    ) { it.mapNotNull(Contribution::ease).average() }
     val allSolos = contributionData.toMap().keys.flatten().map { pairOf(it) }.toSet()
     val maxEase = 5
     colorContext.Provider {
