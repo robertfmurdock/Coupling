@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.PairTickMark
 import com.zegreatrob.coupling.client.components.colorContext
@@ -44,6 +44,11 @@ val PairContributionsHeatMap by nfc<PairContributionsHeatMapProps> { (contributi
     val inclusiveContributions = adjustDatasetForHeatMap(
         contributionData.toMap().mapValues { (_, report) -> report.contributions?.elements ?: emptyList() },
     )
+    if (inclusiveContributions.values.flatten().isEmpty()) {
+        +"No contributions available for this period."
+        return@nfc
+    }
+
     val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(
         window,
         spinsUntilFullRotation,

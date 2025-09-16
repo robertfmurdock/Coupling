@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.PairTickMark
 import com.zegreatrob.coupling.client.components.colorContext
+import com.zegreatrob.coupling.client.components.contribution.CouplingHeatmapTooltip
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis

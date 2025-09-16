@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.contribution
 import com.zegreatrob.coupling.client.components.PairCycleTimeBarChart
 import com.zegreatrob.coupling.client.components.contribution.AllContributionsLineGraph
 import com.zegreatrob.coupling.client.components.contribution.AllEaseLineGraph
+import com.zegreatrob.coupling.client.components.contribution.PairContributionsHeatMap
 import com.zegreatrob.coupling.client.components.contribution.PairContributionsLineGraph
 import com.zegreatrob.coupling.client.components.contribution.PairEaseLineGraph
 import com.zegreatrob.coupling.client.components.contribution.StoryContributionGraph
@@ -32,9 +33,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.unsafeJso
 import react.Props
-import react.router.dom.SetURLSearchParams
 
 external interface ContributionVisualizationProps : Props {
     var commander: Commander
@@ -89,18 +88,6 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
 private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): List<Contribution> = flatMap {
     it.second.contributions?.elements
         ?: emptyList()
-}
-
-fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updatedWindow: GqlContributionWindow? ->
-    setSearchParams({ previous ->
-        previous.also {
-            if (updatedWindow != null) {
-                previous.set("window", updatedWindow.name)
-            } else {
-                previous.delete("window")
-            }
-        }
-    }, unsafeJso { })
 }
 
 private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
