@@ -1,15 +1,16 @@
 {
   "reject": [
-    "entities",
-    "express",
-    "mime",
-    "read-pkg-up",
     "@nivo/bar",
     "@nivo/boxplot",
     "@nivo/colors",
     "@nivo/core",
     "@nivo/heatmap",
     "@nivo/line",
-    "@nivo/tooltip"
+    "@nivo/tooltip",
+    "entities",
+    "express",
+    "jsdom",
+    "mime",
+    "read-pkg-up"
   ]
 }
