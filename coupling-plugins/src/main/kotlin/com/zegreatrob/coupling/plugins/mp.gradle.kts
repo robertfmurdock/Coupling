@@ -17,7 +17,7 @@ version = "0.0.0"
 
 kotlin {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    jvmToolchain(20)
+    jvmToolchain(22)
     compilerOptions {
         allWarningsAsErrors = true
         languageVersion.set(KotlinVersion.KOTLIN_2_2)

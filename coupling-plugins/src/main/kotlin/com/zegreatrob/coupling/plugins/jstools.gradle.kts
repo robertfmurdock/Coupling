@@ -17,7 +17,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(20)
+    jvmToolchain(22)
     js {
         useEsModules()
         compilerOptions { target = "es2015" }

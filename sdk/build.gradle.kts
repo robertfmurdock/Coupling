@@ -110,7 +110,7 @@ tasks {
     }
     installCert {
         dependsOn(":caddyComposeUp")
-        jdkSelector = "20"
+        jdkSelector = "22"
         certificatePath = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
     }
     "jvmTest" {

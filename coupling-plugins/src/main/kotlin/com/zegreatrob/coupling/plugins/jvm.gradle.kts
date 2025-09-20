@@ -15,7 +15,7 @@ kotlin {
     compilerOptions {
         allWarningsAsErrors = true
     }
-    jvmToolchain(20)
+    jvmToolchain(22)
     sourceSets {
         all {
             languageSettings {
