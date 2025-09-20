@@ -1,12 +1,5 @@
 {
   "reject": [
-    "@nivo/bar",
-    "@nivo/boxplot",
-    "@nivo/colors",
-    "@nivo/core",
-    "@nivo/heatmap",
-    "@nivo/line",
-    "@nivo/tooltip",
     "entities",
     "express",
     "jsdom",
