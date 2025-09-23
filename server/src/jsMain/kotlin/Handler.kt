@@ -61,7 +61,7 @@ private val websocketApp by lazy {
         use(jwtMiddleware { request -> request.query["token"] })
         use(userLoadingMiddleware())
 
-        all("*") { request, response, _ ->
+        all("*path") { request, response, _ ->
             val connectionId = request.connectionId
             with(
                 request.scope.async {

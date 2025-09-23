@@ -1,9 +1,6 @@
 {
   "reject": [
-    "entities",
-    "express",
     "jsdom",
-    "mime",
     "read-pkg-up"
   ]
 }

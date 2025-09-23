@@ -21,7 +21,7 @@ fun Express.routes() {
         verifySlackSignature(),
         slackCommandResponse(),
     )
-    all("/api/*", apiGuard())
+    all("/api/*path", apiGuard())
     use("/api/graphql", urlencoded(json("extended" to true)), com.zegreatrob.coupling.server.external.express.json())
     use(
         "/api/graphql",
@@ -32,7 +32,7 @@ fun Express.routes() {
             },
         ),
     )
-    get("*", indexRoute())
+    get("*path", indexRoute())
 }
 
 data class CouplingContext(val scope: CoroutineScope, val commandDispatcher: CommandDispatcher)
