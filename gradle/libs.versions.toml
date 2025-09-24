@@ -24,7 +24,7 @@ org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 [plugins]
 com-apollographql-apollo = "com.apollographql.apollo:4.3.3"
 com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.12"
-com-github-ben-manes-versions = "com.github.ben-manes.versions:0.52.0"
+com-github-ben-manes-versions = "com.github.ben-manes.versions:0.53.0"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:1.8.13"
 com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:1.8.13"
