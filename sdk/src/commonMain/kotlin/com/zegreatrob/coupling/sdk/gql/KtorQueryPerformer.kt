@@ -35,7 +35,7 @@ interface KtorQueryPerformer :
     }
 
     private suspend fun postStringToJsonObject(body: JsonElement): JsonElement {
-        val result = client.post("api/graphql") {
+        val result = client.post("/api/graphql") {
             header("Authorization", "Bearer ${getIdToken()}")
             contentType(ContentType.Application.Json)
             setBody(body)

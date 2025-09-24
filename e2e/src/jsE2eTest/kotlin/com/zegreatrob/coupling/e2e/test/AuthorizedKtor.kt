@@ -73,4 +73,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-fun authorizedSdk(token: String) = couplingSdk({ token }, buildClientWithToken(), apolloClientUrl = "${process.env.BASEURL}")
+fun authorizedSdk(token: String) = couplingSdk({ token }, buildClientWithToken())

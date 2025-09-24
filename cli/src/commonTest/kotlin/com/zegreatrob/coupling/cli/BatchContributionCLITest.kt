@@ -19,7 +19,6 @@ import com.zegreatrob.tools.digger.model.Contribution
 import kotlin.test.Test
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 class BatchContributionCLITest {
@@ -51,9 +50,6 @@ class BatchContributionCLITest {
         val command = BatchContribution(
             exerciseScope,
             cannon,
-            object : Clock {
-                override fun now(): Instant = now
-            },
         )
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
@@ -92,7 +88,7 @@ class BatchContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = BatchContribution(exerciseScope, cannon, Clock.System)
+        val command = BatchContribution(exerciseScope, cannon)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${listOf(sourceContribution).toJsonString()}\'")
@@ -126,7 +122,7 @@ class BatchContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = BatchContribution(exerciseScope, cannon, Clock.System)
+        val command = BatchContribution(exerciseScope, cannon)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${listOf(sourceContribution.toJsonString())}\'")

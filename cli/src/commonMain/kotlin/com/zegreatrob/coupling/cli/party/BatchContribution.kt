@@ -12,12 +12,10 @@ import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.tools.digger.json.ContributionParser
 import kotlinx.coroutines.CoroutineScope
-import kotlin.time.Clock
 
 class BatchContribution(
     private val scope: CoroutineScope = cliScope,
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
-    private val clock: Clock,
 ) : CliktCommand(name = "batch"),
     ContributionCliCommand {
     private val file by option().default("")

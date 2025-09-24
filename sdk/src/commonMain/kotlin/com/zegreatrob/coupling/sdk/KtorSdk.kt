@@ -13,13 +13,12 @@ fun couplingSdk(
     getIdTokenFunc: suspend () -> String,
     httpClient: HttpClient,
     pipe: ActionPipe = ActionPipe,
-    apolloClientUrl: String,
 ) = DispatcherPipeCannon<CouplingSdkDispatcher>(
     KtorCouplingSdkDispatcher(
         getIdTokenFunc,
         httpClient,
         ApolloClient.Builder()
-            .serverUrl("${apolloClientUrl}api/graphql")
+            .serverUrl("/api/graphql")
             .ktorClient(httpClient)
             .build(),
     ),

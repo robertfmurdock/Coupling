@@ -14,5 +14,5 @@ fun party(): CliktCommand = Party()
     .subcommands(
         Contribution()
             .subcommands(SaveContribution(clock = Clock.System))
-            .subcommands(BatchContribution(clock = Clock.System)),
+            .subcommands(BatchContribution()),
     )
