@@ -22,7 +22,9 @@ import js.objects.unsafeJso
 import react.FC
 import react.Props
 import react.ReactNode
-import react.dom.svg.ReactSVG
+import react.dom.svg.ReactSVG.g
+import react.dom.svg.ReactSVG.text
+import react.dom.svg.TextAnchor
 
 external interface StoryEaseGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
@@ -30,15 +32,15 @@ external interface StoryEaseGraphProps : Props {
 }
 
 val StoryEaseTick = FC<TickProps> { props ->
-    ReactSVG.g {
+    g {
         transform = "translate(${props.x},${props.y})"
-        ReactSVG.text {
+        text {
             x = 0.0
             y = 0.0
             dy = 4.0
             fill = "#666"
             transform = "rotate(-70)"
-            textAnchor = "end"
+            textAnchor = TextAnchor.end
             +props.payload.value?.toString()
         }
     }
