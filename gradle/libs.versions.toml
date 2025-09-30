@@ -15,7 +15,7 @@ org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappe
 org-jetbrains-kotlinx-kotlinx-coroutines-bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2"
 org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat"
 org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.9.0"
-org-junit-junit-bom = "org.junit:junit-bom:5.13.4"
+org-junit-junit-bom = "org.junit:junit-bom:6.0.0"
 org-kotlincrypto-hash-bom = "org.kotlincrypto.hash:bom:0.8.0"
 org-kotools-types = { module = "org.kotools:types", version.ref = "org-kotools" }
 org-kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-serialization", version.ref = "org-kotools" }
