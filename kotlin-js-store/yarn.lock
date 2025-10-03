@@ -159,10 +159,10 @@
     "@smithy/util-utf8" "^4.2.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.901.0":
-  version "3.901.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.901.0.tgz#b899efdb0d8540a083f24d502a09e5f8cb6f2b08"
-  integrity sha512-LZ7j0UwRnPh6NgioRqeAvbBLvlUUjolEA+vvmmSnWZSGvs8T/QZzytvKvDPKpr5sYTJKVDOYqOXE9eDuqHaqjw==
+"@aws-sdk/client-dynamodb@3.902.0":
+  version "3.902.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.902.0.tgz#74e73074c79f967ae4e8d23a20d272eca217f6a9"
+  integrity sha512-WoBzn00MEvnhKFkrFPpqDjHxaqOriwJ2N00/GsoppHiMMPqinN53wB/phur7BsvhQCZZMbnIWrslcZcQxOzFLg==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -728,13 +728,13 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.901.0":
-  version "3.901.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.901.0.tgz#6d8cf9fbe13b599021866ef43c0aacaad61c9aeb"
-  integrity sha512-o7u+IIJgspWOkBzR657zBl+HJ+YyRKgWBlhhkSvIWTLMUbzrYCi/+Jg/th9VUHU7W7Rw/RmBE8ehYJtFjOg+gg==
+"@aws-sdk/lib-dynamodb@3.902.0":
+  version "3.902.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.902.0.tgz#eef6290400c652e3aaa50e17d8fee5e8c5aac835"
+  integrity sha512-fe7DAz/57St3lrJoxayu55CJBj8JNhTh2keR+JNtA2lDdY7FZnRalUJse5Mts2gqG5+3zUdPDfMcevu7vhXIzw==
   dependencies:
     "@aws-sdk/core" "3.901.0"
-    "@aws-sdk/util-dynamodb" "3.901.0"
+    "@aws-sdk/util-dynamodb" "3.902.0"
     "@smithy/core" "^3.14.0"
     "@smithy/smithy-client" "^4.7.0"
     "@smithy/types" "^4.6.0"
@@ -951,10 +951,10 @@
     "@smithy/types" "^2.3.1"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.901.0":
-  version "3.901.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.901.0.tgz#8631c4ee86c1f03677e6239f9f13ea2b22dff94c"
-  integrity sha512-J5Pq/t9IgPM9NuCihRsK7xyMJeSljDs46c8HNg0iFOT9ESMggwUO4cJM9wx72acRP/c96q+wlLbsbAxUVR4TgQ==
+"@aws-sdk/util-dynamodb@3.902.0":
+  version "3.902.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.902.0.tgz#4c8246a3de4e75eedec27fbc62e07df158eacdb0"
+  integrity sha512-elZ9e671bda7Z1NzNSHiYKktnoXx4z2FJCJf1hpHrA/rMqVmnErNl/QzHZqF+0jH/0UoK7g4LCjJRO5A+reBoQ==
   dependencies:
     tslib "^2.6.2"
 
@@ -14449,10 +14449,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.19.1:
-  version "4.19.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.19.1.tgz#bdb58b4df7afd3910f184878ad1315576f1dc633"
-  integrity sha512-TnkStWwPYFfXd+AxSYA2oMmOTUafxykEmY1ySQWD7ddbtlkXFr031Uam4s6YBzDCI2Mg8dYAqdkZD0bkXnfGTw==
+serverless@^4.20.2:
+  version "4.20.2"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.20.2.tgz#8f128a49b62cf9be09adcbf56bd4e7556d12172b"
+  integrity sha512-AWUzYKekW5mT5qRBrIOvi5E0pw8OWen6MLO1KxtTH7/b9els2i+gtegfDBa0DhiSCg6Hph8CBIllfQY4hmXKUw==
   dependencies:
     axios "^1.12.1"
     axios-proxy-builder "^0.1.2"
