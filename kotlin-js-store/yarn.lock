@@ -51,17 +51,17 @@
     "@csstools/css-tokenizer" "^3.0.3"
     lru-cache "^10.4.3"
 
-"@auth0/auth0-react@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.5.0.tgz#0718750ad79fa06074b674405fea13a1ee8c412d"
-  integrity sha512-o2nuJ85D4ESRybh3zbA5Dl1Oe17fRZL+/Q17b1qQdS+0QWZrXTEzTMD0wb0tYGST5rJb8rt7pVh6Tj4cWhdTCQ==
+"@auth0/auth0-react@2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.6.0.tgz#f6b5c858410759698f601f339f99869576ea6c00"
+  integrity sha512-CPzmMlFS0adw6BfRAIC15MC7o12pq3bC1UiPwE8X4Ttwv3sjREtnOuJd6ZERkwHemgiYmKIdM/PcieV0i9cIWQ==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.4.1"
+    "@auth0/auth0-spa-js" "^2.5.0"
 
-"@auth0/auth0-spa-js@^2.4.1":
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.4.1.tgz#48fcde461684be720a664746a3eaf6c1aca7e7d7"
-  integrity sha512-GE1XPLEgEUeqYBw5VcA52+3ubJDh4VKZFqdu0mr6h7anu+rFZb389cDbfpW145I23T1knZB/jvQtuRrkcLuT+Q==
+"@auth0/auth0-spa-js@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.5.0.tgz#f42c1fe4de15867d44d73c201c9bd6c464c22008"
+  integrity sha512-4Xvx2E4N2Airr1Rp+KOejdDbpj5LnfLtNZ/TaOdo7VbRGmpWAYkyGFcF9BBQSQ10rGhFn/GaBHIZECyskruAfg==
   dependencies:
     browser-tabs-lock "^1.2.15"
     dpop "^2.1.1"
