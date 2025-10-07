@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.express.middleware
 
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.jwtMiddleware
+import com.zegreatrob.coupling.server.external.compression.compression
 import com.zegreatrob.coupling.server.external.express.Express
 
 fun Express.middleware() {
@@ -13,4 +14,5 @@ fun Express.middleware() {
     }
     use(staticResourcesPublic())
     use(jwtMiddleware())
+    use(compression())
 }
