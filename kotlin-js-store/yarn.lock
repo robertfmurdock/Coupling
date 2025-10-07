@@ -4770,17 +4770,17 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.6.0.tgz#41dd6093d34652cddb5d5bdeee04eafc33826668"
   integrity sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==
 
-"@slack/bolt@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.4.0.tgz#99f2123fe20101e2c4dece78bde3070c323b0316"
-  integrity sha512-FjGl1+hUo0w6ZSP2v3ZyjEkpGnA2t83Kz/Et2aEtIe8rRxrHd8R9CKShpd7BesuIcvqaz2eVe33YiKGohOiMKw==
+"@slack/bolt@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-4.5.0.tgz#92a6a137fbeb944fc0b4a2ab7bcb66538d418b43"
+  integrity sha512-1YbgO/UDLYa0vOtGsTohpnl/dSKwo7RbUd29IJMfqNDLn+t81MmIL0w2KPNjZJQLsoevTRNCdHDeh4PJyY8DIA==
   dependencies:
     "@slack/logger" "^4.0.0"
-    "@slack/oauth" "^3.0.3"
-    "@slack/socket-mode" "^2.0.4"
-    "@slack/types" "^2.14.0"
-    "@slack/web-api" "^7.9.1"
-    axios "^1.8.3"
+    "@slack/oauth" "^3.0.4"
+    "@slack/socket-mode" "^2.0.5"
+    "@slack/types" "^2.17.0"
+    "@slack/web-api" "^7.11.0"
+    axios "^1.12.0"
     express "^5.0.0"
     path-to-regexp "^8.1.0"
     raw-body "^3"
@@ -4793,18 +4793,6 @@
   dependencies:
     "@types/node" ">=18.0.0"
 
-"@slack/oauth@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@slack/oauth/-/oauth-3.0.3.tgz#311f929ac77a7f528853349b05d5710793231a74"
-  integrity sha512-N3pLJPacZ57bqmD1HzHDmHe/CNsL9pESZXRw7pfv6QXJVRgufPIW84aRpAez2Xb0616RpGBYZW5dZH0Nbskwyg==
-  dependencies:
-    "@slack/logger" "^4"
-    "@slack/web-api" "^7.9.1"
-    "@types/jsonwebtoken" "^9"
-    "@types/node" ">=18"
-    jsonwebtoken "^9"
-    lodash.isstring "^4"
-
 "@slack/oauth@^3.0.4":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@slack/oauth/-/oauth-3.0.4.tgz#4dc5d7de81b90aa714b09e9a6158ff9dfdac1639"
@@ -4816,22 +4804,17 @@
     "@types/node" ">=18"
     jsonwebtoken "^9"
 
-"@slack/socket-mode@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@slack/socket-mode/-/socket-mode-2.0.4.tgz#ce6155e3e69aa6d43b1ea76a4f01431f7e7599c2"
-  integrity sha512-PB2fO4TSv47TXJ6WlKY7BeVNdcHcpPOxZsztGyG7isWXp69MVj+xAzQ3KSZ8aVTgV59f8xFJPXSHipn1x2Z5IQ==
+"@slack/socket-mode@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@slack/socket-mode/-/socket-mode-2.0.5.tgz#6156dacf86417ec1b96a440eef9c068566eae343"
+  integrity sha512-VaapvmrAifeFLAFaDPfGhEwwunTKsI6bQhYzxRXw7BSujZUae5sANO76WqlVsLXuhVtCVrBWPiS2snAQR2RHJQ==
   dependencies:
     "@slack/logger" "^4"
-    "@slack/web-api" "^7.9.1"
+    "@slack/web-api" "^7.10.0"
     "@types/node" ">=18"
     "@types/ws" "^8"
     eventemitter3 "^5"
     ws "^8"
-
-"@slack/types@^2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@slack/types/-/types-2.14.0.tgz#913946b4bcb635dad1d39ceca73699215c38cf6f"
-  integrity sha512-n0EGm7ENQRxlXbgKSrQZL69grzg1gHLAVd+GlRVQJ1NSORo0FrApR7wql/gaKdu2n4TO83Sq/AmeUOqD60aXUA==
 
 "@slack/types@^2.17.0":
   version "2.17.0"
@@ -4873,24 +4856,6 @@
     axios "^1.11.0"
     eventemitter3 "^5.0.1"
     form-data "^4.0.4"
-    is-electron "2.2.2"
-    is-stream "^2"
-    p-queue "^6"
-    p-retry "^4"
-    retry "^0.13.1"
-
-"@slack/web-api@^7.9.1":
-  version "7.9.1"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.9.1.tgz#bfbb2050fda3b09a33ab03eb490db39e354fde28"
-  integrity sha512-qMcb1oWw3Y/KlUIVJhkI8+NcQXq1lNymwf+ewk93ggZsGd6iuz9ObQsOEbvlqlx1J+wd8DmIm3DORGKs0fcKdg==
-  dependencies:
-    "@slack/logger" "^4.0.0"
-    "@slack/types" "^2.9.0"
-    "@types/node" ">=18.0.0"
-    "@types/retry" "0.12.0"
-    axios "^1.8.3"
-    eventemitter3 "^5.0.1"
-    form-data "^4.0.0"
     is-electron "2.2.2"
     is-stream "^2"
     p-queue "^6"
@@ -7181,15 +7146,6 @@ axios@^1.12.0, axios@^1.12.1:
     form-data "^4.0.4"
     proxy-from-env "^1.1.0"
 
-axios@^1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.8.3.tgz#9ebccd71c98651d547162a018a1a95a4b4ed4de8"
-  integrity sha512-iP4DebzoNlP/YN2dpwCgb8zoCmhtkajzS48JvwmkSkXvPI3DHc7m+XYL5tGnSlJtR6nImXZmdCuN5aP8dh1d8A==
-  dependencies:
-    follow-redirects "^1.15.6"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
-
 b4a@^1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/b4a/-/b4a-1.6.4.tgz#ef1c1422cae5ce6535ec191baeed7567443f36c9"
@@ -7533,17 +7489,6 @@ browserslist@^4.24.0:
     node-releases "^2.0.18"
     update-browserslist-db "^1.1.0"
 
-browserslist@^4.24.5:
-  version "4.26.3"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.26.3.tgz#40fbfe2d1cd420281ce5b1caa8840049c79afb56"
-  integrity sha512-lAUU+02RFBuCKQPj/P6NgjlbCnLBMp4UtgTx7vNHd3XSIJF87s9a5rA3aH2yw3GS9DqZAUbOtZdCCiZeVRqt0w==
-  dependencies:
-    baseline-browser-mapping "^2.8.9"
-    caniuse-lite "^1.0.30001746"
-    electron-to-chromium "^1.5.227"
-    node-releases "^2.0.21"
-    update-browserslist-db "^1.1.3"
-
 browserslist@^4.25.0:
   version "4.25.1"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.25.1.tgz#ba9e8e6f298a1d86f829c9b975e07948967bb111"
@@ -7552,6 +7497,17 @@ browserslist@^4.25.0:
     caniuse-lite "^1.0.30001726"
     electron-to-chromium "^1.5.173"
     node-releases "^2.0.19"
+    update-browserslist-db "^1.1.3"
+
+browserslist@^4.26.3:
+  version "4.26.3"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.26.3.tgz#40fbfe2d1cd420281ce5b1caa8840049c79afb56"
+  integrity sha512-lAUU+02RFBuCKQPj/P6NgjlbCnLBMp4UtgTx7vNHd3XSIJF87s9a5rA3aH2yw3GS9DqZAUbOtZdCCiZeVRqt0w==
+  dependencies:
+    baseline-browser-mapping "^2.8.9"
+    caniuse-lite "^1.0.30001746"
+    electron-to-chromium "^1.5.227"
+    node-releases "^2.0.21"
     update-browserslist-db "^1.1.3"
 
 bser@2.1.1:
@@ -10105,15 +10061,6 @@ form-data-encoder@^2.1.2:
   resolved "https://registry.yarnpkg.com/form-data-encoder/-/form-data-encoder-2.1.4.tgz#261ea35d2a70d48d30ec7a9603130fa5515e9cd5"
   integrity sha512-yDYSgNMraqvnxiEXO4hi88+YZxaHC6QKzb5N84iRCTDeRO7ZALpir/lVmf/uXUhnwUr2O4HU8s/n6x+yNjQkHw==
 
-form-data@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
-  integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
-  dependencies:
-    asynckit "^0.4.0"
-    combined-stream "^1.0.8"
-    mime-types "^2.1.12"
-
 form-data@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.4.tgz#784cdcce0669a9d68e94d11ac4eea98088edd2c4"
@@ -12013,7 +11960,7 @@ lodash.isplainobject@^4.0.6:
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
   integrity sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==
 
-lodash.isstring@^4, lodash.isstring@^4.0.1:
+lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
   integrity sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==
@@ -12215,10 +12162,10 @@ map-cache@^0.2.0:
   resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
   integrity sha512-8y/eV9QQZCiyn1SprXSrCmqJN0yNRATe+PO8ztwqrvrbdRLA3eYJF0yaR0YayLWkMbsQSKWS9N2gPcGEc4UsZg==
 
-marked@^16.3.0:
-  version "16.3.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-16.3.0.tgz#2f513891f867d6edc4772b4a026db9cc331eb94f"
-  integrity sha512-K3UxuKu6l6bmA5FUwYho8CfJBlsUWAooKtdGgMcERSpF7gcBUrCGsLH7wDaaNOzwq18JzSUDyoEb/YsrqMac3w==
+marked@^16.4.0:
+  version "16.4.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-16.4.0.tgz#b0c22707a3add380827a75437131801cd54bf425"
+  integrity sha512-CTPAcRBq57cn3R8n3hwc2REddc28hjR7RzDXQ+lXLmMJYqn20BaI2cGw6QjgZGIgVfp2Wdfw4aMzgNteQ6qJgQ==
 
 math-intrinsics@^1.1.0:
   version "1.1.0"
@@ -14254,7 +14201,7 @@ schema-utils@^4.0.0:
     ajv-formats "^2.1.1"
     ajv-keywords "^5.1.0"
 
-schema-utils@^4.2.0, schema-utils@^4.3.2:
+schema-utils@^4.2.0:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.3.2.tgz#0c10878bf4a73fd2b1dfd14b9462b26788c806ae"
   integrity sha512-Gn/JaSk/Mt9gYubxTtSn/QCV4em9mpAPiR1rqy/Ocu19u/G9J5WWdNoUT4SiV6mFC3y6cxyFcFwdzPM3FgxGAQ==
@@ -14268,6 +14215,16 @@ schema-utils@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.3.0.tgz#3b669f04f71ff2dfb5aba7ce2d5a9d79b35622c0"
   integrity sha512-Gf9qqc58SpCA/xdziiHz35F4GNIWYWZrEshUc/G/r5BnLph6xpKuLeoJoQuj5WfBIx/eQLf+hmVPYHaxJu7V2g==
+  dependencies:
+    "@types/json-schema" "^7.0.9"
+    ajv "^8.9.0"
+    ajv-formats "^2.1.1"
+    ajv-keywords "^5.1.0"
+
+schema-utils@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.3.3.tgz#5b1850912fa31df90716963d45d9121fdfc09f46"
+  integrity sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==
   dependencies:
     "@types/json-schema" "^7.0.9"
     ajv "^8.9.0"
@@ -15114,7 +15071,7 @@ tapable@^2.0.0, tapable@^2.2.0, tapable@^2.2.1:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
   integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
-tapable@^2.2.3:
+tapable@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.3.0.tgz#7e3ea6d5ca31ba8e078b560f0d83ce9a14aa8be6"
   integrity sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==
@@ -15953,10 +15910,10 @@ webpack-sources@^3.3.3:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.3.3.tgz#d4bf7f9909675d7a070ff14d0ef2a4f3c982c723"
   integrity sha512-yd1RBzSGanHkitROoPFd6qsrxt+oFhg/129YzheDGqeustzX0vTZJZsSsQjVQC4yzBQ56K55XU8gaNCtIzOnTg==
 
-webpack@5.102.0:
-  version "5.102.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.102.0.tgz#7a2416e6da356c35f1fb35333d2f5cee0133e953"
-  integrity sha512-hUtqAR3ZLVEYDEABdBioQCIqSoguHbFn1K7WlPPWSuXmx0031BD73PSE35jKyftdSh4YLDoQNgK4pqBt5Q82MA==
+webpack@5.102.1:
+  version "5.102.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.102.1.tgz#1003a3024741a96ba99c37431938bf61aad3d988"
+  integrity sha512-7h/weGm9d/ywQ6qzJ+Xy+r9n/3qgp/thalBbpOi5i223dPXKi04IBtqPN9nTd+jBc7QKfvDbaBnFipYp4sJAUQ==
   dependencies:
     "@types/eslint-scope" "^3.7.7"
     "@types/estree" "^1.0.8"
@@ -15966,7 +15923,7 @@ webpack@5.102.0:
     "@webassemblyjs/wasm-parser" "^1.14.1"
     acorn "^8.15.0"
     acorn-import-phases "^1.0.3"
-    browserslist "^4.24.5"
+    browserslist "^4.26.3"
     chrome-trace-event "^1.0.2"
     enhanced-resolve "^5.17.3"
     es-module-lexer "^1.2.1"
@@ -15978,8 +15935,8 @@ webpack@5.102.0:
     loader-runner "^4.2.0"
     mime-types "^2.1.27"
     neo-async "^2.6.2"
-    schema-utils "^4.3.2"
-    tapable "^2.2.3"
+    schema-utils "^4.3.3"
+    tapable "^2.3.0"
     terser-webpack-plugin "^5.3.11"
     watchpack "^2.4.4"
     webpack-sources "^3.3.3"
