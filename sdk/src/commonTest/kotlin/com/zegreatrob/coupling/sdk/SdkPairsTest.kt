@@ -146,6 +146,36 @@ class SdkPairsTest {
     }
 
     @Test
+    fun excludeRetiredWillNotIncludeContributorsThatWereNeverPlayers() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(4)
+    }) {
+        savePartyStateWithFixedPlayerOrder(party, players, emptyList())
+        sdk().fire(
+            SaveContributionCommand(
+                partyId = party.id,
+                contributionList = listOf(
+                    ContributionInput(
+                        contributionId = ContributionId.new(),
+                        participantEmails = setOf("extra-player@zegreatrob.com"),
+                        commitCount = null,
+                        name = null,
+                    ),
+                ),
+            ),
+        )
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs(includeRetired = false) { players() } } })
+    } verify { result ->
+        result?.party?.pairs?.mapNotNull {
+            it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element)
+        }
+            ?.flatten()
+            ?.distinct()
+            .assertIsEqualTo(players)
+    }
+
+    @Test
     fun willIncludeMobsFromContributionHistoryViaAdditionalEmailsIgnoringCase() = asyncSetup(object {
         val party = stubPartyDetails()
         val player1 = stubPlayer().copy(additionalEmails = setOf("excellent.continuousexcellence.io"))

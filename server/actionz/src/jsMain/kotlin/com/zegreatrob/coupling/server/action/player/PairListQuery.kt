@@ -70,8 +70,9 @@ data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
 
         fun PlayerPair.anyPlayersAreRetired(
             retiredPlayerListData: List<PartyRecord<Player>>,
-        ): Boolean = players?.map { it.element.id }?.any { playerId ->
-            retiredPlayerListData.any { it.data.player.id == playerId }
+        ): Boolean = players?.any { pairPlayerRecord ->
+            val playerId = pairPlayerRecord.element.id
+            pairPlayerRecord.isDeleted || retiredPlayerListData.any { it.data.player.id == playerId }
         } == true
 
         private suspend fun PairListQuery.loadData() = coroutineScope {
@@ -90,6 +91,7 @@ data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
             partyId = query.partyId,
             defaultPlayer.copy(id = PlayerId(email.toNotBlankString().getOrThrow()), email = email),
             "-".toNotBlankString().getOrThrow(),
+            isDeleted = true,
         )
     }
 }

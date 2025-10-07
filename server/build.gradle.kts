@@ -97,9 +97,11 @@ tasks {
             compileKotlinJs,
             jsProcessResources,
             compileProductionExecutableKotlinJs,
+            jsProductionExecutableCompileSync,
             "jsProductionExecutableCompileSync",
         )
         mustRunAfter(clean, ":kotlinStoreYarnLock")
+        inputs.files(jsProductionExecutableCompileSync.map { it.outputs.files })
         inputs.dir(jsProcessResources.map { it.destinationDir.path })
         inputs.file(compileProductionExecutableKotlinJs.map { compileTask ->
             compileTask.destinationDirectory.file(compileTask.compilerOptions.moduleName.map { "$it.mjs" })
