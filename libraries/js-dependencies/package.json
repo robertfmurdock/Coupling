@@ -28,7 +28,7 @@
     "@slack/oauth": "^3.0.4",
     "@slack/web-api": "^7.11.0",
     "@slack/webhook": "^7.0.6",
-    "@stripe/react-stripe-js": "^5.0.0",
+    "@stripe/react-stripe-js": "^5.2.0",
     "@stripe/stripe-js": "^8.0.0",
     "babel-loader": "^10.0.0",
     "chromedriver": "141.0.0",
