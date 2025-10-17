@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@auth0/auth0-react": "2.7.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.911.0",
+    "@auth0/auth0-react": "2.8.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.912.0",
     "@aws-sdk/client-dynamodb": "3.911.0",
     "@aws-sdk/client-lambda": "~3.911.0",
     "@aws-sdk/lib-dynamodb": "3.911.0",
@@ -58,7 +58,7 @@
     "jwks-rsa": "3.2.0",
     "jwt-decode": "4.0.0",
     "karma": "^6.4.4",
-    "marked": "^16.4.0",
+    "marked": "^16.4.1",
     "mime": "4.1.0",
     "mini-css-extract-plugin": "^2.9.4",
     "minimist": "^1.2.8",
@@ -73,7 +73,7 @@
     "react-use-websocket": "^4.13.0",
     "reactjs-popup": "^2.0.6",
     "read-pkg-up": "^4.0.0",
-    "recharts": "^3.2.1",
+    "recharts": "^3.3.0",
     "resolve-pkg": "^2.0.0",
     "serverless": "^4.21.1",
     "serverless-http": "^4.0.0",
