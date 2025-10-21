@@ -8,7 +8,7 @@
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
-    "@graphql-codegen/cli": "^6.0.0",
+    "@graphql-codegen/cli": "^6.0.1",
     "@graphql-codegen/kotlin": "^3.0.2",
     "@graphql-tools/schema": "^10.0.25",
     "@graphql-tools/stitch": "^10.0.2",
