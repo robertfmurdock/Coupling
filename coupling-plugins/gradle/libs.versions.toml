@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.25.2"
 org-jlleitschuh-gradle-ktlint = "13.1.0"
@@ -13,7 +13,7 @@ com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.8.17"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:2.2.20"
+org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:2.2.21"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
 org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.2.0"
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.17"
@@ -21,5 +21,5 @@ org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.17"
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.53.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.1"
-org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:2.2.20"
+org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:2.2.21"
 org-jmailen-kotlinter = "org.jmailen.kotlinter:5.2.0"
