@@ -13,10 +13,10 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.unsafeJso
 import kotools.types.text.toNotBlankString
 import react.Props
 import react.PropsWithChildren
+import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -28,13 +28,14 @@ import web.cssom.Position
 import web.cssom.deg
 import web.cssom.em
 import web.cssom.px
+import web.html.HtmlSource
 
 val AboutPage by nfc<PageProps> {
     aboutPageContent {
         div {
-            dangerouslySetInnerHTML = unsafeJso {
-                __html = parse(MarkdownContent.content.aboutMd)
-            }
+            dangerouslySetInnerHTML = DangerouslySetInnerHTML(
+                __html = HtmlSource(parse(MarkdownContent.content.aboutMd)),
+            )
         }
     }
 }

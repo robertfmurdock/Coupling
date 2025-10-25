@@ -11,14 +11,15 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.unsafeJso
 import react.Props
+import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h4
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.p
 import react.dom.html.ReactHTML.select
 import react.useState
+import web.html.HtmlSource
 
 external interface BoostConfigurationProps : Props {
     var subscription: SubscriptionDetails?
@@ -35,7 +36,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
     var boostedParty by useState { props.parties.firstOrNull { props.boost?.partyIds?.contains(it.id) == true } }
 
     if (subscription?.isActive == true) {
-        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(MarkdownContent.content.boostMd) } }
+        div { dangerouslySetInnerHTML = DangerouslySetInnerHTML(HtmlSource(parse(MarkdownContent.content.boostMd))) }
 
         h4 { +"Currently Boosting:" }
         p { +(boostedParty?.name ?: "No party") }
