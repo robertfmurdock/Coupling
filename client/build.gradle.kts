@@ -15,7 +15,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.testmints.action-mint")
     kotlin("plugin.serialization")
-//    alias(libs.plugins.io.github.turansky.kfc.application)
+    alias(libs.plugins.io.github.turansky.kfc.application)
     alias(libs.plugins.io.github.turansky.seskar)
 }
 
