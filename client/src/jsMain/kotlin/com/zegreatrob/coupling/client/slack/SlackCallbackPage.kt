@@ -15,12 +15,13 @@ import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
 import js.array.component1
-import js.objects.unsafeJso
 import react.Props
 import react.PropsWithValue
 import react.create
+import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
 import react.router.dom.useSearchParams
+import web.html.HtmlSource
 
 val SlackCallbackPage by nfc<PageProps> { props ->
     val (urlSearchParams) = useSearchParams()
@@ -56,7 +57,9 @@ val SlackCallbackLoadContent by nfc<PropsWithValue<DataLoadState<VoidResult>>> {
 }
 
 val SlackInstallSuccess by nfc<Props> {
-    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(MarkdownContent.content.installSuccessMd) } }
+    div {
+        dangerouslySetInnerHTML = DangerouslySetInnerHTML(HtmlSource(parse(MarkdownContent.content.installSuccessMd)))
+    }
     ReturnToCouplingButton {
         to = "/parties"
     }

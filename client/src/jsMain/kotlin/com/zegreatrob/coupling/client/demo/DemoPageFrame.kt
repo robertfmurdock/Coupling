@@ -18,7 +18,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.ActionCannon
 import emotion.react.css
-import js.objects.unsafeJso
 import popper.core.Modifier
 import popper.core.ModifierPhases
 import popper.core.PositioningStrategy
@@ -31,6 +30,7 @@ import popper.core.modifiers.Padding
 import react.ChildrenBuilder
 import react.Props
 import react.RefObject
+import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
 import react.popper.PopperInstance
 import react.popper.UsePopperOptions
@@ -46,6 +46,7 @@ import web.cssom.px
 import web.cssom.vw
 import web.dom.document
 import web.html.HTMLElement
+import web.html.HtmlSource
 import web.timers.setTimeout
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -92,11 +93,11 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
             css { pointerEvents = None.none }
             when (state) {
                 is Start -> aboutPageContent {
-                    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(state.text) } }
+                    div { dangerouslySetInnerHTML = DangerouslySetInnerHTML(HtmlSource(parse(state.text))) }
                 }
 
                 is ShowIntro -> aboutPageContent {
-                    div { dangerouslySetInnerHTML = unsafeJso { __html = parse(state.text) } }
+                    div { dangerouslySetInnerHTML = DangerouslySetInnerHTML(HtmlSource(parse(state.text))) }
                 }
 
                 is MakeParty -> partyConfigFrame(state)
@@ -128,7 +129,7 @@ fun ChildrenBuilder.popperDiv(
         arrowRef = arrowRef,
         popperInstance = popperInstance,
     ) {
-        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(state.description) } }
+        div { dangerouslySetInnerHTML = DangerouslySetInnerHTML(HtmlSource(parse(state.description))) }
         if (state.showReturnButton) {
             returnToCouplingButton()
         }
@@ -139,7 +140,7 @@ private fun popperOptions(arrowRef: RefObject<HTMLElement>, state: DemoAnimation
     placement = state.placement,
     strategy = PositioningStrategy.absolute,
     modifiers = arrayOf(
-        Modifier<ArrowOptions>(
+        Modifier(
             name = Arrow,
             options = ArrowOptions(
                 element = arrowRef.current,
@@ -148,7 +149,7 @@ private fun popperOptions(arrowRef: RefObject<HTMLElement>, state: DemoAnimation
             phase = ModifierPhases.main,
             enabled = true,
         ),
-        Modifier<OffsetOptions>(
+        Modifier(
             name = Offset,
             options = OffsetOptions.invoke(Offset(0, 10)),
             phase = ModifierPhases.main,

@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.client.components.external.marked.parse
 import com.zegreatrob.coupling.client.components.external.reactpopup.popup
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.objects.unsafeJso
 import kotlinx.browser.localStorage
 import react.Props
 import react.create
+import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -26,6 +26,7 @@ import web.cssom.VerticalAlign
 import web.cssom.ident
 import web.cssom.px
 import web.cssom.s
+import web.html.HtmlSource
 import kotlin.js.json
 
 private fun saveNotificationLog(updatedThing: Array<String>) {
@@ -79,10 +80,7 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
                 marginRight = 15.px
                 marginBottom = 15.px
             }
-            div {
-                dangerouslySetInnerHTML =
-                    unsafeJso { __html = parse(recentInfoMd) }
-            }
+            div { dangerouslySetInnerHTML = DangerouslySetInnerHTML.invoke(HtmlSource(parse(recentInfoMd))) }
         }
     },
     contentStyle = json(

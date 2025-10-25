@@ -17,8 +17,8 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.objects.unsafeJso
 import react.Props
+import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
@@ -30,6 +30,7 @@ import react.router.dom.LinkProps
 import react.useMemo
 import react.useState
 import web.dom.ElementId
+import web.html.HtmlSource
 import kotlin.uuid.Uuid
 
 external interface SlackConnectPageContentProps : Props {
@@ -90,7 +91,11 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
             }
         }
     } else {
-        div { dangerouslySetInnerHTML = unsafeJso { __html = parse(MarkdownContent.content.connectSuccessMd) } }
+        div {
+            dangerouslySetInnerHTML = DangerouslySetInnerHTML(
+                __html = HtmlSource(parse(MarkdownContent.content.connectSuccessMd)),
+            )
+        }
         ReturnToCouplingButton { to = "/${command.partyId.value}/pairAssignments/current/" }
     }
 }
