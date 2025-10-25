@@ -27,6 +27,7 @@ dependencies {
     implementation("com.zegreatrob.tools:tagger-plugin")
     implementation("com.zegreatrob.tools:digger-plugin")
     implementation(kotlin("gradle-plugin", libs.versions.kotlin.get()))
+    implementation(libs.org.jetbrains.kotlin.plugin.js.plain.objects)
     implementation(libs.com.fasterxml.jackson.core.jackson.databind)
     implementation(libs.com.github.ben.manes.gradle.versions.plugin)
     implementation(libs.org.apache.logging.log4j.log4j.core)

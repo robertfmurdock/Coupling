@@ -29,6 +29,7 @@ com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:1.8.17"
 com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:1.8.17"
 io-github-turansky-seskar = "io.github.turansky.seskar:4.27.0"
+io-github-turansky-kfc-application = "io.github.turansky.kfc.application:14.13.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.1"
 
 [versions]
