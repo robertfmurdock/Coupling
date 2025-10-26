@@ -24,6 +24,14 @@ export default defineConfig(({command}) => {
         server: {
             port: 3000
         },
+        build: {
+            rollupOptions: {
+                external: Object.keys(cdnSettings),
+                output: {
+                    globals: cdnSettings,
+                },
+            },
+        },
         assetsInclude: [
             "**/*.md"
         ],
