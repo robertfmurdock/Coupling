@@ -123,6 +123,7 @@ dependencies {
 
     jsTestImplementation(project(":libraries:stub-model"))
     jsTestImplementation(project(":libraries:test-logging"))
+    jsTestImplementation(npmConstrained("rollup-plugin-visualizer"))
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")
     jsTestImplementation("com.zegreatrob.testmints:minspy")
@@ -171,9 +172,9 @@ tasks {
         dependsOn(lookupCdnUrls, jsProcessResources)
         mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
+        inputs.file(project.layout.projectDirectory.file("vite.config.mjs"))
         inputs.dir(jsProcessResources.map { it.destinationDir })
         inputs.file(File(project.projectDir, "cdn.settings.json"))
-        outputs.dir(outputDirectory.dir("html"))
         outputs.file(outputDirectory.file("client-vendor.js"))
         outputs.file(outputDirectory.file("client-kotlin.js"))
         outputs.file(outputDirectory.file("client-coupling-core.js"))

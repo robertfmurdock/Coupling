@@ -75,6 +75,7 @@
     "read-pkg-up": "^4.0.0",
     "recharts": "^3.3.0",
     "resolve-pkg": "^2.0.0",
+    "rollup-plugin-visualizer": "6.0.5",
     "serverless": "^4.22.0",
     "serverless-http": "^4.0.0",
     "serverless-offline": "^14.4.0",

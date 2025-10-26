@@ -1,7 +1,9 @@
-import {defineConfig} from 'vite'
-import {createHtmlPlugin} from 'vite-plugin-html'
-import path from 'path'
 import fs from 'fs'
+import path from 'path'
+import {visualizer} from "rollup-plugin-visualizer";
+import {createHtmlPlugin} from 'vite-plugin-html'
+import {defineConfig} from 'vite'
+
 
 export default defineConfig(({command}) => {
     let cdnFile = fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json'), {encoding: "UTF-8"});
@@ -35,13 +37,8 @@ export default defineConfig(({command}) => {
         assetsInclude: [
             "**/*.md"
         ],
-        optimizeDeps: {
-            exclude: [
-
-            ]
-        },
         experimental: {
-            renderBuiltUrl(filename, {hostType}) {
+            "renderBuiltUrl": function (filename, {hostType}) {
                 if (hostType === 'js') {
                     return {runtime: `window.webpackPublicPath + ${JSON.stringify(filename)}`}
                 } else {
@@ -57,6 +54,7 @@ export default defineConfig(({command}) => {
                     data: {
                         htmlWebpackPlugin: {
                             options: {
+                                title: isServing ? 'Coupling Dev Server' : 'Coupling',
                                 appMountClass: 'view-container',
                                 cdnSettings: cdnSettings,
                                 cdnImportMap: cdnImportMap,
@@ -74,6 +72,7 @@ export default defineConfig(({command}) => {
                     },
                 }
             }),
+            visualizer({template: 'sunburst'}),
         ],
     });
 })

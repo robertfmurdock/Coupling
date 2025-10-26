@@ -26,7 +26,7 @@
           "imports":  <%- JSON.stringify(htmlWebpackPlugin.options.cdnImportMap) %>
         }
     </script>
-    <script>
+    <script type="module">
         <% for (const key in htmlWebpackPlugin.options.cdnSettings) { %>
             <% const value = htmlWebpackPlugin.options.cdnSettings[key] %>
             import * as <%= value %> from "<%= key%>";
