@@ -25,21 +25,6 @@ kotlin {
             target = "es2015"
             moduleKind = JsModuleKind.MODULE_ES
         }
-
-        browser {
-            webpackTask {
-                esModules = true
-
-                dependsOn("additionalResources")
-                inputs.files("${project.projectDir}/src/main/resources")
-                val profile: String? by project
-                if (!profile.isNullOrBlank()) {
-                    this.args.add("--profile")
-                    val statsFilePath = project.layout.buildDirectory.file("reports/stats.json").get().asFile.absolutePath
-                    this.args.add("--json=$statsFilePath")
-                }
-            }
-        }
     }
     sourceSets {
         sourceSets { all { languageSettings.optIn("kotlin.js.ExperimentalWasmJsInterop") } }
@@ -104,8 +89,6 @@ dependencies {
     jsMainImplementation(npmConstrained("favicons"))
     jsMainImplementation(npmConstrained("file-loader"))
     jsMainImplementation(npmConstrained("fitty"))
-    jsMainImplementation(npmConstrained("html-webpack-harddisk-plugin"))
-    jsMainImplementation(npmConstrained("html-webpack-plugin"))
     jsMainImplementation(npmConstrained("karma"))
     jsMainImplementation(npmConstrained("mini-css-extract-plugin"))
     jsMainImplementation(npmConstrained("raw-loader"))
