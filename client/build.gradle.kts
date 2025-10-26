@@ -1,10 +1,10 @@
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
 import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
@@ -118,19 +118,24 @@ rootProject.apply<TaggerPlugin>()
 rootProject.yarn.ignoreScripts = false
 
 tasks {
-    val cdnBuildOutput = project.layout.buildDirectory.file("cdn.json")
+    val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
+    val cdnBuildOutput = npmProjectDir.map { it.file("cdn.json") }
+    val settingsFile = File(project.projectDir, "cdn.settings.json")
+    val copyCdnSettings by registering(Copy::class) {
+        dependsOn(":kotlinNpmInstall")
+        from(settingsFile)
+        into(npmProjectDir)
+    }
     val lookupCdnUrls by registering(NodeExec::class) {
         setup(project)
         dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall")
         inputs.files(cdnLookupConfiguration)
         inputs.files(jsRuntimeClasspath)
-        val settingsFile = File(project.projectDir, "cdn.settings.json")
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)
         val cdnLookupFile = cdnLookupConfiguration.resolve().first()
         arguments = listOf("--no-warnings", cdnLookupFile.absolutePath) + settings.fieldNames().asSequence().toList()
-        val cdnOutputFile = file(cdnBuildOutput)
-        outputFile = cdnOutputFile
+        outputFile = file(cdnBuildOutput)
         outputs.cacheIf { true }
     }
     val projectResultPath = rootProject.layout.buildDirectory
@@ -150,7 +155,7 @@ tasks {
     compileProductionExecutableKotlinJs {}
 
     jsBrowserProductionVite {
-        dependsOn(lookupCdnUrls, jsProcessResources)
+        dependsOn(lookupCdnUrls, copyCdnSettings, jsProcessResources)
         mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
         inputs.file(project.layout.projectDirectory.file("vite.config.mjs"))

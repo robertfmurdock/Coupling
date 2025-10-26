@@ -118,7 +118,7 @@ tasks {
         inputs.file(compilation.npmProject.packageJsonFile)
 
         setup(project)
-        nodeModulesDir = compilation.npmProject.nodeModulesDir?.get()?.asFile
+        nodeModulesDir = compilation.npmProject.nodeModulesDir.get().asFile
         npmProjectDir = compilation.npmProject.dir.get().asFile
 
         nodeCommand = "webpack"

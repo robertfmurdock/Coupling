@@ -29,7 +29,7 @@ async function generateFavicons() {
 }
 
 function generateCdnInformation(isServing) {
-    let cdnFile = fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json'), {encoding: "UTF-8"});
+    let cdnFile = fs.readFileSync('cdn.json', {encoding: "UTF-8"});
     if (isServing) {
         cdnFile = cdnFile.replaceAll('production', 'development')
     }
@@ -39,7 +39,7 @@ function generateCdnInformation(isServing) {
             .filter((line) => !line.includes("TRACE"))
             .join("\n")
     )
-    const cdnSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/cdn.settings.json')))
+    const cdnSettings = JSON.parse(fs.readFileSync('cdn.settings.json'))
     const cdnImportMap = Object.fromEntries(
         Object.entries(cdnSettings).map(([key, value]) => [key, cdnResources[key]])
     );
