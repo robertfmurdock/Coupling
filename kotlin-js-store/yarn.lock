@@ -9954,7 +9954,7 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
-favicons@7.2.0:
+favicons@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/favicons/-/favicons-7.2.0.tgz#1f1662f1f69e5637c19275209003b7b822c24250"
   integrity sha512-k/2rVBRIRzOeom3wI9jBPaSEvoTSQEW4iM0EveBmBBKFxO8mSyyRWtDlfC3VnEfu0avmjrMzy8/ZFPSe6F71Hw==
@@ -15764,13 +15764,6 @@ webpack-cli@6.0.1:
     interpret "^3.1.1"
     rechoir "^0.8.0"
     webpack-merge "^6.0.1"
-
-webpack-favicons@1.5.43:
-  version "1.5.43"
-  resolved "https://registry.yarnpkg.com/webpack-favicons/-/webpack-favicons-1.5.43.tgz#fd80dff225b6b087e2060cfcbd9b3f485e6245ae"
-  integrity sha512-prAavTPgWzn8c7uc9s6XQEqywdyg5wa1jzmGbd3nn6fE1G2OXMl14PcprYB2xa/+b/Kplndd48oLbt8Nc6MwQw==
-  dependencies:
-    favicons "7.2.0"
 
 webpack-merge@^6.0.1:
   version "6.0.1"

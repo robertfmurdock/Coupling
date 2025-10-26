@@ -1,13 +1,35 @@
 import fs from 'fs'
+import fsp from 'fs/promises'
 import path from 'path'
-import {visualizer} from "rollup-plugin-visualizer";
 import {createHtmlPlugin} from 'vite-plugin-html'
 import {defineConfig} from 'vite'
+import {visualizer} from "rollup-plugin-visualizer";
+import favicons from "favicons";
 
+async function generateFavicons() {
+    const source = "kotlin/images/logo.png";
+    const response = await favicons(source, {path: "/images/favicons",});
+    const faviconDirectory = 'kotlin/images/favicons';
+    await fsp.mkdir(faviconDirectory, {recursive: true});
+    await Promise.all(
+        response.images.map(
+            async (image) =>
+                await fsp.writeFile(path.join(faviconDirectory, image.name), image.contents),
+        ),
+    );
+    await Promise.all(
+        response.files.map(
+            async (file) =>
+                await fsp.writeFile(path.join(faviconDirectory, file.name), file.contents),
+        ),
+    );
+    const htmlBasename = "index.html"
+    await fsp.writeFile(path.join(faviconDirectory, htmlBasename), response.html.join("\n"));
+    return response;
+}
 
-export default defineConfig(({command}) => {
+function generateCdnInformation(isServing) {
     let cdnFile = fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json'), {encoding: "UTF-8"});
-    let isServing = command === 'serve';
     if (isServing) {
         cdnFile = cdnFile.replaceAll('production', 'development')
     }
@@ -21,6 +43,13 @@ export default defineConfig(({command}) => {
     const cdnImportMap = Object.fromEntries(
         Object.entries(cdnSettings).map(([key, value]) => [key, cdnResources[key]])
     );
+    return {isServing, cdnSettings, cdnImportMap};
+}
+
+export default defineConfig(async ({command}) => {
+    const isServing = command === 'serve';
+    const response = await generateFavicons();
+    const {cdnSettings, cdnImportMap} = generateCdnInformation(isServing);
     return ({
         root: "kotlin",
         server: {
@@ -48,7 +77,6 @@ export default defineConfig(({command}) => {
         },
         plugins: [
             createHtmlPlugin({
-                minify: true,
                 template: 'index.html',
                 inject: {
                     data: {
@@ -67,7 +95,9 @@ export default defineConfig(({command}) => {
                                     prereleaseMode: true,
                                 } : {}
                             },
-                            tags: {headTags: `<script type="module" src="./Coupling-client.mjs"></script>`}
+                            tags: {
+                                headTags: [`<script type="module" src="./Coupling-client.mjs"></script>`, ...response.html].join('\n')
+                            }
                         }
                     },
                 }

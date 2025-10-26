@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
 import js.coroutines.promise
 import js.promise.await
+import js.promise.catch
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotools.types.text.toNotBlankString
@@ -63,7 +64,7 @@ fun Express.indexRoute(): Handler = { _, response, _ ->
         }
 
         indexStream.pipe(rewritingStream).pipe(response)
-    }
+    }.catch { response.sendStatus(500) }
 }
 
 private fun rewriteLinksToStaticResources(tag: Tag) {

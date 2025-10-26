@@ -1,4 +1,5 @@
 {
+  "lodash": "_",
   "react": "React",
   "react-dom/client": "ReactDOM",
   "react-router": "ReactRouter",
