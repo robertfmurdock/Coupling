@@ -17,7 +17,16 @@ import kotools.types.text.toNotBlankString
 import web.http.fetch
 
 val indexHtmlPromise
-    get() = MainScope().promise { fetch("${Config.clientUrl}/html/index.html").textAsync().await() }
+    get() = MainScope().promise {
+        fetch("${Config.clientUrl}/index.html")
+            .also {
+                if (!it.ok) {
+                    throw Exception("Unable to fetch index.html from ${Config.clientUrl}\n${it.statusText}")
+                }
+            }
+            .textAsync()
+            .await()
+    }
 
 fun Express.indexRoute(): Handler = { _, response, _ ->
     indexHtmlPromise.then { indexHtml ->
@@ -61,6 +70,7 @@ private fun rewriteLinksToStaticResources(tag: Tag) {
     tag.attrs = tag.attrs.map { attribute ->
         attribute.apply {
             this.value = this.value.replace("/app/build", Config.clientUrl)
+                .replace("/assets", "${Config.clientUrl}/assets")
         }
     }.toTypedArray()
 }

@@ -27,10 +27,24 @@ export default defineConfig(({command}) => {
         assetsInclude: [
             "**/*.md"
         ],
+        optimizeDeps: {
+            exclude: [
+
+            ]
+        },
+        experimental: {
+            renderBuiltUrl(filename, {hostType}) {
+                if (hostType === 'js') {
+                    return {runtime: `window.webpackPublicPath + ${JSON.stringify(filename)}`}
+                } else {
+                    return {relative: true}
+                }
+            },
+        },
         plugins: [
             createHtmlPlugin({
                 minify: true,
-                template: 'template.html',
+                template: 'index.html',
                 inject: {
                     data: {
                         htmlWebpackPlugin: {

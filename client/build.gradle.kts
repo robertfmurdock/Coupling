@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.plugins.setup
 import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
@@ -168,7 +167,7 @@ tasks {
     }
     compileProductionExecutableKotlinJs {}
 
-    val browserProductionWebpack = named("jsBrowserProductionWebpack", KotlinWebpack::class) {
+    jsBrowserProductionVite {
         dependsOn(lookupCdnUrls, jsProcessResources)
         mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
@@ -187,11 +186,11 @@ tasks {
     }
 
     val uploadToS3 by registering(Exec::class) {
-        dependsOn(browserProductionWebpack)
+        dependsOn(jsBrowserProductionVite)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
-        val absolutePath = browserProductionWebpack.get().outputDirectory.get().asFile.absolutePath
+        val absolutePath = jsBrowserProductionVite.get().outputDirectory.get().asFile.absolutePath
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${rootProject.version}".split(" ")
     }
     rootProject
@@ -230,9 +229,7 @@ artifacts {
     add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.map { it.destinationDirectory }) {
         builtBy(tasks.compileProductionExecutableKotlinJs)
     }
-    val browserProductionWebpack = tasks.named("jsBrowserProductionWebpack", KotlinWebpack::class)
-    val browserDistribution = tasks.named("jsBrowserDistribution")
-    add(clientConfiguration.name, browserProductionWebpack.map { it.outputDirectory }) {
-        builtBy(browserProductionWebpack, browserDistribution)
+    add(clientConfiguration.name, tasks.jsBrowserProductionVite.map { it.outputDirectory }) {
+        builtBy(tasks.jsBrowserProductionVite, tasks.jsBrowserProductionVitePrepare)
     }
 }
