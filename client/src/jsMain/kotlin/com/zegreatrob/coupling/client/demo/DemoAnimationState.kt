@@ -27,7 +27,7 @@ import web.cssom.ClassName
 import kotlin.time.Clock
 import kotlin.uuid.Uuid
 
-@JsModule("images/parties/simpsons.svg")
+@JsModule("/images/parties/simpsons.svg")
 private external val simpsonsSvg: String
 
 private val demoParty = PartyDetails(
@@ -36,22 +36,22 @@ private val demoParty = PartyDetails(
     imageURL = simpsonsSvg,
 )
 
-@JsModule("images/players/homer.png")
+@JsModule("/images/players/homer.png")
 private external val homer: String
 
-@JsModule("images/players/marge.png")
+@JsModule("/images/players/marge.png")
 private external val marge: String
 
-@JsModule("images/players/bart.png")
+@JsModule("/images/players/bart.png")
 private external val bart: String
 
-@JsModule("images/players/lisa.png")
+@JsModule("/images/players/lisa.png")
 private external val lisa: String
 
-@JsModule("images/players/maggie.png")
+@JsModule("/images/players/maggie.png")
 private external val maggie: String
 
-@JsModule("images/players/slh.png")
+@JsModule("/images/players/slh.png")
 private external val slh: String
 
 private val player1 = defaultPlayer.copy(id = PlayerId.new(), name = "Homer", imageURL = homer)

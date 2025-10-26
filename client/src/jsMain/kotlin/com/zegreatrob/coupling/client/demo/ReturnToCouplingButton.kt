@@ -77,7 +77,7 @@ private val couplingLogo by nfc<Props> {
     }
 }
 
-@JsModule("images/logo.svg")
+@JsModule("/images/logo.svg")
 private external val logoSvg: String
 
 fun radialGradient(vararg stops: LinearColorStop): Gradient = "radial-gradient($stops)".unsafeCast<Gradient>()

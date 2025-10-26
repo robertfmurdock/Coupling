@@ -117,6 +117,7 @@ dependencies {
     jsMainImplementation(npmConstrained("styled-components"))
     jsMainImplementation(npmConstrained("text-loader"))
     jsMainImplementation(npmConstrained("url-loader"))
+    jsMainImplementation(npmConstrained("vite-plugin-html"))
     jsMainImplementation(npmConstrained("webpack"))
     jsMainImplementation(npmConstrained("webpack-cli"))
     jsMainImplementation(npmConstrained("webpack-favicons"))
