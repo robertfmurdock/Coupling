@@ -44,12 +44,12 @@
     <% if (htmlWebpackPlugin.options.window) { %>
     <script>
       <% for (var varName in htmlWebpackPlugin.options.window) { %>
-        window['<%=varName%>'] = <%- JSON.stringify(htmlWebpackPlugin.options.window[varName]) %>;
+        window['<%=varName%>'] = <%= JSON.stringify(htmlWebpackPlugin.options.window[varName]) %>;
       <% } %>
     </script>
     <% } %>
 
-    <%- htmlWebpackPlugin.tags.headTags %>
+    <%= htmlWebpackPlugin.tags.headTags %>
 </head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-F28M9PKERE"></script>
 <script>

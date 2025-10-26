@@ -15,7 +15,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.testmints.action-mint")
     kotlin("plugin.serialization")
-    alias(libs.plugins.io.github.turansky.kfc.application)
+//    alias(libs.plugins.io.github.turansky.kfc.application)
     alias(libs.plugins.io.github.turansky.seskar)
 }
 
@@ -117,7 +117,6 @@ dependencies {
     jsMainImplementation(npmConstrained("styled-components"))
     jsMainImplementation(npmConstrained("text-loader"))
     jsMainImplementation(npmConstrained("url-loader"))
-    jsMainImplementation(npmConstrained("vite-plugin-html"))
     jsMainImplementation(npmConstrained("webpack"))
     jsMainImplementation(npmConstrained("webpack-cli"))
     jsMainImplementation(npmConstrained("webpack-favicons"))

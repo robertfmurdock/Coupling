@@ -86,7 +86,6 @@
     "styled-components": "^6.1.19",
     "text-loader": "0.0.1",
     "url-loader": "^4.1.1",
-    "vite-plugin-html": "^3.2.2",
     "webpack": "5.102.1",
     "webpack-cli": "6.0.1",
     "webpack-favicons": "1.5.43",
