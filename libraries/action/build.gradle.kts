@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask

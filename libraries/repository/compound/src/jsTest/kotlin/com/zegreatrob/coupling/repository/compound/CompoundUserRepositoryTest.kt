@@ -12,7 +12,6 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 import kotlin.time.Clock
 
-@Suppress("unused")
 class CompoundUserRepositoryTest : UserRepositoryValidator<CompoundUserRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<CompoundUserRepository>>(sharedSetup = {

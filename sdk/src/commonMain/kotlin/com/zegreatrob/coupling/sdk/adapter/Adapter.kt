@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.zegreatrob.coupling.sdk.adapter
 
 import com.apollographql.apollo.api.Adapter
@@ -37,6 +35,7 @@ val pairAssignmentDocumentIdAdapter = serializationAdapter(::PairAssignmentDocum
 val notBlankStringAdapter = serializationAdapter({ it }, { it })
 
 @ExperimentalTime
+@Suppress("unused")
 object KotlinDurationAdapter : Adapter<Duration> {
     override fun fromJson(reader: JsonReader, customScalarAdapters: CustomScalarAdapters): Duration = Duration.parse(reader.nextString()!!)
 

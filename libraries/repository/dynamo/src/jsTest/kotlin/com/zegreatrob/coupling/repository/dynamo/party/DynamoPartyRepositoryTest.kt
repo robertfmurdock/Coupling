@@ -24,7 +24,6 @@ import kotlin.time.Duration.Companion.hours
 
 typealias PartyMint = ContextMint<DynamoPartyRepository>
 
-@Suppress("unused")
 class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoPartyRepository>>(sharedSetup = {
