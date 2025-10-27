@@ -48,13 +48,13 @@ val DraggablePinButton by nfc<DraggablePinButtonProps> { props ->
     ReactHTML.span {
         ref = draggableRef
         css {
-            display = Display.Companion.inlineBlock
+            display = Display.inlineBlock
             transitionDuration = 0.4.s
-            transitionProperty = TransitionProperty.Companion.all
-            transitionTimingFunction = TransitionTimingFunction.Companion.easeIn
+            transitionProperty = TransitionProperty.all
+            transitionTimingFunction = TransitionTimingFunction.easeIn
             animationDuration = 0.25.s
             animationName = ident("pulsate")
-            animationIterationCount = AnimationIterationCount.Companion.infinite
+            animationIterationCount = AnimationIterationCount.infinite
         }
         PinButton(pin = pin, scale = scale, showTooltip = true)
     }

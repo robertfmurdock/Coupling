@@ -15,7 +15,7 @@ fun Record<PartyElement<Pin>>.toSerializable() = GqlPinDetails(
     timestamp = timestamp,
 )
 
-fun GqlPinDetails.toModel(): Record<PartyElement<Pin>>? = Record(
+fun GqlPinDetails.toModel(): Record<PartyElement<Pin>> = Record(
     data = partyId.with(
         Pin(
             id = id,

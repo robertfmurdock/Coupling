@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.pairassignments.spin
 
-import com.zegreatrob.coupling.client.components.create
 import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.get
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf

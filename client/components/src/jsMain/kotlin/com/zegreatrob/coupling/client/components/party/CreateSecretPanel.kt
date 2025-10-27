@@ -41,7 +41,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
             label = ReactNode("Description")
             backgroundColor = partySecretBackgroundColor
             inputProps = unsafeJso {
-                type = InputType.Companion.text
+                type = InputType.text
                 onChange = { event -> description = event.target.value }
             }
         }
@@ -69,7 +69,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
                 label = ReactNode("Secret ID")
                 backgroundColor = partySecretBackgroundColor
                 inputProps = unsafeJso {
-                    type = InputType.Companion.text
+                    type = InputType.text
                     disabled = true
                     value = createdSecret?.id?.value?.toString() ?: ""
                 }
@@ -80,7 +80,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
                 label = ReactNode("Secret Value")
                 backgroundColor = partySecretBackgroundColor
                 inputProps = unsafeJso {
-                    type = InputType.Companion.text
+                    type = InputType.text
                     disabled = true
                     value = secretValue
                 }

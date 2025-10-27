@@ -24,7 +24,7 @@ class BoostConfigurationTest {
         val subscription = SubscriptionDetails(null, null, true, null)
         val parties = stubParties(4)
         val boostedParty = parties.random()
-        val boost = Boost(UserId.Companion.new(), setOf(boostedParty.id), Instant.Companion.DISTANT_FUTURE)
+        val boost = Boost(UserId.new(), setOf(boostedParty.id), Instant.DISTANT_FUTURE)
     }) exercise {
         render {
             BoostConfiguration(
@@ -47,7 +47,7 @@ class BoostConfigurationTest {
         val subscription = SubscriptionDetails(null, null, true, null)
         val parties = stubParties(4)
         val boostedParty = parties.random()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         render {
             BoostConfiguration(
@@ -74,7 +74,7 @@ class BoostConfigurationTest {
         val subscription = SubscriptionDetails(null, null, true, null)
         val parties = stubParties(4)
         val boostedParty = parties.random()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
         val dispatcher = StubDispatcher()
     }) {
         render {

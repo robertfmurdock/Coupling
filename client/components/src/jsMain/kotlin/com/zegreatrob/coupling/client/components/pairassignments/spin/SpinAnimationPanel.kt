@@ -48,9 +48,9 @@ private fun ChildrenBuilder.assignedPairs(party: PartyDetails, revealedPairs: Li
 }
 
 val playerSpotlightStyles = ClassName {
-    position = Position.Companion.relative
+    position = Position.relative
     "> div" {
-        position = Position.Companion.absolute
+        position = Position.absolute
         zIndex = integer(1)
         transform = translate((-50).pct, (-50).pct)
     }
@@ -68,8 +68,8 @@ private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = ReactHTML.di
 
 private fun ChildrenBuilder.placeholderPlayerCard() = ReactHTML.div {
     css {
-        visibility = Visibility.Companion.hidden
-        display = Display.Companion.inlineBlock
+        visibility = Visibility.hidden
+        display = Display.inlineBlock
     }
     flippedPlayer(placeholderPlayer)
 }
@@ -78,7 +78,7 @@ private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) =
     flipId = player.id.value.toString()
     this.key = key ?: ""
     ReactHTML.div {
-        css { display = Display.Companion.inlineBlock }
+        css { display = Display.inlineBlock }
         PlayerCard(player)
     }
 }

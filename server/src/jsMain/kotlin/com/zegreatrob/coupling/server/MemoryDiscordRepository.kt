@@ -11,7 +11,7 @@ class MemoryDiscordRepository : DiscordAccessRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>? {
+    override suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess> {
         TODO("Not yet implemented")
     }
 }

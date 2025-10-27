@@ -14,13 +14,13 @@ val visuallyHidden by nfc<PropsWithChildren> { props ->
     ReactHTML.span {
         css {
             border = 0.px
-            clipPath = ClipPath.Companion.borderBox
+            clipPath = ClipPath.borderBox
             height = 1.px
             margin = ((-1).px)
-            overflow = Overflow.Companion.hidden
+            overflow = Overflow.hidden
             padding = (0.px)
-            position = Position.Companion.absolute
-            whiteSpace = WhiteSpace.Companion.nowrap
+            position = Position.absolute
+            whiteSpace = WhiteSpace.nowrap
             width = 1.px
         }
         +props.children

@@ -35,10 +35,10 @@ val CouplingSelect = FC<CouplingSelectProps> { props ->
     CouplingLabelWrapper(props.label, props.backgroundColor) {
         ReactHTML.select {
             css {
-                display = Display.Companion.block
-                outline = None.Companion.none
-                border = None.Companion.none
-                fontSize = FontSize.Companion.larger
+                display = Display.block
+                outline = None.none
+                border = None.none
+                fontSize = FontSize.larger
                 borderRadius = 0.41.em
                 width = "calc(100% - 0.7em)".unsafeCast<Width>()
                 padding = 0.35.em
@@ -58,10 +58,10 @@ external interface CouplingLabelWrapperProps : PropsWithChildren {
 val CouplingLabelWrapper = FC<CouplingLabelWrapperProps> { props ->
     ReactHTML.div {
         css {
-            display = Display.Companion.block
+            display = Display.block
             margin = 1.17.em
             padding = 0.5.em
-            border = Border(0.1.em, LineStyle.Companion.solid, Color("rgb(100 50 50 / 10%)"))
+            border = Border(0.1.em, LineStyle.solid, Color("rgb(100 50 50 / 10%)"))
             marginBottom = 0.2.em
             borderRadius = 0.3.em
         }
@@ -69,11 +69,11 @@ val CouplingLabelWrapper = FC<CouplingLabelWrapperProps> { props ->
             ReactHTML.div {
                 css {
                     backgroundColor = props.backgroundColor
-                    display = Display.Companion.block
+                    display = Display.block
                     float = Float.Companion.left
                     marginTop = (-1.05).em
                     padding = Padding(0.117.em, 0.29.em)
-                    overflow = Overflow.Companion.hidden
+                    overflow = Overflow.hidden
                     fontFamily = string("Arial, Helvetica, sans-serif")
                 }
                 +props.label
@@ -94,10 +94,10 @@ val CouplingInput = FC<CouplingInputProps> { props ->
     CouplingLabelWrapper(props.label, props.backgroundColor) {
         ReactHTML.input {
             css {
-                display = Display.Companion.block
-                outline = None.Companion.none
-                border = None.Companion.none
-                fontSize = FontSize.Companion.larger
+                display = Display.block
+                outline = None.none
+                border = None.none
+                fontSize = FontSize.larger
                 borderRadius = 0.41.em
                 width = "calc(100% - 0.7em)".unsafeCast<Width>()
                 padding = 0.35.em

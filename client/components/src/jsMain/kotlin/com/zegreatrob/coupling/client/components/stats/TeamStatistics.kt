@@ -24,12 +24,12 @@ external interface TeamStatisticsProps : Props {
 val TeamStatistics by nfc<TeamStatisticsProps> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
     ReactHTML.div {
         css {
-            display = Display.Companion.inlineBlock
-            verticalAlign = VerticalAlign.Companion.top
+            display = Display.inlineBlock
+            verticalAlign = VerticalAlign.top
             margin = 8.px
             padding = 10.px
             borderWidth = 2.px
-            borderStyle = LineStyle.Companion.solid
+            borderStyle = LineStyle.solid
             borderColor = Color("#8e8e8e")
             borderRadius = 5.px
             backgroundColor = Color("#ffffff")

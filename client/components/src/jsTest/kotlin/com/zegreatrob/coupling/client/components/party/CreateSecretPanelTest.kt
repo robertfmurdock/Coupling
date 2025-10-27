@@ -18,7 +18,7 @@ class CreateSecretPanelTest {
     fun givenNoDescriptionClickWillNotFireCreateCommand() = asyncSetup(object {
         val partyId = stubPartyId()
         val dispatcher = StubDispatcher()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         globalThis["alert"] = {}
         TestingLibraryReact.render { CreateSecretPanel(partyId, dispatcher.func()) }
@@ -34,7 +34,7 @@ class CreateSecretPanelTest {
         val partyId = stubPartyId()
         val dispatcher = StubDispatcher()
         val description = "We represent the lolly-pop kids!"
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         TestingLibraryReact.render { CreateSecretPanel(partyId, dispatcher.func()) }
     } exercise {
@@ -50,7 +50,7 @@ class CreateSecretPanelTest {
         val partyId = stubPartyId()
         val dispatcher = StubDispatcher.Channel()
         val description = "We represent the lolly-pop kids!"
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
         val expectedSecret = stubSecret()
         val expectedSecretValue = "Don't tell nobody!"
     }) {

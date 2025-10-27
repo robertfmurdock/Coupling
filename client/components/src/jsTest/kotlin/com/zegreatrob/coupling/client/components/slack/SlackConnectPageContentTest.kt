@@ -36,7 +36,7 @@ class SlackConnectPageContentTest {
     @Test
     fun willSendSaveCommandOnSave() = asyncSetup(object {
         val stubber = StubDispatcher.Channel()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
         val parties = stubParties(6)
         val targetParty = parties.random()
         val slackTeam = uuidString()
@@ -85,7 +85,7 @@ class SlackConnectPageContentTest {
 
     @Test
     fun afterSaveReturnButtonTakesYouToParty() = asyncSetup(object : ScopeMint() {
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
         val party = stubPartyDetails()
         val stubDispatcher = StubDispatcher.Channel()
     }) {

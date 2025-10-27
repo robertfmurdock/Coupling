@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.PartyNavigation
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.party.PartySelectButton
 import com.zegreatrob.coupling.model.Boost
@@ -35,16 +34,16 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
     val party = props.party
     ReactHTML.div {
         css {
-            textAlign = TextAlign.Companion.left
+            textAlign = TextAlign.left
             margin = 5.px
         }
         ReactHTML.div {
             css {
-                display = Display.Companion.grid
+                display = Display.grid
                 gridTemplateColumns = repeat(6, 1.fr)
-                flexDirection = FlexDirection.Companion.row
-                alignItems = AlignItems.Companion.center
-                whiteSpace = WhiteSpace.Companion.nowrap
+                flexDirection = FlexDirection.row
+                alignItems = AlignItems.center
+                whiteSpace = WhiteSpace.nowrap
             }
             ReactHTML.div {
                 css {
@@ -62,26 +61,26 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                 }
                 ReactHTML.h1 {
                     css {
-                        display = Display.Companion.flex
-                        flexDirection = FlexDirection.Companion.column
-                        alignItems = AlignItems.Companion.center
+                        display = Display.flex
+                        flexDirection = FlexDirection.column
+                        alignItems = AlignItems.center
                         marginLeft = 15.px
-                        textDecoration = TextDecoration.Companion.underline
+                        textDecoration = TextDecoration.underline
                         flexGrow = number(2.0)
                     }
                     ReactHTML.div {
                         css {
-                            display = Display.Companion.inlineBlock
+                            display = Display.inlineBlock
                             marginLeft = 15.px
-                            textDecoration = TextDecoration.Companion.underline
+                            textDecoration = TextDecoration.underline
                             flexGrow = number(2.0)
-                            alignSelf = AlignSelf.Companion.stretch
-                            "*" { verticalAlign = VerticalAlign.Companion.middle }
+                            alignSelf = AlignSelf.stretch
+                            "*" { verticalAlign = VerticalAlign.middle }
                         }
                         ReactHTML.div {
                             css {
-                                display = Display.Companion.flex
-                                alignItems = AlignItems.Companion.baseline
+                                display = Display.flex
+                                alignItems = AlignItems.baseline
                             }
                             ReactHTML.span {
                                 css { flexGrow = number(2.0) }
@@ -90,8 +89,8 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                             ReactHTML.span {
                                 css {
                                     margin = Margin(0.px, 20.px)
-                                    alignItems = AlignItems.Companion.baseline
-                                    alignSelf = AlignSelf.Companion.stretch
+                                    alignItems = AlignItems.baseline
+                                    alignSelf = AlignSelf.stretch
                                 }
                                 PartySelectButton()
                                 LogoutButton()

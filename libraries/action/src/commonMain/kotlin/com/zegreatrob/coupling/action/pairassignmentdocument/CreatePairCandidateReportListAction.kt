@@ -17,8 +17,6 @@ data class CreatePairCandidateReportListAction(val game: GameSpin) {
 
         suspend fun perform(action: CreatePairCandidateReportListAction) = action.createReports()
 
-        private suspend fun CreatePairCandidateReportListAction.createReportsUsingLongestRule() = game.createReports(PairingRule.LongestTime)
-
         private suspend fun CreatePairCandidateReportListAction.createReports(): NotEmptyList<PairCandidateReport> = game.createReports(game.rule)
 
         private suspend fun GameSpin.createReports(rule: PairingRule) = remainingPlayers.map { player -> pairCandidateReport(rule, player) }

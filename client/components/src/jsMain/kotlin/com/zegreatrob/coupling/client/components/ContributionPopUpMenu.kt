@@ -75,7 +75,7 @@ private fun popperOptions(arrowRef: RefObject<HTMLElement>): UsePopperOptions = 
     placement = Placement.right,
     strategy = PositioningStrategy.absolute,
     modifiers = arrayOf(
-        Modifier<ArrowOptions>(
+        Modifier(
             name = Arrow,
             options = ArrowOptions(
                 element = arrowRef.current,
@@ -84,7 +84,7 @@ private fun popperOptions(arrowRef: RefObject<HTMLElement>): UsePopperOptions = 
             phase = ModifierPhases.main,
             enabled = true,
         ),
-        Modifier<OffsetOptions>(
+        Modifier(
             name = Offset,
             options = OffsetOptions.invoke(Offset(0, 10)),
             phase = ModifierPhases.main,

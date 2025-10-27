@@ -83,17 +83,17 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
             asDynamic()["data-assigned-pair"] = pair.toPair().pairId
             css {
                 padding = 5.px
-                display = Display.Companion.inlineFlex
+                display = Display.inlineFlex
                 margin = Margin(0.px, 2.px, 0.px, 2.px)
-                position = Position.Companion.relative
+                position = Position.relative
                 perspective = 10.em
-                flexDirection = FlexDirection.Companion.column
+                flexDirection = FlexDirection.column
             }
             ref = pinDroppableRef
 
             ReactHTML.div {
                 css {
-                    position = Position.Companion.absolute
+                    position = Position.absolute
                     top = 0.px
                     left = 0.px
                     right = 0.px
@@ -101,13 +101,13 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
                     transform = rotatex(15.deg)
                     borderWidth = 3.px
                     borderRadius = 40.px
-                    borderStyle = LineStyle.Companion.hidden
-                    borderColor = NamedColor.Companion.dimgray
+                    borderStyle = LineStyle.hidden
+                    borderColor = NamedColor.dimgray
                     margin = 10.px
                     backgroundColor = if (pinIsOver) {
                         Color("#cff8ff")
                     } else {
-                        NamedColor.Companion.aliceblue
+                        NamedColor.aliceblue
                     }
                     flexGrow = number(1.0)
                 }
@@ -135,17 +135,17 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
     ReactHTML.span {
         asDynamic()["data-call-sign"] = ""
         css {
-            position = Position.Companion.relative
-            fontSize = FontSize.Companion.large
+            position = Position.relative
+            fontSize = FontSize.large
             padding = 8.px
             backgroundColor = Color("#c9d6bab8")
             backgroundImage = url(CouplingImages.images.overlayPng)
-            backgroundRepeat = BackgroundRepeat.Companion.repeatX
+            backgroundRepeat = BackgroundRepeat.repeatX
             borderRadius = 15.px
             borderWidth = 1.px
-            borderStyle = LineStyle.Companion.dotted
-            borderColor = NamedColor.Companion.black
-            fontWeight = FontWeight.Companion.bold
+            borderStyle = LineStyle.dotted
+            borderColor = NamedColor.black
+            fontWeight = FontWeight.bold
             zIndex = integer(10)
         }
         +"${callSign.adjective} ${callSign.noun}"
@@ -177,9 +177,9 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNo
     this.key = player.id.value.toString()
     ReactHTML.div {
         css {
-            display = Display.Companion.inlineBlock
+            display = Display.inlineBlock
             if (player.id.value.toString().contains("?")) {
-                visibility = Visibility.Companion.hidden
+                visibility = Visibility.hidden
             }
         }
         +handler()

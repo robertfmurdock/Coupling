@@ -65,7 +65,7 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
     ReactHTML.div {
         css(className) {
             playerCardStyles(tilt, deselected)
-            "img" { display = Display.Companion.block }
+            "img" { display = Display.block }
             playerCardRuleSet(size)
         }
         asDynamic()["data-player-id"] = player.id.value.toString()
@@ -83,16 +83,16 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
 }
 
 private fun PropertiesBuilder.playerCardStyles(tilt: Angle, deselected: Boolean) {
-    position = Position.Companion.relative
-    clear = Clear.Companion.both
-    display = Display.Companion.inlineBlock
-    overflow = Overflow.Companion.visible
-    border = Border(3.px, LineStyle.Companion.outset, Color("#dab8018f"))
+    position = Position.relative
+    clear = Clear.both
+    display = Display.inlineBlock
+    overflow = Overflow.visible
+    border = Border(3.px, LineStyle.outset, Color("#dab8018f"))
     backgroundImage = url(CouplingImages.images.overlayPng)
-    backgroundRepeat = BackgroundRepeat.Companion.repeatX
-    textAlign = TextAlign.Companion.center
-    textDecoration = None.Companion.none
-    color = NamedColor.Companion.black
+    backgroundRepeat = BackgroundRepeat.repeatX
+    textAlign = TextAlign.center
+    textDecoration = None.none
+    color = NamedColor.black
     margin = Margin(0.px, 2.px, 0.px, 2.px)
     transitionDuration = 0.25.s
     transform = rotate(tilt)
@@ -102,7 +102,7 @@ private fun PropertiesBuilder.playerCardStyles(tilt: Angle, deselected: Boolean)
         backgroundColor = Color("#ca6363")
     } else {
         top = 0.px
-        backgroundColor = NamedColor.Companion.darkseagreen
+        backgroundColor = NamedColor.darkseagreen
     }
 }
 
@@ -114,7 +114,7 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
     borderWidth = (sizeInEm * 0.04).em
     borderRadius = (sizeInEm * 0.08).em
     boxShadow = BoxShadow((sizeInEm * 0.02).em, (sizeInEm * 0.04).em, (sizeInEm * 0.04).em, rgb(0, 0, 0, 0.6))
-    flex = Flex(number(0.0), number(0.0), Auto.Companion.auto)
+    flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 
 fun Int.inCouplingEm(): Double = this / 14.0

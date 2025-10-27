@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.party.PartyElement
 import kotlinx.serialization.Serializable
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList

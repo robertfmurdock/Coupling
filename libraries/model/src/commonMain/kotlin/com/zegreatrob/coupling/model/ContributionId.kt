@@ -8,6 +8,6 @@ import kotlin.uuid.Uuid
 data class ContributionId(val value: NotBlankString) {
     companion object {
         @OptIn(ExperimentalKotoolsTypesApi::class)
-        fun new() = ContributionId(Uuid.Companion.random().toString().toNotBlankString().getOrThrow())
+        fun new() = ContributionId(Uuid.random().toString().toNotBlankString().getOrThrow())
     }
 }

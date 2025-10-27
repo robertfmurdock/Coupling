@@ -21,7 +21,7 @@ external interface UpdatingPlayerListProps<D> : Props where D : SavePlayerComman
 
 @ReactFunc
 val UpdatingPlayerList by nfc<UpdatingPlayerListProps<*>> { props ->
-    var players by useState<List<Player>>(props.players)
+    var players by useState(props.players)
     val addPlayer = { updated: Player -> players = players.merge(updated) }
 
     @Suppress("UNCHECKED_CAST")

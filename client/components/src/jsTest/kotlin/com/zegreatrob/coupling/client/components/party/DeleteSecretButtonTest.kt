@@ -17,7 +17,7 @@ class DeleteSecretButtonTest {
         val partyId = stubPartyId()
         val secret = stubSecret()
         val dispatcher = StubDispatcher()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         TestingLibraryReact.render { DeleteSecretButton(partyId, secret, dispatcher.func(), {}) }
     } exercise {

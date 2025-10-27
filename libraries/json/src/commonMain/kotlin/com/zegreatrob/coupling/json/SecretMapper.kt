@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.with
 
-fun GqlPartySecret.toModel(): PartyRecord<Secret>? = PartyRecord(
+fun GqlPartySecret.toModel(): PartyRecord<Secret> = PartyRecord(
     partyId.with(
         Secret(
             id = id,

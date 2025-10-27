@@ -16,10 +16,10 @@ external interface CloseButtonProps : Props {
 val CloseButton = FC<CloseButtonProps> { props ->
     ReactHTML.button {
         css {
-            color = Globals.Companion.inherit
-            border = None.Companion.none
+            color = Globals.inherit
+            border = None.none
             padding = 0.em
-            backgroundColor = Globals.Companion.inherit
+            backgroundColor = Globals.inherit
         }
         ariaLabel = "Close"
         ReactHTML.i { className = ClassName("fa fa-close") }

@@ -13,7 +13,7 @@ val CouplingDropDown = FC<PropsWithChildren> { props ->
     ReactHTML.div {
         css {
             fontSize = 14.px
-            position = Position.Companion.absolute
+            position = Position.absolute
             +black
             padding = Padding(0.2.em, 0.5.em, 0.5.em)
             borderRadius = 1.em

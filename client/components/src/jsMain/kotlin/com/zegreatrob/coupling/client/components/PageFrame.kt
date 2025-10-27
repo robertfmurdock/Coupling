@@ -25,14 +25,14 @@ val PageFrame by nfc<PageFrameProps> { props ->
     div {
         css(props.className) {
             padding = Padding(0.px, 25.px, 25.px, 25.px)
-            borderStyle = LineStyle.Companion.solid
+            borderStyle = LineStyle.solid
             borderTopWidth = 2.px
             borderBottomWidth = 2.px
             borderLeftWidth = 12.px
             borderRightWidth = 12.px
             borderRadius = 82.px
             margin = Margin(0.px, 20.px)
-            display = Display.Companion.inlineBlock
+            display = Display.inlineBlock
             minHeight = 100.vh
             this.borderColor = props.borderColor
             this.backgroundColor = props.backgroundColor

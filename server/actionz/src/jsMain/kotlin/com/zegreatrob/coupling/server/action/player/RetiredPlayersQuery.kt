@@ -22,7 +22,7 @@ data class RetiredPlayersQuery(val partyId: PartyId) {
             }
 
         private fun List<PartyRecord<Player>>.mergeAllRecordsInGroup(): List<PartyRecord<Player>> = listOfNotNull(
-            fold<PartyRecord<Player>, PartyRecord<Player>?>(null) { current, entry ->
+            fold(null) { current, entry ->
                 current?.mergeFrom(entry) ?: entry
             },
         )

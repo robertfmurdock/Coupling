@@ -8,9 +8,6 @@ import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 object ContributionVisualizationPage : BrowserSyntax {
 
     private suspend fun visualizationStyleLabel() = TestingLibraryBrowser.getByText("Visualization Style")
-    suspend fun lastWeekContributionHeader() = TestingLibraryBrowser.getByText(
-        "Contributions for the last Week:",
-    )
 
     suspend fun waitForPage() = WebdriverBrowser.waitUntil(
         { visualizationStyleLabel().isDisplayed() },

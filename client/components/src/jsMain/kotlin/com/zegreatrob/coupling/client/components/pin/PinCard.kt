@@ -42,19 +42,19 @@ val PinCard by nfc<PinCardProps> { props ->
     optionalLink(shouldLink, props.partyId, pin) {
         ReactHTML.div {
             css {
-                position = Position.Companion.relative
-                clear = Clear.Companion.both
-                display = Display.Companion.inlineBlock
-                overflow = Overflow.Companion.hidden
-                border = Border(3.px, LineStyle.Companion.outset, NamedColor.Companion.black)
+                position = Position.relative
+                clear = Clear.both
+                display = Display.inlineBlock
+                overflow = Overflow.hidden
+                border = Border(3.px, LineStyle.outset, NamedColor.black)
                 backgroundColor = Color("#E0DCD2FF")
                 backgroundImage = url(CouplingImages.images.overlayPng)
-                backgroundRepeat = BackgroundRepeat.Companion.repeatX
-                textAlign = TextAlign.Companion.center
-                textDecoration = None.Companion.none
+                backgroundRepeat = BackgroundRepeat.repeatX
+                textAlign = TextAlign.center
+                textDecoration = None.none
                 borderRadius = 6.px
                 boxShadow = BoxShadow(1.px, 2.px, 2.px, rgb(0, 0, 0, 0.6))
-                color = NamedColor.Companion.black
+                color = NamedColor.black
                 margin = Margin(0.px, 2.px, 0.px, 2.px)
                 top = 0.px
                 padding = 2.px

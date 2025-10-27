@@ -50,22 +50,22 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
             className = ClassName {
                 if (zoomOnHover) {
                     hover {
-                        transitionProperty = TransitionProperty.Companion.all
-                        transitionTimingFunction = TransitionTimingFunction.Companion.easeIn
+                        transitionProperty = TransitionProperty.all
+                        transitionTimingFunction = TransitionTimingFunction.easeIn
                         transitionDuration = 0.2.s
                         transform = rotate(0.deg)
                         animationDuration = 0.5.s
                         animationName = ident("twitch")
                         animationDelay = 0.2.s
-                        animationIterationCount = AnimationIterationCount.Companion.infinite
+                        animationIterationCount = AnimationIterationCount.infinite
                     }
                 }
 
                 if (isOver) {
-                    backgroundColor = NamedColor.Companion.orange
+                    backgroundColor = NamedColor.orange
                     animationDuration = 0.25.s
                     animationName = ident("wiggle")
-                    animationIterationCount = AnimationIterationCount.Companion.infinite
+                    animationIterationCount = AnimationIterationCount.infinite
                 }
             },
             key = pinnedPlayer.player.id.value.toString(),

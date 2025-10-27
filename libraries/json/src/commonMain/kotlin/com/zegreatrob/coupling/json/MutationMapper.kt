@@ -10,7 +10,7 @@ fun GqlMutation.toDomain() = CouplingMutationResult(
     saveSlackIntegration = saveSlackIntegration,
 )
 
-fun GqlSecretToken.toDomain(): Pair<Secret, String>? = Secret(
+fun GqlSecretToken.toDomain(): Pair<Secret, String> = Secret(
     id = secretId,
     description = description,
     createdTimestamp = createdTimestamp,

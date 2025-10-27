@@ -17,7 +17,7 @@ fun ChildrenBuilder.slackTeam(slackTeam: String?) {
         ariaLabel = "Slack Team ID"
         this.name = "slackTeam"
         id = ElementId("slack-team-id")
-        this.type = InputType.Companion.text
+        this.type = InputType.text
         disabled = true
         placeholder = ""
         this.list = ""

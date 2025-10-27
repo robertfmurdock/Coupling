@@ -11,9 +11,9 @@ import web.cssom.px
 val PairAssignmentBlock by nfc<PropsWithChildren> { props ->
     ReactHTML.div {
         css {
-            display = Display.Companion.inlineBlock
+            display = Display.inlineBlock
             fontSize = 28.px
-            fontWeight = FontWeight.Companion.bold
+            fontWeight = FontWeight.bold
             borderRadius = 15.px
             paddingLeft = 40.px
             paddingRight = 5.px

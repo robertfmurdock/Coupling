@@ -56,7 +56,7 @@ class JwtSecretHandlerTest {
         override val secretIssuer: String = "test-issuer"
         override val secretAudience: String = "https://test.coupling.zegreatrob.com"
         override val secretSigningSecret: String = testSecretSigningSecret
-        val userEmail = Uuid.Companion.random().toString().toNotBlankString().getOrThrow()
+        val userEmail = Uuid.random().toString().toNotBlankString().getOrThrow()
         val secretId = SecretId.new()
         val expectedExpiration = Clock.System.now().plus(2.hours)
     }) exercise {
@@ -89,7 +89,7 @@ class JwtSecretHandlerTest {
         override val secretIssuer: String = "test-issuer"
         override val secretAudience: String = "https://test.coupling.zegreatrob.com"
         override val secretSigningSecret: String = testSecretSigningSecret
-        val userEmail = Uuid.Companion.random().toString().toNotBlankString().getOrThrow()
+        val userEmail = Uuid.random().toString().toNotBlankString().getOrThrow()
         val secretId = SecretId.new()
     }) exercise {
         val token = createSecret(Pair(userEmail, secretId))
@@ -104,7 +104,7 @@ class JwtSecretHandlerTest {
         override val secretIssuer: String = "test-issuer"
         override val secretAudience: String = "https://test.coupling.zegreatrob.com"
         override val secretSigningSecret: String = testSecretSigningSecret
-        val userEmail = Uuid.Companion.random().toString().toNotBlankString().getOrThrow()
+        val userEmail = Uuid.random().toString().toNotBlankString().getOrThrow()
         val secretId = SecretId.new()
     }) exercise {
         val token = SignJWT(recordOf("https://zegreatrob.com/secret-id" to secretId.value.toString()))

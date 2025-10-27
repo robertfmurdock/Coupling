@@ -9,7 +9,6 @@ external fun stripe(secretKey: String): Stripe
 external interface Stripe {
     val customers: StripeCustomersApi
     val subscriptions: StripeSubscriptionsApi
-    val setupIntents: StripeSetupIntentsApi
 }
 
 external interface StripeCustomersApi {

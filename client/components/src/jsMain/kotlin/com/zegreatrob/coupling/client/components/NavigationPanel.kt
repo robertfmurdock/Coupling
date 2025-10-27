@@ -22,14 +22,14 @@ val NavigationPanel = FC<PropsWithChildren> { props ->
             gridColumnStart = integer(2)
             gridColumnEnd = integer(6)
             gridRow = integer(2)
-            display = Display.Companion.flex
-            alignItems = AlignItems.Companion.center
-            flexDirection = FlexDirection.Companion.column
+            display = Display.flex
+            alignItems = AlignItems.center
+            flexDirection = FlexDirection.column
         }
         ReactHTML.div {
             css {
-                display = Display.Companion.inlineFlex
-                alignItems = AlignItems.Companion.center
+                display = Display.inlineFlex
+                alignItems = AlignItems.center
                 borderRadius = 20.px
                 padding = Padding(5.px, 5.px)
                 margin = Margin(2.px, 2.px)

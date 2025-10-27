@@ -7,6 +7,6 @@ import kotlinx.datetime.toLocalDateTime
 
 val contributionsByDate: (Contribution) -> LocalDate? = { contribution ->
     contribution.dateTime
-        ?.toLocalDateTime(TimeZone.Companion.currentSystemDefault())
+        ?.toLocalDateTime(TimeZone.currentSystemDefault())
         ?.date
 }

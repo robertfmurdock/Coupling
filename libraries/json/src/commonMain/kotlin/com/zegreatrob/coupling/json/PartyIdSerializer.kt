@@ -13,7 +13,7 @@ typealias PartyIdString =
     PartyId
 
 object PartyIdSerializer : KSerializer<PartyId> {
-    private val delegateSerializer = NotBlankString.Companion.serializer()
+    private val delegateSerializer = NotBlankString.serializer()
 
     override val descriptor = SerialDescriptor(
         serialName = "com.zegreatrob.coupling.model.party.PartyId",

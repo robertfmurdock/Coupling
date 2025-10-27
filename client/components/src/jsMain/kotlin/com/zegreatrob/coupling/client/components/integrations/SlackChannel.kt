@@ -17,7 +17,7 @@ fun ChildrenBuilder.slackChannel(slackChannel: String?) {
         ariaLabel = "Slack Channel ID"
         this.name = "slackChannel"
         id = ElementId("slack-channel-id")
-        this.type = InputType.Companion.text
+        this.type = InputType.text
         placeholder = ""
         this.list = ""
         this.checked = false

@@ -20,8 +20,8 @@ val PartyCardHeader by nfc<PartyCardHeaderProps> { (party, size) ->
         this.size = size
         css {
             "a" {
-                color = Globals.Companion.inherit
-                textDecoration = None.Companion.none
+                color = Globals.inherit
+                textDecoration = None.none
             }
         }
         this.headerContent = party.name ?: ""

@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Da
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.array.component1
-import js.array.component2
 import js.objects.unsafeJso
 import kotlinx.browser.window
 import react.FC

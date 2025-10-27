@@ -46,19 +46,19 @@ val CardHeader by nfc<CardHeaderProps> { props ->
         css(props.className) {
             margin = Margin((size * 0.02).px, 0.px)
             height = (size * 0.33).px
-            verticalAlign = VerticalAlign.Companion.top
-            overflow = Overflow.Companion.visible
-            display = Display.Companion.flex
-            alignItems = AlignItems.Companion.center
-            flexDirection = FlexDirection.Companion.column
-            position = Position.Companion.relative
+            verticalAlign = VerticalAlign.top
+            overflow = Overflow.visible
+            display = Display.flex
+            alignItems = AlignItems.center
+            flexDirection = FlexDirection.column
+            position = Position.relative
             transform = scale(1.1)
             perspective = 10.em
         }
         ReactHTML.div {
             css {
-                position = Position.Companion.absolute
-                overflow = Overflow.Companion.hidden
+                position = Position.absolute
+                overflow = Overflow.hidden
                 borderRadius = (size / 10).px
                 top = 0.px
                 left = 0.px
@@ -67,11 +67,11 @@ val CardHeader by nfc<CardHeaderProps> { props ->
                 transform = rotatex(20.deg)
                 backgroundColor = rgb(255, 255, 255, 0.4)
                 backgroundImage = url(CouplingImages.images.overlayPng)
-                backgroundRepeat = BackgroundRepeat.Companion.repeatX
-                borderStyle = LineStyle.Companion.hidden
+                backgroundRepeat = BackgroundRepeat.repeatX
+                borderStyle = LineStyle.hidden
                 borderColor = Color("#00000054")
                 borderWidth = 1.px
-                fontWeight = FontWeight.Companion.bold
+                fontWeight = FontWeight.bold
             }
         }
         ReactHTML.div {
@@ -82,8 +82,8 @@ val CardHeader by nfc<CardHeaderProps> { props ->
             ref = headerContainerRef
             ReactHTML.div {
                 css {
-                    display = Display.Companion.flex
-                    alignItems = AlignItems.Companion.center
+                    display = Display.flex
+                    alignItems = AlignItems.center
                     height = (size * 0.33).px
                 }
                 +props.headerContent.ifBlank { "Unknown" }

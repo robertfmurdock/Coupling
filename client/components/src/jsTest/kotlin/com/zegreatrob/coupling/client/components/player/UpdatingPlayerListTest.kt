@@ -32,10 +32,7 @@ class UpdatingPlayerListTest {
         var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>? = null
     }) {
         render {
-            UpdatingPlayerList<SavePlayerCommand.Dispatcher>(
-                players,
-                dispatchFunc = stubDispatchFunc(stubCannon),
-            ) { players, dispatcher ->
+            UpdatingPlayerList(players, dispatchFunc = stubDispatchFunc(stubCannon)) { players, dispatcher ->
                 lastPlayersCallback = players
                 dispatchFunc = dispatcher
                 +"lol"
@@ -43,7 +40,7 @@ class UpdatingPlayerListTest {
         }
     } exercise {
         act { dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, newPlayer)) }() }
-    } verify { result ->
+    } verify {
         stubCannon.receivedActions.contains(SavePlayerCommand(partyId, newPlayer))
         lastPlayersCallback.assertIsEqualTo(players + newPlayer)
     }
@@ -61,7 +58,7 @@ class UpdatingPlayerListTest {
         val updatedPlayer = targetPlayer.copy(name = "Bill")
     }) {
         render {
-            UpdatingPlayerList<SavePlayerCommand.Dispatcher>(
+            UpdatingPlayerList(
                 players + targetPlayer,
                 dispatchFunc = stubDispatchFunc(stubCannon),
             ) { players, dispatcher ->
@@ -72,7 +69,7 @@ class UpdatingPlayerListTest {
         }
     } exercise {
         act { dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, updatedPlayer)) }() }
-    } verify { result ->
+    } verify {
         stubCannon.receivedActions.contains(SavePlayerCommand(partyId, updatedPlayer))
         lastPlayersCallback.assertIsEqualTo(players + updatedPlayer)
     }
@@ -87,10 +84,7 @@ class UpdatingPlayerListTest {
         var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>? = null
     }) {
         render {
-            UpdatingPlayerList<SavePlayerCommand.Dispatcher>(
-                players,
-                dispatchFunc = stubDispatcher.func<SavePlayerCommand.Dispatcher>(),
-            ) { players, dispatcher ->
+            UpdatingPlayerList(players, dispatchFunc = stubDispatcher.func()) { players, dispatcher ->
                 lastPlayersCallback = players
                 dispatchFunc = dispatcher
                 +"lol"
@@ -101,7 +95,7 @@ class UpdatingPlayerListTest {
             dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, newPlayer)) }()
             stubDispatcher.onActionReturn(VoidResult.Rejected)
         }
-    } verify { result ->
+    } verify {
         lastPlayersCallback.assertIsEqualTo(players)
     }
 }

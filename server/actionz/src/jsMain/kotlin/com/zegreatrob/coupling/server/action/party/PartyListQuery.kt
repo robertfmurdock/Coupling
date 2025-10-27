@@ -38,7 +38,7 @@ object PartyListQuery {
             )
             PartyListResult(
                 ownedParties = ownedParties,
-                playerParties = (partyRecords - ownedParties)
+                playerParties = (partyRecords - ownedParties.toSet())
                     .filter(
                         playerRecords.map { it.data.partyId }.toSet().allowFilter(),
                     ),

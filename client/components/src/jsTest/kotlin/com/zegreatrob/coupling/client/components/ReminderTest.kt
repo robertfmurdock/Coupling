@@ -55,14 +55,14 @@ class ReminderTest {
     @Test
     fun clickingCloseButtonWillUpdateLocalStorage() = asyncSetup(object {
         val reminderId = uuidString()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         TestingLibraryReact.render { Reminder(id = reminderId) { +"The Content" } }
     } exercise {
         actor.click(TestingLibraryReact.screen.getByRole("button", RoleOptions(name = "Close")))
     } verify {
         localStorage.getItem("coupling:reminder:$reminderId")
-            ?.let { Instant.Companion.parse(it) }
+            ?.let { Instant.parse(it) }
             ?.let { Clock.System.now() - it < 300.milliseconds }
             .assertIsEqualTo(true, "should have written time close to now")
     }
@@ -70,7 +70,7 @@ class ReminderTest {
     @Test
     fun clickingCloseButtonWillNoLongerShowContent() = asyncSetup(object {
         val reminderId = uuidString()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         TestingLibraryReact.render { Reminder(id = reminderId) { +"The Content" } }
     } exercise {

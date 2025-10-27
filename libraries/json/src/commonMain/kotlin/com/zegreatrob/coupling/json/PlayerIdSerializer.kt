@@ -13,7 +13,7 @@ typealias PlayerIdString =
     PlayerId
 
 object PlayerIdSerializer : KSerializer<PlayerId> {
-    private val delegateSerializer = NotBlankString.Companion.serializer()
+    private val delegateSerializer = NotBlankString.serializer()
 
     override val descriptor = SerialDescriptor(
         serialName = "com.zegreatrob.coupling.model.player.PlayerId",

@@ -95,13 +95,13 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
     document.pairs.toList().mapIndexed { index, pair ->
         span {
             css {
-                border = Border(3.px, LineStyle.Companion.double, NamedColor.Companion.dimgray)
-                backgroundColor = NamedColor.Companion.aliceblue
+                border = Border(3.px, LineStyle.double, NamedColor.dimgray)
+                backgroundColor = NamedColor.aliceblue
                 padding = 5.px
-                display = Display.Companion.inlineBlock
+                display = Display.inlineBlock
                 borderRadius = 40.px
                 margin = Margin(0.px, 2.px, 0.px, 2.px)
-                position = Position.Companion.relative
+                position = Position.relative
             }
             key = "$index"
             pair.pinnedPlayers.toList().map(::showPlayer)
@@ -118,34 +118,34 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
 
 private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     css {
-        width = Auto.Companion.auto
-        height = Auto.Companion.auto
-        position = Position.Companion.relative
-        clear = Clear.Companion.both
-        display = Display.Companion.inlineBlock
-        overflow = Overflow.Companion.hidden
-        border = Border(3.px, LineStyle.Companion.outset, NamedColor.Companion.gold)
-        backgroundColor = NamedColor.Companion.darkseagreen
+        width = Auto.auto
+        height = Auto.auto
+        position = Position.relative
+        clear = Clear.both
+        display = Display.inlineBlock
+        overflow = Overflow.hidden
+        border = Border(3.px, LineStyle.outset, NamedColor.gold)
+        backgroundColor = NamedColor.darkseagreen
         backgroundImage = url(CouplingImages.images.overlayPng)
-        backgroundRepeat = BackgroundRepeat.Companion.repeatX
+        backgroundRepeat = BackgroundRepeat.repeatX
         padding = 6.px
-        textAlign = TextAlign.Companion.center
-        textDecoration = None.Companion.none
+        textAlign = TextAlign.center
+        textDecoration = None.none
         borderRadius = 6.px
         boxShadow = BoxShadow(0.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
-        color = NamedColor.Companion.black
+        color = NamedColor.black
         margin = Margin(0.px, 2.px, 0.px, 2.px)
     }
     key = pinnedPlayer.player.id.value.toString()
     div {
         css {
-            backgroundColor = NamedColor.Companion.darkcyan
+            backgroundColor = NamedColor.darkcyan
             backgroundImage = url(CouplingImages.images.overlayPng)
-            backgroundRepeat = BackgroundRepeat.Companion.repeatX
+            backgroundRepeat = BackgroundRepeat.repeatX
             asDynamic()["margin-before"] = "6px"
             asDynamic()["margin-after"] = "6px"
             borderRadius = 15.px
-            fontWeight = FontWeight.Companion.bold
+            fontWeight = FontWeight.bold
         }
         +pinnedPlayer.player.name
     }

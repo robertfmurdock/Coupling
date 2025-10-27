@@ -30,7 +30,7 @@ val PinSection by nfc<PinSectionProps> { props ->
     ReactHTML.div {
         css(className) {
             marginLeft = -(pinList.size * 12 * scale.factor).px
-            position = Position.Companion.absolute
+            position = Position.absolute
             bottom = 10.px
             left = 50.pct
         }

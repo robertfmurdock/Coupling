@@ -42,17 +42,17 @@ val Reminder by nfc<ReminderProps> { props ->
         ReactHTML.div {
             css {
                 background = Color("#333333eb")
-                color = NamedColor.Companion.white
-                fontWeight = FontWeight.Companion.bold
+                color = NamedColor.white
+                fontWeight = FontWeight.bold
                 padding = Padding(4.px, 8.px)
                 borderRadius = 20.px
                 zIndex = integer(200)
-                display = Display.Companion.inlineBlock
-                position = Position.Companion.relative
+                display = Display.inlineBlock
+                position = Position.relative
             }
             ReactHTML.div {
                 css {
-                    position = Position.Companion.absolute
+                    position = Position.absolute
                     right = 1.em
                 }
                 CloseButton { this.onClose = onClose }

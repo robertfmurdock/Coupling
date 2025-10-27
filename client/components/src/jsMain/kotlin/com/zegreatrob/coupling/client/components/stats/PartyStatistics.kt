@@ -86,13 +86,13 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
 
     ReactHTML.div {
         css {
-            whiteSpace = WhiteSpace.Companion.nowrap
-            display = Display.Companion.inlineFlex
+            whiteSpace = WhiteSpace.nowrap
+            display = Display.inlineFlex
         }
         ReactHTML.div {
             css {
-                display = Display.Companion.inlineBlock
-                verticalAlign = VerticalAlign.Companion.top
+                display = Display.inlineBlock
+                verticalAlign = VerticalAlign.top
                 flexGrow = number(0.0)
             }
             ReactHTML.div {
@@ -106,7 +106,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
         }
         ReactHTML.div {
             css {
-                display = Display.Companion.inlineBlock
+                display = Display.inlineBlock
                 marginLeft = 20.px
             }
             ReactHTML.div {

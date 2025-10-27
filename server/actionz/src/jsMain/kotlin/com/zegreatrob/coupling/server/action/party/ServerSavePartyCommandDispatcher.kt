@@ -15,9 +15,9 @@ import com.zegreatrob.coupling.repository.party.PartySaveSyntax
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
 
 interface ServerSavePartyCommandDispatcher :
     SavePartyCommand.Dispatcher,
@@ -37,7 +37,7 @@ interface ServerSavePartyCommandDispatcher :
         CommandResult.Unauthorized
     }
 
-    private suspend fun SavePartyCommand.savePartyAndUser() = withContext(coroutineContext) {
+    private suspend fun SavePartyCommand.savePartyAndUser() = withContext(currentCoroutineContext()) {
         launch { party.save() }
         launch {
             currentUser.copy(authorizedPartyIds = currentUser.authorizedPartyIds + party.id)

@@ -5,7 +5,6 @@ import org.w3c.dom.CloseEvent
 import org.w3c.dom.ErrorEvent
 import org.w3c.dom.EventSourceInit
 import org.w3c.dom.MessageEvent
-import org.w3c.dom.WebSocket
 import org.w3c.dom.events.Event
 import kotlin.js.Json
 
@@ -33,9 +32,4 @@ sealed external interface UseWebSocketOptions {
 
 external interface UseWebSocket {
     val sendMessage: (message: String, keep: Boolean) -> Unit
-    val sendJsonMessage: (jsonMessage: Json, keep: Boolean) -> Unit
-    val lastMessage: MessageEvent?
-    val lastJsonMessage: Json?
-    val readyState: Short
-    val getWebSocket: () -> WebSocket
 }

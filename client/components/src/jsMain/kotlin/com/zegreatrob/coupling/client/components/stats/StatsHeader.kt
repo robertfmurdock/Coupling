@@ -11,8 +11,8 @@ import web.cssom.px
 val StatsHeader by nfc<PropsWithChildren> { props ->
     ReactHTML.div {
         css {
-            fontWeight = FontWeight.Companion.bold
-            fontSize = FontSize.Companion.large
+            fontWeight = FontWeight.bold
+            fontSize = FontSize.large
             marginBottom = 5.px
         }
         +props.children

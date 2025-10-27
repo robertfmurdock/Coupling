@@ -36,9 +36,9 @@ external interface PairReportTableProps : Props {
 val PairReportTable by nfc<PairReportTableProps> { (pairReports) ->
     div {
         css {
-            display = Display.Companion.inlineBlock
-            textAlign = TextAlign.Companion.left
-            whiteSpace = WhiteSpace.Companion.normal
+            display = Display.inlineBlock
+            textAlign = TextAlign.left
+            whiteSpace = WhiteSpace.normal
         }
         pairReports.mapIndexed { index, pairReport ->
             PairReportView(pairReport, key = "$index")
@@ -52,7 +52,7 @@ external interface PairReportViewProps : Props {
 
 @ReactFunc
 val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
-    val tweak = useMemo { Random.Default.nextInt(8).toDouble() }
+    val tweak = useMemo { Random.nextInt(8).toDouble() }
     PairPanel {
         asDynamic()["data-pair-report"] = pairReport.pair.joinToString("-") { it.name }
         reportPlayerCard(pairReport.pair.player1, (-tweak).deg)
@@ -60,8 +60,8 @@ val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
 
         div {
             css {
-                display = Display.Companion.inlineBlock
-                verticalAlign = VerticalAlign.Companion.top
+                display = Display.inlineBlock
+                verticalAlign = VerticalAlign.top
                 margin = 8.px
             }
             StatsHeader { +"Stats" }
@@ -79,7 +79,7 @@ val PairPanel = FC<PropsWithChildren> { props ->
     div {
         css {
             borderWidth = 2.px
-            borderStyle = LineStyle.Companion.solid
+            borderStyle = LineStyle.solid
             borderColor = Color("#8e8e8e")
             borderRadius = 5.px
             backgroundColor = Color("#ffffff")
@@ -96,7 +96,7 @@ private fun TimeResult.presentationString() = when (this) {
 
 private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = div {
     css {
-        display = Display.Companion.inlineBlock
+        display = Display.inlineBlock
     }
     key = player.id.value.toString()
     PlayerCard(player, size = 50, tilt = tilt)

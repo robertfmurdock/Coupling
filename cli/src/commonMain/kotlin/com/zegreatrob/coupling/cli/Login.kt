@@ -49,7 +49,7 @@ class Login : CliktCommand() {
         environment: Auth0Environment,
         deviceCode: String,
         interval: Int,
-    ): PollResult? {
+    ): PollResult {
         var pollResult: PollResult?
         while (true) {
             pollResult = checkForResult(environment.clientId, deviceCode)

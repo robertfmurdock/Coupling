@@ -15,12 +15,10 @@ afterEvaluate {
 }
 
 fun Project.getTestRunIdentifier(): String {
-    var testRunIdentifier: Any? by rootProject.extra
+    val testRunIdentifier: Any? by rootProject.extra
     return if (testRunIdentifier != null)
         "$testRunIdentifier"
     else {
-        UUID.randomUUID().toString().also {
-            testRunIdentifier = it
-        }
+        UUID.randomUUID().toString()
     }
 }

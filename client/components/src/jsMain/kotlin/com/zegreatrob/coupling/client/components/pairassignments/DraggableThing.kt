@@ -68,7 +68,7 @@ val DroppableThing by nfc<DroppableThingProps> { (itemType, dropCallback, handle
     drop(draggableRef)
 
     ReactHTML.div {
-        css { display = Display.Companion.inlineBlock }
+        css { display = Display.inlineBlock }
         ref = draggableRef
         +handler(isOver)
     }

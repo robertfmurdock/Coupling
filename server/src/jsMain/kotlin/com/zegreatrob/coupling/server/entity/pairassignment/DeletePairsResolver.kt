@@ -20,7 +20,7 @@ val deletePairsResolver = dispatch(
     toSerializable = { true },
 )
 
-private fun GqlDeletePairAssignmentsInput.toModel(): DeletePairAssignmentsCommand? = DeletePairAssignmentsCommand(
+private fun GqlDeletePairAssignmentsInput.toModel(): DeletePairAssignmentsCommand = DeletePairAssignmentsCommand(
     partyId = partyId,
     pairAssignmentDocumentId = pairAssignmentsId,
 )

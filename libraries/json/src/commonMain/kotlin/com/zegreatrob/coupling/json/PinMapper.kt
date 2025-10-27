@@ -14,13 +14,13 @@ fun Pin.toSerializableInput() = GqlPinInput(
     icon = icon,
 )
 
-fun GqlPin.toModel(): Pin? = Pin(
+fun GqlPin.toModel(): Pin = Pin(
     id = id,
     name = name ?: "",
     icon = icon ?: "",
 )
 
-fun GqlPinInput.toModel(): Pin? = Pin(
+fun GqlPinInput.toModel(): Pin = Pin(
     id = id,
     name = name ?: "",
     icon = icon ?: "",

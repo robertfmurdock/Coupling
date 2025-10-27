@@ -23,14 +23,14 @@ val PlayerCardHeader by nfc<PlayerCardHeaderProps> { props ->
     CardHeader {
         size = props.size
         css {
-            transitionProperty = TransitionProperty.Companion.all
-            transitionTimingFunction = TransitionTimingFunction.Companion.easeOut
+            transitionProperty = TransitionProperty.all
+            transitionTimingFunction = TransitionTimingFunction.easeOut
             transitionDuration = 0.4.s
 
             "a" {
-                color = Globals.Companion.inherit
-                textDecoration = None.Companion.none
-                display = Display.Companion.block
+                color = Globals.inherit
+                textDecoration = None.none
+                display = Display.block
             }
         }
         headerContent = props.player.name

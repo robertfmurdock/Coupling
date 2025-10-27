@@ -74,48 +74,48 @@ val PinButton by nfc<PinButtonProps> { props ->
 }
 
 private val tooltipStyles = emotion.css.ClassName {
-    visibility = Visibility.Companion.hidden
-    position = Position.Companion.absolute
+    visibility = Visibility.hidden
+    position = Position.absolute
     padding = Padding(5.px, 8.px)
     borderRadius = 15.px
     zIndex = integer(1)
     bottom = 125.pct
     left = 50.pct
     transform = translatex((-50).pct)
-    backgroundRepeat = BackgroundRepeat.Companion.repeatX
+    backgroundRepeat = BackgroundRepeat.repeatX
     backgroundImage = url(CouplingImages.images.overlayPng)
     backgroundColor = Color("#222222")
     color = Color("#fff")
-    display = Display.Companion.inlineBlock
-    lineHeight = Length.Companion.normal
-    fontSize = FontSize.Companion.larger
-    whiteSpace = WhiteSpace.Companion.nowrap
+    display = Display.inlineBlock
+    lineHeight = Length.normal
+    fontSize = FontSize.larger
+    whiteSpace = WhiteSpace.nowrap
     after {
         content = string("''")
-        position = Position.Companion.absolute
+        position = Position.absolute
         top = 96.pct
         left = 50.pct
         marginLeft = (-5).px
         borderWidth = 5.px
-        borderStyle = LineStyle.Companion.solid
+        borderStyle = LineStyle.solid
         borderTopColor = Color("#222222")
-        borderRightColor = NamedColor.Companion.transparent
-        borderLeftColor = NamedColor.Companion.transparent
-        borderBottomColor = NamedColor.Companion.transparent
+        borderRightColor = NamedColor.transparent
+        borderLeftColor = NamedColor.transparent
+        borderBottomColor = NamedColor.transparent
     }
 }
 
 private fun PropertiesBuilder.pinButtonStyles() {
-    display = Display.Companion.inlineBlock
-    backgroundColor = NamedColor.Companion.white
-    borderStyle = LineStyle.Companion.double
-    borderColor = NamedColor.Companion.black
-    textAlign = TextAlign.Companion.center
-    position = Position.Companion.relative
+    display = Display.inlineBlock
+    backgroundColor = NamedColor.white
+    borderStyle = LineStyle.double
+    borderColor = NamedColor.black
+    textAlign = TextAlign.center
+    position = Position.relative
     hover {
         tooltipStyles {
-            visibility = Visibility.Companion.visible
-            position = Position.Companion.absolute
+            visibility = Visibility.visible
+            position = Position.absolute
             zIndex = integer(1)
         }
     }

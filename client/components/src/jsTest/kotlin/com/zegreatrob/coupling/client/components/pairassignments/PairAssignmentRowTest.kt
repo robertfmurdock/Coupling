@@ -20,7 +20,6 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.unsafeJso
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.Window
 import kotlin.js.json
@@ -35,12 +34,12 @@ class PairAssignmentRowTest {
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.Companion.new(),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )
         val stubDispatcher = StubDispatcher.Channel()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PairAssignmentRow.create(
@@ -65,12 +64,12 @@ class PairAssignmentRowTest {
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.Companion.new(),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )
         val stubDispatcher = StubDispatcher()
-        val actor = UserEvent.Companion.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PairAssignmentRow.create(

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import emotion.react.css
-import js.lazy.Lazy
 import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div

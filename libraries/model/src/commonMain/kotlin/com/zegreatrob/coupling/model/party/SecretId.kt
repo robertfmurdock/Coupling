@@ -8,7 +8,7 @@ import kotlin.uuid.Uuid
 data class SecretId(val value: NotBlankString) {
     companion object {
         @OptIn(ExperimentalKotoolsTypesApi::class)
-        fun new() = SecretId(Uuid.Companion.random().toString().toNotBlankString().getOrThrow())
+        fun new() = SecretId(Uuid.random().toString().toNotBlankString().getOrThrow())
     }
 }
 

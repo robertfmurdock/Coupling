@@ -46,13 +46,6 @@ data class FindNewPairsAction(val game: Game) {
 
         private suspend fun GameSpin.getNextPlayer() = cannon.fire(NextPlayerAction(this))
 
-        private fun Pair<Round, CouplingPair>.nextRound(): Round = let { (round, newPair) ->
-            Round(
-                round.pairs.plus(newPair),
-                round.gameSpin?.copyWithout(newPair),
-            )
-        }
-
         private fun GameSpin.copyWithout(newPair: CouplingPair): GameSpin? {
             return copy(
                 remainingPlayers = remainingPlayers.toList().minus(newPair.toSet()).toNotEmptyList()

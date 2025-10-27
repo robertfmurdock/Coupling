@@ -15,7 +15,7 @@ interface SdkCreateConnectUserSecretCommand :
         ?.toDomain()
 }
 
-internal fun CreateConnectUserSecret.toDomain(): Pair<Secret, String>? = Secret(
+internal fun CreateConnectUserSecret.toDomain(): Pair<Secret, String> = Secret(
     id = secretId,
     description = description,
     createdTimestamp = createdTimestamp,

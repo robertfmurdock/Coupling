@@ -84,10 +84,10 @@ private fun ChildrenBuilder.boostIndicator(boost: Boost) {
         css {
             float = Float.Companion.right
             zIndex = integer(100)
-            position = Position.Companion.relative
+            position = Position.relative
             animationName = ident("pulsate")
             animationDuration = 0.75.s
-            animationIterationCount = AnimationIterationCount.Companion.infinite
+            animationIterationCount = AnimationIterationCount.infinite
             hover {
                 animationDuration = 0.25.s
             }
@@ -105,14 +105,14 @@ private fun ChildrenBuilder.boostPinButton(boost: Boost) {
 }
 
 private fun PropertiesBuilder.staticCardStyles() {
-    display = Display.Companion.inlineBlock
-    borderStyle = LineStyle.Companion.outset
+    display = Display.inlineBlock
+    borderStyle = LineStyle.outset
     borderColor = Color("#f5f5f5")
-    backgroundColor = NamedColor.Companion.lightsteelblue
-    textAlign = TextAlign.Companion.center
-    textDecoration = None.Companion.none
+    backgroundColor = NamedColor.lightsteelblue
+    textAlign = TextAlign.center
+    textDecoration = None.none
     boxShadow = BoxShadow(0.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
-    color = NamedColor.Companion.black
+    color = NamedColor.black
     margin = Margin(0.px, 2.px, 4.px, 2.px)
 
     "img" {
@@ -127,7 +127,7 @@ private fun PropertiesBuilder.partyCardCss(size: Int) {
     height = (size * 1.4).px
     borderWidth = (size * 0.01).px
     borderRadius = (size * 10.0 / 150).px
-    flex = Flex(number(0.0), number(0.0), Auto.Companion.auto)
+    flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 
 private fun ChildrenBuilder.partyGravatar(party: PartyDetails, size: Int) = if (party.imageURL != null) {

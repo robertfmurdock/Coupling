@@ -21,7 +21,7 @@ val heatmapTopRowClass = ClassName {
 }
 
 val heatmapSideRow = ClassName {
-    display = Display.Companion.inlineBlock
+    display = Display.inlineBlock
 }
 
 external interface PlayerHeatmapProps : Props {
@@ -35,7 +35,7 @@ val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
         className = heatmapTopRowClass
         div {
             css {
-                display = Display.Companion.inlineBlock
+                display = Display.inlineBlock
                 width = 62.px
             }
         }
@@ -48,8 +48,8 @@ val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
     Heatmap(
         heatmapData,
         ClassName {
-            display = Display.Companion.inlineBlock
-            verticalAlign = VerticalAlign.Companion.top
+            display = Display.inlineBlock
+            verticalAlign = VerticalAlign.top
         },
     )
 }
@@ -60,12 +60,12 @@ external interface TopRowPlayerProps : Props {
 
 @ReactFunc
 val TopRowPlayer by nfc<TopRowPlayerProps> { props ->
-    val tweak = useMemo { Random.Default.nextInt(6).toDouble() - 3.0 }
+    val tweak = useMemo { Random.nextInt(6).toDouble() - 3.0 }
     div {
         css {
-            display = Display.Companion.inlineBlock
+            display = Display.inlineBlock
             width = 90.px
-            textAlign = TextAlign.Companion.center
+            textAlign = TextAlign.center
         }
         key = props.player.id.value.toString()
         PlayerCard(props.player, size = 50, tilt = tweak.deg)
@@ -78,13 +78,13 @@ external interface SidePlayerProps : Props {
 
 @ReactFunc
 val SidePlayer by nfc<SidePlayerProps> { props ->
-    val tweak = useMemo(props.player.id) { 1.5 - Random.Default.nextInt(6).toDouble() }
+    val tweak = useMemo(props.player.id) { 1.5 - Random.nextInt(6).toDouble() }
     div {
         css {
-            display = Display.Companion.block
+            display = Display.block
             height = 90.px
             "> div" {
-                verticalAlign = VerticalAlign.Companion.middle
+                verticalAlign = VerticalAlign.middle
             }
         }
         key = props.player.id.value.toString()
