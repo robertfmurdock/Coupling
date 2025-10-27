@@ -19,7 +19,7 @@ val RootComponent by nfc<RootProps> { props ->
         clientId = config.auth0ClientId
         domain = config.auth0Domain
         cacheLocation = "localstorage"
-        authorizationParams = Auth0AuthorizationParams(
+        authorizationParams = Auth0AuthorizationParams.invoke(
             redirectUri = "${window.location.origin}${config.basename}",
             audience = "https://${window.location.hostname}/api",
             scope = "email",

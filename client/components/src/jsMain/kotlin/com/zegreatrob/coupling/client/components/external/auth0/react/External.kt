@@ -2,6 +2,7 @@
 
 package com.zegreatrob.coupling.client.components.external.auth0.react
 
+import kotlinx.js.JsPlainObject
 import react.ElementType
 import react.PropsWithChildren
 import kotlin.js.Json
@@ -19,6 +20,7 @@ external interface Auth0ProviderProps : PropsWithChildren {
     var authorizationParams: Auth0AuthorizationParams
 }
 
+@JsPlainObject
 sealed external interface Auth0AuthorizationParams {
     @JsName("redirect_uri")
     var redirectUri: String
