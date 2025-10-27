@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
+@Suppress("unused")
 class MemoryBoostRepositoryTest : ExtendedBoostRepositoryValidator<MemoryBoostRepository, SharedContextData<MemoryBoostRepository>> {
 
     companion object {

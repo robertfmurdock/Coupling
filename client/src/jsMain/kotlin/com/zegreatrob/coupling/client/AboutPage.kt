@@ -90,7 +90,7 @@ private val playerHeader by nfc<Props> {
     div {
         PlayerCard(
             defaultPlayer.copy(
-                PlayerId("1".toNotBlankString().getOrThrow()),
+                id = PlayerId("1".toNotBlankString().getOrThrow()),
                 name = "RoB",
                 imageURL = CouplingImages.images.robPng,
             ),
@@ -99,7 +99,7 @@ private val playerHeader by nfc<Props> {
         )
         PlayerCard(
             defaultPlayer.copy(
-                PlayerId("2".toNotBlankString().getOrThrow()),
+                id = PlayerId("2".toNotBlankString().getOrThrow()),
                 name = "Autumn",
                 imageURL = CouplingImages.images.autumnPng,
             ),

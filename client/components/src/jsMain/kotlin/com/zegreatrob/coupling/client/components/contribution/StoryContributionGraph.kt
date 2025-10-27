@@ -163,9 +163,17 @@ private fun contiguousRange(
     story: JsString,
 ): Pair<Int, Int> {
     val minIndex =
-        sortedContributionsByDate.indexOfFirst { it.second.any { it.story == story || it.story?.contains(story) == true } }
+        sortedContributionsByDate.indexOfFirst {
+            it.second.any { contribution ->
+                contribution.story == story || contribution.story?.contains(story) == true
+            }
+        }
     val maxIndex = sortedContributionsByDate.subList(minIndex + 1, sortedContributionsByDate.size)
-        .indexOfFirst { it.second.all { it.story != story && it.story?.contains(story) == false } }
+        .indexOfFirst {
+            it.second.all { contribution ->
+                contribution.story != story && contribution.story?.contains(story) == false
+            }
+        }
     return Pair(minIndex, max(minIndex, if (maxIndex < 0) sortedContributionsByDate.size else maxIndex + minIndex))
 }
 

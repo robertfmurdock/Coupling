@@ -13,6 +13,4 @@ inline fun <reified E, reified I, reified D> requiredInput(crossinline callback:
     i?.let { callback(couplingContext, e, i) }
 }
 
-inline fun <reified E, reified D> adapt(crossinline callback: suspend (CouplingContext, E) -> D?): GraphQLDispatcherProvider<E, JsonNull?, D> = { couplingContext, e, _ -> callback(couplingContext, e) }
-
 inline fun <reified E, reified D> adapt(crossinline callback: suspend (CouplingContext) -> D?): GraphQLDispatcherProvider<E, JsonNull?, D> = { couplingContext, _, _ -> callback(couplingContext) }

@@ -19,7 +19,7 @@ class PathsTest {
         val partyIdValue = uuidString()
         val partyId = PartyId(partyIdValue)
         val playerIdValue = "playerIdValue"
-        val player = stubPlayer().copy(PlayerId(playerIdValue.toNotBlankString().getOrThrow()))
+        val player = stubPlayer().copy(id = PlayerId(playerIdValue.toNotBlankString().getOrThrow()))
     }) exercise {
         partyId.with(player).playerConfigPath()
     } verify { result ->

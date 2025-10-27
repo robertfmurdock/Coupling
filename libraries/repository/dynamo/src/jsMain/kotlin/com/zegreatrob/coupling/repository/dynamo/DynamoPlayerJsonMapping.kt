@@ -41,8 +41,8 @@ interface DynamoPlayerJsonMapping :
     fun Json.toPlayer() = getDynamoStringValue("id")?.let {
         Player(
             id = PlayerId(it.toNotBlankString().getOrThrow()),
-            badge = getDynamoNumberValue("badge")?.toInt()?.let {
-                Badge.entries.firstOrNull { badge -> badge.value == it }
+            badge = getDynamoNumberValue("badge")?.toInt()?.let { badgeInt ->
+                Badge.entries.firstOrNull { badge -> badge.value == badgeInt }
             } ?: defaultPlayer.badge,
             name = getDynamoStringValue("name") ?: "",
             email = getDynamoStringValue("email") ?: "",

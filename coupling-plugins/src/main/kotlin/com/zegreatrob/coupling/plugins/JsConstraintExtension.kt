@@ -14,8 +14,6 @@ abstract class JsConstraintExtension(val project: Project) {
     var json: File? = null
 
     fun dependencies() = json?.let(::loadPackageJson)?.get("dependencies")?.dependencyEntries()
-    fun devDependencies() = json?.let(::loadPackageJson)?.get("devDependencies")?.dependencyEntries()
-    val exists get() = json != null && json != NullNode.instance
     private fun JsonNode.dependencyEntries() = properties().asSequence().map { entry ->
         entry.key to entry.value
     }

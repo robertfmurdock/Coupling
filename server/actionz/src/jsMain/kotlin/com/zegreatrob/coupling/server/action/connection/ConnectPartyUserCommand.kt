@@ -45,7 +45,7 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
             } else {
                 val atIndex = email.toString().indexOf("@")
                 defaultPlayer.copy(
-                    PlayerId("-1".toNotBlankString().getOrThrow()),
+                    id = PlayerId("-1".toNotBlankString().getOrThrow()),
                     name = email.toString().substring(0, atIndex),
                     email = email.toString(),
                 )

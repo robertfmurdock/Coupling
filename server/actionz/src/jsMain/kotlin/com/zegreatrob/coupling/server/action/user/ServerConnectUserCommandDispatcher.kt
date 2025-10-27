@@ -16,9 +16,7 @@ interface ServerConnectUserCommandDispatcher :
 
     override suspend fun perform(command: ConnectUserCommand): Boolean? {
         val result = secretGenerator.validateSubject(command.token)
-        if (result == null) {
-            return false
-        }
+            ?: return false
         val (secretId, subject) = result
         val targetUserEmail = subject.toNotBlankString().getOrNull()
         val targetUserDetails = targetUserEmail?.let { userRepository.getUsersWithEmail(it) }?.firstOrNull()?.data

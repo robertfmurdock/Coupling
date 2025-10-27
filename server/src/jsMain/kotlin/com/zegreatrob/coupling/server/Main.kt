@@ -18,6 +18,7 @@ import kotlinx.coroutines.plus
 
 val serverScope = MainScope() + CoroutineName("Server")
 
+@Suppress("unused")
 @JsName("start")
 fun start() = startDeferred.asPromise()
 

@@ -243,7 +243,7 @@ fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 private fun expectedOnlinePlayerList(email: String) = listOf(
     defaultPlayer.copy(
         id = PlayerId("-1".toNotBlankString().getOrThrow()),
-        name = email.substring(0, email.indexOf("@")),
+        name = email.substringBefore("@"),
         email = email,
     ),
 )

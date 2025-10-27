@@ -8,12 +8,6 @@ class UnauthorizedResult<V> : Result<V>()
 
 fun <V> V.successResult() = SuccessfulResult(this)
 
-fun Boolean.deletionResult(entityName: String): Result<Unit> = if (this) {
-    SuccessfulResult(Unit)
-} else {
-    NotFoundResult(entityName)
-}
-
 fun <V> Result<V>.valueOrNull() = when (this) {
     is SuccessfulResult -> value
     else -> null

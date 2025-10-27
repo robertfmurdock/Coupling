@@ -36,6 +36,7 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
         "taskName" to taskName,
         "testParent" to testDescriptor.parent?.name,
         "testName" to testDescriptor.name,
+        "testRunIdentifier" to testRunIdentifier,
     )
 
     private fun Map<String, String?>.asMessage() = ObjectMessage(this)

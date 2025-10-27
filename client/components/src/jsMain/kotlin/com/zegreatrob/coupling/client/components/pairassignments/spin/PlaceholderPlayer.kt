@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotools.types.text.toNotBlankString
 
 val placeholderPlayer = defaultPlayer.copy(
-    PlayerId("?".toNotBlankString().getOrThrow()),
+    id = PlayerId("?".toNotBlankString().getOrThrow()),
     name = "Next...",
     callSignAdjective = "--------",
     callSignNoun = "--------",

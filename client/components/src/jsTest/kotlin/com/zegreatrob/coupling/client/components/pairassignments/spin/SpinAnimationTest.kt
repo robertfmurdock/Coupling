@@ -157,7 +157,8 @@ class SpinAnimationTest {
             )
             it.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairAssignments.pairs[0].players.toList().joinToString("-", transform = { it.id.value.toString() }),
+                    pairAssignments.pairs[0].players.toList()
+                        .joinToString("-", transform = { player -> player.id.value.toString() }),
                     "?-??",
                 ),
             )

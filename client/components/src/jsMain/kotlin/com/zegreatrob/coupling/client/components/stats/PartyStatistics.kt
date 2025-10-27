@@ -142,7 +142,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
 private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size == 2 }
     .map {
         NivoLineData(
-            id = it.players?.joinToString("-") { it.element.name } ?: "unknown",
+            id = it.players?.joinToString("-") { record -> record.element.name } ?: "unknown",
             data = it.pairAssignmentHistory
                 ?.map { pairAssignment ->
                     NivoPoint(

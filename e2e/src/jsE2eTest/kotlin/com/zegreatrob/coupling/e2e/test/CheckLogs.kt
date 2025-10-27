@@ -24,7 +24,7 @@ fun List<Json>.forwardLogs() = forEach {
 
 private fun parseForForwarding(it: Json): Json {
     val message = it["message"].toString()
-    val messageJson: String = JSON.parse(message.substring(message.indexOf("\"{")))
+    val messageJson: String = JSON.parse(message.substringAfter("\"{"))
     return json("source" to "browser").add(JSON.parse(messageJson))
 }
 

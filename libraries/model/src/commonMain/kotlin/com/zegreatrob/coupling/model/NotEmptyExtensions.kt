@@ -16,8 +16,6 @@ inline fun <I, reified O> NotEmptyList<I>.flatMap(crossinline function: (I) -> I
 
 operator fun <E> NotEmptyList<E>.get(index: Int): E = toList()[index]
 
-fun NotEmptyList<CouplingPair>.withNoPins() = map(CouplingPair::toPinnedPair)
-
 fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
 fun CouplingPair.toPinnedPlayers() = toNotEmptyList().map { player -> player.withPins(emptyList()) }

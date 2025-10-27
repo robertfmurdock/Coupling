@@ -20,7 +20,7 @@ fun JsonObject.nestedKeys(): Map<String, Entry?> = keys.mapNotNull { key ->
     when (val entry = jsonObject[key]) {
         is JsonObject -> key to Entry(entry.nestedKeys())
         is JsonArray -> entry.jsonArray.let {
-            key to (if (it.size > 0 && it[0] is JsonObject) Entry(it[0].jsonObject.nestedKeys()) else null)
+            key to (if (it.isNotEmpty() && it[0] is JsonObject) Entry(it[0].jsonObject.nestedKeys()) else null)
         }
 
         JsonNull, null -> null

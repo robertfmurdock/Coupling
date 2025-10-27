@@ -1,3 +1,4 @@
+
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.pin.PinId
@@ -8,6 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotools.types.text.NotBlankString
 
+@Suppress("unused")
 typealias PinIdString =
     @Serializable(PinIdSerializer::class)
     PinId

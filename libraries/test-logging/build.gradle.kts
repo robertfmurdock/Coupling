@@ -48,7 +48,7 @@ artifacts {
     val compileProductionExecutableKotlinJs =
         tasks.named("compileProductionExecutableKotlinJs", Kotlin2JsCompile::class)
     add(testLoggingLib.name, compileProductionExecutableKotlinJs.map {
-        it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
+        it.destinationDirectory.file(it.compilerOptions.moduleName.map { name -> "$name.js" })
     }) {
         builtBy(compileProductionExecutableKotlinJs)
     }

@@ -151,12 +151,12 @@ private fun playerNameSequence(
     player: Player,
     playersSoFar: List<Player>,
 ) = player.name.rangeOfStringLength().map { index ->
-    AddPlayer(demoParty, player.copy(name = player.name.substring(0, index)), playersSoFar)
+    AddPlayer(demoParty, player.copy(name = player.name.take(index)), playersSoFar)
 }
 
 fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
     pin.name.rangeOfStringLength().map { index ->
-        AddPin(demoParty, pin.copy(name = pin.name.substring(0, index)), pins.subList(0, pinIndex))
+        AddPin(demoParty, pin.copy(name = pin.name.take(index)), pins.subList(0, pinIndex))
     }
 } + AddPin(demoParty, pins.last(), pins)
 

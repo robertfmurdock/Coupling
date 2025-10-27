@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.user
 
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
@@ -11,10 +11,11 @@ import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.server.action.party.CurrentConnectedUsersProvider
 import com.zegreatrob.coupling.server.action.party.UserPlayersSyntax
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class UserIsAuthorizedWithDataAction(val partyId: PartyId) : SimpleSuspendResultAction<UserIsAuthorizedWithDataAction.Dispatcher, Pair<PartyDetails, List<Player>>?> {
+data class UserIsAuthorizedWithDataAction(val partyId: PartyId) : SimpleSuspendAction<UserIsAuthorizedWithDataAction.Dispatcher, Result<Pair<PartyDetails, List<Player>>?>> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher :

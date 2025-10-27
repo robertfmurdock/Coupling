@@ -40,7 +40,7 @@ class RetiredPlayersPageE2ETest {
         val players = (1..4)
             .map { "${randomInt()}-RetiredPlayerPageE2ETest-$it" }
             .map { PlayerId(it.toNotBlankString().getOrThrow()) }
-            .map { id -> defaultPlayer.copy(id, name = "$id-name", email = id.value.toString()) }
+            .map { id -> defaultPlayer.copy(id = id, name = "$id-name", email = id.value.toString()) }
             .toList()
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer
