@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.gravatar
 
+import kotlinx.js.JsPlainObject
 import org.kotlincrypto.hash.md.MD5
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML
@@ -15,9 +16,10 @@ fun gravatarUrl(email: String, options: GravatarOptions): String {
 private fun md5(value: String): String = md5.digest(value.encodeToByteArray())
     .toHexString()
 
+@JsPlainObject
 sealed external interface GravatarOptions {
-    var default: String
-    var size: Int
+    val default: String
+    val size: Int
 }
 
 fun ChildrenBuilder.gravatarImage(

@@ -19,6 +19,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import js.objects.unsafeJso
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOptionElement
@@ -35,7 +36,7 @@ class PartyConfigTest {
     fun willDefaultPartyThatIsMissingData() = asyncSetup(object {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
-        render(unsafeJso { wrapper = TestRouter }) {
+        render(RenderOptions(wrapper = TestRouter)) {
             PartyConfig(party = party, boost = null, isNew = false, dispatchFunc = DispatchFunc { {} })
         }
     } verify {
@@ -104,7 +105,7 @@ class PartyConfigTest {
         val party = PartyDetails(stubPartyId())
         val stubDispatcher = StubDispatcher()
     }) {
-        render(unsafeJso { wrapper = TestRouter }) {
+        render(RenderOptions(wrapper = TestRouter)) {
             PartyConfig(party = party, boost = null, isNew = true, dispatchFunc = stubDispatcher.func())
         }
     } exercise {

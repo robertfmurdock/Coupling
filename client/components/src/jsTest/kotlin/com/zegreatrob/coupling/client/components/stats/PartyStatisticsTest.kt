@@ -15,7 +15,7 @@ import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
-import js.objects.unsafeJso
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import kotools.types.text.toNotBlankString
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
@@ -35,7 +35,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("1"), name = "Mathematica")
     }) exercise {
-        render(unsafeJso { wrapper = TestRouter }) {
+        render(RenderOptions(wrapper = TestRouter)) {
             PartyStatistics(
                 party = party,
                 players = players,
@@ -101,7 +101,14 @@ class PartyStatisticsTest {
     }
 
     private fun pairList(player1: Player, player2: Player): List<Record<PartyElement<Player>>> = listOf(player1, player2)
-        .map { Record(PartyElement(stubPartyId(), it), "test".toNotBlankString().getOrThrow(), false, Instant.DISTANT_PAST) }
+        .map {
+            Record(
+                PartyElement(stubPartyId(), it),
+                "test".toNotBlankString().getOrThrow(),
+                false,
+                Instant.DISTANT_PAST,
+            )
+        }
 
     @Test
     fun sendsPlayerHeatDataToSubComponent() = setup(object {
@@ -145,7 +152,7 @@ class PartyStatisticsTest {
             ),
         )
     }) exercise {
-        render(unsafeJso { wrapper = TestRouter }) {
+        render(RenderOptions(wrapper = TestRouter)) {
             PartyStatistics(party, players, pairs, 0, null)
         }
     } verify { wrapper ->
@@ -169,7 +176,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {
-        render(unsafeJso { wrapper = TestRouter }) {
+        render(RenderOptions(wrapper = TestRouter)) {
             PartyStatistics(party, players, emptyList(), 3, null)
         }
     } verify {
@@ -189,7 +196,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {
-        render(unsafeJso { wrapper = TestRouter }) {
+        render(RenderOptions(wrapper = TestRouter)) {
             PartyStatistics(party, players, emptyList(), 0, 2.days)
         }
     } verify {

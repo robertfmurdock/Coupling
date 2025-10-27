@@ -18,10 +18,10 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.react.external.reactTestingLibrary
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.globals.globalThis
-import js.objects.unsafeJso
 import kotools.types.collection.notEmptyListOf
 import kotools.types.collection.toNotEmptyList
 import org.w3c.dom.HTMLElement
@@ -47,12 +47,12 @@ class PrepareSpinTest {
 
     @Test
     fun whenSelectedPinIsClickedWillDeselectPin() = prepareSetup(object {
-        val user = UserEvent.Companion.setup()
+        val user = UserEvent.setup()
         val party = stubPartyDetails()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = TestingLibraryReact.render(unsafeJso { wrapper = TestRouter }) {
+        val wrapper = TestingLibraryReact.render(RenderOptions(wrapper = TestRouter)) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) exercise {
@@ -74,12 +74,12 @@ class PrepareSpinTest {
 
     @Test
     fun whenMultipleSelectedPinsAreClickedWillDeselectAll() = prepareSetup(object {
-        val user = UserEvent.Companion.setup()
+        val user = UserEvent.setup()
         val party = stubPartyDetails()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = TestingLibraryReact.render(unsafeJso { wrapper = TestRouter }) {
+        val wrapper = TestingLibraryReact.render(RenderOptions(wrapper = TestRouter)) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) exercise {
@@ -101,13 +101,13 @@ class PrepareSpinTest {
 
     @Test
     fun whenDeselectedPinIsClickedWillSelectPin() = prepareSetup(object {
-        val user = UserEvent.Companion.setup()
+        val user = UserEvent.setup()
         val party = stubPartyDetails()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val render = TestingLibraryReact.render(unsafeJso { wrapper = TestRouter }) {
+        val render = TestingLibraryReact.render(RenderOptions(wrapper = TestRouter)) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) {
@@ -140,7 +140,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
-        TestingLibraryReact.render(unsafeJso { wrapper = TestRouter }) {
+        TestingLibraryReact.render(RenderOptions(wrapper = TestRouter)) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     } verify { result ->
@@ -160,9 +160,9 @@ class PrepareSpinTest {
     fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
-        val user = UserEvent.Companion.setup()
+        val user = UserEvent.setup()
         val currentPairs = PairAssignmentDocument(
-            PairAssignmentDocumentId.Companion.new(),
+            PairAssignmentDocumentId.new(),
             Clock.System.now(),
             notEmptyListOf(
                 pairOf(players[0], players[1]).withPins(emptySet()),
@@ -170,7 +170,7 @@ class PrepareSpinTest {
             ),
             null,
         )
-        val result = TestingLibraryReact.render(unsafeJso { wrapper = TestRouter }) {
+        val result = TestingLibraryReact.render(RenderOptions(wrapper = TestRouter)) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
@@ -192,9 +192,9 @@ class PrepareSpinTest {
     fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
-        val user = UserEvent.Companion.setup()
+        val user = UserEvent.setup()
         val currentPairs = null
-        val context = TestingLibraryReact.render(unsafeJso { wrapper = TestRouter }) {
+        val context = TestingLibraryReact.render(RenderOptions(wrapper = TestRouter)) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
@@ -210,15 +210,15 @@ class PrepareSpinTest {
     @Test
     fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = asyncSetup(object {
         val party = stubPartyDetails()
-        val user = UserEvent.Companion.setup()
+        val user = UserEvent.setup()
         val players = stubPlayers(3).toNotEmptyList().getOrThrow()
         val currentPairs = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.Companion.new(),
+            id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
             null,
         )
-        val context = TestingLibraryReact.render(unsafeJso { wrapper = TestRouter }) {
+        val context = TestingLibraryReact.render(RenderOptions(wrapper = TestRouter)) {
             PrepareSpin(party, players.toList(), currentPairs, emptyList(), { {} })
         }
     }) exercise {

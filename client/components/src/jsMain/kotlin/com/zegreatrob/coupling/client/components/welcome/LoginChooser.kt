@@ -4,13 +4,13 @@ import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.DemoButton
 import com.zegreatrob.coupling.client.components.external.auth0.react.RedirectLoginOptions
+import com.zegreatrob.coupling.client.components.external.auth0.react.TAppState
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import js.array.component1
-import js.objects.unsafeJso
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.dom.useSearchParams
@@ -40,7 +40,7 @@ val LoginChooser by nfc<Props> {
     val signInFunc = {
         auth0Data.loginWithRedirect(
             RedirectLoginOptions(
-                appState = unsafeJso { returnTo = "${window.asDynamic()["basename"]}$returnPath" },
+                appState = TAppState(returnTo = "${window.asDynamic()["basename"]}$returnPath"),
             ),
         )
     }

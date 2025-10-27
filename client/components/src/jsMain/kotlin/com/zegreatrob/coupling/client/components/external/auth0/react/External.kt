@@ -41,23 +41,28 @@ external interface Auth0Hook {
     fun logout(json: Auth0LogoutStructure = definedExternally)
 }
 
+@JsPlainObject
 sealed external interface RedirectLoginOptions {
-    var appState: TAppState
+    val appState: TAppState
 }
 
+@JsPlainObject
 sealed external interface TAppState {
-    var returnTo: String
+    val returnTo: String
 }
 
+@JsPlainObject
 sealed external interface Auth0LogoutStructure {
-    var clientId: String?
-    var logoutParams: Auth0LogoutParams?
+    val clientId: String?
+    val logoutParams: Auth0LogoutParams?
 }
 
+@JsPlainObject
 sealed external interface Auth0LogoutParams {
-    var returnTo: String
+    val returnTo: String
 }
 
+@JsPlainObject
 external interface Auth0User {
     val name: String
     val email: String

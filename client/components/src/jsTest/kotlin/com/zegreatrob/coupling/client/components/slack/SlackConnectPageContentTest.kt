@@ -15,6 +15,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
 import react.ReactNode
@@ -41,7 +42,7 @@ class SlackConnectPageContentTest {
         val slackTeam = uuidString()
         val slackChannel = uuidString()
     }) {
-        render(unsafeJso { wrapper = TestRouter }) {
+        render(RenderOptions(wrapper = TestRouter)) {
             SlackConnectPageContent(
                 parties = parties,
                 slackTeam = slackTeam,

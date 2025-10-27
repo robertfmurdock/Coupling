@@ -16,6 +16,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
 import kotools.types.text.toNotBlankString
@@ -63,7 +64,7 @@ class ContributorMenuTest {
     }) exercise {
         render(
             ContributorMenu.create(contributor, players, partyId, StubDispatcher().func()),
-            unsafeJso { wrapper = TestRouter },
+            RenderOptions(wrapper = TestRouter),
         )
     } verify {
         screen.findByText("Player Config").assertNotNull()

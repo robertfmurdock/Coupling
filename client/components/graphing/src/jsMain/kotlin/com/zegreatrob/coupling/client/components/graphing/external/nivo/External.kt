@@ -1,69 +1,79 @@
 package com.zegreatrob.coupling.client.components.graphing.external.nivo
 
+import kotlinx.js.JsPlainObject
 import react.ElementType
 import react.Props
 
+@JsPlainObject
 sealed external interface NivoLineData {
-    var id: String
-    var data: Array<NivoPoint>
-    var color: String?
+    val id: String
+    val data: Array<NivoPoint>
+    val color: String?
 }
 
+@JsPlainObject
 sealed external interface NivoPoint {
-    var x: Any?
-    var y: Any?
-    var context: Any?
+    val x: Any?
+    val y: Any?
+    val context: Any?
 }
 
+@JsPlainObject
 sealed external interface NinoLinePointDecorated {
-    var x: Any
-    var xFormatted: Any
-    var y: Any
-    var yFormatted: Any
-    var context: Any?
+    val x: Any
+    val xFormatted: Any
+    val y: Any
+    val yFormatted: Any
+    val context: Any?
 }
 
+@JsPlainObject
 external interface RechartsTooltipPayload {
-    var name: Any?
-    var value: Any?
+    val name: Any?
+    val value: Any?
 }
 
+@JsPlainObject
 sealed external interface NivoChartMargin {
-    var top: Number
-    var right: Number
-    var bottom: Number
-    var left: Number
+    val top: Number
+    val right: Number
+    val bottom: Number
+    val left: Number
 }
 
+@JsPlainObject
 sealed external interface NivoDatum {
-    var id: String
-    var value: Number
+    val id: String
+    val value: Number
 }
 
+@JsPlainObject
 sealed external interface NivoHeatMapData {
-    var id: Any
-    var data: Array<NivoPoint>
+    val id: Any
+    val data: Array<NivoPoint>
 }
 
+@JsPlainObject
 sealed external interface NivoHeatMapColors {
-    var type: String
-    var scheme: String
-    var divergeAt: Number
-    var minValue: Number
-    var maxValue: Number
+    val type: String
+    val scheme: String
+    val divergeAt: Number
+    val minValue: Number
+    val maxValue: Number
 }
 
+@JsPlainObject
 sealed external interface NivoAxis {
-    var tickSize: Number?
-    var tickPadding: Number?
-    var tickRotation: Number?
-    var ticksPosition: String?
-    var legend: String?
-    var legendPosition: String?
-    var legendOffset: Number?
-    var truncateTickAt: Number?
-    var renderTick: ElementType<AxisTickProps>?
-    var format: ((Number) -> String)?
+    val tickSize: Number?
+    val tickPadding: Number?
+    val tickRotation: Number?
+    val ticksPosition: String?
+    val legend: String?
+    val legendPosition: String?
+    val legendOffset: Number?
+    val truncateTickAt: Number?
+    val renderTick: ElementType<AxisTickProps>?
+    val format: ((Number) -> String)?
 }
 
 external interface AxisTickProps : Props {

@@ -18,6 +18,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
 import kotools.types.collection.notEmptyListOf
@@ -48,7 +49,7 @@ class PairAssignmentRowTest {
                 controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
-            unsafeJso { wrapper = TestRouter },
+            RenderOptions(wrapper = TestRouter),
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
@@ -78,7 +79,7 @@ class PairAssignmentRowTest {
                 controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
-            unsafeJso { wrapper = TestRouter },
+            RenderOptions(wrapper = TestRouter),
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
