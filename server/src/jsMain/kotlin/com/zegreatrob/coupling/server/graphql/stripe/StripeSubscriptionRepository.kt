@@ -3,13 +3,14 @@ package com.zegreatrob.coupling.server.graphql.stripe
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.server.action.subscription.SubscriptionRepository
 import com.zegreatrob.coupling.server.external.stripe.StripeCustomer
-import js.objects.unsafeJso
+import com.zegreatrob.coupling.server.external.stripe.StripeCustomersListOptions
+import com.zegreatrob.coupling.server.external.stripe.StripeSubscriptionsListOptions
 import kotlinx.coroutines.await
 import kotlin.time.Instant
 
 class StripeSubscriptionRepository : SubscriptionRepository {
     override suspend fun findSubscriptionDetails(email: String): SubscriptionDetails? {
-        val customers = stripe.customers.list(unsafeJso { this.email = email }).await()
+        val customers = stripe.customers.list(StripeCustomersListOptions(email = email)).await()
         val customer = customers.data.firstOrNull()
         val subscription = customer?.findSubscription()
         return customer?.let {
@@ -22,7 +23,7 @@ class StripeSubscriptionRepository : SubscriptionRepository {
         }
     }
 
-    private suspend fun StripeCustomer.findSubscription() = stripe.subscriptions.list(unsafeJso { this.customer = id })
+    private suspend fun StripeCustomer.findSubscription() = stripe.subscriptions.list(StripeSubscriptionsListOptions(customer = id))
         .await()
         .data
         .firstOrNull()

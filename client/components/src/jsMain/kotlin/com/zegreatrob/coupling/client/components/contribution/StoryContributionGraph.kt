@@ -60,7 +60,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
         mapNotNull
             .sortedWith { l, r -> l.first.compareTo(r.first) }
 
-    val stories = (points.flatMap { Object.Companion.keys(it).toList() }.distinct() - "x")
+    val stories = (points.flatMap { Object.keys(it).toList() }.distinct() - "x")
         .sortedWith { a, b -> preferLargerRangeWithEarlierTimes(sortedContributionsByDate, a, b) }
     val xMinMillis = points.minOfOrNull { it.x.unsafeCast<Double>() }
     val xMaxMillis = points.maxOfOrNull { it.x.unsafeCast<Double>() }
@@ -105,7 +105,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                     Legend {
                         width = "90%"
                         height = "7%"
-                        wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.Companion.preWrap }
+                        wrapperStyle = unsafeJso { whiteSpace = WhiteSpace.preWrap }
                         content = { props ->
                             Legend.create {
                                 +props
@@ -173,10 +173,11 @@ private fun dateContributionCountByStory(
     date: LocalDate,
     dateContributions: List<Contribution>,
     byPercent: Boolean,
-): LinePoint = Object.Companion.assign(
-    unsafeJso<LinePoint> {
-        x = date.atTime(0, 0).toInstant(TimeZone.Companion.currentSystemDefault()).toJSDate().getTime()
-    },
+): LinePoint = Object.assign(
+    LinePoint(
+        x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate().getTime(),
+        y = 0.0,
+    ),
     dateContributions.groupBy(Contribution::story).toList()
         .fold(Record<String, Double>()) { record, (story, storyContributions) ->
             if (story == null) {
@@ -192,7 +193,7 @@ private fun dateContributionCountByStory(
             }
         }.also { record ->
             if (byPercent) {
-                val stories = Object.Companion.keys(record)
+                val stories = Object.keys(record)
                 val total = stories.sumOf { key: String -> record[key].unsafeCast<Double>() }
                 stories.forEach { key -> record[key] = record[key].unsafeCast<Double>() / total }
             }

@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.raw
 import com.zegreatrob.coupling.server.external.express.urlencoded
+import com.zegreatrob.coupling.server.external.graphql.http.GqlHttpExpressOptions
 import com.zegreatrob.coupling.server.external.graphql.http.createHandler
 import com.zegreatrob.coupling.server.graphql.unifiedSchema
-import js.objects.unsafeJso
 import kotlinx.coroutines.CoroutineScope
 import kotlin.js.json
 
@@ -26,10 +26,10 @@ fun Express.routes() {
     use(
         "/api/graphql",
         createHandler(
-            unsafeJso {
-                schema = unifiedSchema()
-                context = { request -> CouplingContext(request.raw.scope, request.raw.commandDispatcher) }
-            },
+            GqlHttpExpressOptions(
+                schema = unifiedSchema(),
+                context = { request -> CouplingContext(request.raw.scope, request.raw.commandDispatcher) },
+            ),
         ),
     )
     get("*path", indexRoute())

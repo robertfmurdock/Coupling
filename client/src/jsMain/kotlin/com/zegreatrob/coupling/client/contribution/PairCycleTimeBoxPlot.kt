@@ -30,7 +30,7 @@ external interface PairCycleTimeBoxPlotProps : Props {
 
 @ReactFunc
 val PairCycleTimeBoxPlot by nfc<PairCycleTimeBoxPlotProps> { props ->
-    val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
+    val getColor = useOrdinalColorScale(NivoOrdinalScaleColorConfig(scheme = "pastel1"), "value")
     val couplingPairs = props.data.toMap().keys
     colorContext.Provider {
         this.value = getColor

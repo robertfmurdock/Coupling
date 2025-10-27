@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoDatum
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
+import kotlinx.js.JsPlainObject
 import react.ComponentType
 import react.ElementType
 import react.Props
@@ -30,24 +31,26 @@ external interface TooltipProps : Props {
     var cell: ComputedCell<out HeatMapDatum>
 }
 
+@JsPlainObject
 external interface HeatMapDatum {
-    var x: Any
-    var y: Any?
+    val x: Any
+    val y: Any?
 }
 
+@JsPlainObject
 external interface ComputedCell<D> {
-    var id: String
-    var serieId: String
-    var value: Number?
-    var formattedValue: String?
-    var data: D
-    var x: Number
-    var y: Number
-    var width: Number
-    var height: Number
-    var color: String
-    var opacity: Number
-    var borderColor: String
-    var label: String
-    var labelTextColor: String
+    val id: String
+    val serieId: String
+    val value: Number?
+    val formattedValue: String?
+    val data: D
+    val x: Number
+    val y: Number
+    val width: Number
+    val height: Number
+    val color: String
+    val opacity: Number
+    val borderColor: String
+    val label: String
+    val labelTextColor: String
 }

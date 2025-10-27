@@ -3,6 +3,7 @@
 
 package com.zegreatrob.coupling.server.external.graphql
 
+import kotlinx.js.JsPlainObject
 import kotlin.js.Json
 
 external class GraphQLSchema(config: Json)
@@ -19,9 +20,10 @@ external interface GraphQLScalarTypeConfig<T> {
     var parseLiteral: ((AST) -> T)?
 }
 
+@JsPlainObject
 external interface AST {
-    var kind: Any
-    var value: dynamic
+    val kind: Any
+    val value: dynamic
 }
 
 external fun buildSchema(schema: String): GraphQLSchema

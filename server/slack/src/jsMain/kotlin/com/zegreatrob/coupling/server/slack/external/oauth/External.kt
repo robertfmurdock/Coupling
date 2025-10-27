@@ -2,6 +2,7 @@
 
 package com.zegreatrob.coupling.server.slack.external.oauth
 
+import kotlinx.js.JsPlainObject
 import web.http.Request
 import web.http.Response
 import kotlin.js.Promise
@@ -13,39 +14,44 @@ external class InstallProvider(options: InstallProviderOptions) {
     fun handleInstallPath(request: Request, response: Response)
 }
 
+@JsPlainObject
 sealed external interface InstallUrlOptions {
-    var scopes: Array<String>
-    var redirectUri: String
+    val scopes: Array<String>
+    val redirectUri: String
 }
 
+@JsPlainObject
 sealed external interface InstallProviderOptions {
-    var clientId: String
-    var clientSecret: String
-    var stateSecret: String
-    var legacyStateVerification: Boolean
-    var installationStore: InstallationStore
-    var installUrlOptions: InstallUrlOptions
+    val clientId: String
+    val clientSecret: String
+    val stateSecret: String
+    val installUrlOptions: InstallUrlOptions
+    val legacyStateVerification: Boolean?
+    val installationStore: InstallationStore?
 }
 
+@JsPlainObject
 sealed external interface InstallationStore {
     var storeInstallation: (Installation) -> Unit
     var fetchInstallation: (InstallationQuery) -> Installation
     var deleteInstallation: (InstallationQuery) -> Unit
 }
 
+@JsPlainObject
 sealed external interface InstallationQuery {
-    var teamId: String
-    var enterpriseId: String
-    var userId: String
-    var conversationId: String
-    var isEnterpriseInstall: Boolean
+    val teamId: String
+    val enterpriseId: String
+    val userId: String
+    val conversationId: String
+    val isEnterpriseInstall: Boolean
 }
 
+@JsPlainObject
 sealed external interface Installation {
-    var botToken: String?
-    var userToken: String?
-    var botId: String?
-    var botUserId: String?
-    var teamId: String?
-    var enterpriseId: String?
+    val botToken: String?
+    val userToken: String?
+    val botId: String?
+    val botUserId: String?
+    val teamId: String?
+    val enterpriseId: String?
 }

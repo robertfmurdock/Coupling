@@ -1,15 +1,9 @@
 package com.zegreatrob.coupling.e2e.test.webdriverio
 
-import com.zegreatrob.coupling.e2e.test.SimpleStyle
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
-import com.zegreatrob.wrapper.wdio.WebdriverElement
 
 interface BrowserSyntax {
-    val SimpleStyle.locator get() = By.className(className)
-    val SimpleStyle.element get() = WebdriverElement(locator)
-
     suspend fun waitToArriveAt(expectedPath: String) {
         WebdriverBrowser.waitUntil({
             try {

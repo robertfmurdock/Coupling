@@ -5,6 +5,7 @@ package com.zegreatrob.coupling.client.components.graphing.external.recharts
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.TimeScale
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.RechartsTooltipPayload
 import js.array.ReadonlyArray
+import kotlinx.js.JsPlainObject
 import react.FC
 import react.Props
 import react.PropsWithChildren
@@ -17,17 +18,19 @@ external interface ResponsiveContainerProps : PropsWithChildren {
 
 external val ResponsiveContainer: FC<ResponsiveContainerProps>
 
+@JsPlainObject
 external interface RechartsMargin {
-    var top: Number
-    var left: Number
-    var right: Number
-    var bottom: Number
+    val top: Number
+    val left: Number
+    val right: Number
+    val bottom: Number
 }
 
+@JsPlainObject
 external interface LinePoint {
-    var x: Any
-    var y: Double
-    var z: Any
+    val x: Any
+    val y: Double
+    val z: Any?
 }
 
 external interface LineChartProps : PropsWithChildren {
@@ -100,8 +103,9 @@ external interface LegendProps : Props {
     var payload: ReadonlyArray<RechartsTooltipPayload>?
 }
 
+@JsPlainObject
 external interface LegendEvent {
-    var dataKey: String
+    val dataKey: String
 }
 
 external val Legend: FC<LegendProps>

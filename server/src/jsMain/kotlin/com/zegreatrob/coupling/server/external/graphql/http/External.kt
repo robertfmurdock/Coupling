@@ -4,12 +4,14 @@ package com.zegreatrob.coupling.server.external.graphql.http
 
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.graphql.GraphQLSchema
+import kotlinx.js.JsPlainObject
 
-external fun createHandler(options: GraphQlHttpExpressOptions): Handler
+external fun createHandler(options: GqlHttpExpressOptions): Handler
 
-external interface GraphQlHttpExpressOptions {
-    var schema: GraphQLSchema
-    var context: (Request) -> dynamic
+@JsPlainObject
+external interface GqlHttpExpressOptions {
+    val schema: GraphQLSchema
+    val context: (Request) -> dynamic
 }
 
 external interface Request {

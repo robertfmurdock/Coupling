@@ -3,6 +3,7 @@
 package com.zegreatrob.coupling.server.secret.external.jose
 
 import js.typedarrays.Uint8Array
+import kotlinx.js.JsPlainObject
 import kotlin.js.Date
 import kotlin.js.Promise
 
@@ -23,14 +24,17 @@ external fun jwtVerify(
     options: JWTVerifyOptions = definedExternally,
 ): Promise<JWTVerifyResult>
 
+@JsPlainObject
 sealed external interface JWTVerifyResult {
     val payload: JWTPayload
 }
 
+@JsPlainObject
 sealed external interface JWTPayload {
     val sub: String
 }
 
+@JsPlainObject
 sealed external interface JWTVerifyOptions {
     var algorithms: Array<String>?
     var audience: Array<String>?

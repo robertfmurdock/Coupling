@@ -3,6 +3,7 @@
 package com.zegreatrob.coupling.server.external.parse5htmlrewritingstream
 
 import com.zegreatrob.coupling.server.external.fs.Stream
+import kotlinx.js.JsPlainObject
 
 @JsName("RewritingStream")
 external class RewritingStream : Stream {
@@ -15,11 +16,13 @@ external class RewritingStream : Stream {
     override fun pipe(stream: Any): Stream
 }
 
+@JsPlainObject
 sealed external interface Tag {
     var attrs: Array<Attribute>
     val tagName: String
 }
 
+@JsPlainObject
 sealed external interface Attribute {
     val name: String
     val namespace: String

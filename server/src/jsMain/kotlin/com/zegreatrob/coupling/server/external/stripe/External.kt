@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.external.stripe
 
+import kotlinx.js.JsPlainObject
 import kotlin.js.Promise
 
 @JsModule("stripe")
@@ -16,6 +17,7 @@ external interface StripeCustomersApi {
     fun list(options: StripeCustomersListOptions): Promise<StripeListResult<StripeCustomer>>
 }
 
+@JsPlainObject
 sealed external interface StripeListResult<T> {
     val data: Array<T>
 }
@@ -24,22 +26,27 @@ external interface StripeSubscriptionsApi {
     fun list(options: StripeSubscriptionsListOptions): Promise<StripeListResult<StripeSubscription>>
 }
 
+@JsPlainObject
 sealed external interface StripeCustomersCreateOptions {
-    var email: String
+    val email: String
 }
 
+@JsPlainObject
 sealed external interface StripeCustomersListOptions {
-    var email: String
+    val email: String
 }
 
+@JsPlainObject
 sealed external interface StripeSubscriptionsListOptions {
-    var customer: String
+    val customer: String
 }
 
+@JsPlainObject
 sealed external interface StripeCustomer {
     val id: String
 }
 
+@JsPlainObject
 sealed external interface StripeSubscription {
     val id: String
     val status: String
@@ -55,14 +62,16 @@ external interface StripeSetupIntentsApi {
     fun create(options: StripeSetupIntentCreateOptions): Promise<StripeSetupIntent>
 }
 
+@JsPlainObject
 sealed external interface StripeSetupIntentCreateOptions {
-    var customer: String
+    val customer: String
 
     @JsName("payment_method_types")
-    var paymentMethodTypes: Array<String>
+    val paymentMethodTypes: Array<String>
 }
 
+@JsPlainObject
 sealed external interface StripeSetupIntent {
     @JsName("client_secret")
-    var clientSecret: String?
+    val clientSecret: String?
 }

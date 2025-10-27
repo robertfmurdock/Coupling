@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.graphing.contribution
 
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.RechartsMargin
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Scatter
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ScatterChart
@@ -18,7 +19,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.core.toPrecision
 import js.lazy.Lazy
-import js.objects.unsafeJso
 import react.FC
 import react.Props
 import react.ReactNode
@@ -59,12 +59,7 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
         width = "100%"
         height = "100%"
         ScatterChart {
-            margin = unsafeJso {
-                bottom = 60
-                left = 40
-                right = 80
-                top = 20
-            }
+            margin = RechartsMargin(bottom = 60, left = 40, right = 80, top = 20)
             XAxis {
                 type = "category"
                 dataKey = "x"
@@ -99,11 +94,11 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
             }
             Scatter {
                 data = storyContributions.map { (story, contributions) ->
-                    unsafeJso<LinePoint> {
-                        x = story
-                        y = contributions.mapNotNull { it.ease }.average()
-                        z = contributions.size
-                    }
+                    LinePoint(
+                        x = story,
+                        y = contributions.mapNotNull { it.ease }.average(),
+                        z = contributions.size,
+                    )
                 }.toTypedArray()
             }
         }

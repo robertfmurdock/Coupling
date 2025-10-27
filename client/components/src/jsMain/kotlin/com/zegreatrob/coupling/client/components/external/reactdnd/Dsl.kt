@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.external.reactdnd
 
 import com.zegreatrob.coupling.client.components.external.reactdnd.dsl.DragDropValueContent
 import js.globals.globalThis
-import react.ElementType
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -53,12 +52,4 @@ fun <T> useDrop(
         results[0].unsafeCast<T>(),
         results[1].unsafeCast<(Any) -> Any>(),
     )
-}
-
-external interface ReactDnd {
-    fun useDrag(options: Json): dynamic
-    fun useDrop(options: Json): dynamic
-
-    @JsName("DndProvider")
-    val dndProvider: ElementType<DnDProvideProps>
 }

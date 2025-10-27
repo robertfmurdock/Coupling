@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.PairTickMark
 import com.zegreatrob.coupling.client.components.colorContext
+import com.zegreatrob.coupling.client.components.external.nivo.NivoOrdinalScaleColorConfig
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
@@ -21,7 +22,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.core.toPrecision
 import js.lazy.Lazy
-import js.objects.unsafeJso
 import react.Props
 import react.useEffect
 import react.useState
@@ -35,7 +35,7 @@ external interface PairEaseHeatMapProps : Props {
 @ReactFunc
 @Lazy
 val PairEaseHeatMap by nfc<PairEaseHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
-    val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
+    val getColor = useOrdinalColorScale(NivoOrdinalScaleColorConfig(scheme = "pastel1"), "value")
     val (interpolator, setInterpolator) = useState<((Number) -> String)?>(null)
     useEffect {
         val value = interpolatorAsync.await()

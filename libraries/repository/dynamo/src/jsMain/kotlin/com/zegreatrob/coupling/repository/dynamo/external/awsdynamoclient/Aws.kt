@@ -3,6 +3,7 @@
 
 package com.zegreatrob.coupling.repository.dynamo.external.awsdynamoclient
 
+import kotlinx.js.JsPlainObject
 import kotlin.js.Json
 import kotlin.js.Promise
 
@@ -27,15 +28,16 @@ external interface DynamoCommand
 
 external class ScanCommand(input: ScanCommandInput) : DynamoCommand
 
+@JsPlainObject
 sealed external interface ScanCommandInput {
     @JsName("TableName")
-    var tableName: String
+    val tableName: String
 
     @JsName("IndexName")
-    var indexName: String?
+    val indexName: String?
 
     @JsName("ProjectionExpression")
-    var projectionExpression: String
+    val projectionExpression: String
 }
 
 sealed external interface ScanCommandOutput {

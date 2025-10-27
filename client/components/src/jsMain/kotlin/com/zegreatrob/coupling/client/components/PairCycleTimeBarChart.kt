@@ -33,7 +33,7 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
         }
     }.toTypedArray()
     val largestMobSize = pairToCycleTime.toMap().keys.largestMobSize()
-    val getColor = useOrdinalColorScale(unsafeJso { scheme = "pastel1" }, "value")
+    val getColor = useOrdinalColorScale(NivoOrdinalScaleColorConfig(scheme = "pastel1"), "value")
     val couplingPairs = props.data.toMap().keys
     colorContext.Provider {
         this.value = getColor

@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.Lege
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Line
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LineChart
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
+import com.zegreatrob.coupling.client.components.graphing.external.recharts.RechartsMargin
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.Tooltip
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.TooltipProps
@@ -72,12 +73,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
             width = "100%"
             height = "100%"
             LineChart {
-                margin = unsafeJso {
-                    bottom = 60
-                    left = 40
-                    right = 80
-                    top = 20
-                }
+                margin = RechartsMargin(bottom = 60, left = 40, right = 80, top = 20)
                 data = flattenedPoints
                 CartesianGrid {
                     strokeDasharray = "3 3"
