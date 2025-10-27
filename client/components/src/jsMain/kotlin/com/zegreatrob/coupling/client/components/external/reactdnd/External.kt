@@ -17,10 +17,6 @@ external interface DnDProvideProps : PropsWithChildren {
     var backend: DnDBackend
 }
 
-sealed external interface DragOptions {
-    fun collect(monitor: DragSourceMonitor)
-}
-
 external interface DragSourceMonitor {
     fun isDragging(): Boolean
     fun isOver(): Boolean

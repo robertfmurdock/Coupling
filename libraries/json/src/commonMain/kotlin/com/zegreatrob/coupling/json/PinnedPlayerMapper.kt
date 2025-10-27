@@ -45,7 +45,7 @@ fun GqlPinnedPlayer.toModel() = PinnedPlayer(
         avatarType = avatarType?.toModel(),
         additionalEmails = unvalidatedEmails?.toSet() ?: emptySet(),
     ),
-    pins = pins.mapNotNull(GqlPin::toModel),
+    pins = pins.map(GqlPin::toModel),
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)

@@ -36,4 +36,4 @@ fun List<PartyRecord<PairAssignmentDocument>>.toSerializableString() = map { it.
 fun String.toPairAssignmentRecords(): List<PartyRecord<PairAssignmentDocument>> = fromJsonString<List<GqlPairAssignmentDocumentDetails>>().map { it.toModel() }
 
 fun List<PartyRecord<Pin>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
-fun String.toPinRecords(): List<PartyRecord<Pin>> = fromJsonString<List<GqlPinDetails>>().mapNotNull { it.toModel() }
+fun String.toPinRecords(): List<PartyRecord<Pin>> = fromJsonString<List<GqlPinDetails>>().map { it.toModel() }
