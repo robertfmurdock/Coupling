@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Color

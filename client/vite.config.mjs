@@ -3,7 +3,7 @@ import fsp from 'fs/promises'
 import path from 'path'
 import {createHtmlPlugin} from 'vite-plugin-html'
 import {defineConfig} from 'vite'
-import {visualizer} from "rollup-plugin-visualizer";
+import Sonda from 'sonda/vite';
 import favicons from "favicons";
 
 async function generateFavicons() {
@@ -102,7 +102,7 @@ export default defineConfig(async ({command}) => {
                     },
                 }
             }),
-            visualizer({template: 'sunburst'}),
+            Sonda({open: false}),
         ],
     });
 })

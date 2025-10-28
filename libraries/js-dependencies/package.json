@@ -33,7 +33,6 @@
     "chromedriver": "141.0.6",
     "compression": "^1.8.1",
     "core-js": "^3.46.0",
-    "css-loader": "^7.1.2",
     "d3": "^7.9.0",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
@@ -59,7 +58,6 @@
     "karma": "^6.4.4",
     "marked": "^16.4.1",
     "mime": "4.1.0",
-    "mini-css-extract-plugin": "^2.9.4",
     "minimist": "^1.2.8",
     "on-finished": "^2.4.1",
     "parse5": "~8.0.0",
@@ -74,12 +72,12 @@
     "read-pkg-up": "^4.0.0",
     "recharts": "^3.3.0",
     "resolve-pkg": "^2.0.0",
-    "rollup-plugin-visualizer": "6.0.5",
     "serverless": "^4.22.0",
     "serverless-http": "^4.0.0",
     "serverless-offline": "^14.4.0",
     "serverless-offline-ssm": "^6.2.0",
     "serverless-prune-plugin": "^2.1.0",
+    "sonda": "^0.9.0",
     "source-map-loader": "^5.0.0",
     "stripe": "^19.1.0",
     "style-loader": "^4.0.0",
@@ -89,7 +87,6 @@
     "vite-plugin-html": "^3.2.2",
     "webpack": "5.102.1",
     "webpack-cli": "^6.0.1",
-    "webpack-node-externals": "^3.0.0",
     "ws": "^8.18.3"
   }
 }

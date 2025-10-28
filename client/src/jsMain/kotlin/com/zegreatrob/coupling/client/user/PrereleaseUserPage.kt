@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
+import js.lazy.Lazy
 
+@Lazy
 val PrereleaseUserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,

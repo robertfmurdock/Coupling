@@ -15,6 +15,7 @@ import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
 import js.array.component1
+import js.lazy.Lazy
 import react.Props
 import react.PropsWithValue
 import react.create
@@ -23,6 +24,7 @@ import react.dom.html.ReactHTML.div
 import react.router.dom.useSearchParams
 import web.html.HtmlSource
 
+@Lazy
 val SlackCallbackPage by nfc<PageProps> { props ->
     val (urlSearchParams) = useSearchParams()
     val code = urlSearchParams.get("code")

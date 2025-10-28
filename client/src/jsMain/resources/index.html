@@ -19,7 +19,7 @@
     <meta property="og:site_name" content="Coupling! An app for pairs." />
     <meta property="og:description" content="Coupling is a webapp for teams that use pair programming. It suggests pairs that haven't worked together in a long time, shows history of who's worked with who, and generally makes the plan visible, all with a silly tone." />
 
-    <script>var iosDragDropShim = {enableEnterLeave: true};</script>
+    <script>const iosDragDropShim = {enableEnterLeave: true};</script>
 
     <script type="importmap">
         {
@@ -34,14 +34,14 @@
         <% } %>
 
         <% if (htmlWebpackPlugin.options.window) { %>
-            <% for (var varName in htmlWebpackPlugin.options.window) { %>
+            <% for (const varName in htmlWebpackPlugin.options.window) { %>
                 window['<%=varName%>'] = <%= JSON.stringify(htmlWebpackPlugin.options.window[varName]) %>;
             <% } %>
         <% } %>
     </script>
     <% if (htmlWebpackPlugin.options.window) { %>
     <script>
-      <% for (var varName in htmlWebpackPlugin.options.window) { %>
+      <% for (const varName in htmlWebpackPlugin.options.window) { %>
         window['<%=varName%>'] = <%- JSON.stringify(htmlWebpackPlugin.options.window[varName]) %>;
       <% } %>
     </script>
