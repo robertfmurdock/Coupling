@@ -51,11 +51,56 @@ fragment BoostDetailsFragment on BoostDetails {
 query userQuery {
     user {
         details {
-            id
-            email
-            connectSecretId
-            connectedEmails
-            authorizedPartyIds
+            ...UserDetailsFragment
         }
     }
+}
+
+query userPageQuery {
+    user {
+        details {
+            ...UserDetailsFragment
+        }
+    }
+    partyList {
+        details {
+            ...PartyDetailsFragment
+        }
+    }
+}
+
+query prereleaseUserPageQuery {
+    user {
+        details {
+            ...UserDetailsFragment
+        }
+        subscription {
+            stripeCustomerId
+            stripeSubscriptionId
+            isActive
+            currentPeriodEnd
+        }
+        boost {
+            userId
+            partyIds
+            expirationDate
+        }
+    }
+    config {
+        stripeAdminCode
+        stripePurchaseCode
+    }
+    partyList {
+        details {
+            ...PartyDetailsFragment
+        }
+    }
+}
+
+fragment UserDetailsFragment on UserDetails {
+    id
+    email
+    connectSecretId
+    connectedEmails
+    authorizedPartyIds
 }
