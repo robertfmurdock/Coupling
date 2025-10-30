@@ -1,0 +1,19 @@
+fragment PartyDetailsFragment on PartyDetails {
+    id
+    name
+    email
+    pairingRule
+    badgesEnabled
+    defaultBadgeName
+    alternateBadgeName
+    callSignsEnabled
+    animationsEnabled
+    animationSpeed
+    modifyingUserEmail
+    timestamp
+    isDeleted
+}
+
+query partyListQuery {
+    partyList { details {...PartyDetailsFragment}}
+}

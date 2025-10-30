@@ -21,7 +21,8 @@ import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.action.user.ConnectUserCommand
 import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
 import com.zegreatrob.coupling.action.user.DisconnectUserCommand
-import com.zegreatrob.coupling.sdk.gql.GraphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.RawGraphQuery
 
 interface CouplingSdkDispatcher :
     ApplyBoostCommand.Dispatcher,
@@ -38,7 +39,8 @@ interface CouplingSdkDispatcher :
     DeleteSecretCommand.Dispatcher,
     GrantDiscordAccessCommand.Dispatcher,
     GrantSlackAccessCommand.Dispatcher,
-    GraphQuery.Dispatcher,
+    ApolloGraphQuery.Dispatcher,
+    RawGraphQuery.Dispatcher,
     SaveContributionCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,

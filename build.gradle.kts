@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.com.github.sghill.distribution.sha)
     alias(libs.plugins.com.zegreatrob.tools.digger)
     alias(libs.plugins.nl.littlerobots.version.catalog.update)
+    alias(libs.plugins.com.apollographql.apollo) apply false
     base
 }
 

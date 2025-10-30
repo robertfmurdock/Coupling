@@ -19,7 +19,7 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.model.user.UserDetails
-import com.zegreatrob.coupling.sdk.gql.GraphQuery
+import com.zegreatrob.coupling.sdk.gql.RawGraphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -37,7 +37,7 @@ import web.html.InputType
 import web.html.text
 import kotlin.uuid.Uuid
 
-external interface UserConfigProps<D> : Props where D : GraphQuery.Dispatcher, D : ApplyBoostCommand.Dispatcher {
+external interface UserConfigProps<D> : Props where D : RawGraphQuery.Dispatcher, D : ApplyBoostCommand.Dispatcher {
     var user: UserDetails?
     var subscription: SubscriptionDetails?
     var partyList: List<PartyDetails>

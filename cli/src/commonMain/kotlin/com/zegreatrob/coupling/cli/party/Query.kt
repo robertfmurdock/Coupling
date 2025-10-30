@@ -8,7 +8,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.cli.cliScope
 import com.zegreatrob.coupling.cli.withSdk
-import com.zegreatrob.coupling.sdk.gql.GraphQuery
+import com.zegreatrob.coupling.sdk.gql.RawGraphQuery
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -22,7 +22,7 @@ private class Query : CliktCommand() {
         cliScope.launch {
             val variables = Json.parseToJsonElement(variableJson).jsonObject
             withSdk(cliScope, env, ::echo) { sdk ->
-                echo(sdk.fire(GraphQuery(query, variables))?.raw ?: "No response.")
+                echo(sdk.fire(RawGraphQuery(query, variables))?.raw ?: "No response.")
             }
         }
     }
