@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.navigateToPartyList
 import com.zegreatrob.coupling.client.routing.partyId
-import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.client.schema.PartySecretsPageQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 
@@ -18,19 +18,13 @@ val PartySecretsPage by nfc<PageProps> { props ->
     } else {
         CouplingQuery(
             commander = props.commander,
-            query = graphQuery {
-                party(partyId) {
-                    details()
-                    secretList()
-                    boost()
-                }
-            },
+            query = ApolloGraphQuery(PartySecretsPageQuery(partyId)),
             key = props.partyId?.value?.toString(),
         ) { reload, dispatcher, result ->
             PartySecretLayout(
-                partyDetails = result.party?.details?.data ?: return@CouplingQuery,
-                secrets = result.party?.secretList?.elements ?: emptyList(),
-                boost = result.party?.boost?.data,
+                partyDetails = result.party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery,
+                secrets = result.party.secretList?.map { it.partySecretFragment.toModel() } ?: emptyList(),
+                boost = result.party.boost?.boostDetailsFragment?.toModel(),
                 dispatcher = dispatcher,
                 reload = reload,
             )

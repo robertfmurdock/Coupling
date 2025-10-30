@@ -1,0 +1,61 @@
+fragment PartyDetailsFragment on PartyDetails {
+    id
+    name
+    email
+    pairingRule
+    badgesEnabled
+    defaultBadgeName
+    alternateBadgeName
+    callSignsEnabled
+    animationsEnabled
+    animationSpeed
+    modifyingUserEmail
+    timestamp
+    isDeleted
+}
+
+query partyListQuery {
+    partyList { details {...PartyDetailsFragment}}
+}
+
+query partyQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) { details {...PartyDetailsFragment}}
+}
+
+query partySecretsPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details {...PartyDetailsFragment}
+        secretList {
+            ...PartySecretFragment
+        }
+        boost {
+            ...BoostDetailsFragment
+        }
+    }
+}
+
+fragment PartySecretFragment on PartySecret {
+    id
+    partyId
+    description
+    createdTimestamp
+    lastUsedTimestamp
+}
+
+fragment BoostDetailsFragment on BoostDetails {
+    userId
+    partyIds
+    expirationDate
+}
+
+query userQuery {
+    user {
+        details {
+            id
+            email
+            connectSecretId
+            connectedEmails
+            authorizedPartyIds
+        }
+    }
+}
