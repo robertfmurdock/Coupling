@@ -104,3 +104,10 @@ fragment UserDetailsFragment on UserDetails {
     connectedEmails
     authorizedPartyIds
 }
+
+query contributionVisualizationPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        spinsUntilFullRotation
+    }
+}
