@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.party
 
+import com.zegreatrob.coupling.client.gql.PartyListQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.schema.PartyListQuery
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy

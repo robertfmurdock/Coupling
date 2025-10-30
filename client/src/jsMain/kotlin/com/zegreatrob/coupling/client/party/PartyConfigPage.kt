@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.components.party.PartyConfig
+import com.zegreatrob.coupling.client.gql.PartyQuery
+import com.zegreatrob.coupling.client.gql.UserQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
-import com.zegreatrob.coupling.client.schema.PartyQuery
-import com.zegreatrob.coupling.client.schema.UserQuery
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery

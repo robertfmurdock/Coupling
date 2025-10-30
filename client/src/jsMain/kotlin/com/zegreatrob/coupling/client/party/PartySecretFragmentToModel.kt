@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.schema.fragment.PartySecretFragment
+import com.zegreatrob.coupling.client.gql.fragment.PartySecretFragment
 import com.zegreatrob.coupling.model.party.Secret
 
 fun PartySecretFragment.toModel(): Secret = Secret(

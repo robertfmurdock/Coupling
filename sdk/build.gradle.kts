@@ -1,3 +1,7 @@
+@file:OptIn(ApolloExperimental::class)
+
+import com.apollographql.apollo.annotations.ApolloExperimental
+
 plugins {
     alias(libs.plugins.com.zegreatrob.tools.certifier)
     alias(libs.plugins.com.apollographql.apollo)
@@ -13,6 +17,19 @@ kotlin {
 
 apollo {
     service("service") {
+        generateApolloMetadata.set(true)
+        generateDataBuilders.set(true)
+        packageName.set("com.zegreatrob.coupling.sdk.schema")
+        schemaFiles.from(
+            file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
+            file("../server/src/jsMain/resources/schema.graphqls"),
+        )
+        generateAsInternal = false
+        introspection {
+            endpointUrl.set("https://localhost/graphql")
+            headers.put("api-key", "1234567890abcdef")
+            schemaFile.set(file("src/main/graphql/schema.graphqls"))
+        }
         mapScalar(
             "ContributionId",
             "com.zegreatrob.coupling.json.ContributionIdString",
@@ -57,18 +74,6 @@ apollo {
             "com.zegreatrob.coupling.json.UserIdString",
             "com.zegreatrob.coupling.sdk.adapter.userIdAdapter"
         )
-
-        packageName.set("com.zegreatrob.coupling.sdk.schema")
-        schemaFiles.from(
-            file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
-            file("../server/src/jsMain/resources/schema.graphqls"),
-        )
-        generateAsInternal = true
-        introspection {
-            endpointUrl.set("https://localhost/graphql")
-            headers.put("api-key", "1234567890abcdef")
-            schemaFile.set(file("src/main/graphql/schema.graphqls"))
-        }
     }
 }
 

@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.contribution.ContributionContentFrame
+import com.zegreatrob.coupling.client.gql.ContributionVisualizationPageQuery
 import com.zegreatrob.coupling.client.party.toModel
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.client.schema.ContributionVisualizationPageQuery
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import js.lazy.Lazy
 

@@ -41,61 +41,8 @@ kotlin {
 
 apollo {
     service("service") {
-        mapScalar(
-            "ContributionId",
-            "com.zegreatrob.coupling.json.ContributionIdString",
-            "com.zegreatrob.coupling.sdk.adapter.contributionAdapter"
-        )
-        mapScalar("DateTimeISO", "kotlin.time.Instant", "com.apollographql.adapter.core.KotlinInstantAdapter")
-        mapScalar("Duration", "kotlin.time.Duration", "com.zegreatrob.coupling.sdk.adapter.KotlinDurationAdapter")
-        mapScalar(
-            "Email",
-            "kotools.types.text.NotBlankString",
-            "com.zegreatrob.coupling.sdk.adapter.notBlankStringAdapter"
-        )
-        mapScalar("Float", "Double")
-        mapScalar("ID", "String")
-        mapScalar(
-            "PairAssignmentDocumentId",
-            "com.zegreatrob.coupling.json.PairAssignmentDocumentIdString",
-            "com.zegreatrob.coupling.sdk.adapter.pairAssignmentDocumentIdAdapter"
-        )
-        mapScalar(
-            "PartyId",
-            "com.zegreatrob.coupling.json.PartyIdString",
-            "com.zegreatrob.coupling.sdk.adapter.partyIdAdapter"
-        )
-        mapScalar(
-            "PinId",
-            "com.zegreatrob.coupling.json.PinIdString",
-            "com.zegreatrob.coupling.sdk.adapter.pinIdAdapter"
-        )
-        mapScalar(
-            "PlayerId",
-            "com.zegreatrob.coupling.json.PlayerIdString",
-            "com.zegreatrob.coupling.sdk.adapter.playerIdAdapter"
-        )
-        mapScalar(
-            "SecretId",
-            "com.zegreatrob.coupling.json.SecretIdString",
-            "com.zegreatrob.coupling.sdk.adapter.secretIdAdapter"
-        )
-        mapScalar(
-            "UserId",
-            "com.zegreatrob.coupling.json.UserIdString",
-            "com.zegreatrob.coupling.sdk.adapter.userIdAdapter"
-        )
-
-        packageName.set("com.zegreatrob.coupling.client.schema")
-        schemaFiles.from(
-            file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
-            file("../server/src/jsMain/resources/schema.graphqls"),
-        )
-        introspection {
-            endpointUrl.set("https://localhost/graphql")
-            headers.put("api-key", "1234567890abcdef")
-            schemaFile.set(file("src/main/graphql/schema.graphqls"))
-        }
+        packageName.set("com.zegreatrob.coupling.client.gql")
+        dependsOn(project(":sdk"))
     }
 }
 

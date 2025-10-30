@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.components.party.PartySecretLayout
+import com.zegreatrob.coupling.client.gql.PartySecretsPageQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.navigateToPartyList
 import com.zegreatrob.coupling.client.routing.partyId
-import com.zegreatrob.coupling.client.schema.PartySecretsPageQuery
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy

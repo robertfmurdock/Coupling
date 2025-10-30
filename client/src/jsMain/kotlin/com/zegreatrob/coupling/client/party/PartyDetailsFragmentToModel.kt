@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.schema.fragment.PartyDetailsFragment
+import com.zegreatrob.coupling.client.gql.fragment.PartyDetailsFragment
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import org.kotools.types.ExperimentalKotoolsTypesApi

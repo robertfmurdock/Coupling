@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.schema.fragment.BoostDetailsFragment
+import com.zegreatrob.coupling.client.gql.fragment.BoostDetailsFragment
 import com.zegreatrob.coupling.model.Boost
 
 fun BoostDetailsFragment.toModel(): Boost = Boost(
