@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.gql.PartyListQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 

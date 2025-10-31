@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
+    alias(libs.plugins.com.apollographql.apollo)
     distribution
 }
 
@@ -31,6 +32,13 @@ kotlin {
                 }
             }
         }
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.zegreatrob.coupling.cli.gql")
+        dependsOn(project(":sdk"))
     }
 }
 

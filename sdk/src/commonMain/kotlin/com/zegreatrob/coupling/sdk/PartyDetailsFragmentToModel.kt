@@ -1,8 +1,8 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.client.gql.fragment.PartyDetailsFragment
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.sdk.schema.fragment.PartyDetailsFragment
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)

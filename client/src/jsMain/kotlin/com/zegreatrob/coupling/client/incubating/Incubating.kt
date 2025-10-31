@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.incubating
 
 import com.zegreatrob.coupling.client.gql.IncubatingQuery
-import com.zegreatrob.coupling.client.party.toModel
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 

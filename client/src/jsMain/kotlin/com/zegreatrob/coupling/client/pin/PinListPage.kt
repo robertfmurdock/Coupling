@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.gql.PinListPageQuery
-import com.zegreatrob.coupling.client.party.toModel
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery

@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.components.contribution.ContributionOvervi
 import com.zegreatrob.coupling.client.components.contribution.ContributionStartContent
 import com.zegreatrob.coupling.client.components.player.UpdatingPlayerList
 import com.zegreatrob.coupling.client.gql.ContributionOverviewPageQuery
-import com.zegreatrob.coupling.client.party.toModel
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery

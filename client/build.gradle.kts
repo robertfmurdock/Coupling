@@ -72,8 +72,6 @@ dependencies {
     jsMainImplementation(project(":libraries:logging"))
     jsMainImplementation(project(":libraries:repository:core"))
     jsMainImplementation(project(":libraries:repository:memory"))
-    jsMainImplementation("com.apollographql.adapters:apollo-adapters-core")
-    jsMainImplementation("com.apollographql.apollo:apollo-runtime")
     jsMainImplementation("com.zegreatrob.jsmints:minreact")
     jsMainImplementation("com.zegreatrob.jsmints:react-data-loader")
     jsMainImplementation("com.zegreatrob.testmints:action")

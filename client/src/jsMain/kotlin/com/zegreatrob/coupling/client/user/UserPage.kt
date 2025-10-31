@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.gql.UserPageQuery
-import com.zegreatrob.coupling.client.party.toModel
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.party.PartyDetails

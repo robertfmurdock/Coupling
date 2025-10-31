@@ -1,0 +1,3 @@
+query partyListQuery {
+    partyList { details {...PartyDetailsFragment}}
+}

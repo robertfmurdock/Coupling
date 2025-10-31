@@ -1,10 +1,9 @@
-package com.zegreatrob.coupling.client.pairassignments.list
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.sdk.schema.fragment.PairAssignmentDetailsFragment
-import com.zegreatrob.coupling.sdk.toModel
 import kotools.types.collection.toNotEmptyList
 
 fun PairAssignmentDetailsFragment.toModel() = PairAssignmentDocument(

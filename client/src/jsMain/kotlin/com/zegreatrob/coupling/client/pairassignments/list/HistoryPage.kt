@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.gql.HistoryPageQuery
-import com.zegreatrob.coupling.client.party.toModel
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.schema.type.PartyInput
+import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
 
 @Lazy
