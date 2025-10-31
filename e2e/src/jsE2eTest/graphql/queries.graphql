@@ -1,0 +1,9 @@
+query partyListQuery {
+    partyList { details {...PartyDetailsFragment}}
+}
+
+query partyPlayerListQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        playerList { ...PlayerDetailsFragment }
+    }
+}

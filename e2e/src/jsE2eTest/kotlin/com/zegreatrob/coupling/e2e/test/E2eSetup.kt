@@ -2,9 +2,11 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.e2e.gql.PartyListQuery
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.async.TestTemplate
@@ -18,9 +20,9 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
 
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdk.await().apply {
-            fire(graphQuery { partyList { details() } })
+            fire(ApolloGraphQuery(PartyListQuery()))
                 ?.partyList
-                ?.mapNotNull { it.details?.data }
+                ?.mapNotNull { it.details?.partyDetailsFragment?.toModel() }
                 ?.map(PartyDetails::id)
                 ?.map { DeletePartyCommand(it) }
                 ?.forEach { fire(it) }

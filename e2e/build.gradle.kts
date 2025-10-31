@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.jsmints.plugins.wdiotest")
+    alias(libs.plugins.com.apollographql.apollo)
 }
 
 kotlin {
@@ -35,6 +36,18 @@ val clientConfiguration: Configuration by configurations.creating {
     isCanBeResolved = true
     attributes {
         attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "client")
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.zegreatrob.coupling.e2e.gql")
+        dependsOn(project(":sdk"))
+        srcDir("src/jsE2eTest/graphql")
+        generateSourcesDuringGradleSync.set(true)
+        outputDirConnection {
+            connectToKotlinSourceSet("jsE2eTest")
+        }
     }
 }
 

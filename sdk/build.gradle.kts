@@ -30,6 +30,7 @@ apollo {
             headers.put("api-key", "1234567890abcdef")
             schemaFile.set(file("src/main/graphql/schema.graphqls"))
         }
+        generateSourcesDuringGradleSync.set(true)
         mapScalar(
             "ContributionId",
             "com.zegreatrob.coupling.json.ContributionIdString",

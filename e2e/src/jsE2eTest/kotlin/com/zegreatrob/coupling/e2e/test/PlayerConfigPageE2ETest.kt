@@ -5,18 +5,18 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.e2e.gql.PartyPlayerListQuery
 import com.zegreatrob.coupling.e2e.test.ConfigForm.retireButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
-import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -60,8 +60,8 @@ class PlayerConfigPageE2ETest {
         saveButton().click()
         page.waitForSaveToComplete("3")
     } verify {
-        sdk().fire(graphQuery { party(party.id) { playerList() } })
-            ?.party?.playerList?.elements?.map { it.name }
+        sdk().fire(ApolloGraphQuery(PartyPlayerListQuery(party.id)))
+            ?.party?.playerList?.map { it.playerDetailsFragment.name }
             .assertIsEqualTo(listOf("1", "2", "3"))
     }
 
