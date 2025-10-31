@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -12,7 +12,7 @@ class StoryContributionGraphTest {
     fun willRenderWithEmptyData() = asyncSetup(object {
     }) exercise {
         render {
-            StoryContributionGraph(emptyList(), GqlContributionWindow.All, false)
+            StoryContributionGraph(emptyList(), ContributionWindow.All, false)
         }
     } verify {
         screen.findByTestId("contribution-graph")

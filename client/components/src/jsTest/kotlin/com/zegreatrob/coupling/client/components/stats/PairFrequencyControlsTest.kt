@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
@@ -31,7 +31,7 @@ class PairFrequencyControlsTest {
         val viewSpy = SpyData<VisualizationContext, ReactNode>()
             .apply { spyWillReturn(ReactNode("Mission Complete")) }
     }) exercise {
-        render(PairFrequencyControls.create(pairs, GqlContributionWindow.All, {}) { +viewSpy.spyFunction(it) })
+        render(PairFrequencyControls.create(pairs, ContributionWindow.All, {}) { +viewSpy.spyFunction(it) })
     } verify {
         viewSpy.spyReceivedValues.last()
             .assertIsEqualTo(VisualizationContext(Visualization.PairFrequencyHeatmap, emptyList()))
@@ -50,7 +50,7 @@ class PairFrequencyControlsTest {
             .apply { spyWillReturn(listOf("Pending", "Mission Complete").map(::ReactNode)) }
         val actor = UserEvent.setup()
     }) {
-        render(PairFrequencyControls.create(pairs, GqlContributionWindow.All, {}) { +viewSpy.spyFunction(it) })
+        render(PairFrequencyControls.create(pairs, ContributionWindow.All, {}) { +viewSpy.spyFunction(it) })
     } exercise {
         actor.click(screen.findByRole("checkbox", RoleOptions(expectedPair.pairName)))
     } verify {

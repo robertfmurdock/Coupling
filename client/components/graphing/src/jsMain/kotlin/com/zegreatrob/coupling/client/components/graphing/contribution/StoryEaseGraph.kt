@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.graphing.contribution
 
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.LinePoint
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.RechartsMargin
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ResponsiveContainer
@@ -10,7 +11,6 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.Tool
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.XAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.ZAxis
-import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements
@@ -28,7 +28,7 @@ import react.dom.svg.TextAnchor
 
 external interface StoryEaseGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
-    var window: GqlContributionWindow
+    var window: ContributionWindow
 }
 
 val StoryEaseTick = FC<TickProps> { props ->
@@ -52,7 +52,7 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
     val (pairsToReports, window) = props
     var storyContributions = pairsToReports.contributionsByStory()
 
-    if (pairsToReports.flatMap { it.second.contributions?.elements ?: emptyList() }.isEmpty()) {
+    if (pairsToReports.flatMap { it.second.contributions ?: emptyList() }.isEmpty()) {
         return@nfc
     }
     ResponsiveContainer {

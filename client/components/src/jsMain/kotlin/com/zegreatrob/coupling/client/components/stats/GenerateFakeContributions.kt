@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.Game
 import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
-import com.zegreatrob.coupling.json.GqlContributionWindow
-import com.zegreatrob.coupling.json.toModel
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionReport
@@ -39,7 +38,7 @@ private val random = Random(10)
 
 suspend fun generateFakeContributions(
     pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
-    selectedWindow: GqlContributionWindow,
+    selectedWindow: ContributionWindow,
     fakeStyle: FakeDataStyle,
 ): List<Pair<CouplingPair, ContributionReport>> = contributionStartDateTime(selectedWindow, pairsContributions)
     .let { startDateTime ->
@@ -150,7 +149,7 @@ private fun List<CouplingPair>.generatePairingSet(): List<CouplingPair> = fold(e
 }
 
 private fun contributionStartDateTime(
-    selectedWindow: GqlContributionWindow,
+    selectedWindow: ContributionWindow,
     pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
 ) = beginningOfWindow(selectedWindow) ?: pairsContributions.toMap()
     .values
@@ -158,7 +157,7 @@ private fun contributionStartDateTime(
     .flatten()
     .firstContributionInstant()
 
-private fun beginningOfWindow(selectedWindow: GqlContributionWindow) = selectedWindow.toModel()?.let {
+private fun beginningOfWindow(selectedWindow: ContributionWindow) = selectedWindow.toValue()?.let {
     Clock.System.now() - it
 }
 

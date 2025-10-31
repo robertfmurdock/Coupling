@@ -111,3 +111,85 @@ query contributionVisualizationPageQuery($partyId: PartyId!) {
         spinsUntilFullRotation
     }
 }
+
+query contributionVisualizationDataQuery($partyId: PartyId!, $window: ContributionWindow!, $pairsInput: PairsInput!) {
+    party(input: {partyId: $partyId}) {
+        pairs(input: $pairsInput) {
+            players {
+                ...PlayerDetailsFragment
+            }
+            contributionReport(input: {window: $window}) {
+                contributions {
+                    ...PartyContributionFragment
+                }
+                medianCycleTime
+                withCycleTimeCount
+            }
+        }
+    }
+}
+
+query contributionListPageQuery($partyId: PartyId!, $window: ContributionWindow!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        playerList { ...PlayerDetailsFragment }
+        retiredPlayers { ...PlayerDetailsFragment }
+        contributionReport(input: {window: $window}) {
+            contributions { ...ContributionFragment }
+        }
+    }
+}
+
+fragment PlayerDetailsFragment on PlayerDetails {
+    id
+    name
+    email
+    badge
+    callSignAdjective
+    callSignNoun
+    imageURL
+    avatarType
+    unvalidatedEmails
+}
+
+fragment ContributionFragment on Contribution {
+    commitCount
+    createdAt
+    cycleTime
+    dateTime
+    ease
+    firstCommit
+    firstCommitDateTime
+    hash
+    id
+    integrationDateTime
+    label
+    link
+    name
+    participantEmails
+    semver
+    story
+}
+
+fragment PartyContributionFragment on Contribution {
+    commitCount
+    createdAt
+    cycleTime
+    dateTime
+    ease
+    firstCommit
+    firstCommitDateTime
+    hash
+    id
+    integrationDateTime
+    label
+    link
+    name
+    participantEmails
+    semver
+    story
+    partyId
+    modifyingUserEmail
+    timestamp
+    isDeleted
+}

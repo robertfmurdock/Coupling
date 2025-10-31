@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
-import com.zegreatrob.coupling.json.GqlContributionWindow
-import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
@@ -49,7 +48,7 @@ private const val WORKDAYS_PER_WEEK = 5
 private const val EXCELLENT_CONTRIBUTIONS_PER_DAY = 4
 
 fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
-    window: GqlContributionWindow,
+    window: ContributionWindow,
     spinsUntilFullRotation: Int,
     yConverter: (List<Contribution>) -> Number,
 ): Pair<Int, Array<NivoHeatMapData>> {
@@ -72,7 +71,7 @@ fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
     return Pair(max, data)
 }
 
-private fun GqlContributionWindow.weeks(map: Map<Set<Player>, List<Contribution>>) = toModel()
+private fun ContributionWindow.weeks(map: Map<Set<Player>, List<Contribution>>) = toValue()
     ?.inWholeWeeks()
     ?: map.weeksSinceFirstContribution()
 

@@ -38,7 +38,7 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
     val (party, boost, pin, pinList, reload, dispatchFunc) = props
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
-    val updatedPin = values.fromJsonDynamic<GqlPin>().toModel() ?: pin
+    val updatedPin = values.fromJsonDynamic<GqlPin>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSubmit = dispatchFunc {
         fire(SavePinCommand(party.id, updatedPin))

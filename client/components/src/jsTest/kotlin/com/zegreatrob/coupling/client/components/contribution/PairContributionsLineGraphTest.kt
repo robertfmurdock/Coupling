@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.partyRecord
@@ -18,7 +18,7 @@ class PairContributionsLineGraphTest {
 
     @Test
     fun whenDataIsNotAvailableWillShowIndication() = asyncSetup(object : ScopeMint() {
-        val window = GqlContributionWindow.All
+        val window = ContributionWindow.All
         val data = listOf(
             Pair(
                 pairOf(stubPlayer()),
@@ -37,7 +37,7 @@ class PairContributionsLineGraphTest {
         render {
             PairContributionsLineGraph(data, window)
         }
-    } verify { result ->
+    } verify {
         screen.findByText("No contributions with time data available for this period.")
     }
 }

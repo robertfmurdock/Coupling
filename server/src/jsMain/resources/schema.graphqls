@@ -74,7 +74,7 @@ type PlayerDetails {
     callSignNoun: String!
     imageURL: String
     avatarType: AvatarType
-    unvalidatedEmails: [String]!
+    unvalidatedEmails: [String!]!
     modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!

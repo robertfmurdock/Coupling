@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.coupling.client.components.external.nivo.NivoOrdinalScaleColorConfig
 import com.zegreatrob.coupling.client.components.external.nivo.bar.ResponsiveBar
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
-import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
@@ -18,7 +18,7 @@ import kotlin.js.json
 
 external interface PairCycleTimeBarChartProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
-    var window: GqlContributionWindow
+    var window: ContributionWindow
 }
 
 @ReactFunc

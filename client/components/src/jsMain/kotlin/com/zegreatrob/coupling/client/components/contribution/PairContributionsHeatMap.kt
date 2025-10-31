@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.components.colorContext
 import com.zegreatrob.coupling.client.components.external.nivo.NivoOrdinalScaleColorConfig
 import com.zegreatrob.coupling.client.components.external.nivo.colors.useOrdinalColorScale
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoHeatMapData
@@ -12,7 +13,6 @@ import com.zegreatrob.coupling.client.components.graphing.interpolatorAsync
 import com.zegreatrob.coupling.client.components.pairContext
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
-import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -26,7 +26,7 @@ import react.useState
 
 external interface PairContributionsHeatMapProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
-    var window: GqlContributionWindow
+    var window: ContributionWindow
     var spinsUntilFullRotation: Int
 }
 

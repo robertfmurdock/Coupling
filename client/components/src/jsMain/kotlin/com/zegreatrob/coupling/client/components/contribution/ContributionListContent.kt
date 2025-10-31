@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.client.components.contribution
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
 import com.zegreatrob.coupling.client.components.DispatchFunc
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.external.d3.array.quantileSorted
 import com.zegreatrob.coupling.client.components.stats.ContributionControlPanelFrame
 import com.zegreatrob.coupling.client.components.stats.ContributionLabelFilter
 import com.zegreatrob.coupling.client.components.stats.EnumSelector
-import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
@@ -34,8 +34,8 @@ import kotlin.time.DurationUnit
 external interface ContributionListContentProps : Props {
     var party: PartyDetails
     var contributions: List<Contribution>
-    var window: GqlContributionWindow
-    var setWindow: (GqlContributionWindow) -> Unit
+    var window: ContributionWindow
+    var setWindow: (ContributionWindow) -> Unit
     var players: List<Player>
     var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>
 }

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -19,7 +19,7 @@ import kotlin.test.Test
 class PairEaseLineGraphTest {
     @Test
     fun whenDataIsNotAvailableWillShowIndication() = asyncSetup(object : ScopeMint() {
-        val window = GqlContributionWindow.All
+        val window = ContributionWindow.All
         val data = listOf(
             Pair(
                 pairOf(stubPlayer()),
@@ -38,13 +38,13 @@ class PairEaseLineGraphTest {
         render {
             PairEaseLineGraph(data, window)
         }
-    } verify { result ->
+    } verify {
         screen.findByText("No ease data available for this period.")
     }
 
     @Test
     fun whenDataIsAvailableWillNotShowIndication() = asyncSetup(object : ScopeMint() {
-        val window = GqlContributionWindow.All
+        val window = ContributionWindow.All
         val data = listOf(
             pairOf(stubPlayer()) to report(stubContribution().copy(ease = null)),
             pairOf(stubPlayer()) to report(stubContribution().copy(ease = 2)),
@@ -55,18 +55,18 @@ class PairEaseLineGraphTest {
         render {
             PairEaseLineGraph(data, window)
         }
-    } verify { result ->
+    } verify {
         screen.findByTestId("coupling-responsive-line")
     }
 
     @Test
     fun whenNoPairsAreSelectedShowIndication() = asyncSetup(object : ScopeMint() {
-        val window = GqlContributionWindow.All
+        val window = ContributionWindow.All
     }) exercise {
         render {
             PairEaseLineGraph(emptyList(), window)
         }
-    } verify { result ->
+    } verify {
         screen.findByText("No pairs are selected.")
     }
 }

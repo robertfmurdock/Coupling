@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoLineData
 import com.zegreatrob.coupling.client.components.graphing.external.nivo.NivoPoint
-import com.zegreatrob.coupling.json.GqlContributionWindow
-import com.zegreatrob.coupling.json.toModel
+import com.zegreatrob.coupling.client.components.stats.toValue
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements
@@ -22,12 +22,12 @@ import kotlin.time.toJSDate
 
 external interface PairEaseLineGraphProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
-    var window: GqlContributionWindow
+    var window: ContributionWindow
 }
 
 @ReactFunc
 val PairEaseLineGraph by nfc<PairEaseLineGraphProps> { (data, window) ->
-    val duration = window.toModel()
+    val duration = window.toValue()
 
     if (data.isEmpty()) {
         +"No pairs are selected."

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.client.components.contribution.contributionContentBackgroundColor
-import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.element
@@ -30,8 +30,8 @@ import web.html.checkbox
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, ContributionReport>>
     var children: (VisualizationContext) -> ReactNode
-    var window: GqlContributionWindow
-    var setWindow: (GqlContributionWindow) -> Unit
+    var window: ContributionWindow
+    var setWindow: (ContributionWindow) -> Unit
 }
 
 enum class Visualization {

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.StubDispatcher
-import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.stubmodel.stubContribution
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -28,7 +28,7 @@ class ContributionListContentTest {
             ContributionListContent.create(
                 stubPartyDetails(),
                 contributions,
-                GqlContributionWindow.All,
+                ContributionWindow.All,
                 {},
                 emptyList(),
                 StubDispatcher().func(),
@@ -59,7 +59,7 @@ class ContributionListContentTest {
             ContributionListContent.create(
                 stubPartyDetails(),
                 contributions,
-                GqlContributionWindow.All,
+                ContributionWindow.All,
                 {},
                 emptyList(),
                 StubDispatcher().func(),

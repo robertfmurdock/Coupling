@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.partyRecord
@@ -17,7 +17,7 @@ class PairEaseHeatMapTest {
 
     @Test
     fun whenDataIsNotAvailableWillShowIndication() = asyncSetup(object {
-        val window = GqlContributionWindow.All
+        val window = ContributionWindow.All
         val data = listOf(
             Pair(
                 pairOf(stubPlayer()),
@@ -36,7 +36,7 @@ class PairEaseHeatMapTest {
         render {
             PairEaseHeatMap(data, window, 0)
         }
-    } verify { result ->
+    } verify {
         screen.findByText("No ease data available for this period.")
     }
 }

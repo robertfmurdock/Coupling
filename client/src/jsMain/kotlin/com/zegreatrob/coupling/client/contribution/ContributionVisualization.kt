@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.contribution
 
+import com.apollographql.apollo.api.Optional
 import com.zegreatrob.coupling.client.components.PairCycleTimeBarChart
 import com.zegreatrob.coupling.client.components.contribution.AllContributionsLineGraph
 import com.zegreatrob.coupling.client.components.contribution.AllEaseLineGraph
@@ -8,6 +9,7 @@ import com.zegreatrob.coupling.client.components.contribution.PairContributionsL
 import com.zegreatrob.coupling.client.components.contribution.PairEaseHeatMap
 import com.zegreatrob.coupling.client.components.contribution.PairEaseLineGraph
 import com.zegreatrob.coupling.client.components.contribution.StoryContributionGraph
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.contribution.StoryEaseGraph
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
 import com.zegreatrob.coupling.client.components.stats.Visualization
@@ -21,17 +23,17 @@ import com.zegreatrob.coupling.client.components.stats.Visualization.PairEaseLin
 import com.zegreatrob.coupling.client.components.stats.Visualization.PairFrequencyHeatmap
 import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsOverTime
 import com.zegreatrob.coupling.client.components.stats.Visualization.StoryContributionsPercentOverTime
+import com.zegreatrob.coupling.client.gql.ContributionVisualizationDataQuery
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
-import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.type.PairsInput
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
@@ -47,21 +49,10 @@ external interface ContributionVisualizationProps : Props {
 @Lazy
 val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     val (commander, party, spinsUntilFullRotation) = props
-    val (window, setWindow) = useWindow(GqlContributionWindow.Quarter)
+    val (window, setWindow) = useWindow(ContributionWindow.Quarter)
     CouplingQuery(
         commander = commander,
-        query = graphQuery {
-            party(party.id) {
-                pairs {
-                    players()
-                    contributionReport(window = window) {
-                        contributions()
-                        medianCycleTime()
-                        withCycleTimeCount()
-                    }
-                }
-            }
-        },
+        query = ApolloGraphQuery(ContributionVisualizationDataQuery(party.id, window.toGql(), PairsInput(Optional.Present(true)))),
     ) { reload, _, queryResult ->
         PairFrequencyControls(
             pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery,
@@ -93,7 +84,16 @@ private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): Lis
         ?: emptyList()
 }
 
-private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
-    val contributionReport = it.contributionReport ?: return@mapNotNull null
-    it.players?.elements?.toCouplingPair()?.let { pair -> pair to contributionReport }
+private fun List<ContributionVisualizationDataQuery.Pair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
+    val contributionReport = it.contributionReport?.toModel() ?: return@mapNotNull null
+    val players = it.players?.map { player -> player.playerDetailsFragment.toModel() }
+    players?.toCouplingPair()?.let { pair -> pair to contributionReport }
 }
+
+fun ContributionVisualizationDataQuery.ContributionReport.toModel() = ContributionReport(
+    contributions = contributions?.map { contribution ->
+        contribution.partyContributionFragment.toModel()
+    } ?: emptyList(),
+    medianCycleTime = medianCycleTime,
+    withCycleTimeCount = withCycleTimeCount,
+)

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.chromatic.schemePaired
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleOrdinal
 import com.zegreatrob.coupling.client.components.graphing.external.d3.scale.scaleTime
@@ -14,7 +15,6 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.Tool
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.XAxis
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxis
 import com.zegreatrob.coupling.client.components.graphing.scaledTimeFormat
-import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -40,7 +40,7 @@ import kotlin.time.toJSDate
 
 external interface StoryContributionGraphProps : Props {
     var data: List<Contribution>
-    var window: GqlContributionWindow
+    var window: ContributionWindow
     var byPercent: Boolean
 }
 
