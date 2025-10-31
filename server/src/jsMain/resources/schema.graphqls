@@ -50,8 +50,8 @@ type UserDetails {
 
 type Pin {
     id: PinId!
-    icon: String
-    name: String
+    icon: String!
+    name: String!
 }
 
 type PinDetails {
@@ -110,7 +110,7 @@ type PinnedPlayer {
     callSignNoun: String!
     imageURL: String
     pins: [Pin!]!
-    unvalidatedEmails: [String]
+    unvalidatedEmails: [String!]!
 }
 
 type PinnedPair {

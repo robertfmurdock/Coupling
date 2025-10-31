@@ -18,8 +18,27 @@ query partyListQuery {
     partyList { details {...PartyDetailsFragment}}
 }
 
+query slackConnectPageQuery {
+    partyList { details {...PartyDetailsFragment}}
+}
+
 query partyQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) { details {...PartyDetailsFragment}}
+}
+
+query playerPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details {...PartyDetailsFragment}
+        playerList { ...PlayerDetailsFragment }
+        retiredPlayers { ...PlayerDetailsFragment }
+    }
+}
+
+query retiredPlayersPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details {...PartyDetailsFragment}
+        retiredPlayers { ...PlayerDetailsFragment }
+    }
 }
 
 query partySecretsPageQuery($partyId: PartyId!) {
@@ -164,6 +183,14 @@ query integrationPageQuery($partyInput: PartyInput!) {
             slackChannel
             slackTeam
         }
+    }
+    config { addToSlackUrl }
+}
+
+query historyPageQuery($partyInput: PartyInput!) {
+    party(input: $partyInput) {
+        details { ...PartyDetailsFragment }
+        pairAssignmentDocumentList { ...PairAssignmentDetailsFragment }
     }
     config { addToSlackUrl }
 }

@@ -51,3 +51,34 @@ fragment BoostDetailsFragment on BoostDetails {
     partyIds
     expirationDate
 }
+
+fragment PairAssignmentDetailsFragment on PairAssignmentDocumentDetails {
+    id
+    partyId
+    date
+    pairs {
+        players {
+            id
+            name
+            email
+            badge
+            avatarType
+            callSignAdjective
+            callSignNoun
+            imageURL
+            unvalidatedEmails
+            pins {
+                icon
+                id
+                name
+            }
+        }
+        pins {
+            icon
+            id
+            name
+        }
+    }
+    discordMessageId
+    slackMessageId
+}

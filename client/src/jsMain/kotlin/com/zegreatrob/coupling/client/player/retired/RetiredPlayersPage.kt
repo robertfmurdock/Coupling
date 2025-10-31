@@ -1,26 +1,24 @@
 package com.zegreatrob.coupling.client.player.retired
 
+import com.zegreatrob.coupling.client.gql.RetiredPlayersPageQuery
+import com.zegreatrob.coupling.client.party.toModel
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
 
 @Lazy
 val RetiredPlayersPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
-        query = graphQuery {
-            party(partyId) {
-                details()
-                retiredPlayers()
-            }
-        },
+        query = ApolloGraphQuery(RetiredPlayersPageQuery(partyId)),
         key = partyId.value.toString(),
     ) { _, _, result ->
         RetiredPlayers(
-            party = result.party?.details?.data ?: return@CouplingQuery,
-            retiredPlayers = result.party?.retiredPlayers?.elements ?: return@CouplingQuery,
+            party = result.party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery,
+            retiredPlayers = result.party.retiredPlayers?.map { it.playerDetailsFragment.toModel() }
+                ?: return@CouplingQuery,
         )
     }
 }
