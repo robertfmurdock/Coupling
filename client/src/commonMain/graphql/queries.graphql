@@ -55,7 +55,7 @@ query pinListPageQuery($partyId: PartyId!) {
     }
 }
 
-query PrepareSpinPageQuery($partyId: PartyId!) {
+query prepareSpinPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         details { ...PartyDetailsFragment }
         playerList { ...PlayerDetailsFragment }
@@ -64,15 +64,20 @@ query PrepareSpinPageQuery($partyId: PartyId!) {
     }
 }
 
+query currentPairsPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        playerList { ...PlayerDetailsFragment }
+        currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
+        boost { ...BoostDetailsFragment }
+    }
+}
+
 query partySecretsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details {...PartyDetailsFragment}
-        secretList {
-            ...PartySecretFragment
-        }
-        boost {
-            ...BoostDetailsFragment
-        }
+        details {...PartyDetailsFragment }
+        secretList { ...PartySecretFragment }
+        boost { ...BoostDetailsFragment }
     }
 }
 
