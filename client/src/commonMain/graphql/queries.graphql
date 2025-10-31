@@ -41,6 +41,29 @@ query retiredPlayersPageQuery($partyId: PartyId!) {
     }
 }
 
+query pinPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        pinList { ...PinDetailsFragment }
+    }
+}
+
+query pinListPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        pinList { ...PinDetailsFragment }
+    }
+}
+
+query PrepareSpinPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        playerList { ...PlayerDetailsFragment }
+        pinList { ...PinDetailsFragment }
+        currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
+    }
+}
+
 query partySecretsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         details {...PartyDetailsFragment}

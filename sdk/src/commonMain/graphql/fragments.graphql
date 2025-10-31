@@ -11,6 +11,13 @@ fragment PlayerDetailsFragment on PlayerDetails {
     unvalidatedEmails
 }
 
+fragment PinDetailsFragment on PinDetails {
+    id
+    partyId
+    icon
+    name
+}
+
 fragment ContributionFragment on Contribution {
     commitCount
     createdAt
