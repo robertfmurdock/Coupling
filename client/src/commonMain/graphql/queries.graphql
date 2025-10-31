@@ -151,3 +151,19 @@ query contributionOverviewPageQuery($partyInput: PartyInput!, $contributionRepor
         }
     }
 }
+
+query incubatingQuery {
+    partyList { details { ...PartyDetailsFragment } }
+    config { addToSlackUrl, discordClientId }
+}
+
+query integrationPageQuery($partyInput: PartyInput!) {
+    party(input: $partyInput) {
+        details { ...PartyDetailsFragment }
+        integration {
+            slackChannel
+            slackTeam
+        }
+    }
+    config { addToSlackUrl }
+}
