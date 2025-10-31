@@ -14,6 +14,14 @@ fragment PartyDetailsFragment on PartyDetails {
     isDeleted
 }
 
+fragment PartyPlayerDetailsFragment on PlayerDetails {
+    ...PlayerDetailsFragment
+    partyId
+    modifyingUserEmail
+    timestamp
+    isDeleted
+}
+
 query partyListQuery {
     partyList { details {...PartyDetailsFragment}}
 }
@@ -70,6 +78,33 @@ query currentPairsPageQuery($partyId: PartyId!) {
         playerList { ...PlayerDetailsFragment }
         currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
         boost { ...BoostDetailsFragment }
+    }
+}
+
+query newPairsPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        playerList { ...PlayerDetailsFragment }
+        currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
+    }
+}
+
+query StatisticsPageQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+        playerList { ...PlayerDetailsFragment }
+        pairs(input: {includeRetired: false}) {
+            players { ...PartyPlayerDetailsFragment }
+            spinsSinceLastPaired
+            recentTimesPaired
+            pairAssignmentHistory {
+                date
+                recentTimesPaired
+            }
+        }
+        medianSpinDuration
+        spinsUntilFullRotation
+
     }
 }
 
