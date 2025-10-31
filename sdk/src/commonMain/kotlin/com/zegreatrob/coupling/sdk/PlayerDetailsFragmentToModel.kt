@@ -1,7 +1,7 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.client.gql.fragment.PlayerDetailsFragment
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.schema.fragment.PlayerDetailsFragment
 
 fun PlayerDetailsFragment.toModel() = Player(
     id = id,

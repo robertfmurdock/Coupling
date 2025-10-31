@@ -1,7 +1,7 @@
-package com.zegreatrob.coupling.client.user
+package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.client.gql.fragment.UserDetailsFragment
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.sdk.schema.fragment.UserDetailsFragment
 
 fun UserDetailsFragment.toModel(): UserDetails = UserDetails(
     id = id,

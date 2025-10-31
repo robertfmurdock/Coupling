@@ -1,7 +1,7 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.client.gql.fragment.ContributionFragment
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.sdk.schema.fragment.ContributionFragment
 
 fun ContributionFragment.toModel() = Contribution(
     commitCount = commitCount,

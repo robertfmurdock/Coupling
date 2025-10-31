@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.sdk.schema.type.Badge
 

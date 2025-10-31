@@ -34,20 +34,6 @@ query partySecretsPageQuery($partyId: PartyId!) {
     }
 }
 
-fragment PartySecretFragment on PartySecret {
-    id
-    partyId
-    description
-    createdTimestamp
-    lastUsedTimestamp
-}
-
-fragment BoostDetailsFragment on BoostDetails {
-    userId
-    partyIds
-    expirationDate
-}
-
 query userQuery {
     user {
         details {
@@ -97,14 +83,6 @@ query prereleaseUserPageQuery {
     }
 }
 
-fragment UserDetailsFragment on UserDetails {
-    id
-    email
-    connectSecretId
-    connectedEmails
-    authorizedPartyIds
-}
-
 query contributionVisualizationPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         details { ...PartyDetailsFragment }
@@ -138,37 +116,6 @@ query contributionListPageQuery($partyId: PartyId!, $window: ContributionWindow!
             contributions { ...ContributionFragment }
         }
     }
-}
-
-fragment PlayerDetailsFragment on PlayerDetails {
-    id
-    name
-    email
-    badge
-    callSignAdjective
-    callSignNoun
-    imageURL
-    avatarType
-    unvalidatedEmails
-}
-
-fragment ContributionFragment on Contribution {
-    commitCount
-    createdAt
-    cycleTime
-    dateTime
-    ease
-    firstCommit
-    firstCommitDateTime
-    hash
-    id
-    integrationDateTime
-    label
-    link
-    name
-    participantEmails
-    semver
-    story
 }
 
 fragment PartyContributionFragment on Contribution {
