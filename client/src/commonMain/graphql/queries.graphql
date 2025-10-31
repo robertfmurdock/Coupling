@@ -140,3 +140,14 @@ fragment PartyContributionFragment on Contribution {
     timestamp
     isDeleted
 }
+
+query contributionOverviewPageQuery($partyInput: PartyInput!, $contributionReportInput: ContributionsInput!) {
+    party(input: $partyInput) {
+        details { ...PartyDetailsFragment }
+        playerList { ...PlayerDetailsFragment }
+        retiredPlayers { ...PlayerDetailsFragment }
+        contributionReport(input: $contributionReportInput) {
+            contributions { ...ContributionFragment }
+        }
+    }
+}
