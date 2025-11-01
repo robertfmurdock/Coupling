@@ -22,6 +22,21 @@ query playersAndPinsQuery($partyId: PartyId!) {
     }
 }
 
+query pinListQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pinList { ...PinDetailsFragment}
+    }
+}
+
+query pinRecordListQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pinList {
+            timestamp
+            modifyingUserEmail
+        }
+    }
+}
+
 query userDetailsQuery {
     user { details { ...UserDetailsFragment } }
 }
