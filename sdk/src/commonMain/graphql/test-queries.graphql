@@ -102,3 +102,43 @@ query recentTimesPairedQuery($partyId: PartyId!) {
         pairs { recentTimesPaired }
     }
 }
+
+query partyContributionReportContributionsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        contributionReport {
+            contributions { ...ContributionFragment }
+        }
+    }
+}
+
+query partyContributionReportNumbersQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        contributionReport {
+            count
+            medianCycleTime
+            withCycleTimeCount
+        }
+    }
+}
+
+query partyContributionReportContributorsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        contributionReport {
+            contributors {
+                email
+                playerId
+            }
+        }
+    }
+}
+
+query partyPairsContributionReportContributionsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairs {
+            players { id }
+            contributionReport {
+                contributions { ...ContributionFragment }
+            }
+        }
+    }
+}

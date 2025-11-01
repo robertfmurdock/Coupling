@@ -8,11 +8,15 @@ import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
-import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributionsQuery
+import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributorsQuery
+import com.zegreatrob.coupling.sdk.schema.PartyContributionReportNumbersQuery
+import com.zegreatrob.coupling.sdk.schema.PartyPairsContributionReportContributionsQuery
 import com.zegreatrob.coupling.stubmodel.roundToMillis
 import com.zegreatrob.coupling.stubmodel.stubContributionInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -50,15 +54,18 @@ class SdkContributionTest {
         savePartyState(party, emptyList(), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionReport { contributions() } } })
+        sdk().fire(ApolloGraphQuery(PartyContributionReportContributionsQuery(party.id)))
     } verify { result ->
-        result?.party?.contributionReport?.contributions?.elements?.withoutCreatedAt()
+        val contributions = result?.party?.contributionReport?.contributions?.map { it.contributionFragment.toModel() }
+        contributions
+            ?.withoutCreatedAt()
             .assertIsEqualTo(
                 contributionInputs.toExpectedContributions(),
             )
-        result?.party?.contributionReport?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
-            createdAt.assertIsCloseToNow()
-        }
+        contributions?.map { it.createdAt }
+            ?.forEach { createdAt ->
+                createdAt.assertIsCloseToNow()
+            }
     }
 
     @Test
@@ -71,17 +78,9 @@ class SdkContributionTest {
         savePartyState(party, emptyList(), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    contributionReport {
-                        count()
-                        medianCycleTime()
-                        withCycleTimeCount()
-                    }
-                }
-            },
-        )?.party?.contributionReport
+        sdk().fire(ApolloGraphQuery(PartyContributionReportNumbersQuery(party.id)))
+            ?.party
+            ?.contributionReport
     } verify { result ->
         result?.count.assertIsEqualTo(contributionInputs.size)
         result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
@@ -109,7 +108,7 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
         sdk().fire(ClearContributionsCommand(partyId = party.id))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionReport { contributions() } } })
+        sdk().fire(ApolloGraphQuery(PartyContributionReportContributionsQuery(party.id)))
     } verify { result ->
         result?.party?.contributionReport?.contributions?.size
             .assertIsEqualTo(0)
@@ -131,31 +130,25 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    pairs {
-                        players()
-                        contributionReport { contributions() }
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(PartyPairsContributionReportContributionsQuery(party.id)))
     } verify { result ->
         result?.party?.pairs
-            ?.filter { it.players?.elements?.map(Player::id) != listOf(expectedPlayer.id) }
+            ?.filter { it.players?.map { player -> player.id } != listOf(expectedPlayer.id) }
             ?.forEach {
-                it.contributionReport?.contributions?.elements?.withoutCreatedAt()
+                val contributions = it.contributionReport?.contributions
+                    ?.map { contribution -> contribution.contributionFragment.toModel() }
+                contributions?.withoutCreatedAt()
                     .assertIsEqualTo(
                         emptyList(),
                         "Pairs should only contain contributions with exact matches, but ${
-                            it.players?.elements?.map(Player::id)
+                            it.players?.map { player -> player.id }
                         } had an inappropriate match",
                     )
             }
         result?.party?.pairs
-            ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
-            ?.contributionReport?.contributions?.elements?.withoutCreatedAt()
+            ?.find { it.players?.map { player -> player.id } == listOf(expectedPlayer.id) }
+            ?.contributionReport?.contributions?.map { it.contributionFragment.toModel() }
+            ?.withoutCreatedAt()
             .assertIsEqualTo(
                 listOf(
                     contributionInput.toExpectedContribution(),
@@ -330,26 +323,16 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    contributionReport {
-                        contributors {
-                            email()
-                            playerId()
-                        }
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(PartyContributionReportContributorsQuery(party.id)))
     } verify { result ->
-        result?.party?.contributionReport?.contributors
+        val contributors = result?.party?.contributionReport?.contributors
+        contributors?.map { it.email }
             .assertIsEqualTo(
                 contributionInputs.asSequence().flatMap { it.participantEmails }
                     .toSet()
-                    .sorted()
-                    .map { Contributor(email = it, playerId = null) }.toList(),
+                    .sorted(),
             )
+        contributors?.mapNotNull { it.playerId }.assertIsEqualTo(emptyList())
     }
 
     @Test
@@ -365,18 +348,7 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    contributionReport {
-                        contributors {
-                            email()
-                            playerId()
-                        }
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(PartyContributionReportContributorsQuery(party.id)))
     } verify { result ->
         result?.party?.contributionReport?.contributors?.map { it.playerId }
             .assertIsEqualTo(
@@ -399,7 +371,7 @@ class SdkContributionTest {
         savePartyState(party, listOf(player), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionReport { contributors { playerId() } } } })
+        sdk().fire(ApolloGraphQuery(PartyContributionReportContributorsQuery(party.id)))
     } verify { result ->
         result?.party?.contributionReport?.contributors?.map { it.playerId }
             .assertIsEqualTo(
@@ -419,18 +391,7 @@ class SdkContributionTest {
         savePartyState(party, listOf(player), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    contributionReport {
-                        contributors {
-                            email()
-                            playerId()
-                        }
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(PartyContributionReportContributorsQuery(party.id)))
     } verify { result ->
         result?.party?.contributionReport?.contributors?.map { it.playerId }
             .assertIsEqualTo(listOf(player.id))
@@ -448,18 +409,7 @@ class SdkContributionTest {
         savePartyState(party, listOf(player), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    contributionReport {
-                        contributors {
-                            email()
-                            playerId()
-                        }
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(PartyContributionReportContributorsQuery(party.id)))
     } verify { result ->
         result?.party?.contributionReport?.contributors?.map { it.playerId }
             .assertIsEqualTo(listOf(player.id))
