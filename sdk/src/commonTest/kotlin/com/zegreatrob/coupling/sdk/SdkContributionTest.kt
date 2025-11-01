@@ -1,22 +1,23 @@
 package com.zegreatrob.coupling.sdk
 
+import com.apollographql.apollo.api.Optional
 import com.zegreatrob.coupling.action.party.ClearContributionsCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.stats.halfwayValue
-import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
-import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
-import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributionsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributorsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportNumbersQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPairsContributionReportContributionsQuery
+import com.zegreatrob.coupling.sdk.schema.PartyPairsContributionReportNumbersQuery
+import com.zegreatrob.coupling.sdk.schema.type.ContributionWindow
+import com.zegreatrob.coupling.sdk.schema.type.ContributionsInput
+import com.zegreatrob.coupling.sdk.schema.type.PairsInput
 import com.zegreatrob.coupling.stubmodel.roundToMillis
 import com.zegreatrob.coupling.stubmodel.stubContributionInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -130,7 +131,16 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPairsContributionReportContributionsQuery(party.id)))
+        sdk().fire(
+            ApolloGraphQuery(
+                PartyPairsContributionReportContributionsQuery(
+                    partyId = party.id,
+                    reportInput = Optional.present(
+                        ContributionsInput(window = Optional.present(ContributionWindow.Week)),
+                    ),
+                ),
+            ),
+        )
     } verify { result ->
         result?.party?.pairs
             ?.filter { it.players?.map { player -> player.id } != listOf(expectedPlayer.id) }
@@ -177,21 +187,16 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs + stubContributionInput()))
     } exercise {
         sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    pairs {
-                        players()
-                        contributionReport {
-                            count()
-                            medianCycleTime()
-                            withCycleTimeCount()
-                        }
-                    }
-                }
-            },
-        )?.party?.pairs?.first {
-            it.players?.elements?.map(Player::email)?.toSet() == pairEmails
-        }?.contributionReport
+            ApolloGraphQuery(
+                PartyPairsContributionReportNumbersQuery(
+                    partyId = party.id,
+                    pairsInput = Optional.present(PairsInput(includeRetired = Optional.present(true))),
+                ),
+            ),
+        )
+            ?.party?.pairs?.first {
+                it.players?.map { player -> player.email }?.toSet() == pairEmails
+            }?.contributionReport
     } verify { result ->
         result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
         result?.withCycleTimeCount.assertIsEqualTo(cycleTimeContributionsCount)
@@ -219,15 +224,17 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    contributionReport(GqlContributionWindow.Week) { contributions() }
-                }
-            },
+            ApolloGraphQuery(
+                PartyContributionReportContributionsQuery(
+                    partyId = party.id,
+                    reportInput = Optional.present(ContributionsInput(window = Optional.present(ContributionWindow.Week))),
+                ),
+            ),
         )
     } verify { result ->
         result?.party
-            ?.contributionReport?.contributions?.elements?.withoutCreatedAt()
+            ?.contributionReport?.contributions?.map { it.contributionFragment.toModel() }
+            ?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
                 (contributionInputs - excludedContributionInput)
@@ -252,12 +259,19 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionReport(limit = expectedLimit) { contributions() } } })
+        sdk().fire(
+            ApolloGraphQuery(
+                PartyContributionReportContributionsQuery(
+                    partyId = party.id,
+                    reportInput = Optional.present(ContributionsInput(limit = Optional.present(expectedLimit))),
+                ),
+            ),
+        )
     } verify { result ->
         result?.party
             ?.contributionReport
             ?.contributions
-            ?.elements
+            ?.map { it.contributionFragment.toModel() }
             ?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
@@ -288,19 +302,20 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    pairs {
-                        players()
-                        contributionReport(GqlContributionWindow.Week) { contributions() }
-                    }
-                }
-            },
+            ApolloGraphQuery(
+                PartyPairsContributionReportContributionsQuery(
+                    partyId = party.id,
+                    reportInput = Optional.present(
+                        ContributionsInput(window = Optional.present(ContributionWindow.Week)),
+                    ),
+                ),
+            ),
         )
     } verify { result ->
         result?.party?.pairs
-            ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
-            ?.contributionReport?.contributions?.elements?.withoutCreatedAt()
+            ?.find { it.players?.map { player -> player.id } == listOf(expectedPlayer.id) }
+            ?.contributionReport?.contributions?.map { it.contributionFragment.toModel() }
+            ?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
                 (contributionInputs - excludedContributionCommand)
