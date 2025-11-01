@@ -2,11 +2,26 @@ query partyIdListQuery {
     partyList { id }
 }
 
+query partyDetailsAndListQuery($partyId: PartyId!) {
+    partyList { details {...PartyDetailsFragment} }
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+    }
+}
+
 query playersAndPinsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         playerList {...PlayerDetailsFragment}
         pinList { ...PinDetailsFragment}
     }
+}
+
+query userDetailsQuery {
+    user { details { ...UserDetailsFragment } }
+}
+
+query userPlayersQuery {
+    user { players { ...PlayerDetailsFragment } }
 }
 
 query userBoostQuery {

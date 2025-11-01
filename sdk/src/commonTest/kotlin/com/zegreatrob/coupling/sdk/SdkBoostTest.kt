@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
-import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.sdk.schema.PartyBoostQuery
 import com.zegreatrob.coupling.sdk.schema.UserBoostQuery
+import com.zegreatrob.coupling.sdk.schema.UserDetailsQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
@@ -24,7 +24,7 @@ class SdkBoostTest {
     private val setupWithUser = asyncSetup.extend(
         beforeAll = suspend {
             val sdk = sdk()
-            val user = sdk.fire(graphQuery { user { details() } })?.user?.details
+            val user = sdk.fire(ApolloGraphQuery(UserDetailsQuery()))?.user?.details?.userDetailsFragment
                 ?: throw Exception("Sdk did not provide user.")
             object {
                 val sdk = sdk
