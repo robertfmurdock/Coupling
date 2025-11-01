@@ -20,7 +20,7 @@ val IncubatingPage by nfc<PageProps> { props ->
             IncubatingContent(
                 discordClientId = discordClientId,
                 addToSlackUrl = addToSlackUrl,
-                partyList = result.partyList?.mapNotNull { it.details?.partyDetailsFragment?.toModel() } ?: emptyList(),
+                partyList = result.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList(),
             )
         }
     }

@@ -15,7 +15,7 @@ class List : CliktCommand() {
         withSdk(cliScope, env, ::echo) { sdk ->
             sdk.fire(ApolloGraphQuery(PartyListQuery()))
                 ?.partyList
-                ?.mapNotNull { it.details?.partyDetailsFragment?.toModel() }
+                ?.mapNotNull { it.partyDetails.toModel() }
                 ?.joinToString("\n") { "Party: id = ${it.id.value}, name = ${it.name}" }
                 .let { it ?: "" }
                 .let { echo(it) }

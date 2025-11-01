@@ -19,7 +19,7 @@ val SlackConnectPage by nfc<PageProps> { props ->
             query = ApolloGraphQuery(SlackConnectPageQuery()),
         ) { _, dispatch, result ->
             SlackConnectPageContent(
-                parties = result.partyList?.mapNotNull { it.details?.partyDetailsFragment?.toModel() } ?: emptyList(),
+                parties = result.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList(),
                 slackTeam = slackTeam,
                 slackChannel = slackChannel,
                 dispatchFunc = dispatch,

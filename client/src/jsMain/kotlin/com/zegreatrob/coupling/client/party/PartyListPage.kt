@@ -15,7 +15,7 @@ val PartyListPage by nfc<PageProps> { props ->
         query = ApolloGraphQuery(PartyListQuery()),
     ) { _, _, result ->
         PartyList(
-            result.partyList?.mapNotNull { it.details?.partyDetailsFragment?.toModel() }
+            result.partyList?.mapNotNull { it.partyDetails.toModel() }
                 ?: return@CouplingQuery,
         )
     }

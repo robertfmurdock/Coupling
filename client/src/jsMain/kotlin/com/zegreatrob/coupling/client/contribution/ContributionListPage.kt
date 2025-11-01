@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.components.player.UpdatingPlayerList
 import com.zegreatrob.coupling.client.gql.ContributionListPageQuery
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
+import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
@@ -19,7 +20,7 @@ val ContributionListPage = partyPageFunction { props, partyId ->
         query = ApolloGraphQuery(ContributionListPageQuery(partyId, window.toGql())),
         key = "${partyId.value}$window",
     ) { _, dispatchFunc, queryResult ->
-        val party = queryResult.party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery
+        val party = queryResult.party?.partyDetails?.toModel() ?: return@CouplingQuery
         val contributions =
             queryResult.party.contributionReport?.contributions?.map { it.contributionFragment.toModel() }
                 ?: return@CouplingQuery

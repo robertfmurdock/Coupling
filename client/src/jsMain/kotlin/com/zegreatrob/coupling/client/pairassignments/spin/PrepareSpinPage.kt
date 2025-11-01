@@ -17,7 +17,7 @@ val PrepareSpinPage = partyPageFunction { props, partyId ->
     ) { _, dispatcher, result ->
         val party = result.party
         PrepareSpin(
-            party = party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery,
+            party = party?.partyDetails?.toModel() ?: return@CouplingQuery,
             players = party.playerList?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery,
             pins = party.pinList?.map { it.pinDetailsFragment.toModel() } ?: return@CouplingQuery,
             currentPairsDoc = party.currentPairAssignmentDocument?.pairAssignmentDetailsFragment?.toModel(),

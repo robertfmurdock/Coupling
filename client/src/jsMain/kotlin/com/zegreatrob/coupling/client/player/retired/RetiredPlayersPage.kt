@@ -15,7 +15,7 @@ val RetiredPlayersPage = partyPageFunction { props, partyId ->
         key = partyId.value.toString(),
     ) { _, _, result ->
         RetiredPlayers(
-            party = result.party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery,
+            party = result.party?.partyDetails?.toModel() ?: return@CouplingQuery,
             retiredPlayers = result.party.retiredPlayers?.map { it.playerDetailsFragment.toModel() }
                 ?: return@CouplingQuery,
         )

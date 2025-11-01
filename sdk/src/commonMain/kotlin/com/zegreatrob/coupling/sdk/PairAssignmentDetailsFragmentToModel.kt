@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.schema.fragment.PairAssignmentDetailsFragment
 import kotools.types.collection.toNotEmptyList
 

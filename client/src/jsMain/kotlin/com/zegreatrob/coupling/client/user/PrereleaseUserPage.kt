@@ -38,7 +38,7 @@ private fun PrereleaseUserPageQuery.Boost.toModel(): Boost = Boost(
     expirationDate = expirationDate,
 )
 
-private fun partyDetails(list: PrereleaseUserPageQuery.PartyList): PartyDetails? = list.details?.partyDetailsFragment?.toModel()
+private fun partyDetails(list: PrereleaseUserPageQuery.PartyList): PartyDetails? = list.partyDetails.toModel()
 
 private fun PrereleaseUserPageQuery.Subscription.toModel(): SubscriptionDetails = SubscriptionDetails(
     stripeCustomerId = stripeCustomerId,

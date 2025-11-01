@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
+import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributionsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributorsQuery

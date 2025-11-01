@@ -22,7 +22,7 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
         CouplingLogin.sdk.await().apply {
             fire(ApolloGraphQuery(PartyListQuery()))
                 ?.partyList
-                ?.mapNotNull { it.details?.partyDetailsFragment?.toModel() }
+                ?.mapNotNull { it.partyDetails.toModel() }
                 ?.map(PartyDetails::id)
                 ?.map { DeletePartyCommand(it) }
                 ?.forEach { fire(it) }

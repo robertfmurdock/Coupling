@@ -1,5 +1,5 @@
 query partyListQuery {
-    partyList { details {...PartyDetailsFragment}}
+    partyList { ...PartyDetails }
 }
 
 query partyPlayerListQuery($partyId: PartyId!) {

@@ -24,7 +24,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
             key = partyId.value.toString(),
         ) { _, commandFunc, result ->
             PartyConfig(
-                party = result.party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery,
+                party = result.party?.partyDetails?.toModel() ?: return@CouplingQuery,
                 boost = null,
                 dispatchFunc = commandFunc,
                 isNew = false,

@@ -26,4 +26,4 @@ val UserPage by nfc<PageProps> {
     }
 }
 
-private fun details(list: UserPageQuery.PartyList): PartyDetails? = list.details?.partyDetailsFragment?.toModel()
+private fun details(list: UserPageQuery.PartyList): PartyDetails? = list.partyDetails.toModel()

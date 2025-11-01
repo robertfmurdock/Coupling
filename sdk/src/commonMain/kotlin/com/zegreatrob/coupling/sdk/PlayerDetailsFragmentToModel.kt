@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.schema.fragment.PlayerDetailsFragment
 
 fun PlayerDetailsFragment.toModel() = Player(

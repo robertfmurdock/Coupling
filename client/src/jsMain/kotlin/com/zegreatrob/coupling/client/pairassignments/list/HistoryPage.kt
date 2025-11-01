@@ -26,7 +26,7 @@ val HistoryPage = partyPageFunction { props, partyId ->
 
 private fun HistoryPageQuery.Data.toHistoryData(): Pair<PartyDetails, List<PairAssignmentDocument>>? = party?.let {
     Pair(
-        first = it.details?.partyDetailsFragment?.toModel() ?: return@let null,
+        first = it.partyDetails.toModel() ?: return@let null,
         second = it.pairAssignmentDocumentList?.map { doc ->
             doc.pairAssignmentDetailsFragment.toModel()
         } ?: return@let null,

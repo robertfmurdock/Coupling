@@ -22,7 +22,7 @@ val PinPage = partyPageFunction { props, partyId ->
         val pinList = result.party?.pinList?.map { it.pinDetailsFragment.toModel() }
             ?: return@CouplingQuery
         PinConfig(
-            party = result.party.details?.partyDetailsFragment?.toModel()
+            party = result.party.partyDetails.toModel()
                 ?: return@CouplingQuery,
             boost = null,
             pinList = pinList,

@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
+import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.schema.PartyBoostQuery
 import com.zegreatrob.coupling.sdk.schema.UserBoostQuery

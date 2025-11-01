@@ -15,7 +15,7 @@ val ContributionVisualizationPage = partyPageFunction { props, partyId ->
         query = ApolloGraphQuery(ContributionVisualizationPageQuery(partyId)),
         key = partyId.value.toString(),
     ) { _, _, queryResult ->
-        val party = queryResult.party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery
+        val party = queryResult.party?.partyDetails?.toModel() ?: return@CouplingQuery
         val spinsUntilFullRotation = queryResult.party.spinsUntilFullRotation ?: return@CouplingQuery
         ContributionContentFrame(party = party) {
             ContributionVisualization(props.commander, party, spinsUntilFullRotation)

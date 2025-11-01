@@ -24,7 +24,7 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
         query = ApolloGraphQuery(PlayerPageQuery(partyId)),
         key = "${partyId.value}-$playerId",
     ) { reload, commandFunc, data ->
-        val partyDetails = data.party?.details?.partyDetailsFragment?.toModel() ?: return@CouplingQuery
+        val partyDetails = data.party?.partyDetails?.toModel() ?: return@CouplingQuery
         val playerList = data.party.playerList?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery
         val retiredPlayers =
             data.party.retiredPlayers?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery

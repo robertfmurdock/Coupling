@@ -144,9 +144,9 @@ class SdkUserTest {
             ApolloGraphQuery(PartyDetailsAndListQuery(party.id)),
         )
     } verifyAnd { result ->
-        (result?.partyList?.mapNotNull { it.details?.partyDetailsFragment?.toModel() } ?: emptyList())
+        (result?.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList())
             .assertContains(party)
-        result?.party?.details?.partyDetailsFragment?.toModel()
+        result?.party?.partyDetails?.toModel()
             .assertIsEqualTo(party)
     } teardown {
         sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))

@@ -6,7 +6,7 @@ query partyAccessTypeDetailsListQuery {
     partyList {
         id
         accessType
-        details {...PartyDetailsFragment}
+        ...PartyDetails
     }
 }
 
@@ -18,9 +18,9 @@ query partyListModificationDataQuery {
 }
 
 query partyDetailsAndListQuery($partyId: PartyId!) {
-    partyList { details {...PartyDetailsFragment} }
+    partyList { ...PartyDetails }
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
     }
 }
 
@@ -56,7 +56,7 @@ query partyIntegrationDataQuery($partyId: PartyId!) {
 
 query partyDetailsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
     }
 }
 

@@ -7,20 +7,20 @@ fragment PartyPlayerDetailsFragment on PlayerDetails {
 }
 
 query partyListQuery {
-    partyList { details {...PartyDetailsFragment}}
+    partyList { ...PartyDetails }
 }
 
 query slackConnectPageQuery {
-    partyList { details {...PartyDetailsFragment}}
+    partyList { ...PartyDetails }
 }
 
 query partyQuery($partyId: PartyId!) {
-    party(input: {partyId: $partyId}) { details {...PartyDetailsFragment}}
+    party(input: {partyId: $partyId}) { ...PartyDetails }
 }
 
 query playerPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details {...PartyDetailsFragment}
+        ...PartyDetails
         playerList { ...PlayerDetailsFragment }
         retiredPlayers { ...PlayerDetailsFragment }
     }
@@ -28,28 +28,28 @@ query playerPageQuery($partyId: PartyId!) {
 
 query retiredPlayersPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details {...PartyDetailsFragment}
+        ...PartyDetails
         retiredPlayers { ...PlayerDetailsFragment }
     }
 }
 
 query pinPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         pinList { ...PinDetailsFragment }
     }
 }
 
 query pinListPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         pinList { ...PinDetailsFragment }
     }
 }
 
 query prepareSpinPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         playerList { ...PlayerDetailsFragment }
         pinList { ...PinDetailsFragment }
         currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
@@ -58,7 +58,7 @@ query prepareSpinPageQuery($partyId: PartyId!) {
 
 query currentPairsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         playerList { ...PlayerDetailsFragment }
         currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
         boost { ...BoostDetailsFragment }
@@ -67,7 +67,7 @@ query currentPairsPageQuery($partyId: PartyId!) {
 
 query newPairsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         playerList { ...PlayerDetailsFragment }
         currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
     }
@@ -75,7 +75,7 @@ query newPairsPageQuery($partyId: PartyId!) {
 
 query StatisticsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         playerList { ...PlayerDetailsFragment }
         pairs(input: {includeRetired: false}) {
             players { ...PartyPlayerDetailsFragment }
@@ -94,7 +94,7 @@ query StatisticsPageQuery($partyId: PartyId!) {
 
 query partySecretsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details {...PartyDetailsFragment }
+        ...PartyDetails
         secretList { ...PartySecretFragment }
         boost { ...BoostDetailsFragment }
     }
@@ -115,9 +115,7 @@ query userPageQuery {
         }
     }
     partyList {
-        details {
-            ...PartyDetailsFragment
-        }
+        ...PartyDetails
     }
 }
 
@@ -143,15 +141,13 @@ query prereleaseUserPageQuery {
         stripePurchaseCode
     }
     partyList {
-        details {
-            ...PartyDetailsFragment
-        }
+        ...PartyDetails
     }
 }
 
 query contributionVisualizationPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         spinsUntilFullRotation
     }
 }
@@ -175,7 +171,7 @@ query contributionVisualizationDataQuery($partyId: PartyId!, $window: Contributi
 
 query contributionListPageQuery($partyId: PartyId!, $window: ContributionWindow!) {
     party(input: {partyId: $partyId}) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         playerList { ...PlayerDetailsFragment }
         retiredPlayers { ...PlayerDetailsFragment }
         contributionReport(input: {window: $window}) {
@@ -209,7 +205,7 @@ fragment PartyContributionFragment on Contribution {
 
 query contributionOverviewPageQuery($partyInput: PartyInput!, $contributionReportInput: ContributionsInput!) {
     party(input: $partyInput) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         playerList { ...PlayerDetailsFragment }
         retiredPlayers { ...PlayerDetailsFragment }
         contributionReport(input: $contributionReportInput) {
@@ -219,13 +215,13 @@ query contributionOverviewPageQuery($partyInput: PartyInput!, $contributionRepor
 }
 
 query incubatingQuery {
-    partyList { details { ...PartyDetailsFragment } }
+    partyList { ...PartyDetails }
     config { addToSlackUrl, discordClientId }
 }
 
 query integrationPageQuery($partyInput: PartyInput!) {
     party(input: $partyInput) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         integration {
             slackChannel
             slackTeam
@@ -236,7 +232,7 @@ query integrationPageQuery($partyInput: PartyInput!) {
 
 query historyPageQuery($partyInput: PartyInput!) {
     party(input: $partyInput) {
-        details { ...PartyDetailsFragment }
+        ...PartyDetails
         pairAssignmentDocumentList { ...PairAssignmentDetailsFragment }
     }
     config { addToSlackUrl }

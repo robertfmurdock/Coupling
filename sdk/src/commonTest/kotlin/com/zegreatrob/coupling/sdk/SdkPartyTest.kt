@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.AccessType
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.schema.PartyAccessTypeAndListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyAccessTypeDetailsListQuery
@@ -42,8 +43,8 @@ class SdkPartyTest {
             fire(DeletePartyCommand(party.id))
             sdk().fire(ApolloGraphQuery(PartyDetailsAndListQuery(party.id))).let {
                 Pair(
-                    it?.partyList?.mapNotNull { party -> party.details?.partyDetailsFragment?.toModel() },
-                    it?.party?.details?.partyDetailsFragment?.toModel(),
+                    it?.partyList?.mapNotNull { party -> party.partyDetails.toModel() },
+                    it?.party?.partyDetails?.toModel(),
                 )
             }
         }
@@ -64,8 +65,7 @@ class SdkPartyTest {
         parties.map {
             sdk().fire(ApolloGraphQuery(PartyDetailsQuery(it.id)))
                 ?.party
-                ?.details
-                ?.partyDetailsFragment
+                ?.partyDetails
                 ?.toModel()
         }
     } verify { result ->
@@ -81,7 +81,7 @@ class SdkPartyTest {
     } exercise {
         sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
     } verify { result ->
-        result?.partyList?.mapNotNull { it.details?.partyDetailsFragment?.toModel() }
+        result?.partyList?.mapNotNull { it.partyDetails.toModel() }
             .assertContainsAll(parties)
         result?.partyList?.filter { partyIds.contains(it.id) }
             ?.map { it.accessType.toModel() }
@@ -136,7 +136,7 @@ class SdkPartyTest {
         sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.details?.partyDetailsFragment?.toModel() }
+        result?.map { it.partyDetails.toModel() }
             .assertContains(party)
         result?.first { it.id == party.id }
             ?.accessType
@@ -159,7 +159,7 @@ class SdkPartyTest {
         sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.details?.partyDetailsFragment?.toModel() }
+        result?.map { it.partyDetails.toModel() }
             .assertContains(party)
     }
 
@@ -174,7 +174,7 @@ class SdkPartyTest {
         sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.details?.partyDetailsFragment?.toModel() }?.contains(party)
+        result?.map { it.partyDetails.toModel() }?.contains(party)
             .assertIsEqualTo(false)
     }
 
@@ -189,7 +189,7 @@ class SdkPartyTest {
         sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.details?.partyDetailsFragment?.toModel() }?.contains(party)
+        result?.map { it.partyDetails.toModel() }?.contains(party)
             .assertIsEqualTo(false)
     }
 
@@ -200,8 +200,7 @@ class SdkPartyTest {
         sdk().fire(SavePartyCommand(party.copy(name = "changed name")))
         altSdk().fire(ApolloGraphQuery(PartyDetailsQuery(party.id)))
             ?.party
-            ?.details
-            ?.partyDetailsFragment
+            ?.partyDetails
             ?.toModel()
     } verify { result ->
         result.assertIsEqualTo(party)

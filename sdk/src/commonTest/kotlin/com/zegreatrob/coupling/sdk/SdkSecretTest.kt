@@ -51,8 +51,7 @@ class SdkSecretTest {
         val tokenSdk = couplingSdk({ token }, buildClient())
         tokenSdk.fire(ApolloGraphQuery(PartyDetailsQuery(party.id)))
             ?.party
-            ?.details
-            ?.partyDetailsFragment
+            ?.partyDetails
             ?.toModel()
             .assertIsEqualTo(party)
     }
@@ -128,7 +127,7 @@ class SdkSecretTest {
         )
         queryResult
             ?.partyList
-            ?.mapNotNull { it.details?.partyDetailsFragment?.toModel() }
+            ?.mapNotNull { it.partyDetails.toModel() }
             .assertIsEqualTo(listOf(party1))
         queryResult?.party
             .assertIsEqualTo(null)

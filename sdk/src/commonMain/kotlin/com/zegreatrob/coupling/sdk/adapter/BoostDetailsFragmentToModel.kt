@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.sdk.adapter
 
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.sdk.schema.fragment.BoostDetailsFragment
