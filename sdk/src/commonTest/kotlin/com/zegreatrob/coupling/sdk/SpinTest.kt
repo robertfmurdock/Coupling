@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.forEach
 import com.zegreatrob.coupling.model.get
 import com.zegreatrob.coupling.model.map
@@ -26,7 +25,8 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.CurrentPairAssignmentsQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -239,7 +239,10 @@ class SpinTest {
     }
 }
 
-private suspend fun queryCurrentPairs(partyId: PartyId, sdk: ActionCannon<CouplingSdkDispatcher>) = sdk.fire(graphQuery { party(partyId) { currentPairAssignments() } })
+private suspend fun queryCurrentPairs(partyId: PartyId, sdk: ActionCannon<CouplingSdkDispatcher>) = sdk.fire(
+    ApolloGraphQuery(CurrentPairAssignmentsQuery(partyId)),
+)
     ?.party
     ?.currentPairAssignmentDocument
-    ?.element
+    ?.pairAssignmentDetailsFragment
+    ?.toModel()

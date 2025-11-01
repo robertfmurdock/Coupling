@@ -8,3 +8,47 @@ query playersAndPinsQuery($partyId: PartyId!) {
         pinList { ...PinDetailsFragment}
     }
 }
+
+query userBoostQuery {
+    user { boost { ...BoostDetailsFragment } }
+}
+
+query partyBoostQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        boost { ...BoostDetailsFragment }
+    }
+}
+
+query configQuery {
+    config {
+        discordClientId
+    }
+}
+
+query globalStatsQuery($input: GlobalStatsInput!) {
+    globalStats(input: $input) {
+        parties {
+            appliedPinCount
+            id
+            medianSpinDuration
+            medianSpinDurationMillis
+            name
+            playerCount
+            spins
+            uniquePinCount
+        }
+        totalAppliedPins
+        totalParties
+        totalPlayers
+        totalSpins
+        totalUniquePins
+    }
+}
+
+query currentPairAssignmentsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        currentPairAssignmentDocument {
+            ...PairAssignmentDetailsFragment
+        }
+    }
+}

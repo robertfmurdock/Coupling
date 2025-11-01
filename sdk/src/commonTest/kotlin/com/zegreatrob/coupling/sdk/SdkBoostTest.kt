@@ -9,7 +9,10 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.schema.PartyBoostQuery
+import com.zegreatrob.coupling.sdk.schema.UserBoostQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
@@ -36,7 +39,7 @@ class SdkBoostTest {
         sdk.fire(ApplyBoostCommand(PartyId("${Uuid.random()}")))
         sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
-        sdk.fire(graphQuery { user { boost() } })
+        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
             ?.user
             ?.boost
             .assertIsEqualTo(null)
@@ -47,7 +50,7 @@ class SdkBoostTest {
     } exercise {
         sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
-        sdk.fire(graphQuery { user { boost() } })
+        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
             ?.user
             ?.boost
             .assertIsEqualTo(null)
@@ -63,8 +66,9 @@ class SdkBoostTest {
     }) exercise {
         sdk.fire(ApplyBoostCommand(partyId))
     } verifyWithWait {
-        sdk.fire(graphQuery { user { boost() } })
-            ?.user?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
+        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
+            ?.user?.boost?.boostDetailsFragment?.toModel()
+            ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
@@ -85,8 +89,9 @@ class SdkBoostTest {
         sdk.fire(SavePartyCommand(party))
         sdk.fire(ApplyBoostCommand(party.id))
     } verifyWithWait {
-        sdk.fire(graphQuery { party(party.id) { boost() } })
-            ?.party?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
+        sdk.fire(ApolloGraphQuery(PartyBoostQuery(party.id)))
+            ?.party?.boost?.boostDetailsFragment?.toModel()
+            ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
@@ -110,8 +115,9 @@ class SdkBoostTest {
         sdk.fire(ApplyBoostCommand(updatedBoostParty1))
         sdk.fire(ApplyBoostCommand(updatedBoostParty2))
     } verifyWithWait {
-        sdk.fire(graphQuery { user { boost() } })
-            ?.user?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
+        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
+            ?.user?.boost?.boostDetailsFragment?.toModel()
+            ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
