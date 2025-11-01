@@ -6,16 +6,14 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.data
-import com.zegreatrob.coupling.model.element
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.document
-import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.CurrentPairAssignmentsQuery
+import com.zegreatrob.coupling.sdk.schema.PairAssignmentListQuery
+import com.zegreatrob.coupling.sdk.schema.PairAssignmentRecordListQuery
+import com.zegreatrob.coupling.sdk.schema.PartyMedianSpinDurationQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -57,13 +55,12 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk.fire(SavePairAssignmentsCommand(party.id, updatedDocument))
     } verifyWithWait {
-        sdk.fire(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
+        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(party.id)))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
-            .data()
-            .map { it.document }
-            .assertIsEqualTo(listOf(this.updatedDocument))
+            .map { it.pairAssignmentDetailsFragment.toModel() }
+            .assertIsEqualTo(listOf(updatedDocument))
     }
 
     private fun Instant.roundToMillis() = toEpochMilliseconds().let(Instant::fromEpochMilliseconds)
@@ -89,11 +86,12 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        sdk.fire(graphQuery { party(partyId) { currentPairAssignments() } })
+        sdk().fire(ApolloGraphQuery(CurrentPairAssignmentsQuery(partyId)))
             ?.party
             ?.currentPairAssignmentDocument
-    } verify { result: PartyRecord<PairAssignmentDocument>? ->
-        result?.element.assertIsEqualTo(newest)
+    } verify { result ->
+        result?.pairAssignmentDetailsFragment?.toModel()
+            .assertIsEqualTo(newest)
     }
 
     @Test
@@ -108,12 +106,9 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk.fire(DeletePairAssignmentsCommand(partyId, document.id))
     } verifyWithWait {
-        sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(partyId)))
             ?.party
             ?.pairAssignmentDocumentList
-            .let { it ?: emptyList() }
-            .data()
-            .map(PartyElement<PairAssignmentDocument>::document)
             .assertIsEqualTo(emptyList())
     }
 
@@ -130,13 +125,13 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(partyId)))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
     } verifyWithWait { result ->
-        result.data()
-            .map { it.document }
+        result
+            .map { it.pairAssignmentDetailsFragment.toModel() }
             .assertIsEqualTo(
                 listOf(newest, middle, oldest),
             )
@@ -156,7 +151,7 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        sdk.fire(graphQuery { party(partyId) { medianSpinDuration() } })
+        sdk().fire(ApolloGraphQuery(PartyMedianSpinDurationQuery(partyId)))
             ?.party
             ?.medianSpinDuration
     } verify { result ->
@@ -165,28 +160,25 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
-        sdk.fire(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
+        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(party.id)))
             ?.party
             ?.pairAssignmentDocumentList
-            .let { it ?: emptyList() }
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
-        val sdk = sdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
             val otherParty = stubPartyDetails()
-            val sdk = sdk
             val otherSdk: ActionCannon<CouplingSdkDispatcher> = otherSdk
         }
     }) {
         otherSdk.fire(SavePartyCommand(otherParty))
         otherSdk.fire(SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
     } exercise {
-        sdk.fire(graphQuery { party(PartyId("someoneElseParty")) { pairAssignmentDocumentList() } })
+        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(PartyId("someoneElseParty"))))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
@@ -206,7 +198,7 @@ class SdkPairAssignmentDocumentTest {
     }) {
         sdk.fire(SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
     } exercise {
-        sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+        sdk().fire(ApolloGraphQuery(PairAssignmentRecordListQuery(partyId)))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
@@ -214,7 +206,7 @@ class SdkPairAssignmentDocumentTest {
         result.size.assertIsEqualTo(1)
         result.first().apply {
             timestamp.assertIsRecentDateTime()
-            modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
+            modifyingUserEmail.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
         }
     }
 

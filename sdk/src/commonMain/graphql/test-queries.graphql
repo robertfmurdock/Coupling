@@ -2,6 +2,10 @@ query partyIdListQuery {
     partyList { id }
 }
 
+query partyMedianSpinDurationQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) { medianSpinDuration }
+}
+
 query partyDetailsAndListQuery($partyId: PartyId!) {
     partyList { details {...PartyDetailsFragment} }
     party(input: {partyId: $partyId}) {
@@ -25,6 +29,18 @@ query playersAndPinsQuery($partyId: PartyId!) {
 query pinListQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         pinList { ...PinDetailsFragment}
+    }
+}
+
+query pairAssignmentListQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairAssignmentDocumentList { ...PairAssignmentDetailsFragment }
+    }
+}
+
+query pairAssignmentRecordListQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairAssignmentDocumentList { timestamp, modifyingUserEmail }
     }
 }
 
