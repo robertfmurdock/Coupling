@@ -2,14 +2,51 @@ query partyIdListQuery {
     partyList { id }
 }
 
-query partyMedianSpinDurationQuery($partyId: PartyId!) {
-    party(input: {partyId: $partyId}) { medianSpinDuration }
+query partyAccessTypeDetailsListQuery {
+    partyList {
+        id
+        accessType
+        details {...PartyDetailsFragment}
+    }
+}
+
+query partyListModificationDataQuery {
+    partyList {
+        id
+        details { modifyingUserEmail, timestamp}
+    }
 }
 
 query partyDetailsAndListQuery($partyId: PartyId!) {
     partyList { details {...PartyDetailsFragment} }
     party(input: {partyId: $partyId}) {
         details { ...PartyDetailsFragment }
+    }
+}
+
+query partyAccessTypeAndListQuery($partyId: PartyId!) {
+    partyList {
+        id
+        accessType
+    }
+    party(input: {partyId: $partyId}) {
+        id
+        accessType
+    }
+}
+
+query partyMedianSpinDurationQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) { medianSpinDuration }
+}
+
+query partyIntegrationDataQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        integration {
+            slackTeam
+            slackChannel
+            modifyingUserEmail
+            timestamp
+        }
     }
 }
 
@@ -113,9 +150,55 @@ query partySecretListQuery($partyId: PartyId!) {
     }
 }
 
-query recentTimesPairedQuery($partyId: PartyId!) {
+query partyPairsRecentTimesPairedQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         pairs { recentTimesPaired }
+    }
+}
+
+query partyPairsHistoryRecentTimesPairedQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairs {
+            pairAssignmentHistory {
+                recentTimesPaired
+            }
+        }
+    }
+}
+
+query partyPairsCountQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairs { count }
+    }
+}
+
+query partyPairsSpinsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairs { spinsSinceLastPaired }
+    }
+}
+
+query partyPairsHistoryQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairs { pairAssignmentHistory { details { ...PairAssignmentDetailsFragment } } }
+    }
+}
+
+query partyPairsHistoryDateQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairs { pairAssignmentHistory { date } }
+    }
+}
+
+query partyPairHistoryQuery($partyId: PartyId!, $pairInput: PairInput!) {
+    party(input: {partyId: $partyId}) {
+        pair(input: $pairInput) { pairAssignmentHistory { details { ...PairAssignmentDetailsFragment } } }
+    }
+}
+
+query partyPairPlayerIdsQuery($partyId: PartyId!, $pairInput: PairInput!) {
+    party(input: {partyId: $partyId}) {
+        pair(input: $pairInput) { players { id } }
     }
 }
 

@@ -21,8 +21,8 @@ type PartyDetails {
     animationsEnabled: Boolean
     animationSpeed: Float
     modifyingUserEmail: Email
-    timestamp: DateTimeISO
-    isDeleted: Boolean
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 type PartyIntegration {

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths
 import com.zegreatrob.coupling.client.components.useForm
-import com.zegreatrob.coupling.json.GqlPartyDetails
+import com.zegreatrob.coupling.json.JsonPartyDetails
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toModel
@@ -31,7 +31,7 @@ external interface PartyConfigProps<D> : Props
 @ReactFunc
 val PartyConfig by nfc<PartyConfigProps<*>> { (party, boost, commandFunc, isNew) ->
     val (values, onChange) = useForm(party.toSerializable().toJsonDynamic().unsafeCast<Json>())
-    val updatedParty = values.correctTypes().fromJsonDynamic<GqlPartyDetails>().toModel()
+    val updatedParty = values.correctTypes().fromJsonDynamic<JsonPartyDetails>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToPartyList = { setRedirectUrl(Paths.partyList()) }
     val onSave = commandFunc {

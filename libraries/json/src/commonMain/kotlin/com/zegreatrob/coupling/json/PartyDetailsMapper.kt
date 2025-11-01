@@ -65,6 +65,20 @@ fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
+fun JsonPartyDetails.toModel(): PartyDetails = PartyDetails(
+    id = id,
+    pairingRule = PairingRule.fromValue(pairingRule),
+    defaultBadgeName = defaultBadgeName,
+    alternateBadgeName = alternateBadgeName,
+    email = email,
+    name = name,
+    badgesEnabled = badgesEnabled,
+    callSignsEnabled = callSignsEnabled,
+    animationEnabled = animationsEnabled,
+    animationSpeed = animationSpeed,
+)
+
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPartyDetails.toModel(): PartyDetails = PartyDetails(
     id = id,
     pairingRule = PairingRule.fromValue(pairingRule),
