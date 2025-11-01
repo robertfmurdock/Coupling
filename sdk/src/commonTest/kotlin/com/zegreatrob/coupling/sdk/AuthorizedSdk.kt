@@ -5,7 +5,8 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.PartyIdListQuery
 import com.zegreatrob.testmints.action.ActionCannon
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
@@ -50,9 +51,9 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() = fire(graphQuery { partyList { details() } })
+private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() = fire(ApolloGraphQuery(PartyIdListQuery()))
     ?.partyList
-    ?.mapNotNull { it.id }
+    ?.map { it.id }
     ?.forEach { fire(DeletePartyCommand(it)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)

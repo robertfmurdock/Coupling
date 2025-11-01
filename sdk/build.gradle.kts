@@ -16,21 +16,21 @@ kotlin {
 }
 
 apollo {
+
     service("service") {
-        generateApolloMetadata.set(true)
-        generateDataBuilders.set(true)
-        packageName.set("com.zegreatrob.coupling.sdk.schema")
+        generateApolloMetadata = true
+        generateAsInternal = false
+        generateSourcesDuringGradleSync = true
+        packageName = "com.zegreatrob.coupling.sdk.schema"
         schemaFiles.from(
             file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
             file("../server/src/jsMain/resources/schema.graphqls"),
         )
-        generateAsInternal = false
         introspection {
-            endpointUrl.set("https://localhost/graphql")
+            endpointUrl = "https://localhost/graphql"
             headers.put("api-key", "1234567890abcdef")
-            schemaFile.set(file("src/main/graphql/schema.graphqls"))
+            schemaFile = file("src/main/graphql/schema.graphqls")
         }
-        generateSourcesDuringGradleSync.set(true)
         mapScalar(
             "ContributionId",
             "com.zegreatrob.coupling.json.ContributionIdString",

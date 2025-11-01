@@ -6,12 +6,12 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.PlayersAndPinsQuery
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -41,16 +41,13 @@ class RequestCombineEndpointTest {
         playersToSave.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {
-            sdk.fire(
-                graphQuery {
-                    party(party.id) {
-                        playerList()
-                        pinList()
-                    }
-                },
-            )
-                ?.party
-                .let { it?.playerList?.elements to it?.pinList?.elements }
+            sdk.fire(ApolloGraphQuery(PlayersAndPinsQuery(party.id)))
+                ?.party.let { party ->
+                    Pair(
+                        party?.playerList?.map { it.playerDetailsFragment.toModel() },
+                        party?.pinList?.map { it.pinDetailsFragment.toModel() },
+                    )
+                }
         }
     } verify { (players, pins) ->
         players.assertIsEqualTo(playersToSave)
