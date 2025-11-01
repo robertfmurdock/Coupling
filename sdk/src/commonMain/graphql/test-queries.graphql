@@ -39,6 +39,10 @@ query partyMedianSpinDurationQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) { medianSpinDuration }
 }
 
+query partySpinsUntilFullRotationQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) { spinsUntilFullRotation }
+}
+
 query partyIntegrationDataQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         integration {
@@ -53,6 +57,30 @@ query partyIntegrationDataQuery($partyId: PartyId!) {
 query partyDetailsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         details { ...PartyDetailsFragment }
+    }
+}
+
+query partyPlayersDetailsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        playerList {...PlayerDetailsFragment}
+    }
+}
+
+query partyPlayersDataQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        playerList {isDeleted, timestamp, modifyingUserEmail}
+    }
+}
+
+query partyRetiredPlayersDetailsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        retiredPlayers {...PlayerDetailsFragment}
+    }
+}
+
+query partyRetiredPlayersDataQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        retiredPlayers { isDeleted, timestamp, modifyingUserEmail }
     }
 }
 

@@ -8,11 +8,15 @@ import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.player.PlayerId
-import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.PartyPlayersDataQuery
+import com.zegreatrob.coupling.sdk.schema.PartyPlayersDetailsQuery
+import com.zegreatrob.coupling.sdk.schema.PartyRetiredPlayersDataQuery
+import com.zegreatrob.coupling.sdk.schema.PartyRetiredPlayersDetailsQuery
+import com.zegreatrob.coupling.sdk.schema.PartySpinsUntilFullRotationQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -56,12 +60,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player))
     } exercise {
         sdk.fire(SavePlayerCommand(party.id, updatedPlayer))
-        sdk.fire(graphQuery { party(party.id) { playerList() } })
+        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
             ?.party
             ?.playerList
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.map { it.data.player }
+        result?.map { it.playerDetailsFragment.toModel() }
             .assertIsEqualTo(listOf(this.updatedPlayer))
     }
 
@@ -76,13 +79,12 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(partyId, player))
     } exercise {
         sdk.fire(DeletePlayerCommand(partyId, player.id))
-        sdk.fire(graphQuery { party(partyId) { playerList() } })
+        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
             ?.playerList
-            .let { it ?: emptyList() }
     } verifyWithWait { result ->
-        result.map { it.data.player }
-            .contains(this.player)
+        result?.map { it.playerDetailsFragment.toModel() }
+            ?.contains(this.player)
             .assertIsEqualTo(false)
     }
 
@@ -113,12 +115,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
     } exercise {
-        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
+        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.map { it.data.player }
+        result?.map { it.playerDetailsFragment.toModel() }
             .assertIsEqualTo(listOf(this.player))
     }
 
@@ -142,12 +143,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, similarPlayer))
         sdk.fire(DeletePlayerCommand(party.id, similarPlayer.id))
     } exercise {
-        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
+        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.map { it.data.player }
+        result?.map { it.playerDetailsFragment.toModel() }
             .assertIsEqualTo(
                 listOf(player.copy(additionalEmails = player.additionalEmails + similarPlayer.additionalEmails)),
             )
@@ -170,12 +170,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player2))
         sdk.fire(DeletePlayerCommand(party.id, player2.id))
     } exercise {
-        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
+        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.map { it.data.player }
+        result?.map { it.playerDetailsFragment.toModel() }
             .assertIsEqualTo(listOf(player, player2))
     }
 
@@ -193,11 +192,10 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player))
         sdk.fire(DeletePlayerCommand(party.id, playerId))
     } verifyWithWait {
-        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
+        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
-            .let { it ?: emptyList() }
-            .map { it.data.player }
+            ?.map { it.playerDetailsFragment.toModel() }
             .assertIsEqualTo(listOf(this.player))
     }
 
@@ -211,13 +209,11 @@ class SdkPlayerTest {
     }) {
         players.forEach { setupScope.launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
     } exercise {
-        sdk.fire(graphQuery { party(partyId) { playerList() } })
+        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
             ?.playerList
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.map { it.data.player }
-            .toSet()
+        result?.map { it.playerDetailsFragment.toModel() }?.toSet()
             .assertIsEqualTo(players.toSet())
     }
 
@@ -233,7 +229,7 @@ class SdkPlayerTest {
             players.forEach { launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
         }
     } exercise {
-        sdk.fire(graphQuery { party(partyId) { spinsUntilFullRotation() } })
+        sdk().fire(ApolloGraphQuery(PartySpinsUntilFullRotationQuery(partyId)))
             ?.party
             ?.spinsUntilFullRotation
     } verify { result ->
@@ -256,13 +252,12 @@ class SdkPlayerTest {
     }) {
         sdk.fire(SavePlayerCommand(party.id, player))
     } exercise {
-        sdk.fire(graphQuery { party(party.id) { playerList() } })
+        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
             ?.party
             ?.playerList
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.map { it.data.player }
-            .also { it.assertHasIds() }
+        result?.map { it.playerDetailsFragment.toModel() }
+            .also { it!!.assertHasIds() }
             .assertIsEqualTo(listOf(this.player))
     }
 
@@ -280,12 +275,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(partyId, player1))
         sdk.fire(SavePlayerCommand(partyId2, player2))
     } exercise {
-        sdk.fire(graphQuery { party(partyId) { playerList() } })
+        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
             ?.playerList
-            .let { it ?: emptyList() }
     } verifyAnd { result ->
-        result.map { it.data.player }
+        result?.map { it.playerDetailsFragment.toModel() }
             .assertIsEqualTo(listOf(player1))
     } teardown {
         sdk.fire(DeletePartyCommand(partyId2))
@@ -301,16 +295,16 @@ class SdkPlayerTest {
     }) exercise {
         sdk.fire(SavePlayerCommand(party.id, player))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
-        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
+        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDataQuery(party.id)))
             ?.party
             ?.retiredPlayers
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.size.assertIsEqualTo(1)
-        result.first().apply {
+        result?.size
+            .assertIsEqualTo(1)
+        result!!.first().apply {
             isDeleted.assertIsEqualTo(true)
             timestamp.assertIsCloseToNow()
-            modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
+            modifyingUserEmail.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
         }
     }
 
@@ -323,15 +317,14 @@ class SdkPlayerTest {
         }
     }) exercise {
         sdk.fire(SavePlayerCommand(party.id, player))
-        sdk.fire(graphQuery { party(party.id) { playerList() } })
+        sdk().fire(ApolloGraphQuery(PartyPlayersDataQuery(party.id)))
             ?.party
             ?.playerList
-            .let { it ?: emptyList() }
     } verify { result ->
-        result.size.assertIsEqualTo(1)
-        result.first().apply {
+        result?.size.assertIsEqualTo(1)
+        result!!.first().apply {
             timestamp.assertIsCloseToNow()
-            modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
+            modifyingUserEmail.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
         }
     }
 
@@ -348,12 +341,10 @@ class SdkPlayerTest {
                     otherSdk.fire(SavePartyCommand(party))
                     otherSdk.fire(SavePlayerCommand(party.id, stubPlayer()))
                 } exercise {
-                    sdk.fire(graphQuery { party(party.id) { playerList() } })
+                    sdk.fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
                         ?.party
-                        ?.playerList
-                        .let { it ?: emptyList() }
                 } verifyAnd { result ->
-                    result.assertIsEqualTo(emptyList())
+                    result.assertIsEqualTo(null)
                 } teardown {
                     otherSdk.fire(DeletePartyCommand(party.id))
                 }
@@ -376,10 +367,9 @@ class SdkPlayerTest {
                     otherSdk.fire(SavePartyCommand(party))
                 } exercise {
                     sdk.fire(SavePlayerCommand(party.id, player))
-                    otherSdk.fire(graphQuery { party(party.id) { playerList() } })
+                    otherSdk.fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
                         ?.party
                         ?.playerList
-                        .let { it ?: emptyList() }
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
