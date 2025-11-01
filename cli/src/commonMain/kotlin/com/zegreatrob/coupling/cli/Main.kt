@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.cli
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import com.zegreatrob.coupling.cli.party.party
-import com.zegreatrob.coupling.cli.party.query
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -14,7 +13,6 @@ suspend fun main(args: Array<String>) {
     Welcome()
         .subcommands(Login())
         .subcommands(party())
-        .subcommands(query())
         .main(platformArgCorrection(args))
     cliScope.joinAll()
 }
