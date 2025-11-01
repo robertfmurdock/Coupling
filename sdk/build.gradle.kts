@@ -86,14 +86,14 @@ dependencies {
     "commonMainApi"("com.apollographql.adapters:apollo-adapters-core")
     "commonMainImplementation"(project(":libraries:repository:core"))
     "commonMainImplementation"("com.apollographql.ktor:apollo-engine-ktor")
-    "commonMainImplementation"("io.ktor:ktor-client-content-negotiation")
     "commonMainImplementation"("io.ktor:ktor-client-core")
     "commonMainImplementation"("io.ktor:ktor-client-logging")
     "commonMainImplementation"("io.ktor:ktor-client-websockets")
-    "commonMainImplementation"("io.ktor:ktor-serialization-kotlinx-json")
     "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json")
 
+    "commonTestImplementation"("io.ktor:ktor-serialization-kotlinx-json")
+    "commonTestImplementation"("io.ktor:ktor-client-content-negotiation")
+    "commonTestImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json")
     "commonTestImplementation"(project(":libraries:repository:validation"))
     "commonTestImplementation"(project(":libraries:stub-model"))
     "commonTestImplementation"(project(":libraries:test-logging"))
@@ -103,8 +103,6 @@ dependencies {
     "commonTestImplementation"("io.github.oshai:kotlin-logging")
     "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
 
-    "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-js")
-    "jsMainImplementation"(npmConstrained("ws"))
     "jsTestImplementation"(project(":server:slack"))
     "jvmTestImplementation"("io.ktor:ktor-client-java")
 }
