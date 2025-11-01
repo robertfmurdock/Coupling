@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.sdk.dsl
 
-import com.zegreatrob.coupling.json.GqlConfiguration
-import com.zegreatrob.coupling.json.GqlGlobalStatsInput
 import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
@@ -29,11 +27,6 @@ class CouplingQueryBuilder : BuilderWithInput() {
 
     private fun variablesJson() = buildJsonObject { variables.forEach { put(it.key, it.value) } }
 
-    fun user(block: UserQueryBuilder.() -> Unit) = UserQueryBuilder()
-        .also(block)
-        .output
-        .addToQuery("user")
-
     fun partyList(block: PartyQueryBuilder.() -> Unit) = mergeToParent(
         "partyList",
         PartyQueryBuilder()
@@ -46,22 +39,6 @@ class CouplingQueryBuilder : BuilderWithInput() {
         child = PartyQueryBuilder()
             .also(block),
     )
-
-    fun globalStats(year: Int) {
-        GqlReference.globalStats.addToQuery(
-            queryKey = "globalStats",
-            inputSettings = InputSettings(
-                input = GqlGlobalStatsInput(year = year),
-                inputName = "input",
-                inputType = "GlobalStatsInput",
-            ),
-        )
-    }
-
-    fun config(block: ConfigQueryBuilder.() -> Unit) = ConfigQueryBuilder()
-        .also(block)
-        .output
-        .addToQuery("config")
 }
 
 abstract class BuilderWithInput {
@@ -104,31 +81,6 @@ abstract class BuilderWithInput {
         queryKey = queryKey,
         inputString = inputSettings.addInputString(),
     )
-}
-
-class ConfigQueryBuilder : QueryBuilder<GqlConfiguration> {
-    override var output: GqlConfiguration = GqlConfiguration(
-        addToSlackUrl = null,
-        stripePurchaseCode = null,
-        discordClientId = null,
-        stripeAdminCode = null,
-    )
-
-    fun addToSlackUrl() {
-        output = output.copy(addToSlackUrl = "")
-    }
-
-    fun discordClientId() {
-        output = output.copy(discordClientId = "")
-    }
-
-    fun stripeAdminCode() {
-        output = output.copy(stripeAdminCode = "")
-    }
-
-    fun stripePurchaseCode() {
-        output = output.copy(stripePurchaseCode = "")
-    }
 }
 
 inline fun <reified J, T> T.queryContent(): String where T : BuilderWithInput, T : QueryBuilder<J> = output.nestedKeys<J>()

@@ -9,6 +9,12 @@ query partyDetailsAndListQuery($partyId: PartyId!) {
     }
 }
 
+query partyDetailsQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        details { ...PartyDetailsFragment }
+    }
+}
+
 query playersAndPinsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         playerList {...PlayerDetailsFragment}
@@ -64,6 +70,14 @@ query currentPairAssignmentsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         currentPairAssignmentDocument {
             ...PairAssignmentDetailsFragment
+        }
+    }
+}
+
+query partySecretListQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        secretList {
+            ...PartySecretFragment
         }
     }
 }

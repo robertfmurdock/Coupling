@@ -7,12 +7,12 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.action.secret.fire
-import com.zegreatrob.coupling.model.CouplingQueryResult
-import com.zegreatrob.coupling.model.data
-import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
+import com.zegreatrob.coupling.sdk.schema.PartyDetailsQuery
+import com.zegreatrob.coupling.sdk.schema.PartySecretListQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.uuidString
@@ -42,17 +42,18 @@ class SdkSecretTest {
         val (secret, token) = result!!
         secret.assertIsNotEqualTo(null)
         token.assertIsValidToken(party.id)
-        sdk().fire(graphQuery { party(party.id) { secretList() } })
+        sdk().fire(ApolloGraphQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.elements
+            ?.map { it.partySecretFragment.toModel() }
             .assertIsEqualTo(listOf(secret))
 
         val tokenSdk = couplingSdk({ token }, buildClient())
-        tokenSdk.fire(graphQuery { party(party.id) { details() } })
+        tokenSdk.fire(ApolloGraphQuery(PartyDetailsQuery(party.id)))
             ?.party
             ?.details
-            ?.data
+            ?.partyDetailsFragment
+            ?.toModel()
             .assertIsEqualTo(party)
     }
 
@@ -66,11 +67,11 @@ class SdkSecretTest {
         val (_, token) = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
         tokenSdk = couplingSdk({ token }, buildClient())
     } exercise {
-        tokenSdk.fire(graphQuery { party(party.id) { details() } })
-        sdk().fire(graphQuery { party(party.id) { secretList() } })
+        tokenSdk.fire(ApolloGraphQuery(PartyDetailsQuery(party.id)))
+        sdk().fire(ApolloGraphQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.elements
+            ?.map { it.partySecretFragment.toModel() }
     } verify { result ->
         result?.first()?.lastUsedTimestamp
             ?.let { Clock.System.now() - it }
@@ -96,13 +97,13 @@ class SdkSecretTest {
     } exercise {
         sdk().fire(DeleteSecretCommand(party.id, secret.id))
     } verify {
-        sdk().fire(graphQuery { party(party.id) { secretList() } })
+        sdk().fire(ApolloGraphQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.elements
+            ?.map { it.partySecretFragment.toModel() }
             .assertIsEqualTo(emptyList())
         val tokenSdk = couplingSdk({ token }, buildClient())
-        runCatching { tokenSdk.fire(graphQuery { party(party.id) { details() } }) }
+        runCatching { tokenSdk.fire(ApolloGraphQuery(PartyDetailsQuery(party.id))) }
             .exceptionOrNull()
             .assertIsNotEqualTo(null, "Expect this to fail")
     }
@@ -122,16 +123,12 @@ class SdkSecretTest {
     } verify { result ->
         val (_, token) = result!!
         val tokenSdk = couplingSdk({ token }, buildClient())
-        val queryResult: CouplingQueryResult? = tokenSdk.fire(
-            graphQuery {
-                partyList { details() }
-                party(party2.id) { details() }
-            },
+        val queryResult = tokenSdk.fire(
+            ApolloGraphQuery(PartyDetailsAndListQuery(party2.id)),
         )
         queryResult
             ?.partyList
-            ?.mapNotNull { it.details }
-            ?.data()
+            ?.mapNotNull { it.details?.partyDetailsFragment?.toModel() }
             .assertIsEqualTo(listOf(party1))
         queryResult?.party
             .assertIsEqualTo(null)

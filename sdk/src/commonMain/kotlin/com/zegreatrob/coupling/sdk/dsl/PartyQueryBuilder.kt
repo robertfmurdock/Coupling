@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.json.GqlPairsInput
 import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.PlayerId
-import com.zegreatrob.coupling.sdk.dsl.GqlReference.boost
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
@@ -45,8 +44,6 @@ class PartyQueryBuilder :
     override var queries = mutableListOf<String>()
     override var inputs = mutableListOf<String>()
     override var variables = mutableMapOf<String, JsonElement>()
-
-    fun boost() = also { output = output.copy(boost = boost) }
 
     fun contributionReport(
         window: GqlContributionWindow? = null,
