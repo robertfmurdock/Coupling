@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.apollographql.apollo.api.Optional.Companion.present
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
@@ -12,8 +13,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.schema.PartyPairsPlayerDetailsQuery
+import com.zegreatrob.coupling.sdk.schema.type.PairsInput
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -34,9 +37,9 @@ class SdkPairsTest {
     }) {
         savePartyStateWithFixedPlayerOrder(party, players, emptyList())
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
+        sdk().fire(ApolloGraphQuery(PartyPairsPlayerDetailsQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element) }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetailsFragment.toModel() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -57,9 +60,16 @@ class SdkPairsTest {
         savePartyStateWithFixedPlayerOrder(party, players, emptyList())
         sdk().fire(DeletePlayerCommand(party.id, players[3].id))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs(includeRetired = false) { players() } } })
+        sdk().fire(
+            ApolloGraphQuery(
+                PartyPairsPlayerDetailsQuery(
+                    partyId = party.id,
+                    pairsInput = present(PairsInput(includeRetired = present(false))),
+                ),
+            ),
+        )
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element) }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetailsFragment.toModel() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -105,9 +115,9 @@ class SdkPairsTest {
             )
         }
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
+        sdk().fire(ApolloGraphQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element) }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetailsFragment.toModel() } }
             ?.last()
             .assertIsEqualTo(mob)
     }
@@ -135,10 +145,17 @@ class SdkPairsTest {
             ),
         )
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs(includeRetired = false) { players() } } })
+        sdk().fire(
+            ApolloGraphQuery(
+                PartyPairsPlayerDetailsQuery(
+                    partyId = party.id,
+                    pairsInput = present(PairsInput(includeRetired = present(false))),
+                ),
+            ),
+        )
     } verify { result ->
         result?.party?.pairs?.mapNotNull {
-            it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element)
+            it.players?.map { player -> player.playerDetailsFragment.toModel() }
         }
             ?.flatten()
             ?.distinct()
@@ -165,10 +182,17 @@ class SdkPairsTest {
             ),
         )
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs(includeRetired = false) { players() } } })
+        sdk().fire(
+            ApolloGraphQuery(
+                PartyPairsPlayerDetailsQuery(
+                    partyId = party.id,
+                    pairsInput = present(PairsInput(includeRetired = present(false))),
+                ),
+            ),
+        )
     } verify { result ->
         result?.party?.pairs?.mapNotNull {
-            it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element)
+            it.players?.map { player -> player.playerDetailsFragment.toModel() }
         }
             ?.flatten()
             ?.distinct()
@@ -201,9 +225,9 @@ class SdkPairsTest {
             )
         }
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
+        sdk().fire(ApolloGraphQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element) }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetailsFragment.toModel() } }
             ?.last()
             .assertIsEqualTo(mob)
     }

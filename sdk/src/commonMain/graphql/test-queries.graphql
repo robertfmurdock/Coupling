@@ -148,6 +148,12 @@ query partyContributionReportContributorsQuery($partyId: PartyId!) {
     }
 }
 
+query partyPairsPlayerDetailsQuery($partyId: PartyId!, $pairsInput: PairsInput) {
+    party(input: {partyId: $partyId}) {
+        pairs(input: $pairsInput) { players { ...PlayerDetailsFragment } }
+    }
+}
+
 query partyPairsContributionReportContributionsQuery($partyId: PartyId!, $reportInput: ContributionsInput) {
     party(input: {partyId: $partyId}) {
         pairs {
