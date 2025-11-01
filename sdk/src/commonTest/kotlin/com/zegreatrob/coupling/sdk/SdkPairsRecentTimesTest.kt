@@ -1,13 +1,19 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.action.stats.heatmap.heatmapData
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.schema.RecentTimesPairedQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -16,9 +22,9 @@ import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 import kotlin.time.Clock
 
-class SdkHeatMapDataTest {
+class SdkPairsRecentTimesTest {
 
-    companion object : AssignPinsAction.Dispatcher {
+    companion object Companion : AssignPinsAction.Dispatcher {
         private fun pairAssignmentDocument(player1: Player, player2: Player) = PairAssignmentDocument(
             id = PairAssignmentDocumentId.new(),
             date = Clock.System.now(),
@@ -35,14 +41,14 @@ class SdkHeatMapDataTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { recentTimesPaired() } } })
+        sdk().fire(ApolloGraphQuery(RecentTimesPairedQuery(party.id)))
     } verify { result ->
-        heatmapData(players, result?.party?.pairs!!)
-            .assertIsEqualTo(emptyList<List<Int?>>())
+        result?.party?.pairs?.map { it.recentTimesPaired }
+            .assertIsEqualTo(emptyList())
     }
 
     @Test
-    fun withOnePlayerProducesOneRowWith10() = asyncSetup(object {
+    fun withOnePlayerShowsOnePairWithoutRecentTimes() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = listOf(stubPlayer())
         val history = emptyList<PairAssignmentDocument>()
@@ -50,26 +56,15 @@ class SdkHeatMapDataTest {
         savePartyState(party, players, history)
     } exercise {
         sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    pairs {
-                        players()
-                        recentTimesPaired()
-                    }
-                }
-            },
+            ApolloGraphQuery(RecentTimesPairedQuery(party.id)),
         )
     } verify { result ->
-        heatmapData(players, result?.party?.pairs!!)
-            .assertIsEqualTo(
-                listOf(
-                    listOf(null),
-                ),
-            )
+        result?.party?.pairs?.map { it.recentTimesPaired }
+            .assertIsEqualTo(listOf(null))
     }
 
     @Test
-    fun withThreePlayersAndNoHistoryProducesThreeRows() = asyncSetup(object {
+    fun withThreePlayersAndNoHistoryProducesThreePairsWithZero() = asyncSetup(object {
         val players = listOf(
             stubPlayer(),
             stubPlayer(),
@@ -80,29 +75,14 @@ class SdkHeatMapDataTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    pairs {
-                        players()
-                        recentTimesPaired()
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(RecentTimesPairedQuery(party.id)))
     } verify { result ->
-        heatmapData(players, result?.party?.pairs!!)
-            .assertIsEqualTo(
-                listOf(
-                    listOf(null, 0.0, 0.0),
-                    listOf(0.0, null, 0.0),
-                    listOf(0.0, 0.0, null),
-                ),
-            )
+        result?.party?.pairs?.map { it.recentTimesPaired }
+            .assertIsEqualTo(listOf(0, 0, 0, null, null, null))
     }
 
     @Test
-    fun withTwoPlayersAndShortHistoryProducesTwoRowsWithHeatValues() = asyncSetup(object {
+    fun withTwoPlayersAndShortHistoryProducesOneRecentPairing() = asyncSetup(object {
         val players = listOf(
             stubPlayer(),
             stubPlayer(),
@@ -112,28 +92,14 @@ class SdkHeatMapDataTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    pairs {
-                        players()
-                        recentTimesPaired()
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(RecentTimesPairedQuery(party.id)))
     } verify { result ->
-        heatmapData(players, result?.party?.pairs!!)
-            .assertIsEqualTo(
-                listOf(
-                    listOf(null, 1.0),
-                    listOf(1.0, null),
-                ),
-            )
+        result?.party?.pairs?.map { it.recentTimesPaired }
+            .assertIsEqualTo(listOf(1, null, null))
     }
 
     @Test
-    fun withTwoPlayersAndFullHistoryProducesTwoRowsWithHeatValues() = asyncSetup(object {
+    fun withTwoPlayersAndFullHistoryProducesHigherPairingNumber() = asyncSetup(object {
         val players = listOf(
             stubPlayer(),
             stubPlayer(),
@@ -149,28 +115,14 @@ class SdkHeatMapDataTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    pairs {
-                        players()
-                        recentTimesPaired()
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(RecentTimesPairedQuery(party.id)))
     } verify { result ->
-        heatmapData(players, result?.party?.pairs!!)
-            .assertIsEqualTo(
-                listOf(
-                    listOf(null, 10.0),
-                    listOf(10.0, null),
-                ),
-            )
+        result?.party?.pairs?.map { it.recentTimesPaired }
+            .assertIsEqualTo(listOf(5, null, null))
     }
 
     @Test
-    fun withThreePlayersAndInterestingHistoryProducesThreeRowsWithHeatValues() = asyncSetup(object {
+    fun withThreePlayersAndInterestingHistoryProducesAccurateNumbers() = asyncSetup(object {
         val players = listOf(
             stubPlayer().copy(name = "0"),
             stubPlayer().copy(name = "1"),
@@ -195,27 +147,19 @@ class SdkHeatMapDataTest {
             pairAssignmentDocument(players[0], players[2]),
         )
     }) {
-        savePartyState(party, players, history)
+        with(sdk()) {
+            fire(SavePartyCommand(party))
+            players.forEach {
+                fire(SavePlayerCommand(party.id, it))
+            }
+            history.forEach {
+                fire(SavePairAssignmentsCommand(party.id, it))
+            }
+        }
     } exercise {
-        sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    spinsUntilFullRotation()
-                    pairs {
-                        players()
-                        recentTimesPaired()
-                    }
-                }
-            },
-        )
+        sdk().fire(ApolloGraphQuery(RecentTimesPairedQuery(party.id)))
     } verify { result ->
-        heatmapData(players, result?.party?.pairs!!)
-            .assertIsEqualTo(
-                listOf(
-                    listOf(null, 10.0, 1.0),
-                    listOf(10.0, null, 0.0),
-                    listOf(1.0, 0.0, null),
-                ),
-            )
+        result?.party?.pairs?.map { it.recentTimesPaired }
+            .assertIsEqualTo(listOf(14, 1, 0, null, null, null))
     }
 }

@@ -23,7 +23,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.FC
 import react.Props
-import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
 import react.useState
 import web.cssom.Color
 import web.cssom.Display
@@ -57,7 +57,7 @@ external interface PartyStatisticsProps : Props {
 @ReactFunc
 val PartyStatistics by nfc<PartyStatisticsProps> { props ->
     val (party, players, pairs, spinsUntilFullRotation, medianSpinDuration, chartComponent) = props
-    ReactHTML.div {
+    div {
         PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
             ConfigHeader {
                 this.party = party
@@ -84,18 +84,18 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
 
     var showPlot by useState(false)
 
-    ReactHTML.div {
+    div {
         css {
             whiteSpace = WhiteSpace.nowrap
             display = Display.inlineFlex
         }
-        ReactHTML.div {
+        div {
             css {
                 display = Display.inlineBlock
                 verticalAlign = VerticalAlign.top
                 flexGrow = number(0.0)
             }
-            ReactHTML.div {
+            div {
                 TeamStatistics(
                     spinsUntilFullRotation = spinsUntilFullRotation,
                     activePlayerCount = players.size,
@@ -104,12 +104,12 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
             }
             PairReportTable(pairs.pairReports())
         }
-        ReactHTML.div {
+        div {
             css {
                 display = Display.inlineBlock
                 marginLeft = 20.px
             }
-            ReactHTML.div {
+            div {
                 CouplingButton {
                     onClick = { showPlot = false }
                     +"Heatmap"
@@ -121,7 +121,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
             }
 
             if (showPlot) {
-                ReactHTML.div {
+                div {
                     css {
                         width = 600.px
                         height = 600.px

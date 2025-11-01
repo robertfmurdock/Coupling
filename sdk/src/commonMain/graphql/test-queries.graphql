@@ -96,3 +96,9 @@ query partySecretListQuery($partyId: PartyId!) {
         }
     }
 }
+
+query recentTimesPairedQuery($partyId: PartyId!) {
+    party(input: {partyId: $partyId}) {
+        pairs { recentTimesPaired }
+    }
+}
