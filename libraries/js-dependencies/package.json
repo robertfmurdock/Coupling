@@ -72,7 +72,7 @@
     "serverless-offline": "^14.4.0",
     "serverless-offline-ssm": "^6.2.0",
     "serverless-prune-plugin": "^2.1.0",
-    "sonda": "^0.9.0",
+    "sonda": "^0.10.0",
     "stripe": "^19.2.0",
     "styled-components": "^6.1.19",
     "vite-plugin-html": "^3.2.2",
