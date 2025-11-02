@@ -81,22 +81,22 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
 }
 
 private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): List<Contribution> = flatMap {
-    it.second.contributions?.elements
-        ?: emptyList()
+    it.second.contributions.elements
 }
 
 private fun List<ContributionVisualizationDataQuery.Pair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
     val contributionReport = it.contributionReport?.toModel() ?: return@mapNotNull null
-    val players = it.players?.map { player -> player.playerDetails.toDomain() }
-    players?.toCouplingPair()?.let { pair -> pair to contributionReport }
+    val players = it.players.map { player -> player.playerDetails.toDomain() }
+    players.toCouplingPair() to contributionReport
 }
 
 fun ContributionVisualizationDataQuery.ContributionReport.toModel() = ContributionReport(
-    contributions = contributions?.map { contribution ->
+    contributions = contributions.map { contribution ->
         contribution.partyContributionFragment.toModel()
-    } ?: emptyList(),
+    },
     medianCycleTime = medianCycleTime,
     withCycleTimeCount = withCycleTimeCount,
     partyId = partyId,
     count = count,
+    contributors = emptyList(),
 )

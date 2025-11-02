@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.player.Player
 
 data class PlayerPair(
-    val players: List<PartyRecord<Player>>? = null,
+    val players: List<PartyRecord<Player>>,
     val count: Int? = null,
     val spinsSinceLastPaired: Int? = null,
     val recentTimesPaired: Int? = null,
-    val pairAssignmentHistory: List<PairAssignment>? = null,
+    val pairAssignmentHistory: List<PairAssignment>,
     val contributionReport: ContributionReport? = null,
 )

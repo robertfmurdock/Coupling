@@ -26,6 +26,7 @@ class PairEaseLineGraphTest {
                 ContributionReport(
                     partyId = stubPartyId(),
                     count = 0,
+                    contributors = emptyList(),
                     contributions = listOf(
                         partyRecord(
                             stubPartyId(),
@@ -76,6 +77,7 @@ class PairEaseLineGraphTest {
 private fun report(data: Contribution): ContributionReport = ContributionReport(
     partyId = stubPartyId(),
     count = 0,
+    contributors = emptyList(),
     contributions = listOf(
         partyRecord(
             stubPartyId(),

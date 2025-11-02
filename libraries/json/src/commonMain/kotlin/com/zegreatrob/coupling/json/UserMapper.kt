@@ -7,7 +7,7 @@ fun User.toSerializable() = GqlUser(
     details = details?.toSerializable(),
     boost = boost?.toSerializable(),
     subscription = subscription?.toJson(),
-    players = null,
+    players = emptyList(),
 )
 
 fun GqlUser.toModel() = User(
@@ -15,5 +15,5 @@ fun GqlUser.toModel() = User(
     details = details?.toModel(),
     boost = boost?.toModelRecord(),
     subscription = subscription?.toModel(),
-    players = players?.map { it.toModel() },
+    players = players.map { it.toModel() },
 )

@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
+import com.zegreatrob.coupling.json.GqlAccessType
+import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.json.PartyIdString
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
@@ -49,18 +51,20 @@ import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.external.graphql.GraphQLScalarType
-import js.objects.recordOf
 import js.objects.unsafeJso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.decodeFromDynamic
+import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 import kotlin.js.json
 
 @Serializable
 data class GqlPartyNode(
     val id: PartyIdString,
+    val accessType: GqlAccessType? = null,
+    val details: GqlPartyDetails? = null,
 )
 
 fun couplingResolvers() = json(
@@ -74,13 +78,15 @@ fun couplingResolvers() = json(
                 val input = kotlinx.serialization.json.Json.decodeFromDynamic<GqlPartyInput>(args["input"])
                 val dispatcher = DispatcherProviders.authorizedPartyDispatcher(r, input.partyId)
                 if (dispatcher != null) {
-                    recordOf(
-                        "id" to input.partyId.value.toString(),
-                        "accessType" to if (dispatcher.currentUser.authorizedPartyIds.contains(input.partyId)) {
-                            "Owner"
-                        } else {
-                            "Player"
-                        },
+                    kotlinx.serialization.json.Json.encodeToDynamic(
+                        GqlPartyNode(
+                            id = input.partyId,
+                            accessType = if (dispatcher.currentUser.authorizedPartyIds.contains(input.partyId)) {
+                                GqlAccessType.Owner
+                            } else {
+                                GqlAccessType.Player
+                            },
+                        ),
                     )
                 } else {
                     null

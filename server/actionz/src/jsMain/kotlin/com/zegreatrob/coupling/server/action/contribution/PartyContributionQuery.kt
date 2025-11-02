@@ -39,6 +39,6 @@ fun contributionReport(
         count = contributions.size,
         medianCycleTime = cycleTimeContributions.sorted().halfwayValue(),
         withCycleTimeCount = cycleTimeContributions.size,
-        contributors = null,
+        contributors = emptyList(),
     )
 }

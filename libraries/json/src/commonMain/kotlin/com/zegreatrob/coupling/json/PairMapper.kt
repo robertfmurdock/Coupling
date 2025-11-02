@@ -10,28 +10,29 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPair.toModel() = PlayerPair(
-    players = players?.map(GqlPlayerDetails::toModel),
+    players = players.map(GqlPlayerDetails::toModel),
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
     recentTimesPaired = recentTimesPaired,
-    pairAssignmentHistory = pairAssignmentHistory?.map { json ->
+    pairAssignmentHistory = pairAssignmentHistory.map { json ->
         PairAssignment(
             documentId = json.documentId,
             details = json.details?.toModel(),
             date = json.date,
             allPairs = json.allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),
             recentTimesPaired = json.recentTimesPaired,
+            playerIds = emptyList(),
         )
     },
     contributionReport = contributionReport?.toModel(),
 )
 
 fun PartyElement<PlayerPair>.toJson() = GqlPair(
-    players = element.players?.map(PartyRecord<Player>::toSerializable),
+    players = element.players.map(PartyRecord<Player>::toSerializable),
     spinsSinceLastPaired = element.spinsSinceLastPaired,
     partyId = partyId,
     count = null,
-    pairAssignmentHistory = null,
+    pairAssignmentHistory = emptyList(),
     recentTimesPaired = null,
     contributionReport = null,
 )

@@ -37,7 +37,7 @@ type User {
     id: UserId!
     details: UserDetails
     boost: BoostDetails
-    players: [PlayerDetails!]
+    players: [PlayerDetails!]!
 }
 
 type UserDetails {
@@ -178,12 +178,12 @@ type Party {
     accessType: AccessType!
     details: PartyDetails!
     integration: PartyIntegration
-    pinList: [PinDetails!]
-    playerList: [PlayerDetails!]
-    retiredPlayers: [PlayerDetails!]
-    pairs(input: PairsInput): [Pair!]
-    pairAssignmentDocumentList: [PairAssignmentDocumentDetails!]
-    secretList: [PartySecret!]
+    pinList: [PinDetails!]!
+    playerList: [PlayerDetails!]!
+    retiredPlayers: [PlayerDetails!]!
+    pairs(input: PairsInput): [Pair!]!
+    pairAssignmentDocumentList: [PairAssignmentDocumentDetails!]!
+    secretList: [PartySecret!]!
     currentPairAssignmentDocument: PairAssignmentDocumentDetails
     spinsUntilFullRotation: Int
     medianSpinDuration: Duration
@@ -364,25 +364,25 @@ input PartyInput {
 
 type Pair {
     partyId: PartyId
-    players: [PlayerDetails!]
+    players: [PlayerDetails!]!
     count: Int
     spinsSinceLastPaired: Int
     recentTimesPaired: Int
     contributionReport(input: ContributionsInput): ContributionReport
-    pairAssignmentHistory: [PairAssignment!]
+    pairAssignmentHistory: [PairAssignment!]!
 }
 
 type ContributionReport {
     partyId: PartyId!
-    contributions: [Contribution!]
+    contributions: [Contribution!]!
     count: Int!
     medianCycleTime: Duration
     withCycleTimeCount: Int
-    contributors: [Contributor!]
+    contributors: [Contributor!]!
 }
 
 type PairAssignment {
-    playerIds: [PlayerId!]
+    playerIds: [PlayerId!]!
     documentId: PairAssignmentDocumentId!
     details: PairAssignmentDocumentDetails
     date: DateTimeISO
@@ -394,7 +394,7 @@ type PairAssignment {
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Query {
-    partyList: [Party!]
+    partyList: [Party!]!
     party(input: PartyInput!): Party
     user: User!
     globalStats(input: GlobalStatsInput!) : GlobalStats!

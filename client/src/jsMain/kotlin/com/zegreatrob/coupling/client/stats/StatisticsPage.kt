@@ -31,7 +31,7 @@ val StatisticsPage = partyPageFunction { props, partyId ->
 }
 
 private fun StatisticsPageQuery.Pair.toModel(): PlayerPair = PlayerPair(
-    players = players?.map {
+    players = players.map {
         partyRecord(
             partyId = it.partyPlayerDetails.partyId,
             modifyingUserEmail = it.partyPlayerDetails.modifyingUserEmail!!,
@@ -42,11 +42,12 @@ private fun StatisticsPageQuery.Pair.toModel(): PlayerPair = PlayerPair(
     },
     spinsSinceLastPaired = spinsSinceLastPaired,
     recentTimesPaired = recentTimesPaired,
-    pairAssignmentHistory = pairAssignmentHistory?.map { it.toModel() },
+    pairAssignmentHistory = pairAssignmentHistory.map { it.toModel() },
 )
 
 private fun StatisticsPageQuery.PairAssignmentHistory.toModel(): PairAssignment = PairAssignment(
     date = date,
     recentTimesPaired = recentTimesPaired,
     documentId = documentId,
+    playerIds = emptyList(),
 )

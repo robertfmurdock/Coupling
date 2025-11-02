@@ -25,6 +25,7 @@ class PairContributionsLineGraphTest {
                 ContributionReport(
                     partyId = stubPartyId(),
                     count = 0,
+                    contributors = emptyList(),
                     contributions = listOf(
                         partyRecord(
                             stubPartyId(),

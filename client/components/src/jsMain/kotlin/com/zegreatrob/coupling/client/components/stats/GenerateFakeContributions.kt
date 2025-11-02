@@ -70,6 +70,7 @@ suspend fun generateFakeContributions(
                 withCycleTimeCount = contributions.mapNotNull { it.cycleTime }.count(),
                 count = contributions.size,
                 partyId = PartyId("-"),
+                contributors = emptyList(),
             )
         }
     }
@@ -155,7 +156,7 @@ private fun contributionStartDateTime(
     pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
 ) = beginningOfWindow(selectedWindow) ?: pairsContributions.toMap()
     .values
-    .mapNotNull { it.contributions?.elements }
+    .map { it.contributions.elements }
     .flatten()
     .firstContributionInstant()
 

@@ -191,6 +191,6 @@ private fun List<Pair<CouplingPair, ContributionReport>>.applyFilters(
 
 private fun selectedLabelTransform(selectedLabelFilter: String) = { (pair, report): Pair<CouplingPair, ContributionReport> ->
     pair to report.run {
-        copy(contributions = contributions?.filter { it.element.label == selectedLabelFilter })
+        copy(contributions = contributions.filter { it.element.label == selectedLabelFilter })
     }
 }

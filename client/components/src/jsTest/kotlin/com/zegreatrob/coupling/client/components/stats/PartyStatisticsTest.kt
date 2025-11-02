@@ -43,26 +43,32 @@ class PartyStatisticsTest {
                     PlayerPair(
                         pairList(players[0], players[2]),
                         spinsSinceLastPaired = null,
+                        pairAssignmentHistory = emptyList(),
                     ),
                     PlayerPair(
                         pairList(players[0], players[3]),
                         spinsSinceLastPaired = null,
+                        pairAssignmentHistory = emptyList(),
                     ),
                     PlayerPair(
                         pairList(players[0], players[1]),
                         spinsSinceLastPaired = 0,
+                        pairAssignmentHistory = emptyList(),
                     ),
                     PlayerPair(
                         pairList(players[1], players[2]),
                         spinsSinceLastPaired = null,
+                        pairAssignmentHistory = emptyList(),
                     ),
                     PlayerPair(
                         pairList(players[1], players[3]),
                         spinsSinceLastPaired = null,
+                        pairAssignmentHistory = emptyList(),
                     ),
                     PlayerPair(
                         pairList(players[2], players[3]),
                         spinsSinceLastPaired = 0,
+                        pairAssignmentHistory = emptyList(),
                     ),
                 ),
                 spinsUntilFullRotation = 0,
@@ -129,26 +135,33 @@ class PartyStatisticsTest {
             PlayerPair(
                 listOf(players[0], players[1]).toRecords(party.id),
                 recentTimesPaired = 1,
+                pairAssignmentHistory = emptyList(),
             ),
             PlayerPair(
                 listOf(players[0], players[2]).toRecords(party.id),
                 recentTimesPaired = 0,
+                pairAssignmentHistory = emptyList(),
             ),
             PlayerPair(
                 listOf(players[0], players[3]).toRecords(party.id),
                 recentTimesPaired = 0,
+                pairAssignmentHistory = emptyList(),
+
             ),
             PlayerPair(
                 listOf(players[1], players[2]).toRecords(party.id),
                 recentTimesPaired = 0,
+                pairAssignmentHistory = emptyList(),
             ),
             PlayerPair(
                 listOf(players[1], players[3]).toRecords(party.id),
                 recentTimesPaired = 0,
+                pairAssignmentHistory = emptyList(),
             ),
             PlayerPair(
                 listOf(players[2], players[3]).toRecords(party.id),
                 recentTimesPaired = 1,
+                pairAssignmentHistory = emptyList(),
             ),
         )
     }) exercise {

@@ -24,6 +24,7 @@ class PairEaseHeatMapTest {
                 ContributionReport(
                     partyId = stubPartyId(),
                     count = 0,
+                    contributors = emptyList(),
                     contributions = listOf(
                         partyRecord(
                             stubPartyId(),

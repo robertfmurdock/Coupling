@@ -18,7 +18,7 @@ class PairContributionsHeatMapTest {
         val data = listOf(
             Pair(
                 pairOf(stubPlayer()),
-                ContributionReport(PartyId("-"), count = 0, contributions = emptyList()),
+                ContributionReport(PartyId("-"), count = 0, contributions = emptyList(), contributors = emptyList()),
             ),
         )
     }) exercise {

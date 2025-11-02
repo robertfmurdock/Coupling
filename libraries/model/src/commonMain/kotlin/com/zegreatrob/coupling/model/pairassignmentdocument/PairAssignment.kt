@@ -7,7 +7,7 @@ import kotlin.time.Instant
 
 data class PairAssignment(
     val documentId: PairAssignmentDocumentId,
-    val playerIds: List<PlayerId>? = null,
+    val playerIds: List<PlayerId>,
     val details: PartyRecord<PairAssignmentDocument>? = null,
     val date: Instant? = null,
     val allPairs: NotEmptyList<PinnedCouplingPair>? = null,

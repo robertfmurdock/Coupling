@@ -51,7 +51,7 @@ data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
                 }.toSet()
 
             val naturalPlayerSets: Set<Set<Record<PartyElement<Player>>>> =
-                naturalPairCombinations.mapNotNull { it.players?.toSet() }.toSet()
+                naturalPairCombinations.map { it.players.toSet() }.toSet()
             val extraPairs = allContributionPairs - naturalPlayerSets
 
             val filter: (PlayerPair) -> Boolean = if (query.includeRetired == true) {
@@ -62,7 +62,7 @@ data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
             return query.partyId.with(
                 (
                     naturalPairCombinations + extraPairs.map {
-                        PlayerPair(players = it.toList())
+                        PlayerPair(players = it.toList(), pairAssignmentHistory = emptyList())
                     }
                     ).filter(filter),
             )
@@ -70,10 +70,10 @@ data class PairListQuery(val partyId: PartyId, val includeRetired: Boolean?) {
 
         fun PlayerPair.anyPlayersAreRetired(
             retiredPlayerListData: List<PartyRecord<Player>>,
-        ): Boolean = players?.any { pairPlayerRecord ->
+        ): Boolean = players.any { pairPlayerRecord ->
             val playerId = pairPlayerRecord.element.id
             pairPlayerRecord.isDeleted || retiredPlayerListData.any { it.data.player.id == playerId }
-        } == true
+        }
 
         private suspend fun PairListQuery.loadData() = coroutineScope {
             val contributions = async { partyId.contributions().elements }
