@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyPlayersDataQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPlayersDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyRetiredPlayersDataQuery
@@ -64,7 +65,7 @@ class SdkPlayerTest {
             ?.party
             ?.playerList
     } verify { result ->
-        result?.map { it.playerDetails.toModel() }
+        result?.map { it.playerDetails.toDomain() }
             .assertIsEqualTo(listOf(this.updatedPlayer))
     }
 
@@ -83,7 +84,7 @@ class SdkPlayerTest {
             ?.party
             ?.playerList
     } verifyWithWait { result ->
-        result?.map { it.playerDetails.toModel() }
+        result?.map { it.playerDetails.toDomain() }
             ?.contains(this.player)
             .assertIsEqualTo(false)
     }
@@ -119,7 +120,7 @@ class SdkPlayerTest {
             ?.party
             ?.retiredPlayers
     } verify { result ->
-        result?.map { it.playerDetails.toModel() }
+        result?.map { it.playerDetails.toDomain() }
             .assertIsEqualTo(listOf(this.player))
     }
 
@@ -147,7 +148,7 @@ class SdkPlayerTest {
             ?.party
             ?.retiredPlayers
     } verify { result ->
-        result?.map { it.playerDetails.toModel() }
+        result?.map { it.playerDetails.toDomain() }
             .assertIsEqualTo(
                 listOf(player.copy(additionalEmails = player.additionalEmails + similarPlayer.additionalEmails)),
             )
@@ -174,7 +175,7 @@ class SdkPlayerTest {
             ?.party
             ?.retiredPlayers
     } verify { result ->
-        result?.map { it.playerDetails.toModel() }
+        result?.map { it.playerDetails.toDomain() }
             .assertIsEqualTo(listOf(player, player2))
     }
 
@@ -195,7 +196,7 @@ class SdkPlayerTest {
         sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
-            ?.map { it.playerDetails.toModel() }
+            ?.map { it.playerDetails.toDomain() }
             .assertIsEqualTo(listOf(this.player))
     }
 
@@ -213,7 +214,7 @@ class SdkPlayerTest {
             ?.party
             ?.playerList
     } verify { result ->
-        result?.map { it.playerDetails.toModel() }?.toSet()
+        result?.map { it.playerDetails.toDomain() }?.toSet()
             .assertIsEqualTo(players.toSet())
     }
 
@@ -256,7 +257,7 @@ class SdkPlayerTest {
             ?.party
             ?.playerList
     } verify { result ->
-        result?.map { it.playerDetails.toModel() }
+        result?.map { it.playerDetails.toDomain() }
             .also { it!!.assertHasIds() }
             .assertIsEqualTo(listOf(this.player))
     }
@@ -279,7 +280,7 @@ class SdkPlayerTest {
             ?.party
             ?.playerList
     } verifyAnd { result ->
-        result?.map { it.playerDetails.toModel() }
+        result?.map { it.playerDetails.toDomain() }
             .assertIsEqualTo(listOf(player1))
     } teardown {
         sdk.fire(DeletePartyCommand(partyId2))

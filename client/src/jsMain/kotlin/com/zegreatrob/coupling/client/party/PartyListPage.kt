@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.gql.PartyListQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 
@@ -15,7 +15,7 @@ val PartyListPage by nfc<PageProps> { props ->
         query = GqlQuery(PartyListQuery()),
     ) { _, _, result ->
         PartyList(
-            result.partyList?.mapNotNull { it.partyDetails.toModel() }
+            result.partyList?.mapNotNull { it.partyDetails.toDomain() }
                 ?: return@CouplingQuery,
         )
     }

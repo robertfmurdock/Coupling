@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.routing.pinId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
 
 @Lazy
@@ -19,10 +19,10 @@ val PinPage = partyPageFunction { props, partyId ->
         query = GqlQuery(PinPageQuery(partyId)),
         key = pinId?.value?.toString(),
     ) { reload, commandFunc, result ->
-        val pinList = result.party?.pinList?.map { it.pinDetails.toModel() }
+        val pinList = result.party?.pinList?.map { it.pinDetails.toDomain() }
             ?: return@CouplingQuery
         PinConfig(
-            party = result.party.partyDetails.toModel()
+            party = result.party.partyDetails.toDomain()
                 ?: return@CouplingQuery,
             boost = null,
             pinList = pinList,

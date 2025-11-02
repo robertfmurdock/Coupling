@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 import kotlin.uuid.Uuid
@@ -24,7 +24,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
             key = partyId.value.toString(),
         ) { _, commandFunc, result ->
             PartyConfig(
-                party = result.party?.partyDetails?.toModel() ?: return@CouplingQuery,
+                party = result.party?.partyDetails?.toDomain() ?: return@CouplingQuery,
                 boost = null,
                 dispatchFunc = commandFunc,
                 isNew = false,

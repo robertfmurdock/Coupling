@@ -9,8 +9,8 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
-import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributionsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributorsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportNumbersQuery
@@ -58,7 +58,7 @@ class SdkContributionTest {
     } exercise {
         sdk().fire(GqlQuery(PartyContributionReportContributionsQuery(party.id)))
     } verify { result ->
-        val contributions = result?.party?.contributionReport?.contributions?.map { it.contributionDetails.toModel() }
+        val contributions = result?.party?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
         contributions
             ?.withoutCreatedAt()
             .assertIsEqualTo(
@@ -147,7 +147,7 @@ class SdkContributionTest {
             ?.filter { it.players?.map { player -> player.id } != listOf(expectedPlayer.id) }
             ?.forEach {
                 val contributions = it.contributionReport?.contributions
-                    ?.map { contribution -> contribution.contributionDetails.toModel() }
+                    ?.map { contribution -> contribution.contributionDetails.toDomain() }
                 contributions?.withoutCreatedAt()
                     .assertIsEqualTo(
                         emptyList(),
@@ -158,7 +158,7 @@ class SdkContributionTest {
             }
         result?.party?.pairs
             ?.find { it.players?.map { player -> player.id } == listOf(expectedPlayer.id) }
-            ?.contributionReport?.contributions?.map { it.contributionDetails.toModel() }
+            ?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()
             .assertIsEqualTo(
                 listOf(
@@ -234,7 +234,7 @@ class SdkContributionTest {
         )
     } verify { result ->
         result?.party
-            ?.contributionReport?.contributions?.map { it.contributionDetails.toModel() }
+            ?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
@@ -272,7 +272,7 @@ class SdkContributionTest {
         result?.party
             ?.contributionReport
             ?.contributions
-            ?.map { it.contributionDetails.toModel() }
+            ?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
@@ -315,7 +315,7 @@ class SdkContributionTest {
     } verify { result ->
         result?.party?.pairs
             ?.find { it.players?.map { player -> player.id } == listOf(expectedPlayer.id) }
-            ?.contributionReport?.contributions?.map { it.contributionDetails.toModel() }
+            ?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(

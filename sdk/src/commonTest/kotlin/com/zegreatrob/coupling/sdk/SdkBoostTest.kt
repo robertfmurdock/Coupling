@@ -9,8 +9,8 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
-import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyBoostQuery
 import com.zegreatrob.coupling.sdk.schema.UserBoostQuery
 import com.zegreatrob.coupling.sdk.schema.UserDetailsQuery
@@ -68,7 +68,7 @@ class SdkBoostTest {
         sdk.fire(ApplyBoostCommand(partyId))
     } verifyWithWait {
         sdk.fire(GqlQuery(UserBoostQuery()))
-            ?.user?.boost?.boostDetails?.toModel()
+            ?.user?.boost?.boostDetails?.toDomain()
             ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
@@ -91,7 +91,7 @@ class SdkBoostTest {
         sdk.fire(ApplyBoostCommand(party.id))
     } verifyWithWait {
         sdk.fire(GqlQuery(PartyBoostQuery(party.id)))
-            ?.party?.boost?.boostDetails?.toModel()
+            ?.party?.boost?.boostDetails?.toDomain()
             ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
@@ -117,7 +117,7 @@ class SdkBoostTest {
         sdk.fire(ApplyBoostCommand(updatedBoostParty2))
     } verifyWithWait {
         sdk.fire(GqlQuery(UserBoostQuery()))
-            ?.user?.boost?.boostDetails?.toModel()
+            ?.user?.boost?.boostDetails?.toDomain()
             ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(

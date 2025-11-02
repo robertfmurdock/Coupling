@@ -12,8 +12,8 @@ import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.AccessType
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyAccessTypeAndListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyAccessTypeDetailsListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
@@ -43,8 +43,8 @@ class SdkPartyTest {
             fire(DeletePartyCommand(party.id))
             sdk().fire(GqlQuery(PartyDetailsAndListQuery(party.id))).let {
                 Pair(
-                    it?.partyList?.mapNotNull { party -> party.partyDetails.toModel() },
-                    it?.party?.partyDetails?.toModel(),
+                    it?.partyList?.mapNotNull { party -> party.partyDetails.toDomain() },
+                    it?.party?.partyDetails?.toDomain(),
                 )
             }
         }
@@ -66,7 +66,7 @@ class SdkPartyTest {
             sdk().fire(GqlQuery(PartyDetailsQuery(it.id)))
                 ?.party
                 ?.partyDetails
-                ?.toModel()
+                ?.toDomain()
         }
     } verify { result ->
         result.assertIsEqualTo(this.parties)
@@ -81,10 +81,10 @@ class SdkPartyTest {
     } exercise {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
     } verify { result ->
-        result?.partyList?.mapNotNull { it.partyDetails.toModel() }
+        result?.partyList?.mapNotNull { it.partyDetails.toDomain() }
             .assertContainsAll(parties)
         result?.partyList?.filter { partyIds.contains(it.id) }
-            ?.map { it.accessType.toModel() }
+            ?.map { it.accessType.toDomain() }
             ?.distinct()
             .assertIsEqualTo(listOf(AccessType.Owner))
     }
@@ -101,10 +101,10 @@ class SdkPartyTest {
     } verify { result ->
         result?.partyList
             ?.filter { it.id == party.id }
-            ?.map { it.accessType.toModel() }
+            ?.map { it.accessType.toDomain() }
             ?.distinct()
             .assertIsEqualTo(listOf(AccessType.Owner))
-        result?.party?.accessType?.toModel()
+        result?.party?.accessType?.toDomain()
             .assertIsEqualTo(AccessType.Owner)
     }
 
@@ -136,11 +136,11 @@ class SdkPartyTest {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.partyDetails.toModel() }
+        result?.map { it.partyDetails.toDomain() }
             .assertContains(party)
         result?.first { it.id == party.id }
             ?.accessType
-            ?.toModel()
+            ?.toDomain()
             .assertIsEqualTo(AccessType.Player)
     }
 
@@ -159,7 +159,7 @@ class SdkPartyTest {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.partyDetails.toModel() }
+        result?.map { it.partyDetails.toDomain() }
             .assertContains(party)
     }
 
@@ -174,7 +174,7 @@ class SdkPartyTest {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.partyDetails.toModel() }?.contains(party)
+        result?.map { it.partyDetails.toDomain() }?.contains(party)
             .assertIsEqualTo(false)
     }
 
@@ -189,7 +189,7 @@ class SdkPartyTest {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
-        result?.map { it.partyDetails.toModel() }?.contains(party)
+        result?.map { it.partyDetails.toDomain() }?.contains(party)
             .assertIsEqualTo(false)
     }
 
@@ -201,7 +201,7 @@ class SdkPartyTest {
         altSdk().fire(GqlQuery(PartyDetailsQuery(party.id)))
             ?.party
             ?.partyDetails
-            ?.toModel()
+            ?.toDomain()
     } verify { result ->
         result.assertIsEqualTo(party)
     }

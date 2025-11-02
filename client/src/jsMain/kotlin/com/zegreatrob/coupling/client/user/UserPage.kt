@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 
@@ -16,7 +16,7 @@ val UserPage by nfc<PageProps> {
         query = GqlQuery(UserPageQuery()),
     ) { reload, dispatcher, result ->
         UserConfig(
-            user = result.user?.details?.userDetails?.toModel(),
+            user = result.user?.details?.userDetails?.toDomain(),
             partyList = result.partyList?.mapNotNull(::details) ?: emptyList(),
             dispatcher = dispatcher,
             subscription = null,
@@ -26,4 +26,4 @@ val UserPage by nfc<PageProps> {
     }
 }
 
-private fun details(list: UserPageQuery.PartyList): PartyDetails? = list.partyDetails.toModel()
+private fun details(list: UserPageQuery.PartyList): PartyDetails? = list.partyDetails.toDomain()

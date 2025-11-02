@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 
@@ -18,7 +18,7 @@ val PrereleaseUserPage by nfc<PageProps> {
         query = GqlQuery(PrereleaseUserPageQuery()),
     ) { reload, dispatcher, result ->
         UserConfig(
-            user = result.user?.details?.userDetails?.toModel(),
+            user = result.user?.details?.userDetails?.toDomain(),
             subscription = result.user?.subscription?.toModel(),
             partyList = result.partyList?.mapNotNull(::partyDetails) ?: emptyList(),
             dispatcher = dispatcher,
@@ -38,7 +38,7 @@ private fun PrereleaseUserPageQuery.Boost.toModel(): Boost = Boost(
     expirationDate = expirationDate,
 )
 
-private fun partyDetails(list: PrereleaseUserPageQuery.PartyList): PartyDetails? = list.partyDetails.toModel()
+private fun partyDetails(list: PrereleaseUserPageQuery.PartyList): PartyDetails? = list.partyDetails.toDomain()
 
 private fun PrereleaseUserPageQuery.Subscription.toModel(): SubscriptionDetails = SubscriptionDetails(
     stripeCustomerId = stripeCustomerId,

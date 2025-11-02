@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.action.secret.fire
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.PartySecretListQuery
@@ -45,14 +46,14 @@ class SdkSecretTest {
         sdk().fire(GqlQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.map { it.partySecret.toModel() }
+            ?.map { it.partySecret.toDomain() }
             .assertIsEqualTo(listOf(secret))
 
         val tokenSdk = couplingSdk({ token }, buildClient())
         tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id)))
             ?.party
             ?.partyDetails
-            ?.toModel()
+            ?.toDomain()
             .assertIsEqualTo(party)
     }
 
@@ -70,7 +71,7 @@ class SdkSecretTest {
         sdk().fire(GqlQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.map { it.partySecret.toModel() }
+            ?.map { it.partySecret.toDomain() }
     } verify { result ->
         result?.first()?.lastUsedTimestamp
             ?.let { Clock.System.now() - it }
@@ -99,7 +100,7 @@ class SdkSecretTest {
         sdk().fire(GqlQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.map { it.partySecret.toModel() }
+            ?.map { it.partySecret.toDomain() }
             .assertIsEqualTo(emptyList())
         val tokenSdk = couplingSdk({ token }, buildClient())
         runCatching { tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id))) }
@@ -127,7 +128,7 @@ class SdkSecretTest {
         )
         queryResult
             ?.partyList
-            ?.mapNotNull { it.partyDetails.toModel() }
+            ?.mapNotNull { it.partyDetails.toDomain() }
             .assertIsEqualTo(listOf(party1))
         queryResult?.party
             .assertIsEqualTo(null)

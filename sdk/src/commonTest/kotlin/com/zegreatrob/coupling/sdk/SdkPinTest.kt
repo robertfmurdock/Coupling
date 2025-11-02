@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PinListQuery
 import com.zegreatrob.coupling.sdk.schema.PinRecordListQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -51,7 +52,7 @@ class SdkPinTest {
         sdk.fire(GqlQuery(PinListQuery(party.id)))
             ?.party
             ?.pinList
-            ?.map { it.pinDetails.toModel() }
+            ?.map { it.pinDetails.toDomain() }
             .assertIsEqualTo(pins)
     }
 
@@ -91,7 +92,7 @@ class SdkPinTest {
             ?.party
             ?.pinList
             .let { it ?: emptyList() }
-            .map { it.pinDetails.toModel() }
+            .map { it.pinDetails.toDomain() }
             .assertContains(this.pins[0])
             .assertContains(this.pins[2])
             .size

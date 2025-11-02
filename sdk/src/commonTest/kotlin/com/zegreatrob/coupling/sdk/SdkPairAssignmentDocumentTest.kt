@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.CurrentPairAssignmentsQuery
 import com.zegreatrob.coupling.sdk.schema.PairAssignmentListQuery
 import com.zegreatrob.coupling.sdk.schema.PairAssignmentRecordListQuery
@@ -59,7 +60,7 @@ class SdkPairAssignmentDocumentTest {
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
-            .map { it.pairAssignmentDetails.toModel() }
+            .map { it.pairAssignmentDetails.toDomain() }
             .assertIsEqualTo(listOf(updatedDocument))
     }
 
@@ -90,7 +91,7 @@ class SdkPairAssignmentDocumentTest {
             ?.party
             ?.currentPairAssignmentDocument
     } verify { result ->
-        result?.pairAssignmentDetails?.toModel()
+        result?.pairAssignmentDetails?.toDomain()
             .assertIsEqualTo(newest)
     }
 
@@ -131,7 +132,7 @@ class SdkPairAssignmentDocumentTest {
             .let { it ?: emptyList() }
     } verifyWithWait { result ->
         result
-            .map { it.pairAssignmentDetails.toModel() }
+            .map { it.pairAssignmentDetails.toDomain() }
             .assertIsEqualTo(
                 listOf(newest, middle, oldest),
             )

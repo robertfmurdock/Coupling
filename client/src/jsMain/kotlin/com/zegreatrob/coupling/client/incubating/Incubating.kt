@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.gql.IncubatingQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 
@@ -20,7 +20,7 @@ val IncubatingPage by nfc<PageProps> { props ->
             IncubatingContent(
                 discordClientId = discordClientId,
                 addToSlackUrl = addToSlackUrl,
-                partyList = result.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList(),
+                partyList = result.partyList?.mapNotNull { it.partyDetails.toDomain() } ?: emptyList(),
             )
         }
     }

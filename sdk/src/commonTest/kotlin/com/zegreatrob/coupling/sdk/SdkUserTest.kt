@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.action.user.DisconnectUserCommand
 import com.zegreatrob.coupling.action.user.fire
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
 import com.zegreatrob.coupling.sdk.schema.UserDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.UserPlayersQuery
@@ -45,7 +46,7 @@ class SdkUserTest {
         sdk().fire(GqlQuery(UserPlayersQuery()))
     } verify { result ->
         (result?.user?.players ?: emptyList())
-            .map { it.playerDetails.toModel() }
+            .map { it.playerDetails.toDomain() }
             .assertContains(player)
     }
 
@@ -144,9 +145,9 @@ class SdkUserTest {
             GqlQuery(PartyDetailsAndListQuery(party.id)),
         )
     } verifyAnd { result ->
-        (result?.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList())
+        (result?.partyList?.mapNotNull { it.partyDetails.toDomain() } ?: emptyList())
             .assertContains(party)
-        result?.party?.partyDetails?.toModel()
+        result?.party?.partyDetails?.toDomain()
             .assertIsEqualTo(party)
     } teardown {
         sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))

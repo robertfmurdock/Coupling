@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.gql.SlackConnectPageQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 
@@ -19,7 +19,7 @@ val SlackConnectPage by nfc<PageProps> { props ->
             query = GqlQuery(SlackConnectPageQuery()),
         ) { _, dispatch, result ->
             SlackConnectPageContent(
-                parties = result.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList(),
+                parties = result.partyList?.mapNotNull { it.partyDetails.toDomain() } ?: emptyList(),
                 slackTeam = slackTeam,
                 slackChannel = slackChannel,
                 dispatchFunc = dispatch,

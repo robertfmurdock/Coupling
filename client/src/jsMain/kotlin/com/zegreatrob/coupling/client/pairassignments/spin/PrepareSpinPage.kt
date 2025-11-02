@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.gql.PrepareSpinPageQuery
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
 
 @Lazy
@@ -17,10 +17,10 @@ val PrepareSpinPage = partyPageFunction { props, partyId ->
     ) { _, dispatcher, result ->
         val party = result.party
         PrepareSpin(
-            party = party?.partyDetails?.toModel() ?: return@CouplingQuery,
-            players = party.playerList?.map { it.playerDetails.toModel() } ?: return@CouplingQuery,
-            pins = party.pinList?.map { it.pinDetails.toModel() } ?: return@CouplingQuery,
-            currentPairsDoc = party.currentPairAssignmentDocument?.pairAssignmentDetails?.toModel(),
+            party = party?.partyDetails?.toDomain() ?: return@CouplingQuery,
+            players = party.playerList?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery,
+            pins = party.pinList?.map { it.pinDetails.toDomain() } ?: return@CouplingQuery,
+            currentPairsDoc = party.currentPairAssignmentDocument?.pairAssignmentDetails?.toDomain(),
             dispatchFunc = dispatcher,
         )
     }

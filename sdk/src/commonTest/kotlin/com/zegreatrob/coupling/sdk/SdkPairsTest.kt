@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyPairHistoryQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPairPlayerIdsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPairsCountQuery
@@ -43,7 +44,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toModel() } }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -73,7 +74,7 @@ class SdkPairsTest {
             ),
         )
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toModel() } }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -121,7 +122,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toModel() } }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
             ?.last()
             .assertIsEqualTo(mob)
     }
@@ -159,7 +160,7 @@ class SdkPairsTest {
         )
     } verify { result ->
         result?.party?.pairs?.mapNotNull {
-            it.players?.map { player -> player.playerDetails.toModel() }
+            it.players?.map { player -> player.playerDetails.toDomain() }
         }
             ?.flatten()
             ?.distinct()
@@ -196,7 +197,7 @@ class SdkPairsTest {
         )
     } verify { result ->
         result?.party?.pairs?.mapNotNull {
-            it.players?.map { player -> player.playerDetails.toModel() }
+            it.players?.map { player -> player.playerDetails.toDomain() }
         }
             ?.flatten()
             ?.distinct()
@@ -231,7 +232,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toModel() } }
+        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
             ?.last()
             .assertIsEqualTo(mob)
     }
@@ -274,7 +275,7 @@ class SdkPairsTest {
         sdk().fire(GqlQuery(PartyPairsHistoryQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map {
-            it.pairAssignmentHistory?.map { record -> record.details?.pairAssignmentDetails?.toModel() }
+            it.pairAssignmentHistory?.map { record -> record.details?.pairAssignmentDetails?.toDomain() }
         }
             .assertIsEqualTo(
                 listOf(
@@ -311,7 +312,7 @@ class SdkPairsTest {
         )
     } verify { result ->
         result?.party?.pair?.pairAssignmentHistory
-            ?.map { record -> record.details?.pairAssignmentDetails?.toModel() }
+            ?.map { record -> record.details?.pairAssignmentDetails?.toDomain() }
             .assertIsEqualTo(
                 listOf(pair01_1, pair01_2, pair01_3).sortedByDescending { it.date },
             )

@@ -299,7 +299,7 @@ input SavePlayerInput {
     callSignNoun: String!
     imageURL: String
     avatarType: String
-    unvalidatedEmails: [String]!
+    unvalidatedEmails: [String!]!
 }
 
 input SavePairAssignmentsInput {
@@ -312,8 +312,8 @@ input SavePairAssignmentsInput {
 }
 
 input PinnedPairInput {
-    players: [PinnedPlayerInput]!
-    pins: [PinInput]!
+    players: [PinnedPlayerInput!]!
+    pins: [PinInput!]!
 }
 
 input PinnedPlayerInput {
@@ -325,8 +325,8 @@ input PinnedPlayerInput {
     callSignNoun: String!
     imageURL: String
     avatarType: AvatarType
-    unvalidatedEmails: [String]!
-    pins: [PinInput]!
+    unvalidatedEmails: [String!]!
+    pins: [PinInput!]!
 }
 
 type GlobalStats {
@@ -386,7 +386,7 @@ type PairAssignment {
     documentId: PairAssignmentDocumentId!
     details: PairAssignmentDocumentDetails
     date: DateTimeISO
-    allPairs: [PinnedPair]
+    allPairs: [PinnedPair!]
     recentTimesPaired: Int
 }
 
@@ -428,7 +428,7 @@ type Mutation {
 
 input SaveContributionInput {
     partyId: PartyId!
-    contributionList: [ContributionInput]!
+    contributionList: [ContributionInput!]!
 }
 
 input ContributionInput {

@@ -6,9 +6,8 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.navigateToPartyList
 import com.zegreatrob.coupling.client.routing.partyId
-import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
 
@@ -24,9 +23,9 @@ val PartySecretsPage by nfc<PageProps> { props ->
             key = props.partyId?.value?.toString(),
         ) { reload, dispatcher, result ->
             PartySecretLayout(
-                partyDetails = result.party?.partyDetails?.toModel() ?: return@CouplingQuery,
-                secrets = result.party.secretList?.map { it.partySecret.toModel() } ?: emptyList(),
-                boost = result.party.boost?.boostDetails?.toModel(),
+                partyDetails = result.party?.partyDetails?.toDomain() ?: return@CouplingQuery,
+                secrets = result.party.secretList?.map { it.partySecret.toDomain() } ?: emptyList(),
+                boost = result.party.boost?.boostDetails?.toDomain(),
                 dispatcher = dispatcher,
                 reload = reload,
             )

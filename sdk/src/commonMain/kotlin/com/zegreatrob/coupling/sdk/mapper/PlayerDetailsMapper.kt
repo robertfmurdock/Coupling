@@ -1,17 +1,16 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.sdk.mapper
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.schema.fragment.PlayerDetails
 
-fun PlayerDetails.toModel() = Player(
+fun PlayerDetails.toDomain() = Player(
     id = id,
     name = name,
     email = email,
-    badge = badge.toModel(),
+    badge = badge.toDomain(),
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
     imageURL = imageURL,
-    avatarType = avatarType?.toModel(),
+    avatarType = avatarType?.toDomain(),
     additionalEmails = unvalidatedEmails.toSet(),
 )

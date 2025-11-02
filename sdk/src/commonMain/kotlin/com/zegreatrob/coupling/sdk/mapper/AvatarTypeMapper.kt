@@ -1,8 +1,8 @@
-package com.zegreatrob.coupling.sdk.adapter
+package com.zegreatrob.coupling.sdk.mapper
 
 import com.zegreatrob.coupling.sdk.schema.type.AvatarType
 
-fun AvatarType.toModel() = when (this) {
+fun AvatarType.toDomain() = when (this) {
     AvatarType.Retro -> com.zegreatrob.coupling.model.player.AvatarType.Retro
     AvatarType.RobohashSet1 -> com.zegreatrob.coupling.model.player.AvatarType.RobohashSet1
     AvatarType.RobohashSet2 -> com.zegreatrob.coupling.model.player.AvatarType.RobohashSet2

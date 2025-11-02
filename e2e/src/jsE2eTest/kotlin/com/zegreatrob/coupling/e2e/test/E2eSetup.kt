@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.e2e.gql.PartyListQuery
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.async.TestTemplate
@@ -22,7 +22,7 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
         CouplingLogin.sdk.await().apply {
             fire(GqlQuery(PartyListQuery()))
                 ?.partyList
-                ?.mapNotNull { it.partyDetails.toModel() }
+                ?.mapNotNull { it.partyDetails.toDomain() }
                 ?.map(PartyDetails::id)
                 ?.map { DeletePartyCommand(it) }
                 ?.forEach { fire(it) }

@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
 
 @Lazy
@@ -20,8 +20,8 @@ val StatisticsPage = partyPageFunction { props, partyId ->
         key = partyId.value.toString(),
     ) { _, _, queryResult ->
         PartyStatistics(
-            party = queryResult.party?.partyDetails?.toModel() ?: return@CouplingQuery,
-            players = queryResult.party.playerList?.map { it.playerDetails.toModel() } ?: return@CouplingQuery,
+            party = queryResult.party?.partyDetails?.toDomain() ?: return@CouplingQuery,
+            players = queryResult.party.playerList?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery,
             pairs = queryResult.party.pairs?.map { it.toModel() } ?: return@CouplingQuery,
             spinsUntilFullRotation = queryResult.party.spinsUntilFullRotation ?: return@CouplingQuery,
             medianSpinDuration = queryResult.party.medianSpinDuration,
@@ -37,7 +37,7 @@ private fun StatisticsPageQuery.Pair.toModel(): PlayerPair = PlayerPair(
             modifyingUserEmail = it.partyPlayerDetails.modifyingUserEmail!!,
             isDeleted = it.partyPlayerDetails.isDeleted,
             timestamp = it.partyPlayerDetails.timestamp,
-            data = it.partyPlayerDetails.playerDetails.toModel(),
+            data = it.partyPlayerDetails.playerDetails.toDomain(),
         )
     },
     spinsSinceLastPaired = spinsSinceLastPaired,

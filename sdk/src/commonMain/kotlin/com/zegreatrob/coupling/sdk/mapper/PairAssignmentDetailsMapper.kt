@@ -1,26 +1,25 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.sdk.mapper
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.sdk.adapter.toModel
 import com.zegreatrob.coupling.sdk.schema.fragment.PairAssignmentDetails
 import kotools.types.collection.toNotEmptyList
 
-fun PairAssignmentDetails.toModel() = PairAssignmentDocument(
+fun PairAssignmentDetails.toDomain() = PairAssignmentDocument(
     id = id,
     date = date,
     pairs = pairs.map { pair ->
         pair.players.map { player ->
             com.zegreatrob.coupling.model.player.Player(
                 id = player.id,
-                badge = player.badge.toModel(),
+                badge = player.badge.toDomain(),
                 name = player.name,
                 email = player.email,
                 callSignAdjective = player.callSignAdjective,
                 callSignNoun = player.callSignNoun,
                 imageURL = player.imageURL,
-                avatarType = player.avatarType?.toModel(),
+                avatarType = player.avatarType?.toDomain(),
                 additionalEmails = player.unvalidatedEmails.toSet(),
             )
         }.toCouplingPair()

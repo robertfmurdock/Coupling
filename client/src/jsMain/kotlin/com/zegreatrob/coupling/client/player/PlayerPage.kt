@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.toModel
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
 
 @Lazy
@@ -24,10 +24,10 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
         query = GqlQuery(PlayerPageQuery(partyId)),
         key = "${partyId.value}-$playerId",
     ) { reload, commandFunc, data ->
-        val partyDetails = data.party?.partyDetails?.toModel() ?: return@CouplingQuery
-        val playerList = data.party.playerList?.map { it.playerDetails.toModel() } ?: return@CouplingQuery
+        val partyDetails = data.party?.partyDetails?.toDomain() ?: return@CouplingQuery
+        val playerList = data.party.playerList?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery
         val retiredPlayers =
-            data.party.retiredPlayers?.map { it.playerDetails.toModel() } ?: return@CouplingQuery
+            data.party.retiredPlayers?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery
         val player = (playerList + retiredPlayers).find { it.id == playerId }
             ?: playerList.defaultWithCallSign()
         PlayerConfig(

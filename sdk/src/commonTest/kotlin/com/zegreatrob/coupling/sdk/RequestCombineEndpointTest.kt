@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PlayersAndPinsQuery
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -44,8 +45,8 @@ class RequestCombineEndpointTest {
             sdk.fire(GqlQuery(PlayersAndPinsQuery(party.id)))
                 ?.party.let { party ->
                     Pair(
-                        party?.playerList?.map { it.playerDetails.toModel() },
-                        party?.pinList?.map { it.pinDetails.toModel() },
+                        party?.playerList?.map { it.playerDetails.toDomain() },
+                        party?.pinList?.map { it.pinDetails.toDomain() },
                     )
                 }
         }

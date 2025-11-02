@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.sdk.adapter
+package com.zegreatrob.coupling.sdk.mapper
 
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.sdk.schema.fragment.ContributionDetails
 
-fun ContributionDetails.toModel() = Contribution(
+fun ContributionDetails.toDomain() = Contribution(
     commitCount = commitCount,
     createdAt = createdAt,
     cycleTime = cycleTime,

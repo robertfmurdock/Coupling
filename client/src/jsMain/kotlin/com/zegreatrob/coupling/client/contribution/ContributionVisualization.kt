@@ -33,8 +33,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.type.PairsInput
-import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
@@ -87,7 +87,7 @@ private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): Lis
 
 private fun List<ContributionVisualizationDataQuery.Pair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
     val contributionReport = it.contributionReport?.toModel() ?: return@mapNotNull null
-    val players = it.players?.map { player -> player.playerDetails.toModel() }
+    val players = it.players?.map { player -> player.playerDetails.toDomain() }
     players?.toCouplingPair()?.let { pair -> pair to contributionReport }
 }
 
