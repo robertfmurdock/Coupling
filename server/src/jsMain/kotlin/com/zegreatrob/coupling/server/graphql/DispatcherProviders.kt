@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
@@ -19,7 +18,7 @@ object DispatcherProviders {
         context.commandDispatcher
     }
 
-    val partyCommand: (CouplingContext, GqlParty, JsonNull?) -> CommandDispatcher = { context, _, _ ->
+    val partyCommand: (CouplingContext, GqlPartyNode, JsonNull?) -> CommandDispatcher = { context, _, _ ->
         context.commandDispatcher
     }
 

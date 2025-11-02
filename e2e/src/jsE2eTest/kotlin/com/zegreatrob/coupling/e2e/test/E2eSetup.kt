@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.e2e.gql.PartyListQuery
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.action.ActionCannon
@@ -20,7 +20,7 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
 
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdk.await().apply {
-            fire(ApolloGraphQuery(PartyListQuery()))
+            fire(GqlQuery(PartyListQuery()))
                 ?.partyList
                 ?.mapNotNull { it.partyDetails.toModel() }
                 ?.map(PartyDetails::id)

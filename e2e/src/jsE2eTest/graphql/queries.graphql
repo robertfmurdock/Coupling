@@ -4,6 +4,6 @@ query partyListQuery {
 
 query partyPlayerListQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        playerList { ...PlayerDetailsFragment }
+        playerList { ...PlayerDetails }
     }
 }

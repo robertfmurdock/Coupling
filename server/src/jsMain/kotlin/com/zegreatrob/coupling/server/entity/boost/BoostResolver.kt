@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.server.entity.boost
 import com.zegreatrob.coupling.action.boost.PartyBoostQuery
 import com.zegreatrob.coupling.action.boost.UserBoostQuery
 import com.zegreatrob.coupling.action.boost.perform
-import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.prereleaseCommand
+import com.zegreatrob.coupling.server.graphql.GqlPartyNode
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
@@ -20,7 +20,7 @@ val userBoostResolver = dispatch(
 
 val partyBoostResolver = dispatch(
     dispatcherFunc = prereleaseCommand(),
-    commandFunc = { partyJson: GqlParty, _: JsonNull? -> PartyBoostQuery(partyJson.id) },
+    commandFunc = { partyJson: GqlPartyNode, _: JsonNull? -> PartyBoostQuery(partyJson.id) },
     fireFunc = ::perform,
     toSerializable = ::jsonBoostRecord,
 )

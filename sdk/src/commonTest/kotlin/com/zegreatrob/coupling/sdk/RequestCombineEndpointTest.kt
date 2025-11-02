@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PlayersAndPinsQuery
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -41,11 +41,11 @@ class RequestCombineEndpointTest {
         playersToSave.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {
-            sdk.fire(ApolloGraphQuery(PlayersAndPinsQuery(party.id)))
+            sdk.fire(GqlQuery(PlayersAndPinsQuery(party.id)))
                 ?.party.let { party ->
                     Pair(
-                        party?.playerList?.map { it.playerDetailsFragment.toModel() },
-                        party?.pinList?.map { it.pinDetailsFragment.toModel() },
+                        party?.playerList?.map { it.playerDetails.toModel() },
+                        party?.pinList?.map { it.pinDetails.toModel() },
                     )
                 }
         }

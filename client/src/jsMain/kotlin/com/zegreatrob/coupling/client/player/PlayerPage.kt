@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
 
@@ -21,13 +21,13 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
     val playerId = props.playerId
     CouplingQuery(
         commander = props.commander,
-        query = ApolloGraphQuery(PlayerPageQuery(partyId)),
+        query = GqlQuery(PlayerPageQuery(partyId)),
         key = "${partyId.value}-$playerId",
     ) { reload, commandFunc, data ->
         val partyDetails = data.party?.partyDetails?.toModel() ?: return@CouplingQuery
-        val playerList = data.party.playerList?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery
+        val playerList = data.party.playerList?.map { it.playerDetails.toModel() } ?: return@CouplingQuery
         val retiredPlayers =
-            data.party.retiredPlayers?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery
+            data.party.retiredPlayers?.map { it.playerDetails.toModel() } ?: return@CouplingQuery
         val player = (playerList + retiredPlayers).find { it.id == playerId }
             ?: playerList.defaultWithCallSign()
         PlayerConfig(

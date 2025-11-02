@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.action.secret.fire
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.PartySecretListQuery
@@ -42,14 +42,14 @@ class SdkSecretTest {
         val (secret, token) = result!!
         secret.assertIsNotEqualTo(null)
         token.assertIsValidToken(party.id)
-        sdk().fire(ApolloGraphQuery(PartySecretListQuery(party.id)))
+        sdk().fire(GqlQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.map { it.partySecretFragment.toModel() }
+            ?.map { it.partySecret.toModel() }
             .assertIsEqualTo(listOf(secret))
 
         val tokenSdk = couplingSdk({ token }, buildClient())
-        tokenSdk.fire(ApolloGraphQuery(PartyDetailsQuery(party.id)))
+        tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id)))
             ?.party
             ?.partyDetails
             ?.toModel()
@@ -66,11 +66,11 @@ class SdkSecretTest {
         val (_, token) = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
         tokenSdk = couplingSdk({ token }, buildClient())
     } exercise {
-        tokenSdk.fire(ApolloGraphQuery(PartyDetailsQuery(party.id)))
-        sdk().fire(ApolloGraphQuery(PartySecretListQuery(party.id)))
+        tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id)))
+        sdk().fire(GqlQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.map { it.partySecretFragment.toModel() }
+            ?.map { it.partySecret.toModel() }
     } verify { result ->
         result?.first()?.lastUsedTimestamp
             ?.let { Clock.System.now() - it }
@@ -96,13 +96,13 @@ class SdkSecretTest {
     } exercise {
         sdk().fire(DeleteSecretCommand(party.id, secret.id))
     } verify {
-        sdk().fire(ApolloGraphQuery(PartySecretListQuery(party.id)))
+        sdk().fire(GqlQuery(PartySecretListQuery(party.id)))
             ?.party
             ?.secretList
-            ?.map { it.partySecretFragment.toModel() }
+            ?.map { it.partySecret.toModel() }
             .assertIsEqualTo(emptyList())
         val tokenSdk = couplingSdk({ token }, buildClient())
-        runCatching { tokenSdk.fire(ApolloGraphQuery(PartyDetailsQuery(party.id))) }
+        runCatching { tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id))) }
             .exceptionOrNull()
             .assertIsNotEqualTo(null, "Expect this to fail")
     }
@@ -123,7 +123,7 @@ class SdkSecretTest {
         val (_, token) = result!!
         val tokenSdk = couplingSdk({ token }, buildClient())
         val queryResult = tokenSdk.fire(
-            ApolloGraphQuery(PartyDetailsAndListQuery(party2.id)),
+            GqlQuery(PartyDetailsAndListQuery(party2.id)),
         )
         queryResult
             ?.partyList

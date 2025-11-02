@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPlayersDataQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPlayersDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyRetiredPlayersDataQuery
@@ -60,11 +60,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player))
     } exercise {
         sdk.fire(SavePlayerCommand(party.id, updatedPlayer))
-        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
             ?.party
             ?.playerList
     } verify { result ->
-        result?.map { it.playerDetailsFragment.toModel() }
+        result?.map { it.playerDetails.toModel() }
             .assertIsEqualTo(listOf(this.updatedPlayer))
     }
 
@@ -79,11 +79,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(partyId, player))
     } exercise {
         sdk.fire(DeletePlayerCommand(partyId, player.id))
-        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(partyId)))
+        sdk().fire(GqlQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
             ?.playerList
     } verifyWithWait { result ->
-        result?.map { it.playerDetailsFragment.toModel() }
+        result?.map { it.playerDetails.toModel() }
             ?.contains(this.player)
             .assertIsEqualTo(false)
     }
@@ -115,11 +115,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
+        sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
     } verify { result ->
-        result?.map { it.playerDetailsFragment.toModel() }
+        result?.map { it.playerDetails.toModel() }
             .assertIsEqualTo(listOf(this.player))
     }
 
@@ -143,11 +143,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, similarPlayer))
         sdk.fire(DeletePlayerCommand(party.id, similarPlayer.id))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
+        sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
     } verify { result ->
-        result?.map { it.playerDetailsFragment.toModel() }
+        result?.map { it.playerDetails.toModel() }
             .assertIsEqualTo(
                 listOf(player.copy(additionalEmails = player.additionalEmails + similarPlayer.additionalEmails)),
             )
@@ -170,11 +170,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player2))
         sdk.fire(DeletePlayerCommand(party.id, player2.id))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
+        sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
     } verify { result ->
-        result?.map { it.playerDetailsFragment.toModel() }
+        result?.map { it.playerDetails.toModel() }
             .assertIsEqualTo(listOf(player, player2))
     }
 
@@ -192,10 +192,10 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(party.id, player))
         sdk.fire(DeletePlayerCommand(party.id, playerId))
     } verifyWithWait {
-        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDetailsQuery(party.id)))
+        sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
             ?.party
             ?.retiredPlayers
-            ?.map { it.playerDetailsFragment.toModel() }
+            ?.map { it.playerDetails.toModel() }
             .assertIsEqualTo(listOf(this.player))
     }
 
@@ -209,11 +209,11 @@ class SdkPlayerTest {
     }) {
         players.forEach { setupScope.launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(partyId)))
+        sdk().fire(GqlQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
             ?.playerList
     } verify { result ->
-        result?.map { it.playerDetailsFragment.toModel() }?.toSet()
+        result?.map { it.playerDetails.toModel() }?.toSet()
             .assertIsEqualTo(players.toSet())
     }
 
@@ -229,7 +229,7 @@ class SdkPlayerTest {
             players.forEach { launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
         }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartySpinsUntilFullRotationQuery(partyId)))
+        sdk().fire(GqlQuery(PartySpinsUntilFullRotationQuery(partyId)))
             ?.party
             ?.spinsUntilFullRotation
     } verify { result ->
@@ -252,11 +252,11 @@ class SdkPlayerTest {
     }) {
         sdk.fire(SavePlayerCommand(party.id, player))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
             ?.party
             ?.playerList
     } verify { result ->
-        result?.map { it.playerDetailsFragment.toModel() }
+        result?.map { it.playerDetails.toModel() }
             .also { it!!.assertHasIds() }
             .assertIsEqualTo(listOf(this.player))
     }
@@ -275,11 +275,11 @@ class SdkPlayerTest {
         sdk.fire(SavePlayerCommand(partyId, player1))
         sdk.fire(SavePlayerCommand(partyId2, player2))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPlayersDetailsQuery(partyId)))
+        sdk().fire(GqlQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
             ?.playerList
     } verifyAnd { result ->
-        result?.map { it.playerDetailsFragment.toModel() }
+        result?.map { it.playerDetails.toModel() }
             .assertIsEqualTo(listOf(player1))
     } teardown {
         sdk.fire(DeletePartyCommand(partyId2))
@@ -295,7 +295,7 @@ class SdkPlayerTest {
     }) exercise {
         sdk.fire(SavePlayerCommand(party.id, player))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
-        sdk().fire(ApolloGraphQuery(PartyRetiredPlayersDataQuery(party.id)))
+        sdk().fire(GqlQuery(PartyRetiredPlayersDataQuery(party.id)))
             ?.party
             ?.retiredPlayers
     } verify { result ->
@@ -317,7 +317,7 @@ class SdkPlayerTest {
         }
     }) exercise {
         sdk.fire(SavePlayerCommand(party.id, player))
-        sdk().fire(ApolloGraphQuery(PartyPlayersDataQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPlayersDataQuery(party.id)))
             ?.party
             ?.playerList
     } verify { result ->
@@ -341,7 +341,7 @@ class SdkPlayerTest {
                     otherSdk.fire(SavePartyCommand(party))
                     otherSdk.fire(SavePlayerCommand(party.id, stubPlayer()))
                 } exercise {
-                    sdk.fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
+                    sdk.fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
                         ?.party
                 } verifyAnd { result ->
                     result.assertIsEqualTo(null)
@@ -367,7 +367,7 @@ class SdkPlayerTest {
                     otherSdk.fire(SavePartyCommand(party))
                 } exercise {
                     sdk.fire(SavePlayerCommand(party.id, player))
-                    otherSdk.fire(ApolloGraphQuery(PartyPlayersDetailsQuery(party.id)))
+                    otherSdk.fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
                         ?.party
                         ?.playerList
                 } verifyAnd { result ->

@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.GlobalStatsQuery
 import com.zegreatrob.coupling.sdk.schema.type.GlobalStatsInput
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -37,7 +37,7 @@ class SdkGlobalStatsTest {
             ),
         )
     } exercise {
-        sdk().fire(ApolloGraphQuery(GlobalStatsQuery(GlobalStatsInput(now))))
+        sdk().fire(GqlQuery(GlobalStatsQuery(GlobalStatsInput(now))))
     } verify { result ->
         result?.globalStats?.parties?.size
             .assertIsNotEqualTo(0)

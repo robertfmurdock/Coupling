@@ -1,5 +1,5 @@
-fragment PartyPlayerDetailsFragment on PlayerDetails {
-    ...PlayerDetailsFragment
+fragment PartyPlayerDetails on PlayerDetails {
+    ...PlayerDetails
     partyId
     modifyingUserEmail
     timestamp
@@ -21,67 +21,68 @@ query partyQuery($partyId: PartyId!) {
 query playerPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        playerList { ...PlayerDetailsFragment }
-        retiredPlayers { ...PlayerDetailsFragment }
+        playerList { ...PlayerDetails }
+        retiredPlayers { ...PlayerDetails }
     }
 }
 
 query retiredPlayersPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        retiredPlayers { ...PlayerDetailsFragment }
+        retiredPlayers { ...PlayerDetails }
     }
 }
 
 query pinPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        pinList { ...PinDetailsFragment }
+        pinList { ...PinDetails }
     }
 }
 
 query pinListPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        pinList { ...PinDetailsFragment }
+        pinList { ...PinDetails }
     }
 }
 
 query prepareSpinPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        playerList { ...PlayerDetailsFragment }
-        pinList { ...PinDetailsFragment }
-        currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
+        playerList { ...PlayerDetails }
+        pinList { ...PinDetails }
+        currentPairAssignmentDocument { ...PairAssignmentDetails }
     }
 }
 
 query currentPairsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        playerList { ...PlayerDetailsFragment }
-        currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
-        boost { ...BoostDetailsFragment }
+        playerList { ...PlayerDetails }
+        currentPairAssignmentDocument { ...PairAssignmentDetails }
+        boost { ...BoostDetails }
     }
 }
 
 query newPairsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        playerList { ...PlayerDetailsFragment }
-        currentPairAssignmentDocument { ...PairAssignmentDetailsFragment }
+        playerList { ...PlayerDetails }
+        currentPairAssignmentDocument { ...PairAssignmentDetails }
     }
 }
 
 query StatisticsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        playerList { ...PlayerDetailsFragment }
+        playerList { ...PlayerDetails }
         pairs(input: {includeRetired: false}) {
-            players { ...PartyPlayerDetailsFragment }
+            players { ...PartyPlayerDetails }
             spinsSinceLastPaired
             recentTimesPaired
             pairAssignmentHistory {
+                documentId
                 date
                 recentTimesPaired
             }
@@ -95,15 +96,15 @@ query StatisticsPageQuery($partyId: PartyId!) {
 query partySecretsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        secretList { ...PartySecretFragment }
-        boost { ...BoostDetailsFragment }
+        secretList { ...PartySecret }
+        boost { ...BoostDetails }
     }
 }
 
 query userQuery {
     user {
         details {
-            ...UserDetailsFragment
+            ...UserDetails
         }
     }
 }
@@ -111,7 +112,7 @@ query userQuery {
 query userPageQuery {
     user {
         details {
-            ...UserDetailsFragment
+            ...UserDetails
         }
     }
     partyList {
@@ -122,7 +123,7 @@ query userPageQuery {
 query prereleaseUserPageQuery {
     user {
         details {
-            ...UserDetailsFragment
+            ...UserDetails
         }
         subscription {
             stripeCustomerId
@@ -156,12 +157,14 @@ query contributionVisualizationDataQuery($partyId: PartyId!, $window: Contributi
     party(input: {partyId: $partyId}) {
         pairs(input: $pairsInput) {
             players {
-                ...PlayerDetailsFragment
+                ...PlayerDetails
             }
             contributionReport(input: {window: $window}) {
                 contributions {
                     ...PartyContributionFragment
                 }
+                partyId
+                count
                 medianCycleTime
                 withCycleTimeCount
             }
@@ -172,10 +175,10 @@ query contributionVisualizationDataQuery($partyId: PartyId!, $window: Contributi
 query contributionListPageQuery($partyId: PartyId!, $window: ContributionWindow!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
-        playerList { ...PlayerDetailsFragment }
-        retiredPlayers { ...PlayerDetailsFragment }
+        playerList { ...PlayerDetails }
+        retiredPlayers { ...PlayerDetails }
         contributionReport(input: {window: $window}) {
-            contributions { ...ContributionFragment }
+            contributions { ...ContributionDetails }
         }
     }
 }
@@ -206,10 +209,10 @@ fragment PartyContributionFragment on Contribution {
 query contributionOverviewPageQuery($partyInput: PartyInput!, $contributionReportInput: ContributionsInput!) {
     party(input: $partyInput) {
         ...PartyDetails
-        playerList { ...PlayerDetailsFragment }
-        retiredPlayers { ...PlayerDetailsFragment }
+        playerList { ...PlayerDetails }
+        retiredPlayers { ...PlayerDetails }
         contributionReport(input: $contributionReportInput) {
-            contributions { ...ContributionFragment }
+            contributions { ...ContributionDetails }
         }
     }
 }
@@ -233,7 +236,7 @@ query integrationPageQuery($partyInput: PartyInput!) {
 query historyPageQuery($partyInput: PartyInput!) {
     party(input: $partyInput) {
         ...PartyDetails
-        pairAssignmentDocumentList { ...PairAssignmentDetailsFragment }
+        pairAssignmentDocumentList { ...PairAssignmentDetails }
     }
     config { addToSlackUrl }
 }

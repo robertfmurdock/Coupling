@@ -1,8 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.json.GqlAccessType
-import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.GqlPartyInput
+import com.zegreatrob.coupling.json.PartyIdString
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userPlayerListResolve
@@ -50,13 +49,19 @@ import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.external.graphql.GraphQLScalarType
+import js.objects.recordOf
 import js.objects.unsafeJso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.decodeFromDynamic
-import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 import kotlin.js.json
+
+@Serializable
+data class GqlPartyNode(
+    val id: PartyIdString,
+)
 
 fun couplingResolvers() = json(
     "DateTimeISO" to makeStringScalarType("DateTimeISO"),
@@ -69,30 +74,13 @@ fun couplingResolvers() = json(
                 val input = kotlinx.serialization.json.Json.decodeFromDynamic<GqlPartyInput>(args["input"])
                 val dispatcher = DispatcherProviders.authorizedPartyDispatcher(r, input.partyId)
                 if (dispatcher != null) {
-                    kotlinx.serialization.json.Json.encodeToDynamic(
-                        GqlParty(
-                            id = input.partyId,
-                            accessType = if (dispatcher.currentUser.authorizedPartyIds.contains(input.partyId)) {
-                                GqlAccessType.Owner
-                            } else {
-                                GqlAccessType.Player
-                            },
-                            boost = null,
-                            contributionReport = null,
-                            currentPairAssignmentDocument = null,
-                            details = null,
-                            integration = null,
-                            medianSpinDuration = null,
-                            pair = null,
-                            pairAssignmentDocumentList = null,
-                            pairs = null,
-                            pinList = null,
-                            playerList = null,
-                            retiredPlayers = null,
-                            secretList = null,
-                            spinsUntilFullRotation = null,
-                        ),
-
+                    recordOf(
+                        "id" to input.partyId.value.toString(),
+                        "accessType" to if (dispatcher.currentUser.authorizedPartyIds.contains(input.partyId)) {
+                            "Owner"
+                        } else {
+                            "Player"
+                        },
                     )
                 } else {
                     null

@@ -62,7 +62,7 @@ query partyDetailsQuery($partyId: PartyId!) {
 
 query partyPlayersDetailsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        playerList {...PlayerDetailsFragment}
+        playerList {...PlayerDetails}
     }
 }
 
@@ -74,7 +74,7 @@ query partyPlayersDataQuery($partyId: PartyId!) {
 
 query partyRetiredPlayersDetailsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        retiredPlayers {...PlayerDetailsFragment}
+        retiredPlayers {...PlayerDetails}
     }
 }
 
@@ -86,20 +86,20 @@ query partyRetiredPlayersDataQuery($partyId: PartyId!) {
 
 query playersAndPinsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        playerList {...PlayerDetailsFragment}
-        pinList { ...PinDetailsFragment}
+        playerList {...PlayerDetails}
+        pinList { ...PinDetails}
     }
 }
 
 query pinListQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pinList { ...PinDetailsFragment}
+        pinList { ...PinDetails}
     }
 }
 
 query pairAssignmentListQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairAssignmentDocumentList { ...PairAssignmentDetailsFragment }
+        pairAssignmentDocumentList { ...PairAssignmentDetails }
     }
 }
 
@@ -119,20 +119,20 @@ query pinRecordListQuery($partyId: PartyId!) {
 }
 
 query userDetailsQuery {
-    user { details { ...UserDetailsFragment } }
+    user { details { ...UserDetails } }
 }
 
 query userPlayersQuery {
-    user { players { ...PlayerDetailsFragment } }
+    user { players { ...PlayerDetails } }
 }
 
 query userBoostQuery {
-    user { boost { ...BoostDetailsFragment } }
+    user { boost { ...BoostDetails } }
 }
 
 query partyBoostQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        boost { ...BoostDetailsFragment }
+        boost { ...BoostDetails }
     }
 }
 
@@ -165,7 +165,7 @@ query globalStatsQuery($input: GlobalStatsInput!) {
 query currentPairAssignmentsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         currentPairAssignmentDocument {
-            ...PairAssignmentDetailsFragment
+            ...PairAssignmentDetails
         }
     }
 }
@@ -173,7 +173,7 @@ query currentPairAssignmentsQuery($partyId: PartyId!) {
 query partySecretListQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         secretList {
-            ...PartySecretFragment
+            ...PartySecret
         }
     }
 }
@@ -208,7 +208,7 @@ query partyPairsSpinsQuery($partyId: PartyId!) {
 
 query partyPairsHistoryQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { pairAssignmentHistory { details { ...PairAssignmentDetailsFragment } } }
+        pairs { pairAssignmentHistory { details { ...PairAssignmentDetails } } }
     }
 }
 
@@ -220,7 +220,7 @@ query partyPairsHistoryDateQuery($partyId: PartyId!) {
 
 query partyPairHistoryQuery($partyId: PartyId!, $pairInput: PairInput!) {
     party(input: {partyId: $partyId}) {
-        pair(input: $pairInput) { pairAssignmentHistory { details { ...PairAssignmentDetailsFragment } } }
+        pair(input: $pairInput) { pairAssignmentHistory { details { ...PairAssignmentDetails } } }
     }
 }
 
@@ -233,7 +233,7 @@ query partyPairPlayerIdsQuery($partyId: PartyId!, $pairInput: PairInput!) {
 query partyContributionReportContributionsQuery($partyId: PartyId!, $reportInput: ContributionsInput) {
     party(input: {partyId: $partyId}) {
         contributionReport(input: $reportInput) {
-            contributions { ...ContributionFragment }
+            contributions { ...ContributionDetails }
         }
     }
 }
@@ -261,7 +261,7 @@ query partyContributionReportContributorsQuery($partyId: PartyId!) {
 
 query partyPairsPlayerDetailsQuery($partyId: PartyId!, $pairsInput: PairsInput) {
     party(input: {partyId: $partyId}) {
-        pairs(input: $pairsInput) { players { ...PlayerDetailsFragment } }
+        pairs(input: $pairsInput) { players { ...PlayerDetails } }
     }
 }
 
@@ -270,7 +270,7 @@ query partyPairsContributionReportContributionsQuery($partyId: PartyId!, $report
         pairs {
             players { id }
             contributionReport(input: $reportInput) {
-                contributions { ...ContributionFragment }
+                contributions { ...ContributionDetails }
             }
         }
     }
@@ -281,7 +281,7 @@ query partyPairsContributionReportNumbersQuery($partyId: PartyId!, $pairsInput: 
         id
         accessType
         pairs(input: $pairsInput) {
-            players { email, partyId, ...PlayerDetailsFragment }
+            players { email, partyId, ...PlayerDetails }
             contributionReport {
                 count
                 medianCycleTime

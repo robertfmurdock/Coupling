@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.gql.UserPageQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
@@ -13,10 +13,10 @@ import js.lazy.Lazy
 val UserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,
-        query = ApolloGraphQuery(UserPageQuery()),
+        query = GqlQuery(UserPageQuery()),
     ) { reload, dispatcher, result ->
         UserConfig(
-            user = result.user?.details?.userDetailsFragment?.toModel(),
+            user = result.user?.details?.userDetails?.toModel(),
             partyList = result.partyList?.mapNotNull(::details) ?: emptyList(),
             dispatcher = dispatcher,
             subscription = null,

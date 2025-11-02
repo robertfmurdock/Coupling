@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PinListQuery
 import com.zegreatrob.coupling.sdk.schema.PinRecordListQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -48,10 +48,10 @@ class SdkPinTest {
     ) exercise {
         pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
     } verifyWithWait {
-        sdk.fire(ApolloGraphQuery(PinListQuery(party.id)))
+        sdk.fire(GqlQuery(PinListQuery(party.id)))
             ?.party
             ?.pinList
-            ?.map { it.pinDetailsFragment.toModel() }
+            ?.map { it.pinDetails.toModel() }
             .assertIsEqualTo(pins)
     }
 
@@ -65,7 +65,7 @@ class SdkPinTest {
 
     @Test
     fun givenNoPinsWillReturnEmptyList() = partySetup() exercise {
-        sdk.fire(ApolloGraphQuery(PinListQuery(party.id)))
+        sdk.fire(GqlQuery(PinListQuery(party.id)))
             ?.party
             ?.pinList
     } verify { result ->
@@ -87,11 +87,11 @@ class SdkPinTest {
         pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
         sdk.fire(DeletePinCommand(party.id, this.pins[1].id))
     } verifyWithWait {
-        sdk.fire(ApolloGraphQuery(PinListQuery(party.id)))
+        sdk.fire(GqlQuery(PinListQuery(party.id)))
             ?.party
             ?.pinList
             .let { it ?: emptyList() }
-            .map { it.pinDetailsFragment.toModel() }
+            .map { it.pinDetails.toModel() }
             .assertContains(this.pins[0])
             .assertContains(this.pins[2])
             .size
@@ -106,7 +106,7 @@ class SdkPinTest {
         otherSdk().fire(SavePartyCommand(otherParty))
         otherSdk().fire(SavePinCommand(otherParty.id, stubPin()))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PinListQuery(otherParty.id)))
+        sdk().fire(GqlQuery(PinListQuery(otherParty.id)))
             ?.party
             ?.pinList
     } verifyAnd { result ->
@@ -125,7 +125,7 @@ class SdkPinTest {
         sdk.fire(SavePartyCommand(party))
         sdk.fire(SavePinCommand(party.id, pin))
     } exercise {
-        sdk.fire(ApolloGraphQuery(PinRecordListQuery(party.id)))
+        sdk.fire(GqlQuery(PinRecordListQuery(party.id)))
             ?.party
             ?.pinList
             ?: emptyList()

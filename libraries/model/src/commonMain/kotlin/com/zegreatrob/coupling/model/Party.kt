@@ -35,9 +35,9 @@ enum class AccessType {
 }
 
 data class ContributionReport(
-    val partyId: PartyId? = null,
+    val partyId: PartyId,
     val contributions: List<PartyRecord<Contribution>>? = null,
-    val count: Int? = null,
+    val count: Int,
     val medianCycleTime: Duration? = null,
     val withCycleTimeCount: Int? = null,
     val contributors: List<Contributor>? = null,

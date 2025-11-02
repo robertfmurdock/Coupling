@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.partyRecord
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
 
@@ -16,12 +16,12 @@ import js.lazy.Lazy
 val StatisticsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
-        query = ApolloGraphQuery(StatisticsPageQuery(partyId)),
+        query = GqlQuery(StatisticsPageQuery(partyId)),
         key = partyId.value.toString(),
     ) { _, _, queryResult ->
         PartyStatistics(
             party = queryResult.party?.partyDetails?.toModel() ?: return@CouplingQuery,
-            players = queryResult.party.playerList?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery,
+            players = queryResult.party.playerList?.map { it.playerDetails.toModel() } ?: return@CouplingQuery,
             pairs = queryResult.party.pairs?.map { it.toModel() } ?: return@CouplingQuery,
             spinsUntilFullRotation = queryResult.party.spinsUntilFullRotation ?: return@CouplingQuery,
             medianSpinDuration = queryResult.party.medianSpinDuration,
@@ -33,11 +33,11 @@ val StatisticsPage = partyPageFunction { props, partyId ->
 private fun StatisticsPageQuery.Pair.toModel(): PlayerPair = PlayerPair(
     players = players?.map {
         partyRecord(
-            partyId = it.partyPlayerDetailsFragment.partyId,
-            modifyingUserEmail = it.partyPlayerDetailsFragment.modifyingUserEmail!!,
-            isDeleted = it.partyPlayerDetailsFragment.isDeleted,
-            timestamp = it.partyPlayerDetailsFragment.timestamp,
-            data = it.partyPlayerDetailsFragment.playerDetailsFragment.toModel(),
+            partyId = it.partyPlayerDetails.partyId,
+            modifyingUserEmail = it.partyPlayerDetails.modifyingUserEmail!!,
+            isDeleted = it.partyPlayerDetails.isDeleted,
+            timestamp = it.partyPlayerDetails.timestamp,
+            data = it.partyPlayerDetails.playerDetails.toModel(),
         )
     },
     spinsSinceLastPaired = spinsSinceLastPaired,
@@ -48,4 +48,5 @@ private fun StatisticsPageQuery.Pair.toModel(): PlayerPair = PlayerPair(
 private fun StatisticsPageQuery.PairAssignmentHistory.toModel(): PairAssignment = PairAssignment(
     date = date,
     recentTimesPaired = recentTimesPaired,
+    documentId = documentId,
 )

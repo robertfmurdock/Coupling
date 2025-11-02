@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.sdk.adapter.toModel
-import com.zegreatrob.coupling.sdk.schema.fragment.PairAssignmentDetailsFragment
+import com.zegreatrob.coupling.sdk.schema.fragment.PairAssignmentDetails
 import kotools.types.collection.toNotEmptyList
 
-fun PairAssignmentDetailsFragment.toModel() = PairAssignmentDocument(
+fun PairAssignmentDetails.toModel() = PairAssignmentDocument(
     id = id,
     date = date,
     pairs = pairs.map { pair ->

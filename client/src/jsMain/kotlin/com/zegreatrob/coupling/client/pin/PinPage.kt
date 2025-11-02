@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.pinId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
 
@@ -16,10 +16,10 @@ val PinPage = partyPageFunction { props, partyId ->
     val pinId = props.pinId
     CouplingQuery(
         commander = props.commander,
-        query = ApolloGraphQuery(PinPageQuery(partyId)),
+        query = GqlQuery(PinPageQuery(partyId)),
         key = pinId?.value?.toString(),
     ) { reload, commandFunc, result ->
-        val pinList = result.party?.pinList?.map { it.pinDetailsFragment.toModel() }
+        val pinList = result.party?.pinList?.map { it.pinDetails.toModel() }
             ?: return@CouplingQuery
         PinConfig(
             party = result.party.partyDetails.toModel()

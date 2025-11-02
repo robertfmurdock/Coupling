@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
@@ -15,10 +15,10 @@ import js.lazy.Lazy
 val PrereleaseUserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,
-        query = ApolloGraphQuery(PrereleaseUserPageQuery()),
+        query = GqlQuery(PrereleaseUserPageQuery()),
     ) { reload, dispatcher, result ->
         UserConfig(
-            user = result.user?.details?.userDetailsFragment?.toModel(),
+            user = result.user?.details?.userDetails?.toModel(),
             subscription = result.user?.subscription?.toModel(),
             partyList = result.partyList?.mapNotNull(::partyDetails) ?: emptyList(),
             dispatcher = dispatcher,

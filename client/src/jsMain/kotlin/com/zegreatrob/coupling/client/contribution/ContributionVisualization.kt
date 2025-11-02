@@ -32,7 +32,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.type.PairsInput
 import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.ReactFunc
@@ -53,7 +53,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     val (window, setWindow) = useWindow(ContributionWindow.Quarter)
     CouplingQuery(
         commander = commander,
-        query = ApolloGraphQuery(ContributionVisualizationDataQuery(party.id, window.toGql(), PairsInput(Optional.Present(true)))),
+        query = GqlQuery(ContributionVisualizationDataQuery(party.id, window.toGql(), PairsInput(Optional.Present(true)))),
     ) { reload, _, queryResult ->
         PairFrequencyControls(
             pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery,
@@ -87,7 +87,7 @@ private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): Lis
 
 private fun List<ContributionVisualizationDataQuery.Pair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
     val contributionReport = it.contributionReport?.toModel() ?: return@mapNotNull null
-    val players = it.players?.map { player -> player.playerDetailsFragment.toModel() }
+    val players = it.players?.map { player -> player.playerDetails.toModel() }
     players?.toCouplingPair()?.let { pair -> pair to contributionReport }
 }
 
@@ -97,4 +97,6 @@ fun ContributionVisualizationDataQuery.ContributionReport.toModel() = Contributi
     } ?: emptyList(),
     medianCycleTime = medianCycleTime,
     withCycleTimeCount = withCycleTimeCount,
+    partyId = partyId,
+    count = count,
 )

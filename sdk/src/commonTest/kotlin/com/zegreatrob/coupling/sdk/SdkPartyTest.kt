@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.AccessType
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.adapter.toModel
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyAccessTypeAndListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyAccessTypeDetailsListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
@@ -41,7 +41,7 @@ class SdkPartyTest {
     } exercise {
         with(sdk()) {
             fire(DeletePartyCommand(party.id))
-            sdk().fire(ApolloGraphQuery(PartyDetailsAndListQuery(party.id))).let {
+            sdk().fire(GqlQuery(PartyDetailsAndListQuery(party.id))).let {
                 Pair(
                     it?.partyList?.mapNotNull { party -> party.partyDetails.toModel() },
                     it?.party?.partyDetails?.toModel(),
@@ -63,7 +63,7 @@ class SdkPartyTest {
         parties.forEach { sdk().fire(SavePartyCommand(it)) }
     } exercise {
         parties.map {
-            sdk().fire(ApolloGraphQuery(PartyDetailsQuery(it.id)))
+            sdk().fire(GqlQuery(PartyDetailsQuery(it.id)))
                 ?.party
                 ?.partyDetails
                 ?.toModel()
@@ -79,7 +79,7 @@ class SdkPartyTest {
     }) {
         parties.forEach { sdk().fire(SavePartyCommand(it)) }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
+        sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
     } verify { result ->
         result?.partyList?.mapNotNull { it.partyDetails.toModel() }
             .assertContainsAll(parties)
@@ -97,7 +97,7 @@ class SdkPartyTest {
         sdk().fire(SavePartyCommand(party))
         sdk().fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyAccessTypeAndListQuery(party.id)))
+        sdk().fire(GqlQuery(PartyAccessTypeAndListQuery(party.id)))
     } verify { result ->
         result?.partyList
             ?.filter { it.id == party.id }
@@ -133,7 +133,7 @@ class SdkPartyTest {
             fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
         }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
+        sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
         result?.map { it.partyDetails.toModel() }
@@ -156,7 +156,7 @@ class SdkPartyTest {
             )
         }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
+        sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
         result?.map { it.partyDetails.toModel() }
@@ -171,7 +171,7 @@ class SdkPartyTest {
             fire(SavePlayerCommand(party.id, playerMatchingSdkUser.copy(email = "something else")))
         }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
+        sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
         result?.map { it.partyDetails.toModel() }?.contains(party)
@@ -186,7 +186,7 @@ class SdkPartyTest {
             fire(DeletePlayerCommand(party.id, playerMatchingSdkUser.id))
         }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyAccessTypeDetailsListQuery()))
+        sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
             ?.partyList
     } verify { result ->
         result?.map { it.partyDetails.toModel() }?.contains(party)
@@ -198,7 +198,7 @@ class SdkPartyTest {
         altSdk().fire(SavePartyCommand(party))
     } exercise {
         sdk().fire(SavePartyCommand(party.copy(name = "changed name")))
-        altSdk().fire(ApolloGraphQuery(PartyDetailsQuery(party.id)))
+        altSdk().fire(GqlQuery(PartyDetailsQuery(party.id)))
             ?.party
             ?.partyDetails
             ?.toModel()
@@ -212,7 +212,7 @@ class SdkPartyTest {
     }) {
         sdk().fire(SavePartyCommand(party))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyListModificationDataQuery()))
+        sdk().fire(GqlQuery(PartyListModificationDataQuery()))
             ?.partyList
     } verifyAnd { partyList ->
         partyList?.first { it.id == party.id }
@@ -237,7 +237,7 @@ class SdkPartyTest {
     } verifyAnd { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
 
-        val integration = sdk().fire(ApolloGraphQuery(PartyIntegrationDataQuery(party.id)))
+        val integration = sdk().fire(GqlQuery(PartyIntegrationDataQuery(party.id)))
             ?.party
             ?.integration
         assertNotNull(integration)
@@ -258,7 +258,7 @@ class SdkPartyTest {
         sdk().fire(SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
     } verify { result ->
         result.assertIsEqualTo(CommandResult.Unauthorized)
-        sdk().fire(ApolloGraphQuery(PartyIntegrationDataQuery(party.id)))
+        sdk().fire(GqlQuery(PartyIntegrationDataQuery(party.id)))
             ?.party
             ?.integration
             .assertIsEqualTo(null)

@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.contribution.ContributionConten
 import com.zegreatrob.coupling.client.gql.ContributionVisualizationPageQuery
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
 
@@ -12,7 +12,7 @@ import js.lazy.Lazy
 val ContributionVisualizationPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
-        query = ApolloGraphQuery(ContributionVisualizationPageQuery(partyId)),
+        query = GqlQuery(ContributionVisualizationPageQuery(partyId)),
         key = partyId.value.toString(),
     ) { _, _, queryResult ->
         val party = queryResult.party?.partyDetails?.toModel() ?: return@CouplingQuery

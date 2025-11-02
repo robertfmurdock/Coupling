@@ -176,7 +176,7 @@ type Contribution {
 type Party {
     id: PartyId!
     accessType: AccessType!
-    details: PartyDetails
+    details: PartyDetails!
     integration: PartyIntegration
     pinList: [PinDetails!]
     playerList: [PlayerDetails!]
@@ -373,9 +373,9 @@ type Pair {
 }
 
 type ContributionReport {
-    partyId: PartyId
+    partyId: PartyId!
     contributions: [Contribution!]
-    count: Int
+    count: Int!
     medianCycleTime: Duration
     withCycleTimeCount: Int
     contributors: [Contributor!]
@@ -383,7 +383,7 @@ type ContributionReport {
 
 type PairAssignment {
     playerIds: [PlayerId!]
-    documentId: PairAssignmentDocumentId
+    documentId: PairAssignmentDocumentId!
     details: PairAssignmentDocumentDetails
     date: DateTimeISO
     allPairs: [PinnedPair]
@@ -396,8 +396,8 @@ All Queries and Mutations are subject to change. If you want to program an integ
 type Query {
     partyList: [Party!]
     party(input: PartyInput!): Party
-    user: User
-    globalStats(input: GlobalStatsInput!) : GlobalStats
+    user: User!
+    globalStats(input: GlobalStatsInput!) : GlobalStats!
     config: Configuration
 }
 

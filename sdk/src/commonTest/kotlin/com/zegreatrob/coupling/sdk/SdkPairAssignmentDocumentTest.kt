@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.CurrentPairAssignmentsQuery
 import com.zegreatrob.coupling.sdk.schema.PairAssignmentListQuery
 import com.zegreatrob.coupling.sdk.schema.PairAssignmentRecordListQuery
@@ -55,11 +55,11 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk.fire(SavePairAssignmentsCommand(party.id, updatedDocument))
     } verifyWithWait {
-        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(party.id)))
+        sdk().fire(GqlQuery(PairAssignmentListQuery(party.id)))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
-            .map { it.pairAssignmentDetailsFragment.toModel() }
+            .map { it.pairAssignmentDetails.toModel() }
             .assertIsEqualTo(listOf(updatedDocument))
     }
 
@@ -86,11 +86,11 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        sdk().fire(ApolloGraphQuery(CurrentPairAssignmentsQuery(partyId)))
+        sdk().fire(GqlQuery(CurrentPairAssignmentsQuery(partyId)))
             ?.party
             ?.currentPairAssignmentDocument
     } verify { result ->
-        result?.pairAssignmentDetailsFragment?.toModel()
+        result?.pairAssignmentDetails?.toModel()
             .assertIsEqualTo(newest)
     }
 
@@ -106,7 +106,7 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk.fire(DeletePairAssignmentsCommand(partyId, document.id))
     } verifyWithWait {
-        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(partyId)))
+        sdk().fire(GqlQuery(PairAssignmentListQuery(partyId)))
             ?.party
             ?.pairAssignmentDocumentList
             .assertIsEqualTo(emptyList())
@@ -125,13 +125,13 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(partyId)))
+        sdk().fire(GqlQuery(PairAssignmentListQuery(partyId)))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
     } verifyWithWait { result ->
         result
-            .map { it.pairAssignmentDetailsFragment.toModel() }
+            .map { it.pairAssignmentDetails.toModel() }
             .assertIsEqualTo(
                 listOf(newest, middle, oldest),
             )
@@ -151,7 +151,7 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyMedianSpinDurationQuery(partyId)))
+        sdk().fire(GqlQuery(PartyMedianSpinDurationQuery(partyId)))
             ?.party
             ?.medianSpinDuration
     } verify { result ->
@@ -160,7 +160,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
-        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(party.id)))
+        sdk().fire(GqlQuery(PairAssignmentListQuery(party.id)))
             ?.party
             ?.pairAssignmentDocumentList
     } verify { result ->
@@ -178,7 +178,7 @@ class SdkPairAssignmentDocumentTest {
         otherSdk.fire(SavePartyCommand(otherParty))
         otherSdk.fire(SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PairAssignmentListQuery(PartyId("someoneElseParty"))))
+        sdk().fire(GqlQuery(PairAssignmentListQuery(PartyId("someoneElseParty"))))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
@@ -198,7 +198,7 @@ class SdkPairAssignmentDocumentTest {
     }) {
         sdk.fire(SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
     } exercise {
-        sdk().fire(ApolloGraphQuery(PairAssignmentRecordListQuery(partyId)))
+        sdk().fire(GqlQuery(PairAssignmentRecordListQuery(partyId)))
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }

@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.slack.SlackConnectPageContent
 import com.zegreatrob.coupling.client.gql.SlackConnectPageQuery
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
@@ -16,7 +16,7 @@ val SlackConnectPage by nfc<PageProps> { props ->
     SlackConnectPageFrame {
         CouplingQuery(
             commander = props.commander,
-            query = ApolloGraphQuery(SlackConnectPageQuery()),
+            query = GqlQuery(SlackConnectPageQuery()),
         ) { _, dispatch, result ->
             SlackConnectPageContent(
                 parties = result.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList(),

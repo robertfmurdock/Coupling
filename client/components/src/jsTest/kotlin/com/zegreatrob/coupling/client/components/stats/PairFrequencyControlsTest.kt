@@ -60,6 +60,8 @@ class PairFrequencyControlsTest {
 }
 
 fun stubContributionReport(contributions: List<Contribution>) = ContributionReport(
+    partyId = stubPartyId(),
+    count = 0,
     contributions = contributions.map {
         partyRecord(
             partyId = stubPartyId(),

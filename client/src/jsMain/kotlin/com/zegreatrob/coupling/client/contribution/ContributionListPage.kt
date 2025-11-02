@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.gql.ContributionListPageQuery
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.adapter.toModel
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
 
@@ -17,16 +17,16 @@ val ContributionListPage = partyPageFunction { props, partyId ->
     val (window, setWindow) = useWindow(ContributionWindow.Week)
     CouplingQuery(
         commander = props.commander,
-        query = ApolloGraphQuery(ContributionListPageQuery(partyId, window.toGql())),
+        query = GqlQuery(ContributionListPageQuery(partyId, window.toGql())),
         key = "${partyId.value}$window",
     ) { _, dispatchFunc, queryResult ->
         val party = queryResult.party?.partyDetails?.toModel() ?: return@CouplingQuery
         val contributions =
-            queryResult.party.contributionReport?.contributions?.map { it.contributionFragment.toModel() }
+            queryResult.party.contributionReport?.contributions?.map { it.contributionDetails.toModel() }
                 ?: return@CouplingQuery
-        val players = queryResult.party.playerList?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery
+        val players = queryResult.party.playerList?.map { it.playerDetails.toModel() } ?: return@CouplingQuery
         val retiredPlayers =
-            queryResult.party.retiredPlayers?.map { it.playerDetailsFragment.toModel() } ?: return@CouplingQuery
+            queryResult.party.retiredPlayers?.map { it.playerDetails.toModel() } ?: return@CouplingQuery
         UpdatingPlayerList(
             players = players + retiredPlayers,
             dispatchFunc = dispatchFunc,

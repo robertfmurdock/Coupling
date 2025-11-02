@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.type.PartyInput
 import com.zegreatrob.coupling.sdk.toModel
 import js.lazy.Lazy
@@ -15,7 +15,7 @@ import js.lazy.Lazy
 val HistoryPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
-        query = ApolloGraphQuery(HistoryPageQuery(PartyInput(partyId))),
+        query = GqlQuery(HistoryPageQuery(PartyInput(partyId))),
         key = partyId.value.toString(),
     ) { reload, commandFunc, result ->
         val (party, history) = result.toHistoryData()
@@ -28,7 +28,7 @@ private fun HistoryPageQuery.Data.toHistoryData(): Pair<PartyDetails, List<PairA
     Pair(
         first = it.partyDetails.toModel() ?: return@let null,
         second = it.pairAssignmentDocumentList?.map { doc ->
-            doc.pairAssignmentDetailsFragment.toModel()
+            doc.pairAssignmentDetails.toModel()
         } ?: return@let null,
     )
 }

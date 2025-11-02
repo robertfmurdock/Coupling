@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.sdk.schema.fragment.PinDetailsFragment
+import com.zegreatrob.coupling.sdk.schema.fragment.PinDetails
 
-fun PinDetailsFragment.toModel() = Pin(id = id, name = name, icon = icon)
+fun PinDetails.toModel() = Pin(id = id, name = name, icon = icon)

@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.adapter.toModel
-import com.zegreatrob.coupling.sdk.schema.fragment.PlayerDetailsFragment
+import com.zegreatrob.coupling.sdk.schema.fragment.PlayerDetails
 
-fun PlayerDetailsFragment.toModel() = Player(
+fun PlayerDetails.toModel() = Player(
     id = id,
     name = name,
     email = email,

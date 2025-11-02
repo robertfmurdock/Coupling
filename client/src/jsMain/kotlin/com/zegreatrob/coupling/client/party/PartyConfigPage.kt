@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.toModel
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
@@ -20,7 +20,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
     if (partyId != null) {
         CouplingQuery(
             commander = props.commander,
-            query = ApolloGraphQuery(PartyQuery(partyId)),
+            query = GqlQuery(PartyQuery(partyId)),
             key = partyId.value.toString(),
         ) { _, commandFunc, result ->
             PartyConfig(
@@ -33,7 +33,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
     } else {
         CouplingQuery(
             commander = props.commander,
-            query = ApolloGraphQuery(UserQuery()),
+            query = GqlQuery(UserQuery()),
         ) { _, commandFunc, _ -> PartyConfig(newParty(), null, commandFunc, isNew = true) }
     }
 }

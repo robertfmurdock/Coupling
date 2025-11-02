@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.user.UserDetails
-import com.zegreatrob.coupling.sdk.schema.fragment.UserDetailsFragment
 
-fun UserDetailsFragment.toModel(): UserDetails = UserDetails(
+fun com.zegreatrob.coupling.sdk.schema.fragment.UserDetails.toModel(): UserDetails = UserDetails(
     id = id,
     email = email,
     connectSecretId = connectSecretId,

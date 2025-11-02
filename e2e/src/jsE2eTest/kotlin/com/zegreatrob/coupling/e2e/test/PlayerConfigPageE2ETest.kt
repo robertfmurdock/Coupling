@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -60,8 +60,8 @@ class PlayerConfigPageE2ETest {
         saveButton().click()
         page.waitForSaveToComplete("3")
     } verify {
-        sdk().fire(ApolloGraphQuery(PartyPlayerListQuery(party.id)))
-            ?.party?.playerList?.map { it.playerDetailsFragment.name }
+        sdk().fire(GqlQuery(PartyPlayerListQuery(party.id)))
+            ?.party?.playerList?.map { it.playerDetails.name }
             .assertIsEqualTo(listOf("1", "2", "3"))
     }
 

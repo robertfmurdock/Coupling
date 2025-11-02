@@ -68,6 +68,8 @@ suspend fun generateFakeContributions(
                 },
                 medianCycleTime = contributions.getOrNull(contributions.size / 2)?.cycleTime,
                 withCycleTimeCount = contributions.mapNotNull { it.cycleTime }.count(),
+                count = contributions.size,
+                partyId = PartyId("-"),
             )
         }
     }

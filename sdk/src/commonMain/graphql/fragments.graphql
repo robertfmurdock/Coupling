@@ -13,7 +13,7 @@ fragment PartyDetails on Party {
     }
 }
 
-fragment PlayerDetailsFragment on PlayerDetails {
+fragment PlayerDetails on PlayerDetails {
     id
     name
     email
@@ -25,14 +25,14 @@ fragment PlayerDetailsFragment on PlayerDetails {
     unvalidatedEmails
 }
 
-fragment PinDetailsFragment on PinDetails {
+fragment PinDetails on PinDetails {
     id
     partyId
     icon
     name
 }
 
-fragment ContributionFragment on Contribution {
+fragment ContributionDetails on Contribution {
     commitCount
     createdAt
     cycleTime
@@ -51,7 +51,7 @@ fragment ContributionFragment on Contribution {
     story
 }
 
-fragment UserDetailsFragment on UserDetails {
+fragment UserDetails on UserDetails {
     id
     email
     connectSecretId
@@ -59,7 +59,7 @@ fragment UserDetailsFragment on UserDetails {
     authorizedPartyIds
 }
 
-fragment PartySecretFragment on PartySecret {
+fragment PartySecret on PartySecret {
     id
     partyId
     description
@@ -67,13 +67,13 @@ fragment PartySecretFragment on PartySecret {
     lastUsedTimestamp
 }
 
-fragment BoostDetailsFragment on BoostDetails {
+fragment BoostDetails on BoostDetails {
     userId
     partyIds
     expirationDate
 }
 
-fragment PairAssignmentDetailsFragment on PairAssignmentDocumentDetails {
+fragment PairAssignmentDetails on PairAssignmentDocumentDetails {
     id
     partyId
     date

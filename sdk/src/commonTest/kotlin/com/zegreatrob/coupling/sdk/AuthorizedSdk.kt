@@ -5,7 +5,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyIdListQuery
 import com.zegreatrob.testmints.action.ActionCannon
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -51,7 +51,7 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() = fire(ApolloGraphQuery(PartyIdListQuery()))
+private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() = fire(GqlQuery(PartyIdListQuery()))
     ?.partyList
     ?.map { it.id }
     ?.forEach { fire(DeletePartyCommand(it)) }

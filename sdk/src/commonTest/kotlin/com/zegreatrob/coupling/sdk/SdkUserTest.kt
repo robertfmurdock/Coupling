@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
 import com.zegreatrob.coupling.action.user.DisconnectUserCommand
 import com.zegreatrob.coupling.action.user.fire
 import com.zegreatrob.coupling.model.party.Secret
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
 import com.zegreatrob.coupling.sdk.schema.UserDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.UserPlayersQuery
@@ -25,9 +25,9 @@ class SdkUserTest {
 
     @Test
     fun canPerformUserQuery() = asyncSetup() exercise {
-        sdk().fire(ApolloGraphQuery(UserDetailsQuery()))
+        sdk().fire(GqlQuery(UserDetailsQuery()))
     } verify { result ->
-        result?.user?.details?.userDetailsFragment.let {
+        result?.user?.details?.userDetails.let {
             it?.email.toString().assertIsEqualTo(PRIMARY_AUTHORIZED_USER_EMAIL)
             it?.id.assertIsNotEqualTo(null)
             it?.authorizedPartyIds.assertIsNotEqualTo(null)
@@ -42,10 +42,10 @@ class SdkUserTest {
         sdk().fire(SavePartyCommand(party))
         sdk().fire(SavePlayerCommand(party.id, player))
     } exercise {
-        sdk().fire(ApolloGraphQuery(UserPlayersQuery()))
+        sdk().fire(GqlQuery(UserPlayersQuery()))
     } verify { result ->
         (result?.user?.players ?: emptyList())
-            .map { it.playerDetailsFragment.toModel() }
+            .map { it.playerDetails.toModel() }
             .assertContains(player)
     }
 
@@ -67,11 +67,11 @@ class SdkUserTest {
     }) {
         createResult = sdk().fire(CreateConnectUserSecretCommand)
     } exercise {
-        sdk().fire(ApolloGraphQuery(UserDetailsQuery()))
+        sdk().fire(GqlQuery(UserDetailsQuery()))
     } verify { result ->
         createResult.assertIsNotEqualTo(null)
         createResult?.let { (secret) ->
-            result?.user?.details?.userDetailsFragment?.connectSecretId
+            result?.user?.details?.userDetails?.connectSecretId
                 .assertIsEqualTo(secret.id)
         }
     }
@@ -86,8 +86,8 @@ class SdkUserTest {
         altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(firstToken))
     } verify { result: Boolean? ->
         result.assertIsEqualTo(false)
-        sdk().fire(ApolloGraphQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetailsFragment?.connectedEmails?.map { it.toString() }
+        sdk().fire(GqlQuery(UserDetailsQuery()))
+            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(ALT_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_EMAIL to not be connected.")
     }
@@ -101,12 +101,12 @@ class SdkUserTest {
         altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
     } verifyAnd { result: Boolean? ->
         result.assertIsEqualTo(true)
-        altAuthorizedSdkDeferred.await().fire(ApolloGraphQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetailsFragment?.connectedEmails?.map { it.toString() }
+        altAuthorizedSdkDeferred.await().fire(GqlQuery(UserDetailsQuery()))
+            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(PRIMARY_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(true, "Expected $PRIMARY_AUTHORIZED_USER_EMAIL to be connected.")
-        sdk().fire(ApolloGraphQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetailsFragment?.connectedEmails?.map { it.toString() }
+        sdk().fire(GqlQuery(UserDetailsQuery()))
+            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(ALT_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(true, "Expected $ALT_AUTHORIZED_USER_EMAIL to be connected.")
     } teardown {
@@ -122,12 +122,12 @@ class SdkUserTest {
     } exercise {
         sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
     } verify {
-        altAuthorizedSdkDeferred.await().fire(ApolloGraphQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetailsFragment?.connectedEmails?.map { it.toString() }
+        altAuthorizedSdkDeferred.await().fire(GqlQuery(UserDetailsQuery()))
+            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(PRIMARY_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(false, "Expected $PRIMARY_AUTHORIZED_USER_EMAIL not to be connected.")
-        sdk().fire(ApolloGraphQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetailsFragment?.connectedEmails?.map { it.toString() }
+        sdk().fire(GqlQuery(UserDetailsQuery()))
+            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(ALT_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_EMAIL not to be connected.")
     }
@@ -141,7 +141,7 @@ class SdkUserTest {
         altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
     } exercise {
         altAuthorizedSdkDeferred.await().fire(
-            ApolloGraphQuery(PartyDetailsAndListQuery(party.id)),
+            GqlQuery(PartyDetailsAndListQuery(party.id)),
         )
     } verifyAnd { result ->
         (result?.partyList?.mapNotNull { it.partyDetails.toModel() } ?: emptyList())

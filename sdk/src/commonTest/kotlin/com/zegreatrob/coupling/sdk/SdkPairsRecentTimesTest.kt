@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPairsRecentTimesPairedQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -41,7 +41,7 @@ class SdkPairsRecentTimesTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPairsRecentTimesPairedQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map { it.recentTimesPaired }
             .assertIsEqualTo(emptyList())
@@ -56,7 +56,7 @@ class SdkPairsRecentTimesTest {
         savePartyState(party, players, history)
     } exercise {
         sdk().fire(
-            ApolloGraphQuery(PartyPairsRecentTimesPairedQuery(party.id)),
+            GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)),
         )
     } verify { result ->
         result?.party?.pairs?.map { it.recentTimesPaired }
@@ -75,7 +75,7 @@ class SdkPairsRecentTimesTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPairsRecentTimesPairedQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(0, 0, 0, null, null, null))
@@ -92,7 +92,7 @@ class SdkPairsRecentTimesTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPairsRecentTimesPairedQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(1, null, null))
@@ -115,7 +115,7 @@ class SdkPairsRecentTimesTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPairsRecentTimesPairedQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(5, null, null))
@@ -157,7 +157,7 @@ class SdkPairsRecentTimesTest {
             }
         }
     } exercise {
-        sdk().fire(ApolloGraphQuery(PartyPairsRecentTimesPairedQuery(party.id)))
+        sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(14, 1, 0, null, null, null))

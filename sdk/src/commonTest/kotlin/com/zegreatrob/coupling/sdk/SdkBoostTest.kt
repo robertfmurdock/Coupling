@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.adapter.toModel
-import com.zegreatrob.coupling.sdk.gql.ApolloGraphQuery
+import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyBoostQuery
 import com.zegreatrob.coupling.sdk.schema.UserBoostQuery
 import com.zegreatrob.coupling.sdk.schema.UserDetailsQuery
@@ -25,7 +25,7 @@ class SdkBoostTest {
     private val setupWithUser = asyncSetup.extend(
         beforeAll = suspend {
             val sdk = sdk()
-            val user = sdk.fire(ApolloGraphQuery(UserDetailsQuery()))?.user?.details?.userDetailsFragment
+            val user = sdk.fire(GqlQuery(UserDetailsQuery()))?.user?.details?.userDetails
                 ?: throw Exception("Sdk did not provide user.")
             object {
                 val sdk = sdk
@@ -40,7 +40,7 @@ class SdkBoostTest {
         sdk.fire(ApplyBoostCommand(PartyId("${Uuid.random()}")))
         sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
-        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
+        sdk.fire(GqlQuery(UserBoostQuery()))
             ?.user
             ?.boost
             .assertIsEqualTo(null)
@@ -51,7 +51,7 @@ class SdkBoostTest {
     } exercise {
         sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
-        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
+        sdk.fire(GqlQuery(UserBoostQuery()))
             ?.user
             ?.boost
             .assertIsEqualTo(null)
@@ -67,8 +67,8 @@ class SdkBoostTest {
     }) exercise {
         sdk.fire(ApplyBoostCommand(partyId))
     } verifyWithWait {
-        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
-            ?.user?.boost?.boostDetailsFragment?.toModel()
+        sdk.fire(GqlQuery(UserBoostQuery()))
+            ?.user?.boost?.boostDetails?.toModel()
             ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
@@ -90,8 +90,8 @@ class SdkBoostTest {
         sdk.fire(SavePartyCommand(party))
         sdk.fire(ApplyBoostCommand(party.id))
     } verifyWithWait {
-        sdk.fire(ApolloGraphQuery(PartyBoostQuery(party.id)))
-            ?.party?.boost?.boostDetailsFragment?.toModel()
+        sdk.fire(GqlQuery(PartyBoostQuery(party.id)))
+            ?.party?.boost?.boostDetails?.toModel()
             ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
@@ -116,8 +116,8 @@ class SdkBoostTest {
         sdk.fire(ApplyBoostCommand(updatedBoostParty1))
         sdk.fire(ApplyBoostCommand(updatedBoostParty2))
     } verifyWithWait {
-        sdk.fire(ApolloGraphQuery(UserBoostQuery()))
-            ?.user?.boost?.boostDetailsFragment?.toModel()
+        sdk.fire(GqlQuery(UserBoostQuery()))
+            ?.user?.boost?.boostDetails?.toModel()
             ?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
