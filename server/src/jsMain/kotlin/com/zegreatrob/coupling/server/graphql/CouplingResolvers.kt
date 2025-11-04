@@ -117,7 +117,6 @@ fun couplingResolvers() = json(
         "spin" to spinResolver,
     ),
     "Party" to json(
-        "id" to getPartyDetailsResolve { it?.data?.id?.value?.toString() },
         "name" to getPartyDetailsResolve { it?.data?.name },
         "email" to getPartyDetailsResolve { it?.data?.email },
         "pairingRule" to getPartyDetailsResolve { it?.data?.pairingRule?.let(::toValue) },
