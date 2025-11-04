@@ -5,9 +5,8 @@ import com.zegreatrob.coupling.server.repository.cache.CachedPairAssignmentDocum
 import com.zegreatrob.coupling.server.repository.cache.CachedPlayerRepository
 
 class CachedRepositoryCatalog(private val catalog: RepositoryCatalog) : RepositoryCatalog by catalog {
-    override val contributionRepository by lazy {
-        CachedContributionRepository(catalog.contributionRepository)
-    }
+    override val partyRepository by lazy { CachedPartyRepository(catalog.partyRepository) }
+    override val contributionRepository by lazy { CachedContributionRepository(catalog.contributionRepository) }
     override val playerRepository by lazy { CachedPlayerRepository(catalog.playerRepository) }
     override val pairAssignmentDocumentRepository by lazy {
         CachedPairAssignmentDocumentRepository(catalog.pairAssignmentDocumentRepository)
