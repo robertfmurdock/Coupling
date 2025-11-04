@@ -13,7 +13,8 @@ query partyAccessTypeDetailsListQuery {
 query partyListModificationDataQuery {
     partyList {
         id
-        details { modifyingUserEmail, timestamp}
+        modifyingUserEmail,
+        timestamp
     }
 }
 

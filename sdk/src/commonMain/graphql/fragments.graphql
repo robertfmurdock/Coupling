@@ -1,16 +1,14 @@
 fragment PartyDetails on Party {
     id
-    details {
-        name
-        email
-        pairingRule
-        badgesEnabled
-        defaultBadgeName
-        alternateBadgeName
-        callSignsEnabled
-        animationsEnabled
-        animationSpeed
-    }
+    name
+    email
+    pairingRule
+    badgesEnabled
+    defaultBadgeName
+    alternateBadgeName
+    callSignsEnabled
+    animationsEnabled
+    animationSpeed
 }
 
 fragment PlayerDetails on PlayerDetails {

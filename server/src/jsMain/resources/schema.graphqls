@@ -9,22 +9,6 @@ scalar PlayerId
 scalar SecretId
 scalar UserId
 
-type PartyDetails {
-    id: PartyId!
-    name: String
-    email: String
-    pairingRule: Int
-    badgesEnabled: Boolean
-    defaultBadgeName: String!
-    alternateBadgeName: String!
-    callSignsEnabled: Boolean
-    animationsEnabled: Boolean
-    animationSpeed: Float
-    modifyingUserEmail: Email
-    timestamp: DateTimeISO!
-    isDeleted: Boolean!
-}
-
 type PartyIntegration {
     slackTeam: String
     slackChannel: String
@@ -170,8 +154,19 @@ type Contribution {
 
 type Party {
     id: PartyId!
+    name: String
+    email: String
+    pairingRule: Int
+    badgesEnabled: Boolean
+    defaultBadgeName: String!
+    alternateBadgeName: String!
+    callSignsEnabled: Boolean
+    animationsEnabled: Boolean
+    animationSpeed: Float
+    modifyingUserEmail: Email
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
     accessType: AccessType!
-    details: PartyDetails!
     integration: PartyIntegration
     pinList: [PinDetails!]!
     playerList: [PlayerDetails!]!

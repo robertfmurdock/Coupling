@@ -1,10 +1,6 @@
 package com.zegreatrob.coupling.server.entity.party
 
 import com.zegreatrob.coupling.json.GqlAccessType
-import com.zegreatrob.coupling.json.GqlPartyDetails
-import com.zegreatrob.coupling.json.toSerializable
-import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.server.action.party.PartyListQuery
 import com.zegreatrob.coupling.server.action.party.PartyListResult
 import com.zegreatrob.coupling.server.action.party.perform
@@ -20,13 +16,5 @@ val partyListResolve = dispatch(
     toSerializable = ::toJson,
 )
 
-private fun toJson(records: PartyListResult) = records.ownedParties
-    .map(Record<PartyDetails>::toSerializable)
-    .map { gqlParty(it, GqlAccessType.Owner) } + records.playerParties.map(Record<PartyDetails>::toSerializable)
-    .map { gqlParty(it, GqlAccessType.Player) }
-
-private fun gqlParty(details: GqlPartyDetails, accessType: GqlAccessType) = GqlPartyNode(
-    id = details.id,
-    accessType = accessType,
-    details = details,
-)
+private fun toJson(records: PartyListResult) = records.ownedParties.map { GqlPartyNode(id = it.data.id, accessType = GqlAccessType.Owner) }
+    .plus(records.playerParties.map { GqlPartyNode(id = it.data.id, accessType = GqlAccessType.Player) })

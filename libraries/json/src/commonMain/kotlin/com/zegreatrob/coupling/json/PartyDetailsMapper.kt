@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.defaultParty
@@ -48,22 +47,6 @@ fun PartyDetails.toSerializable() = JsonPartyDetails(
     animationSpeed = animationSpeed,
 )
 
-fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
-    id = data.id,
-    pairingRule = PairingRule.toValue(data.pairingRule),
-    badgesEnabled = data.badgesEnabled,
-    defaultBadgeName = data.defaultBadgeName,
-    alternateBadgeName = data.alternateBadgeName,
-    email = data.email,
-    name = data.name,
-    callSignsEnabled = data.callSignsEnabled,
-    animationsEnabled = data.animationEnabled,
-    animationSpeed = data.animationSpeed,
-    modifyingUserEmail = modifyingUserId,
-    isDeleted = isDeleted,
-    timestamp = timestamp,
-)
-
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun JsonPartyDetails.toModel(): PartyDetails = PartyDetails(
     id = id,
@@ -77,38 +60,3 @@ fun JsonPartyDetails.toModel(): PartyDetails = PartyDetails(
     animationEnabled = animationsEnabled,
     animationSpeed = animationSpeed,
 )
-
-@OptIn(ExperimentalKotoolsTypesApi::class)
-fun GqlPartyDetails.toModel(): PartyDetails = PartyDetails(
-    id = id,
-    pairingRule = PairingRule.fromValue(pairingRule),
-    defaultBadgeName = defaultBadgeName,
-    alternateBadgeName = alternateBadgeName,
-    email = email,
-    name = name,
-    badgesEnabled = badgesEnabled == true,
-    callSignsEnabled = callSignsEnabled == true,
-    animationEnabled = animationsEnabled != false,
-    animationSpeed = animationSpeed ?: 1.0,
-)
-
-@OptIn(ExperimentalKotoolsTypesApi::class)
-fun GqlPartyDetails.toModelRecord(): Record<PartyDetails>? {
-    return Record(
-        data = PartyDetails(
-            id = id,
-            pairingRule = PairingRule.fromValue(pairingRule),
-            defaultBadgeName = defaultBadgeName,
-            alternateBadgeName = alternateBadgeName,
-            email = email,
-            name = name,
-            badgesEnabled = badgesEnabled == true,
-            callSignsEnabled = callSignsEnabled == true,
-            animationEnabled = animationsEnabled != false,
-            animationSpeed = animationSpeed ?: 1.0,
-        ),
-        modifyingUserId = modifyingUserEmail ?: return null,
-        isDeleted = isDeleted ?: return null,
-        timestamp = timestamp ?: return null,
-    )
-}

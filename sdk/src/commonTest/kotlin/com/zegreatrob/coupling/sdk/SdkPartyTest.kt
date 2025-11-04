@@ -43,7 +43,7 @@ class SdkPartyTest {
             fire(DeletePartyCommand(party.id))
             sdk().fire(GqlQuery(PartyDetailsAndListQuery(party.id))).let {
                 Pair(
-                    it?.partyList?.mapNotNull { party -> party.partyDetails.toDomain() },
+                    it?.partyList?.map { party -> party.partyDetails.toDomain() },
                     it?.party?.partyDetails?.toDomain(),
                 )
             }
@@ -81,7 +81,7 @@ class SdkPartyTest {
     } exercise {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
     } verify { result ->
-        result?.partyList?.mapNotNull { it.partyDetails.toDomain() }
+        result?.partyList?.map { it.partyDetails.toDomain() }
             .assertContainsAll(parties)
         result?.partyList?.filter { partyIds.contains(it.id) }
             ?.map { it.accessType.toDomain() }
@@ -215,8 +215,7 @@ class SdkPartyTest {
         sdk().fire(GqlQuery(PartyListModificationDataQuery()))
             ?.partyList
     } verifyAnd { partyList ->
-        partyList?.first { it.id == party.id }
-            ?.details!!
+        partyList?.first { it.id == party.id }!!
             .apply {
                 modifyingUserEmail.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
                 timestamp.isWithinOneSecondOfNow()

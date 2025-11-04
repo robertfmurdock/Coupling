@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.json.GqlAccessType
-import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.json.PartyIdString
+import com.zegreatrob.coupling.model.party.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userPlayerListResolve
@@ -20,7 +20,7 @@ import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListRe
 import com.zegreatrob.coupling.server.entity.pairassignment.savePairsResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
 import com.zegreatrob.coupling.server.entity.party.deletePartyResolver
-import com.zegreatrob.coupling.server.entity.party.partyDetailsResolve
+import com.zegreatrob.coupling.server.entity.party.getPartyDetailsResolve
 import com.zegreatrob.coupling.server.entity.party.partyIntegrationResolve
 import com.zegreatrob.coupling.server.entity.party.partyListResolve
 import com.zegreatrob.coupling.server.entity.party.savePartyResolver
@@ -64,7 +64,6 @@ import kotlin.js.json
 data class GqlPartyNode(
     val id: PartyIdString,
     val accessType: GqlAccessType? = null,
-    val details: GqlPartyDetails? = null,
 )
 
 fun couplingResolvers() = json(
@@ -118,7 +117,19 @@ fun couplingResolvers() = json(
         "spin" to spinResolver,
     ),
     "Party" to json(
-        "details" to partyDetailsResolve,
+        "id" to getPartyDetailsResolve { it?.data?.id?.value?.toString() },
+        "name" to getPartyDetailsResolve { it?.data?.name },
+        "email" to getPartyDetailsResolve { it?.data?.email },
+        "pairingRule" to getPartyDetailsResolve { it?.data?.pairingRule?.let(::toValue) },
+        "badgesEnabled" to getPartyDetailsResolve { it?.data?.badgesEnabled },
+        "defaultBadgeName" to getPartyDetailsResolve { it?.data?.defaultBadgeName },
+        "alternateBadgeName" to getPartyDetailsResolve { it?.data?.alternateBadgeName },
+        "callSignsEnabled" to getPartyDetailsResolve { it?.data?.callSignsEnabled },
+        "animationsEnabled" to getPartyDetailsResolve { it?.data?.animationEnabled },
+        "animationSpeed" to getPartyDetailsResolve { it?.data?.animationSpeed },
+        "modifyingUserEmail" to getPartyDetailsResolve { it?.modifyingUserId },
+        "timestamp" to getPartyDetailsResolve { it?.timestamp },
+        "isDeleted" to getPartyDetailsResolve { it?.isDeleted },
         "integration" to partyIntegrationResolve,
         "pinList" to pinListResolve,
         "playerList" to playerListResolve,
