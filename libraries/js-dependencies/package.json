@@ -10,7 +10,7 @@
     "@graphql-codegen/kotlin": "^3.0.2",
     "@graphql-codegen/plugin-helpers": "^6.0.0",
     "@graphql-codegen/visitor-plugin-common": "6.1.0",
-    "@graphql-tools/schema": "^10.0.26",
+    "@graphql-tools/schema": "^10.0.27",
     "@graphql-tools/stitch": "^10.1.1",
     "@log4js-node/log4js-api": "1.0.2",
     "@nivo/bar": "^0.99.0",
