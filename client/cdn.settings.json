@@ -12,5 +12,8 @@
   "@auth0/auth0-react": "Auth0React",
   "@js-joda/core": "Joda",
   "react-flip-toolkit": "ReactFlipToolkit",
-  "marked": "Marked"
+  "marked": "Marked",
+  "@emotion/css": "EmotionCss",
+  "fitty": "Fitty",
+  "drag-drop-webkit-mobile": "DDWM"
 }
