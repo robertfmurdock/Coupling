@@ -35,17 +35,12 @@ type PartyIntegration {
 
 type User {
     id: UserId!
-    details: UserDetails
-    boost: BoostDetails
-    players: [PlayerDetails!]!
-}
-
-type UserDetails {
-    id: UserId!
     email: Email!
     connectSecretId: SecretId
     connectedEmails: [Email!]!
     authorizedPartyIds: [PartyId!]!
+    boost: BoostDetails
+    players: [PlayerDetails!]!
 }
 
 type Pin {

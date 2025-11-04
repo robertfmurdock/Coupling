@@ -28,7 +28,7 @@ class SdkUserTest {
     fun canPerformUserQuery() = asyncSetup() exercise {
         sdk().fire(GqlQuery(UserDetailsQuery()))
     } verify { result ->
-        result?.user?.details?.userDetails.let {
+        result?.user?.userDetails.let {
             it?.email.toString().assertIsEqualTo(PRIMARY_AUTHORIZED_USER_EMAIL)
             it?.id.assertIsNotEqualTo(null)
             it?.authorizedPartyIds.assertIsNotEqualTo(null)
@@ -72,7 +72,7 @@ class SdkUserTest {
     } verify { result ->
         createResult.assertIsNotEqualTo(null)
         createResult?.let { (secret) ->
-            result?.user?.details?.userDetails?.connectSecretId
+            result?.user?.userDetails?.connectSecretId
                 .assertIsEqualTo(secret.id)
         }
     }
@@ -88,7 +88,7 @@ class SdkUserTest {
     } verify { result: Boolean? ->
         result.assertIsEqualTo(false)
         sdk().fire(GqlQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
+            ?.user?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(ALT_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_EMAIL to not be connected.")
     }
@@ -103,11 +103,11 @@ class SdkUserTest {
     } verifyAnd { result: Boolean? ->
         result.assertIsEqualTo(true)
         altAuthorizedSdkDeferred.await().fire(GqlQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
+            ?.user?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(PRIMARY_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(true, "Expected $PRIMARY_AUTHORIZED_USER_EMAIL to be connected.")
         sdk().fire(GqlQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
+            ?.user?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(ALT_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(true, "Expected $ALT_AUTHORIZED_USER_EMAIL to be connected.")
     } teardown {
@@ -124,11 +124,11 @@ class SdkUserTest {
         sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
     } verify {
         altAuthorizedSdkDeferred.await().fire(GqlQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
+            ?.user?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(PRIMARY_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(false, "Expected $PRIMARY_AUTHORIZED_USER_EMAIL not to be connected.")
         sdk().fire(GqlQuery(UserDetailsQuery()))
-            ?.user?.details?.userDetails?.connectedEmails?.map { it.toString() }
+            ?.user?.userDetails?.connectedEmails?.map { it.toString() }
             ?.contains(ALT_AUTHORIZED_USER_EMAIL)
             .assertIsEqualTo(false, "Expected $ALT_AUTHORIZED_USER_EMAIL not to be connected.")
     }
@@ -145,7 +145,7 @@ class SdkUserTest {
             GqlQuery(PartyDetailsAndListQuery(party.id)),
         )
     } verifyAnd { result ->
-        (result?.partyList?.mapNotNull { it.partyDetails.toDomain() } ?: emptyList())
+        (result?.partyList?.map { it.partyDetails.toDomain() } ?: emptyList())
             .assertContains(party)
         result?.party?.partyDetails?.toDomain()
             .assertIsEqualTo(party)

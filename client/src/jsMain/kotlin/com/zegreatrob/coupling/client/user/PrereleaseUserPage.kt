@@ -18,14 +18,14 @@ val PrereleaseUserPage by nfc<PageProps> {
         query = GqlQuery(PrereleaseUserPageQuery()),
     ) { reload, dispatcher, result ->
         UserConfig(
-            user = result.user?.details?.userDetails?.toDomain(),
-            subscription = result.user?.subscription?.toModel(),
-            partyList = result.partyList?.mapNotNull(::partyDetails) ?: emptyList(),
+            user = result.user.userDetails.toDomain(),
+            subscription = result.user.subscription?.toModel(),
+            partyList = result.partyList.map(::partyDetails),
             dispatcher = dispatcher,
             prereleaseUserConfig = PrereleaseUserConfig(
                 stripeAdminCode = result.config?.stripeAdminCode ?: return@CouplingQuery,
                 stripePurchaseCode = result.config.stripePurchaseCode ?: return@CouplingQuery,
-                boost = result.user?.boost?.toModel(),
+                boost = result.user.boost?.toModel(),
             ),
             reload = reload,
         )
@@ -38,7 +38,7 @@ private fun PrereleaseUserPageQuery.Boost.toModel(): Boost = Boost(
     expirationDate = expirationDate,
 )
 
-private fun partyDetails(list: PrereleaseUserPageQuery.PartyList): PartyDetails? = list.partyDetails.toDomain()
+private fun partyDetails(list: PrereleaseUserPageQuery.PartyList): PartyDetails = list.partyDetails.toDomain()
 
 private fun PrereleaseUserPageQuery.Subscription.toModel(): SubscriptionDetails = SubscriptionDetails(
     stripeCustomerId = stripeCustomerId,

@@ -16,8 +16,8 @@ val UserPage by nfc<PageProps> {
         query = GqlQuery(UserPageQuery()),
     ) { reload, dispatcher, result ->
         UserConfig(
-            user = result.user?.details?.userDetails?.toDomain(),
-            partyList = result.partyList?.mapNotNull(::details) ?: emptyList(),
+            user = result.user.userDetails.toDomain(),
+            partyList = result.partyList.map(::details),
             dispatcher = dispatcher,
             subscription = null,
             prereleaseUserConfig = null,
@@ -26,4 +26,4 @@ val UserPage by nfc<PageProps> {
     }
 }
 
-private fun details(list: UserPageQuery.PartyList): PartyDetails? = list.partyDetails.toDomain()
+private fun details(list: UserPageQuery.PartyList): PartyDetails = list.partyDetails.toDomain()

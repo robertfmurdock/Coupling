@@ -102,29 +102,17 @@ query partySecretsPageQuery($partyId: PartyId!) {
 }
 
 query userQuery {
-    user {
-        details {
-            ...UserDetails
-        }
-    }
+    user { ...UserDetails }
 }
 
 query userPageQuery {
-    user {
-        details {
-            ...UserDetails
-        }
-    }
-    partyList {
-        ...PartyDetails
-    }
+    user { ...UserDetails }
+    partyList { ...PartyDetails }
 }
 
 query prereleaseUserPageQuery {
     user {
-        details {
-            ...UserDetails
-        }
+        ...UserDetails
         subscription {
             stripeCustomerId
             stripeSubscriptionId

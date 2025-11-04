@@ -51,7 +51,7 @@ fragment ContributionDetails on Contribution {
     story
 }
 
-fragment UserDetails on UserDetails {
+fragment UserDetails on User {
     id
     email
     connectSecretId

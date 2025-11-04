@@ -25,7 +25,7 @@ class SdkBoostTest {
     private val setupWithUser = asyncSetup.extend(
         beforeAll = suspend {
             val sdk = sdk()
-            val user = sdk.fire(GqlQuery(UserDetailsQuery()))?.user?.details?.userDetails
+            val user = sdk.fire(GqlQuery(UserDetailsQuery()))?.user?.userDetails
                 ?: throw Exception("Sdk did not provide user.")
             object {
                 val sdk = sdk
