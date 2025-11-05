@@ -128,7 +128,7 @@ class SdkSecretTest {
         )
         queryResult
             ?.partyList
-            ?.mapNotNull { it.partyDetails.toDomain() }
+            ?.map { it.partyDetails.toDomain() }
             .assertIsEqualTo(listOf(party1))
         queryResult?.party
             .assertIsEqualTo(null)

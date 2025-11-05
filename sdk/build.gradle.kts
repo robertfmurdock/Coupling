@@ -21,6 +21,7 @@ apollo {
         generateApolloMetadata = true
         generateAsInternal = false
         generateSourcesDuringGradleSync = true
+        generateDataBuilders = true
         packageName = "com.zegreatrob.coupling.sdk.schema"
         schemaFiles.from(
             file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
@@ -91,9 +92,6 @@ dependencies {
     "commonMainImplementation"("io.ktor:ktor-client-websockets")
     "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
-    "commonTestImplementation"("io.ktor:ktor-serialization-kotlinx-json")
-    "commonTestImplementation"("io.ktor:ktor-client-content-negotiation")
-    "commonTestImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json")
     "commonTestImplementation"(project(":libraries:repository:validation"))
     "commonTestImplementation"(project(":libraries:stub-model"))
     "commonTestImplementation"(project(":libraries:test-logging"))
@@ -101,7 +99,11 @@ dependencies {
     "commonTestImplementation"("com.zegreatrob.testmints:minassert")
     "commonTestImplementation"("com.zegreatrob.testmints:standard")
     "commonTestImplementation"("io.github.oshai:kotlin-logging")
+    "commonTestImplementation"("io.ktor:ktor-client-content-negotiation")
+    "commonTestImplementation"("io.ktor:ktor-client-mock")
+    "commonTestImplementation"("io.ktor:ktor-serialization-kotlinx-json")
     "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
+    "commonTestImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json")
 
     "jsTestImplementation"(project(":server:slack"))
     "jvmTestImplementation"("io.ktor:ktor-client-java")

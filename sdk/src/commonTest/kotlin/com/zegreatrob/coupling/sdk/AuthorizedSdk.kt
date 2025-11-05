@@ -11,6 +11,7 @@ import com.zegreatrob.testmints.action.ActionCannon
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -56,8 +57,14 @@ private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedPartie
     ?.map { it.id }
     ?.forEach { fire(DeletePartyCommand(it)) }
 
-private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> couplingSdk({ token }, buildClient(), LoggingActionPipe(Uuid.random())) }
+suspend fun sdk(username: String, password: String, engine: HttpClientEngine? = null, traceId: Uuid? = null) = generateAccessToken(username, password)
+    .let { token ->
+        couplingSdk(
+            { token },
+            buildClient(engine, traceId),
+            LoggingActionPipe(traceId ?: Uuid.random()),
+        )
+    }
 
 suspend fun sdk(): ActionCannon<CouplingSdkDispatcher> = primaryAuthorizedSdkDeferred.await()
 
@@ -83,20 +90,19 @@ val baseUrl = Url("https://localhost")
 
 private val ktorLogger = KotlinLogging.logger("ktor")
 
-fun buildClient(): HttpClient {
+fun buildClient(engine: HttpClientEngine? = null, traceId: Uuid? = null): HttpClient {
     setupPlatformSpecificKtorSettings()
 
-    val client = defaultClient("$baseUrl", Uuid.random()).config {
-        followRedirects = false
-        expectSuccess = false
-        install(Logging) {
+    return defaultClient("$baseUrl", traceId ?: Uuid.random(), engine).config {
+        this.followRedirects = false
+        this.expectSuccess = false
+        this.install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) = ktorLogger.info { message }
             }
             level = LogLevel.BODY
         }
     }
-    return client
 }
 
 private suspend fun generateAccessToken(username: String, password: String): String {
