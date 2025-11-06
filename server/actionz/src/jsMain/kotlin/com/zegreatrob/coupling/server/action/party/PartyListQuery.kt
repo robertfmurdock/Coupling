@@ -1,10 +1,8 @@
 package com.zegreatrob.coupling.server.action.party
 
-import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
@@ -20,33 +18,29 @@ object PartyListQuery {
         CurrentUserProvider,
         PartyRecordSyntax {
 
-        suspend fun perform(query: PartyListQuery): PartyListResult = getPartiesAndUserPlayers()
-            .onlyAuthenticatedParties()
+        suspend fun perform(query: PartyListQuery): PartyListResult = fetchAuthorizedPartyIds()
+            .loadParties()
 
-        private suspend fun getPartiesAndUserPlayers() = getPartiesAndPlayersDeferred()
-            .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
+        private suspend fun fetchAuthorizedPartyIds() = coroutineScope {
+            Pair(async { userAuthorizedPartyIds() }, async { playerAuthorizedPartyIds() })
+        }.let { Pair(it.first.await(), it.second.await()) }
 
-        private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
-            async { getPartyRecords() } to async { currentUser.loadPlayers() }
-        }
-
-        private suspend fun Pair<List<Record<PartyDetails>>, List<PartyRecord<Player>>>.onlyAuthenticatedParties() = let { (partyRecords, playerRecords) ->
-            val ownedParties = partyRecords.filter(
-                loadCurrentConnectedUsers()
-                    .flatMap { it.authorizedPartyIds }
-                    .toSet().allowFilter(),
-            )
+        private suspend fun Pair<Set<PartyId>, Set<PartyId>>.loadParties() = coroutineScope {
+            val parties = getPartyRecords(first + second)
             PartyListResult(
-                ownedParties = ownedParties,
-                playerParties = (partyRecords - ownedParties.toSet())
-                    .filter(
-                        playerRecords.map { it.data.partyId }.toSet().allowFilter(),
-                    ),
+                ownedParties = parties.filter { it.data.id in first },
+                playerParties = parties.filter { it.data.id in second && it.data.id !in first },
             )
         }
+
+        private suspend fun playerAuthorizedPartyIds(): Set<PartyId> = currentUser.loadPlayers()
+            .map { it.data.partyId }
+            .toSet()
+
+        private suspend fun userAuthorizedPartyIds(): Set<PartyId> = loadCurrentConnectedUsers()
+            .flatMap { it.authorizedPartyIds }
+            .toSet()
     }
 }
-
-private fun Set<PartyId>.allowFilter(): (Record<PartyDetails>) -> Boolean = { contains(it.data.id) }
 
 data class PartyListResult(val ownedParties: List<Record<PartyDetails>>, val playerParties: List<Record<PartyDetails>>)

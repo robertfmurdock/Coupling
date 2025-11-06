@@ -28,6 +28,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.Test
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
+import kotlin.uuid.Uuid
 
 class SdkSecretTest {
 
@@ -49,7 +50,7 @@ class SdkSecretTest {
             ?.map { it.partySecret.toDomain() }
             .assertIsEqualTo(listOf(secret))
 
-        val tokenSdk = couplingSdk({ token }, buildClient())
+        val tokenSdk = couplingSdk({ token }, buildClient(traceId = Uuid.random()))
         tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id)))
             ?.party
             ?.partyDetails
@@ -65,7 +66,7 @@ class SdkSecretTest {
     }) {
         sdk().fire(SavePartyCommand(party))
         val (_, token) = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
-        tokenSdk = couplingSdk({ token }, buildClient())
+        tokenSdk = couplingSdk({ token }, buildClient(traceId = Uuid.random()))
     } exercise {
         tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id)))
         sdk().fire(GqlQuery(PartySecretListQuery(party.id)))
@@ -102,7 +103,7 @@ class SdkSecretTest {
             ?.secretList
             ?.map { it.partySecret.toDomain() }
             .assertIsEqualTo(emptyList())
-        val tokenSdk = couplingSdk({ token }, buildClient())
+        val tokenSdk = couplingSdk({ token }, buildClient(traceId = Uuid.random()))
         runCatching { tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id))) }
             .exceptionOrNull()
             .assertIsNotEqualTo(null, "Expect this to fail")
@@ -122,7 +123,7 @@ class SdkSecretTest {
         sdk().fire(CreateSecretCommand(party1.id, secretDescription))
     } verify { result ->
         val (_, token) = result!!
-        val tokenSdk = couplingSdk({ token }, buildClient())
+        val tokenSdk = couplingSdk({ token }, buildClient(traceId = Uuid.random()))
         val queryResult = tokenSdk.fire(
             GqlQuery(PartyDetailsAndListQuery(party2.id)),
         )

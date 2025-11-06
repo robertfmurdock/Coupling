@@ -23,9 +23,23 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     ) {
         parties.forEach { repository.save(it) }
     } exercise {
-        repository.loadParties()
+        repository.loadParties(emptySet())
     } verify { result ->
         result.parties().assertContainsAll(parties)
+    }
+
+    @Test
+    fun saveMultipleThenGetFilteredListWillReturnOnlyCertainParties() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val parties = stubParties(3)
+            val expectedParties = parties.shuffled().take(2)
+        }.bind(),
+    ) {
+        parties.forEach { repository.save(it) }
+    } exercise {
+        repository.loadParties(expectedParties.map { it.id }.toSet())
+    } verify { result ->
+        result.parties().assertIsEqualTo(expectedParties)
     }
 
     private fun List<PartyDetails>.assertContainsAll(expectedParties: List<PartyDetails>) = expectedParties.forEach(this::assertContains)
@@ -54,7 +68,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
         clock.currentTime = Clock.System.now().minus(3.days)
         repository.save(party)
     } exercise {
-        repository.loadParties()
+        repository.loadParties(emptySet())
     } verifyAnd { result ->
         result.first { it.data.id == party.id }.apply {
             modifyingUserId.assertIsEqualTo(user.id.value)
@@ -100,7 +114,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     } exercise {
         repository.deleteIt(party.id)
         Pair(
-            repository.loadParties(),
+            repository.loadParties(emptySet()),
             repository.getDetails(party.id)?.data,
         )
     } verifyAnd { (listResult, getResult) ->

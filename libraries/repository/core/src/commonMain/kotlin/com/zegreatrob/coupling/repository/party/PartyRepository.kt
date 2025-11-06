@@ -35,5 +35,5 @@ fun interface PartyIntegrationGet {
 }
 
 fun interface PartyListGet {
-    suspend fun loadParties(): List<Record<PartyDetails>>
+    suspend fun loadParties(partyIds: Set<PartyId>): List<Record<PartyDetails>>
 }

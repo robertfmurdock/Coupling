@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo
 
+import com.zegreatrob.coupling.repository.dynamo.external.batchExecuteStatement
+import com.zegreatrob.coupling.repository.dynamo.external.executeStatement
 import com.zegreatrob.coupling.repository.dynamo.external.query
 import kotlinx.coroutines.await
 import kotlin.js.Json
@@ -10,6 +12,13 @@ interface DynamoQuerySyntax :
     DynamoTableNameSyntax,
     DynamoItemSyntax {
     suspend fun performQuery(query: Json): Json = dynamoDBClient.query(query).await()
+
+    suspend fun executeStatement(query: Json): Array<Json> = dynamoDBClient.executeStatement(query).await()
+        .itemsNode()
+
+    suspend fun batchExecuteStatement(query: Json): Array<Json> = dynamoDBClient.batchExecuteStatement(query).await()
+        .also { println(JSON.stringify(it)) }
+        .itemsNode()
 
     suspend fun queryAllRecords(
         params: Json = json("TableName" to prefixedTableName),

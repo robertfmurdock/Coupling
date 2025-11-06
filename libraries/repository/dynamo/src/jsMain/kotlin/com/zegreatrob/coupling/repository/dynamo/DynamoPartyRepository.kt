@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import kotlin.js.Json
+import kotlin.js.json
 import kotlin.time.Clock
 
 class DynamoPartyRepository private constructor(override val userId: UserId, override val clock: Clock) :
@@ -45,7 +46,22 @@ class DynamoPartyRepository private constructor(override val userId: UserId, ove
         "${DynamoPartyJsonMapping.INTEGRATION_CONSTANT}${partyId.value}",
     )?.let { it.toRecord(it.toIntegration()) }
 
-    override suspend fun loadParties() = scanAllRecords()
+    override suspend fun loadParties(partyIds: Set<PartyId>) = (
+        if (partyIds.isEmpty()) {
+            scanAllRecords()
+        } else {
+            scanAllRecords(
+                json(
+                    "TableName" to prefixedTableName,
+                    "ScanIndexForward" to false,
+                    "ExpressionAttributeValues" to json(
+                        ":partyIds" to partyIds.map { it.value.toString() }.toTypedArray(),
+                    ),
+                    "FilterExpression" to "contains(:partyIds, id)",
+                ),
+            )
+        }
+        )
         .map { it.toRecord(it.toParty()) }
         .sortedBy { it.timestamp }
         .groupBy { it.data.id }

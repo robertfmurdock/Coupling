@@ -34,7 +34,7 @@ data class GlobalStatsQuery(val year: Int) {
         val partyRepository: PartyRepository
         val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
-        suspend fun perform(query: GlobalStatsQuery): GlobalStats = partyRepository.loadParties()
+        suspend fun perform(query: GlobalStatsQuery): GlobalStats = partyRepository.loadParties(emptySet())
             .toStats(yearMatcher(query.year))
             .filter(::excludePartiesSpinningUnnaturallyFast)
             .toGlobalStats()

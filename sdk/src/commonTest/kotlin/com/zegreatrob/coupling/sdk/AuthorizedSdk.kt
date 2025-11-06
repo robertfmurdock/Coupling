@@ -57,12 +57,12 @@ private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedPartie
     ?.map { it.id }
     ?.forEach { fire(DeletePartyCommand(it)) }
 
-suspend fun sdk(username: String, password: String, engine: HttpClientEngine? = null, traceId: Uuid? = null) = generateAccessToken(username, password)
+suspend fun sdk(username: String, password: String, engine: HttpClientEngine? = null, traceId: Uuid = Uuid.random()) = generateAccessToken(username, password)
     .let { token ->
         couplingSdk(
             { token },
             buildClient(engine, traceId),
-            LoggingActionPipe(traceId ?: Uuid.random()),
+            LoggingActionPipe(traceId),
         )
     }
 
@@ -90,10 +90,10 @@ val baseUrl = Url("https://localhost")
 
 private val ktorLogger = KotlinLogging.logger("ktor")
 
-fun buildClient(engine: HttpClientEngine? = null, traceId: Uuid? = null): HttpClient {
+fun buildClient(engine: HttpClientEngine? = null, traceId: Uuid): HttpClient {
     setupPlatformSpecificKtorSettings()
 
-    return defaultClient("$baseUrl", traceId ?: Uuid.random(), engine).config {
+    return defaultClient("$baseUrl", traceId, engine).config {
         this.followRedirects = false
         this.expectSuccess = false
         this.install(Logging) {

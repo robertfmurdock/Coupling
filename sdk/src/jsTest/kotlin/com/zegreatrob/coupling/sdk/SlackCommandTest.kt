@@ -12,12 +12,13 @@ import io.ktor.http.formUrlEncode
 import kotlin.js.Date
 import kotlin.math.roundToInt
 import kotlin.test.Test
+import kotlin.uuid.Uuid
 
 class SlackCommandTest {
 
     @Test
     fun canSuccessfullyAcceptSignedSlackRequest() = asyncSetup(object {
-        val client = buildClient().config {
+        val client = buildClient(traceId = Uuid.random()).config {
             Logging { level = LogLevel.ALL }
         }
         val timestamp = Date.now().roundToInt()

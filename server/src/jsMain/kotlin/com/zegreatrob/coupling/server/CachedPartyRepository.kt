@@ -12,8 +12,8 @@ class CachedPartyRepository(private val repository: PartyRepository) : PartyRepo
     private val mutex = Mutex()
     private val cache = mutableMapOf<PartyId, Record<PartyDetails>?>()
 
-    override suspend fun loadParties(): List<Record<PartyDetails>> = mutex.withLock {
-        repository.loadParties().also { cache.putAll(it.associateBy { record -> record.data.id }) }
+    override suspend fun loadParties(partyIds: Set<PartyId>): List<Record<PartyDetails>> = mutex.withLock {
+        repository.loadParties(partyIds).also { cache.putAll(it.associateBy { record -> record.data.id }) }
     }
 
     override suspend fun getDetails(partyId: PartyId): Record<PartyDetails>? = mutex.withLock {
