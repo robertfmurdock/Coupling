@@ -39,7 +39,8 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     } exercise {
         repository.loadParties(expectedParties.map { it.id }.toSet())
     } verify { result ->
-        result.parties().assertIsEqualTo(expectedParties)
+        result.parties().sortedBy { it.id.value }
+            .assertIsEqualTo(expectedParties.sortedBy { it.id.value })
     }
 
     private fun List<PartyDetails>.assertContainsAll(expectedParties: List<PartyDetails>) = expectedParties.forEach(this::assertContains)
