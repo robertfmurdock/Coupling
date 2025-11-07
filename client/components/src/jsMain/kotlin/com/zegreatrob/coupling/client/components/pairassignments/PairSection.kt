@@ -1,3 +1,5 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
@@ -16,6 +18,8 @@ import emotion.react.css
 import js.globals.globalThis
 import js.objects.unsafeJso
 import kotlinx.browser.window
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.launch
 import org.w3c.dom.DataTransfer
 import react.ChildrenBuilder
 import react.Props
@@ -29,8 +33,8 @@ import web.cssom.Float
 import web.cssom.VerticalAlign
 import web.cssom.px
 import web.html.HTMLElement
+import web.html.toBlob
 import kotlin.js.Json
-import kotlin.js.Promise
 import kotlin.js.json
 
 external interface PairSectionProps : Props {
@@ -84,7 +88,11 @@ private fun HTMLElement.writeImageToClipboardAsPromise(): () -> Unit = {
     window.navigator.clipboard.write(
         dataTransfer(
             html2canvas(this, json("useCORS" to true, "imageTimeout" to 500))
-                .then { Promise { resolve, _ -> it.toBlob(resolve, "image/svg") } },
+                .then { hTMLCanvasElement ->
+                    kotlinx.coroutines.GlobalScope.launch {
+                        hTMLCanvasElement.toBlob("image/svg")
+                    }
+                },
         ),
     )
 }
