@@ -33,11 +33,13 @@ private fun signingSecret(request: Request, token: dynamic): dynamic = when (tok
     else -> auth0Secret(request, token)
 }
 
-private fun auth0Secret(request: Request, token: Any?): dynamic = expressJwtSecret(
+private val expressJwtSecret = expressJwtSecret(
     json(
         "cache" to true,
         "rateLimit" to true,
         "jwksRequestsPerMinute" to 5,
         "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json",
     ),
-)(request, token)
+)
+
+private fun auth0Secret(request: Request, token: Any?): dynamic = expressJwtSecret(request, token)
