@@ -15,8 +15,10 @@ import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PlayersAndPinsQuery
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -24,7 +26,7 @@ class RequestCombineEndpointTest {
     @Test
     fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = sdk()
-        object {
+        object : ScopeMint() {
             val sdk = sdk
             val party = PartyDetails(id = PartyId("et-${Uuid.random()}"))
             val playersToSave = listOf(
@@ -38,8 +40,8 @@ class RequestCombineEndpointTest {
         }
     }) {
         sdk.fire(SavePartyCommand(party))
-        pinsToSave.forEach { sdk.fire(SavePinCommand(party.id, it)) }
-        playersToSave.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
+        pinsToSave.forEach { setupScope.launch { sdk.fire(SavePinCommand(party.id, it)) } }
+        playersToSave.forEach { setupScope.launch { sdk.fire(SavePlayerCommand(party.id, it)) } }
     } exercise {
         coroutineScope {
             sdk.fire(GqlQuery(PlayersAndPinsQuery(party.id)))

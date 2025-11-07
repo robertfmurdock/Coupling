@@ -26,6 +26,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.uuid.Uuid
@@ -52,10 +54,12 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() = fire(GqlQuery(PartyIdListQuery()))
-    ?.partyList
-    ?.map { it.id }
-    ?.forEach { fire(DeletePartyCommand(it)) }
+private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() = coroutineScope {
+    fire(GqlQuery(PartyIdListQuery()))
+        ?.partyList
+        ?.map { it.id }
+        ?.forEach { launch { fire(DeletePartyCommand(it)) } }
+}
 
 suspend fun sdk(username: String, password: String, engine: HttpClientEngine? = null, traceId: Uuid = Uuid.random()) = generateAccessToken(username, password)
     .let { token ->
