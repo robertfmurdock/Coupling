@@ -167,20 +167,21 @@ type Party {
     modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
+    spinsUntilFullRotation: Int
+    medianSpinDuration: Duration
+
     accessType: AccessType!
+    boost: BoostDetails
+    contributionReport(input: ContributionsInput): ContributionReport
+    currentPairingSet: PairingSet
     integration: PartyIntegration
+    pair(input: PairInput) : Pair
+    pairList(input: PairListInput): [Pair!]!
+    pairingSetList: [PairingSet!]!
     pinList: [PinDetails!]!
     playerList: [Player!]!
     retiredPlayers: [Player!]!
-    pairs(input: PairsInput): [Pair!]!
-    pairingSetList: [PairingSet!]!
     secretList: [PartySecret!]!
-    currentPairingSet: PairingSet
-    spinsUntilFullRotation: Int
-    medianSpinDuration: Duration
-    boost: BoostDetails
-    contributionReport(input: ContributionsInput): ContributionReport
-    pair(input: PairInput) : Pair
 }
 
 enum AccessType {
@@ -196,7 +197,7 @@ input PairInput {
     playerIdList: [PlayerId!]!
 }
 
-input PairsInput {
+input PairListInput {
     includeRetired: Boolean
 }
 

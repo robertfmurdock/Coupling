@@ -77,7 +77,7 @@ query StatisticsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
         playerList { ...PlayerDetails }
-        pairs(input: {includeRetired: false}) {
+        pairList(input: {includeRetired: false}) {
             players { ...PartyPlayerDetails }
             spinsSinceLastPaired
             recentTimesPaired
@@ -141,9 +141,9 @@ query contributionVisualizationPageQuery($partyId: PartyId!) {
     }
 }
 
-query contributionVisualizationDataQuery($partyId: PartyId!, $window: ContributionWindow!, $pairsInput: PairsInput!) {
+query contributionVisualizationDataQuery($partyId: PartyId!, $window: ContributionWindow!, $pairsInput: PairListInput!) {
     party(input: {partyId: $partyId}) {
-        pairs(input: $pairsInput) {
+        pairList(input: $pairsInput) {
             players {
                 ...PlayerDetails
             }

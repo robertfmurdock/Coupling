@@ -21,7 +21,7 @@ import com.zegreatrob.coupling.sdk.schema.PartyPairsPlayerDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPairsRecentTimesPairedQuery
 import com.zegreatrob.coupling.sdk.schema.PartyPairsSpinsQuery
 import com.zegreatrob.coupling.sdk.schema.type.PairInput
-import com.zegreatrob.coupling.sdk.schema.type.PairsInput
+import com.zegreatrob.coupling.sdk.schema.type.PairListInput
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -44,7 +44,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairList?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -69,12 +69,12 @@ class SdkPairsTest {
             GqlQuery(
                 PartyPairsPlayerDetailsQuery(
                     partyId = party.id,
-                    pairsInput = present(PairsInput(includeRetired = present(false))),
+                    pairsInput = present(PairListInput(includeRetired = present(false))),
                 ),
             ),
         )
     } verify { result ->
-        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairList?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -122,7 +122,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairList?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             ?.last()
             .assertIsEqualTo(mob)
     }
@@ -154,12 +154,12 @@ class SdkPairsTest {
             GqlQuery(
                 PartyPairsPlayerDetailsQuery(
                     partyId = party.id,
-                    pairsInput = present(PairsInput(includeRetired = present(false))),
+                    pairsInput = present(PairListInput(includeRetired = present(false))),
                 ),
             ),
         )
     } verify { result ->
-        result?.party?.pairs?.map {
+        result?.party?.pairList?.map {
             it.players.map { player -> player.playerDetails.toDomain() }
         }
             ?.flatten()
@@ -191,12 +191,12 @@ class SdkPairsTest {
             GqlQuery(
                 PartyPairsPlayerDetailsQuery(
                     partyId = party.id,
-                    pairsInput = present(PairsInput(includeRetired = present(false))),
+                    pairsInput = present(PairListInput(includeRetired = present(false))),
                 ),
             ),
         )
     } verify { result ->
-        result?.party?.pairs?.map {
+        result?.party?.pairList?.map {
             it.players.map { player -> player.playerDetails.toDomain() }
         }
             ?.flatten()
@@ -232,7 +232,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairList?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             ?.last()
             .assertIsEqualTo(mob)
     }
@@ -253,7 +253,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsCountQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.count }
+        result?.party?.pairList?.map { it.count }
             .assertIsEqualTo(
                 listOf(3, 1, 1, 0, 0, 0),
             )
@@ -274,7 +274,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsHistoryQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map {
+        result?.party?.pairList?.map {
             it.pairAssignmentHistory.map { record -> record.pairingSetDetails.toDomain() }
         }
             .assertIsEqualTo(
@@ -361,7 +361,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsHistoryDateQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.pairAssignmentHistory.map { record -> record.date } }
+        result?.party?.pairList?.map { it.pairAssignmentHistory.map { record -> record.date } }
             .assertIsEqualTo(
                 listOf(
                     listOf(pair01_1, pair01_2, pair01_3).map { it.date }.sortedDescending(),
@@ -389,7 +389,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.recentTimesPaired }
+        result?.party?.pairList?.map { it.recentTimesPaired }
             .assertIsEqualTo(
                 listOf(4, 0, 0, null, null, null),
             )
@@ -410,7 +410,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsHistoryRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.pairAssignmentHistory.map { history -> history.recentTimesPaired } }
+        result?.party?.pairList?.map { it.pairAssignmentHistory.map { history -> history.recentTimesPaired } }
             .assertIsEqualTo(
                 listOf(
                     listOf(4, 3, 2, 1),
@@ -455,7 +455,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsSpinsQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.spinsSinceLastPaired }
+        result?.party?.pairList?.map { it.spinsSinceLastPaired }
             .assertIsEqualTo(
                 listOf(0, 1, 3, null, null, null),
             )

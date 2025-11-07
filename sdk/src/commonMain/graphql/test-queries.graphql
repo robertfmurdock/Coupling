@@ -181,13 +181,13 @@ query partySecretListQuery($partyId: PartyId!) {
 
 query partyPairsRecentTimesPairedQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { recentTimesPaired }
+        pairList { recentTimesPaired }
     }
 }
 
 query partyPairsHistoryRecentTimesPairedQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs {
+        pairList {
             pairAssignmentHistory {
                 recentTimesPaired
             }
@@ -197,25 +197,25 @@ query partyPairsHistoryRecentTimesPairedQuery($partyId: PartyId!) {
 
 query partyPairsCountQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { count }
+        pairList { count }
     }
 }
 
 query partyPairsSpinsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { spinsSinceLastPaired }
+        pairList { spinsSinceLastPaired }
     }
 }
 
 query partyPairsHistoryQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { pairAssignmentHistory { ...PairingSetDetails } }
+        pairList { pairAssignmentHistory { ...PairingSetDetails } }
     }
 }
 
 query partyPairsHistoryDateQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { pairAssignmentHistory { date } }
+        pairList { pairAssignmentHistory { date } }
     }
 }
 
@@ -260,15 +260,15 @@ query partyContributionReportContributorsQuery($partyId: PartyId!) {
     }
 }
 
-query partyPairsPlayerDetailsQuery($partyId: PartyId!, $pairsInput: PairsInput) {
+query partyPairsPlayerDetailsQuery($partyId: PartyId!, $pairsInput: PairListInput) {
     party(input: {partyId: $partyId}) {
-        pairs(input: $pairsInput) { players { ...PlayerDetails } }
+        pairList(input: $pairsInput) { players { ...PlayerDetails } }
     }
 }
 
 query partyPairsContributionReportContributionsQuery($partyId: PartyId!, $reportInput: ContributionsInput) {
     party(input: {partyId: $partyId}) {
-        pairs {
+        pairList {
             players { id }
             contributionReport(input: $reportInput) {
                 contributions { ...ContributionDetails }
@@ -277,11 +277,11 @@ query partyPairsContributionReportContributionsQuery($partyId: PartyId!, $report
     }
 }
 
-query partyPairsContributionReportNumbersQuery($partyId: PartyId!, $pairsInput: PairsInput) {
+query partyPairsContributionReportNumbersQuery($partyId: PartyId!, $pairsInput: PairListInput) {
     party(input: {partyId: $partyId}) {
         id
         accessType
-        pairs(input: $pairsInput) {
+        pairList(input: $pairsInput) {
             players { email, partyId, ...PlayerDetails }
             contributionReport {
                 count

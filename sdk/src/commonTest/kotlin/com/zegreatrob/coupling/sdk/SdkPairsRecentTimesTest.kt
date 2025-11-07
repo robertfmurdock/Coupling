@@ -43,7 +43,7 @@ class SdkPairsRecentTimesTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.recentTimesPaired }
+        result?.party?.pairList?.map { it.recentTimesPaired }
             .assertIsEqualTo(emptyList())
     }
 
@@ -59,7 +59,7 @@ class SdkPairsRecentTimesTest {
             GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)),
         )
     } verify { result ->
-        result?.party?.pairs?.map { it.recentTimesPaired }
+        result?.party?.pairList?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(null))
     }
 
@@ -77,7 +77,7 @@ class SdkPairsRecentTimesTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.recentTimesPaired }
+        result?.party?.pairList?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(0, 0, 0, null, null, null))
     }
 
@@ -94,7 +94,7 @@ class SdkPairsRecentTimesTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.recentTimesPaired }
+        result?.party?.pairList?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(1, null, null))
     }
 
@@ -117,7 +117,7 @@ class SdkPairsRecentTimesTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.recentTimesPaired }
+        result?.party?.pairList?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(5, null, null))
     }
 
@@ -159,7 +159,7 @@ class SdkPairsRecentTimesTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.recentTimesPaired }
+        result?.party?.pairList?.map { it.recentTimesPaired }
             .assertIsEqualTo(listOf(14, 1, 0, null, null, null))
     }
 }

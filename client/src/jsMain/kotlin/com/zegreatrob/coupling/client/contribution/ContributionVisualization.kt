@@ -34,7 +34,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
-import com.zegreatrob.coupling.sdk.schema.type.PairsInput
+import com.zegreatrob.coupling.sdk.schema.type.PairListInput
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
@@ -53,10 +53,10 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     val (window, setWindow) = useWindow(ContributionWindow.Quarter)
     CouplingQuery(
         commander = commander,
-        query = GqlQuery(ContributionVisualizationDataQuery(party.id, window.toGql(), PairsInput(Optional.Present(true)))),
+        query = GqlQuery(ContributionVisualizationDataQuery(party.id, window.toGql(), PairListInput(Optional.Present(true)))),
     ) { reload, _, queryResult ->
         PairFrequencyControls(
-            pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery,
+            pairsContributions = queryResult.party?.pairList?.toPairContributions() ?: return@CouplingQuery,
             window = window,
             setWindow = {
                 setWindow(it)
@@ -84,7 +84,7 @@ private fun List<Pair<CouplingPair, ContributionReport>>.allContributions(): Lis
     it.second.contributions.elements
 }
 
-private fun List<ContributionVisualizationDataQuery.Pair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
+private fun List<ContributionVisualizationDataQuery.PairList>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
     val contributionReport = it.contributionReport?.toModel() ?: return@mapNotNull null
     val players = it.players.map { player -> player.playerDetails.toDomain() }
     players.toCouplingPair() to contributionReport

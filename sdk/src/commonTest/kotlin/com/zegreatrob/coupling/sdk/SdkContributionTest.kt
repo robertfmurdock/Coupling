@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.sdk.schema.PartyPairsContributionReportContributi
 import com.zegreatrob.coupling.sdk.schema.PartyPairsContributionReportNumbersQuery
 import com.zegreatrob.coupling.sdk.schema.type.ContributionWindow
 import com.zegreatrob.coupling.sdk.schema.type.ContributionsInput
-import com.zegreatrob.coupling.sdk.schema.type.PairsInput
+import com.zegreatrob.coupling.sdk.schema.type.PairListInput
 import com.zegreatrob.coupling.stubmodel.roundToMillis
 import com.zegreatrob.coupling.stubmodel.stubContributionInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -143,7 +143,7 @@ class SdkContributionTest {
             ),
         )
     } verify { result ->
-        result?.party?.pairs
+        result?.party?.pairList
             ?.filter { it.players.map { player -> player.id } != listOf(expectedPlayer.id) }
             ?.forEach {
                 val contributions = it.contributionReport?.contributions
@@ -156,7 +156,7 @@ class SdkContributionTest {
                         } had an inappropriate match",
                     )
             }
-        result?.party?.pairs
+        result?.party?.pairList
             ?.find { it.players.map { player -> player.id } == listOf(expectedPlayer.id) }
             ?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()
@@ -191,11 +191,11 @@ class SdkContributionTest {
             GqlQuery(
                 PartyPairsContributionReportNumbersQuery(
                     partyId = party.id,
-                    pairsInput = Optional.present(PairsInput(includeRetired = Optional.present(true))),
+                    pairsInput = Optional.present(PairListInput(includeRetired = Optional.present(true))),
                 ),
             ),
         )
-            ?.party?.pairs?.first {
+            ?.party?.pairList?.first {
                 it.players.map { player -> player.email }.toSet() == pairEmails
             }?.contributionReport
     } verify { result ->
@@ -313,7 +313,7 @@ class SdkContributionTest {
             ),
         )
     } verify { result ->
-        result?.party?.pairs
+        result?.party?.pairList
             ?.find { it.players.map { player -> player.id } == listOf(expectedPlayer.id) }
             ?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()

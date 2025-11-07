@@ -33,8 +33,8 @@ import com.zegreatrob.coupling.server.entity.player.pairAssignmentHeatResolve
 import com.zegreatrob.coupling.server.entity.player.pairAssignmentHistoryResolve
 import com.zegreatrob.coupling.server.entity.player.pairCountResolve
 import com.zegreatrob.coupling.server.entity.player.pairHeatResolve
+import com.zegreatrob.coupling.server.entity.player.pairListResolve
 import com.zegreatrob.coupling.server.entity.player.pairResolve
-import com.zegreatrob.coupling.server.entity.player.pairsResolve
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.player.savePlayerResolver
@@ -136,7 +136,7 @@ fun couplingResolvers() = json(
         "pairingSetList" to pairAssignmentListResolve,
         "secretList" to secretListResolve,
         "currentPairingSet" to currentPairAssignmentResolve,
-        "pairs" to pairsResolve,
+        "pairList" to pairListResolve,
         "pair" to pairResolve,
         "medianSpinDuration" to medianSpinDurationResolve,
         "spinsUntilFullRotation" to spinsUntilFullRotationResolve,
