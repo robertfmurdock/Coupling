@@ -24,7 +24,7 @@ type User {
     connectedEmails: [Email!]!
     authorizedPartyIds: [PartyId!]!
     boost: BoostDetails
-    players: [PlayerDetails!]!
+    players: [Player!]!
 }
 
 type Pin {
@@ -43,7 +43,7 @@ type PinDetails {
     isDeleted: Boolean!
 }
 
-type PlayerDetails {
+type Player {
     id: PlayerId!
     partyId: PartyId!
     name: String!
@@ -170,8 +170,8 @@ type Party {
     accessType: AccessType!
     integration: PartyIntegration
     pinList: [PinDetails!]!
-    playerList: [PlayerDetails!]!
-    retiredPlayers: [PlayerDetails!]!
+    playerList: [Player!]!
+    retiredPlayers: [Player!]!
     pairs(input: PairsInput): [Pair!]!
     pairingSetList: [PairingSet!]!
     secretList: [PartySecret!]!
@@ -355,7 +355,7 @@ input PartyInput {
 
 type Pair {
     partyId: PartyId
-    players: [PlayerDetails!]!
+    players: [Player!]!
     count: Int
     spinsSinceLastPaired: Int
     recentTimesPaired: Int
@@ -380,7 +380,7 @@ type Query {
     party(input: PartyInput!): Party
     user: User!
     globalStats(input: GlobalStatsInput!) : GlobalStats!
-    config: Configuration
+    config: Configuration!
 }
 
 """

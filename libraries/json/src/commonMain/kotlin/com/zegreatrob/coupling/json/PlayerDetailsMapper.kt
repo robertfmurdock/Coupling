@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
-fun PartyRecord<Player>.toSerializable() = GqlPlayerDetails(
+fun PartyRecord<Player>.toSerializable() = GqlPlayer(
     id = data.element.id,
     name = data.element.name,
     email = data.element.email,
@@ -36,7 +36,7 @@ fun GqlSavePlayerInput.toModel(): Player = Player(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-fun GqlPlayerDetails.toModel(): PartyRecord<Player> = PartyRecord(
+fun GqlPlayer.toModel(): PartyRecord<Player> = PartyRecord(
     partyId.with(
         Player(
             id = id,

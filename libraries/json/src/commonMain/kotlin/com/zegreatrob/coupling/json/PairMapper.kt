@@ -10,7 +10,7 @@ import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPair.toModel() = PlayerPair(
-    players = players.map(GqlPlayerDetails::toModel),
+    players = players.map(GqlPlayer::toModel),
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
     recentTimesPaired = recentTimesPaired,

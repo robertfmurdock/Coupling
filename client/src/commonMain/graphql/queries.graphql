@@ -1,4 +1,4 @@
-fragment PartyPlayerDetails on PlayerDetails {
+fragment PartyPlayerDetails on Player {
     ...PlayerDetails
     partyId
     modifyingUserEmail

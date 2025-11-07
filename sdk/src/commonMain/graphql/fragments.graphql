@@ -11,7 +11,7 @@ fragment PartyDetails on Party {
     animationSpeed
 }
 
-fragment PlayerDetails on PlayerDetails {
+fragment PlayerDetails on Player {
     id
     name
     email
