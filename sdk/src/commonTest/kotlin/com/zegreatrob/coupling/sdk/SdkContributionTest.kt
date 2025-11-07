@@ -144,7 +144,7 @@ class SdkContributionTest {
         )
     } verify { result ->
         result?.party?.pairs
-            ?.filter { it.players?.map { player -> player.id } != listOf(expectedPlayer.id) }
+            ?.filter { it.players.map { player -> player.id } != listOf(expectedPlayer.id) }
             ?.forEach {
                 val contributions = it.contributionReport?.contributions
                     ?.map { contribution -> contribution.contributionDetails.toDomain() }
@@ -152,12 +152,12 @@ class SdkContributionTest {
                     .assertIsEqualTo(
                         emptyList(),
                         "Pairs should only contain contributions with exact matches, but ${
-                            it.players?.map { player -> player.id }
+                            it.players.map { player -> player.id }
                         } had an inappropriate match",
                     )
             }
         result?.party?.pairs
-            ?.find { it.players?.map { player -> player.id } == listOf(expectedPlayer.id) }
+            ?.find { it.players.map { player -> player.id } == listOf(expectedPlayer.id) }
             ?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()
             .assertIsEqualTo(
@@ -196,7 +196,7 @@ class SdkContributionTest {
             ),
         )
             ?.party?.pairs?.first {
-                it.players?.map { player -> player.email }?.toSet() == pairEmails
+                it.players.map { player -> player.email }.toSet() == pairEmails
             }?.contributionReport
     } verify { result ->
         result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
@@ -314,7 +314,7 @@ class SdkContributionTest {
         )
     } verify { result ->
         result?.party?.pairs
-            ?.find { it.players?.map { player -> player.id } == listOf(expectedPlayer.id) }
+            ?.find { it.players.map { player -> player.id } == listOf(expectedPlayer.id) }
             ?.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
             ?.withoutCreatedAt()
             ?.toSet()

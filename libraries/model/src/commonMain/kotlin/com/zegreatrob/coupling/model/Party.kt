@@ -44,6 +44,6 @@ data class ContributionReport(
 )
 
 data class Contributor(
-    val email: String? = null,
-    val playerId: PlayerId? = null,
+    val email: String,
+    val playerId: PlayerId?,
 )

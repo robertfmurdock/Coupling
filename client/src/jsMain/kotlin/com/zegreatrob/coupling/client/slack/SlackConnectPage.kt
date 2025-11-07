@@ -19,7 +19,7 @@ val SlackConnectPage by nfc<PageProps> { props ->
             query = GqlQuery(SlackConnectPageQuery()),
         ) { _, dispatch, result ->
             SlackConnectPageContent(
-                parties = result.partyList?.mapNotNull { it.partyDetails.toDomain() } ?: emptyList(),
+                parties = result.partyList.map { it.partyDetails.toDomain() },
                 slackTeam = slackTeam,
                 slackChannel = slackChannel,
                 dispatchFunc = dispatch,

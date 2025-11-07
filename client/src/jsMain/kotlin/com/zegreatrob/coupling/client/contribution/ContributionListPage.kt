@@ -23,9 +23,9 @@ val ContributionListPage = partyPageFunction { props, partyId ->
         val contributions =
             queryResult.party.contributionReport?.contributions?.map { it.contributionDetails.toDomain() }
                 ?: return@CouplingQuery
-        val players = queryResult.party.playerList?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery
+        val players = queryResult.party.playerList.map { it.playerDetails.toDomain() }
         val retiredPlayers =
-            queryResult.party.retiredPlayers?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery
+            queryResult.party.retiredPlayers.map { it.playerDetails.toDomain() }
         UpdatingPlayerList(
             players = players + retiredPlayers,
             dispatchFunc = dispatchFunc,

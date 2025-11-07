@@ -44,7 +44,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -74,7 +74,7 @@ class SdkPairsTest {
             ),
         )
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             .assertIsEqualTo(
                 listOf(
                     listOf(players[0], players[1]),
@@ -122,7 +122,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             ?.last()
             .assertIsEqualTo(mob)
     }
@@ -159,8 +159,8 @@ class SdkPairsTest {
             ),
         )
     } verify { result ->
-        result?.party?.pairs?.mapNotNull {
-            it.players?.map { player -> player.playerDetails.toDomain() }
+        result?.party?.pairs?.map {
+            it.players.map { player -> player.playerDetails.toDomain() }
         }
             ?.flatten()
             ?.distinct()
@@ -196,8 +196,8 @@ class SdkPairsTest {
             ),
         )
     } verify { result ->
-        result?.party?.pairs?.mapNotNull {
-            it.players?.map { player -> player.playerDetails.toDomain() }
+        result?.party?.pairs?.map {
+            it.players.map { player -> player.playerDetails.toDomain() }
         }
             ?.flatten()
             ?.distinct()
@@ -232,7 +232,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsPlayerDetailsQuery(partyId = party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.players?.map { player -> player.playerDetails.toDomain() } }
+        result?.party?.pairs?.map { it.players.map { player -> player.playerDetails.toDomain() } }
             ?.last()
             .assertIsEqualTo(mob)
     }
@@ -275,7 +275,7 @@ class SdkPairsTest {
         sdk().fire(GqlQuery(PartyPairsHistoryQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map {
-            it.pairAssignmentHistory?.map { record -> record.details?.pairAssignmentDetails?.toDomain() }
+            it.pairAssignmentHistory.map { record -> record.details?.pairAssignmentDetails?.toDomain() }
         }
             .assertIsEqualTo(
                 listOf(
@@ -361,7 +361,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsHistoryDateQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.pairAssignmentHistory?.map { record -> record.date } }
+        result?.party?.pairs?.map { it.pairAssignmentHistory.map { record -> record.date } }
             .assertIsEqualTo(
                 listOf(
                     listOf(pair01_1, pair01_2, pair01_3).map { it.date }.sortedDescending(),
@@ -410,7 +410,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsHistoryRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairs?.map { it.pairAssignmentHistory?.map { history -> history.recentTimesPaired } }
+        result?.party?.pairs?.map { it.pairAssignmentHistory.map { history -> history.recentTimesPaired } }
             .assertIsEqualTo(
                 listOf(
                     listOf(4, 3, 2, 1),

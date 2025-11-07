@@ -15,7 +15,7 @@ class List : CliktCommand() {
         withSdk(cliScope, env, ::echo) { sdk ->
             sdk.fire(GqlQuery(PartyListQuery()))
                 ?.partyList
-                ?.mapNotNull { it.partyDetails.toDomain() }
+                ?.map { it.partyDetails.toDomain() }
                 ?.joinToString("\n") { "Party: id = ${it.id.value}, name = ${it.name}" }
                 .let { it ?: "" }
                 .let { echo(it) }

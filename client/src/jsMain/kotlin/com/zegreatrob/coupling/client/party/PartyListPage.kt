@@ -14,9 +14,6 @@ val PartyListPage by nfc<PageProps> { props ->
         commander = props.commander,
         query = GqlQuery(PartyListQuery()),
     ) { _, _, result ->
-        PartyList(
-            result.partyList?.mapNotNull { it.partyDetails.toDomain() }
-                ?: return@CouplingQuery,
-        )
+        PartyList(result.partyList.map { it.partyDetails.toDomain() })
     }
 }

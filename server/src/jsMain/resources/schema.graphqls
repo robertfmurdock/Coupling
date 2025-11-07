@@ -156,13 +156,13 @@ type Party {
     id: PartyId!
     name: String
     email: String
-    pairingRule: Int
-    badgesEnabled: Boolean
+    pairingRule: Int!
+    badgesEnabled: Boolean!
     defaultBadgeName: String!
     alternateBadgeName: String!
-    callSignsEnabled: Boolean
-    animationsEnabled: Boolean
-    animationSpeed: Float
+    callSignsEnabled: Boolean!
+    animationsEnabled: Boolean!
+    animationSpeed: Float!
     modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
@@ -187,7 +187,7 @@ enum AccessType {
 }
 
 type Contributor {
-    email: String
+    email: String!
     playerId: PlayerId
 }
 

@@ -22,7 +22,7 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
         CouplingLogin.sdk.await().apply {
             fire(GqlQuery(PartyListQuery()))
                 ?.partyList
-                ?.mapNotNull { it.partyDetails.toDomain() }
+                ?.map { it.partyDetails.toDomain() }
                 ?.map(PartyDetails::id)
                 ?.map { DeletePartyCommand(it) }
                 ?.forEach { fire(it) }
