@@ -9,7 +9,7 @@ data class PairAssignment(
     val documentId: PairAssignmentDocumentId,
     val playerIds: List<PlayerId>,
     val details: PartyRecord<PairAssignmentDocument>? = null,
-    val date: Instant? = null,
+    val date: Instant,
     val allPairs: NotEmptyList<PinnedCouplingPair>? = null,
     val recentTimesPaired: Int? = null,
 )

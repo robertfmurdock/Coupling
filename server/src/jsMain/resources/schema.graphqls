@@ -97,7 +97,7 @@ type PinnedPair {
     pins: [Pin!]!
 }
 
-type  PairingSet {
+type PairingSet {
     id: PairingSetId!
     partyId: PartyId!
     date: DateTimeISO!
@@ -107,6 +107,7 @@ type  PairingSet {
     modifyingUserEmail: Email
     timestamp: DateTimeISO!
     isDeleted: Boolean!
+    recentTimesPaired: Int
 }
 
 type PartySecret {
@@ -359,7 +360,7 @@ type Pair {
     spinsSinceLastPaired: Int
     recentTimesPaired: Int
     contributionReport(input: ContributionsInput): ContributionReport
-    pairAssignmentHistory: [PairAssignment!]!
+    pairAssignmentHistory: [PairingSet!]!
 }
 
 type ContributionReport {
@@ -369,15 +370,6 @@ type ContributionReport {
     medianCycleTime: Duration
     withCycleTimeCount: Int
     contributors: [Contributor!]!
-}
-
-type PairAssignment {
-    playerIds: [PlayerId!]!
-    documentId: PairingSetId!
-    pairingSet: PairingSet
-    date: DateTimeISO
-    allPairs: [PinnedPair!]
-    recentTimesPaired: Int
 }
 
 """

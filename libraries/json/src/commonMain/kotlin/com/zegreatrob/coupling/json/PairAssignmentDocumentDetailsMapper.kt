@@ -18,6 +18,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairingSet(
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
+    recentTimesPaired = null,
 )
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(

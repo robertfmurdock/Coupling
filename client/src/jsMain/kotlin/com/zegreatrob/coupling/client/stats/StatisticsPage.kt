@@ -48,6 +48,6 @@ private fun StatisticsPageQuery.Pair.toModel(): PlayerPair = PlayerPair(
 private fun StatisticsPageQuery.PairAssignmentHistory.toModel(): PairAssignment = PairAssignment(
     date = date,
     recentTimesPaired = recentTimesPaired,
-    documentId = documentId,
+    documentId = id,
     playerIds = emptyList(),
 )

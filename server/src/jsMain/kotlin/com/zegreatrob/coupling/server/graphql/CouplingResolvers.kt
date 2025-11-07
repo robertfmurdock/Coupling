@@ -157,7 +157,7 @@ fun couplingResolvers() = json(
         "pairAssignmentHistory" to pairAssignmentHistoryResolve,
         "contributionReport" to pairContributionReportResolver,
     ),
-    "PairAssignment" to json(
+    "PairingSet" to json(
         "recentTimesPaired" to pairAssignmentHeatResolve,
     ),
     "User" to json(

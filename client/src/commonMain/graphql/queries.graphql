@@ -82,7 +82,7 @@ query StatisticsPageQuery($partyId: PartyId!) {
             spinsSinceLastPaired
             recentTimesPaired
             pairAssignmentHistory {
-                documentId
+                id
                 date
                 recentTimesPaired
             }

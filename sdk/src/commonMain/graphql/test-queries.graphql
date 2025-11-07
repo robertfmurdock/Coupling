@@ -209,7 +209,7 @@ query partyPairsSpinsQuery($partyId: PartyId!) {
 
 query partyPairsHistoryQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { pairAssignmentHistory { pairingSet { ...PairingSetDetails } } }
+        pairs { pairAssignmentHistory { ...PairingSetDetails } }
     }
 }
 
@@ -221,7 +221,7 @@ query partyPairsHistoryDateQuery($partyId: PartyId!) {
 
 query partyPairHistoryQuery($partyId: PartyId!, $pairInput: PairInput!) {
     party(input: {partyId: $partyId}) {
-        pair(input: $pairInput) { pairAssignmentHistory { pairingSet { ...PairingSetDetails } } }
+        pair(input: $pairInput) { pairAssignmentHistory { ...PairingSetDetails } }
     }
 }
 

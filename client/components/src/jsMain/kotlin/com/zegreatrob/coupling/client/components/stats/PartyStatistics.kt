@@ -139,23 +139,23 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
     }
 }
 
-private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size == 2 }
+private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players.size == 2 }
     .map {
         NivoLineData(
-            id = it.players?.joinToString("-") { record -> record.element.name } ?: "unknown",
+            id = it.players.joinToString("-") { record -> record.element.name },
             data = it.pairAssignmentHistory
-                ?.map { pairAssignment ->
+                .map { pairAssignment ->
                     NivoPoint(
-                        x = pairAssignment.date?.toJSDate() ?: 0,
+                        x = pairAssignment.date.toJSDate(),
                         y = pairAssignment.recentTimesPaired ?: 0,
                     )
                 }
-                ?.toTypedArray() ?: emptyArray(),
+                .toTypedArray(),
         )
     }.filter { it.data.isNotEmpty() }
     .toTypedArray()
 
-private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired }
+private fun List<PlayerPair>.pairReports() = map { it.players.elements.toCouplingPair() to it.spinsSinceLastPaired }
     .mapNotNull { (pair, spins) ->
         (pair as? CouplingPair.Double)?.let {
             PairReport(

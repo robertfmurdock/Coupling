@@ -16,11 +16,11 @@ fun GqlPair.toModel() = PlayerPair(
     recentTimesPaired = recentTimesPaired,
     pairAssignmentHistory = pairAssignmentHistory.map { json ->
         PairAssignment(
-            documentId = json.documentId,
-            details = json.pairingSet?.toModel(),
+            documentId = json.id,
+            details = json.toModel(),
             date = json.date,
-            allPairs = json.allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),
-            recentTimesPaired = json.recentTimesPaired,
+            allPairs = json.pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrNull(),
+            recentTimesPaired = null,
             playerIds = emptyList(),
         )
     },

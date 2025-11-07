@@ -1,15 +1,12 @@
 package com.zegreatrob.coupling.server.entity.player
 
 import com.zegreatrob.coupling.json.GqlPair
-import com.zegreatrob.coupling.json.GqlPairAssignment
+import com.zegreatrob.coupling.json.GqlPairingSet
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
-import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.orderedPairedPlayers
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
@@ -44,40 +41,31 @@ val pairAssignmentHistoryResolve = dispatch(
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
         val partyId = data.partyId ?: return@dispatch null
-        val players = model.players?.elements ?: return@dispatch null
+        val players = model.players.elements
         PairAssignmentHistoryQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
         )
     },
     fireFunc = ::perform,
-    toSerializable = { (pair, history) ->
-        history.map { doc -> pairAssignment(pair, doc) }.map(PairAssignment::toSerializable)
-    },
-)
-
-private fun pairAssignment(
-    pair: CouplingPair,
-    doc: PartyRecord<PairAssignmentDocument>,
-) = PairAssignment(
-    playerIds = pair.map { it.id },
-    details = doc,
-    documentId = doc.data.element.id,
-    allPairs = doc.data.element.pairs,
-    date = doc.data.element.date,
-    recentTimesPaired = null,
+    toSerializable = { (pair, history) -> history.map { it.toSerializable() } },
 )
 
 val pairAssignmentHeatResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
-    commandFunc = { data: GqlPairAssignment, _ ->
+    commandFunc = { data: GqlPairingSet, _ ->
         val model = data.toModel()
-        val partyId = model.details?.data?.partyId ?: return@dispatch null
-        val pair = model.playerIds?.map { defaultPlayer.copy(id = it) }?.toCouplingPair() ?: return@dispatch null
+        val record = model.data
+        val partyId = record.partyId
+        val pairingSet = record.element
+        val pair = pairingSet.orderedPairedPlayers()
+            .map { it.id }
+            .map { defaultPlayer.copy(id = it) }
+            .toCouplingPair()
         RecentTimesPairedQuery(
             partyId = partyId,
             pair = pair,
-            lastAssignments = model.documentId,
+            lastAssignments = pairingSet.id,
         )
     },
     fireFunc = ::perform,
@@ -89,7 +77,7 @@ val spinsSinceLastPairedResolve = dispatch(
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
         val partyId = data.partyId ?: return@dispatch null
-        val players = model.players?.elements ?: return@dispatch null
+        val players = model.players.elements
         SpinsSinceLastPairedQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
@@ -104,7 +92,7 @@ val pairHeatResolve = dispatch(
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
         val partyId = data.partyId ?: return@dispatch null
-        val players = model.players?.elements ?: return@dispatch null
+        val players = model.players.elements
         RecentTimesPairedQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
