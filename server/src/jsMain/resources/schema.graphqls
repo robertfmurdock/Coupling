@@ -2,7 +2,7 @@ scalar ContributionId
 scalar DateTimeISO
 scalar Duration
 scalar Email
-scalar PairAssignmentDocumentId
+scalar PairingSetId
 scalar PartyId
 scalar PinId
 scalar PlayerId
@@ -97,8 +97,8 @@ type PinnedPair {
     pins: [Pin!]!
 }
 
-type PairAssignmentDocumentDetails {
-    id: PairAssignmentDocumentId!
+type  PairingSet {
+    id: PairingSetId!
     partyId: PartyId!
     date: DateTimeISO!
     pairs: [PinnedPair!]!
@@ -172,9 +172,9 @@ type Party {
     playerList: [PlayerDetails!]!
     retiredPlayers: [PlayerDetails!]!
     pairs(input: PairsInput): [Pair!]!
-    pairAssignmentDocumentList: [PairAssignmentDocumentDetails!]!
+    pairingSetList: [PairingSet!]!
     secretList: [PartySecret!]!
-    currentPairAssignmentDocument: PairAssignmentDocumentDetails
+    currentPairingSet: PairingSet
     spinsUntilFullRotation: Int
     medianSpinDuration: Duration
     boost: BoostDetails
@@ -232,7 +232,7 @@ input SpinInput {
 }
 
 type SpinOutput {
-    result: PairAssignmentDocumentDetails!
+    result: PairingSet!
 }
 
 input DeletePartyInput {
@@ -250,7 +250,7 @@ input DeletePlayerInput {
 
 input DeletePairAssignmentsInput {
     partyId: PartyId!
-    pairAssignmentsId: PairAssignmentDocumentId!
+    pairingSetId: PairingSetId!
 }
 
 input SavePinInput {
@@ -294,7 +294,7 @@ input SavePlayerInput {
 
 input SavePairAssignmentsInput {
     partyId: PartyId!
-    pairAssignmentsId: PairAssignmentDocumentId!
+    pairingSetId: PairingSetId!
     date: DateTimeISO!
     pairs: [PinnedPairInput!]!
     discordMessageId: String
@@ -373,8 +373,8 @@ type ContributionReport {
 
 type PairAssignment {
     playerIds: [PlayerId!]!
-    documentId: PairAssignmentDocumentId!
-    details: PairAssignmentDocumentDetails
+    documentId: PairingSetId!
+    pairingSet: PairingSet
     date: DateTimeISO
     allPairs: [PinnedPair!]
     recentTimesPaired: Int

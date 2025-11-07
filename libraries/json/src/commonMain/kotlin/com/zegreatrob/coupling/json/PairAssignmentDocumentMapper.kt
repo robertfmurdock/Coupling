@@ -28,7 +28,7 @@ fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlSavePairAssignmentsInput.toModel() = PairAssignmentDocument(
-    id = pairAssignmentsId,
+    id = pairingSetId,
     date = date,
     pairs = pairs.map(GqlPinnedPairInput::toModel).toNotEmptyList().getOrThrow(),
     discordMessageId = discordMessageId,

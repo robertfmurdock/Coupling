@@ -58,9 +58,9 @@ class SdkPairAssignmentDocumentTest {
     } verifyWithWait {
         sdk().fire(GqlQuery(PairAssignmentListQuery(party.id)))
             ?.party
-            ?.pairAssignmentDocumentList
+            ?.pairingSetList
             .let { it ?: emptyList() }
-            .map { it.pairAssignmentDetails.toDomain() }
+            .map { it.pairingSetDetails.toDomain() }
             .assertIsEqualTo(listOf(updatedDocument))
     }
 
@@ -89,9 +89,9 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk().fire(GqlQuery(CurrentPairAssignmentsQuery(partyId)))
             ?.party
-            ?.currentPairAssignmentDocument
+            ?.currentPairingSet
     } verify { result ->
-        result?.pairAssignmentDetails?.toDomain()
+        result?.pairingSetDetails?.toDomain()
             .assertIsEqualTo(newest)
     }
 
@@ -109,7 +109,7 @@ class SdkPairAssignmentDocumentTest {
     } verifyWithWait {
         sdk().fire(GqlQuery(PairAssignmentListQuery(partyId)))
             ?.party
-            ?.pairAssignmentDocumentList
+            ?.pairingSetList
             .assertIsEqualTo(emptyList())
     }
 
@@ -128,11 +128,11 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk().fire(GqlQuery(PairAssignmentListQuery(partyId)))
             ?.party
-            ?.pairAssignmentDocumentList
+            ?.pairingSetList
             .let { it ?: emptyList() }
     } verifyWithWait { result ->
         result
-            .map { it.pairAssignmentDetails.toDomain() }
+            .map { it.pairingSetDetails.toDomain() }
             .assertIsEqualTo(
                 listOf(newest, middle, oldest),
             )
@@ -163,7 +163,7 @@ class SdkPairAssignmentDocumentTest {
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
         sdk().fire(GqlQuery(PairAssignmentListQuery(party.id)))
             ?.party
-            ?.pairAssignmentDocumentList
+            ?.pairingSetList
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
@@ -181,7 +181,7 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk().fire(GqlQuery(PairAssignmentListQuery(PartyId("someoneElseParty"))))
             ?.party
-            ?.pairAssignmentDocumentList
+            ?.pairingSetList
             .let { it ?: emptyList() }
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
@@ -201,7 +201,7 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         sdk().fire(GqlQuery(PairAssignmentRecordListQuery(partyId)))
             ?.party
-            ?.pairAssignmentDocumentList
+            ?.pairingSetList
             .let { it ?: emptyList() }
     } verify { result ->
         result.size.assertIsEqualTo(1)

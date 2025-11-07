@@ -18,7 +18,7 @@ val NewPairAssignmentsPage = partyPageFunction { props, partyId ->
         SocketedPairAssignments(
             party = result.party?.partyDetails?.toDomain() ?: return@CouplingQuery,
             players = result.party.playerList.map { it.playerDetails.toDomain() },
-            pairAssignments = result.party.currentPairAssignmentDocument?.pairAssignmentDetails?.toDomain(),
+            pairAssignments = result.party.currentPairingSet?.pairingSetDetails?.toDomain(),
             controls = Controls(dispatchFunc, reload),
             allowSave = true,
         )

@@ -11,7 +11,7 @@ fun PairAssignment.toSerializable() = GqlPairAssignment(
     documentId = documentId,
     date = date,
     allPairs = allPairs?.map(PinnedCouplingPair::toSerializable)?.toList(),
-    details = details?.toSerializable(),
+    pairingSet = details?.toSerializable(),
     recentTimesPaired = recentTimesPaired,
 )
 
@@ -21,6 +21,6 @@ fun GqlPairAssignment.toModel() = PairAssignment(
     documentId = documentId,
     date = date,
     allPairs = allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),
-    details = details?.toModel(),
+    details = pairingSet?.toModel(),
     recentTimesPaired = recentTimesPaired,
 )

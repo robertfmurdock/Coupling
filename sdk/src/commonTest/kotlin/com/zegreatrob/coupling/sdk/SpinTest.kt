@@ -244,6 +244,6 @@ private suspend fun queryCurrentPairs(partyId: PartyId, sdk: ActionCannon<Coupli
     GqlQuery(CurrentPairAssignmentsQuery(partyId)),
 )
     ?.party
-    ?.currentPairAssignmentDocument
-    ?.pairAssignmentDetails
+    ?.currentPairingSet
+    ?.pairingSetDetails
     ?.toDomain()

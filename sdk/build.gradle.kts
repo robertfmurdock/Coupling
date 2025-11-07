@@ -47,7 +47,7 @@ apollo {
         mapScalar("Float", "Double")
         mapScalar("ID", "String")
         mapScalar(
-            "PairAssignmentDocumentId",
+            "PairingSetId",
             "com.zegreatrob.coupling.json.PairAssignmentDocumentIdString",
             "com.zegreatrob.coupling.sdk.adapter.pairAssignmentDocumentIdAdapter"
         )

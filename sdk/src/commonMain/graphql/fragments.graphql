@@ -71,7 +71,7 @@ fragment BoostDetails on BoostDetails {
     expirationDate
 }
 
-fragment PairAssignmentDetails on PairAssignmentDocumentDetails {
+fragment PairingSetDetails on PairingSet {
     id
     partyId
     date

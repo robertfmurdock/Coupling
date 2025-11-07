@@ -100,13 +100,13 @@ query pinListQuery($partyId: PartyId!) {
 
 query pairAssignmentListQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairAssignmentDocumentList { ...PairAssignmentDetails }
+        pairingSetList { ...PairingSetDetails }
     }
 }
 
 query pairAssignmentRecordListQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairAssignmentDocumentList { timestamp, modifyingUserEmail }
+        pairingSetList { timestamp, modifyingUserEmail }
     }
 }
 
@@ -165,8 +165,8 @@ query globalStatsQuery($input: GlobalStatsInput!) {
 
 query currentPairAssignmentsQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        currentPairAssignmentDocument {
-            ...PairAssignmentDetails
+        currentPairingSet {
+            ...PairingSetDetails
         }
     }
 }
@@ -209,7 +209,7 @@ query partyPairsSpinsQuery($partyId: PartyId!) {
 
 query partyPairsHistoryQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairs { pairAssignmentHistory { details { ...PairAssignmentDetails } } }
+        pairs { pairAssignmentHistory { pairingSet { ...PairingSetDetails } } }
     }
 }
 
@@ -221,7 +221,7 @@ query partyPairsHistoryDateQuery($partyId: PartyId!) {
 
 query partyPairHistoryQuery($partyId: PartyId!, $pairInput: PairInput!) {
     party(input: {partyId: $partyId}) {
-        pair(input: $pairInput) { pairAssignmentHistory { details { ...PairAssignmentDetails } } }
+        pair(input: $pairInput) { pairAssignmentHistory { pairingSet { ...PairingSetDetails } } }
     }
 }
 

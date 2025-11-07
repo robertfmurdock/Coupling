@@ -52,7 +52,7 @@ query prepareSpinPageQuery($partyId: PartyId!) {
         ...PartyDetails
         playerList { ...PlayerDetails }
         pinList { ...PinDetails }
-        currentPairAssignmentDocument { ...PairAssignmentDetails }
+        currentPairingSet { ...PairingSetDetails }
     }
 }
 
@@ -60,7 +60,7 @@ query currentPairsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
         playerList { ...PlayerDetails }
-        currentPairAssignmentDocument { ...PairAssignmentDetails }
+        currentPairingSet { ...PairingSetDetails }
         boost { ...BoostDetails }
     }
 }
@@ -69,7 +69,7 @@ query newPairsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
         playerList { ...PlayerDetails }
-        currentPairAssignmentDocument { ...PairAssignmentDetails }
+        currentPairingSet { ...PairingSetDetails }
     }
 }
 
@@ -224,7 +224,7 @@ query integrationPageQuery($partyInput: PartyInput!) {
 query historyPageQuery($partyInput: PartyInput!) {
     party(input: $partyInput) {
         ...PartyDetails
-        pairAssignmentDocumentList { ...PairAssignmentDetails }
+        pairingSetList { ...PairingSetDetails }
     }
     config { addToSlackUrl }
 }

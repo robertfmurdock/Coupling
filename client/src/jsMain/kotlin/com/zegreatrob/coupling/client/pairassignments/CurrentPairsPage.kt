@@ -20,7 +20,7 @@ val CurrentPairsPage = partyPageFunction { props, partyId ->
                 ?: return@CouplingQuery,
             boost = result.party.boost?.boostDetails?.toDomain(),
             players = result.party.playerList.map { it.playerDetails.toDomain() },
-            pairAssignments = result.party.currentPairAssignmentDocument?.pairAssignmentDetails?.toDomain(),
+            pairAssignments = result.party.currentPairingSet?.pairingSetDetails?.toDomain(),
             controls = Controls(dispatchFunc, reload),
             allowSave = false,
         )

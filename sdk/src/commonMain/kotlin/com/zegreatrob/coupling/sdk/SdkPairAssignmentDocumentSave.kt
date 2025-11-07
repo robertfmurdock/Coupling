@@ -31,7 +31,7 @@ interface SdkSavePairAssignmentsCommandDispatcher :
 
 internal fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
     partyId = partyId,
-    pairAssignmentsId = element.id,
+    pairingSetId = element.id,
     date = element.date,
     pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),
     discordMessageId = presentIfNotNull(element.discordMessageId),

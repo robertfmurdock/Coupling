@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.party.with
 import kotools.types.collection.toNotEmptyList
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
-fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairAssignmentDocumentDetails(
+fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairingSet(
     partyId = data.partyId,
     id = data.element.id,
     date = data.element.date,
@@ -29,7 +29,7 @@ fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-fun GqlPairAssignmentDocumentDetails.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
+fun GqlPairingSet.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
     partyId.with(
         PairAssignmentDocument(
             id = id,

@@ -20,7 +20,7 @@ val PrepareSpinPage = partyPageFunction { props, partyId ->
             party = party?.partyDetails?.toDomain() ?: return@CouplingQuery,
             players = party.playerList.map { it.playerDetails.toDomain() },
             pins = party.pinList.map { it.pinDetails.toDomain() },
-            currentPairsDoc = party.currentPairAssignmentDocument?.pairAssignmentDetails?.toDomain(),
+            currentPairsDoc = party.currentPairingSet?.pairingSetDetails?.toDomain(),
             dispatchFunc = dispatcher,
         )
     }

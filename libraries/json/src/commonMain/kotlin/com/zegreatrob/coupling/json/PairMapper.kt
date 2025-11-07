@@ -17,7 +17,7 @@ fun GqlPair.toModel() = PlayerPair(
     pairAssignmentHistory = pairAssignmentHistory.map { json ->
         PairAssignment(
             documentId = json.documentId,
-            details = json.details?.toModel(),
+            details = json.pairingSet?.toModel(),
             date = json.date,
             allPairs = json.allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),
             recentTimesPaired = json.recentTimesPaired,

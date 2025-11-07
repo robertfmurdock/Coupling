@@ -275,7 +275,7 @@ class SdkPairsTest {
         sdk().fire(GqlQuery(PartyPairsHistoryQuery(party.id)))
     } verify { result ->
         result?.party?.pairs?.map {
-            it.pairAssignmentHistory.map { record -> record.details?.pairAssignmentDetails?.toDomain() }
+            it.pairAssignmentHistory.map { record -> record.pairingSet?.pairingSetDetails?.toDomain() }
         }
             .assertIsEqualTo(
                 listOf(
@@ -312,7 +312,7 @@ class SdkPairsTest {
         )
     } verify { result ->
         result?.party?.pair?.pairAssignmentHistory
-            ?.map { record -> record.details?.pairAssignmentDetails?.toDomain() }
+            ?.map { record -> record.pairingSet?.pairingSetDetails?.toDomain() }
             .assertIsEqualTo(
                 listOf(pair01_1, pair01_2, pair01_3).sortedByDescending { it.date },
             )
