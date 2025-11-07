@@ -21,8 +21,8 @@ val StatisticsPage = partyPageFunction { props, partyId ->
     ) { _, _, queryResult ->
         PartyStatistics(
             party = queryResult.party?.partyDetails?.toDomain() ?: return@CouplingQuery,
-            players = queryResult.party.playerList?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery,
-            pairs = queryResult.party.pairs?.map { it.toModel() } ?: return@CouplingQuery,
+            players = queryResult.party.playerList.map { it.playerDetails.toDomain() },
+            pairs = queryResult.party.pairs.map { it.toModel() },
             spinsUntilFullRotation = queryResult.party.spinsUntilFullRotation ?: return@CouplingQuery,
             medianSpinDuration = queryResult.party.medianSpinDuration,
             chartComponent = CouplingResponsiveLine,

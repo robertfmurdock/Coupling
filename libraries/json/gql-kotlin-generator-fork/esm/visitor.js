@@ -1,6 +1,14 @@
-import { isEnumType, isInputObjectType, isObjectType, isScalarType, Kind, } from 'graphql';
-import { wrapTypeWithModifiers } from '@graphql-codegen/java-common';
-import { BaseVisitor, buildScalarsFromConfig, getBaseTypeNode, indent, indentMultiline, transformComment, } from '@graphql-codegen/visitor-plugin-common';
+import {isEnumType, isInputObjectType, isObjectType, isScalarType, Kind,} from 'graphql';
+import {wrapTypeWithModifiers} from '@graphql-codegen/java-common';
+import {
+    BaseVisitor,
+    buildScalarsFromConfig,
+    getBaseTypeNode,
+    indent,
+    indentMultiline,
+    transformComment,
+} from '@graphql-codegen/visitor-plugin-common';
+
 export const KOTLIN_SCALARS = {
     ID: { input: 'Any', output: 'Any' },
     String: { input: 'String', output: 'String' },

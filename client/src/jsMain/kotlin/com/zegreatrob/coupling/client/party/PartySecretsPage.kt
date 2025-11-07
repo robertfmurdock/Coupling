@@ -24,7 +24,7 @@ val PartySecretsPage by nfc<PageProps> { props ->
         ) { reload, dispatcher, result ->
             PartySecretLayout(
                 partyDetails = result.party?.partyDetails?.toDomain() ?: return@CouplingQuery,
-                secrets = result.party.secretList?.map { it.partySecret.toDomain() } ?: emptyList(),
+                secrets = result.party.secretList.map { it.partySecret.toDomain() },
                 boost = result.party.boost?.boostDetails?.toDomain(),
                 dispatcher = dispatcher,
                 reload = reload,

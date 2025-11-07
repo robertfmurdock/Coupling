@@ -25,9 +25,8 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
         key = "${partyId.value}-$playerId",
     ) { reload, commandFunc, data ->
         val partyDetails = data.party?.partyDetails?.toDomain() ?: return@CouplingQuery
-        val playerList = data.party.playerList?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery
-        val retiredPlayers =
-            data.party.retiredPlayers?.map { it.playerDetails.toDomain() } ?: return@CouplingQuery
+        val playerList = data.party.playerList.map { it.playerDetails.toDomain() }
+        val retiredPlayers = data.party.retiredPlayers.map { it.playerDetails.toDomain() }
         val player = (playerList + retiredPlayers).find { it.id == playerId }
             ?: playerList.defaultWithCallSign()
         PlayerConfig(

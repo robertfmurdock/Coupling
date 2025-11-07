@@ -24,6 +24,7 @@ import react.Fragment
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
 import react.useRef
 import web.cssom.Angle
 import web.cssom.BackgroundRepeat
@@ -91,7 +92,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
             }
             ref = pinDroppableRef
 
-            ReactHTML.div {
+            div {
                 css {
                     position = Position.absolute
                     top = 0.px
@@ -112,12 +113,12 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
                     flexGrow = number(1.0)
                 }
             }
-            ReactHTML.div {
+            div {
                 if (party.callSignsEnabled) {
                     callSign(callSign)
                 }
             }
-            ReactHTML.div {
+            div {
                 pair.pinnedPlayers.toList().forEachIndexed { index, player ->
                     Fragment {
                         key = player.player.id.value.toString()
@@ -175,7 +176,7 @@ private fun playerCardComponent(
 private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNode) = Flipped {
     flipId = player.id.value.toString()
     this.key = player.id.value.toString()
-    ReactHTML.div {
+    div {
         css {
             display = Display.inlineBlock
             if (player.id.value.toString().contains("?")) {

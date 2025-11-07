@@ -1,7 +1,8 @@
-import { dirname, normalize } from 'path';
-import { buildPackageNameFromPath } from '@graphql-codegen/java-common';
-import { getCachedDocumentNodeFromSchema, oldVisit, } from '@graphql-codegen/plugin-helpers';
-import { KotlinResolversVisitor } from './visitor.js';
+import {dirname, normalize} from 'path';
+import {buildPackageNameFromPath} from '@graphql-codegen/java-common';
+import {getCachedDocumentNodeFromSchema, oldVisit,} from '@graphql-codegen/plugin-helpers';
+import {KotlinResolversVisitor} from './visitor.js';
+
 export const plugin = async (schema, documents, config, { outputFile }) => {
     const relevantPath = dirname(normalize(outputFile));
     const defaultPackageName = buildPackageNameFromPath(relevantPath);

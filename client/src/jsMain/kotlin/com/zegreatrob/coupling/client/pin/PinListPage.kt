@@ -17,8 +17,7 @@ val PinListPage = partyPageFunction { props, partyId ->
         PinList(
             party = result.party?.partyDetails?.toDomain()
                 ?: return@CouplingQuery,
-            pins = result.party.pinList?.map { it.pinDetails.toDomain() }
-                ?: return@CouplingQuery,
+            pins = result.party.pinList.map { it.pinDetails.toDomain() },
         )
     }
 }

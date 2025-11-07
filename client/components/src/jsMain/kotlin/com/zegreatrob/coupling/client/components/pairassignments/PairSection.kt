@@ -91,4 +91,4 @@ private fun HTMLElement.writeImageToClipboardAsPromise(): () -> Unit = {
 
 private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it))).unsafeCast<DataTransfer>()
 
-external class ClipboardItem(params: Json)
+external class ClipboardItem(@Suppress("unused") params: Json)
