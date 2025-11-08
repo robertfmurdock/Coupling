@@ -87,7 +87,6 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-datetime")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     jsMainImplementation(npmConstrained("@auth0/auth0-react"))
-    jsMainImplementation(npmConstrained("core-js"))
     jsMainImplementation(npmConstrained("date-fns"))
     jsMainImplementation(npmConstrained("drag-drop-webkit-mobile"))
     jsMainImplementation(npmConstrained("favicons"))
@@ -97,7 +96,6 @@ dependencies {
     jsMainImplementation(npmConstrained("react-use-websocket"))
     jsMainImplementation(npmConstrained("reactjs-popup"))
     jsTestImplementation(npmConstrained("sonda"))
-    jsMainImplementation(npmConstrained("styled-components"))
     jsMainImplementation(npmConstrained("vite-plugin-html"))
 
     jsTestImplementation(project(":libraries:stub-model"))
