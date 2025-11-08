@@ -23,7 +23,7 @@ fragment PlayerDetails on Player {
     unvalidatedEmails
 }
 
-fragment PinDetails on PinDetails {
+fragment PinDetails on Pin {
     id
     partyId
     icon

@@ -29,12 +29,6 @@ type User {
 
 type Pin {
     id: PinId!
-    icon: String!
-    name: String!
-}
-
-type PinDetails {
-    id: PinId!
     partyId: PartyId!
     icon: String!
     name: String!
@@ -79,7 +73,7 @@ enum AvatarType {
     DicebearLorelei,
 }
 
-type PinnedPlayer {
+type PlayerSnapshot {
     id: PlayerId!
     name: String!
     email: String!
@@ -88,20 +82,26 @@ type PinnedPlayer {
     callSignAdjective: String!
     callSignNoun: String!
     imageURL: String
-    pins: [Pin!]!
+    pins: [PinSnapshot!]!
     unvalidatedEmails: [String!]!
 }
 
-type PinnedPair {
-    players: [PinnedPlayer!]!
-    pins: [Pin!]!
+type PinSnapshot {
+    id: PinId!
+    icon: String!
+    name: String!
+}
+
+type PairSnapshot {
+    players: [PlayerSnapshot!]!
+    pins: [PinSnapshot!]!
 }
 
 type PairingSet {
     id: PairingSetId!
     partyId: PartyId!
     date: DateTimeISO!
-    pairs: [PinnedPair!]!
+    pairs: [PairSnapshot!]!
     discordMessageId: String
     slackMessageId: String
     modifyingUserEmail: Email
@@ -178,7 +178,7 @@ type Party {
     pair(input: PairInput) : Pair
     pairList(input: PairListInput): [Pair!]!
     pairingSetList: [PairingSet!]!
-    pinList: [PinDetails!]!
+    pinList: [Pin!]!
     playerList: [Player!]!
     retiredPlayers: [Player!]!
     secretList: [PartySecret!]!

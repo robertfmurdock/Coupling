@@ -27,7 +27,7 @@ fun GqlParty.toModel() = Party(
         timestamp = timestamp,
     ),
     integration = integration?.toModelRecord(),
-    pinList = pinList.map(GqlPinDetails::toModel),
+    pinList = pinList.map(GqlPin::toModel),
     playerList = playerList.map(GqlPlayer::toModel),
     retiredPlayers = retiredPlayers.map(GqlPlayer::toModel),
     secretList = secretList.map(GqlPartySecret::toModel),

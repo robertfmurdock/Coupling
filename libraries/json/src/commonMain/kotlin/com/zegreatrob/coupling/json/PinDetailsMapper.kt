@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 
-fun Record<PartyElement<Pin>>.toSerializable() = GqlPinDetails(
+fun Record<PartyElement<Pin>>.toSerializable() = GqlPin(
     id = data.element.id,
     name = data.element.name,
     icon = data.element.icon,
@@ -15,7 +15,7 @@ fun Record<PartyElement<Pin>>.toSerializable() = GqlPinDetails(
     timestamp = timestamp,
 )
 
-fun GqlPinDetails.toModel(): Record<PartyElement<Pin>> = Record(
+fun GqlPin.toModel(): Record<PartyElement<Pin>> = Record(
     data = partyId.with(
         Pin(
             id = id,

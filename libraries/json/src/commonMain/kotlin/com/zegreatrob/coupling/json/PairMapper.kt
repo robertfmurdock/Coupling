@@ -19,7 +19,7 @@ fun GqlPair.toModel() = PlayerPair(
             documentId = json.id,
             pairingSet = json.toModel(),
             date = json.date,
-            allPairs = json.pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrNull(),
+            allPairs = json.pairs.map(GqlPairSnapshot::toModel).toNotEmptyList().getOrNull(),
             recentTimesPaired = null,
             playerIds = emptyList(),
         )

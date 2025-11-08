@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
-fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
+fun PinnedPlayer.toSerializable() = GqlPlayerSnapshot(
     id = player.id,
     name = player.name,
     email = player.email,
@@ -20,7 +20,7 @@ fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-fun GqlPinnedPlayer.toModel() = PinnedPlayer(
+fun GqlPlayerSnapshot.toModel() = PinnedPlayer(
     player = Player(
         id = id,
         badge = badge.toModel(),
@@ -32,7 +32,7 @@ fun GqlPinnedPlayer.toModel() = PinnedPlayer(
         avatarType = avatarType?.toModel(),
         additionalEmails = unvalidatedEmails.toSet(),
     ),
-    pins = pins.map(GqlPin::toModel),
+    pins = pins.map(GqlPinSnapshot::toModel),
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)

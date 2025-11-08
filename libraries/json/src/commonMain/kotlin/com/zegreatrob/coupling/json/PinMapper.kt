@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.pin.Pin
 
-fun Pin.toSerializable() = GqlPin(
+fun Pin.toSerializable() = GqlPinSnapshot(
     id = id,
     name = name,
     icon = icon,
@@ -14,7 +14,7 @@ fun Pin.toSerializableInput() = GqlPinInput(
     icon = icon,
 )
 
-fun GqlPin.toModel(): Pin = Pin(
+fun GqlPinSnapshot.toModel(): Pin = Pin(
     id = id,
     name = name,
     icon = icon,
