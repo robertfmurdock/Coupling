@@ -37,7 +37,6 @@ import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.type.PairListInput
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.lazy.Lazy
 import react.Props
 
 external interface ContributionVisualizationProps : Props {
@@ -47,7 +46,6 @@ external interface ContributionVisualizationProps : Props {
 }
 
 @ReactFunc
-@Lazy
 val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     val (commander, party, spinsUntilFullRotation) = props
     val (window, setWindow) = useWindow(ContributionWindow.Quarter)

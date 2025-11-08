@@ -13,7 +13,6 @@ import react.FC
 import react.use
 import web.cssom.Angle
 
-@Lazy
 val CouplingHeatmapTooltip = FC<TooltipProps> { props ->
     val cell = props.cell
     val pairs = use(pairContext)

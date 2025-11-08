@@ -33,7 +33,6 @@ external interface PairEaseHeatMapProps : Props {
 }
 
 @ReactFunc
-@Lazy
 val PairEaseHeatMap by nfc<PairEaseHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
     val getColor = useOrdinalColorScale(NivoOrdinalScaleColorConfig(scheme = "pastel1"), "value")
     val (interpolator, setInterpolator) = useState<((Number) -> String)?>(null)

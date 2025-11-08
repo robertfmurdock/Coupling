@@ -45,7 +45,6 @@ external interface StoryContributionGraphProps : Props {
 }
 
 @ReactFunc
-@Lazy
 val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
     val (data, window, byPercent) = props
     val contributionsByDate = data.groupBy(contributionsByDate)

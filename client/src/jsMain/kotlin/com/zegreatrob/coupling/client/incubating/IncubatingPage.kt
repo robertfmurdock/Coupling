@@ -14,8 +14,8 @@ val IncubatingPage by nfc<PageProps> { props ->
         commander = props.commander,
         query = GqlQuery(IncubatingQuery()),
     ) { _, _, result ->
-        val addToSlackUrl = result.config?.addToSlackUrl
-        val discordClientId = result.config?.discordClientId
+        val addToSlackUrl = result.config.addToSlackUrl
+        val discordClientId = result.config.discordClientId
         if (addToSlackUrl != null && discordClientId != null) {
             IncubatingContent(
                 discordClientId = discordClientId,

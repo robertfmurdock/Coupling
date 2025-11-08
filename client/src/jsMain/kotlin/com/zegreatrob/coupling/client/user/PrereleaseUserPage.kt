@@ -23,7 +23,7 @@ val PrereleaseUserPage by nfc<PageProps> {
             partyList = result.partyList.map(::partyDetails),
             dispatcher = dispatcher,
             prereleaseUserConfig = PrereleaseUserConfig(
-                stripeAdminCode = result.config?.stripeAdminCode ?: return@CouplingQuery,
+                stripeAdminCode = result.config.stripeAdminCode ?: return@CouplingQuery,
                 stripePurchaseCode = result.config.stripePurchaseCode ?: return@CouplingQuery,
                 boost = result.user.boost?.toModel(),
             ),

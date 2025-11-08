@@ -9,7 +9,6 @@ import react.dom.html.ReactHTML.div
 import web.cssom.Color
 import web.cssom.px
 
-@Lazy
 val LineTooltip = FC<PropsWithValue<TooltipProps>> { props ->
     val args = props.value
     div {
