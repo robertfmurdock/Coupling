@@ -19,19 +19,6 @@ fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
     pins = pins.map(Pin::toSerializable),
 )
 
-fun PinnedPlayer.toSerializableInput() = GqlPinnedPlayerInput(
-    id = player.id,
-    name = player.name,
-    email = player.email,
-    badge = player.badge.toSerializable(),
-    callSignAdjective = player.callSignAdjective,
-    callSignNoun = player.callSignNoun,
-    imageURL = player.imageURL,
-    avatarType = player.avatarType?.toSerializable(),
-    unvalidatedEmails = player.additionalEmails.toList(),
-    pins = pins.map(Pin::toSerializableInput),
-)
-
 @OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPinnedPlayer.toModel() = PinnedPlayer(
     player = Player(
@@ -43,7 +30,7 @@ fun GqlPinnedPlayer.toModel() = PinnedPlayer(
         callSignNoun = callSignNoun,
         imageURL = imageURL,
         avatarType = avatarType?.toModel(),
-        additionalEmails = unvalidatedEmails?.toSet() ?: emptySet(),
+        additionalEmails = unvalidatedEmails.toSet(),
     ),
     pins = pins.map(GqlPin::toModel),
 )
@@ -61,5 +48,5 @@ fun GqlPinnedPlayerInput.toModel() = PinnedPlayer(
         avatarType = avatarType?.toModel(),
         additionalEmails = unvalidatedEmails.toSet(),
     ),
-    pins = pins.mapNotNull(GqlPinInput::toModel),
+    pins = pins.map(GqlPinInput::toModel),
 )

@@ -1,18 +1,10 @@
 package com.zegreatrob.coupling.json
 
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-
-val jsonWithDefaults = Json { encodeDefaults = true }
-
-inline fun <reified T> T.nestedKeys() = let(jsonWithDefaults::encodeToJsonElement)
-    .jsonObject
-    .nestedKeys()
 
 data class Entry(val content: Map<String, Entry?>)
 
