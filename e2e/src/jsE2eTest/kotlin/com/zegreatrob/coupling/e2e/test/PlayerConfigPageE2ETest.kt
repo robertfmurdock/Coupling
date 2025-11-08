@@ -360,9 +360,7 @@ class PlayerConfigPageE2ETest {
                 callSignsEnabled = true,
             )
         }) {
-            sdk.await().apply {
-                fire(SavePartyCommand(party))
-            }
+            sdk.await().fire(SavePartyCommand(party))
         } exercise {
             PlayerConfigPage.goToNew(party.id)
         } verify {
