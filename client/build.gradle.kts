@@ -92,7 +92,6 @@ dependencies {
     jsMainImplementation(npmConstrained("drag-drop-webkit-mobile"))
     jsMainImplementation(npmConstrained("favicons"))
     jsMainImplementation(npmConstrained("fitty"))
-    jsMainImplementation(npmConstrained("karma"))
     jsMainImplementation(npmConstrained("react-dnd"))
     jsMainImplementation(npmConstrained("react-dnd-html5-backend"))
     jsMainImplementation(npmConstrained("react-use-websocket"))
