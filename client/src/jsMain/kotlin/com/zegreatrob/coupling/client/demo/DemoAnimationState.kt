@@ -9,8 +9,8 @@ import com.zegreatrob.coupling.client.components.party.partyConfigContentClassNa
 import com.zegreatrob.coupling.client.components.pin.pinConfigContentClassName
 import com.zegreatrob.coupling.client.components.player.playerConfigContentClassName
 import com.zegreatrob.coupling.client.components.spin.playerSelectorClass
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -74,8 +74,8 @@ private val pins = listOf(
     Pin(id = PinId.new(), name = "watchman", icon = "eye"),
 )
 
-private val pairAssignments = PairAssignmentDocument(
-    id = PairAssignmentDocumentId.new(),
+private val pairAssignments = PairingSet(
+    id = PairingSetId.new(),
     date = Clock.System.now(),
     pairs = notEmptyListOf(
         pairOf(player1, player4).withPins(emptySet()),
@@ -204,7 +204,7 @@ data class CurrentPairs(
     val party: PartyDetails,
     val players: List<Player>,
     val pins: List<Pin>,
-    val pairAssignments: PairAssignmentDocument?,
+    val pairAssignments: PairingSet?,
     val allowSave: Boolean,
 ) : DemoAnimationState() {
 

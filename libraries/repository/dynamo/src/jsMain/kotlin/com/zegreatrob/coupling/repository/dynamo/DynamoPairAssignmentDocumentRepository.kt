@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -33,13 +33,13 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         override val tableName = "PAIR_ASSIGNMENTS"
     }
 
-    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = performPutItem(
+    override suspend fun save(partyPairDocument: PartyElement<PairingSet>) = performPutItem(
         partyPairDocument
             .toRecord()
             .asDynamoJson(),
     )
 
-    suspend fun saveRawRecord(record: PartyRecord<PairAssignmentDocument>) = performPutItem(
+    suspend fun saveRawRecord(record: PartyRecord<PairingSet>) = performPutItem(
         record.asDynamoJson(),
     )
 
@@ -51,20 +51,20 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         .mapNotNull { toRecord(it) }
         .maxByOrNull { it.data.document.date }
 
-    override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = performDelete(
-        pairAssignmentDocumentId.value.toString(),
+    override suspend fun deleteIt(partyId: PartyId, pairingSetId: PairingSetId) = performDelete(
+        pairingSetId.value.toString(),
         partyId,
         now(),
         ::toRecord,
     ) { asDynamoJson() }
 
-    suspend fun getRecords(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>> = partyId.logAsync("getPairAssignmentRecords") {
+    suspend fun getRecords(partyId: PartyId): List<PartyRecord<PairingSet>> = partyId.logAsync("getPairAssignmentRecords") {
         queryAllRecords(partyId.itemListQueryParams())
     }
         .mapNotNull { toRecord(it) }
         .sortedByDescending { it.timestamp }
 
-    private fun toRecord(json: Json): PartyRecord<PairAssignmentDocument>? = json.toPairAssignmentDocument()
+    private fun toRecord(json: Json): PartyRecord<PairingSet>? = json.toPairAssignmentDocument()
         ?.let { json.tribeId().with(it) }
         ?.let { json.toRecord(it) }
 

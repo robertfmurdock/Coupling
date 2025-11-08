@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components.pairassignments.spin
 
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.model.flatMap
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.orderedPairedPlayers
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -14,12 +14,12 @@ import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 sealed class SpinAnimationState {
-    abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState?
-    abstract fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData
-    open fun duration(pairAssignments: PairAssignmentDocument): Int = 200
+    abstract fun next(pairAssignments: PairingSet): SpinAnimationState?
+    abstract fun stateData(players: List<Player>, pairAssignments: PairingSet): SpinStateData
+    open fun duration(pairAssignments: PairingSet): Int = 200
 
     companion object {
-        fun sequence(pairAssignments: PairAssignmentDocument): Sequence<Frame<SpinAnimationState>> = generateSequence<Frame<SpinAnimationState>>(Frame(Start, 0)) { (state, time) ->
+        fun sequence(pairAssignments: PairingSet): Sequence<Frame<SpinAnimationState>> = generateSequence<Frame<SpinAnimationState>>(Frame(Start, 0)) { (state, time) ->
             state.next(pairAssignments)
                 ?.let { Frame(it, time + state.duration(pairAssignments)) }
         }
@@ -27,7 +27,7 @@ sealed class SpinAnimationState {
 }
 
 data object Start : SpinAnimationState() {
-    override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState {
+    override fun next(pairAssignments: PairingSet): SpinAnimationState {
         val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
         val firstPlayer = orderedPairedPlayers.first()
         return if (orderedPairedPlayers.count() == 1) {
@@ -37,7 +37,7 @@ data object Start : SpinAnimationState() {
         }
     }
 
-    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
+    override fun stateData(players: List<Player>, pairAssignments: PairingSet) = SpinStateData(
         rosterPlayers = players,
         revealedPairs = makePlaceholderPlayers(pairAssignments).toSimulatedPairs(),
         shownPlayer = null,
@@ -45,8 +45,8 @@ data object Start : SpinAnimationState() {
 }
 
 data object End : SpinAnimationState() {
-    override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState? = null
-    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
+    override fun next(pairAssignments: PairingSet): SpinAnimationState? = null
+    override fun stateData(players: List<Player>, pairAssignments: PairingSet) = SpinStateData(
         rosterPlayers = emptyList(),
         revealedPairs = emptyList(),
         shownPlayer = null,
@@ -54,10 +54,10 @@ data object End : SpinAnimationState() {
 }
 
 data class ShowPlayer(val player: Player) : SpinAnimationState() {
-    override fun duration(pairAssignments: PairAssignmentDocument) = 500
-    override fun next(pairAssignments: PairAssignmentDocument) = AssignedPlayer(player)
+    override fun duration(pairAssignments: PairingSet) = 500
+    override fun next(pairAssignments: PairingSet) = AssignedPlayer(player)
 
-    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+    override fun stateData(players: List<Player>, pairAssignments: PairingSet): SpinStateData {
         fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = rosterPlayers.ifEmpty {
             makePlaceholderPlayers(pairAssignments)
         }
@@ -77,7 +77,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
     private val fullShuffles = 2
     private val shuffleTotalDuration = 1000
 
-    override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState {
+    override fun next(pairAssignments: PairingSet): SpinAnimationState {
         val numberOfPlayersShuffling = numberOfPlayersShuffling(pairAssignments)
         val hasShuffledEnough = step / numberOfPlayersShuffling >= fullShuffles
         return if (numberOfPlayersShuffling == 1 || hasShuffledEnough) {
@@ -87,7 +87,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
         }
     }
 
-    private fun numberOfPlayersShuffling(pairAssignments: PairAssignmentDocument): Int {
+    private fun numberOfPlayersShuffling(pairAssignments: PairingSet): Int {
         val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
 
         val indexOfTarget = orderedPairedPlayers.indexOf(target)
@@ -95,9 +95,9 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
         return orderedPairedPlayers.count() - indexOfTarget
     }
 
-    override fun duration(pairAssignments: PairAssignmentDocument) = shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
+    override fun duration(pairAssignments: PairingSet) = shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
 
-    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+    override fun stateData(players: List<Player>, pairAssignments: PairingSet): SpinStateData {
         fun rotateList(rosterPlayers: List<Player>): List<Player> {
             val peopleToRotate = step % rosterPlayers.size
             return rosterPlayers.takeLast(rosterPlayers.size - peopleToRotate) + rosterPlayers.take(peopleToRotate)
@@ -113,14 +113,14 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
 }
 
 data class AssignedPlayer(val player: Player) : SpinAnimationState() {
-    override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState {
+    override fun next(pairAssignments: PairingSet): SpinAnimationState {
         val orderedPlayers = pairAssignments.pairs.flatMap(PinnedCouplingPair::players)
         val playerIndex = orderedPlayers.indexOf(player)
         val nextPlayer = orderedPlayers.getOrNull(playerIndex + 1)
         return nextPlayer?.let { Shuffle(it, 0) } ?: End
     }
 
-    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+    override fun stateData(players: List<Player>, pairAssignments: PairingSet): SpinStateData {
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player) + player
         return SpinStateData(
             rosterPlayers = players - presentedPlayers.toSet(),
@@ -130,11 +130,11 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
     }
 }
 
-private fun PairAssignmentDocument.previouslyPresentedPlayers(player: Player) = orderedPairedPlayers()
+private fun PairingSet.previouslyPresentedPlayers(player: Player) = orderedPairedPlayers()
     .takeWhile { it != player }
     .toList()
 
-private fun PairAssignmentDocument.revealedPairs(presentedPlayers: List<Player>) = presentedPlayers
+private fun PairingSet.revealedPairs(presentedPlayers: List<Player>) = presentedPlayers
     .let {
         it + makePlaceholderPlayers(
             it,
@@ -155,12 +155,12 @@ private fun List<Player>.toSimulatedPairs() = chunked(2)
     }
     .map { it.withPins(emptySet()) }
 
-private fun makePlaceholderPlayers(it: List<Player>, document: PairAssignmentDocument) = infinitePlaceholders()
+private fun makePlaceholderPlayers(it: List<Player>, document: PairingSet) = infinitePlaceholders()
     .take(document.orderedPairedPlayers().count() - it.size)
     .toList()
 
-private fun makePlaceholderPlayers(pairAssignmentDocument: PairAssignmentDocument) = infinitePlaceholders()
-    .take(pairAssignmentDocument.orderedPairedPlayers().count())
+private fun makePlaceholderPlayers(pairingSet: PairingSet) = infinitePlaceholders()
+    .take(pairingSet.orderedPairedPlayers().count())
     .toList()
 
 @OptIn(ExperimentalKotoolsTypesApi::class)

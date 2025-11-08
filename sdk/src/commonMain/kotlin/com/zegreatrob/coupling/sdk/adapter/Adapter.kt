@@ -5,7 +5,7 @@ import com.apollographql.apollo.api.CustomScalarAdapters
 import com.apollographql.apollo.api.json.JsonReader
 import com.apollographql.apollo.api.json.JsonWriter
 import com.zegreatrob.coupling.model.ContributionId
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.pin.PinId
@@ -31,7 +31,7 @@ val playerIdAdapter = serializationAdapter(::PlayerId, PlayerId::value)
 val pinIdAdapter = serializationAdapter(::PinId, PinId::value)
 val secretIdAdapter = serializationAdapter(::SecretId, SecretId::value)
 val userIdAdapter = serializationAdapter(::UserId, UserId::value)
-val pairAssignmentDocumentIdAdapter = serializationAdapter(::PairAssignmentDocumentId, PairAssignmentDocumentId::value)
+val pairingSetIdAdapter = serializationAdapter(::PairingSetId, PairingSetId::value)
 val notBlankStringAdapter = serializationAdapter({ it }, { it })
 
 @ExperimentalTime

@@ -81,7 +81,7 @@ query StatisticsPageQuery($partyId: PartyId!) {
             players { ...PartyPlayerDetails }
             spinsSinceLastPaired
             recentTimesPaired
-            pairAssignmentHistory {
+            pairingSetList {
                 id
                 date
                 recentTimesPaired

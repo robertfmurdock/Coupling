@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.action
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
@@ -41,8 +41,8 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
         ),
         players = fileJson["players"].map { it.toPlayer() },
         history = fileJson["history"].map {
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId((it["id"].textValue().toNotBlankString().getOrThrow())),
+            PairingSet(
+                id = PairingSetId((it["id"].textValue().toNotBlankString().getOrThrow())),
                 date = Instant.parse(it["date"].textValue()),
                 pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }.toNotEmptyList().getOrThrow(),
                 null,

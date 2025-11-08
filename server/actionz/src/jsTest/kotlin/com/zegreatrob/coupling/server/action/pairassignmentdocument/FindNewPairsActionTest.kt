@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.action.pairassignmentdocument.call
 import com.zegreatrob.coupling.action.pairassignmentdocument.let
 import com.zegreatrob.coupling.action.pairassignmentdocument.wrap
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PairingRule
@@ -68,7 +68,7 @@ class FindNewPairsActionTest {
             PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
             PairCandidateReport(ted, emptyList(), TimeResultValue(0)),
         )
-        val history: List<PairAssignmentDocument> = emptyList()
+        val history: List<PairingSet> = emptyList()
     }) {
         NextPlayerAction(GameSpin(players, history, PairingRule.LongestTime))
             .let(cannon::given)

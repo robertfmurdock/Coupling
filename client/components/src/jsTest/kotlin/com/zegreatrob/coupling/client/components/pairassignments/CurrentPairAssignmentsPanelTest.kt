@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.external.reactdnd.dndProvider
 import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.html5Backend
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
@@ -30,8 +30,8 @@ class CurrentPairAssignmentsPanelTest {
     @Test
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
         val party = stubPartyDetails()
-        val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        val pairAssignments = PairingSet(
+            id = PairingSetId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )

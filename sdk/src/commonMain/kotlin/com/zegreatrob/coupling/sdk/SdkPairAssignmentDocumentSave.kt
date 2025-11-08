@@ -4,7 +4,7 @@ import com.apollographql.apollo.api.Optional.Companion.presentIfNotNull
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.map
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -29,7 +29,7 @@ interface SdkSavePairAssignmentsCommandDispatcher :
     }
 }
 
-internal fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
+internal fun PartyElement<PairingSet>.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
     partyId = partyId,
     pairingSetId = element.id,
     date = element.date,

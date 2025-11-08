@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.DiscordTeamAccess
 import com.zegreatrob.coupling.model.DiscordWebhook
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.server.action.discord.DiscordRepository
 import com.zegreatrob.coupling.server.discord.DiscordClient
 import com.zegreatrob.coupling.server.discord.DiscordEmbed
@@ -52,7 +52,7 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
 
     override suspend fun sendSpinMessage(
         webhook: DiscordWebhook,
-        newPairs: PairAssignmentDocument,
+        newPairs: PairingSet,
     ): String? = when (val result = sendMessage(newPairs, webhook)) {
         is MessageResponseData -> result.id
         is ErrorAccessResponse -> null.also {
@@ -62,7 +62,7 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
         }
     }
 
-    override suspend fun deleteMessage(webhook: DiscordWebhook, deadPairs: PairAssignmentDocument) {
+    override suspend fun deleteMessage(webhook: DiscordWebhook, deadPairs: PairingSet) {
         deadPairs.discordMessageId?.let {
             discordClient.deleteWebhookMessage(
                 messageId = it,
@@ -73,7 +73,7 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
     }
 
     private suspend fun sendMessage(
-        pairs: PairAssignmentDocument,
+        pairs: PairingSet,
         webhook: DiscordWebhook,
     ) = pairs.discordMessageId?.let {
         discordClient.updateWebhookMessage(
@@ -90,7 +90,7 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
         embeds = pairs.toDiscordEmbeds(),
     )
 
-    private fun PairAssignmentDocument.toDiscordEmbeds() = listOf(
+    private fun PairingSet.toDiscordEmbeds() = listOf(
         DiscordEmbed(
             title = "**Couples for ${dateText()}**",
             description = pairs.toList().joinToString("\n\n") { " - ${it.pairFieldText()}" },

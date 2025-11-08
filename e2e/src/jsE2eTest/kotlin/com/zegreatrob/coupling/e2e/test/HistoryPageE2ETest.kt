@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.webdriverio.WAIT_TO_BE_PRESENT_DURATION
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -27,7 +27,7 @@ import kotlin.time.Clock
 @Suppress("unused")
 class HistoryPageE2ETest {
 
-    class Context(val pairAssignments: List<PairAssignmentDocument>) {
+    class Context(val pairAssignments: List<PairingSet>) {
         val page = HistoryPage
     }
 
@@ -67,8 +67,8 @@ class HistoryPageE2ETest {
                 ),
             ).onEach { sdk.fire(SavePairAssignmentsCommand(party.id, it)) }
 
-            private fun buildPairAssignmentDocument(number: Int, pairs: NotEmptyList<CouplingPair>) = PairAssignmentDocument(
-                PairAssignmentDocumentId.new(),
+            private fun buildPairAssignmentDocument(number: Int, pairs: NotEmptyList<CouplingPair>) = PairingSet(
+                PairingSetId.new(),
                 Clock.System.now(),
                 pairs.map { it.withPins(emptySet()) },
             )

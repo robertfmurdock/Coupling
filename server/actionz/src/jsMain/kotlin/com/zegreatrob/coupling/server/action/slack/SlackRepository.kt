@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.slack
 
 import com.zegreatrob.coupling.model.SlackTeamAccess
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyId
 
 interface SlackRepository :
@@ -10,11 +10,11 @@ interface SlackRepository :
     SlackDeleteSpin
 
 fun interface SlackDeleteSpin {
-    suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument)
+    suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairingSet)
 }
 
 fun interface SlackSendSpin {
-    suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument, partyId: PartyId): String?
+    suspend fun sendSpinMessage(channel: String, token: String, pairs: PairingSet, partyId: PartyId): String?
 }
 
 fun interface SlackGrantAccess {

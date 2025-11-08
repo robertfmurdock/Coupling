@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.discord
 
 import com.zegreatrob.coupling.model.DiscordTeamAccess
 import com.zegreatrob.coupling.model.DiscordWebhook
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 
 interface DiscordRepository :
     DiscordSendSpin,
@@ -16,9 +16,9 @@ interface DiscordRepository :
 }
 
 fun interface DiscordSendSpin {
-    suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument): String?
+    suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairingSet): String?
 }
 
 fun interface DiscordDeleteSpin {
-    suspend fun deleteMessage(webhook: DiscordWebhook, deadPairs: PairAssignmentDocument)
+    suspend fun deleteMessage(webhook: DiscordWebhook, deadPairs: PairingSet)
 }

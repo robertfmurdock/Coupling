@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.client.components.spin.PrepareSpin
 import com.zegreatrob.coupling.client.components.spin.deselectedPinsClass
 import com.zegreatrob.coupling.client.components.spin.selectedPinsClass
 import com.zegreatrob.coupling.model.map
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
@@ -161,8 +161,8 @@ class PrepareSpinTest {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val user = UserEvent.setup()
-        val currentPairs = PairAssignmentDocument(
-            PairAssignmentDocumentId.new(),
+        val currentPairs = PairingSet(
+            PairingSetId.new(),
             Clock.System.now(),
             notEmptyListOf(
                 pairOf(players[0], players[1]).withPins(emptySet()),
@@ -212,8 +212,8 @@ class PrepareSpinTest {
         val party = stubPartyDetails()
         val user = UserEvent.setup()
         val players = stubPlayers(3).toNotEmptyList().getOrThrow()
-        val currentPairs = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        val currentPairs = PairingSet(
+            id = PairingSetId.new(),
             date = Clock.System.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
             null,

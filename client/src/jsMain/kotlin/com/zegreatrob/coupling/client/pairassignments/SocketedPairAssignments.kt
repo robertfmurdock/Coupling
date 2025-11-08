@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -31,7 +31,7 @@ external interface SocketedPairAssignmentsProps<D> : Props
     var party: PartyDetails
     var boost: Boost?
     var players: List<Player>
-    var pairAssignments: PairAssignmentDocument?
+    var pairAssignments: PairingSet?
     var controls: Controls<D>
     var allowSave: Boolean
 }
@@ -41,7 +41,7 @@ val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, bo
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
     val (message, setMessage) = useState(disconnectedMessage)
     val onMessageFunc: (Message) -> Unit = useCallback { handleMessage(it, setMessage, setPairAssignments) }
-    val updatePairAssignments = useCallback(party.id, controls.dispatchFunc) { new: PairAssignmentDocument ->
+    val updatePairAssignments = useCallback(party.id, controls.dispatchFunc) { new: PairingSet ->
         setPairAssignments(new)
         controls.dispatchFunc { fire(SavePairAssignmentsCommand(party.id, new)) }
             .invoke()
@@ -77,7 +77,7 @@ val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, bo
 private fun handleMessage(
     newMessage: Message,
     setMessage: StateSetter<CouplingSocketMessage>,
-    setPairAssignments: StateSetter<PairAssignmentDocument?>,
+    setPairAssignments: StateSetter<PairingSet?>,
 ) = when (newMessage) {
     is CouplingSocketMessage -> {
         setMessage(newMessage)

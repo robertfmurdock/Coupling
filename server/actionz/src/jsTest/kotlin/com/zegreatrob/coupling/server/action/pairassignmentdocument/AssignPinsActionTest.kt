@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -159,7 +159,7 @@ class AssignPinsActionTest {
         val alternatePair = pairOf(player3, player4)
         val pairs = notEmptyListOf(expectedPair, alternatePair)
 
-        val history = emptyList<PairAssignmentDocument>()
+        val history = emptyList<PairingSet>()
     }) exercise {
         perform(
             AssignPinsAction(

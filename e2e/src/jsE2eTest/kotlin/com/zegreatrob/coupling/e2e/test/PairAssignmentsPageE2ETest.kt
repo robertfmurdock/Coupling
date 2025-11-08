@@ -12,8 +12,8 @@ import com.zegreatrob.coupling.e2e.test.ConfigHeader.getRetiredPlayersButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getStatisticsButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getViewHistoryButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -168,9 +168,9 @@ class PairAssignmentsPageE2ETest {
                     )
                 }
             }
-            private val pairAssignmentDocument by lazy {
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+            private val pairingSet by lazy {
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = LocalDateTime(2015, 5, 30, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(emptySet()),
@@ -181,7 +181,7 @@ class PairAssignmentsPageE2ETest {
 
             private fun PinnedCouplingPair.players() = toPair()
 
-            private val unpairedPlayers = players - (pairAssignmentDocument.pairs.toList().flatMap { it.players() })
+            private val unpairedPlayers = players - (pairingSet.pairs.toList().flatMap { it.players() })
                 .toSet()
 
             private val setup = e2eSetup.extend(beforeAll = {
@@ -189,7 +189,7 @@ class PairAssignmentsPageE2ETest {
                     fire(SavePartyCommand(party))
                     coroutineScope {
                         launch { players.forEach { fire(SavePlayerCommand(party.id, it)) } }
-                        launch { sdk.await().fire(SavePairAssignmentsCommand(party.id, pairAssignmentDocument)) }
+                        launch { sdk.await().fire(SavePairAssignmentsCommand(party.id, pairingSet)) }
                     }
                 }
             })
@@ -209,9 +209,9 @@ class PairAssignmentsPageE2ETest {
 
         private suspend fun WebdriverElementArray.assertTheMostRecentPairsAreShown() {
             get(0).getPairPlayerNames()
-                .assertIsEqualTo(pairAssignmentDocument.pairs.toList()[0].players().map(Player::name))
+                .assertIsEqualTo(pairingSet.pairs.toList()[0].players().map(Player::name))
             get(1).getPairPlayerNames()
-                .assertIsEqualTo(pairAssignmentDocument.pairs.toList()[1].players().map(Player::name))
+                .assertIsEqualTo(pairingSet.pairs.toList()[1].players().map(Player::name))
         }
 
         private suspend fun WebdriverElementArray.assertOnlyUnpairedPlayersAreShown() {

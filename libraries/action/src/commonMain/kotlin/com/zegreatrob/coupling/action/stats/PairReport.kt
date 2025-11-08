@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action.stats
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.player.Player
 import kotlin.math.floor
@@ -10,12 +10,12 @@ import kotlin.time.Instant
 
 data class PairReport(val pair: CouplingPair.Double, val timeSinceLastPair: TimeResult)
 
-fun List<PairAssignmentDocument>.medianSpinDuration() = asDateTimes()
+fun List<PairingSet>.medianSpinDuration() = asDateTimes()
     .toDeltas()
     .sorted()
     .halfwayValue()
 
-fun List<PairAssignmentDocument>.asDateTimes() = map(PairAssignmentDocument::date)
+fun List<PairingSet>.asDateTimes() = map(PairingSet::date)
 
 fun List<Instant>.toDeltas() = zipWithNext { a: Instant, b: Instant -> a - b }
 

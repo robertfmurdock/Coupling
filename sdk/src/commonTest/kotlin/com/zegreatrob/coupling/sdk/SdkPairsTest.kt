@@ -275,7 +275,7 @@ class SdkPairsTest {
         sdk().fire(GqlQuery(PartyPairsHistoryQuery(party.id)))
     } verify { result ->
         result?.party?.pairList?.map {
-            it.pairAssignmentHistory.map { record -> record.pairingSetDetails.toDomain() }
+            it.pairingSetList.map { record -> record.pairingSetDetails.toDomain() }
         }
             .assertIsEqualTo(
                 listOf(
@@ -311,7 +311,7 @@ class SdkPairsTest {
             ),
         )
     } verify { result ->
-        result?.party?.pair?.pairAssignmentHistory
+        result?.party?.pair?.pairingSetList
             ?.map { record -> record.pairingSetDetails.toDomain() }
             .assertIsEqualTo(
                 listOf(pair01_1, pair01_2, pair01_3).sortedByDescending { it.date },
@@ -361,7 +361,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsHistoryDateQuery(party.id)))
     } verify { result ->
-        result?.party?.pairList?.map { it.pairAssignmentHistory.map { record -> record.date } }
+        result?.party?.pairList?.map { it.pairingSetList.map { record -> record.date } }
             .assertIsEqualTo(
                 listOf(
                     listOf(pair01_1, pair01_2, pair01_3).map { it.date }.sortedDescending(),
@@ -410,7 +410,7 @@ class SdkPairsTest {
     } exercise {
         sdk().fire(GqlQuery(PartyPairsHistoryRecentTimesPairedQuery(party.id)))
     } verify { result ->
-        result?.party?.pairList?.map { it.pairAssignmentHistory.map { history -> history.recentTimesPaired } }
+        result?.party?.pairList?.map { it.pairingSetList.map { history -> history.recentTimesPaired } }
             .assertIsEqualTo(
                 listOf(
                     listOf(4, 3, 2, 1),

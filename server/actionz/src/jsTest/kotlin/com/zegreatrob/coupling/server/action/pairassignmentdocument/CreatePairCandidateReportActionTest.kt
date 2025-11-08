@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -22,7 +22,7 @@ class CreatePairCandidateReportActionTest {
 
     companion object :
         CreatePairCandidateReportAction.Dispatcher {
-        fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) = PairAssignmentDocument(id = PairAssignmentDocumentId.new(), date = Clock.System.now(), pairs = pairs)
+        fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) = PairingSet(id = PairingSetId.new(), date = Clock.System.now(), pairs = pairs)
 
         fun pinnedPair(player1: Player, player2: Player) = PinnedCouplingPair(
             notEmptyListOf(
@@ -35,7 +35,7 @@ class CreatePairCandidateReportActionTest {
     @Test
     fun shouldReturnNothingWhenNoPartnersAreAvailable() = setup(object {
         val players: List<Player> = emptyList()
-        val history: List<PairAssignmentDocument> = emptyList()
+        val history: List<PairingSet> = emptyList()
     }) exercise {
         perform(CreatePairCandidateReportAction(stubPlayer(), history, players))
     } verify {
@@ -52,7 +52,7 @@ class CreatePairCandidateReportActionTest {
             val availableOtherPlayers = listOf(selena, talia, jezebel)
 
             private fun createPairCandidateReportAction(
-                history: List<PairAssignmentDocument>,
+                history: List<PairingSet>,
                 availablePlayers: List<Player>,
             ) = CreatePairCandidateReportAction(bruce, history, availablePlayers)
         }
@@ -60,7 +60,7 @@ class CreatePairCandidateReportActionTest {
         class WhoHasNeverPaired {
             @Test
             fun withNoHistory() = setup(object {
-                val history = emptyList<PairAssignmentDocument>()
+                val history = emptyList<PairingSet>()
             }) exercise {
                 perform(createPairCandidateReportAction(history, availableOtherPlayers))
             } verify {

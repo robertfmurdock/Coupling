@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.components.pin.PinButtonScale
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.red
 import com.zegreatrob.coupling.client.components.small
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
@@ -46,7 +46,7 @@ import web.cssom.url
 
 external interface PairAssignmentRowProps : Props {
     var party: PartyDetails
-    var document: PairAssignmentDocument
+    var document: PairingSet
     var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
     var windowFunctions: WindowFunctions?
 }
@@ -91,7 +91,7 @@ private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = CouplingButt
     +"DELETE"
 }
 
-private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
+private fun ChildrenBuilder.showPairs(document: PairingSet) = div {
     document.pairs.toList().mapIndexed { index, pair ->
         span {
             css {
@@ -151,6 +151,6 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     }
 }
 
-fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
+fun PairingSet.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
 
 private fun LocalDateTime.dateText() = "$date - $time"

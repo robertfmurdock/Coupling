@@ -6,11 +6,11 @@ import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import kotlin.uuid.Uuid
 
-data class PairAssignmentDocumentId(val value: NotBlankString) {
-    companion object {
+data class PairingSetId(val value: NotBlankString) {
+    companion object Companion {
         @OptIn(ExperimentalKotoolsTypesApi::class)
-        fun new() = PairAssignmentDocumentId(Uuid.random().toString().toNotBlankString().getOrThrow())
+        fun new() = PairingSetId(Uuid.random().toString().toNotBlankString().getOrThrow())
     }
 }
 
-data class PartyIdPairAssignmentDocumentId(val partyId: PartyId, val pairAssignmentDocumentId: PairAssignmentDocumentId)
+data class PartyIdPairingSetId(val partyId: PartyId, val pairingSetId: PairingSetId)

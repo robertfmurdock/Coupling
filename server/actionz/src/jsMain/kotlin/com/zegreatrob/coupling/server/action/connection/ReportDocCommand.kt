@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.server.action.connection
 
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
-data class ReportDocCommand(val connectionId: String, val doc: PairAssignmentDocument?) {
+data class ReportDocCommand(val connectionId: String, val doc: PairingSet?) {
 
     interface Dispatcher : CouplingConnectionGetSyntax {
         suspend fun perform(command: ReportDocCommand) = with(command) {
@@ -20,7 +20,7 @@ data class ReportDocCommand(val connectionId: String, val doc: PairAssignmentDoc
 
         private suspend fun loadConnectionsAndGenerateMessage(
             connection: CouplingConnection,
-            document: PairAssignmentDocument?,
+            document: PairingSet?,
         ): Pair<List<CouplingConnection>, CouplingSocketMessage> {
             val connections = connection.partyId.loadConnections()
             return connections to couplingSocketMessage(connections, document)

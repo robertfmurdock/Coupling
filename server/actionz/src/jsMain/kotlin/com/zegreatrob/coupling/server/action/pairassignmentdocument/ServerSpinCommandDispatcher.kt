@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
@@ -82,7 +82,7 @@ interface ServerSpinCommandDispatcher<out D> :
         partyIntegration: PartyIntegration?,
         allPlayers: List<Player>,
         pins: List<Pin>,
-        history: List<PairAssignmentDocument>,
+        history: List<PairingSet>,
     ): SpinCommand.Result {
         partyDetails ?: return SpinCommand.Result.PartyDoesNotExist(partyId)
 
@@ -106,10 +106,10 @@ interface ServerSpinCommandDispatcher<out D> :
         return SpinCommand.Result.Success
     }
 
-    suspend fun PairAssignmentDocument.copyWithIntegrationMessageIds(
+    suspend fun PairingSet.copyWithIntegrationMessageIds(
         partyId: PartyId,
         partyIntegration: PartyIntegration?,
-    ): PairAssignmentDocument {
+    ): PairingSet {
         val (slackMessageId, discordMessageId) = coroutineScope {
             listOf(
                 async { partyIntegration?.sendMessage(this@copyWithIntegrationMessageIds, partyId) },
@@ -120,7 +120,7 @@ interface ServerSpinCommandDispatcher<out D> :
         return copy(slackMessageId = slackMessageId, discordMessageId = discordMessageId)
     }
 
-    suspend fun sendDiscordMessage(partyId: PartyId, newPairs: PairAssignmentDocument): String? {
+    suspend fun sendDiscordMessage(partyId: PartyId, newPairs: PairingSet): String? {
         val discordAccess = discordAccessRepository.get(partyId)?.data?.element
         return discordAccess?.webhook
             ?.let { discordRepository.sendSpinMessage(it, newPairs) }
@@ -131,7 +131,7 @@ interface ServerSpinCommandDispatcher<out D> :
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<PinId>) = pins.filter { pinIds.contains(it.id) }
 
-    private suspend fun PartyIntegration.sendMessage(pairs: PairAssignmentDocument, partyId: PartyId): String? {
+    private suspend fun PartyIntegration.sendMessage(pairs: PairingSet, partyId: PartyId): String? {
         val team = slackTeam ?: return null
         val channel = slackChannel ?: return null
         val accessRecord = slackAccessRepository.get(team) ?: return null

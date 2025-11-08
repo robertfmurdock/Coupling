@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
@@ -33,8 +33,8 @@ class PairAssignmentRowTest {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
-        val document = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        val document = PairingSet(
+            id = PairingSetId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )
@@ -63,8 +63,8 @@ class PairAssignmentRowTest {
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
-        val document = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        val document = PairingSet(
+            id = PairingSetId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )

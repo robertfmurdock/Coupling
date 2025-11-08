@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -31,8 +31,8 @@ class RecentTimesPairedQueryTest {
         private fun NotEmptyList<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
             .map { pairAssignmentDocument(index = it) }
 
-        fun NotEmptyList<CouplingPair>.pairAssignmentDocument(index: Int = 0) = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        fun NotEmptyList<CouplingPair>.pairAssignmentDocument(index: Int = 0) = PairingSet(
+            id = PairingSetId.new(),
             date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())
                 .plus(index.minutes),
             pairs = withPins(),
@@ -305,11 +305,11 @@ class RecentTimesPairedQueryTest {
                 pairOf(player3, player4),
             )
             val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument(4)
-            val otherIntervals: List<PairAssignmentDocument> =
+            val otherIntervals: List<PairingSet> =
                 assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD - 1)
 
             val goodRotation = otherIntervals + intervalWithIntendedPair
-            val absenteeRotation: List<PairAssignmentDocument> =
+            val absenteeRotation: List<PairingSet> =
                 assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD)
             val history = goodRotation + absenteeRotation + goodRotation + goodRotation + goodRotation
             override val playerRepository = PlayerListGet { playerRecords }

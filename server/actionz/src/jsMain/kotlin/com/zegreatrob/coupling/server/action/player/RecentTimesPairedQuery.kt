@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.stats.spinsUntilFullRotation
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair.Companion.equivalent
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistoryTrait
@@ -17,7 +17,7 @@ import kotlin.math.min
 const val ROTATION_HEAT_WINDOW = 5
 
 @ActionMint
-data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, val lastAssignments: PairAssignmentDocumentId?) {
+data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, val lastAssignments: PairingSetId?) {
     interface Dispatcher :
         PartyIdHistoryTrait,
         PartyIdLoadPlayersTrait {
@@ -31,7 +31,7 @@ data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, 
             is CouplingPair.Mob -> null
         }
 
-        private suspend fun RecentTimesPairedQuery.historyInHeatWindow(): List<PairAssignmentDocument> {
+        private suspend fun RecentTimesPairedQuery.historyInHeatWindow(): List<PairingSet> {
             val history = partyId.loadHistory()
                 .sortedBy { it.date }
                 .limitHistory(lastAssignments)
@@ -40,15 +40,15 @@ data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, 
                 .slice(0 until min(getLastRelevantRotation(rotationPeriod), history.size))
         }
 
-        private fun List<PairAssignmentDocument>.limitHistory(pairAssignmentDocumentId: PairAssignmentDocumentId?) = if (pairAssignmentDocumentId != null) {
-            slice(0..map(PairAssignmentDocument::id).indexOf(pairAssignmentDocumentId))
+        private fun List<PairingSet>.limitHistory(pairingSetId: PairingSetId?) = if (pairingSetId != null) {
+            slice(0..map(PairingSet::id).indexOf(pairingSetId))
         } else {
             this
         }
 
         private fun getLastRelevantRotation(rotationPeriod: Int) = rotationPeriod * ROTATION_HEAT_WINDOW
 
-        private fun List<PairAssignmentDocument>.flattenedPairings() = map(PairAssignmentDocument::pairs)
+        private fun List<PairingSet>.flattenedPairings() = map(PairingSet::pairs)
             .map(NotEmptyList<PinnedCouplingPair>::toList)
             .flatten()
             .map(PinnedCouplingPair::toPair)

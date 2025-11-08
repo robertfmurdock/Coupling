@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.external.html2canvas.html2canva
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.player.TinyPlayerList
 import com.zegreatrob.coupling.client.components.white
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -36,9 +36,9 @@ import kotlin.js.json
 external interface PairSectionProps : Props {
     var party: PartyDetails
     var players: List<Player>
-    var pairAssignments: PairAssignmentDocument?
+    var pairAssignments: PairingSet?
     var allowSave: Boolean
-    var setPairs: (PairAssignmentDocument) -> Unit
+    var setPairs: (PairingSet) -> Unit
     var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
 }
 

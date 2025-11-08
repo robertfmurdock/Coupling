@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.coroutines.coroutineScope
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 suspend fun savePartyState(
     party: PartyDetails,
     players: List<Player>,
-    pairAssignmentDocs: List<PairAssignmentDocument>,
+    pairAssignmentDocs: List<PairingSet>,
 ) = coroutineScope {
     with(sdk()) {
         fire(SavePartyCommand(party))
@@ -35,7 +35,7 @@ suspend fun savePartyState(
 suspend fun savePartyStateWithFixedPlayerOrder(
     party: PartyDetails,
     players: List<Player>,
-    pairAssignmentDocs: List<PairAssignmentDocument>,
+    pairAssignmentDocs: List<PairingSet>,
 ) = coroutineScope {
     with(sdk()) {
         fire(SavePartyCommand(party))

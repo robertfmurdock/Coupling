@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -13,16 +13,16 @@ import kotlin.time.Clock
 class MemoryPairAssignmentDocumentRepository(
     override val userId: UserId,
     override val clock: Clock,
-    private val recordBackend: RecordBackend<PartyElement<PairAssignmentDocument>> = SimpleRecordBackend(),
+    private val recordBackend: RecordBackend<PartyElement<PairingSet>> = SimpleRecordBackend(),
 ) : PairAssignmentDocumentRepository,
-    TypeRecordSyntax<PartyElement<PairAssignmentDocument>>,
-    RecordBackend<PartyElement<PairAssignmentDocument>> by recordBackend {
+    TypeRecordSyntax<PartyElement<PairingSet>>,
+    RecordBackend<PartyElement<PairingSet>> by recordBackend {
 
-    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = partyPairDocument
+    override suspend fun save(partyPairDocument: PartyElement<PairingSet>) = partyPairDocument
         .record()
         .save()
 
-    override suspend fun loadPairAssignments(partyId: PartyId): List<Record<PartyElement<PairAssignmentDocument>>> = partyId.records()
+    override suspend fun loadPairAssignments(partyId: PartyId): List<Record<PartyElement<PairingSet>>> = partyId.records()
         .filterNot { it.isDeleted }
         .sortedByDescending { it.data.document.date }
 
@@ -35,8 +35,8 @@ class MemoryPairAssignmentDocumentRepository(
         .groupBy { (data) -> data.document.id }
         .map { it.value.last() }
 
-    override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
-        val partyIdPairAssignmentDocument = record(partyId, pairAssignmentDocumentId)?.data
+    override suspend fun deleteIt(partyId: PartyId, pairingSetId: PairingSetId): Boolean {
+        val partyIdPairAssignmentDocument = record(partyId, pairingSetId)?.data
 
         return if (partyIdPairAssignmentDocument == null) {
             false
@@ -46,6 +46,6 @@ class MemoryPairAssignmentDocumentRepository(
         }
     }
 
-    private fun record(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = partyId.records()
-        .find { (data) -> data.document.id == pairAssignmentDocumentId }
+    private fun record(partyId: PartyId, pairingSetId: PairingSetId) = partyId.records()
+        .find { (data) -> data.document.id == pairingSetId }
 }

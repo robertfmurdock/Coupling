@@ -11,7 +11,7 @@ interface SdkDeletePairAssignmentsCommandDispatcher :
     GqlTrait {
     override suspend fun perform(command: DeletePairAssignmentsCommand) = with(command) {
         DeletePairAssignmentsMutation(
-            DeletePairAssignmentsInput(partyId = partyId, pairingSetId = pairAssignmentDocumentId),
+            DeletePairAssignmentsInput(partyId = partyId, pairingSetId = pairingSetId),
         ).execute().data?.deletePairAssignments
             .let { it == true }
             .voidResult()

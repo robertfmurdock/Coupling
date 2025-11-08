@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.FrameRunner
 import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -20,7 +20,7 @@ private val animationContextConsumer: Consumer<Boolean> = animationsDisabledCont
 external interface PairAssignmentsAnimatorProps : PropsWithChildren {
     var party: PartyDetails
     var players: List<Player>
-    var pairAssignments: PairAssignmentDocument
+    var pairAssignments: PairingSet
     var enabled: Boolean
 }
 
@@ -41,7 +41,7 @@ val PairAssignmentsAnimator by nfc<PairAssignmentsAnimatorProps> { props ->
 }
 
 private fun ChildrenBuilder.spinFrameRunner(
-    pairAssignments: PairAssignmentDocument,
+    pairAssignments: PairingSet,
     party: PartyDetails,
     players: List<Player>,
     props: PairAssignmentsAnimatorProps,

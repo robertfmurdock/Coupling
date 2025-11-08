@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.gql.HistoryPageQuery
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
@@ -24,7 +24,7 @@ val HistoryPage = partyPageFunction { props, partyId ->
     }
 }
 
-private fun HistoryPageQuery.Data.toHistoryData(): Pair<PartyDetails, List<PairAssignmentDocument>>? = party?.let {
+private fun HistoryPageQuery.Data.toHistoryData(): Pair<PartyDetails, List<PairingSet>>? = party?.let {
     Pair(
         first = it.partyDetails.toDomain(),
         second = it.pairingSetList.map { doc ->

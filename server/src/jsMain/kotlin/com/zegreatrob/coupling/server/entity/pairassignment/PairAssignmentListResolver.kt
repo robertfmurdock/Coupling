@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.MedianSpinDurationQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.perform
@@ -16,7 +16,7 @@ val pairAssignmentListResolve = dispatch(
     toSerializable = ::toSerializable,
 )
 
-private fun toSerializable(result: List<PartyRecord<PairAssignmentDocument>>?) = result?.map(PartyRecord<PairAssignmentDocument>::toSerializable)
+private fun toSerializable(result: List<PartyRecord<PairingSet>>?) = result?.map(PartyRecord<PairingSet>::toSerializable)
 
 val medianSpinDurationResolve = dispatch(
     dispatcherFunc = partyCommand,

@@ -17,7 +17,7 @@ class PairDocumentTest {
     }) exercise {
         pairs.toSerializable()
             .toJsonElement()
-            .fromJsonElement<JsonPairAssignmentDocument>()
+            .fromJsonElement<JsonPairingSet>()
             .toModel()
     } verify { result ->
         result.assertIsEqualTo(pairs)

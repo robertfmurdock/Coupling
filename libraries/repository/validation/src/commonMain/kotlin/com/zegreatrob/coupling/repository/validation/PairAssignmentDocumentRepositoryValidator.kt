@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.repository.validation
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.element
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -48,7 +48,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             .forEach { repository.save(it) }
     } exercise {
         repository.getCurrentPairAssignments(partyId)
-    } verify { result: PartyRecord<PairAssignmentDocument>? ->
+    } verify { result: PartyRecord<PairingSet>? ->
         result?.element.assertIsEqualTo(newest)
     }
 
@@ -96,7 +96,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     @Test
     fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val id = PairAssignmentDocumentId.new()
+            val id = PairingSetId.new()
         }.bind(),
     ) exercise {
         repository.deleteIt(partyId, id)

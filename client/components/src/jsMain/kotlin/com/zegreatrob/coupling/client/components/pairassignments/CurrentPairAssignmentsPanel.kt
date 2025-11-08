@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.components.red
 import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.map
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
@@ -33,8 +33,8 @@ import web.cssom.px
 
 external interface CurrentPairAssignmentsPanelProps : Props {
     var party: PartyDetails
-    var pairAssignments: PairAssignmentDocument
-    var setPairAssignments: (PairAssignmentDocument) -> Unit
+    var pairAssignments: PairingSet
+    var setPairAssignments: (PairingSet) -> Unit
     var allowSave: Boolean
     var dispatchFunc: DispatchFunc<DeletePairAssignmentsCommand.Dispatcher>
 }
@@ -65,14 +65,14 @@ val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props
     }
 }
 
-private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
+private fun ChildrenBuilder.dateHeader(pairAssignments: PairingSet) = div {
     div { PairAssignmentsHeader(pairAssignments) }
 }
 
 private fun ChildrenBuilder.pairAssignmentList(
     party: PartyDetails,
-    pairAssignments: PairAssignmentDocument,
-    setPairAssignments: (PairAssignmentDocument) -> Unit,
+    pairAssignments: PairingSet,
+    setPairAssignments: (PairingSet) -> Unit,
     allowSave: Boolean,
 ) = div {
     css {
@@ -94,7 +94,7 @@ private fun ChildrenBuilder.pairAssignmentList(
     }
 }
 
-private fun PairAssignmentDocument.copyWithDroppedPin(pinId: PinId, pairId: String): PairAssignmentDocument {
+private fun PairingSet.copyWithDroppedPin(pinId: PinId, pairId: String): PairingSet {
     val droppedPair = pairs.toList().find { it.toPair().pairId == pairId }
     return if (droppedPair != null) {
         copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
@@ -103,7 +103,7 @@ private fun PairAssignmentDocument.copyWithDroppedPin(pinId: PinId, pairId: Stri
     }
 }
 
-private fun findDroppedPin(id: PinId, pairAssignments: PairAssignmentDocument) = pairAssignments
+private fun findDroppedPin(id: PinId, pairAssignments: PairingSet) = pairAssignments
     .pairs
     .toList()
     .map(PinnedCouplingPair::pins)
@@ -122,11 +122,11 @@ private fun PinnedCouplingPair.addPin(pin: Pin) = copy(pins = pins + pin)
 
 private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
 
-private fun PairAssignmentDocument.copyWithSwappedPlayers(
+private fun PairingSet.copyWithSwappedPlayers(
     droppedPlayerId: PlayerId,
     targetPlayer: PinnedPlayer,
     targetPair: PinnedCouplingPair,
-): PairAssignmentDocument {
+): PairingSet {
     val sourcePair = pairs.findPairContainingPlayer(droppedPlayerId)
     val droppedPlayer = sourcePair?.pinnedPlayers?.toList()?.firstOrNull { it.player.id == droppedPlayerId }
 

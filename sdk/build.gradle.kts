@@ -48,8 +48,8 @@ apollo {
         mapScalar("ID", "String")
         mapScalar(
             "PairingSetId",
-            "com.zegreatrob.coupling.json.PairAssignmentDocumentIdString",
-            "com.zegreatrob.coupling.sdk.adapter.pairAssignmentDocumentIdAdapter"
+            "com.zegreatrob.coupling.json.PairingSetIdString",
+            "com.zegreatrob.coupling.sdk.adapter.pairingSetIdAdapter"
         )
         mapScalar(
             "PartyId",

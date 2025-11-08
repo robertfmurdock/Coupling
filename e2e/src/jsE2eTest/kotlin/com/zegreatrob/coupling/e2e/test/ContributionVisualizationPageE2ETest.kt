@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.e2e.test.PartyConfigPage.findByRole
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.stubmodel.stubContributionInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -25,7 +25,7 @@ import kotlin.test.Test
 @Suppress("unused")
 class ContributionVisualizationPageE2ETest {
 
-    class Context(val pairAssignments: List<PairAssignmentDocument>) {
+    class Context(val pairAssignments: List<PairingSet>) {
         val page = HistoryPage
     }
 

@@ -14,10 +14,10 @@ fun GqlPair.toModel() = PlayerPair(
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
     recentTimesPaired = recentTimesPaired,
-    pairAssignmentHistory = pairAssignmentHistory.map { json ->
+    pairAssignmentHistory = pairingSetList.map { json ->
         PairAssignment(
             documentId = json.id,
-            details = json.toModel(),
+            pairingSet = json.toModel(),
             date = json.date,
             allPairs = json.pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrNull(),
             recentTimesPaired = null,
@@ -32,7 +32,7 @@ fun PartyElement<PlayerPair>.toJson() = GqlPair(
     spinsSinceLastPaired = element.spinsSinceLastPaired,
     partyId = partyId,
     count = null,
-    pairAssignmentHistory = emptyList(),
+    pairingSetList = emptyList(),
     recentTimesPaired = null,
     contributionReport = null,
 )

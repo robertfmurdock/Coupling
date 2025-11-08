@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
@@ -25,8 +25,8 @@ import kotlin.time.Clock
 class SdkPairsRecentTimesTest {
 
     companion object Companion : AssignPinsAction.Dispatcher {
-        private fun pairAssignmentDocument(player1: Player, player2: Player) = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        private fun pairAssignmentDocument(player1: Player, player2: Player) = PairingSet(
+            id = PairingSetId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(pairOf(player1, player2)).withPins(),
             null,
@@ -37,7 +37,7 @@ class SdkPairsRecentTimesTest {
     fun withNoPlayersReturnsNoData() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = emptyList<Player>()
-        val history = emptyList<PairAssignmentDocument>()
+        val history = emptyList<PairingSet>()
     }) {
         savePartyState(party, players, history)
     } exercise {
@@ -51,7 +51,7 @@ class SdkPairsRecentTimesTest {
     fun withOnePlayerShowsOnePairWithoutRecentTimes() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = listOf(stubPlayer())
-        val history = emptyList<PairAssignmentDocument>()
+        val history = emptyList<PairingSet>()
     }) {
         savePartyState(party, players, history)
     } exercise {
@@ -70,7 +70,7 @@ class SdkPairsRecentTimesTest {
             stubPlayer(),
             stubPlayer(),
         )
-        val history = emptyList<PairAssignmentDocument>()
+        val history = emptyList<PairingSet>()
         val party = stubPartyDetails()
     }) {
         savePartyState(party, players, history)

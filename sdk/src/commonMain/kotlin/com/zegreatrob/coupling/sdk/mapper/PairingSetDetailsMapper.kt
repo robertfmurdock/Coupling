@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.sdk.mapper
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.sdk.schema.fragment.PairingSetDetails
 import kotools.types.collection.toNotEmptyList
 
-fun PairingSetDetails.toDomain() = PairAssignmentDocument(
+fun PairingSetDetails.toDomain() = PairingSet(
     id = id,
     date = date,
     pairs = pairs.map { pair ->

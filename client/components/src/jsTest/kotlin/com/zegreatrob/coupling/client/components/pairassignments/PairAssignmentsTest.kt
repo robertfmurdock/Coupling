@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -37,8 +37,8 @@ class PairAssignmentsTest {
 
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
-        var pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        var pairAssignments = PairingSet(
+            id = PairingSetId.new(),
             date = Clock.System.now(),
             pairs = notEmptyListOf(
                 pairOf(

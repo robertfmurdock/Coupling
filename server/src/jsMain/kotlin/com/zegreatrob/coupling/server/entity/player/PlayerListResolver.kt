@@ -36,7 +36,7 @@ val spinsUntilFullRotationResolve = dispatch(
     toSerializable = { it },
 )
 
-val pairAssignmentHistoryResolve = dispatch(
+val pairingSetListResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
     commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()

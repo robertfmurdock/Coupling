@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.stats.medianSpinDuration
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -20,8 +20,8 @@ import kotlin.time.Instant
 class MedianSpinDurationTest {
 
     companion object {
-        private fun pairAssignmentDocument(dateTime: Instant) = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        private fun pairAssignmentDocument(dateTime: Instant) = PairingSet(
+            id = PairingSetId.new(),
             date = dateTime,
             pairs = stubPinnedPairs(),
             null,
@@ -36,7 +36,7 @@ class MedianSpinDurationTest {
 
     @Test
     fun whenThereIsNoHistoryWillReturnNotApplicable() = setup(object {
-        val history = emptyList<PairAssignmentDocument>()
+        val history = emptyList<PairingSet>()
     }) exercise {
         history.medianSpinDuration()
     } verify { result ->
@@ -95,8 +95,8 @@ class MedianSpinDurationTest {
     @Test
     fun withOneHistoryEntryWillReturnNull() = setup(object {
         val history = listOf(
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId.new(),
+            PairingSet(
+                id = PairingSetId.new(),
                 date = dateTime(2017, 2, 17),
                 pairs = stubPinnedPairs(),
                 null,

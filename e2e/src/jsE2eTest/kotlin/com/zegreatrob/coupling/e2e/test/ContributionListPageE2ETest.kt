@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.stubmodel.stubContributionInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -16,7 +16,7 @@ import kotlin.test.Test
 @Suppress("unused")
 class ContributionListPageE2ETest {
 
-    class Context(val pairAssignments: List<PairAssignmentDocument>) {
+    class Context(val pairAssignments: List<PairingSet>) {
         val page = HistoryPage
     }
 

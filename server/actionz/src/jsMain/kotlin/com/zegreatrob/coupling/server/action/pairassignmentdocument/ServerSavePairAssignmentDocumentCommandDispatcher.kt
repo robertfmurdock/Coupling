@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
@@ -42,7 +42,7 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
             .also { partyId.loadIntegration()?.updateMessage(pairAssignments, partyId) }
     }
 
-    private suspend fun PartyIntegration.updateMessage(pairs: PairAssignmentDocument, partyId: PartyId) {
+    private suspend fun PartyIntegration.updateMessage(pairs: PairingSet, partyId: PartyId) {
         val team = slackTeam ?: return
         val channel = slackChannel ?: return
         val accessRecord = slackAccessRepository.get(team) ?: return

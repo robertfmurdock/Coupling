@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model.pairassignmentdocument
 
-fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<PairAssignmentDocument>): TimeResult {
+fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<PairingSet>): TimeResult {
     val documentsSinceLastPartnership =
         history.indexOfFirst { historyDocument -> historyDocument.hasPair(pair) }
 

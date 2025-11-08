@@ -42,10 +42,10 @@ private fun StatisticsPageQuery.PairList.toModel(): PlayerPair = PlayerPair(
     },
     spinsSinceLastPaired = spinsSinceLastPaired,
     recentTimesPaired = recentTimesPaired,
-    pairAssignmentHistory = pairAssignmentHistory.map { it.toModel() },
+    pairAssignmentHistory = pairingSetList.map { it.toModel() },
 )
 
-private fun StatisticsPageQuery.PairAssignmentHistory.toModel(): PairAssignment = PairAssignment(
+private fun StatisticsPageQuery.PairingSetList.toModel(): PairAssignment = PairAssignment(
     date = date,
     recentTimesPaired = recentTimesPaired,
     documentId = id,

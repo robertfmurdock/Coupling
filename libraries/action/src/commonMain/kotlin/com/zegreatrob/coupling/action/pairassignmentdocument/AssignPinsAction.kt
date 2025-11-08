@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -16,7 +16,7 @@ import kotools.types.collection.NotEmptyList
 data class AssignPinsAction(
     val pairs: NotEmptyList<CouplingPair>,
     val pins: List<Pin>,
-    val history: List<PairAssignmentDocument>,
+    val history: List<PairingSet>,
 ) {
     interface Dispatcher {
         suspend fun perform(action: AssignPinsAction): NotEmptyList<PinnedCouplingPair> {
@@ -43,7 +43,7 @@ data class AssignPinsAction(
         private fun findPairCandidates(
             pin: Pin,
             pinnedPairs: NotEmptyList<PinnedCouplingPair>,
-            history: List<PairAssignmentDocument>,
+            history: List<PairingSet>,
         ): List<PinnedCouplingPair> {
             val pairsGroupedByLastTime = pinnedPairs.toList().groupBy { pair ->
                 lastTimePlayerInPairHadPin(pin, history, pair.players)
@@ -64,7 +64,7 @@ data class AssignPinsAction(
 
         private fun lastTimePlayerInPairHadPin(
             pin: Pin,
-            history: List<PairAssignmentDocument>,
+            history: List<PairingSet>,
             players: NotEmptyList<Player>,
         ) = history.indexOfFirst { pairAssignmentDocument ->
             val pairWithPinPlayers = pairWithPinPlayers(pairAssignmentDocument, pin)
@@ -75,11 +75,11 @@ data class AssignPinsAction(
 
         private fun Map<Int, List<PinnedCouplingPair>>.minKeyValue() = this[keys.minOrNull()]
 
-        private fun pairWithPinPlayers(doc: PairAssignmentDocument, pin: Pin) = playersWithPin(doc, pin)
+        private fun pairWithPinPlayers(doc: PairingSet, pin: Pin) = playersWithPin(doc, pin)
 
-        private fun playersWithPin(doc: PairAssignmentDocument, pin: Pin) = pairWithPin(doc, pin)
+        private fun playersWithPin(doc: PairingSet, pin: Pin) = pairWithPin(doc, pin)
             ?.players
 
-        private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) = pairAssignmentDocument.pairs.toList().find { docPair -> docPair.pins.contains(pin) }
+        private fun pairWithPin(pairingSet: PairingSet, pin: Pin) = pairingSet.pairs.toList().find { docPair -> docPair.pins.contains(pin) }
     }
 }

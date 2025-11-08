@@ -5,15 +5,15 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.action.voidResult
 import com.zegreatrob.coupling.model.DiscordTeamAccess
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PartyIdPairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PartyIdPairingSetId
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentIdDeleteSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairingSetIdDeleteSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentRecordsSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdLoadIntegrationSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 interface ServerDeletePairAssignmentsCommandDispatcher :
     DeletePairAssignmentsCommand.Dispatcher,
-    PairAssignmentDocumentIdDeleteSyntax,
+    PairingSetIdDeleteSyntax,
     PartyIdPairAssignmentRecordsSyntax,
     PartyIdLoadIntegrationSyntax,
     CurrentPartyIdSyntax {
@@ -41,7 +41,7 @@ interface ServerDeletePairAssignmentsCommandDispatcher :
         val partyId = command.partyId
         val pairAssignments = partyId.loadPairAssignmentRecords()
             .elements
-            .find { it.id == command.pairAssignmentDocumentId }
+            .find { it.id == command.pairingSetId }
 
         return command.partyIdPairAssignmentId()
             .deleteIt()
@@ -49,25 +49,25 @@ interface ServerDeletePairAssignmentsCommandDispatcher :
             .also { pairAssignments?.let(partyId::with)?.deleteIntegrationMessages() }
     }
 
-    private suspend fun PartyElement<PairAssignmentDocument>.deleteIntegrationMessages() = coroutineScope {
+    private suspend fun PartyElement<PairingSet>.deleteIntegrationMessages() = coroutineScope {
         launch { deleteDiscordMessage() }
         launch { deleteSlackMessage() }
     }
 
-    private suspend fun PartyElement<PairAssignmentDocument>.deleteSlackMessage() {
+    private suspend fun PartyElement<PairingSet>.deleteSlackMessage() {
         partyId.loadIntegration()?.deleteMessage(element)
     }
 
-    private suspend fun PartyElement<PairAssignmentDocument>.deleteDiscordMessage() {
+    private suspend fun PartyElement<PairingSet>.deleteDiscordMessage() {
         partyId.getDiscordTeamAccess()
             ?.deleteMessage(element)
     }
 
-    private suspend fun DiscordTeamAccess.deleteMessage(pairAssignmentDocument: PairAssignmentDocument) = discordRepository.deleteMessage(webhook, pairAssignmentDocument)
+    private suspend fun DiscordTeamAccess.deleteMessage(pairingSet: PairingSet) = discordRepository.deleteMessage(webhook, pairingSet)
 
     private suspend fun PartyId.getDiscordTeamAccess() = discordAccessRepository.get(this)?.data?.element
 
-    private suspend fun PartyIntegration.deleteMessage(pairAssignments: PairAssignmentDocument) {
+    private suspend fun PartyIntegration.deleteMessage(pairAssignments: PairingSet) {
         val team = slackTeam ?: return
         val channel = slackChannel ?: return
         val accessRecord = slackAccessRepository.get(team) ?: return
@@ -76,8 +76,8 @@ interface ServerDeletePairAssignmentsCommandDispatcher :
             .onFailure { it.printStackTrace() }
     }
 
-    private fun DeletePairAssignmentsCommand.partyIdPairAssignmentId() = PartyIdPairAssignmentDocumentId(
+    private fun DeletePairAssignmentsCommand.partyIdPairAssignmentId() = PartyIdPairingSetId(
         currentPartyId,
-        pairAssignmentDocumentId,
+        pairingSetId,
     )
 }

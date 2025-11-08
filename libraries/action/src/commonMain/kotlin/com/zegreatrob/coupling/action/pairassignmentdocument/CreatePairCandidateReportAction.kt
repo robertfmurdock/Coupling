@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.calculateTimeSinceLastPartnership
@@ -12,7 +12,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 @ActionMint
 data class CreatePairCandidateReportAction(
     val player: Player,
-    val history: List<PairAssignmentDocument>,
+    val history: List<PairingSet>,
     val allPlayers: List<Player>,
 ) {
 

@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
@@ -16,7 +16,7 @@ data class ShufflePairsAction(
     val party: PartyDetails,
     val players: NotEmptyList<Player>,
     val pins: List<Pin>,
-    val history: List<PairAssignmentDocument>,
+    val history: List<PairingSet>,
 ) {
     interface Dispatcher<out D> :
         Clock,
@@ -37,8 +37,8 @@ data class ShufflePairsAction(
 
         private fun ShufflePairsAction.findNewPairsAction() = FindNewPairsAction(Game(players, history, party.pairingRule))
 
-        private fun pairAssignmentDocument(pairAssignments: NotEmptyList<PinnedCouplingPair>) = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        private fun pairAssignmentDocument(pairAssignments: NotEmptyList<PinnedCouplingPair>) = PairingSet(
+            id = PairingSetId.new(),
             date = currentDate(),
             pairs = pairAssignments,
             discordMessageId = null,

@@ -13,8 +13,8 @@ import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
@@ -109,12 +109,12 @@ private suspend fun generateStrongPairingTeam(
 
     val dispatcher = FakeContributionDispatcher()
 
-    val populatedHistory = datesUntilNow.fold(emptyList<PairAssignmentDocument>()) { history, date ->
+    val populatedHistory = datesUntilNow.fold(emptyList<PairingSet>()) { history, date ->
         if (setOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(date.dayOfWeek)) {
             return@fold history
         }
-        val pairAssignmentsNewestFirst = PairAssignmentDocument(
-            id = PairAssignmentDocumentId.new(),
+        val pairAssignmentsNewestFirst = PairingSet(
+            id = PairingSetId.new(),
             date = date.toInstant(TimeZone.currentSystemDefault()),
             pairs = dispatcher.perform(FindNewPairsAction(Game(players, history, PairingRule.LongestTime))).withPins(),
         )

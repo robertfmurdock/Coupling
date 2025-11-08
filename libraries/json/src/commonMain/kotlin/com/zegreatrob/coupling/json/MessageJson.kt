@@ -13,11 +13,11 @@ sealed class JsonMessage
 data class JsonCouplingSocketMessage(
     var text: String,
     var players: Set<JsonPlayerData>,
-    val currentPairAssignments: JsonPairAssignmentDocument? = null,
+    val currentPairAssignments: JsonPairingSet? = null,
 ) : JsonMessage()
 
 @Serializable
-data class JsonPairAssignmentAdjustmentMessage(val currentPairAssignments: JsonPairAssignmentDocument) : JsonMessage()
+data class JsonPairAssignmentAdjustmentMessage(val currentPairAssignments: JsonPairingSet) : JsonMessage()
 
 fun Message.toSerializable() = when (this) {
     is CouplingSocketMessage -> JsonCouplingSocketMessage(

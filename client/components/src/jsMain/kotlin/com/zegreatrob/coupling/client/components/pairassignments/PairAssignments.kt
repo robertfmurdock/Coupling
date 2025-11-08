@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -35,8 +35,8 @@ external interface PairAssignmentsProps : Props {
     var party: PartyDetails
     var boost: Boost?
     var players: List<Player>
-    var pairs: PairAssignmentDocument?
-    var setPairs: (PairAssignmentDocument) -> Unit
+    var pairs: PairingSet?
+    var setPairs: (PairingSet) -> Unit
     var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
     var message: CouplingSocketMessage
     var allowSave: Boolean
@@ -77,7 +77,7 @@ private fun PropertiesBuilder.pairAssignmentStyles() {
     backgroundColor = Color("#faf0d2")
 }
 
-private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) = copy(
+private fun PairingSet.overlayUpdatedPlayers(players: List<Player>) = copy(
     pairs = pairs.map { pair ->
         pair.copy(
             pinnedPlayers = pair.pinnedPlayers.map { pinnedPlayer ->
@@ -90,12 +90,12 @@ private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) 
     },
 )
 
-private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) = if (pairAssignments == null) {
+private fun notPairedPlayers(players: List<Player>, pairAssignments: PairingSet?) = if (pairAssignments == null) {
     players
 } else {
     val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
     players.filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
 }
 
-private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap(PinnedCouplingPair::players)
+private fun PairingSet.currentlyPairedPlayerIds() = pairs.flatMap(PinnedCouplingPair::players)
     .map(Player::id)

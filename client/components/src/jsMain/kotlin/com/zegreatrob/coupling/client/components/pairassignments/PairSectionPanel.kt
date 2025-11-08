@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.pairassignments.spin.PairAssignmentsAnimator
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -28,9 +28,9 @@ import web.cssom.rgb
 external interface PairSectionPanelProps : Props {
     var party: PartyDetails
     var players: List<Player>
-    var pairAssignments: PairAssignmentDocument?
+    var pairAssignments: PairingSet?
     var allowSave: Boolean
-    var setPairs: (PairAssignmentDocument) -> Unit
+    var setPairs: (PairingSet) -> Unit
     var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
 }
 

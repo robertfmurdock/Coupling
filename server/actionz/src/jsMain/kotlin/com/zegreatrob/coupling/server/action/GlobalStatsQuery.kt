@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.flatMap
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
@@ -40,7 +40,7 @@ data class GlobalStatsQuery(val year: Int) {
             .toGlobalStats()
 
         private suspend fun List<Record<PartyDetails>>.toStats(
-            matchesYear: (PartyRecord<PairAssignmentDocument>) -> Boolean,
+            matchesYear: (PartyRecord<PairingSet>) -> Boolean,
         ): List<PartyStats> = asFlow()
             .map { it to pairAssignmentDocumentRepository.loadPairAssignments(it.data.id) }
             .filter { (_, docs) -> docs.any(matchesYear) }
@@ -63,14 +63,14 @@ data class GlobalStatsQuery(val year: Int) {
     }
 }
 
-private fun yearMatcher(year: Int) = { record: PartyRecord<PairAssignmentDocument> ->
+private fun yearMatcher(year: Int) = { record: PartyRecord<PairingSet> ->
     record.data.element.date.toLocalDateTime(TimeZone.currentSystemDefault()).year == year
 }
 
 private fun partyStats(
     party: Record<PartyDetails>,
-    docs: List<PartyRecord<PairAssignmentDocument>>,
-    filter: (PartyRecord<PairAssignmentDocument>) -> Boolean,
+    docs: List<PartyRecord<PairingSet>>,
+    filter: (PartyRecord<PairingSet>) -> Boolean,
 ): PartyStats {
     val pairDocsThisYear = docs.filter(filter).elements
     return PartyStats(
@@ -84,14 +84,14 @@ private fun partyStats(
     )
 }
 
-private fun List<PairAssignmentDocument>.allPins(): List<Pin> = flatMap {
+private fun List<PairingSet>.allPins(): List<Pin> = flatMap {
     it.pairs.toList().flatMap(PinnedCouplingPair::allPins)
 }
 
 private fun PinnedCouplingPair.allPins(): List<Pin> = pins.toList()
     .plus(pinnedPlayers.flatMap(PinnedPlayer::pins))
 
-private fun List<PairAssignmentDocument>.distinctPlayersPairedThisYear() = map(PairAssignmentDocument::pairs)
+private fun List<PairingSet>.distinctPlayersPairedThisYear() = map(PairingSet::pairs)
     .flatMap(NotEmptyList<PinnedCouplingPair>::toList)
     .asSequence()
     .map(PinnedCouplingPair::players)

@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.call
 import com.zegreatrob.coupling.model.map
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -47,7 +47,7 @@ class ShufflePairsActionTest {
         val party = PartyDetails(PartyId("1"), PairingRule.LongestTime)
         val players = notEmptyListOf(stubPlayer())
         val pins = emptyList<Pin>()
-        val history = emptyList<PairAssignmentDocument>()
+        val history = emptyList<PairingSet>()
         val expectedPairingAssignments = notEmptyListOf(
             pairOf(stubPlayer()),
             pairOf(stubPlayer()),
@@ -64,7 +64,7 @@ class ShufflePairsActionTest {
         perform(ShufflePairsAction(party, players, pins, history))
     } verify { result ->
         result.assertIsEqualTo(
-            PairAssignmentDocument(
+            PairingSet(
                 id = result.id,
                 date = expectedDate,
                 pairs = expectedPinnedPairs,

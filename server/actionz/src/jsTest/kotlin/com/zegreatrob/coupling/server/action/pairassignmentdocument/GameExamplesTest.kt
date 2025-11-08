@@ -10,8 +10,8 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -73,7 +73,7 @@ class GameExamplesTest {
 
         @Test
         fun worksWithNoHistory() = asyncSetup(object {
-            val history = emptyList<PairAssignmentDocument>()
+            val history = emptyList<PairingSet>()
             val party = PartyDetails(
                 PartyId("Best party ever"),
                 PairingRule.LongestTime,
@@ -99,7 +99,7 @@ class GameExamplesTest {
 
         @Test
         fun worksWithAnOddNumberOfPlayersAndNoHistory() = asyncSetup(object {
-            val history = emptyList<PairAssignmentDocument>()
+            val history = emptyList<PairingSet>()
             val party = PartyDetails(
                 PartyId("Best party ever"),
                 PairingRule.LongestTime,
@@ -120,23 +120,23 @@ class GameExamplesTest {
         @Test
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = asyncSetup(object {
             val history = listOf(
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 10),
                     pairs = notEmptyListOf(pairOf(bruce, clark)).withNoPins(),
                 ),
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 9),
                     pairs = notEmptyListOf(pairOf(bruce, diana)).withNoPins(),
                 ),
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 8),
                     pairs = notEmptyListOf(pairOf(bruce, hal)).withNoPins(),
                 ),
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 7),
                     pairs = notEmptyListOf(pairOf(bruce, barry)).withNoPins(),
                 ),
@@ -175,23 +175,23 @@ class GameExamplesTest {
         @Test
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = asyncSetup(object {
             val history = listOf(
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 10),
                     pairs = notEmptyListOf(pairOf(bruce, clark)).withNoPins(),
                 ),
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 9),
                     pairs = notEmptyListOf(pairOf(bruce, diana)).withNoPins(),
                 ),
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 8),
                     pairs = notEmptyListOf(pairOf(bruce, hal)).withNoPins(),
                 ),
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 7),
                     pairs = notEmptyListOf(pairOf(bruce, barry)).withNoPins(),
                 ),
@@ -223,18 +223,18 @@ class GameExamplesTest {
         val allPlayers = notEmptyListOf(kamala, logan, steve, thor)
 
         val history = listOf(
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId.new(),
+            PairingSet(
+                id = PairingSetId.new(),
                 date = dateTime(2014, 1, 10),
                 pairs = notEmptyListOf(pairOf(kamala, thor)).withNoPins(),
             ),
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId.new(),
+            PairingSet(
+                id = PairingSetId.new(),
                 date = dateTime(2014, 1, 9),
                 pairs = notEmptyListOf(pairOf(kamala, steve)).withNoPins(),
             ),
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId.new(),
+            PairingSet(
+                id = PairingSetId.new(),
                 date = dateTime(2014, 1, 8),
                 pairs = notEmptyListOf(pairOf(kamala, logan)).withNoPins(),
             ),

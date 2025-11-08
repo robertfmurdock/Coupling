@@ -14,8 +14,8 @@ import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.forEach
 import com.zegreatrob.coupling.model.get
 import com.zegreatrob.coupling.model.map
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -87,8 +87,8 @@ class SpinTest {
             )
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 10),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(),
@@ -96,8 +96,8 @@ class SpinTest {
                     ),
                     null,
                 ),
-                PairAssignmentDocument(
-                    id = PairAssignmentDocumentId.new(),
+                PairingSet(
+                    id = PairingSetId.new(),
                     date = dateTime(2014, 1, 9),
                     pairs = notEmptyListOf(
                         pairOf(players[0], players[3]).withPins(),
@@ -134,8 +134,8 @@ class SpinTest {
         val party = PartyDetails(id = PartyId(Uuid.random().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId.new(),
+            PairingSet(
+                id = PairingSetId.new(),
                 date = dateTime(2013, 2, 10),
                 pairs = notEmptyListOf(
                     pairOf(players[0], players[3]).withPins(),
@@ -143,8 +143,8 @@ class SpinTest {
                 ),
                 null,
             ),
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId.new(),
+            PairingSet(
+                id = PairingSetId.new(),
                 date = dateTime(2013, 2, 9),
                 pairs = notEmptyListOf(
                     pairOf(players[0], players[2]).withPins(),
@@ -227,7 +227,7 @@ class SpinTest {
             sdk: ActionCannon<CouplingSdkDispatcher>,
             party: PartyDetails,
             players: NotEmptyList<Player>,
-            history: List<PairAssignmentDocument> = emptyList(),
+            history: List<PairingSet> = emptyList(),
             pins: List<Pin> = emptyList(),
         ) = coroutineScope {
             with(sdk) {

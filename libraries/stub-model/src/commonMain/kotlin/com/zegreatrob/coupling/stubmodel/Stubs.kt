@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -100,8 +100,8 @@ fun stubPinTarget(): PinTarget {
 fun Instant.roundToMillis(): Instant = Instant.fromEpochMilliseconds(toEpochMilliseconds())
 
 var pairAssignmentDocumentCounter = 1
-fun stubPairAssignmentDoc() = PairAssignmentDocument(
-    id = PairAssignmentDocumentId.new(),
+fun stubPairAssignmentDoc() = PairingSet(
+    id = PairingSetId.new(),
     date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes).roundToMillis(),
     pairs = notEmptyListOf(
         PinnedCouplingPair(

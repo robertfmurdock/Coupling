@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -47,9 +47,9 @@ class SavePairAssignmentDocumentCommandTest {
         override val partyRepository = MemoryPartyRepository(UserId("-".toNotBlankString().getOrThrow()), Clock.System)
         override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = null
 
-        val pairAssignmentDocument = party.id.with(
-            PairAssignmentDocument(
-                PairAssignmentDocumentId.new(),
+        val pairingSet = party.id.with(
+            PairingSet(
+                PairingSetId.new(),
                 date = Clock.System.now(),
                 pairs = notEmptyListOf(stubPinnedCouplingPair()),
             ),
@@ -60,21 +60,21 @@ class SavePairAssignmentDocumentCommandTest {
         override val discordAccessRepository = DiscordAccessGet { null }
 
         override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
-            .apply { whenever(pairAssignmentDocument, Unit) }
+            .apply { whenever(pairingSet, Unit) }
         override val cannon = ActionCannon(this)
     }) {
         partyRepository.save(party)
     } exercise {
-        perform(SavePairAssignmentsCommand(party.id, pairAssignmentDocument.element))
+        perform(SavePairAssignmentsCommand(party.id, pairingSet.element))
     } verify { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
         pairAssignmentDocumentRepository.spyReceivedValues
-            .assertIsEqualTo(listOf(pairAssignmentDocument))
+            .assertIsEqualTo(listOf(pairingSet))
     }
 }
 
 class SpyPairAssignmentDocumentRepository :
     PairAssignmentDocumentSave,
-    Spy<PartyElement<PairAssignmentDocument>, Unit> by SpyData() {
-    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = spyFunction(partyPairDocument)
+    Spy<PartyElement<PairingSet>, Unit> by SpyData() {
+    override suspend fun save(partyPairDocument: PartyElement<PairingSet>) = spyFunction(partyPairDocument)
 }

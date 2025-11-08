@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
@@ -68,7 +68,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun deleteWhenDocumentDoesNotExistWillNotExplode() = repositorySetup().exercise {
-        runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId.new())) }
+        runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairingSetId.new())) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)

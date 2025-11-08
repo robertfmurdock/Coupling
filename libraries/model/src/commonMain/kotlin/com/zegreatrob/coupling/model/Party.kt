@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
@@ -19,8 +19,8 @@ data class Party(
     val playerList: List<PartyRecord<Player>>? = null,
     val retiredPlayers: List<PartyRecord<Player>>? = null,
     val secretList: List<PartyRecord<Secret>>? = null,
-    val pairAssignmentDocumentList: List<PartyRecord<PairAssignmentDocument>>? = null,
-    val currentPairAssignmentDocument: PartyRecord<PairAssignmentDocument>? = null,
+    val pairingSetList: List<PartyRecord<PairingSet>>? = null,
+    val currentPairingSet: PartyRecord<PairingSet>? = null,
     val boost: Record<Boost>? = null,
     val pairs: List<PlayerPair>? = null,
     val pair: PlayerPair? = null,

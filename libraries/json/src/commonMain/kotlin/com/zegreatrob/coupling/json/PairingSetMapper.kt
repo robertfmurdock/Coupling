@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.map
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.with
 import kotools.types.collection.toNotEmptyList
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
-fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairingSet(
+fun PartyRecord<PairingSet>.toSerializable() = GqlPairingSet(
     partyId = data.partyId,
     id = data.element.id,
     date = data.element.date,
@@ -21,7 +21,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = GqlPairingSet(
     recentTimesPaired = null,
 )
 
-fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
+fun PairingSet.toSerializable() = JsonPairingSet(
     id = id,
     date = date,
     pairs = pairs.map(PinnedCouplingPair::toSerializable),
@@ -30,9 +30,9 @@ fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-fun GqlPairingSet.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
+fun GqlPairingSet.toModel(): PartyRecord<PairingSet> = PartyRecord(
     partyId.with(
-        PairAssignmentDocument(
+        PairingSet(
             id = id,
             date = date,
             pairs = pairs.map(GqlPinnedPair::toModel).toNotEmptyList().getOrThrow(),

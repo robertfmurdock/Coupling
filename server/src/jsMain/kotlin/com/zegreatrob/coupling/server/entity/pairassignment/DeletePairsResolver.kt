@@ -22,5 +22,5 @@ val deletePairsResolver = dispatch(
 
 private fun GqlDeletePairAssignmentsInput.toModel(): DeletePairAssignmentsCommand = DeletePairAssignmentsCommand(
     partyId = partyId,
-    pairAssignmentDocumentId = pairingSetId,
+    pairingSetId = pairingSetId,
 )

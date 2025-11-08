@@ -361,7 +361,7 @@ type Pair {
     spinsSinceLastPaired: Int
     recentTimesPaired: Int
     contributionReport(input: ContributionsInput): ContributionReport
-    pairAssignmentHistory: [PairingSet!]!
+    pairingSetList: [PairingSet!]!
 }
 
 type ContributionReport {

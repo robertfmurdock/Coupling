@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -17,7 +17,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
     DynamoPlayerJsonMapping,
     DynamoPinJsonMapping {
 
-    private fun PairAssignmentDocument.toDynamoJson() = json(
+    private fun PairingSet.toDynamoJson() = json(
         "id" to id.value.toString(),
         "date" to "${date.toEpochMilliseconds()}",
         "pairs" to pairs.toList().map { it.toDynamoJson() }
@@ -26,7 +26,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         "slackMessageId" to slackMessageId,
     )
 
-    fun Record<PartyElement<PairAssignmentDocument>>.asDynamoJson() = recordJson()
+    fun Record<PartyElement<PairingSet>>.asDynamoJson() = recordJson()
         .add(
             json(
                 "tribeId" to data.partyId.value.toString(),
@@ -45,9 +45,9 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         "player" to player.toDynamoJson(),
     )
 
-    fun Json.toPairAssignmentDocument(): PairAssignmentDocument? {
-        return PairAssignmentDocument(
-            id = PairAssignmentDocumentId(getDynamoStringValue("id")?.toNotBlankString()?.getOrNull() ?: return null),
+    fun Json.toPairAssignmentDocument(): PairingSet? {
+        return PairingSet(
+            id = PairingSetId(getDynamoStringValue("id")?.toNotBlankString()?.getOrNull() ?: return null),
             date = getDynamoStringValue("date")?.toLong()?.let { Instant.fromEpochMilliseconds(it) }
                 ?: Instant.DISTANT_PAST,
             pairs = getDynamoListValue("pairs")?.mapNotNull { pair -> toPinnedCouplingPair(pair) }

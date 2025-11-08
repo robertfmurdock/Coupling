@@ -188,7 +188,7 @@ query partyPairsRecentTimesPairedQuery($partyId: PartyId!) {
 query partyPairsHistoryRecentTimesPairedQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         pairList {
-            pairAssignmentHistory {
+            pairingSetList {
                 recentTimesPaired
             }
         }
@@ -209,19 +209,19 @@ query partyPairsSpinsQuery($partyId: PartyId!) {
 
 query partyPairsHistoryQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairList { pairAssignmentHistory { ...PairingSetDetails } }
+        pairList { pairingSetList { ...PairingSetDetails } }
     }
 }
 
 query partyPairsHistoryDateQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
-        pairList { pairAssignmentHistory { date } }
+        pairList { pairingSetList { date } }
     }
 }
 
 query partyPairHistoryQuery($partyId: PartyId!, $pairInput: PairInput!) {
     party(input: {partyId: $partyId}) {
-        pair(input: $pairInput) { pairAssignmentHistory { ...PairingSetDetails } }
+        pair(input: $pairInput) { pairingSetList { ...PairingSetDetails } }
     }
 }
 

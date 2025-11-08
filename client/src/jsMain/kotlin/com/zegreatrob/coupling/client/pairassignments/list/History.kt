@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignmentRow
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -23,7 +23,7 @@ import web.cssom.vh
 
 external interface HistoryProps : Props {
     var party: PartyDetails
-    var history: List<PairAssignmentDocument>
+    var history: List<PairingSet>
     var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
     var windowFunctions: WindowFunctions?
 }

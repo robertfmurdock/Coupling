@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.slack
 
 import com.zegreatrob.coupling.model.SlackTeamAccess
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
@@ -53,7 +53,7 @@ class FetchSlackRepository : SlackRepository {
         token: String,
         channel: String,
         messageTs: String?,
-        pairs: PairAssignmentDocument,
+        pairs: PairingSet,
         partyId: PartyId,
     ): MessageResponse {
         val response = client.updateMessage(
@@ -69,7 +69,7 @@ class FetchSlackRepository : SlackRepository {
         return response
     }
 
-    override suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
+    override suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairingSet) {
         pairs.slackMessageId
             ?.let { messageTs ->
                 val response = client.deleteMessage(accessToken = token, channel = channel, ts = messageTs)
@@ -82,7 +82,7 @@ class FetchSlackRepository : SlackRepository {
     override suspend fun sendSpinMessage(
         channel: String,
         token: String,
-        pairs: PairAssignmentDocument,
+        pairs: PairingSet,
         partyId: PartyId,
     ): String? = (
         pairs.slackMessageId
@@ -109,7 +109,7 @@ class FetchSlackRepository : SlackRepository {
     }
 }
 
-private fun PairAssignmentDocument.toSlackBlocks(partyId: PartyId) = arrayOf(
+private fun PairingSet.toSlackBlocks(partyId: PartyId) = arrayOf(
     json(
         "type" to "header",
         "text" to json(
@@ -151,6 +151,6 @@ fun PinnedCouplingPair.pairFieldText() = listOfNotNull(
         ?.let { "📍 $it" },
 ).joinToString("\n")
 
-fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
+fun PairingSet.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
 
 private fun LocalDateTime.dateText() = "$date - $time"
