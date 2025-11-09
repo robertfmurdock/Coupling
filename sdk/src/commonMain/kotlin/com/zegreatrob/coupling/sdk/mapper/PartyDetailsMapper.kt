@@ -12,8 +12,8 @@ fun PartyDetails.toDomain() = com.zegreatrob.coupling.model.party.PartyDetails(
     alternateBadgeName = alternateBadgeName,
     email = email,
     name = name,
-    badgesEnabled = badgesEnabled == true,
-    callSignsEnabled = callSignsEnabled == true,
-    animationEnabled = animationsEnabled != false,
-    animationSpeed = animationSpeed ?: 1.0,
+    badgesEnabled = badgesEnabled,
+    callSignsEnabled = callSignsEnabled,
+    animationEnabled = animationsEnabled,
+    animationSpeed = animationSpeed,
 )

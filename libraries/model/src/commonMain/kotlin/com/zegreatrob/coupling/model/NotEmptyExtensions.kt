@@ -1,8 +1,5 @@
 package com.zegreatrob.coupling.model
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 
@@ -15,9 +12,5 @@ inline fun <I, reified O> NotEmptyList<I>.flatMap(crossinline function: (I) -> I
     .flatMap(function)
 
 operator fun <E> NotEmptyList<E>.get(index: Int): E = toList()[index]
-
-fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
-
-fun CouplingPair.toPinnedPlayers() = toNotEmptyList().map { player -> player.withPins(emptyList()) }
 
 inline fun <E> NotEmptyList<E>.forEach(function: (e: E) -> Unit) = toList().forEach(function)

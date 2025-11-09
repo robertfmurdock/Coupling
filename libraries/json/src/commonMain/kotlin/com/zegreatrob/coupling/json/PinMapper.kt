@@ -8,12 +8,6 @@ fun Pin.toSerializable() = GqlPinSnapshot(
     icon = icon,
 )
 
-fun Pin.toSerializableInput() = GqlPinInput(
-    id = id,
-    name = name,
-    icon = icon,
-)
-
 fun GqlPinSnapshot.toModel(): Pin = Pin(
     id = id,
     name = name,
