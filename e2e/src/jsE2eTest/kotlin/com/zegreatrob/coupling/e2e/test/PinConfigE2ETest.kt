@@ -122,15 +122,15 @@ class PinConfigE2ETest {
             sdk.fire(SavePinCommand(party.id, pin))
             PinConfigPage.goTo(party.id, pin.id)
         } exercise {
-            retireButton().click()
-            WebdriverBrowser.acceptAlert()
-
+            acceptDialogAndGetMessage { retireButton().click() }
             PinListPage.waitForLoad()
-        } verify {
+        } verifyAnd {
             WebdriverElementArray(".pin-name")
                 .map { it.text() }
                 .contains(pin.name)
                 .assertIsEqualTo(false)
+        } teardown {
+            clearDialogListeners()
         }
     }
 }
