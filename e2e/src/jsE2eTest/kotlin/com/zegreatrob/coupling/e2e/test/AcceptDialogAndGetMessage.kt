@@ -6,15 +6,14 @@ import kotlin.js.Promise
 
 suspend fun acceptDialogAndGetMessage(triggerFunc: suspend () -> Unit): String {
     val textPromise = Promise<String> { resolve, _ ->
-        browser.asDynamic()["on"]("dialog") { dialog: dynamic ->
+        browser.on("dialog") { dialog: dynamic ->
+            println("message <${dialog.message()}>")
             resolve(dialog.message())
             dialog.accept()
         }
     }
     triggerFunc()
-    return textPromise.await()
-}
-
-fun clearDialogListeners() {
-    browser.asDynamic()["removeAllListeners"]("dialog")
+    val await = textPromise.await()
+    browser.removeAllListeners("dialog")
+    return await
 }

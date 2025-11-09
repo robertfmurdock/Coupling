@@ -124,13 +124,11 @@ class PinConfigE2ETest {
         } exercise {
             acceptDialogAndGetMessage { retireButton().click() }
             PinListPage.waitForLoad()
-        } verifyAnd {
+        } verify {
             WebdriverElementArray(".pin-name")
                 .map { it.text() }
                 .contains(pin.name)
                 .assertIsEqualTo(false)
-        } teardown {
-            clearDialogListeners()
         }
     }
 }

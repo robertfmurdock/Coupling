@@ -24,7 +24,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
-import com.zegreatrob.wrapper.wdio.browser
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
@@ -113,10 +112,8 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.playerNameTextField().setValue("completely different name")
         } exercise {
             acceptDialogAndGetMessage { PartyCard.element.click() }
-        } verifyAnd { alertText ->
+        } verify { alertText ->
             alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
-        } teardown {
-            clearDialogListeners()
         }
 
         @Test
@@ -176,10 +173,8 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
             acceptDialogAndGetMessage { retireButton().click() }
-        } verifyAnd {
+        } verify {
             page.waitToArriveAt(("/${party.id.value}/pairAssignments/current/"))
-        } teardown {
-            clearDialogListeners()
         }
 
         @Test

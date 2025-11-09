@@ -88,7 +88,7 @@ class HistoryPageE2ETest {
         @Test
         fun pairingCanBeDeleted() = historyPageSetup().exercise {
             acceptDialogAndGetMessage { HistoryPage.getDeleteButtons()[0].click() }
-        } verifyAnd {
+        } verify {
             WebdriverBrowser.waitUntil(
                 { HistoryPage.pairAssignments.count() == pairAssignments.size - 1 },
                 WAIT_TO_BE_PRESENT_DURATION,
@@ -96,8 +96,6 @@ class HistoryPageE2ETest {
             )
             HistoryPage.pairAssignments.count()
                 .assertIsEqualTo(1)
-        } teardown {
-            clearDialogListeners()
         }
     }
 }
