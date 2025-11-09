@@ -52,7 +52,6 @@ class PlayerConfigPageE2ETest {
         sdk().fire(SavePartyCommand(party))
     } exercise {
         page.goToNew(party.id)
-        println("at new")
         page.playerNameTextField().setValue("1")
         saveButton().click()
         page.waitForSaveToComplete("1")

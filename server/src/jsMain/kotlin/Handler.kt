@@ -69,7 +69,6 @@ private val websocketApp by lazy {
                         delete(connectionId, apiGatewayManagementApiClient()).await()
                         401
                     } else {
-                        println("connect $connectionId")
                         handleConnect(request, connectionId, request.event)
                     }
                 },
@@ -146,7 +145,6 @@ private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true") 
 @JsName("serverlessSocketMessage")
 fun serverlessSocketMessage(event: Json): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
-    println("message $connectionId")
     val message = event.at<String>("body")?.fromJsonString<JsonMessage>()?.toModel()
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
@@ -163,7 +161,6 @@ fun serverlessSocketMessage(event: Json): dynamic {
 @JsName("notifyConnect")
 fun notifyConnect(event: Json) = MainScope().promise {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
-    println("notifyConnect $connectionId")
     val socketDispatcher = socketDispatcher()
     socketDispatcher.perform(ConnectionsQuery(connectionId))
         ?.let { results ->
@@ -184,7 +181,6 @@ fun notifyConnect(event: Json) = MainScope().promise {
 @JsName("serverlessSocketDisconnect")
 fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
     val connectionId = "${event.requestContext.connectionId}"
-    println("disconnect $connectionId")
     val socketDispatcher = socketDispatcher()
 
     socketDispatcher

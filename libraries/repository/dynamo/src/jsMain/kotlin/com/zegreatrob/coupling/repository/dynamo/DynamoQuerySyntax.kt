@@ -17,7 +17,6 @@ interface DynamoQuerySyntax :
         .itemsNode()
 
     suspend fun batchExecuteStatement(query: Json): Array<Json> = dynamoDBClient.batchExecuteStatement(query).await()
-        .also { println(JSON.stringify(it)) }
         .itemsNode()
 
     suspend fun queryAllRecords(

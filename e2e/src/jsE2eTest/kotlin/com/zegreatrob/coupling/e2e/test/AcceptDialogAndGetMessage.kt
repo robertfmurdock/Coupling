@@ -7,7 +7,6 @@ import kotlin.js.Promise
 suspend fun acceptDialogAndGetMessage(triggerFunc: suspend () -> Unit): String {
     val textPromise = Promise<String> { resolve, _ ->
         browser.on("dialog") { dialog: dynamic ->
-            println("message <${dialog.message()}>")
             resolve(dialog.message())
             dialog.accept()
         }
