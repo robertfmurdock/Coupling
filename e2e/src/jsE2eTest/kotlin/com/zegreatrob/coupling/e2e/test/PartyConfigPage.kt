@@ -8,13 +8,13 @@ import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PartyConfigPage : ByRole by TestingLibraryBrowser {
-    suspend fun getPartyNameInput() = getByRole("combobox", RoleOptions(name = "Name"))
-    suspend fun getPartyEmailInput() = getByRole("combobox", RoleOptions(name = "Email"))
-    suspend fun getPartyIdInput() = getByRole("combobox", RoleOptions(name = "Unique Id"))
+    suspend fun getPartyNameInput() = getByRole("textbox", RoleOptions(name = "Name"))
+    suspend fun getPartyEmailInput() = getByRole("textbox", RoleOptions(name = "Email"))
+    suspend fun getPartyIdInput() = getByRole("textbox", RoleOptions(name = "Unique Id"))
     suspend fun getCallSignCheckbox() = getByRole("checkbox", RoleOptions(name = "Enable Call Signs"))
     suspend fun getBadgeCheckbox() = getByRole("checkbox", RoleOptions(name = "Enable Badges"))
-    suspend fun getDefaultBadgeNameInput() = getByRole("combobox", RoleOptions(name = "Default Badge Name"))
-    suspend fun getAltBadgeNameInput() = getByRole("combobox", RoleOptions(name = "Alt Badge Name"))
+    suspend fun getDefaultBadgeNameInput() = getByRole("textbox", RoleOptions(name = "Default Badge Name"))
+    suspend fun getAltBadgeNameInput() = getByRole("textbox", RoleOptions(name = "Alt Badge Name"))
     suspend fun getDifferentBadgesOption() = getByRole("option", RoleOptions(name = "Prefer Different Badges (Beta)"))
     fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
 

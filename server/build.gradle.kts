@@ -64,6 +64,7 @@ dependencies {
     jsMainImplementation(npmConstrained("graphql"))
     jsMainImplementation(npmConstrained("jose"))
     jsMainImplementation(npmConstrained("jwks-rsa"))
+    jsMainImplementation(npmConstrained("lru-memoizer"))
     jsMainImplementation(npmConstrained("on-finished"))
     jsMainImplementation(npmConstrained("parse5"))
     jsMainImplementation(npmConstrained("parse5-html-rewriting-stream"))
