@@ -26,9 +26,7 @@ import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.browser
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.await
 import kotools.types.text.toNotBlankString
-import kotlin.js.Promise
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -118,7 +116,7 @@ class PlayerConfigPageE2ETest {
         } verifyAnd { alertText ->
             alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
         } teardown {
-            browser.asDynamic()["removeAllListeners"]("dialog")
+            clearDialogListeners()
         }
 
         @Test
@@ -181,7 +179,7 @@ class PlayerConfigPageE2ETest {
         } verifyAnd {
             page.waitToArriveAt(("/${party.id.value}/pairAssignments/current/"))
         } teardown {
-            browser.asDynamic()["removeAllListeners"]("dialog")
+            clearDialogListeners()
         }
 
         @Test
@@ -370,15 +368,4 @@ class PlayerConfigPageE2ETest {
                 .assertIsNotEqualTo("")
         }
     }
-}
-
-private suspend fun acceptDialogAndGetMessage(triggerFunc: suspend () -> Unit): String {
-    val textPromise = Promise<String> { resolve, _ ->
-        browser.asDynamic()["on"]("dialog") { dialog: dynamic ->
-            resolve(dialog.message())
-            dialog.accept()
-        }
-    }
-    triggerFunc()
-    return textPromise.await()
 }
