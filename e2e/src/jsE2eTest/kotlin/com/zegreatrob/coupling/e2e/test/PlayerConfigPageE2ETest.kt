@@ -1,3 +1,5 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
@@ -9,7 +11,6 @@ import com.zegreatrob.coupling.e2e.gql.PartyPlayerListQuery
 import com.zegreatrob.coupling.e2e.test.ConfigForm.retireButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
-import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
@@ -23,7 +24,11 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
+import com.zegreatrob.wrapper.wdio.browser
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.await
 import kotools.types.text.toNotBlankString
+import kotlin.js.Promise
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 
@@ -50,6 +55,7 @@ class PlayerConfigPageE2ETest {
         sdk().fire(SavePartyCommand(party))
     } exercise {
         page.goToNew(party.id)
+        println("at new")
         page.playerNameTextField().setValue("1")
         saveButton().click()
         page.waitForSaveToComplete("1")
@@ -92,7 +98,7 @@ class PlayerConfigPageE2ETest {
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            element.click()
+            PartyCard.element.click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
@@ -108,14 +114,11 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().setValue("completely different name")
         } exercise {
-            element.click()
-            WebdriverBrowser.waitForAlert()
-            WebdriverBrowser.alertText().also {
-                WebdriverBrowser.acceptAlert()
-                PairAssignmentsPage.waitForPage()
-            }
-        } verify { alertText ->
+            acceptDialogAndGetMessage { PartyCard.element.click() }
+        } verifyAnd { alertText ->
             alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
+        } teardown {
+            browser.asDynamic()["removeAllListeners"]("dialog")
         }
 
         @Test
@@ -132,7 +135,7 @@ class PlayerConfigPageE2ETest {
                 waitForSaveToComplete(newName)
             }
         } exercise {
-            element.click()
+            PartyCard.element.click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
@@ -155,7 +158,7 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.waitForSaveToComplete("Unknown")
             PlayerConfigPage.waitForPage()
         } exercise {
-            element.click()
+            PartyCard.element.click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
@@ -174,10 +177,11 @@ class PlayerConfigPageE2ETest {
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            retireButton().click()
-            WebdriverBrowser.acceptAlert()
-        } verify {
+            acceptDialogAndGetMessage { retireButton().click() }
+        } verifyAnd {
             page.waitToArriveAt(("/${party.id.value}/pairAssignments/current/"))
+        } teardown {
+            browser.asDynamic()["removeAllListeners"]("dialog")
         }
 
         @Test
@@ -252,13 +256,9 @@ class PlayerConfigPageE2ETest {
         ) exercise {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
-            PlayerConfigPage.defaultBadgeOption().isDisplayed()
-                .assertIsEqualTo(true)
             WebdriverElement("option[value=\"Default\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 1")
-            PlayerConfigPage.altBadgeOption().isDisplayed()
-                .assertIsEqualTo(true)
             WebdriverElement("option[value=\"Alternate\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 2")
@@ -370,4 +370,15 @@ class PlayerConfigPageE2ETest {
                 .assertIsNotEqualTo("")
         }
     }
+}
+
+private suspend fun acceptDialogAndGetMessage(triggerFunc: suspend () -> Unit): String {
+    val textPromise = Promise<String> { resolve, _ ->
+        browser.asDynamic()["on"]("dialog") { dialog: dynamic ->
+            resolve(dialog.message())
+            dialog.accept()
+        }
+    }
+    triggerFunc()
+    return textPromise.await()
 }

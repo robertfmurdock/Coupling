@@ -277,7 +277,7 @@ class PlayerConfigTest {
             },
         )
     } exercise {
-        actor.type(screen.getByLabelText("Name"), "nonsense")
+        actor.type(screen.getByRole("textbox", RoleOptions("Name")), "nonsense")
 
         fireEvent.submit(screen.getByRole("form"))
         act { altStubDispatcher.onActionReturn(VoidResult.Accepted) }
@@ -348,7 +348,7 @@ class PlayerConfigTest {
                 )
             },
         )
-    } verify { action ->
+    } verify {
         screen.queryByText("Retire").assertIsEqualTo(null)
     }
 
@@ -371,7 +371,7 @@ class PlayerConfigTest {
         )
     } exercise {
         actor.type(screen.getByLabelText("Name"), "differentName")
-    } verify { action ->
+    } verify {
         screen.getByText("Retire").assertNotNull()
     }
 

@@ -13,7 +13,7 @@ import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
 
-    suspend fun playerNameTextField() = getByRole("combobox", RoleOptions(name = "Name"))
+    suspend fun playerNameTextField() = getByRole("textbox", RoleOptions(name = "Name"))
     suspend fun defaultBadgeOption() = queryByRole("option", RoleOptions(name = "Default Badge Option"))
     suspend fun altBadgeOption() = queryByRole("option", RoleOptions(name = "Alt Badge Option"))
     suspend fun adjectiveTextInput() = queryByRole("combobox", RoleOptions(name = "Call-Sign Adjective"))

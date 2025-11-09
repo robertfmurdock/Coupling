@@ -13,8 +13,8 @@ import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PinConfigPage : ByRole by TestingLibraryBrowser {
 
-    suspend fun getNameTextField() = getByRole("combobox", RoleOptions(name = "Name"))
-    suspend fun getIconTextField() = getByRole("combobox", RoleOptions(name = "Icon"))
+    suspend fun getNameTextField() = getByRole("textbox", RoleOptions(name = "Name"))
+    suspend fun getIconTextField() = getByRole("textbox", RoleOptions(name = "Icon"))
 
     suspend fun pinBagPinNames() = pinBagButtons().map { it.text() }
 

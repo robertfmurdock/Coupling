@@ -43,7 +43,7 @@ fun ChildrenBuilder.configInput(
     type: InputType,
     onChange: (ChangeEvent<*>) -> Unit,
     placeholder: String = "",
-    list: String = "",
+    list: String? = null,
     checked: Boolean = false,
     autoFocus: Boolean? = false,
 ) {
