@@ -61,7 +61,7 @@
     "react-use-websocket": "^4.13.0",
     "reactjs-popup": "^2.0.6",
     "read-pkg-up": "^4.0.0",
-    "recharts": "^3.3.0",
+    "recharts": "^3.4.1",
     "resolve-pkg": "^2.0.0",
     "serverless": "^4.23.0",
     "serverless-http": "^4.0.0",
