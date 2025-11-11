@@ -2,7 +2,7 @@
 kotlin = "2.2.21"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.25.2"
-org-jlleitschuh-gradle-ktlint = "13.1.0"
+org-jlleitschuh-gradle-ktlint = "14.0.1"
 
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.20.1"
