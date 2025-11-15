@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.TooltipProps
 import emotion.react.css
-import js.lazy.Lazy
 import react.FC
 import react.PropsWithValue
 import react.dom.html.ReactHTML.div

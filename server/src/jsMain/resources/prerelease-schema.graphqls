@@ -2,10 +2,6 @@ extend type User {
     subscription: SubscriptionDetails
 }
 
-extend type BoostDetails {
-    userId: UserId!
-}
-
 type SubscriptionDetails {
     stripeCustomerId: String
     stripeSubscriptionId: String

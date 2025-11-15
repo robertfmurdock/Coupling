@@ -21,7 +21,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.core.toPrecision
-import js.lazy.Lazy
 import react.Props
 import react.useEffect
 import react.useState

@@ -37,7 +37,6 @@ import kotools.types.collection.notEmptyListOf
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
-@Suppress("unused")
 class PairAssignmentsPageE2ETest {
 
     companion object {

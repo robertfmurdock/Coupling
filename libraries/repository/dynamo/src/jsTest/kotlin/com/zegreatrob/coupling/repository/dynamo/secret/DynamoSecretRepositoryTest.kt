@@ -22,7 +22,6 @@ import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
-@Suppress("unused")
 class DynamoSecretRepositoryTest {
 
     @Test

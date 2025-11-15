@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.components.pairContext
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.player.Player
-import js.lazy.Lazy
 import react.FC
 import react.use
 import web.cssom.Angle

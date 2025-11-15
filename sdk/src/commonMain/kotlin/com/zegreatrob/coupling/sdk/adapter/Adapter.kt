@@ -35,7 +35,6 @@ val pairingSetIdAdapter = serializationAdapter(::PairingSetId, PairingSetId::val
 val notBlankStringAdapter = serializationAdapter({ it }, { it })
 
 @ExperimentalTime
-@Suppress("unused")
 object KotlinDurationAdapter : Adapter<Duration> {
     override fun fromJson(reader: JsonReader, customScalarAdapters: CustomScalarAdapters): Duration = Duration.parse(reader.nextString()!!)
 

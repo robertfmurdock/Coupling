@@ -25,7 +25,6 @@ import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
-@Suppress("unused")
 class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
 
     override val repositorySetup = asyncTestTemplate<PartyContext<DynamoPinRepository>>(sharedSetup = {

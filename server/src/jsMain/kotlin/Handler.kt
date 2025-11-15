@@ -1,5 +1,3 @@
-@file:Suppress("HttpUrlsUsage")
-
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
 import com.zegreatrob.coupling.json.toJsonString
@@ -87,7 +85,6 @@ private val websocketApp by lazy {
     }
 }
 
-@Suppress("unused")
 @JsExport
 @JsName("serverlessSocketConnect")
 fun serverlessSocketConnect(event: dynamic, context: dynamic) = serverlessHttp(

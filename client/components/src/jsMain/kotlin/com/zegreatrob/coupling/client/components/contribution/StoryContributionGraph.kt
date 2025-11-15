@@ -21,7 +21,6 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import js.core.toPrecision
 import js.date.Date
-import js.lazy.Lazy
 import js.objects.Object
 import js.objects.Record
 import js.objects.unsafeJso

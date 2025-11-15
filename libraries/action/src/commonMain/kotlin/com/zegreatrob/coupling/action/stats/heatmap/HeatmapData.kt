@@ -16,7 +16,7 @@ private fun findPair(
     player2: Player,
     playerPairs: List<PlayerPair>?,
 ) = playerPairs?.firstOrNull { pair ->
-    pair.players?.elements?.map { it.id }?.toSet() == setOf(player1.id, player2.id)
+    pair.players.elements.map { it.id }.toSet() == setOf(player1.id, player2.id)
 }
 
 val heatIncrements = listOf(0.0, 1.0, 2.5, 4.5, 7.0, 10.0)

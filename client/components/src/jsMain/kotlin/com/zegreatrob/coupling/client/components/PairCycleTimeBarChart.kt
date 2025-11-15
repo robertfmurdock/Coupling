@@ -14,6 +14,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
 import react.Props
+import react.dom.html.ReactHTML.div
 import kotlin.js.json
 
 external interface PairCycleTimeBarChartProps : Props {
@@ -29,40 +30,43 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
     val data = pairToCycleTime.map { (pair, cycleTime) ->
         unsafeJso<dynamic> {
             this.pairId = pair.pairId
-            value = cycleTime.inWholeMilliseconds
+            value = cycleTime.inWholeMilliseconds.toInt()
         }
     }.toTypedArray()
-    val largestMobSize = pairToCycleTime.toMap().keys.largestMobSize()
-    val getColor = useOrdinalColorScale(NivoOrdinalScaleColorConfig(scheme = "pastel1"), "value")
-    val couplingPairs = props.data.toMap().keys
-    colorContext.Provider {
-        this.value = getColor
-        pairContext {
-            this.value = couplingPairs
-            ResponsiveBar {
-                this.data = data
-                this.keys = arrayOf("value")
-                this.indexBy = "pairId"
-                margin = NivoChartMargin(
-                    top = 65,
-                    right = 90,
-                    bottom = 10 + ESTIMATED_PLAYER_WIDTH * largestMobSize,
-                    left = 90,
-                )
-                this.valueFormat = formatMillisAsDuration
-                colors = { arg: dynamic -> getColor(json("value" to arg.indexValue)) }
-                    .unsafeCast<NivoOrdinalScaleColorConfig>()
-                colorBy = "indexValue"
-                this.axisLeft = NivoAxis(
-                    format = formatMillisAsDuration,
-                )
-                this.axisBottom = NivoAxis(renderTick = PairTickMark)
-                this.layout = "vertical"
-                this.labelPosition = "end"
-                this.labelOffset = -10
-                this.groupMode = "grouped"
-                tooltipLabel = { data ->
-                    "${couplingPairs.find { it.pairId == data.indexValue }?.pairName} - ${data.formattedValue}"
+    div {
+        asDynamic()["data-testid"] = "pair-cycle-time-bar-chart"
+        val largestMobSize = pairToCycleTime.toMap().keys.largestMobSize()
+        val getColor = useOrdinalColorScale(NivoOrdinalScaleColorConfig(scheme = "pastel1"), "value")
+        val couplingPairs = props.data.toMap().keys
+        colorContext.Provider {
+            this.value = getColor
+            pairContext {
+                this.value = couplingPairs
+                ResponsiveBar {
+                    this.data = data
+                    this.keys = arrayOf("value")
+                    this.indexBy = "pairId"
+                    margin = NivoChartMargin(
+                        top = 65,
+                        right = 90,
+                        bottom = 10 + ESTIMATED_PLAYER_WIDTH * largestMobSize,
+                        left = 90,
+                    )
+                    this.valueFormat = formatMillisAsDuration
+                    colors = { arg: dynamic -> getColor(json("value" to arg.indexValue)) }
+                        .unsafeCast<NivoOrdinalScaleColorConfig>()
+                    colorBy = "indexValue"
+                    this.axisLeft = NivoAxis(
+                        format = formatMillisAsDuration,
+                    )
+                    this.axisBottom = NivoAxis(renderTick = PairTickMark)
+                    this.layout = "vertical"
+                    this.labelPosition = "end"
+                    this.labelOffset = -10
+                    this.groupMode = "grouped"
+                    tooltipLabel = { data ->
+                        "${couplingPairs.find { it.pairId == data.indexValue }?.pairName} - ${data.formattedValue}"
+                    }
                 }
             }
         }

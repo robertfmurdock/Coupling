@@ -36,7 +36,6 @@ import kotlin.time.DurationUnit
 import kotlin.time.measureTimedValue
 import kotlin.uuid.Uuid
 
-@Suppress("unused")
 class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
