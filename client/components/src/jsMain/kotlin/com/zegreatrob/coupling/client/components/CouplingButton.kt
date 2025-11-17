@@ -150,7 +150,7 @@ private fun PropertiesBuilder.buttonColorsWithFocus(backgroundColor: Color, colo
     this.backgroundColor = backgroundColor
     this.color = color
     focus {
-        outlineColor = NamedColor.transparent
+        outlineColor = Color.transparent
         outlineWidth = 2.px
         outlineOffset = 2.px
     }

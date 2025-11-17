@@ -99,9 +99,9 @@ private val tooltipStyles = emotion.css.ClassName {
         borderWidth = 5.px
         borderStyle = LineStyle.solid
         borderTopColor = Color("#222222")
-        borderRightColor = NamedColor.transparent
-        borderLeftColor = NamedColor.transparent
-        borderBottomColor = NamedColor.transparent
+        borderRightColor = Color.transparent
+        borderLeftColor = Color.transparent
+        borderBottomColor = Color.transparent
     }
 }
 
