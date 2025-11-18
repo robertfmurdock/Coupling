@@ -101,9 +101,13 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
                 }
 
                 is MakeParty -> partyConfigFrame(state)
+
                 is AddPlayer -> playerConfigFrame(state)
+
                 is AddPin -> pinConfigFrame(state)
+
                 is CurrentPairs -> pairAssignmentsFrame(state)
+
                 is PrepareToSpin -> prepareSpinFrame(state)
             }
         }

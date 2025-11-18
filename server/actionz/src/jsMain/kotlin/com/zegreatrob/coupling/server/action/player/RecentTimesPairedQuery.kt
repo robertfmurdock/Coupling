@@ -25,9 +25,11 @@ data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, 
 
         private suspend fun RecentTimesPairedQuery.timesPaired() = when (pair) {
             is CouplingPair.Single -> null
+
             is CouplingPair.Double -> historyInHeatWindow()
                 .flattenedPairings()
                 .count { equivalent(it, pair) }
+
             is CouplingPair.Mob -> null
         }
 

@@ -55,6 +55,7 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
         newPairs: PairingSet,
     ): String? = when (val result = sendMessage(newPairs, webhook)) {
         is MessageResponseData -> result.id
+
         is ErrorAccessResponse -> null.also {
             theLogger.error {
                 mapOf("error" to result.error, "description" to result.errorDescription)

@@ -40,7 +40,9 @@ val GraphIQLPage by nfc<PageProps> {
 val GraphIQLPageLoader by nfc<PropsWithValue<DataLoadState<String>>> { props ->
     when (val state = props.value) {
         is EmptyState -> div()
+
         is PendingState -> +"Loading authorization..."
+
         is ResolvedState -> GraphiQL {
             this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
         }

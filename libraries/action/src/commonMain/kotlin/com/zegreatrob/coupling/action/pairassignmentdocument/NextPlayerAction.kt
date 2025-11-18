@@ -20,7 +20,9 @@ data class NextPlayerAction(val gameSpin: GameSpin) {
                         withFewestPartners(report, reportWithLongestTime)
 
                     report.timeResult is NeverPaired -> report
+
                     timeSinceLastPairedIsLonger(report, reportWithLongestTime) -> report
+
                     else -> reportWithLongestTime
                 }
             }

@@ -49,7 +49,9 @@ val SlackCallbackPage by nfc<PageProps> { props ->
 val SlackCallbackLoadContent by nfc<PropsWithValue<DataLoadState<VoidResult>>> { props ->
     when (val data = props.value) {
         is EmptyState -> +"Empty"
+
         is PendingState -> +"Pending"
+
         is ResolvedState -> when (data.result) {
             VoidResult.Accepted -> SlackInstallSuccess {}
             VoidResult.Rejected -> +"Rejected"

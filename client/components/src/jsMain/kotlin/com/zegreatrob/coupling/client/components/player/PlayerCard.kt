@@ -153,16 +153,27 @@ private fun Player.hashedRandomAvatar() = emailWithFallback()
 
 private fun Player.getGravatarSafeAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1", "&gravatar=yes")
+
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2", "&gravatar=yes")
+
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3", "&gravatar=yes")
+
     AvatarType.RobohashSet4 -> getRobohashImageUrl("set4", "&gravatar=yes")
+
     AvatarType.RobohashSet5 -> getRobohashImageUrl("set5", "&gravatar=yes")
+
     AvatarType.Multiavatar -> multiavatarUrl("png").gravatarWrapper(emailWithFallback(), size)
+
     AvatarType.DicebearPixelArt -> gravatarDicebearUrl("pixel-art", size)
+
     AvatarType.DicebearAdventurer -> gravatarDicebearUrl("adventurer", size)
+
     AvatarType.DicebearCroodles -> gravatarDicebearUrl("croodles", size)
+
     AvatarType.DicebearThumbs -> gravatarDicebearUrl("thumbs", size)
+
     AvatarType.DicebearLorelei -> gravatarDicebearUrl("lorelei", size)
+
     else -> myGravatarUrl(
         options = GravatarOptions(size = size, default = "retro"),
         email = emailWithFallback(),
@@ -181,15 +192,25 @@ private fun Player.getDirectAvatarImageUrl(size: Int, avatarType: AvatarType) = 
     )
 
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1")
+
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
+
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
+
     AvatarType.RobohashSet4 -> getRobohashImageUrl("set4")
+
     AvatarType.RobohashSet5 -> getRobohashImageUrl("set5")
+
     AvatarType.Multiavatar -> multiavatarUrl("svg")
+
     AvatarType.DicebearPixelArt -> dicebearUrl("pixel-art", size, "svg")
+
     AvatarType.DicebearAdventurer -> dicebearUrl("adventurer", size, "svg")
+
     AvatarType.DicebearCroodles -> dicebearUrl("croodles", size, "svg")
+
     AvatarType.DicebearThumbs -> dicebearUrl("thumbs", size, "svg")
+
     AvatarType.DicebearLorelei -> dicebearUrl("lorelei", size, "svg")
 }
 

@@ -47,6 +47,7 @@ suspend fun generateFakeContributions(
 
         when (fakeStyle) {
             FakeDataStyle.RandomPairs -> generatePairsRandomlyNoSolos(pairsContributions, datesUntilNow, true)
+
             FakeDataStyle.RandomPairsWithRandomSolos -> generatePairsRandomlyNoSolos(
                 pairsContributions,
                 datesUntilNow,
