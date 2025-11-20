@@ -6,8 +6,8 @@ com-apollographql-ktor-apollo-engine-ktor = "com.apollographql.ktor:apollo-engin
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.20.1"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.0.3"
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.10.7"
-com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.5.15"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.10.10"
+com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.5.16"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.8.21"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:7.0.13"
 io-ktor-ktor-bom = "io.ktor:ktor-bom:3.3.2"
@@ -23,7 +23,7 @@ org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 
 [plugins]
 com-apollographql-apollo = "com.apollographql.apollo:4.3.3"
-com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.19"
+com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.20"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.53.0"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:1.8.21"
@@ -34,4 +34,4 @@ nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update
 
 [versions]
 com-apollographql-adapters = "0.7.0"
-org-kotools = "5.0.1"
+org-kotools = "5.1.1"
