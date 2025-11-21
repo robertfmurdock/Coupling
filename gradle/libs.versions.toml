@@ -34,4 +34,4 @@ nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update
 
 [versions]
 com-apollographql-adapters = "0.7.0"
-org-kotools = "5.0.1"
+org-kotools = "5.1.1"
