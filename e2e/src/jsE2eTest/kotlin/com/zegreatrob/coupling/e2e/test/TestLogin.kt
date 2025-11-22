@@ -55,39 +55,53 @@ object TestLogin : BrowserSyntax {
         val key = "@@auth0spajs@@::$clientId::$audience::$scope"
         val auth0Cache = json(
             "body" to json(
-                "client_id" to clientId,
                 "access_token" to accessToken,
-                "id_token" to idToken,
-                "token_type" to "Bearer",
-                "scope" to scope,
                 "audience" to audience,
+                "client_id" to clientId,
                 "expires_in" to expiresIn,
-                "decodedToken" to json(
-                    "user" to jwtDecode(idToken),
-                    "claims" to json("__raw" to idToken),
-                ),
+                "scope" to scope,
+                "token_type" to "Bearer",
             ),
             "expiresAt" to (floor(Date.now() / 1000) + expiresIn),
         )
+        val idCacheKey = "@@auth0spajs@@::$clientId::@@user@@"
+        val auth0IdCache = json(
+            "id_token" to idToken,
+            "decodedToken" to json(
+                "user" to jwtDecode(idToken),
+                "claims" to json("__raw" to idToken),
+            ),
+        )
 
-        setAuth0CacheInLocalStorage(key, auth0Cache)
+        setAuth0CacheInLocalStorage(key, auth0Cache, idCacheKey, auth0IdCache)
         WebdriverBrowser.setUrl("")
         PartyListPage.waitForPage()
 
         clearLogs()
     }
 
-    private suspend fun setAuth0CacheInLocalStorage(key: String, auth0Cache: Json) {
+    private suspend fun setAuth0CacheInLocalStorage(
+        cacheKey: String,
+        auth0Cache: Json,
+        idCacheKey: String,
+        auth0IdCache: Json,
+    ) {
         @Suppress("UNUSED_VARIABLE")
         val storageStuff = JSON.stringify(
-            json("key" to key, "auth0Cache" to auth0Cache),
+            json(
+                "cacheKey" to cacheKey,
+                "auth0Cache" to auth0Cache,
+                "idCacheKey" to idCacheKey,
+                "auth0IdCache" to auth0IdCache,
+            ),
         )
 
         js(
             """
                 browser.executeAsync(function(nothing, done) {
                     var result = JSON.parse(nothing)
-                    window.localStorage.setItem(result.key, JSON.stringify(result.auth0Cache));
+                    window.localStorage.setItem(result.cacheKey, JSON.stringify(result.auth0Cache));
+                    window.localStorage.setItem(result.idCacheKey, JSON.stringify(result.auth0IdCache));
                     done()
                     }, storageStuff);
     """,
