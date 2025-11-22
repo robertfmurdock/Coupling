@@ -51,14 +51,14 @@
     "@csstools/css-tokenizer" "^3.0.3"
     lru-cache "^10.4.3"
 
-"@auth0/auth0-react@2.9.0":
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.9.0.tgz#5df18b69b03d3af4854bde6b57d3ca068397b181"
-  integrity sha512-8BRMYjgE0CVQU/ndOZ5OYODdx/5FZs99D9ZI/t4pEeg3ewcGaL/Zewasm+frjeP3DKaNoFrHFX8FUTPiP9rCDQ==
+"@auth0/auth0-react@2.8.0":
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.8.0.tgz#170b3cb3701bed19fadbd7fe6a51dbd555e7d0f7"
+  integrity sha512-f3KOkq+TW7AC3T+ZAo9G0hNL339z15C9q00QDVrMGCzZAPyp8lvDHKcAs21d/u+GzhU5zmssvJTQggDR7JqxSA==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.9.0"
+    "@auth0/auth0-spa-js" "^2.7.0"
 
-"@auth0/auth0-spa-js@^2.9.0":
+"@auth0/auth0-spa-js@^2.7.0":
   version "2.9.1"
   resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.9.1.tgz#b4a160394286a398bba40e12aa705c3346f6ce8a"
   integrity sha512-GNyypxb8ck32tUacYPHAEZ/L845kLDchqXtFZM3Gt/KcBr9C8/c1ncAhGY1UnkgUw2MctwVnBOEoqCD3oP3SPg==
