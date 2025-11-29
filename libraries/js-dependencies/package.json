@@ -9,7 +9,7 @@
     "@graphql-codegen/java-common": "^3.0.1",
     "@graphql-codegen/kotlin": "^3.0.2",
     "@graphql-codegen/plugin-helpers": "^6.1.0",
-    "@graphql-codegen/visitor-plugin-common": "6.2.0",
+    "@graphql-codegen/visitor-plugin-common": "6.2.1",
     "@graphql-tools/schema": "^10.0.30",
     "@graphql-tools/stitch": "^10.1.3",
     "@log4js-node/log4js-api": "1.0.2",
