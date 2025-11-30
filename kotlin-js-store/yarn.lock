@@ -12973,10 +12973,10 @@ socks@^2.8.3:
     ip-address "^10.0.1"
     smart-buffer "^4.2.0"
 
-sonda@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.10.0.tgz#a84fa3a365041f7e258eefef382eaf5c86d01d9b"
-  integrity sha512-Mg6YWl8QOD9Yf8wV5teUYZiB0P1oy994pmPJmi3Fr7+0RXhBcNY6TUZFa7c3gHKLJfemfoAeV22+PSBXlzuT4g==
+sonda@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.10.1.tgz#aab02bfedf62b452c72cb00992649df164ad03db"
+  integrity sha512-nXlQEVsw7833XADV94MXW9EKwLxn4S1U7oSUEgKCQeU4dt0CwYvEFcyRjhjM0Ae2taxsJ9HnFrtw8Eb40/rX4w==
   dependencies:
     "@jridgewell/remapping" "^2.3.5"
     open "^10.2.0"
