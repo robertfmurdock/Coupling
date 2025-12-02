@@ -8795,10 +8795,10 @@ express@^5.0.0:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-express@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/express/-/express-5.2.0.tgz#d4101c16807a1a061c6e9adc7ce617473b4afeb9"
-  integrity sha512-XdpJDLxfztVY59X0zPI6sibRiGcxhTPXRD3IhJmjKf2jwMvkRGV1j7loB8U+heeamoU3XvihAaGRTR4aXXUN3A==
+express@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/express/-/express-5.2.1.tgz#8f21d15b6d327f92b4794ecf8cb08a72f956ac04"
+  integrity sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==
   dependencies:
     accepts "^2.0.0"
     body-parser "^2.2.1"
@@ -10232,10 +10232,10 @@ jose@^5.7.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.3.tgz#6eba1ee3f70b42891f0e1883fe0084a46dbbe02c"
   integrity sha512-egLIoYSpcd+QUF+UHgobt5YzI2Pkw/H39ou9suW687MY6PmCwPmkNV/4TNjn1p2tX5xO3j0d0sq5hiYE24bSlg==
 
-jose@^6.1.2:
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.1.2.tgz#05f75a3bcdf352d07ebdffcfb11d4e835f6f95c6"
-  integrity sha512-MpcPtHLE5EmztuFIqB0vzHAWJPpmN1E6L4oo+kze56LIs3MyXIj9ZHMDxqOvkP38gBR7K1v3jqd4WU2+nrfONQ==
+jose@^6.1.3:
+  version "6.1.3"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.1.3.tgz#8453d7be88af7bb7d64a0481d6a35a0145ba3ea5"
+  integrity sha512-0TpaTfihd4QMNwrz/ob2Bp7X04yuxJkjRGi4aKmOqwhov54i6u79oCv7T+C7lo70MKH6BesI3vscD1yb/yzKXQ==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
@@ -12763,10 +12763,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.25.0:
-  version "4.25.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.25.0.tgz#4d13a221d07f8af0f5327010bd31ffb94b07e002"
-  integrity sha512-LEYU0uyLpZZDPKx7dum7zhJCp6u/t9ObQgwEtH2PN5TJmi24yBHKQ3lDcu9epz/w2Zi0bgORoppeGsmRF4zyLw==
+serverless@^4.26.1:
+  version "4.26.1"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.26.1.tgz#38bb2c0ba4ec747ccf3b44b4a381fe41bf123a71"
+  integrity sha512-aXo6YgwlMozi0+1KI5ySEDf6p3KvouXEvDD44zVGiZIzZYnk0hid0u34s8s1ff/Y3HwHpE/aSf6ObaunFlRBxw==
   dependencies:
     axios "^1.12.1"
     axios-proxy-builder "^0.1.2"
