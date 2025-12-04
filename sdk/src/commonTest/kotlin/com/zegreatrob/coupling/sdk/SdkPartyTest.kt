@@ -156,10 +156,11 @@ class SdkPartyTest {
             )
         }
     } exercise {
-        sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
-            ?.partyList
+        sdk().fire(GqlQuery(PartyDetailsAndListQuery(party.id)))
     } verify { result ->
-        result?.map { it.partyDetails.toDomain() }
+        result?.party?.partyDetails?.toDomain()
+            .assertIsEqualTo(party)
+        result?.partyList?.map { it.partyDetails.toDomain() }
             .assertContains(party)
     }
 

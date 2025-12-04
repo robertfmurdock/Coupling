@@ -208,7 +208,7 @@ class CurrentPartyDispatcher(
     private suspend fun UserDetails.userIsAuthorized(partyId: PartyId) = authorizedPartyIds.contains(partyId) || userIsAlsoPlayer()
 
     private suspend fun UserDetails.userIsAlsoPlayer() = players()
-        .map { it.email }
+        .flatMap { it.additionalEmails + it.email }
         .contains(email.toString())
 
     private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
