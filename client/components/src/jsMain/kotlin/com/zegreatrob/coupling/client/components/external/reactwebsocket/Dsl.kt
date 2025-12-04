@@ -9,7 +9,12 @@ import org.w3c.dom.events.Event
 import kotlin.js.Json
 
 @JsModule("react-use-websocket")
-external fun useWebSocket(url: String, options: UseWebSocketOptions): UseWebSocket
+external val reactUseWebsocketModule: ReactUseWebsocketModule
+
+external interface ReactUseWebsocketModule {
+    @JsName("default")
+    fun useWebSocket(url: String, options: UseWebSocketOptions): UseWebSocket
+}
 
 @JsPlainObject
 sealed external interface UseWebSocketOptions {
