@@ -53,7 +53,7 @@
     "parse5": "~8.0.0",
     "parse5-html-rewriting-stream": "~8.0.0",
     "raw-loader": "^4.0.2",
-    "react": "19.2.0",
+    "react": "19.2.1",
     "react-dnd": "^16.0.1",
     "lru-memoizer": "^3.0.0",
     "react-dnd-html5-backend": "^16.0.1",
