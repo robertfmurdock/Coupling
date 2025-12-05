@@ -40,8 +40,9 @@ function generateCdnInformation(isServing) {
             .join("\n")
     )
     const cdnSettings = JSON.parse(fs.readFileSync('cdn.settings.json'))
+    const cdnLibraries = Object.entries(cdnSettings);
     const cdnImportMap = Object.fromEntries(
-        Object.entries(cdnSettings).map(([key, value]) => [key, cdnResources[key]])
+        cdnLibraries.map(([key, value], index) => [key, cdnResources[key] + '?' + cdnLibraries.slice(0, index).map(([lib]) => `external=${lib}`).join("&") ])
     );
     return {isServing, cdnSettings, cdnImportMap};
 }
