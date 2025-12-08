@@ -63,7 +63,7 @@
     "read-pkg-up": "^4.0.0",
     "recharts": "^3.5.1",
     "resolve-pkg": "^2.0.0",
-    "serverless": "^4.27.0",
+    "serverless": "^4.27.1",
     "serverless-http": "^4.0.0",
     "serverless-offline": "^14.4.0",
     "serverless-offline-ssm": "^6.2.0",

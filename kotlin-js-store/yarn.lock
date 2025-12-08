@@ -12776,10 +12776,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.27.0:
-  version "4.27.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.27.0.tgz#9b1d18f1283c117d7170d9d1038abc1d147f5e32"
-  integrity sha512-tBSD37Y2UaJHcs9e9yspawSt78H8o5C1Y+/xDwj3GVm7wnvcKPqp5BeUoUIubtgQ6BPPqih6eXtwc2ev2kQ3Jg==
+serverless@^4.27.1:
+  version "4.27.1"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.27.1.tgz#2cb66f5b788ff7920ab155544ded6a129045355c"
+  integrity sha512-5JaDcmjDGLW0z7MheX4gAlqocAnynko+05z+ZnJd6ITR92W88GJEKTLTn9pErrcjaEMwnk33OGpI/215qjPwng==
   dependencies:
     axios "^1.12.1"
     axios-proxy-builder "^0.1.2"
