@@ -259,10 +259,10 @@
     "@smithy/util-waiter" "^3.1.5"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.948.0":
-  version "3.948.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.948.0.tgz#56a4839d9185c411f26dee2534e69bd3a917f9f1"
-  integrity sha512-m0DeCanUYLmR9LOVv5mRmmOvk+UwWq1WnzJg5+ZsBt/jP8ohkrh/AnRdas3psjHs9Gn3YHLnBmibiPDht+JuoQ==
+"@aws-sdk/client-lambda@~3.950.0":
+  version "3.950.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.950.0.tgz#665116803c7ab2639356aca96691765de550b5b3"
+  integrity sha512-4Sqxci8y2ltSfPz/hClpKaUeY8uSM+WrZvzH2EPBDX0b3TecozoPu5zXJ/Jb0TEbm5lRWmtYoIB+QG2Wvkti9g==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -7205,10 +7205,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@143.0.0:
-  version "143.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-143.0.0.tgz#fff2c409ea9aa64f4aee02de4c1dc6cd68e07bdb"
-  integrity sha512-zsDjk9nLeQsMcnFXP4huqCOqneIdox3ECIR4laBOH7sog1+K2rTgrK60ogSeYaHUnx9OTAMFkwJL29ekVgVQgw==
+chromedriver@143.0.1:
+  version "143.0.1"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-143.0.1.tgz#d1328faa18a06d42759b8c867fbcc5f95adc68ba"
+  integrity sha512-qR0DKGV7C3r5Fo6WJD2bqQ1ny9THrJTL4X8JeArBQ6m5Cq6sHXAhIrVgsTZuKi9tL/YUcFoELMI3UTg6dMiKWA==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.12.0"
@@ -12145,7 +12145,12 @@ react-virtualized-auto-sizer@^1.0.26:
   resolved "https://registry.yarnpkg.com/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.26.tgz#e9470ef6a778dc4f1d5fd76305fa2d8b610c357a"
   integrity sha512-CblNyiNVw2o+hsa5/49NH2ogGxZ+t+3aweRvNSq7TVjDIlwk7ir4lencEg5HxHeSzwNarSkNkiu0qJSOXtxm5A==
 
-react@19.2.1, react@^19.2.1:
+react@19.2.3:
+  version "19.2.3"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.2.3.tgz#d83e5e8e7a258cf6b4fe28640515f99b87cd19b8"
+  integrity sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==
+
+react@^19.2.1:
   version "19.2.1"
   resolved "https://registry.yarnpkg.com/react/-/react-19.2.1.tgz#8600fa205e58e2e807f6ef431c9f6492591a2700"
   integrity sha512-DGrYcCWK7tvYMnWh79yrPHt+vdx9tY+1gPZa7nJQtO/p8bLTDaHp4dzwEhQB7pZ4Xe3ok4XKuEPrVuc+wlpkmw==
@@ -12776,10 +12781,10 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.27.1:
-  version "4.27.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.27.1.tgz#2cb66f5b788ff7920ab155544ded6a129045355c"
-  integrity sha512-5JaDcmjDGLW0z7MheX4gAlqocAnynko+05z+ZnJd6ITR92W88GJEKTLTn9pErrcjaEMwnk33OGpI/215qjPwng==
+serverless@^4.28.0:
+  version "4.28.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.28.0.tgz#65f62c53333411c8b9f0a334c88b3b70fc7b8862"
+  integrity sha512-Nok6fzChm6wlRxRstJlYZln6YNbuY1/6eM22UEw6ffkzYfxictTsGOqSYVupDdIDkQQSrpt4AfgGLQ/M0166Cg==
   dependencies:
     axios "^1.12.1"
     axios-proxy-builder "^0.1.2"
