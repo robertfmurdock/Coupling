@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.11.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.948.0",
-    "@aws-sdk/client-dynamodb": "3.948.0",
-    "@aws-sdk/client-lambda": "~3.950.0",
-    "@aws-sdk/lib-dynamodb": "3.948.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.952.0",
+    "@aws-sdk/client-dynamodb": "3.952.0",
+    "@aws-sdk/client-lambda": "~3.952.0",
+    "@aws-sdk/lib-dynamodb": "3.952.0",
     "@graphql-codegen/cli": "^6.1.0",
     "@graphql-codegen/java-common": "^3.0.1",
     "@graphql-codegen/kotlin": "^3.0.2",
@@ -25,7 +25,7 @@
     "@slack/web-api": "^7.13.0",
     "@slack/webhook": "^7.0.6",
     "@stripe/react-stripe-js": "^5.4.1",
-    "@stripe/stripe-js": "^8.5.3",
+    "@stripe/stripe-js": "^8.6.0",
     "chromedriver": "143.0.1",
     "compression": "^1.8.1",
     "d3": "^7.9.0",
@@ -71,7 +71,7 @@
     "sonda": "^0.10.1",
     "stripe": "^20.0.0",
     "vite-plugin-html": "^3.2.2",
-    "webpack": "5.103.0",
+    "webpack": "5.104.0",
     "webpack-cli": "^6.0.1"
   }
 }
