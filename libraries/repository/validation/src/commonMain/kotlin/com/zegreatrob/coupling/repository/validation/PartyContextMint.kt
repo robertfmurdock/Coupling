@@ -21,7 +21,7 @@ data class PartyContextData<R>(
     override val user: UserDetails,
 ) : PartyContext<R>
 
-fun <C : PartyContextMint<R>, R> C.bind(): suspend (PartyContext<R>) -> C = { parent: PartyContext<R> ->
+fun <C : PartyContextMint<R>, R : Any> C.bind(): suspend (PartyContext<R>) -> C = { parent: PartyContext<R> ->
     also {
         repository = parent.repository
         clock = parent.clock

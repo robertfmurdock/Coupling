@@ -14,7 +14,7 @@ data class SharedContextData<R>(
     override val user: UserDetails,
 ) : SharedContext<R>
 
-fun <C : ContextMint<R>, R> C.bind(): suspend (SharedContext<R>) -> C = { parent: SharedContext<R> ->
+fun <C : ContextMint<R>, R : Any> C.bind(): suspend (SharedContext<R>) -> C = { parent: SharedContext<R> ->
     also {
         repository = parent.repository
         clock = parent.clock
