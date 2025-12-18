@@ -9,7 +9,7 @@
     "@graphql-codegen/java-common": "^3.0.1",
     "@graphql-codegen/kotlin": "^3.0.2",
     "@graphql-codegen/plugin-helpers": "^6.1.0",
-    "@graphql-codegen/visitor-plugin-common": "6.2.1",
+    "@graphql-codegen/visitor-plugin-common": "6.2.2",
     "@graphql-tools/schema": "^10.0.30",
     "@graphql-tools/stitch": "^10.1.6",
     "@log4js-node/log4js-api": "1.0.2",
@@ -71,7 +71,7 @@
     "sonda": "^0.10.1",
     "stripe": "^20.1.0",
     "vite-plugin-html": "^3.2.2",
-    "webpack": "5.104.0",
+    "webpack": "5.104.1",
     "webpack-cli": "^6.0.1"
   }
 }
