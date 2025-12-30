@@ -3444,11 +3444,6 @@
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.23.1.tgz#0ce8857b024e24fc427585316383ad9d295b3a7f"
   integrity sha512-vDbaOzF7yT2Qs4vO6XV1MHcJv+3dgR1sT+l3B8xxOVhUC336prMvqrvsLL/9Dnw2xr6Qhz4J0dmS0llNAbnUmQ==
 
-"@remix-run/router@^1.21.1":
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.23.0.tgz#35390d0e7779626c026b11376da6789eb8389242"
-  integrity sha512-O3rHJzAQKamUz1fvE0Qaw0xSFqsA/yafi2iqeE0pvdFtCO1viYx8QL6f3Ln/aCCTLxs68SLf0KPM9eSeM8yBnA==
-
 "@repeaterjs/repeater@^3.0.4", "@repeaterjs/repeater@^3.0.6":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/@repeaterjs/repeater/-/repeater-3.0.6.tgz#be23df0143ceec3c69f8b6c2517971a5578fdaa2"
@@ -5459,7 +5454,7 @@ axios-proxy-builder@^0.1.2:
   dependencies:
     tunnel "^0.0.6"
 
-axios@^1.11.0, axios@^1.12.0, axios@^1.12.1:
+axios@^1.11.0, axios@^1.12.0, axios@^1.13.2:
   version "1.13.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.13.2.tgz#9ada120b7b5ab24509553ec3e40123521117f687"
   integrity sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==
@@ -10179,7 +10174,7 @@ react-router-dom@^6.28.2:
     "@remix-run/router" "1.23.1"
     react-router "6.30.2"
 
-react-router@6.30.2, react-router@^6.28.2:
+react-router@6.30.2:
   version "6.30.2"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.30.2.tgz#c78a3b40f7011f49a373b1df89492e7d4ec12359"
   integrity sha512-H2Bm38Zu1bm8KUE5NVWRMzuIyAV8p/JrOaBJAwVmp37AXG72+CZJlEBw6pdn9i5TBgLMhNDgijS4ZlblpHyWTA==
@@ -10484,7 +10479,7 @@ rgb2hex@0.2.5:
   resolved "https://registry.yarnpkg.com/rgb2hex/-/rgb2hex-0.2.5.tgz#f82230cd3ab1364fa73c99be3a691ed688f8dbdc"
   integrity sha512-22MOP1Rh7sAo1BZpDG6R5RFYzR2lYEgwq7HEmyW2qcsOqR2lQKmn+O//xV3YG/0rrhMC6KVX2hU+ZXuaw9a5bw==
 
-rimraf@^5.0.5:
+rimraf@^5.0.10:
   version "5.0.10"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-5.0.10.tgz#23b9843d3dc92db71f96e1a2ce92e39fd2a8221c"
   integrity sha512-l0OE8wL34P4nJH/H2ffoaniAokM2qSmrtXHmlpvYr5AVVX8msAyW0l8NVJFDxlSK4u3Uh/f41cQheDVdnYijwQ==
@@ -10740,14 +10735,14 @@ serverless-prune-plugin@^2.1.0:
   dependencies:
     bluebird "^3.7.2"
 
-serverless@^4.29.0:
-  version "4.29.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.29.0.tgz#ee121f2e9f8e4420ff351d172b669cfe4a9b6b5f"
-  integrity sha512-gqcqCVazCPhFODdPcxco3bWUqIZ2DMv2mIZY9qzJ05IpMr0nAIodgLcaeKoCoPZy5QU5Mgizl4JiMianN54hBQ==
+serverless@^4.29.3:
+  version "4.29.3"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.29.3.tgz#b7f02d25c8389d71e68742f698e7347e54740161"
+  integrity sha512-PUyPwo1HsduTGgrHep7TVT8PAxGU5YaMlY6M8GMQlWQnayVGSPtFTiuSrG7RfpzU2gCGl1cJdLMwr1YSWwvydQ==
   dependencies:
-    axios "^1.12.1"
+    axios "^1.13.2"
     axios-proxy-builder "^0.1.2"
-    rimraf "^5.0.5"
+    rimraf "^5.0.10"
     xml2js "0.6.2"
 
 set-blocking@^2.0.0:
