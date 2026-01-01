@@ -31,22 +31,19 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
         }
         div {
             css {
-                display = Display.flex
+                display = Display.inline
                 textAlign = TextAlign.left
                 margin = (5.px)
             }
-            span {
-                css {
-                    margin = (10.px)
-                    display = Display.flex
-                    alignItems = AlignItems.center
-                }
-                +props.splashComponent
-            }
             h1 {
-                css {
-                    flexGrow = number(2.0)
-                    display = Display.inlineBlock
+                css { display = Display.inlineFlex }
+                span {
+                    css {
+                        margin = (10.px)
+                        display = Display.flex
+                        alignItems = AlignItems.center
+                    }
+                    +props.splashComponent
                 }
                 div {
                     css {
@@ -62,6 +59,21 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                             textAlign = TextAlign.left
                         }
                         +props.title
+                    }
+                }
+            }
+            h1 {
+                css {
+                    flexGrow = number(2.0)
+                    display = Display.inlineBlock
+                }
+                div {
+                    css {
+                        display = Display.flex
+                        alignItems = AlignItems.center
+                        "*" {
+                            verticalAlign = VerticalAlign.middle
+                        }
                     }
                     span {
                         css { margin = Margin(0.px, 20.px) }
