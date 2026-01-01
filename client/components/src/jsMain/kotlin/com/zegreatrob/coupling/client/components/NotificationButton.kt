@@ -24,6 +24,7 @@ import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.ident
+import web.cssom.pct
 import web.cssom.px
 import web.cssom.s
 import web.html.HtmlSource
@@ -45,7 +46,10 @@ val NotificationButton by nfc<Props> {
         setSeenNotification(true)
     }
     span {
-        css { position = Position.relative }
+        css {
+            position = Position.relative
+            left = 100.pct
+        }
         span {
             css {
                 float = Float.left

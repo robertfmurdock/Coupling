@@ -8,7 +8,9 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithChildren
-import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h1
+import react.dom.html.ReactHTML.span
 import web.cssom.AlignItems
 import web.cssom.AlignSelf
 import web.cssom.Display
@@ -32,12 +34,12 @@ external interface ConfigHeaderProps : PropsWithChildren {
 @ReactFunc
 val ConfigHeader by nfc<ConfigHeaderProps> { props ->
     val party = props.party
-    ReactHTML.div {
+    div {
         css {
             textAlign = TextAlign.left
             margin = 5.px
         }
-        ReactHTML.div {
+        div {
             css {
                 display = Display.grid
                 gridTemplateColumns = repeat(6, 1.fr)
@@ -45,7 +47,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                 alignItems = AlignItems.center
                 whiteSpace = WhiteSpace.nowrap
             }
-            ReactHTML.div {
+            div {
                 css {
                     gridColumn = integer(1)
                     gridRowStart = integer(1)
@@ -53,13 +55,13 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                 }
                 PartyCard(party = party, size = 75, boost = props.boost)
             }
-            ReactHTML.div {
+            div {
                 css {
                     gridColumnStart = integer(2)
                     gridColumnEnd = integer(7)
                     gridRow = integer(1)
                 }
-                ReactHTML.h1 {
+                h1 {
                     css {
                         display = Display.flex
                         flexDirection = FlexDirection.column
@@ -68,7 +70,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                         textDecoration = TextDecoration.underline
                         flexGrow = number(2.0)
                     }
-                    ReactHTML.div {
+                    div {
                         css {
                             display = Display.inlineBlock
                             marginLeft = 15.px
@@ -77,25 +79,25 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                             alignSelf = AlignSelf.stretch
                             "*" { verticalAlign = VerticalAlign.middle }
                         }
-                        ReactHTML.div {
+                        div {
                             css {
                                 display = Display.flex
                                 alignItems = AlignItems.baseline
                             }
-                            ReactHTML.span {
+                            span {
                                 css { flexGrow = number(2.0) }
                                 +props.children
                             }
-                            ReactHTML.span {
+                            span {
                                 css {
                                     margin = Margin(0.px, 20.px)
                                     alignItems = AlignItems.baseline
                                     alignSelf = AlignSelf.stretch
                                 }
+                                NotificationButton()
                                 PartySelectButton()
                                 LogoutButton()
                                 GqlButton()
-                                NotificationButton()
                             }
                         }
                     }

@@ -29,11 +29,11 @@ val PartyList by nfc<PartyListProps> { (parties) ->
         GeneralControlBar {
             title = "Party List"
             splashComponent = Fragment.create { CouplingLogo(width = 72.0, height = 48.0) }
+            NotificationButton()
             AboutButton()
             DemoButton()
             LogoutButton()
             GqlButton()
-            NotificationButton()
         }
         div {
             parties.forEach { party ->

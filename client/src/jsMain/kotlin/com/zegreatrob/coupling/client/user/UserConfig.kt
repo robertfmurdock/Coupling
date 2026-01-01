@@ -60,11 +60,11 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
     ) {
         GeneralControlBar {
             title = "User Config"
+            NotificationButton()
             AboutButton()
             DemoButton()
             LogoutButton()
             GqlButton()
-            NotificationButton()
         }
         if (user == null) {
             div { +"User not found." }
