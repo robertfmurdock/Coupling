@@ -8,6 +8,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithChildren
+import react.dom.html.HTMLAttributes
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.span
@@ -25,6 +26,7 @@ import web.cssom.integer
 import web.cssom.number
 import web.cssom.px
 import web.cssom.repeat
+import web.html.HTMLDivElement
 
 external interface ConfigHeaderProps : PropsWithChildren {
     var party: PartyDetails
@@ -61,49 +63,58 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                     gridColumnEnd = integer(7)
                     gridRow = integer(1)
                 }
-                h1 {
-                    css {
-                        display = Display.flex
-                        flexDirection = FlexDirection.column
-                        alignItems = AlignItems.center
-                        marginLeft = 15.px
-                        textDecoration = TextDecoration.underline
-                        flexGrow = number(2.0)
-                    }
-                    div {
-                        css {
-                            display = Display.inlineBlock
-                            marginLeft = 15.px
-                            textDecoration = TextDecoration.underline
-                            flexGrow = number(2.0)
-                            alignSelf = AlignSelf.stretch
-                            "*" { verticalAlign = VerticalAlign.middle }
-                        }
-                        div {
-                            css {
-                                display = Display.flex
-                                alignItems = AlignItems.baseline
-                            }
-                            span {
-                                css { flexGrow = number(2.0) }
-                                +props.children
-                            }
-                            span {
-                                css {
-                                    margin = Margin(0.px, 20.px)
-                                    alignItems = AlignItems.baseline
-                                    alignSelf = AlignSelf.stretch
-                                }
-                                NotificationButton()
-                                PartySelectButton()
-                                LogoutButton()
-                                GqlButton()
-                            }
-                        }
-                    }
-                }
+                partyHeader(props, party)
             }
-            PartyNavigation(party)
         }
+    }
+}
+
+private fun HTMLAttributes<HTMLDivElement>.partyHeader(props: ConfigHeaderProps, party: PartyDetails) {
+    h1 {
+        css {
+            display = Display.flex
+            flexDirection = FlexDirection.column
+            alignItems = AlignItems.center
+            marginLeft = 15.px
+            textDecoration = TextDecoration.underline
+            flexGrow = number(2.0)
+        }
+        div {
+            css {
+                display = Display.inlineFlex
+                marginLeft = 15.px
+                textDecoration = TextDecoration.underline
+                flexGrow = number(2.0)
+                alignSelf = AlignSelf.stretch
+                "*" { verticalAlign = VerticalAlign.middle }
+            }
+            NotificationButton()
+            div {
+                css {
+                    display = Display.inlineFlex
+                    flexGrow = number(1.0)
+                    alignItems = AlignItems.baseline
+                }
+                span {
+                    css { flexGrow = number(2.0) }
+                    +props.children
+                }
+                globalNavigation()
+            }
+        }
+        PartyNavigation(party)
+    }
+}
+
+private fun HTMLAttributes<HTMLDivElement>.globalNavigation() {
+    span {
+        css {
+            margin = Margin(0.px, 20.px)
+            alignItems = AlignItems.baseline
+            alignSelf = AlignSelf.stretch
+        }
+        PartySelectButton()
+        LogoutButton()
+        GqlButton()
     }
 }

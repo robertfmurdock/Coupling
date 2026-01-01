@@ -36,37 +36,38 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                 margin = (5.px)
             }
             h1 {
-                css { display = Display.inlineFlex }
-                span {
-                    css {
-                        margin = (10.px)
-                        display = Display.flex
-                        alignItems = AlignItems.center
-                    }
-                    +props.splashComponent
-                }
-                div {
-                    css {
-                        display = Display.flex
-                        alignItems = AlignItems.center
-                        "*" {
-                            verticalAlign = VerticalAlign.middle
-                        }
-                    }
-                    span {
-                        css {
-                            flexGrow = number(2.0)
-                            textAlign = TextAlign.left
-                        }
-                        +props.title
-                    }
-                }
-            }
-            h1 {
                 css {
                     flexGrow = number(2.0)
                     display = Display.inlineBlock
                 }
+                span {
+                    css { display = Display.inlineFlex }
+                    span {
+                        css {
+                            margin = (10.px)
+                            display = Display.flex
+                            alignItems = AlignItems.center
+                        }
+                        +props.splashComponent
+                    }
+                    div {
+                        css {
+                            display = Display.flex
+                            alignItems = AlignItems.center
+                            "*" {
+                                verticalAlign = VerticalAlign.middle
+                            }
+                        }
+                        span {
+                            css {
+                                flexGrow = number(2.0)
+                                textAlign = TextAlign.left
+                            }
+                            +props.title
+                        }
+                    }
+                }
+
                 div {
                     css {
                         display = Display.flex

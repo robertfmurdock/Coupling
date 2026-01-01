@@ -4,7 +4,8 @@ import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.minreact.nfc
 import react.Props
-import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 import web.cssom.ClassName
 
@@ -15,8 +16,8 @@ val PartySelectButton by nfc<Props> {
         draggable = false
         CouplingButton {
             sizeRuleSet = large
-            ReactHTML.i { className = ClassName("fa fa-arrow-circle-up") }
-            ReactHTML.span { +"Party select" }
+            i { className = ClassName("fa fa-arrow-circle-up") }
+            span { +"Party select" }
         }
     }
 }
