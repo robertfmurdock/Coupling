@@ -7,15 +7,17 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.ChildrenBuilder
 import react.PropsWithChildren
-import react.dom.html.HTMLAttributes
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.span
 import web.cssom.AlignItems
 import web.cssom.AlignSelf
+import web.cssom.Auto
 import web.cssom.Display
 import web.cssom.FlexDirection
+import web.cssom.FlexWrap
 import web.cssom.Margin
 import web.cssom.TextAlign
 import web.cssom.TextDecoration
@@ -26,7 +28,6 @@ import web.cssom.integer
 import web.cssom.number
 import web.cssom.px
 import web.cssom.repeat
-import web.html.HTMLDivElement
 
 external interface ConfigHeaderProps : PropsWithChildren {
     var party: PartyDetails
@@ -69,52 +70,54 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
     }
 }
 
-private fun HTMLAttributes<HTMLDivElement>.partyHeader(props: ConfigHeaderProps, party: PartyDetails) {
+private fun ChildrenBuilder.partyHeader(props: ConfigHeaderProps, party: PartyDetails) {
     h1 {
         css {
-            display = Display.flex
+            display = Display.block
             flexDirection = FlexDirection.column
             alignItems = AlignItems.center
             marginLeft = 15.px
+            marginRight = 20.px
             textDecoration = TextDecoration.underline
             flexGrow = number(2.0)
+            "*" { verticalAlign = VerticalAlign.middle }
+        }
+        NotificationButton()
+        div {
+            css {
+                display = Display.flex
+                flexWrap = FlexWrap.wrap
+            }
+            span {
+                css { flexGrow = number(2.0) }
+                +props.children
+            }
+            span {
+                css {
+                    flexGrow = number(1.0)
+                    flexDirection = FlexDirection.rowReverse
+                    display = Display.flex
+                }
+                span {
+                    css {
+                        display = Display.inlineBlock
+                        margin = Margin(Auto.auto, 20.px)
+                        alignItems = AlignItems.baseline
+                        alignSelf = AlignSelf.stretch
+                    }
+                    PartySelectButton()
+                    LogoutButton()
+                    GqlButton()
+                }
+            }
         }
         div {
             css {
                 display = Display.inlineFlex
-                marginLeft = 15.px
-                textDecoration = TextDecoration.underline
-                flexGrow = number(2.0)
-                alignSelf = AlignSelf.stretch
-                "*" { verticalAlign = VerticalAlign.middle }
+                flexGrow = number(1.0)
+                alignItems = AlignItems.baseline
             }
-            NotificationButton()
-            div {
-                css {
-                    display = Display.inlineFlex
-                    flexGrow = number(1.0)
-                    alignItems = AlignItems.baseline
-                }
-                span {
-                    css { flexGrow = number(2.0) }
-                    +props.children
-                }
-                globalNavigation()
-            }
+            PartyNavigation(party)
         }
-        PartyNavigation(party)
-    }
-}
-
-private fun HTMLAttributes<HTMLDivElement>.globalNavigation() {
-    span {
-        css {
-            margin = Margin(0.px, 20.px)
-            alignItems = AlignItems.baseline
-            alignSelf = AlignSelf.stretch
-        }
-        PartySelectButton()
-        LogoutButton()
-        GqlButton()
     }
 }
