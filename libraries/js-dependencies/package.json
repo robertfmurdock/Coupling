@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.11.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.958.0",
-    "@aws-sdk/client-dynamodb": "3.958.0",
-    "@aws-sdk/client-lambda": "~3.958.0",
-    "@aws-sdk/lib-dynamodb": "3.958.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.962.0",
+    "@aws-sdk/client-dynamodb": "3.962.0",
+    "@aws-sdk/client-lambda": "~3.962.0",
+    "@aws-sdk/lib-dynamodb": "3.962.0",
     "@graphql-codegen/cli": "^6.1.0",
     "@graphql-codegen/java-common": "^3.0.1",
     "@graphql-codegen/kotlin": "^3.0.2",
@@ -63,7 +63,7 @@
     "read-pkg-up": "^4.0.0",
     "recharts": "^3.6.0",
     "resolve-pkg": "^2.0.0",
-    "serverless": "^4.29.3",
+    "serverless": "^4.29.4",
     "serverless-http": "^4.0.0",
     "serverless-offline": "^14.4.0",
     "serverless-offline-ssm": "^6.2.0",
