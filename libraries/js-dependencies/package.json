@@ -5,7 +5,7 @@
     "@aws-sdk/client-dynamodb": "3.966.0",
     "@aws-sdk/client-lambda": "~3.966.0",
     "@aws-sdk/lib-dynamodb": "3.966.0",
-    "@graphql-codegen/cli": "^6.1.0",
+    "@graphql-codegen/cli": "^6.1.1",
     "@graphql-codegen/java-common": "^3.0.1",
     "@graphql-codegen/kotlin": "^3.0.2",
     "@graphql-codegen/plugin-helpers": "^6.1.0",
