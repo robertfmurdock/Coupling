@@ -7,7 +7,6 @@ plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
     alias(libs.plugins.com.avast.gradle.docker.compose)
-    alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.com.github.sghill.distribution.sha)
     alias(libs.plugins.com.zegreatrob.tools.digger)
     alias(libs.plugins.nl.littlerobots.version.catalog.update)
