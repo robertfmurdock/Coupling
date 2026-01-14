@@ -1,6 +1,5 @@
 plugins {
     `java-platform`
-    id("com.zegreatrob.coupling.plugins.versioning")
 }
 
 repositories {

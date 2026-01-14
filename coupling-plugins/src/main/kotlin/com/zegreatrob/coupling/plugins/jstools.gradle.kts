@@ -10,7 +10,6 @@ plugins {
     kotlin("plugin.js-plain-objects")
     id("com.zegreatrob.jsmints.plugins.jspackage")
     id("com.zegreatrob.jsmints.plugins.ncu")
-    id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
     id("com.zegreatrob.coupling.plugins.linter")

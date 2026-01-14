@@ -1,7 +1,3 @@
-plugins {
-    id("com.zegreatrob.coupling.plugins.versioning")
-}
-
 tasks {
     val buildImage by registering(Exec::class) {
         commandLine(

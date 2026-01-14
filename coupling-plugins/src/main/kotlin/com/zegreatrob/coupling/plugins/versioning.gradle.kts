@@ -1,13 +1,26 @@
 package com.zegreatrob.coupling.plugins
 
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
 
+import nl.littlerobots.vcu.plugin.versionSelector
+
 plugins {
+    id("nl.littlerobots.version-catalog-update")
     base
-    id("com.github.ben-manes.versions")
 }
+
+repositories {
+    mavenCentral()
+}
+
+versionCatalogUpdate {
+    val rejectRegex = "^[0-9.]+[0-9](-RC|-M[0-9]*|-RC[0-9]*.*|-beta.*|-Beta.*|-alpha.*|-dev.*)$".toRegex()
+    versionSelector { versionCandidate ->
+        !rejectRegex.matches(versionCandidate.candidate.version)
+    }
+}
+
 
 rootProject.apply<TaggerPlugin>()
 
@@ -18,18 +31,4 @@ tasks {
         .named("release").configure {
             dependsOn(check)
         }
-
-    withType<DependencyUpdatesTask> {
-        checkForGradleUpdate = true
-        outputFormatter = "json"
-        outputDir = "build/dependencyUpdates"
-        reportfileName = "report"
-        revision = "release"
-
-        rejectVersionIf {
-            "^[0-9.]+[0-9](-RC|-M[0-9]+|-RC[0-9]+|-beta.*|-alpha.*|-dev.*)$"
-                .toRegex(RegexOption.IGNORE_CASE)
-                .matches(candidate.version)
-        }
-    }
 }
