@@ -9,22 +9,21 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoader
 import io.ktor.http.parseUrlEncodedParameters
-import js.array.component1
 import js.lazy.Lazy
 import react.Fragment
 import react.create
 import react.dom.html.ReactHTML.div
-import react.router.dom.useSearchParams
+import tanstack.react.router.useSearch
 
 @Lazy
 val DiscordCallbackPage by nfc<PageProps> { props ->
-    val (urlSearchParams) = useSearchParams()
-    val code = urlSearchParams.get("code")
-    val state = urlSearchParams.get("state")
+    val search = useSearch()
+    val code = search["code"]?.toString()
+    val state = search["state"]?.toString()
 
     val stateData = state?.parseUrlEncodedParameters()
     val partyId = stateData?.get("partyId")
-    val guildId = urlSearchParams.get("guild_id")
+    val guildId = search["guild_id"]?.toString()
     InstallPageFrame {
         title = "Discord Install"
         if (code == null || state == null || guildId == null || partyId == null) {

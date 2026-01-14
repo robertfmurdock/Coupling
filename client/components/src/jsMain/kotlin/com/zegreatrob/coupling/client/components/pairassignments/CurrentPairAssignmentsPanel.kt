@@ -21,12 +21,15 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.objects.unsafeJso
 import kotools.types.collection.NotEmptyList
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.router.Navigate
+import react.useEffect
 import react.useState
+import tanstack.react.router.useNavigate
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 import web.cssom.WhiteSpace
 import web.cssom.px
@@ -48,9 +51,15 @@ val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props
         fire(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
         redirectToCurrentFunc()
     }
-    if (redirectUrl != null) {
-        Navigate { to = redirectUrl }
-    } else {
+
+    val navigate = useNavigate()
+    useEffect(redirectUrl) {
+        if (redirectUrl != null) {
+            navigate(unsafeJso { to = RoutePath(redirectUrl) })
+        }
+    }
+
+    if (redirectUrl == null) {
         div {
             className = ClassName("current-pair-assignments")
             dateHeader(pairAssignments)

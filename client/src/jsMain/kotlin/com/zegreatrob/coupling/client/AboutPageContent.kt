@@ -15,7 +15,8 @@ import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Float
@@ -57,7 +58,7 @@ private val backButtonSection by nfc<Props> {
 
 private val backButton by nfc<Props> {
     Link {
-        to = "/parties"
+        to = RoutePath("/parties")
         tabIndex = -1
         draggable = false
         CouplingButton {

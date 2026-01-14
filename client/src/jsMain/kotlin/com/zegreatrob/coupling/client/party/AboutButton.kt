@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.span
-import react.router.dom.Link
+import tanstack.react.router.Link
 import web.cssom.px
 
 val AboutButton by nfc<Props> {

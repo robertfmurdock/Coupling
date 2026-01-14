@@ -5,6 +5,8 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.pinListPath
+import com.zegreatrob.coupling.client.components.external.tanstack.reactrouter.UseBlockerOptions
+import com.zegreatrob.coupling.client.components.external.tanstack.reactrouter.useBlocker
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.client.components.useForm
 import com.zegreatrob.coupling.json.GqlPinSnapshot
@@ -19,9 +21,11 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
 import react.Props
-import react.router.Navigate
-import react.router.dom.usePrompt
+import react.useEffect
 import react.useState
+import tanstack.react.router.useNavigate
+import tanstack.router.core.RoutePath
+import web.prompts.confirm
 import kotlin.js.Json
 
 external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatcher, D : SavePinCommand.Dispatcher {
@@ -40,6 +44,21 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
 
     val updatedPin = values.fromJsonDynamic<GqlPinSnapshot>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+    useBlocker(UseBlockerOptions {
+        if (updatedPin == pin) {
+            false
+        } else {
+            !confirm("You have unsaved data. Press OK to leave without saving.")
+        }
+    })
+
+    val navigate = useNavigate()
+    useEffect(redirectUrl) {
+        if (redirectUrl != null) {
+            navigate(unsafeJso { to = RoutePath(redirectUrl) })
+        }
+    }
+
     val onSubmit = dispatchFunc {
         fire(SavePinCommand(party.id, updatedPin))
         reload()
@@ -52,15 +71,9 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
             setRedirectUrl(party.id.pinListPath())
         }.requireConfirmation("Are you sure you want to delete this pin?")
     }
-    usePrompt(
-        unsafeJso {
-            `when` = updatedPin != pin
-            message = "You have unsaved data. Press OK to leave without saving."
-        },
-    )
-    if (redirectUrl != null) {
-        Navigate { to = redirectUrl }
-    } else {
+
+
+    if (redirectUrl == null) {
         PinConfigContent(party, boost, updatedPin, pinList, onChange, onSubmit, onRemove)
     }
 }

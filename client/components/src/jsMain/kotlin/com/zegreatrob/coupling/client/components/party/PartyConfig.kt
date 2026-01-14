@@ -15,13 +15,16 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.objects.unsafeJso
 import react.Props
-import react.router.Navigate
+import react.useEffect
 import react.useState
+import tanstack.react.router.useNavigate
+import tanstack.router.core.RoutePath
 import kotlin.js.Json
 
 external interface PartyConfigProps<D> : Props
-    where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
+        where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
     var party: PartyDetails
     var boost: Boost?
     var dispatchFunc: DispatchFunc<D>
@@ -43,9 +46,14 @@ val PartyConfig by nfc<PartyConfigProps<*>> { (party, boost, commandFunc, isNew)
         redirectToPartyList()
     }.takeUnless { isNew }
 
-    if (redirectUrl != null) {
-        Navigate { to = redirectUrl }
-    } else {
+    val navigate = useNavigate()
+    useEffect(redirectUrl) {
+        if (redirectUrl != null) {
+            navigate(unsafeJso { to = RoutePath(redirectUrl) })
+        }
+    }
+
+    if (redirectUrl == null) {
         PartyConfigContent(
             party = updatedParty,
             boost = boost,

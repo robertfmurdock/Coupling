@@ -17,7 +17,7 @@ import react.Fragment
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
-import react.router.dom.Link
+import tanstack.react.router.Link
 
 external interface PartyListProps : Props {
     var parties: List<PartyDetails>

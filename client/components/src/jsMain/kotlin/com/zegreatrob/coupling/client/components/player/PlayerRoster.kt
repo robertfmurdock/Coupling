@@ -10,8 +10,9 @@ import csstype.PropertiesBuilder
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.router.dom.Link
 import react.useState
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 import web.cssom.FontWeight
 import web.cssom.deg
@@ -49,7 +50,7 @@ val PlayerRoster by nfc<PlayerRosterProps> { (label, players, partyId, className
                 }
                 players.map { player ->
                     Link {
-                        to = partyId.with(player).playerConfigPath()
+                        to = RoutePath(partyId.with(player).playerConfigPath())
                         draggable = false
                         key = player.id.value.toString()
                         val tilt = random.nextInt(7) - 3

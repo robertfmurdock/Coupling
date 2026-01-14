@@ -3,12 +3,13 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 
 val LogoutButton by nfc<Props> {
     Link {
-        to = "/logout"
+        to = RoutePath("/logout")
         tabIndex = -1
         draggable = false
         CouplingButton {

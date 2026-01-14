@@ -6,11 +6,12 @@ import com.zegreatrob.coupling.client.components.lightGreen
 import com.zegreatrob.coupling.model.party.PartyDetails
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 
 fun ChildrenBuilder.viewHistoryButton(party: PartyDetails) = Link {
-    to = "/${party.id.value}/history/"
+    to = RoutePath("/${party.id.value}/history/")
     tabIndex = -1
     draggable = false
     CouplingButton {

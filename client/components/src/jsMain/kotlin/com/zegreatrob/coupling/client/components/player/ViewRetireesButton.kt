@@ -5,18 +5,19 @@ import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.yellow
 import com.zegreatrob.coupling.model.party.PartyDetails
 import react.ChildrenBuilder
-import react.dom.html.ReactHTML
-import react.router.dom.Link
+import react.dom.html.ReactHTML.i
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 
 fun ChildrenBuilder.viewRetireesButton(party: PartyDetails) = Link {
-    to = "/${party.id.value}/players/retired"
+    to = RoutePath("/${party.id.value}/players/retired")
     tabIndex = -1
     draggable = false
     CouplingButton {
         sizeRuleSet = large
         colorRuleSet = yellow
-        ReactHTML.i { this.className = ClassName("fa fa-user-slash") }
+        i { this.className = ClassName("fa fa-user-slash") }
         +" Retirees!"
     }
 }

@@ -6,12 +6,13 @@ import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 
 val PartySelectButton by nfc<Props> {
     Link {
-        to = "/parties/"
+        to = RoutePath("/parties/")
         tabIndex = -1
         draggable = false
         CouplingButton {

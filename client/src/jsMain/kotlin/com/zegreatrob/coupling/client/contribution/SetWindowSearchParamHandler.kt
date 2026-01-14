@@ -1,17 +1,12 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
-import js.objects.unsafeJso
-import react.router.dom.SetURLSearchParams
+import js.objects.Record
 
-fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) = { updatedWindow: ContributionWindow? ->
-    setSearchParams({ previous ->
-        previous.also {
-            if (updatedWindow != null) {
-                previous.set("window", updatedWindow.name)
-            } else {
-                previous.delete("window")
-            }
+fun setWindowSearchParamHandler(setSearchParams: (callback: (Record<String, String?>) -> Record<String, String?>) -> Unit) =
+    { updatedWindow: ContributionWindow? ->
+        setSearchParams { previous ->
+            previous["window"] = updatedWindow?.name
+            previous
         }
-    }, unsafeJso { })
-}
+    }

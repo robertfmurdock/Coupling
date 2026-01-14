@@ -8,7 +8,8 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import react.Props
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.AnimationIterationCount
 import web.cssom.ClassName
 import web.cssom.ident
@@ -23,7 +24,7 @@ external interface PrepareToSpinButtonProps : Props {
 @ReactFunc
 val PrepareToSpinButton by nfc<PrepareToSpinButtonProps> { (party) ->
     Link {
-        to = "/${party.id.value}/prepare/"
+        to = RoutePath("/${party.id.value}/prepare/")
         tabIndex = -1
         draggable = false
         CouplingButton {

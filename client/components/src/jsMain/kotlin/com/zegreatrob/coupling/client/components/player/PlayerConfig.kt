@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPath
 import com.zegreatrob.coupling.client.components.eventHandler
+import com.zegreatrob.coupling.client.components.external.tanstack.reactrouter.UseBlockerOptions
+import com.zegreatrob.coupling.client.components.external.tanstack.reactrouter.useBlocker
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.JsonPlayerData
@@ -20,13 +22,15 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
 import react.Props
-import react.router.Navigate
-import react.router.dom.usePrompt
+import react.useEffect
 import react.useState
+import tanstack.react.router.useNavigate
+import tanstack.router.core.RoutePath
+import web.prompts.confirm
 import kotlin.js.Json
 
 external interface PlayerConfigProps<P> : Props
-    where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher {
+        where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher {
     var party: PartyDetails
     var boost: Boost?
     var player: Player
@@ -43,12 +47,21 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     val onChange = eventHandler(setValues::invoke)
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
-    usePrompt(
-        unsafeJso {
-            `when` = updatedPlayer != player
-            message = "You have unsaved data. Press OK to leave without saving."
-        },
-    )
+
+    useBlocker(UseBlockerOptions {
+        if (updatedPlayer == player) {
+            false
+        } else {
+            !confirm("You have unsaved data. Press OK to leave without saving.")
+        }
+    })
+    val navigate = useNavigate()
+    useEffect(redirectUrl) {
+        if (redirectUrl != null) {
+            navigate(unsafeJso { to = RoutePath(redirectUrl) })
+        }
+    }
+
     val onSubmit = dispatchFunc {
         fire(
             SavePlayerCommand(
@@ -77,9 +90,7 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
         }
     }
 
-    if (redirectUrl != null) {
-        Navigate { to = redirectUrl }
-    } else {
+    if (redirectUrl == null) {
         PlayerConfigContent(
             party = party,
             boost = boost,

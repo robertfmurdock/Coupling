@@ -9,7 +9,8 @@ import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.BackgroundRepeat
 import web.cssom.Border
 import web.cssom.BoxShadow
@@ -76,7 +77,7 @@ private fun ChildrenBuilder.optionalLink(
 ) {
     if (shouldLink) {
         Link {
-            to = "/${partyId.value}/pin/${pin.id.value}"
+            to = RoutePath("/${partyId.value}/pin/${pin.id.value}")
             handler()
         }
     } else {

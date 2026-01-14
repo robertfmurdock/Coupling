@@ -9,7 +9,8 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.AlignItems
 import web.cssom.AnimationIterationCount
 import web.cssom.Color
@@ -25,7 +26,7 @@ import web.cssom.s
 
 val returnToCouplingButton by nfc<Props> {
     Link {
-        to = "/parties"
+        to = RoutePath("/parties")
         tabIndex = -1
         draggable = false
         CouplingButton {

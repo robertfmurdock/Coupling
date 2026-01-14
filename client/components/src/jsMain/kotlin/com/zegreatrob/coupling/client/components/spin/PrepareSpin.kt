@@ -14,10 +14,12 @@ import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.objects.unsafeJso
 import kotools.types.collection.toNotEmptyList
 import react.Props
-import react.router.useNavigate
 import react.useState
+import tanstack.react.router.useNavigate
+import tanstack.router.core.RoutePath
 
 external interface PrepareSpinProps : Props {
     var party: PartyDetails
@@ -47,7 +49,7 @@ val PrepareSpin by nfc<PrepareSpinProps> { (party, players, currentPairsDoc, pin
         } else {
             dispatchFunc {
                 fire(SpinCommand(party.id, selectedPlayerIds, pinSelections))
-                navigate(party.newPairAssignmentsPath())
+                navigate(unsafeJso { to = RoutePath(party.newPairAssignmentsPath()) })
             }
         },
     )

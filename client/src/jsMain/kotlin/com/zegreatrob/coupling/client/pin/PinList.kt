@@ -14,7 +14,7 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
-import react.router.dom.Link
+import tanstack.react.router.Link
 import web.cssom.Border
 import web.cssom.Color
 import web.cssom.Display

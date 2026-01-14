@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.client.components.FrameRunner
-import js.array.component1
-import js.array.component2
+import js.objects.Record
 import js.objects.unsafeJso
 import react.FC
 import react.dom.html.ReactHTML.button
-import react.router.dom.SetURLSearchParams
-import react.router.dom.useSearchParams
+import tanstack.react.router.useNavigate
+import tanstack.react.router.useSearch
+import tanstack.router.core.UseNavigateResult
 import web.cssom.Angle
 import web.cssom.Left
 import web.cssom.Top
@@ -18,16 +18,17 @@ import web.cssom.px
 private val loadingSequence by lazy { LoadingAnimationState.generateSequence() }
 
 val LoadingPage = FC {
-    val (searchParams, setSearchParams) = useSearchParams()
-    val frameIndex = searchParams.get("frame")?.toIntOrNull()
+    val search = useSearch()
+    val navigate = useNavigate()
+    val frameIndex = search["frame"]?.toString()?.toIntOrNull()
     val currentFrame = frameIndex?.let { loadingSequence.toList()[it] }
     if (currentFrame != null) {
         button {
-            onClick = { setFrame(setSearchParams, frameIndex - 1) }
+            onClick = { setFrame(navigate, frameIndex - 1) }
             +"<"
         }
         button {
-            onClick = { setFrame(setSearchParams, frameIndex + 1) }
+            onClick = { setFrame(navigate, frameIndex + 1) }
             +">"
         }
         LoadingPageFrame(currentFrame.data)
@@ -36,11 +37,13 @@ val LoadingPage = FC {
     }
 }
 
-private fun setFrame(setSearchParams: SetURLSearchParams, frame: Int) {
-    setSearchParams({ params ->
-        params.set("frame", "$frame")
-        params
-    }, unsafeJso())
+private fun setFrame(navigate: UseNavigateResult, frame: Int) {
+    navigate(unsafeJso {
+        search = fun(params: Record<String, String?>): Record<String, String?> {
+            params["frame"] = "$frame"
+            return params
+        }.asDynamic()
+    })
 }
 
 data class LoadingAnimationStateData(

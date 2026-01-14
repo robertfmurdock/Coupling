@@ -10,10 +10,9 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.array.component1
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.router.dom.useSearchParams
+import tanstack.react.router.useSearch
 import web.cssom.BackgroundRepeat
 import web.cssom.Border
 import web.cssom.BoxShadow
@@ -35,8 +34,8 @@ import web.window.window
 
 val LoginChooser by nfc<Props> {
     val auth0Data = useAuth0Data()
-    val (params) = useSearchParams()
-    val returnPath = params.get("path") ?: ""
+    val useSearch = useSearch()
+    val returnPath = useSearch["path"] ?: ""
     val signInFunc = {
         auth0Data.loginWithRedirect(
             RedirectLoginOptions(

@@ -12,7 +12,7 @@ import react.Props
 import react.router.NavigateFunction
 import react.router.RouteObject
 import react.router.dom.useSearchParams
-import react.router.useNavigate
+import tanstack.react.router.useNavigate
 import react.router.useParams
 import react.useEffect
 

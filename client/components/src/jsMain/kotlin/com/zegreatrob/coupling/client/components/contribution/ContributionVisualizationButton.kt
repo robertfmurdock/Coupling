@@ -8,13 +8,14 @@ import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.dom.html.ReactHTML.i
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 
 @ReactFunc
 val ContributionVisualizationButton by nfc<PartyButtonProps> { (partyId) ->
     Link {
-        to = "/${partyId.value}/contributions/visualization"
+        to = RoutePath("/${partyId.value}/contributions/visualization")
         draggable = false
         CouplingButton {
             sizeRuleSet = large

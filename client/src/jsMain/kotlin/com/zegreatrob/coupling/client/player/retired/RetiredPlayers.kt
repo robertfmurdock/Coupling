@@ -14,7 +14,7 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
-import react.router.dom.Link
+import tanstack.react.router.Link
 import web.cssom.BackgroundRepeat
 import web.cssom.ClassName
 import web.cssom.Color

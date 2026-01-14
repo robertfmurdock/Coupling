@@ -25,10 +25,11 @@ import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
-import react.router.dom.Link
-import react.router.dom.LinkProps
 import react.useMemo
 import react.useState
+import tanstack.react.router.Link
+import tanstack.react.router.LinkProps
+import tanstack.router.core.RoutePath
 import web.dom.ElementId
 import web.html.HtmlSource
 import kotlin.uuid.Uuid
@@ -96,7 +97,7 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
                 __html = HtmlSource(parse(MarkdownContent.content.connectSuccessMd)),
             )
         }
-        ReturnToCouplingButton { to = "/${command.partyId.value}/pairAssignments/current/" }
+        ReturnToCouplingButton { to = RoutePath("/${command.partyId.value}/pairAssignments/current/") }
     }
 }
 

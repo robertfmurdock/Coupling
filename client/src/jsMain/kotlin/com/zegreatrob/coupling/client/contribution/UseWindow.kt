@@ -1,15 +1,20 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
-import js.array.component1
-import js.array.component2
-import react.router.dom.useSearchParams
+import js.objects.unsafeJso
+import tanstack.react.router.useNavigate
+import tanstack.react.router.useSearch
 
 fun useWindow(defaultWindow: ContributionWindow): Pair<ContributionWindow, (ContributionWindow?) -> Unit> {
-    val (searchParams, setSearchParams) = useSearchParams()
-    val window: ContributionWindow = searchParams.get("window")?.let { window ->
+    val search = useSearch()
+    val navigate = useNavigate()
+    val window: ContributionWindow = search["window"]?.let { window ->
         ContributionWindow.entries.find { it.name == window }
     } ?: defaultWindow
-    val setWindow = setWindowSearchParamHandler(setSearchParams)
+    val setWindow = setWindowSearchParamHandler {
+        navigate(unsafeJso {
+            this.search = it.asDynamic()
+        })
+    }
     return Pair(window, setWindow)
 }

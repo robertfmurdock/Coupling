@@ -35,7 +35,7 @@ import react.create
 import react.dom.html.ReactHTML.button
 import react.router.RouterProvider
 import react.router.createMemoryRouter
-import react.router.dom.Link
+import tanstack.react.router.Link
 import kotlin.js.json
 import kotlin.test.Test
 

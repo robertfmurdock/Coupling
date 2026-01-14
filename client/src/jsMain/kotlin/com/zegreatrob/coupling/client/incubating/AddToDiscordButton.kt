@@ -19,6 +19,7 @@ import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.router.useHref
 import react.useState
+import tanstack.react.router.useRouter
 
 external interface AddToDiscordButtonProps : Props {
     var partyList: List<PartyDetails>
@@ -29,6 +30,9 @@ external interface AddToDiscordButtonProps : Props {
 val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
     var showTools by useState(false)
     var selectedParty by useState<PartyId?>(null)
+    val router = useRouter()
+    router.
+
     val discordCallbackHref = useHref("/integration/discord/callback")
 
     if (!showTools) {

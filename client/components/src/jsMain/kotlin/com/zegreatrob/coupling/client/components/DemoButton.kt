@@ -4,12 +4,13 @@ import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.ClassName
 
 val DemoButton by nfc<Props> {
     Link {
-        to = "/demo"
+        to = RoutePath("/demo")
         tabIndex = -1
         draggable = false
         CouplingButton {

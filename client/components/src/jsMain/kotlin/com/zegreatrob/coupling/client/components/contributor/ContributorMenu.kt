@@ -11,13 +11,15 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.objects.unsafeJso
 import react.Props
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.hr
-import react.router.useNavigate
+import tanstack.react.router.useNavigate
+import tanstack.router.core.RoutePath
 import web.html.HTMLButtonElement
 
 external interface ContributorMenuProps : Props {
@@ -48,7 +50,7 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
         PlayerCard(contributor, size = 20)
         hr()
         CouplingButton {
-            onClick = { navigate(partyId.with(contributor).playerConfigPath()) }
+            onClick = { navigate(unsafeJso { this.to = RoutePath(partyId.with(contributor).playerConfigPath()) }) }
             +"Player Config"
         }
     } else {

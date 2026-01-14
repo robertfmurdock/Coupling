@@ -21,7 +21,8 @@ import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
 import react.dom.html.ReactHTML.span
-import react.router.dom.Link
+import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.AnimationIterationCount
 import web.cssom.Auto
 import web.cssom.BoxShadow
@@ -59,7 +60,7 @@ val PartyCard by nfc<PartyCardProps> { props ->
     val (party) = props
     val size = props.size ?: 150
     Link {
-        to = party.id.currentPairsPath()
+        to = RoutePath(party.id.currentPairsPath())
         visuallyHidden { +"Party Home Page" }
         span {
             css {
