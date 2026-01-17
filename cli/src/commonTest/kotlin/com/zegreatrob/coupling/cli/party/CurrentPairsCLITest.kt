@@ -45,7 +45,7 @@ class CurrentPairsCLITest {
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(expected::class, result) }
     }) exercise {
-        cli(exerciseScope, cannon).test("party --party-id=${partyId.value} current-pairs")
+        cli(cannon).test("party --party-id=${partyId.value} current-pairs")
     } verify { result ->
         result.statusCode.assertIsEqualTo(0, result.output)
         receivedActions.firstOrNull()
@@ -95,7 +95,7 @@ Current Pairs for Party ID: ${partyId.value}
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.given(expected, CurrentPairAssignmentsQuery.Data { party = null }) }
     }) exercise {
-        cli(exerciseScope, cannon).test("party --party-id=${partyId.value} current-pairs")
+        cli(cannon).test("party --party-id=${partyId.value} current-pairs")
     } verify { result ->
         result.statusCode.assertIsEqualTo(1, result.output)
         result.output.trim()

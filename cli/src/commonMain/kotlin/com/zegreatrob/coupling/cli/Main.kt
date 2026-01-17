@@ -5,7 +5,6 @@ import com.github.ajalt.clikt.core.subcommands
 import com.zegreatrob.coupling.cli.party.party
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -18,10 +17,7 @@ suspend fun main(args: Array<String>) {
     cliScope.joinAll()
 }
 
-fun cli(
-    scope: CoroutineScope = cliScope,
-    cannon: ActionCannon<CouplingSdkDispatcher>? = null,
-): Welcome = Welcome()
+fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): Welcome = Welcome()
     .subcommands(Login())
     .subcommands(party(cannon))
 
