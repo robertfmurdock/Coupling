@@ -23,7 +23,7 @@ fun cli(
     cannon: ActionCannon<CouplingSdkDispatcher>? = null,
 ): Welcome = Welcome()
     .subcommands(Login())
-    .subcommands(party(scope, cannon))
+    .subcommands(party(cannon))
 
 expect fun platformArgCorrection(args: Array<String>): Array<String>
 

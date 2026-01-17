@@ -7,7 +7,6 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
-import kotlinx.coroutines.CoroutineScope
 import kotlin.time.Clock
 
 private class Party : SuspendingCliktCommand() {
@@ -22,9 +21,10 @@ private class Party : SuspendingCliktCommand() {
 
 data class PartyContext(val partyId: PartyId?, val env: String)
 
-fun party(scope: CoroutineScope, cannon: ActionCannon<CouplingSdkDispatcher>?): SuspendingCliktCommand = Party()
+fun party(cannon: ActionCannon<CouplingSdkDispatcher>?): SuspendingCliktCommand = Party()
     .subcommands(PartyList())
     .subcommands(PartyDetails(cannon))
+    .subcommands(CurrentPairs(cannon))
     .subcommands(
         Contribution()
             .subcommands(SaveContribution(clock = Clock.System))
