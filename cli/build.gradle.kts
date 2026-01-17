@@ -28,7 +28,7 @@ kotlin {
         compilations {
             "main" {
                 packageJson {
-                    name = "coupling-cli"
+                    name = "@continuous-excellence/coupling-cli"
                     customField("package-name", "coupling-cli")
                     customField("author", "rob@continuousexcellence.io")
                     customField("license", "MIT")
