@@ -16,10 +16,18 @@ class PartyDetails(val scope: CoroutineScope, val cannon: ActionCannon<CouplingS
     private val partyId: PartyId by requireObject<PartyId>("partyId")
 
     override suspend fun run() {
-        println("hey $partyId")
         withSdk(scope, context.env, ::echo, cannon = cannon) {
-            it.fire(GqlQuery(PartyDetailsQuery(partyId)))
-            echo("Details retrieved.")
+            val data = it.fire(GqlQuery(PartyDetailsQuery(partyId)))
+            echo("Party ID: ${data?.party?.partyDetails?.id}")
+            echo("Name: ${data?.party?.partyDetails?.name}")
+            echo("Email: ${data?.party?.partyDetails?.email}")
+            echo("PairingRule: ${data?.party?.partyDetails?.pairingRule}")
+            echo("BadgesEnabled: ${data?.party?.partyDetails?.badgesEnabled}")
+            echo("DefaultBadgeName: ${data?.party?.partyDetails?.defaultBadgeName}")
+            echo("AlternateBadgeName: ${data?.party?.partyDetails?.alternateBadgeName}")
+            echo("CallSignsEnabled: ${data?.party?.partyDetails?.callSignsEnabled}")
+            echo("AnimationsEnabled: ${data?.party?.partyDetails?.animationsEnabled}")
+            echo("AnimationSpeed: ${data?.party?.partyDetails?.animationSpeed}")
         }?.join()
     }
 }
