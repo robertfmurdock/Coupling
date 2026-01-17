@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.cli
 
-import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.command.SuspendingCliktCommand
 
-class Welcome : CliktCommand() {
+class Welcome : SuspendingCliktCommand() {
 
-    override fun run() {
-        echo("Welcome to Coupling CLI.")
+    override suspend fun run() {
+        if (this.currentContext.invokedSubcommands.isEmpty()) {
+            echo("Welcome to Coupling CLI.")
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.cli
 
-import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.auth0.management.KtorAuth0Client
@@ -11,11 +11,11 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlin.time.Duration.Companion.seconds
 
-class Login : CliktCommand() {
+class Login : SuspendingCliktCommand() {
 
     private val env by option().default("production")
 
-    override fun run() {
+    override suspend fun run() {
         val environment = Auth0Environment.map[env]
 
         if (environment != null) {

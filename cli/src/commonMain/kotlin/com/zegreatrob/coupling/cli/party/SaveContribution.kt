@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.cli.party
 
-import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.multiple
@@ -25,7 +25,7 @@ class SaveContribution(
     private val scope: CoroutineScope = cliScope,
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
     private val clock: Clock,
-) : CliktCommand(name = "save"),
+) : SuspendingCliktCommand(name = "save"),
     ContributionCliCommand {
     private val inputJson by option().prompt()
     private val contributionId by option().default("")
@@ -38,7 +38,7 @@ class SaveContribution(
     private val cycleTime by option().default("")
     override val link by option().default("")
     override val label by option().default("")
-    override fun run() {
+    override suspend fun run() {
         val contributionContext = currentContext.findObject<ContributionContext>()
         val partyId = contributionContext!!.partyId
         val data = inputJson.trim()

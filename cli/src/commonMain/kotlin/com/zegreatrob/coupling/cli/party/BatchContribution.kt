@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.cli.party
 
+import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
@@ -16,14 +17,14 @@ import kotlinx.coroutines.CoroutineScope
 class BatchContribution(
     private val scope: CoroutineScope = cliScope,
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
-) : CliktCommand(name = "batch"),
+) : SuspendingCliktCommand(name = "batch"),
     ContributionCliCommand {
     private val file by option().default("")
     private val inputJson by option()
     override val label by option().default("")
     override val link by option().default("")
     private val cycleTimeFromFirstCommit by option().flag()
-    override fun run() {
+    override suspend fun run() {
         val inputJson = inputJson ?: loadFile(file) ?: error("Could not load file")
         val contributions = ContributionParser.parseContributions(inputJson.trim())
         val contributionContext = currentContext.findObject<ContributionContext>()
