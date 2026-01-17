@@ -1,13 +1,11 @@
-package com.zegreatrob.coupling.cli
+package com.zegreatrob.coupling.cli.party
 
+import com.github.ajalt.clikt.command.test
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.obj
-import com.github.ajalt.clikt.testing.test
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommandWrapper
-import com.zegreatrob.coupling.cli.party.BatchContribution
-import com.zegreatrob.coupling.cli.party.ContributionContext
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.testaction.StubCannon
