@@ -128,13 +128,12 @@ tasks {
     val jsPublish by registering(Exec::class) {
         dependsOn(jsCliTar)
         enabled = !isSnapshot()
-        mustRunAfter(check)
+        mustRunAfter(check, ":release", ":deploy:prod:deploy")
         workingDir(mainNpmProjectDir)
         commandLine("npm", "publish")
     }
     register("publish") {
         dependsOn(jsPublish)
-        mustRunAfter(check, ":release", ":deploy:prod:deploy")
     }
 
     val uploadToS3 by registering(Exec::class) {
