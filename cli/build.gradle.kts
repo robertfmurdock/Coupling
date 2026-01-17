@@ -28,7 +28,14 @@ kotlin {
         compilations {
             "main" {
                 packageJson {
-                    customField("bin", mapOf("coupling" to "./kotlin/bin/coupling"))
+                    name = "coupling-cli"
+                    customField("package-name", "coupling-cli")
+                    customField("author", "rob@continuousexcellence.io")
+                    customField("license", "MIT")
+                    customField("keywords", arrayOf("git", "contribution", "pair", "agile", "coaching", "statistics"))
+                    customField("bin", mapOf("coupling" to "kotlin/bin/coupling"))
+                    customField("homepage", "https://github.com/robertfmurdock/Coupling")
+                    customField("repository", "git+https://github.com/robertfmurdock/Coupling.git")
                 }
             }
         }
@@ -118,6 +125,17 @@ tasks {
         workingDir(mainNpmProjectDir)
         commandLine("npm", "link")
     }
+    val jsPublish by registering(Exec::class) {
+        dependsOn(jsCliTar)
+        enabled = !isSnapshot()
+        mustRunAfter(check)
+        workingDir(mainNpmProjectDir)
+        commandLine("npm", "publish")
+    }
+    register("publish") {
+        dependsOn(jsPublish)
+        mustRunAfter(check)
+    }
 
     val uploadToS3 by registering(Exec::class) {
         dependsOn(jsCliTar, distTar)
@@ -137,3 +155,5 @@ tasks {
         }
 
 }
+
+fun Project.isSnapshot() = version.toString().contains("SNAPSHOT") || version == "unspecified"
