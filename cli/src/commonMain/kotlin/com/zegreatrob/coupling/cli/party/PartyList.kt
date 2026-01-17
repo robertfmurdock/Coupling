@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 
-class PartyList : SuspendingCliktCommand("List") {
+class PartyList : SuspendingCliktCommand("list") {
     private val env by option().default("production")
     override suspend fun run() {
         withSdk(cliScope, env, ::echo) { sdk ->
