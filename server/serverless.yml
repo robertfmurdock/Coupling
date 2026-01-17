@@ -12,7 +12,6 @@ package:
     - 'build/executable/**'
 plugins:
   - serverless-offline
-  - serverless-prune-plugin
 custom:
   serverless-offline:
     allowCache: true
