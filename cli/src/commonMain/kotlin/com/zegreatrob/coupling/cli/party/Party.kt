@@ -24,7 +24,7 @@ data class PartyContext(val partyId: PartyId?, val env: String)
 
 fun party(scope: CoroutineScope, cannon: ActionCannon<CouplingSdkDispatcher>?): SuspendingCliktCommand = Party()
     .subcommands(PartyList())
-    .subcommands(PartyDetails(scope, cannon))
+    .subcommands(PartyDetails(cannon))
     .subcommands(
         Contribution()
             .subcommands(SaveContribution(clock = Clock.System))

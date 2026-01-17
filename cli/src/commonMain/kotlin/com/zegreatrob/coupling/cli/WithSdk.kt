@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.testmints.action.ActionCannon
 import io.ktor.client.plugins.HttpRequestRetry
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import kotlin.uuid.Uuid
 
 fun withSdk(
@@ -17,9 +17,9 @@ fun withSdk(
     cannon: ActionCannon<CouplingSdkDispatcher>? = null,
     doWork: suspend (ActionCannon<CouplingSdkDispatcher>) -> Unit,
 ) = (cannon ?: loadSdk(env, echo))
-    ?.let { scope.launch { doWork(it) } }
+    ?.let { scope.async { doWork(it) } }
 
-private fun loadSdk(
+fun loadSdk(
     env: String,
     echo: (String) -> Unit,
 ): ActionCannon<CouplingSdkDispatcher>? {
