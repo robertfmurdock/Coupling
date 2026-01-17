@@ -134,7 +134,7 @@ tasks {
     }
     register("publish") {
         dependsOn(jsPublish)
-        mustRunAfter(check)
+        mustRunAfter(check, ":release", ":deploy:prod:deploy")
     }
 
     val uploadToS3 by registering(Exec::class) {
