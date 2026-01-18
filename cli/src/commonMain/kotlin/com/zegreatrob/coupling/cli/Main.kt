@@ -17,7 +17,7 @@ suspend fun main(args: Array<String>) {
     cliScope.joinAll()
 }
 
-fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): Welcome = Welcome()
+fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): CouplingCli = CouplingCli()
     .subcommands(Login())
     .subcommands(ConfigCommand())
     .subcommands(party(cannon))

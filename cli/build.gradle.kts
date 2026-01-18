@@ -1,8 +1,10 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 
 import com.zegreatrob.tools.tagger.ReleaseVersion
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -18,12 +20,14 @@ kotlin {
                 mainClass.set("com.zegreatrob.coupling.cli.MainKt")
             }
         }
+
     }
     js {
         nodejs {
             useEsModules()
             compilerOptions { target = "es2015" }
             binaries.executable()
+            testTask { environment("COUPLING_VERSION", project.version.toString()) }
         }
         compilations {
             "main" {
@@ -75,6 +79,9 @@ dependencies {
 version = rootProject.version
 
 tasks {
+    named<Test>("jvmTest") {
+        environment("COUPLING_VERSION", project.version.toString())
+    }
     withType<CreateStartScripts> {
         applicationName = "coupling"
     }
@@ -152,6 +159,21 @@ tasks {
         .configure {
             finalizedBy(uploadToS3)
         }
+    val generatedDirectory = project.layout.buildDirectory.dir("generated-sources/templates/kotlin/main")
+    val copyTemplates by registering(Copy::class) {
+        inputs.property("version", rootProject.version)
+        filteringCharset = "UTF-8"
+        from(project.projectDir.resolve("src/commonMain/templates")) {
+            filter<ReplaceTokens>("tokens" to mapOf("COUPLING_VERSION" to rootProject.version))
+        }
+        into(generatedDirectory)
+    }
+    withType<KotlinCompile> {
+        dependsOn(copyTemplates)
+    }
+    kotlin.sourceSets {
+        commonMain { kotlin.srcDir(copyTemplates) }
+    }
 
 }
 
