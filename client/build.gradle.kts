@@ -123,6 +123,7 @@ tasks {
     }
     val lookupCdnUrls by registering(NodeExec::class) {
         setup(project)
+        this.npmProjectDir = npmProjectDir.get().asFile
         dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall")
         inputs.files(cdnLookupConfiguration)
         inputs.files(jsRuntimeClasspath)

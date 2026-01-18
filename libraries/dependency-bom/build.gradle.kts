@@ -24,6 +24,7 @@ dependencies {
     api(platform(libs.org.kotlincrypto.hash.bom))
     constraints {
         api(libs.com.apollographql.adapters.apollo.adapters.core)
+        api(libs.org.jetbrains.kotlin.wrappers.kotlin.react.router.dom.legacy)
         api(libs.com.apollographql.adapters.apollo.adapters.kotlinx.datetime)
         api(libs.com.apollographql.ktor.apollo.engine.ktor)
         api(libs.com.apollographql.apollo.apollo.runtime)
