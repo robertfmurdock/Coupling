@@ -24,6 +24,8 @@ class Login : SuspendingCliktCommand() {
             echo("Your user code is: ${result.userCode}")
             echo("Please follow link to authenticate: ${result.verificationUriComplete}")
 
+            openBrowser(result.verificationUriComplete)
+
             val pollResult = client.pollForSuccess(environment, result.deviceCode, result.interval)
 
             makeDirectory(couplingHomeDirectory)
@@ -31,8 +33,8 @@ class Login : SuspendingCliktCommand() {
             writeDataToFile(
                 configFilePath,
                 text = buildJsonObject {
-                    put("accessToken", pollResult?.accessToken)
-                    put("refreshToken", pollResult?.refreshToken)
+                    put("accessToken", pollResult.accessToken)
+                    put("refreshToken", pollResult.refreshToken)
                 }.toString(),
             )
 
@@ -58,3 +60,5 @@ class Login : SuspendingCliktCommand() {
         return pollResult
     }
 }
+
+expect fun openBrowser(uri: String)
