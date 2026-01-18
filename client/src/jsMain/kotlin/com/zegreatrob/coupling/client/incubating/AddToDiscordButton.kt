@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.incubating
 
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.Editor
+import com.zegreatrob.coupling.client.external.tanstack.react.router.Router
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
@@ -9,6 +10,7 @@ import com.zegreatrob.minreact.nfc
 import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.formUrlEncode
+import js.objects.unsafeJso
 import kotlinx.browser.window
 import react.Props
 import react.dom.html.ReactHTML.a
@@ -17,9 +19,9 @@ import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
-import react.router.useHref
 import react.useState
 import tanstack.react.router.useRouter
+import tanstack.router.core.RoutePath
 
 external interface AddToDiscordButtonProps : Props {
     var partyList: List<PartyDetails>
@@ -31,9 +33,9 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
     var showTools by useState(false)
     var selectedParty by useState<PartyId?>(null)
     val router = useRouter()
-    router.
 
-    val discordCallbackHref = useHref("/integration/discord/callback")
+    val discordCallbackHref =
+        router.unsafeCast<Router>().buildLocation(unsafeJso { to = RoutePath("/integration/discord/callback") }).href
 
     if (!showTools) {
         CouplingButton {

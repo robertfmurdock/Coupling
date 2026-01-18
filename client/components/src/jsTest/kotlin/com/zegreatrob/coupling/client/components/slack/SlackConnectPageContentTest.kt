@@ -17,20 +17,25 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.unsafeJso
+import react.FC
 import react.ReactNode
-import react.create
-import react.router.RouterProvider
-import react.router.createMemoryRouter
+import tanstack.react.router.RouteOptions
+import tanstack.react.router.RouterOptions
+import tanstack.react.router.RouterProvider
+import tanstack.react.router.createRootRoute
+import tanstack.react.router.createRoute
+import tanstack.react.router.createRouter
+import tanstack.router.core.RoutePath
 import kotlin.test.Test
 
 class SlackConnectPageContentTest {
 
     private val saveButton get() = screen.getByRole("button", RoleOptions(name = "Save"))
-    private val returnButton get() = screen.queryByRole(
-        "button",
-        RoleOptions(name = "Return to Coupling"),
-    )
+    private val returnButton
+        get() = screen.queryByRole(
+            "button",
+            RoleOptions(name = "Return to Coupling"),
+        )
     private val partySelect get() = screen.getByLabelText("Party")
 
     @Test
@@ -88,28 +93,33 @@ class SlackConnectPageContentTest {
         val actor = UserEvent.setup()
         val party = stubPartyDetails()
         val stubDispatcher = StubDispatcher.Channel()
-    }) {
-        render(
-            RouterProvider.create {
-                router = createMemoryRouter(
-                    arrayOf(
-                        unsafeJso {
-                            path = "/${party.id.value}/pairAssignments/current/"
-                            element = ReactNode("Party Time")
-                        },
-                        unsafeJso {
-                            path = "*"
-                            element = SlackConnectPageContent.create(
-                                parties = listOf(party),
-                                slackTeam = uuidString(),
-                                slackChannel = uuidString(),
-                                dispatchFunc = stubDispatcher.func(),
-                            )
-                        },
-                    ),
-                )
-            },
+        val router = createRouter(
+            options = RouterOptions(
+                routeTree = createRootRoute().also {
+                    it.addChildren(
+                        arrayOf(
+                            createRoute(
+                                RouteOptions(
+                                    path = RoutePath("/${party.id.value}/pairAssignments/current/"),
+                                    getParentRoute = { it },
+                                    component = FC { ReactNode("Party Time") },
+                                ),
+                            ),
+                        ),
+                    )
+                },
+                defaultComponent = FC {
+                    SlackConnectPageContent(
+                        parties = listOf(party),
+                        slackTeam = uuidString(),
+                        slackChannel = uuidString(),
+                        dispatchFunc = stubDispatcher.func(),
+                    )
+                },
+            ),
         )
+    }) {
+        render { RouterProvider { router = this@asyncSetup.router } }
         actor.click(saveButton)
         act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
     } exercise {

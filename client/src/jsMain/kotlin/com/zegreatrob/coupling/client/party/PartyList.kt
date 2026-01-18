@@ -18,6 +18,7 @@ import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
 import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 
 external interface PartyListProps : Props {
     var parties: List<PartyDetails>
@@ -46,7 +47,7 @@ val PartyList by nfc<PartyListProps> { (parties) ->
 
 val NewPartyButton by nfc<Props> {
     Link {
-        to = "/new-party/"
+        to = RoutePath("/new-party/")
         draggable = false
         tabIndex = -1
         CouplingButton {

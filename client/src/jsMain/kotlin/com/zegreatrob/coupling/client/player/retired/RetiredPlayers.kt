@@ -15,6 +15,7 @@ import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.BackgroundRepeat
 import web.cssom.ClassName
 import web.cssom.Color
@@ -60,7 +61,7 @@ val RetiredPlayers by nfc<RetiredPlayersProps> { (party, players) ->
             div {
                 players.forEach { player ->
                     Link {
-                        to = party.id.with(player).playerConfigPath()
+                        to = RoutePath(party.id.with(player).playerConfigPath())
                         draggable = false
                         key = player.id.value.toString()
                         PlayerCard(player, deselected = true)

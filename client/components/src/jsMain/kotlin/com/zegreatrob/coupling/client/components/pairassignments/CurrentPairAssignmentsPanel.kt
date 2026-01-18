@@ -55,6 +55,7 @@ val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props
     val navigate = useNavigate()
     useEffect(redirectUrl) {
         if (redirectUrl != null) {
+            println("calling navigate with $redirectUrl")
             navigate(unsafeJso { to = RoutePath(redirectUrl) })
         }
     }

@@ -15,6 +15,7 @@ import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.Border
 import web.cssom.Color
 import web.cssom.Display
@@ -48,7 +49,7 @@ val PinList by nfc<PinListProps> { (party, pins) ->
         }
         div {
             Link {
-                to = "/${party.id.value}/pin/new"
+                to = RoutePath("/${party.id.value}/pin/new")
                 tabIndex = -1
                 draggable = false
                 CouplingButton {

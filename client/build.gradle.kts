@@ -1,3 +1,4 @@
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -123,6 +124,7 @@ tasks {
     }
     val lookupCdnUrls by registering(NodeExec::class) {
         setup(project)
+        this.npmProjectDir = npmProjectDir.get().asFile
         dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall")
         inputs.files(cdnLookupConfiguration)
         inputs.files(jsRuntimeClasspath)

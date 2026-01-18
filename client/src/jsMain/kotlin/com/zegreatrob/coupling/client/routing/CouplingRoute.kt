@@ -4,26 +4,16 @@ import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.array.component1
 import js.objects.unsafeJso
 import kotlinx.browser.window
 import react.FC
 import react.Props
-import react.router.NavigateFunction
-import react.router.RouteObject
-import react.router.dom.useSearchParams
-import tanstack.react.router.useNavigate
-import react.router.useParams
 import react.useEffect
-
-fun ClientConfig.couplingRoute(path: String, title: String, rComponent: FC<PageProps>) = unsafeJso<RouteObject> {
-    this.path = path
-    this.element = CouplingRoute.create(
-        title = title,
-        rComponent = rComponent,
-        config = this@couplingRoute,
-    )
-}
+import tanstack.react.router.useNavigate
+import tanstack.react.router.useParams
+import tanstack.react.router.useSearch
+import tanstack.router.core.RoutePath
+import tanstack.router.core.UseNavigateResult
 
 external interface CouplingRouteProps : Props {
     var rComponent: FC<PageProps>
@@ -33,7 +23,7 @@ external interface CouplingRouteProps : Props {
 
 @ReactFunc
 val CouplingRoute by nfc<CouplingRouteProps> { props ->
-    val (searchParams) = useSearchParams()
+    val searchParams = useSearch()
     val params = useParams()
     val navigate = useNavigate()
 
@@ -58,12 +48,17 @@ val CouplingRoute by nfc<CouplingRouteProps> { props ->
 
 private fun appTitle() = window.document.title.split("-")[0].trim()
 
-private fun newPathSetter(navigate: NavigateFunction) = { path: String ->
-    navigate.invoke(
-        if (path.startsWith("/")) {
-            path
-        } else {
-            "/$path"
+private fun newPathSetter(navigate: UseNavigateResult) = { path: String ->
+
+    navigate(
+        unsafeJso {
+            to = RoutePath(
+                if (path.startsWith("/")) {
+                    path
+                } else {
+                    "/$path"
+                },
+            )
         },
     )
 }

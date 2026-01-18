@@ -16,19 +16,23 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.unsafeJso
 import kotools.types.collection.notEmptyListOf
-import react.ReactNode
-import react.create
-import react.router.RouterProvider
-import react.router.createMemoryRouter
+import react.FC
+import tanstack.react.router.RootRouteOptions
+import tanstack.react.router.RouteOptions
+import tanstack.react.router.RouterOptions
+import tanstack.react.router.RouterProvider
+import tanstack.react.router.createRootRoute
+import tanstack.react.router.createRoute
+import tanstack.react.router.createRouter
+import tanstack.router.core.RoutePath
 import kotlin.test.Test
 import kotlin.time.Clock
 
 class CurrentPairAssignmentsPanelTest {
 
     @Test
-    fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
+    fun clickingSaveButtonWillRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
         val party = stubPartyDetails()
         val pairAssignments = PairingSet(
             id = PairingSetId.new(),
@@ -37,31 +41,37 @@ class CurrentPairAssignmentsPanelTest {
         )
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
-    }) {
-        render(
-            RouterProvider.create {
-                router = createMemoryRouter(
-                    arrayOf(
-                        unsafeJso {
-                            path = "/${party.id.value}/pairAssignments/current/"
-                            element = ReactNode("current pairs")
-                        },
-                        unsafeJso {
-                            path = "*"
-                            element = CurrentPairAssignmentsPanel.create(
-                                party,
-                                pairAssignments,
-                                setPairAssignments = { },
-                                allowSave = true,
-                                dispatchFunc = stubDispatcher.func(),
-                            )
-                        },
-                    ),
-                )
-            },
+        val router = createRouter(
+            options = RouterOptions(
+                routeTree = createRootRoute(
+                    options = RootRouteOptions(notFoundComponent = FC {
+                        CurrentPairAssignmentsPanel(
+                            party,
+                            pairAssignments,
+                            setPairAssignments = { },
+                            allowSave = true,
+                            dispatchFunc = stubDispatcher.func(),
+                        )
+                    })
+                ).also {
+                    it.addChildren(
+                        arrayOf(
+                            createRoute(
+                                RouteOptions(
+                                    path = RoutePath("/${party.id.value}/pairAssignments/current/"),
+                                    getParentRoute = { it },
+                                    component = FC { +"current pairs" },
+                                ),
+                            ),
+                        ),
+                    )
+                },
+            ),
         )
+    }) {
+        render { RouterProvider { router = this@asyncSetup.router } }
     } exercise {
-        actor.click(screen.getByText("Save!"))
+        actor.click(screen.findByText("Save!"))
     } verify {
         stubDispatcher.receivedActions.size
             .assertIsEqualTo(0)
@@ -74,30 +84,40 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = stubPairAssignmentDoc()
         val stubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
+        val router = createRouter(
+            options = RouterOptions(
+                routeTree = createRootRoute(
+                    options = RootRouteOptions(notFoundComponent = FC {
+                        CurrentPairAssignmentsPanel(
+                            party,
+                            pairAssignments,
+                            setPairAssignments = { },
+                            allowSave = true,
+                            dispatchFunc = stubDispatcher.func(),
+                        )
+                    }),
+                ).also {
+                    it.addChildren(
+                        arrayOf(
+                            createRoute(
+                                RouteOptions(
+                                    path = RoutePath("/${party.id.value}/pairAssignments/current/"),
+                                    getParentRoute = { it },
+                                    component = FC {
+                                        +"current pairs"
+                                    },
+                                ),
+                            ),
+                        ),
+                    )
+                },
+            ),
+        )
     }) {
         render {
             dndProvider {
                 backend = html5Backend
-                RouterProvider {
-                    router = createMemoryRouter(
-                        arrayOf(
-                            unsafeJso {
-                                path = "/${party.id.value}/pairAssignments/current/"
-                                element = ReactNode("current pairs")
-                            },
-                            unsafeJso {
-                                path = "*"
-                                element = CurrentPairAssignmentsPanel.create(
-                                    party,
-                                    pairAssignments,
-                                    setPairAssignments = { },
-                                    allowSave = true,
-                                    dispatchFunc = stubDispatcher.func(),
-                                )
-                            },
-                        ),
-                    )
-                }
+                RouterProvider { router = this@asyncSetup.router }
             }
         }
     } exercise {
@@ -106,6 +126,6 @@ class CurrentPairAssignmentsPanelTest {
     } verify { receivedAction ->
         receivedAction
             .assertIsEqualTo(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
-        screen.getByText("current pairs")
+        screen.findByText("current pairs")
     }
 }

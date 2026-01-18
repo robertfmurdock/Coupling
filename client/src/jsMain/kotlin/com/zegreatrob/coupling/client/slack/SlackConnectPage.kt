@@ -11,8 +11,8 @@ import js.lazy.Lazy
 
 @Lazy
 val SlackConnectPage by nfc<PageProps> { props ->
-    val slackTeam = props.search.get("slackTeam") ?: ""
-    val slackChannel = props.search.get("slackChannel") ?: ""
+    val slackTeam = props.search["slackTeam"]?.toString() ?: ""
+    val slackChannel = props.search["slackChannel"]?.toString() ?: ""
     SlackConnectPageFrame {
         CouplingQuery(
             commander = props.commander,

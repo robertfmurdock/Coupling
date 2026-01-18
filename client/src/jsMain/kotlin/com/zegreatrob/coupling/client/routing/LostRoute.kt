@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.routing
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.router.useLocation
+import tanstack.react.router.useLocation
 
 val LostRoute by nfc<Props> {
     val location = useLocation()

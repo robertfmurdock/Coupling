@@ -16,20 +16,20 @@ import kotools.types.text.toNotBlankString
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import org.w3c.dom.get
 import react.Props
-import web.url.URLSearchParams
+import tanstack.router.core.ParamName
 import kotlin.uuid.Uuid
 
 external interface PageProps : Props {
-    var pathParams: ReadonlyRecord<String, String>
+    var pathParams: ReadonlyRecord<ParamName, String>
     var commander: Commander
-    var search: URLSearchParams
+    var search: ReadonlyRecord<String, Any?>
     var config: ClientConfig
 }
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-val PageProps.partyId: PartyId? get() = pathParams["partyId"]?.let(::PartyId)
-val PageProps.playerId: PlayerId? get() = pathParams["playerId"]?.toNotBlankString()?.getOrNull()?.let(::PlayerId)
-val PageProps.pinId: PinId? get() = pathParams["pinId"]?.toNotBlankString()?.getOrNull()?.let(::PinId)
+val PageProps.partyId: PartyId? get() = pathParams[ParamName("partyId")]?.let(::PartyId)
+val PageProps.playerId: PlayerId? get() = pathParams[ParamName("playerId")]?.toNotBlankString()?.getOrNull()?.let(::PlayerId)
+val PageProps.pinId: PinId? get() = pathParams[ParamName("pinId")]?.toNotBlankString()?.getOrNull()?.let(::PinId)
 
 interface Commander {
     fun tracingCannon(traceId: Uuid): DispatcherPipeCannon<CouplingSdkDispatcher>

@@ -44,13 +44,15 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
 
     val updatedPin = values.fromJsonDynamic<GqlPinSnapshot>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    useBlocker(UseBlockerOptions {
-        if (updatedPin == pin) {
-            false
-        } else {
-            !confirm("You have unsaved data. Press OK to leave without saving.")
-        }
-    })
+    useBlocker(
+        UseBlockerOptions {
+            if (updatedPin == pin) {
+                false
+            } else {
+                !confirm("You have unsaved data. Press OK to leave without saving.")
+            }
+        },
+    )
 
     val navigate = useNavigate()
     useEffect(redirectUrl) {
@@ -71,7 +73,6 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
             setRedirectUrl(party.id.pinListPath())
         }.requireConfirmation("Are you sure you want to delete this pin?")
     }
-
 
     if (redirectUrl == null) {
         PinConfigContent(party, boost, updatedPin, pinList, onChange, onSubmit, onRemove)

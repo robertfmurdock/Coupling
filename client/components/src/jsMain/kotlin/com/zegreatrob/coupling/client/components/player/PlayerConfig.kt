@@ -21,12 +21,13 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
+import kotlinx.browser.window
 import react.Props
 import react.useEffect
+import react.useEffectOnceWithCleanup
 import react.useState
 import tanstack.react.router.useNavigate
 import tanstack.router.core.RoutePath
-import web.prompts.confirm
 import kotlin.js.Json
 
 external interface PlayerConfigProps<P> : Props
@@ -47,14 +48,24 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     val onChange = eventHandler(setValues::invoke)
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
-
-    useBlocker(UseBlockerOptions {
-        if (updatedPlayer == player) {
-            false
-        } else {
-            !confirm("You have unsaved data. Press OK to leave without saving.")
+    useEffectOnceWithCleanup {
+        println("=== PlayerConfig mounted, blocker should be registered ===")
+        onCleanup {
+            println("=== PlayerConfig unmounting ===")
         }
-    })
+    }
+    useBlocker(
+        UseBlockerOptions(
+            shouldBlockFn = {
+                println("sucka mc")
+                if (updatedPlayer == player) {
+                    false
+                } else {
+                    !window.confirm("You have unsaved data. Press OK to leave without saving.")
+                }
+            }
+        ),
+    )
     val navigate = useNavigate()
     useEffect(redirectUrl) {
         if (redirectUrl != null) {

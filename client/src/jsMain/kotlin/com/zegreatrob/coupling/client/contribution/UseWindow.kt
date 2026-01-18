@@ -12,9 +12,11 @@ fun useWindow(defaultWindow: ContributionWindow): Pair<ContributionWindow, (Cont
         ContributionWindow.entries.find { it.name == window }
     } ?: defaultWindow
     val setWindow = setWindowSearchParamHandler {
-        navigate(unsafeJso {
-            this.search = it.asDynamic()
-        })
+        navigate(
+            unsafeJso {
+                this.search = it.asDynamic()
+            },
+        )
     }
     return Pair(window, setWindow)
 }

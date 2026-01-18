@@ -14,21 +14,21 @@ import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
-import js.array.component1
 import js.lazy.Lazy
 import react.Props
 import react.PropsWithValue
 import react.create
 import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
-import react.router.dom.useSearchParams
+import tanstack.react.router.useSearch
+import tanstack.router.core.RoutePath
 import web.html.HtmlSource
 
 @Lazy
 val SlackCallbackPage by nfc<PageProps> { props ->
-    val (urlSearchParams) = useSearchParams()
-    val code = urlSearchParams.get("code")
-    val state = urlSearchParams.get("state")
+    val search = useSearch()
+    val code = search["code"]?.toString()
+    val state = search["state"]?.toString()
     InstallPageFrame {
         title = "Slack Install"
         if (code == null || state == null) {
@@ -65,6 +65,6 @@ val SlackInstallSuccess by nfc<Props> {
         dangerouslySetInnerHTML = DangerouslySetInnerHTML(HtmlSource(parse(MarkdownContent.content.installSuccessMd)))
     }
     ReturnToCouplingButton {
-        to = "/parties"
+        to = RoutePath("/parties")
     }
 }

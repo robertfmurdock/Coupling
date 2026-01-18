@@ -9,7 +9,7 @@ val demoSequence by lazy { DemoAnimationState.generateSequence() }
 
 @Lazy
 val DemoPage by nfc<PageProps> { props ->
-    val frameIndex = props.search.get("frame")
+    val frameIndex = props.search["frame"]?.toString()
     val currentFrame = frameIndex?.toIntOrNull()?.let { demoSequence.toList()[it] }
     if (currentFrame != null) {
         DemoPageFrame(currentFrame.data)

@@ -38,12 +38,14 @@ val LoadingPage = FC {
 }
 
 private fun setFrame(navigate: UseNavigateResult, frame: Int) {
-    navigate(unsafeJso {
-        search = fun(params: Record<String, String?>): Record<String, String?> {
-            params["frame"] = "$frame"
-            return params
-        }.asDynamic()
-    })
+    navigate(
+        unsafeJso {
+            search = fun(params: Record<String, String?>): Record<String, String?> {
+                params["frame"] = "$frame"
+                return params
+            }.asDynamic()
+        },
+    )
 }
 
 data class LoadingAnimationStateData(

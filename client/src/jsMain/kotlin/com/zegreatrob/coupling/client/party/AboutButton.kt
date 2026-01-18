@@ -9,11 +9,12 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.span
 import tanstack.react.router.Link
+import tanstack.router.core.RoutePath
 import web.cssom.px
 
 val AboutButton by nfc<Props> {
     Link {
-        to = "/about"
+        to = RoutePath("/about")
         tabIndex = -1
         draggable = false
         CouplingButton {

@@ -18,12 +18,18 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.objects.unsafeJso
 import kotools.types.text.toNotBlankString
-import react.ReactNode
+import react.FC
 import react.create
-import react.router.RouterProvider
-import react.router.createMemoryRouter
+import tanstack.history.createMemoryHistory
+import tanstack.react.router.RootRouteOptions
+import tanstack.react.router.RouteOptions
+import tanstack.react.router.RouterOptions
+import tanstack.react.router.RouterProvider
+import tanstack.react.router.createRootRoute
+import tanstack.react.router.createRoute
+import tanstack.react.router.createRouter
+import tanstack.router.core.RoutePath
 import kotlin.test.Test
 
 class ContributorMenuTest {
@@ -33,23 +39,30 @@ class ContributorMenuTest {
         val partyId = stubPartyId()
         val players = (stubPlayers(3) + contributor).shuffled()
         val user = UserEvent.setup()
-    }) {
-        render(
-            RouterProvider.create {
-                router = createMemoryRouter(
-                    arrayOf(
-                        unsafeJso {
-                            path = partyId.with(contributor).playerConfigPath()
-                            element = ReactNode("Success")
-                        },
-                        unsafeJso {
-                            path = "*"
-                            element = ContributorMenu.create(contributor, players, partyId, StubDispatcher().func())
-                        },
-                    ),
-                )
-            },
+        val router = createRouter(
+            options = RouterOptions(
+                routeTree = createRootRoute(
+                    options = RootRouteOptions(notFoundComponent = FC {
+                        ContributorMenu(contributor, players, partyId, StubDispatcher().func())
+                    }),
+                ).also {
+                    it.addChildren(
+                        arrayOf(
+                            createRoute(
+                                RouteOptions(
+                                    path = RoutePath(partyId.with(contributor).playerConfigPath()),
+                                    getParentRoute = { it },
+                                    component = FC { +"Success" },
+                                ),
+                            ),
+                        ),
+                    )
+                },
+                history = createMemoryHistory(),
+            ),
         )
+    }) {
+        render { RouterProvider { router = this@asyncSetup.router } }
     } exercise {
         user.click(screen.findByText("Player Config"))
     } verify {

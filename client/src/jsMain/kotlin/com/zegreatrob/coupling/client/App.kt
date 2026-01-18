@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.logging.initializeLogging
 import react.create
+import react.createContext
 import react.dom.client.createRoot
 import web.cssom.ClassName
 import web.dom.Document
@@ -28,3 +29,5 @@ private fun windowClientConfig() = ClientConfig(
     webpackPublicPath = "${window.asDynamic()["webpackPublicPath"]}",
     websocketHost = "${window.asDynamic()["websocketHost"]}",
 )
+
+val configContext = createContext(windowClientConfig())

@@ -24,7 +24,7 @@ import tanstack.router.core.RoutePath
 import kotlin.js.Json
 
 external interface PartyConfigProps<D> : Props
-        where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
+    where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
     var party: PartyDetails
     var boost: Boost?
     var dispatchFunc: DispatchFunc<D>

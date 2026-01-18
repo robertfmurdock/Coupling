@@ -51,7 +51,7 @@ class PairAssignmentRowTest {
             RenderOptions(wrapper = TestRouter),
         )
     } exercise {
-        actor.click(screen.getByText("DELETE"))
+        actor.click(screen.findByText("DELETE"))
         act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
     } verify { action ->
         action.assertIsEqualTo(DeletePairAssignmentsCommand(party.id, document.id))
@@ -81,7 +81,7 @@ class PairAssignmentRowTest {
             RenderOptions(wrapper = TestRouter),
         )
     } exercise {
-        actor.click(screen.getByText("DELETE"))
+        actor.click(screen.findByText("DELETE"))
     } verify {
         stubDispatcher.receivedActions.isEmpty()
             .assertIsEqualTo(true)
