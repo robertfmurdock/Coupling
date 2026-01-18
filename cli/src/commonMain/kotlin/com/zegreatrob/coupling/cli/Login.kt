@@ -6,7 +6,6 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.auth0.management.KtorAuth0Client
 import com.zegreatrob.coupling.auth0.management.PollResult
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlin.time.Duration.Companion.seconds
@@ -19,27 +18,25 @@ class Login : SuspendingCliktCommand() {
         val environment = Auth0Environment.map[env]
 
         if (environment != null) {
-            cliScope.launch {
-                val client = KtorAuth0Client()
-                val result = client.getDeviceCodeRequest(environment.audience, environment.clientId)
+            val client = KtorAuth0Client()
+            val result = client.getDeviceCodeRequest(environment.audience, environment.clientId)
 
-                echo("Your user code is: ${result.userCode}")
-                echo("Please follow link to authenticate: ${result.verificationUriComplete}")
+            echo("Your user code is: ${result.userCode}")
+            echo("Please follow link to authenticate: ${result.verificationUriComplete}")
 
-                val pollResult = client.pollForSuccess(environment, result.deviceCode, result.interval)
+            val pollResult = client.pollForSuccess(environment, result.deviceCode, result.interval)
 
-                makeDirectory(couplingHomeDirectory)
+            makeDirectory(couplingHomeDirectory)
 
-                writeDataToFile(
-                    configFilePath,
-                    text = buildJsonObject {
-                        put("accessToken", pollResult?.accessToken)
-                        put("refreshToken", pollResult?.refreshToken)
-                    }.toString(),
-                )
+            writeDataToFile(
+                configFilePath,
+                text = buildJsonObject {
+                    put("accessToken", pollResult?.accessToken)
+                    put("refreshToken", pollResult?.refreshToken)
+                }.toString(),
+            )
 
-                echo("Login complete!")
-            }
+            echo("Login complete!")
         } else {
             echo("Could not find client_id for environment $env")
         }

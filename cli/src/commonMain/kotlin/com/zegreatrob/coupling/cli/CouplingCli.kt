@@ -7,7 +7,7 @@ import com.github.ajalt.clikt.parameters.options.versionOption
 class CouplingCli : SuspendingCliktCommand() {
 
     init {
-        versionOption(com.zegreatrob.coupling.cli.Versions.couplingVersion)
+        versionOption(Versions.couplingVersion)
         context {
             readEnvvar = { key -> getEnv(key) }
         }

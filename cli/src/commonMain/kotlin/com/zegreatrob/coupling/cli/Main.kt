@@ -9,12 +9,9 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-val cliScope = CliScope()
-
 suspend fun main(args: Array<String>) {
     cli()
         .main(platformArgCorrection(args))
-    cliScope.joinAll()
 }
 
 fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): CouplingCli = CouplingCli()

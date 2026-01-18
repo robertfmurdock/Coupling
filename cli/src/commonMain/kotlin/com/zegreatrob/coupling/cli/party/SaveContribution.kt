@@ -8,21 +8,18 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.cli.cliScope
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.tools.digger.json.ContributionParser
-import kotlinx.coroutines.CoroutineScope
 import kotools.types.text.toNotBlankString
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Instant
 
 class SaveContribution(
-    private val scope: CoroutineScope = cliScope,
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
     private val clock: Clock,
 ) : SuspendingCliktCommand(name = "save"),
@@ -76,7 +73,6 @@ class SaveContribution(
             echo("Could not parse contribution", err = true)
         } else {
             withSdk(
-                scope = scope,
                 env = contributionContext.env,
                 echo = ::echo,
                 cannon = cannon,

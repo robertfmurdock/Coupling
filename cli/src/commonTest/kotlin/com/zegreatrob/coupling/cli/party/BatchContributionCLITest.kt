@@ -45,10 +45,7 @@ class BatchContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = BatchContribution(
-            exerciseScope,
-            cannon,
-        )
+        val command = BatchContribution(cannon)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${listOf(sourceContribution).toJsonString()}\'")
@@ -86,7 +83,7 @@ class BatchContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = BatchContribution(exerciseScope, cannon)
+        val command = BatchContribution(cannon)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${listOf(sourceContribution).toJsonString()}\'")
@@ -120,7 +117,7 @@ class BatchContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = BatchContribution(exerciseScope, cannon)
+        val command = BatchContribution(cannon)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${listOf(sourceContribution.toJsonString())}\'")

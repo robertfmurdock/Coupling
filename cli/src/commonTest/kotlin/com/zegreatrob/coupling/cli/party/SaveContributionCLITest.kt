@@ -46,7 +46,7 @@ class SaveContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = SaveContribution(exerciseScope, cannon, Clock.System)
+        val command = SaveContribution(cannon, Clock.System)
             .context { obj = ContributionContext(partyId, "local") }
         val labelOverride = uuidString()
         val linkOverride = uuidString()
@@ -109,7 +109,6 @@ class SaveContributionCLITest {
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
         val command = SaveContribution(
-            exerciseScope,
             cannon,
             object : Clock {
                 override fun now(): Instant = now
@@ -152,7 +151,7 @@ class SaveContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = SaveContribution(exerciseScope, cannon, Clock.System)
+        val command = SaveContribution(cannon, Clock.System)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${sourceContribution.toJsonString()}\'")
@@ -186,7 +185,7 @@ class SaveContributionCLITest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = SaveContribution(exerciseScope, cannon, Clock.System)
+        val command = SaveContribution(cannon, Clock.System)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${sourceContribution.toJsonString()}\'")
