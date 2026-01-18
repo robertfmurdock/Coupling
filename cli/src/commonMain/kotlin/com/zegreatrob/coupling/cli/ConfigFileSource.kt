@@ -3,16 +3,20 @@ package com.zegreatrob.coupling.cli
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.Option
 import com.github.ajalt.clikt.sources.ValueSource
+import com.zegreatrob.coupling.json.toJsonElement
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonPrimitive
 
 class ConfigFileSource(val envvarReader: (key: String) -> String?) : ValueSource {
+    val config = getConfigFromFile()
+    val configJsonElement = config?.toJsonElement<CouplingCliConfig>()
+
     override fun getValues(context: Context, option: Option): List<ValueSource.Invocation> {
-        val configAsElement = readConfigFileAsJsonElement()
+        println("hi values option $option")
+        val configAsElement = configJsonElement
             ?: return emptyList()
         return findInvocations(configAsElement, option)
     }
@@ -49,11 +53,10 @@ class ConfigFileSource(val envvarReader: (key: String) -> String?) : ValueSource
         return replace(pattern) { it.value.last().uppercase() }
     }
 
-    private fun readConfigFileAsJsonElement(): JsonElement? {
+    private fun getConfigFromFile(): CouplingCliConfig? {
         val pwd = envvarReader("PWD")
         val fileContents = readFromFile("$pwd/.coupling")
             ?: return null
-        val config = Json.decodeFromString<CouplingCliConfig>(fileContents)
-        return Json.encodeToJsonElement<CouplingCliConfig>(config)
+        return Json.decodeFromString<CouplingCliConfig>(fileContents)
     }
 }

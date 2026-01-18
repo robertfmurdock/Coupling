@@ -19,6 +19,7 @@ suspend fun main(args: Array<String>) {
 
 fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): Welcome = Welcome()
     .subcommands(Login())
+    .subcommands(ConfigCommand())
     .subcommands(party(cannon))
 
 expect fun platformArgCorrection(args: Array<String>): Array<String>
