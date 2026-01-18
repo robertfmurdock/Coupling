@@ -2,10 +2,12 @@ package com.zegreatrob.coupling.cli
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.parameters.options.versionOption
 
-class Welcome : SuspendingCliktCommand() {
+class CouplingCli : SuspendingCliktCommand() {
 
     init {
+        versionOption(com.zegreatrob.coupling.cli.Versions.couplingVersion)
         context {
             readEnvvar = { key -> getEnv(key) }
         }
