@@ -15,7 +15,6 @@ class ConfigFileSource(val envvarReader: (key: String) -> String?) : ValueSource
     val configJsonElement = config?.toJsonElement<CouplingCliConfig>()
 
     override fun getValues(context: Context, option: Option): List<ValueSource.Invocation> {
-        println("hi values option $option")
         val configAsElement = configJsonElement
             ?: return emptyList()
         return findInvocations(configAsElement, option)
@@ -54,8 +53,7 @@ class ConfigFileSource(val envvarReader: (key: String) -> String?) : ValueSource
     }
 
     private fun getConfigFromFile(): CouplingCliConfig? {
-        val pwd = envvarReader("PWD")
-        val fileContents = readFromFile("$pwd/.coupling")
+        val fileContents = readFromFile("${envvarReader("PWD")}/.coupling")
             ?: return null
         return Json.decodeFromString<CouplingCliConfig>(fileContents)
     }
