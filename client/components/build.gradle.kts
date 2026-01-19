@@ -10,7 +10,7 @@ plugins {
 
 kotlin {
     js {
-        nodejs()
+        nodejs { testTask { useMocha { timeout = "10s" } } }
         useEsModules()
         compilerOptions { target = "es2015" }
         compilations.named("test") {
