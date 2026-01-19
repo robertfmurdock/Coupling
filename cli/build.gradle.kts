@@ -26,7 +26,10 @@ kotlin {
             useEsModules()
             compilerOptions { target = "es2015" }
             binaries.executable()
-            testTask { environment("COUPLING_VERSION", project.version.toString()) }
+            testTask {
+                environment("COUPLING_VERSION", project.version.toString())
+                environment("COUPLING_CLI_ACCESS_TOKEN", "fake")
+            }
         }
         compilations {
             "main" {
@@ -82,6 +85,7 @@ version = rootProject.version
 tasks {
     named<Test>("jvmTest") {
         environment("COUPLING_VERSION", project.version.toString())
+        environment("COUPLING_CLI_ACCESS_TOKEN" to "fake")
     }
     withType<CreateStartScripts> {
         applicationName = "coupling"
