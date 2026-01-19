@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.cli.party.party
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
@@ -30,11 +31,15 @@ val configFilePath = "$couplingHomeDirectory/config.json"
 fun getAccessToken() = getEnv("COUPLING_CLI_ACCESS_TOKEN")
     ?: readFileText(configFilePath)
         ?.let(Json.Default::parseToJsonElement)
-        ?.let { it.jsonObject["accessToken"]?.jsonPrimitive?.content }
+        ?.let { it.jsonObject["accessToken"]?.jsonPrimitive?.contentOrNull }
 
 fun getRefreshToken() = readFileText(configFilePath)
     ?.let(Json.Default::parseToJsonElement)
-    ?.let { it.jsonObject["refreshToken"]?.jsonPrimitive?.content }
+    ?.let { it.jsonObject["refreshToken"]?.jsonPrimitive?.contentOrNull }
+
+fun getEnv() = readFileText(configFilePath)
+    ?.let(Json.Default::parseToJsonElement)
+    ?.let { it.jsonObject["env"]?.jsonPrimitive?.contentOrNull }
 
 expect fun makeDirectory(couplingHomeDirectory: String)
 

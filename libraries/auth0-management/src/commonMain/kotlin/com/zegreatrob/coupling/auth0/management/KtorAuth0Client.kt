@@ -22,7 +22,7 @@ class KtorAuth0Client {
                 },
             )
         }
-        Logging { level = LogLevel.NONE }
+        Logging { level = LogLevel.ALL }
     }
 
     suspend fun checkForResult(

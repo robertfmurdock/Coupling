@@ -66,6 +66,7 @@ dependencies {
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     jsMainImplementation(npmConstrained("open"))
+    "jvmMainImplementation"("com.auth0:java-jwt")
     "jvmMainImplementation"("org.slf4j:slf4j-api")
     "jvmMainImplementation"("org.slf4j:slf4j-simple")
 

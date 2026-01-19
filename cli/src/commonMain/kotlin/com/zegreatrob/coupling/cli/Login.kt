@@ -29,7 +29,7 @@ class Login : SuspendingCliktCommand() {
                 }
                 val result = client.refreshAccess(refreshToken, environment.audience, environment.clientId)
                 if (result.error == null) {
-                    saveTokens(result)
+                    saveTokens(result, env)
                     echo("Login complete!")
                 } else {
                     echo(result.error, err = true)
@@ -48,7 +48,7 @@ class Login : SuspendingCliktCommand() {
 
             makeDirectory(couplingHomeDirectory)
 
-            saveTokens(pollResult)
+            saveTokens(pollResult, env)
 
             echo("Login complete!")
         } else {
@@ -75,12 +75,13 @@ class Login : SuspendingCliktCommand() {
 
 expect fun openBrowser(uri: String)
 
-fun saveTokens(pollResult: AccessResult) {
+fun saveTokens(pollResult: AccessResult, env: String) {
     writeDataToFile(
         configFilePath,
         text = buildJsonObject {
             put("accessToken", pollResult.accessToken)
             put("refreshToken", pollResult.refreshToken)
+            put("env", env)
         }.toString(),
     )
 }
