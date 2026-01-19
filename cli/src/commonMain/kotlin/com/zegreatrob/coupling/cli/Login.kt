@@ -2,9 +2,10 @@ package com.zegreatrob.coupling.cli
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.zegreatrob.coupling.auth0.management.AccessResult
 import com.zegreatrob.coupling.auth0.management.KtorAuth0Client
-import com.zegreatrob.coupling.auth0.management.PollResult
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -13,12 +14,29 @@ import kotlin.time.Duration.Companion.seconds
 class Login : SuspendingCliktCommand() {
 
     private val env by option().default("production")
+    private val refresh by option().flag()
 
     override suspend fun run() {
         val environment = Auth0Environment.map[env]
 
+        val client = KtorAuth0Client()
         if (environment != null) {
-            val client = KtorAuth0Client()
+            if (refresh) {
+                val refreshToken = getRefreshToken()
+                if (refreshToken == null) {
+                    echo("No refresh token found. Please login again.")
+                    return
+                }
+                val result = client.refreshAccess(refreshToken, environment.audience, environment.clientId)
+                if (result.error == null) {
+                    saveTokens(result)
+                    echo("Login complete!")
+                } else {
+                    echo(result.error, err = true)
+                }
+                return
+            }
+
             val result = client.getDeviceCodeRequest(environment.audience, environment.clientId)
 
             echo("Your user code is: ${result.userCode}")
@@ -30,13 +48,7 @@ class Login : SuspendingCliktCommand() {
 
             makeDirectory(couplingHomeDirectory)
 
-            writeDataToFile(
-                configFilePath,
-                text = buildJsonObject {
-                    put("accessToken", pollResult.accessToken)
-                    put("refreshToken", pollResult.refreshToken)
-                }.toString(),
-            )
+            saveTokens(pollResult)
 
             echo("Login complete!")
         } else {
@@ -48,8 +60,8 @@ class Login : SuspendingCliktCommand() {
         environment: Auth0Environment,
         deviceCode: String,
         interval: Int,
-    ): PollResult {
-        var pollResult: PollResult?
+    ): AccessResult {
+        var pollResult: AccessResult?
         while (true) {
             pollResult = checkForResult(environment.clientId, deviceCode)
             when (pollResult.error) {
@@ -62,3 +74,13 @@ class Login : SuspendingCliktCommand() {
 }
 
 expect fun openBrowser(uri: String)
+
+fun saveTokens(pollResult: AccessResult) {
+    writeDataToFile(
+        configFilePath,
+        text = buildJsonObject {
+            put("accessToken", pollResult.accessToken)
+            put("refreshToken", pollResult.refreshToken)
+        }.toString(),
+    )
+}

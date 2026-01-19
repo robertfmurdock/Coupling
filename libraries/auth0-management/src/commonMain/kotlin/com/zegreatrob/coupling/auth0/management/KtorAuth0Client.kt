@@ -7,6 +7,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters
+import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -34,7 +35,7 @@ class KtorAuth0Client {
             append("client_id", clientId)
             append("device_code", deviceCode)
         },
-    ).body<PollResult>()
+    ).body<AccessResult>()
 
     suspend fun getDeviceCodeRequest(audience: String, clientId: String): DeviceCodeRequest {
         val result = auth0HttpClient.submitForm(
@@ -47,4 +48,15 @@ class KtorAuth0Client {
         ).body<DeviceCodeRequest>()
         return result
     }
+
+    suspend fun refreshAccess(refreshToken: String, audience: String, clientId: String): AccessResult = auth0HttpClient.submitForm(
+        url = "https://$AUTH0_DOMAIN/oauth/token",
+        formParameters = parameters {
+            this["grant_type"] = "refresh_token"
+            this["refresh_token"] = refreshToken
+            this["client_id"] = clientId
+            this["scope"] = "email, offline_access"
+            this["audience"] = audience
+        },
+    ).body<AccessResult>()
 }

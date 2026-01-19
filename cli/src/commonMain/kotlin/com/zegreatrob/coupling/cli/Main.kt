@@ -32,6 +32,10 @@ fun getAccessToken() = getEnv("COUPLING_CLI_ACCESS_TOKEN")
         ?.let(Json.Default::parseToJsonElement)
         ?.let { it.jsonObject["accessToken"]?.jsonPrimitive?.content }
 
+fun getRefreshToken() = readFileText(configFilePath)
+    ?.let(Json.Default::parseToJsonElement)
+    ?.let { it.jsonObject["refreshToken"]?.jsonPrimitive?.content }
+
 expect fun makeDirectory(couplingHomeDirectory: String)
 
 expect fun writeDataToFile(configFilePath: String, text: String)

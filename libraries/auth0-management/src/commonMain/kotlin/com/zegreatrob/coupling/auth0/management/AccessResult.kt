@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PollResult(
+data class AccessResult(
     val error: String? = null,
     @SerialName("access_token")
     val accessToken: String? = null,
