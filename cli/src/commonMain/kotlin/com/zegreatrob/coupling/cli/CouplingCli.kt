@@ -18,20 +18,24 @@ class CouplingCli : SuspendingCliktCommand() {
     }
 
     override suspend fun run() {
-        val accessToken = getAccessToken()
-        if (accessToken == null) {
+        val expiration = getAccessToken()?.expiration()
+        if (expiration == null && getEnv("SKIP_AUTH") == null) {
             echo("You are not currently logged in. Some functions will not work.")
             echo("Run `coupling login` to log in.")
-        } else {
-            val expiration = accessToken.expiration()
-            val refreshToken = getRefreshToken()
-            val env = getEnv()
-            val environment = Auth0Environment.map[env]
-            if (env != null && environment != null && refreshToken != null && expiration != null &&
-                expiration < Clock.System.now().plus(15.minutes)
-            ) {
-                refreshAccessToken(refreshToken, environment, env)
-            }
+        } else if (expiration != null) {
+            considerRefreshingToken(expiration)
+        }
+    }
+
+    private suspend fun considerRefreshingToken(expiration: Instant) {
+        val tokens = loadTokens()
+        val refreshToken = tokens?.refreshToken()
+        val env = tokens?.env()
+        val environment = Auth0Environment.map[env]
+        if (env != null && environment != null && refreshToken != null &&
+            expiration < Clock.System.now().plus(15.minutes)
+        ) {
+            refreshAccessToken(refreshToken, environment, env)
         }
     }
 

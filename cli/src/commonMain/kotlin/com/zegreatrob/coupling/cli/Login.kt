@@ -22,7 +22,7 @@ class Login : SuspendingCliktCommand() {
         val client = KtorAuth0Client()
         if (environment != null) {
             if (refresh) {
-                val refreshToken = getRefreshToken()
+                val refreshToken = loadTokens()?.refreshToken()
                 if (refreshToken == null) {
                     echo("No refresh token found. Please login again.")
                     return
