@@ -46,8 +46,6 @@ class Login : SuspendingCliktCommand() {
 
             val pollResult = client.pollForSuccess(environment, result.deviceCode, result.interval)
 
-            makeDirectory(couplingHomeDirectory)
-
             saveTokens(pollResult, env)
 
             echo("Login complete!")
@@ -75,9 +73,9 @@ class Login : SuspendingCliktCommand() {
 
 expect fun openBrowser(uri: String)
 
-fun saveTokens(pollResult: AccessResult, env: String) {
-    writeDataToFile(
-        configFilePath,
+suspend fun saveTokens(pollResult: AccessResult, env: String) {
+    writeSecureData(
+        "tokens",
         text = buildJsonObject {
             put("accessToken", pollResult.accessToken)
             put("refreshToken", pollResult.refreshToken)

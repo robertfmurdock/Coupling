@@ -25,19 +25,16 @@ expect fun platformArgCorrection(args: Array<String>): Array<String>
 expect fun getEnv(variableName: String): String?
 expect fun readFileText(filePath: String): String?
 
-val couplingHomeDirectory = "${getEnv("HOME")}/.coupling"
-val configFilePath = "$couplingHomeDirectory/config.json"
-
-fun getAccessToken() = getEnv("COUPLING_CLI_ACCESS_TOKEN")
-    ?: readFileText(configFilePath)
+suspend fun getAccessToken() = getEnv("COUPLING_CLI_ACCESS_TOKEN")
+    ?: getSecureData("tokens")
         ?.let(Json.Default::parseToJsonElement)
         ?.let { it.jsonObject["accessToken"]?.jsonPrimitive?.contentOrNull }
 
-fun getRefreshToken() = readFileText(configFilePath)
+suspend fun getRefreshToken() = getSecureData("tokens")
     ?.let(Json.Default::parseToJsonElement)
     ?.let { it.jsonObject["refreshToken"]?.jsonPrimitive?.contentOrNull }
 
-fun getEnv() = readFileText(configFilePath)
+suspend fun getEnv() = getSecureData("tokens")
     ?.let(Json.Default::parseToJsonElement)
     ?.let { it.jsonObject["env"]?.jsonPrimitive?.contentOrNull }
 

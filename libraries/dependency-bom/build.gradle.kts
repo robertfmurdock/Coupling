@@ -31,6 +31,7 @@ dependencies {
         api(libs.com.fasterxml.jackson.core.jackson.databind)
         api(libs.com.github.ajalt.clikt.clikt)
         api(libs.com.lemonappdev.konsist)
+        api(libs.eu.anifantakis.ksafe)
         api(libs.io.github.oshai.kotlin.logging)
         api(libs.org.jetbrains.kotlin.wrappers.kotlin.react.router.dom.legacy)
         api(libs.org.jetbrains.kotlinx.kotlinx.datetime)

@@ -13,6 +13,10 @@ plugins {
     distribution
 }
 
+repositories {
+    google()
+}
+
 kotlin {
     jvm {
         binaries {
@@ -70,9 +74,11 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     jsMainImplementation(npmConstrained("open"))
     jsMainImplementation(npmConstrained("jwt-decode"))
+    jsMainImplementation(npmConstrained("@napi-rs/keyring"))
     "jvmMainImplementation"("com.auth0:java-jwt")
     "jvmMainImplementation"("org.slf4j:slf4j-api")
     "jvmMainImplementation"("org.slf4j:slf4j-simple")
+    "jvmMainImplementation"("eu.anifantakis:ksafe")
 
     commonTestImplementation(kotlin("test"))
     commonTestImplementation(project(":libraries:test-action"))

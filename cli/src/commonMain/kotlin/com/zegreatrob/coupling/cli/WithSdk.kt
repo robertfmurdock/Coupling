@@ -16,7 +16,7 @@ suspend fun withSdk(
 ) = (cannon ?: loadSdk(env, echo))
     ?.let { doWork(it) }
 
-fun loadSdk(
+suspend fun loadSdk(
     env: String,
     echo: (String) -> Unit,
 ): ActionCannon<CouplingSdkDispatcher>? {

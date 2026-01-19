@@ -3149,6 +3149,84 @@
   resolved "https://registry.yarnpkg.com/@log4js-node/log4js-api/-/log4js-api-1.0.2.tgz#7a8143fb33f077df3e579dca7f18fea74a02ec8b"
   integrity sha512-6SJfx949YEWooh/CUPpJ+F491y4BYJmknz4hUN1+RHvKoUEynKbRmhnwbk/VLmh4OthLLDNCyWXfbh4DG1cTXA==
 
+"@napi-rs/keyring-darwin-arm64@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-darwin-arm64/-/keyring-darwin-arm64-1.2.0.tgz#754031fe16c04740e355be94fba3f89379df71ec"
+  integrity sha512-CA83rDeyONDADO25JLZsh3eHY8yTEtm/RS6ecPsY+1v+dSawzT9GywBMu2r6uOp1IEhQs/xAfxgybGAFr17lSA==
+
+"@napi-rs/keyring-darwin-x64@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-darwin-x64/-/keyring-darwin-x64-1.2.0.tgz#2b139c4b23368064e6ab63d4a0a7490575718ae0"
+  integrity sha512-dBHjtKRCj4ByfnfqIKIJLo3wueQNJhLRyuxtX/rR4K/XtcS7VLlRD01XXizjpre54vpmObj63w+ZpHG+mGM8uA==
+
+"@napi-rs/keyring-freebsd-x64@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-freebsd-x64/-/keyring-freebsd-x64-1.2.0.tgz#f13b56ac2c16d77ad9b9a1fa8a3d97ce3135a1ac"
+  integrity sha512-DPZFr11pNJSnaoh0dzSUNF+T6ORhy3CkzUT3uGixbA71cAOPJ24iG8e8QrLOkuC/StWrAku3gBnth2XMWOcR3Q==
+
+"@napi-rs/keyring-linux-arm-gnueabihf@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-linux-arm-gnueabihf/-/keyring-linux-arm-gnueabihf-1.2.0.tgz#d9e8b8a847fc2a36d2f0524d8bf4867baad185b0"
+  integrity sha512-8xv6DyEMlvRdqJzp4F39RLUmmTQsLcGYYv/3eIfZNZN1O5257tHxTrFYqAsny659rJJK2EKeSa7PhrSibQqRWQ==
+
+"@napi-rs/keyring-linux-arm64-gnu@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-linux-arm64-gnu/-/keyring-linux-arm64-gnu-1.2.0.tgz#0625f7acd5f1a2dae195093155c0e496281edcf4"
+  integrity sha512-Pu2V6Py+PBt7inryEecirl+t+ti8bhZphjP+W68iVaXHUxLdWmkgL9KI1VkbRHbx5k8K5Tew9OP218YfmVguIA==
+
+"@napi-rs/keyring-linux-arm64-musl@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-linux-arm64-musl/-/keyring-linux-arm64-musl-1.2.0.tgz#eed6f35fe1c03e3c83a53f382f7ea83f9c44b312"
+  integrity sha512-8TDymrpC4P1a9iDEaegT7RnrkmrJN5eNZh3Im3UEV5PPYGtrb82CRxsuFohthCWQW81O483u1bu+25+XA4nKUw==
+
+"@napi-rs/keyring-linux-riscv64-gnu@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-linux-riscv64-gnu/-/keyring-linux-riscv64-gnu-1.2.0.tgz#5a238abd4528475bc611ec8218a7052bc9c85881"
+  integrity sha512-awsB5XI1MYL7fwfjMDGmKOWvNgJEO7mM7iVEMS0fO39f0kVJnOSjlu7RHcXAF0LOx+0VfF3oxbWqJmZbvRCRHw==
+
+"@napi-rs/keyring-linux-x64-gnu@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-linux-x64-gnu/-/keyring-linux-x64-gnu-1.2.0.tgz#044e21f05a9e52150948118d8977b6da385da0a7"
+  integrity sha512-8E+7z4tbxSJXxIBqA+vfB1CGajpCDRyTyqXkBig5NtASrv4YXcntSo96Iah2QDR5zD3dSTsmbqJudcj9rKKuHQ==
+
+"@napi-rs/keyring-linux-x64-musl@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-linux-x64-musl/-/keyring-linux-x64-musl-1.2.0.tgz#13f7945ad2da936fafc32a20e9236eacc96b06b6"
+  integrity sha512-8RZ8yVEnmWr/3BxKgBSzmgntI7lNEsY7xouNfOsQkuVAiCNmxzJwETspzK3PQ2FHtDxgz5vHQDEBVGMyM4hUHA==
+
+"@napi-rs/keyring-win32-arm64-msvc@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-win32-arm64-msvc/-/keyring-win32-arm64-msvc-1.2.0.tgz#967681f3822f6d87a1ab0b54f561712d62909608"
+  integrity sha512-AoqaDZpQ6KPE19VBLpxyORcp+yWmHI9Xs9Oo0PJ4mfHma4nFSLVdhAubJCxdlNptHe5va7ghGCHj3L9Akiv4cQ==
+
+"@napi-rs/keyring-win32-ia32-msvc@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-win32-ia32-msvc/-/keyring-win32-ia32-msvc-1.2.0.tgz#dda6d4dae11f0c22b6ff5c16c5a984bf5479136e"
+  integrity sha512-EYL+EEI6bCsYi3LfwcQdnX3P/R76ENKNn+3PmpGheBsUFLuh0gQuP7aMVHM4rTw6UVe+L3vCLZSptq/oeacz0A==
+
+"@napi-rs/keyring-win32-x64-msvc@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring-win32-x64-msvc/-/keyring-win32-x64-msvc-1.2.0.tgz#1e11385a29644a78f992ca1de9880a2f01a0e6c7"
+  integrity sha512-xFlx/TsmqmCwNU9v+AVnEJgoEAlBYgzFF5Ihz1rMpPAt4qQWWkMd4sCyM1gMJ1A/GnRqRegDiQpwaxGUHFtFbA==
+
+"@napi-rs/keyring@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@napi-rs/keyring/-/keyring-1.2.0.tgz#a853e0b6d4422e6aaa17422069b3da108077711e"
+  integrity sha512-d0d4Oyxm+v980PEq1ZH2PmS6cvpMIRc17eYpiU47KgW+lzxklMu6+HOEOPmxrpnF/XQZ0+Q78I2mgMhbIIo/dg==
+  optionalDependencies:
+    "@napi-rs/keyring-darwin-arm64" "1.2.0"
+    "@napi-rs/keyring-darwin-x64" "1.2.0"
+    "@napi-rs/keyring-freebsd-x64" "1.2.0"
+    "@napi-rs/keyring-linux-arm-gnueabihf" "1.2.0"
+    "@napi-rs/keyring-linux-arm64-gnu" "1.2.0"
+    "@napi-rs/keyring-linux-arm64-musl" "1.2.0"
+    "@napi-rs/keyring-linux-riscv64-gnu" "1.2.0"
+    "@napi-rs/keyring-linux-x64-gnu" "1.2.0"
+    "@napi-rs/keyring-linux-x64-musl" "1.2.0"
+    "@napi-rs/keyring-win32-arm64-msvc" "1.2.0"
+    "@napi-rs/keyring-win32-ia32-msvc" "1.2.0"
+    "@napi-rs/keyring-win32-x64-msvc" "1.2.0"
+
 "@napi-rs/wasm-runtime@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@napi-rs/wasm-runtime/-/wasm-runtime-1.1.0.tgz#c0180393d7862cff0d412e3e1a7c3bd5ea6d9b2f"

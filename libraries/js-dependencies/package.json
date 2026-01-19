@@ -13,6 +13,7 @@
     "@graphql-tools/schema": "^10.0.31",
     "@graphql-tools/stitch": "^10.1.8",
     "@log4js-node/log4js-api": "1.0.2",
+    "@napi-rs/keyring": "^1.2.0",
     "@nivo/bar": "^0.99.0",
     "@nivo/boxplot": "^0.99.0",
     "@nivo/colors": "^0.99.0",
