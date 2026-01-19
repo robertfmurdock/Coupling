@@ -14,8 +14,10 @@ class CouplingCli : SuspendingCliktCommand() {
     }
 
     override suspend fun run() {
-        if (this.currentContext.invokedSubcommands.isEmpty()) {
-            echo("Welcome to Coupling CLI.")
+        val accessToken = getAccessToken()
+        if (accessToken == null) {
+            echo("You are not currently logged in. Some functions will not work.")
+            echo("Run `coupling login` to log in.")
         }
     }
 }

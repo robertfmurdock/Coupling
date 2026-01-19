@@ -10,7 +10,12 @@ import node.fs.writeFileSync
 import node.process.process
 
 actual fun getEnv(variableName: String): String? = process.env[variableName]
-actual fun readFileText(filePath: String): String = readFileSync(filePath, BufferEncoding.utf8)
+actual fun readFileText(filePath: String): String? = if (existsSync(filePath)) {
+    readFileSync(filePath, BufferEncoding.utf8)
+} else {
+    null
+}
+
 actual fun makeDirectory(couplingHomeDirectory: String) {
     if (!existsSync(couplingHomeDirectory)) {
         mkdirSync(couplingHomeDirectory, unsafeJso<MkdirSyncOptions> { })

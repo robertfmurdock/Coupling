@@ -22,15 +22,15 @@ fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): CouplingCli = Coup
 expect fun platformArgCorrection(args: Array<String>): Array<String>
 
 expect fun getEnv(variableName: String): String?
-expect fun readFileText(filePath: String): String
+expect fun readFileText(filePath: String): String?
 
 val couplingHomeDirectory = "${getEnv("HOME")}/.coupling"
 val configFilePath = "$couplingHomeDirectory/config.json"
 
 fun getAccessToken() = getEnv("COUPLING_CLI_ACCESS_TOKEN")
     ?: readFileText(configFilePath)
-        .let(Json.Default::parseToJsonElement)
-        .let { it.jsonObject["accessToken"]?.jsonPrimitive?.content }
+        ?.let(Json.Default::parseToJsonElement)
+        ?.let { it.jsonObject["accessToken"]?.jsonPrimitive?.content }
 
 expect fun makeDirectory(couplingHomeDirectory: String)
 
