@@ -18,12 +18,13 @@ class CouplingCli : SuspendingCliktCommand() {
     }
 
     override suspend fun run() {
-        val expiration = getAccessToken()?.expiration()
-        if (expiration == null && getEnv("SKIP_AUTH") == null) {
+        val accessToken = getAccessToken()
+        if (accessToken == null) {
             echo("You are not currently logged in. Some functions will not work.")
             echo("Run `coupling login` to log in.")
-        } else if (expiration != null) {
-            considerRefreshingToken(expiration)
+        } else {
+            accessToken.expiration()
+                ?.let { considerRefreshingToken(it) }
         }
     }
 

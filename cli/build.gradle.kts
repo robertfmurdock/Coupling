@@ -32,7 +32,7 @@ kotlin {
             binaries.executable()
             testTask {
                 environment("COUPLING_VERSION", project.version.toString())
-                environment("SKIP_AUTH", "true")
+                environment("COUPLING_CLI_ACCESS_TOKEN", "fake")
             }
         }
         compilations {
@@ -92,7 +92,7 @@ version = rootProject.version
 tasks {
     named<Test>("jvmTest") {
         environment("COUPLING_VERSION", project.version.toString())
-        environment("SKIP_AUTH" to "true")
+        environment("COUPLING_CLI_ACCESS_TOKEN" to "fake")
     }
     withType<CreateStartScripts> {
         applicationName = "coupling"
