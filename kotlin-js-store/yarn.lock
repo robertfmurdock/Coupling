@@ -4601,10 +4601,10 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^8.6.1":
-  version "8.6.1"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-8.6.1.tgz#ea1d3e991b93ed01fcbde27af138e4a84f693f18"
-  integrity sha512-UJ05U2062XDgydbUcETH1AoRQLNhigQ2KmDn1BG8sC3xfzu6JKg95Qt6YozdzFpxl1Npii/02m2LEWFt1RYjVA==
+"@stripe/stripe-js@^8.6.3":
+  version "8.6.3"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-8.6.3.tgz#9a0e0afced80d756a0b823ccfc0ea7792c47cc54"
+  integrity sha512-MQsPNsMMprOu+p+BWYvD69aPjD52yQNXZaENRQX7IkbWqu7lp9k04D+RPeHWJEsuyzmCCoHx3Kqqf3tcXPoNvQ==
 
 "@sventschui/webdriverio-testing-library@4.0.1":
   version "4.0.1"
