@@ -1,3 +1,9 @@
 query partyListQuery {
     partyList { ...PartyDetails }
 }
+
+query playersQuery($input: PartyInput!) {
+    party(input: $input) {
+        playerList { ...PlayerDetails }
+    }
+}

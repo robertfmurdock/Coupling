@@ -35,6 +35,7 @@ fun party(cannon: ActionCannon<CouplingSdkDispatcher>?): SuspendingCliktCommand 
     .subcommands(PartyList())
     .subcommands(PartyDetails(cannon))
     .subcommands(CurrentPairs(cannon))
+    .subcommands(Players(cannon))
     .subcommands(
         Contribution()
             .subcommands(SaveContribution(clock = Clock.System))

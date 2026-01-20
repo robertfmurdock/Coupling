@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.cli
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.versionOption
 import com.zegreatrob.coupling.auth0.management.KtorAuth0Client
 import kotlin.time.Clock
@@ -12,10 +14,10 @@ class CouplingCli : SuspendingCliktCommand() {
 
     init {
         versionOption(Versions.couplingVersion)
-        context {
-            readEnvvar = { key -> getEnv(key) }
-        }
+        context { readEnvvar = { key -> getEnv(key) } }
     }
+
+    private val env by option().default("production")
 
     override suspend fun run() {
         val accessToken = getAccessToken()
