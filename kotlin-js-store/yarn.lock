@@ -52,18 +52,27 @@
     "@csstools/css-tokenizer" "^3.0.3"
     lru-cache "^10.4.3"
 
-"@auth0/auth0-react@2.11.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.11.0.tgz#37dcb398a41da588fd46e72b9a158f34fa7b1309"
-  integrity sha512-UhUUNascMmzeSPEb+br7oL+StvXjSu9eEv7gT3+hwO2bAYWfOzY2wyDTwuMA7dmTW8JEfwSzhB7McFQLNHQEng==
+"@auth0/auth0-auth-js@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.4.0.tgz#3f0f7bf91e93f9b81ab7b9506544e71cfe611a29"
+  integrity sha512-ShA7KT4KvcBEtxsXZTcrmoNxai5q1JXhB2aEBFnZD1L6LNLzzmiUWiFTtGMsaaITCylr8TJ/onEQk6XZmUHXbg==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.11.0"
+    jose "^6.0.8"
+    openid-client "^6.8.0"
 
-"@auth0/auth0-spa-js@^2.11.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.11.0.tgz#ad6824dc055d07f9ad4c64f67ca317449a2db966"
-  integrity sha512-MZuUkB6cYAWm2uswWhEj8aMS7sw6zx8cs5YyPbrHCF+MlScLgfOkUnGe0tbnv7592xQ6M2h4lB66WyemFQEmPA==
+"@auth0/auth0-react@2.12.0":
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.12.0.tgz#14c120df69bfbf528da956b46caec0a67173cf87"
+  integrity sha512-EPLe1OYYlnxoz7GR6hbe+eGCuzllWkq+O9FxZYrH9la9Rn98BhGu515LrK5AtWOhq2iE/RuHFcvb926yK0iNhw==
   dependencies:
+    "@auth0/auth0-spa-js" "^2.12.0"
+
+"@auth0/auth0-spa-js@^2.12.0":
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.12.0.tgz#9da65ed53c716910eead670d20d2b4c9b319c5f8"
+  integrity sha512-Hwn46rz1fqX2Wi2ddhqgE6rymDjZdFYIUL1PDMANLMtvYmeWjBovxcrN7QakeQ7wvmIfDNMqVc/bcByjJoUoBQ==
+  dependencies:
+    "@auth0/auth0-auth-js" "^1.4.0"
     browser-tabs-lock "^1.2.15"
     dpop "^2.1.1"
     es-cookie "~1.3.2"
@@ -6002,10 +6011,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@144.0.0:
-  version "144.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-144.0.0.tgz#131e27c8e2fc63a50f935e20b37c20aebc221662"
-  integrity sha512-/tJRUsIroqvqlOMstecDXYIJpq0r441tIOnk951rAbT7OCMRZB98StG+NWp0m31TIKwuizOZobr/PP7ekVaSig==
+chromedriver@144.0.1:
+  version "144.0.1"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-144.0.1.tgz#2fee7d15d35fa0e9459a67e361b2cb3d28184382"
+  integrity sha512-8zrTQnW6oxo77MWxGtWBpA3qhjnU+CbUrCrJoyi83/puBUZAXaWZ9zPxVhWl/5K6I6tPIZHvw1kcMDQwfgFbAg==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.12.0"
@@ -8602,7 +8611,7 @@ jose@^5.7.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.10.0.tgz#c37346a099d6467c401351a9a0c2161e0f52c4be"
   integrity sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==
 
-jose@^6.1.3:
+jose@^6.0.8, jose@^6.1.0, jose@^6.1.3:
   version "6.1.3"
   resolved "https://registry.yarnpkg.com/jose/-/jose-6.1.3.tgz#8453d7be88af7bb7d64a0481d6a35a0145ba3ea5"
   integrity sha512-0TpaTfihd4QMNwrz/ob2Bp7X04yuxJkjRGi4aKmOqwhov54i6u79oCv7T+C7lo70MKH6BesI3vscD1yb/yzKXQ==
@@ -9603,6 +9612,11 @@ nwsapi@^2.2.16:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.23.tgz#59712c3a88e6de2bb0b6ccc1070397267019cf6c"
   integrity sha512-7wfH4sLbt4M0gCDzGE6vzQBo0bfTKjU7Sfpqy/7gs1qBfYz2vEJH6vXcBKpO3+6Yu1telwd0t9HpyOoLEQQbIQ==
 
+oauth4webapi@^3.8.2:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/oauth4webapi/-/oauth4webapi-3.8.3.tgz#8a3e36b88a52db5e619907f031bff3770b2ed1a4"
+  integrity sha512-pQ5BsX3QRTgnt5HxgHwgunIRaDXBdkT23tf8dfzmtTIL2LTpdmxgbpbBm0VgFWAIDlezQvQCTgnVIUmHupXHxw==
+
 object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -9681,6 +9695,14 @@ open@^8.4.0:
     define-lazy-prop "^2.0.0"
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
+
+openid-client@^6.8.0:
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/openid-client/-/openid-client-6.8.1.tgz#0e6dd3c1e9c98771ebf387b793ce9f626791a924"
+  integrity sha512-VoYT6enBo6Vj2j3Q5Ec0AezS+9YGzQo1f5Xc42lreMGlfP4ljiXPKVDvCADh+XHCV/bqPu/wWSiCVXbJKvrODw==
+  dependencies:
+    jose "^6.1.0"
+    oauth4webapi "^3.8.2"
 
 p-finally@^1.0.0:
   version "1.0.0"
@@ -10864,10 +10886,10 @@ serverless-offline@^14.4.0:
     velocityjs "^2.0.6"
     ws "^8.18.0"
 
-serverless@^4.31.0:
-  version "4.31.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.31.0.tgz#78975f95bd5aef60012b8c9560bf746be174537a"
-  integrity sha512-sk9BfgU3+SvImYv7kOYNkFD/Lsds5nWvAEcpHpaBG9PA7CJ9NTat/aCYe/p1AF5qiMZEbrKpsolYt7Fo1Pnr1g==
+serverless@^4.31.2:
+  version "4.31.2"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.31.2.tgz#13e557963e14e5643220410c953fafc765f20d8d"
+  integrity sha512-P2N5qTFGLOg+kTlvk8y4p7+e4CPmJoSGuBM47Oxw2nXZ0wI2Z6BG9lUgEYa2iKvpJYplwntbkM8bInjH0NPqdw==
   dependencies:
     axios "^1.13.2"
     axios-proxy-builder "^0.1.2"
