@@ -31,7 +31,7 @@ val ContributionLabelFilter by nfc<ContributionLabelFilterProps> { props ->
             value = NULL_PLACEHOLDER
             +"All Labels"
         }
-        allLabels.map { label ->
+        allLabels.forEach { label ->
             option {
                 key = label
                 value = label
@@ -43,6 +43,6 @@ val ContributionLabelFilter by nfc<ContributionLabelFilterProps> { props ->
 
 private const val NULL_PLACEHOLDER = "NULL"
 
-private fun ChangeEvent<HTMLSelectElement>.handlePlaceholder() = target.value.let {
+private fun ChangeEvent<*, HTMLSelectElement>.handlePlaceholder() = target.value.let {
     if (it == NULL_PLACEHOLDER) null else it
 }

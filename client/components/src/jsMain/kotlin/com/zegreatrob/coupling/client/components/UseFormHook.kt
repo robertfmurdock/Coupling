@@ -15,16 +15,16 @@ fun useForm(initialValues: Json) = useState(initialValues)
         Pair(values, eventHandler(setValues::invoke))
     }
 
-fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: ChangeEvent<*> ->
+fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: ChangeEvent<*, *> ->
     event.persist()
     setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
 }
 
-private fun Json.copyWithChangeFrom(event: ChangeEvent<*>) = json()
+private fun Json.copyWithChangeFrom(event: ChangeEvent<*, *>) = json()
     .add(this)
     .add(event.toChangeJson())
 
-private fun ChangeEvent<*>.toChangeJson(): Json {
+private fun ChangeEvent<*, *>.toChangeJson(): Json {
     val target = target.unsafeCast<Json>()
     val name = target["name"].unsafeCast<String>()
 
@@ -41,7 +41,7 @@ fun ChildrenBuilder.configInput(
     name: String,
     value: String,
     type: InputType,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
     placeholder: String = "",
     list: String? = null,
     checked: Boolean = false,

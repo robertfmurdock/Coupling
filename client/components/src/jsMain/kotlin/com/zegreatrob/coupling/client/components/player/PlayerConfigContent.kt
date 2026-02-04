@@ -54,7 +54,7 @@ external interface PlayerConfigContentProps : Props {
     var boost: Boost?
     var player: Player
     var players: List<Player>
-    var onChange: (ChangeEvent<*>) -> Unit
+    var onChange: (ChangeEvent<*, *>) -> Unit
     var onSubmit: () -> Unit
     var onRemove: (() -> Unit)?
     var onPlayerChange: (Player) -> Unit
@@ -109,7 +109,7 @@ val PlayerConfigContent by nfc<PlayerConfigContentProps> { props ->
 private fun ChildrenBuilder.playerConfigForm(
     player: Player,
     party: PartyDetails,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?,
     onPlayerChange: (Player) -> Unit,
@@ -156,7 +156,7 @@ private fun onAdditionalEmailChange(
     player: Player,
     additionalEmailsList: List<String>,
     index: Int,
-): (ChangeEvent<*>) -> Unit = {
+): (ChangeEvent<*, *>) -> Unit = {
     val changeValue = (it.target.unsafeCast<HTMLInputElement>()).value
     onPlayerChange(
         player.copy(
@@ -175,7 +175,7 @@ private fun List<String>.updateEmailAtIndex(index: Int, changeValue: String) = m
 
 private fun ChildrenBuilder.additionalEmailInput(
     index: Int,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
     email: String,
 ) {
     configInput(
@@ -189,7 +189,7 @@ private fun ChildrenBuilder.additionalEmailInput(
     )
 }
 
-private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*, *>) -> Unit) {
     configInput(
         labelText = "Name",
         id = "player-name",
@@ -205,7 +205,7 @@ private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*>)
 
 private fun ChildrenBuilder.emailInput(
     player: Player,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
 ) {
     configInput(
         labelText = "Email",
@@ -227,7 +227,7 @@ private fun ChildrenBuilder.emailInput(
     }
 }
 
-private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEvent<*, *>) -> Unit) {
     li {
         configInput(
             labelText = "Call-Sign Adjective",
@@ -259,7 +259,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
 private fun ChildrenBuilder.badgeConfig(
     party: PartyDetails,
     player: Player,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
 ) = li {
     css {
         "> div" {
@@ -300,7 +300,7 @@ private fun ChildrenBuilder.defaultBadgeOption(party: PartyDetails) = option {
 
 private fun ChildrenBuilder.avatarTypeConfig(
     player: Player,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
 ) = li {
     css {
         "> div" {

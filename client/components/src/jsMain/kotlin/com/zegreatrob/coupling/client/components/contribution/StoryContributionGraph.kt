@@ -22,7 +22,7 @@ import emotion.react.css
 import js.core.toPrecision
 import js.date.Date
 import js.objects.Object
-import js.objects.Record
+import js.objects.recordOf
 import js.objects.unsafeJso
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -185,7 +185,7 @@ private fun dateContributionCountByStory(
         y = 0.0,
     ),
     dateContributions.groupBy(Contribution::story).toList()
-        .fold(Record<String, Double>()) { record, (story, storyContributions) ->
+        .fold(recordOf<String, Double>()) { record, (story, storyContributions) ->
             if (story == null) {
                 record
             } else {
