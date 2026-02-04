@@ -20,7 +20,7 @@ import com.zegreatrob.coupling.client.components.graphing.external.recharts.YAxi
 import emotion.react.css
 import js.lazy.Lazy
 import js.objects.Object
-import js.objects.Record
+import js.objects.recordOf
 import js.objects.unsafeJso
 import react.FC
 import react.Props
@@ -124,10 +124,10 @@ fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
             Object.assign(
                 unsafeJso<LinePoint>(),
                 point,
-                Record {
-                    this["x"] = (point.x as Date?)?.getTime()
-                    this[line.id] = point.y
-                },
+                recordOf(
+                    "x" to (point.x as Date?)?.getTime(),
+                    line.id to point.y,
+                ),
             )
         }
     }.sortedBy { it.x.unsafeCast<Double>() }
@@ -138,7 +138,7 @@ fun Array<NivoLineData>.translateToLineChart(): Array<LinePoint> {
                 Object.assign(
                     result,
                     current,
-                    Record { this["y"] = max(result.y, current.y) },
+                    recordOf("y" to max(result.y, current.y)),
                 )
             }
         }

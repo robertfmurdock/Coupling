@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.minreact.ReactFunc
 import react.FC
 import react.PropsWithChildren
-import react.dom.events.FormEvent
-import react.dom.events.FormEventHandler
+import react.dom.events.SubmitEvent
+import react.dom.events.SubmitEventHandler
 import react.dom.html.ReactHTML.form
 import react.useState
 
@@ -12,7 +12,7 @@ import react.useState
 val ConfigForm = FC { props: ConfigFormProps ->
     val onRemove = props.onRemove
     var isSaving by useState(false)
-    val onSubmitFunc: FormEventHandler<*> = { event: FormEvent<*> ->
+    val onSubmitFunc: SubmitEventHandler<*> = { event: SubmitEvent<*> ->
         event.preventDefault()
         isSaving = true
         props.onSubmit?.invoke()

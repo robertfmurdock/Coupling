@@ -35,7 +35,7 @@ external interface PartyConfigContentProps : Props {
     var party: PartyDetails
     var boost: Boost?
     var isNew: Boolean?
-    var onChange: (ChangeEvent<*>) -> Unit
+    var onChange: (ChangeEvent<*, *>) -> Unit
     var onSave: () -> Unit
     var onDelete: (() -> Unit)?
 }
@@ -63,7 +63,7 @@ val PartyConfigContent by nfc<PartyConfigContentProps> { (party, boost, isNew, o
 private fun ChildrenBuilder.partyConfigEditor(
     updatedParty: PartyDetails,
     isNew: Boolean,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
     onSave: () -> Unit,
     onDelete: (() -> Unit)?,
 ) = span {
@@ -79,7 +79,7 @@ private fun ChildrenBuilder.partyConfigEditor(
     }
 }
 
-private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) = div {
+private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit, isNew: Boolean) = div {
     Editor {
         li {
             nameInput(party, onChange)
@@ -131,7 +131,7 @@ private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEven
     }
 }
 
-private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: ChangeEventHandler<*>) {
+private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: ChangeEventHandler<*, *>) {
     val elementId = ElementId("animation-speed")
     label {
         htmlFor = elementId
@@ -143,7 +143,7 @@ private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: 
         this.value = "${party.animationSpeed}"
         this.onChange = onChange
         listOf(0.25, 0.5, 1.0, 1.25, 1.5, 2, 3, 4)
-            .map { speed ->
+            .forEach { speed ->
                 option {
                     key = "$speed"
                     value = "$speed"
@@ -153,7 +153,7 @@ private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: 
     }
 }
 
-private fun ChildrenBuilder.pairingRuleSelect(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.pairingRuleSelect(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) {
     val elementId = ElementId("pairing-rule")
     label {
         htmlFor = elementId
@@ -176,7 +176,7 @@ private fun ChildrenBuilder.pairingRuleSelect(party: PartyDetails, onChange: (Ch
     }
 }
 
-private fun ChildrenBuilder.altBadgeInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.altBadgeInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Alt Badge Name",
     id = "alt-badge-name",
     name = "alternateBadgeName",
@@ -185,7 +185,7 @@ private fun ChildrenBuilder.altBadgeInput(party: PartyDetails, onChange: (Change
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.defaultBadgeInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.defaultBadgeInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Default Badge Name",
     id = "default-badge-name",
     name = "defaultBadgeName",
@@ -194,7 +194,7 @@ private fun ChildrenBuilder.defaultBadgeInput(party: PartyDetails, onChange: (Ch
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.enableBadgesInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableBadgesInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Enable Badges",
     id = "badge-checkbox",
     name = "badgesEnabled",
@@ -204,7 +204,7 @@ private fun ChildrenBuilder.enableBadgesInput(party: PartyDetails, onChange: (Ch
     checked = party.badgesEnabled,
 )
 
-private fun ChildrenBuilder.enableAnimationsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableAnimationsInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Enable Animations",
     id = "animations-checkbox",
     name = "animationsEnabled",
@@ -214,7 +214,7 @@ private fun ChildrenBuilder.enableAnimationsInput(party: PartyDetails, onChange:
     checked = party.animationEnabled,
 )
 
-private fun ChildrenBuilder.enableCallSignsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableCallSignsInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Enable Call Signs",
     id = "call-sign-checkbox",
     name = "callSignsEnabled",
@@ -224,7 +224,7 @@ private fun ChildrenBuilder.enableCallSignsInput(party: PartyDetails, onChange: 
     checked = party.callSignsEnabled,
 )
 
-private fun ChildrenBuilder.uniqueIdInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.uniqueIdInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Unique Id",
     id = "party-id",
     name = "id",
@@ -233,7 +233,7 @@ private fun ChildrenBuilder.uniqueIdInput(party: PartyDetails, onChange: (Change
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.emailInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.emailInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Email",
     id = "party-email",
     name = "email",
@@ -243,7 +243,7 @@ private fun ChildrenBuilder.emailInput(party: PartyDetails, onChange: (ChangeEve
     placeholder = "Enter the party email here",
 )
 
-private fun ChildrenBuilder.nameInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.nameInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Name",
     id = "party-name",
     name = "name",

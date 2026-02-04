@@ -40,7 +40,7 @@ external interface PinConfigContentProps : Props {
     var boost: Boost?
     var pin: Pin
     var pinList: List<Pin>
-    var onChange: (ChangeEvent<*>) -> Unit
+    var onChange: (ChangeEvent<*, *>) -> Unit
     var onSubmit: () -> Unit
     var onRemove: (() -> Unit)?
 }
@@ -82,12 +82,12 @@ val PinConfigContent by nfc<PinConfigContentProps> { (party, boost, pin, pinList
 }
 
 private fun ChildrenBuilder.pinBag(party: PartyDetails, pinList: List<Pin>) = div {
-    pinList.map { pin -> PinCard(party.id, pin, key = pin.id.value.toString()) }
+    pinList.forEach { pin -> PinCard(party.id, pin, key = pin.id.value.toString()) }
 }
 
 private fun ChildrenBuilder.pinConfigForm(
     pin: Pin,
-    onChange: (ChangeEvent<*>) -> Unit,
+    onChange: (ChangeEvent<*, *>) -> Unit,
     onSubmit: () -> Unit,
     onRemove: (() -> Unit)?,
 ) = ConfigForm(
@@ -97,7 +97,7 @@ private fun ChildrenBuilder.pinConfigForm(
     editorDiv(pin, onChange)
 }
 
-private fun ChildrenBuilder.editorDiv(pin: Pin, onChange: (ChangeEvent<*>) -> Unit) = div {
+private fun ChildrenBuilder.editorDiv(pin: Pin, onChange: (ChangeEvent<*, *>) -> Unit) = div {
     Editor {
         li { nameInput(pin, onChange) }
         li { iconInput(pin, onChange) }
@@ -105,7 +105,7 @@ private fun ChildrenBuilder.editorDiv(pin: Pin, onChange: (ChangeEvent<*>) -> Un
     }
 }
 
-private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*, *>) -> Unit) {
     configInput(
         labelText = "Icon",
         id = "pin-icon",
@@ -125,7 +125,7 @@ private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
     }
 }
 
-private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*, *>) -> Unit) {
     configInput(
         labelText = "Name",
         id = "pin-name",
@@ -139,7 +139,7 @@ private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
     span { +"This is what you call the pin. You won't see this much." }
 }
 
-private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*, *>) -> Unit) {
     val elementId = ElementId("pinTarget")
     label {
         htmlFor = elementId
