@@ -1,6 +1,7 @@
 {
   "reject": [
     "jsdom",
-    "read-pkg-up"
+    "read-pkg-up",
+    "resolve-pkg"
   ]
 }

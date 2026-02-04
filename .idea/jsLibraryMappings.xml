@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <excludedPredefinedLibrary name="Coupling/build/js/packages_imported/apollo-kotlin-apollo-runtime/4.4.0/node_modules" />
+    <excludedPredefinedLibrary name="Coupling/build/js/packages_imported/jsmints-wdio-testing-library/6.10.54/node_modules" />
+    <excludedPredefinedLibrary name="Coupling/build/js/packages_imported/jsmints-wdio/6.10.54/node_modules" />
+    <excludedPredefinedLibrary name="Coupling/build/js/packages_imported/jsmints-wdiorunner/6.10.54/node_modules" />
+  </component>
+</project>
