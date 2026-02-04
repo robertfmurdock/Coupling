@@ -11,7 +11,7 @@
     "@graphql-codegen/plugin-helpers": "^6.1.0",
     "@graphql-codegen/visitor-plugin-common": "6.2.2",
     "@graphql-tools/schema": "^10.0.31",
-    "@graphql-tools/stitch": "^10.1.9",
+    "@graphql-tools/stitch": "^10.1.10",
     "@log4js-node/log4js-api": "1.0.2",
     "@napi-rs/keyring": "^1.2.0",
     "@nivo/bar": "^0.99.0",
