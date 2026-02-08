@@ -6,7 +6,7 @@ org-jlleitschuh-gradle-ktlint = "14.0.1"
 
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.21.0"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.10.68"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.10.69"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.5.38"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.8.76"
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.0.1"
