@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.express.Handler
 import node.buffer.Buffer
 import node.buffer.BufferEncoding
+import node.buffer.utf8
 import web.url.URLSearchParams
 import kotlin.js.Json
 import kotlin.js.json
