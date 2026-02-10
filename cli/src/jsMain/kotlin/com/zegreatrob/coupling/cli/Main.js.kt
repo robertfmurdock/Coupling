@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.cli
 
 import js.objects.unsafeJso
 import node.buffer.BufferEncoding
+import node.buffer.utf8
 import node.fs.MkdirSyncOptions
 import node.fs.existsSync
 import node.fs.mkdirSync

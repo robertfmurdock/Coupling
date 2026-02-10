@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.cli.party
 
 import node.buffer.BufferEncoding
+import node.buffer.utf8
 import node.fs.existsSync
 import node.fs.readFileSync
 

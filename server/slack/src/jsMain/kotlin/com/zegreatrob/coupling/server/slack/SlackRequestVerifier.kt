@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.slack
 
 import node.buffer.BufferEncoding
+import node.buffer.hex
 import node.crypto.createHmac
 
 class SlackRequestVerifier(private val signingSecret: String) {

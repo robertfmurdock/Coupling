@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.slack.slackRequestVerifier
 import node.buffer.Buffer
 import node.buffer.BufferEncoding
+import node.buffer.utf8
 
 fun verifySlackSignature(): Handler = { request, response, next ->
     val timestamp = request.get("X-Slack-Request-Timestamp")?.toIntOrNull()
