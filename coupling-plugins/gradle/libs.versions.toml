@@ -6,8 +6,8 @@ org-jlleitschuh-gradle-ktlint = "14.0.1"
 
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.21.0"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.10.69"
-com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.5.38"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.10.71"
+com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.5.39"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.8.76"
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.0.1"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
@@ -16,11 +16,11 @@ org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-std
 org-jetbrains-kotlin-plugin-js-plain-objects = { module = "org.jetbrains.kotlin.plugin.js-plain-objects:org.jetbrains.kotlin.plugin.js-plain-objects.gradle.plugin", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:2.3.10"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
-org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.4.0"
+org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.4.2"
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.17"
 
 [plugins]
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.1"
 org-jetbrains-kotlin-plugin-js-plain-objects = "org.jetbrains.kotlin.plugin.js-plain-objects:2.3.10"
 org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:2.3.10"
-org-jmailen-kotlinter = "org.jmailen.kotlinter:5.4.0"
+org-jmailen-kotlinter = "org.jmailen.kotlinter:5.4.2"
