@@ -34,12 +34,10 @@ class FetchSlackClient(
         RequestInit(
             method = RequestMethod.POST,
             headers = Headers(recordOf("Authorization" to "Basic ${btoa("$clientId:$clientSecret")}")),
-            body = BodyInit(
-                FormData().apply {
-                    append("code", code)
-                    append("redirect_uri", slackRedirectUri)
-                },
-            ),
+            body = FormData().apply {
+                append("code", code)
+                append("redirect_uri", slackRedirectUri)
+            },
         ),
     )
         .textAsync()
