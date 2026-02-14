@@ -12,6 +12,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
+import react.Key
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -102,7 +103,7 @@ private fun flippedPlayer(
     left: Left,
 ) = Flipped.create {
     flipId = player.id.value.toString()
-    key = player.id.value.toString()
+    key = Key(player.id.value.toString())
     div {
         css {
             position = Position.relative

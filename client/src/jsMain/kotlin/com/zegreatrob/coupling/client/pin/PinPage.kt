@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val PinPage = partyPageFunction { props, partyId ->
@@ -17,7 +18,7 @@ val PinPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(PinPageQuery(partyId)),
-        key = pinId?.value?.toString(),
+        key = pinId?.value?.toString()?.let { Key(it) },
     ) { reload, commandFunc, result ->
         val pinList = result.party?.pinList?.map { it.pinDetails.toDomain() }
             ?: return@CouplingQuery

@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import react.Key
 import react.Props
 import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
@@ -69,10 +70,10 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
                             name = "party"
                             value = command.partyId.value
                             onChange = { command = command.copy(partyId = PartyId(it.target.value)) }
-                            props.parties.map { party ->
+                            props.parties.forEach { party ->
                                 val partyName = party.name
                                 option {
-                                    key = party.id.value.toString()
+                                    key = Key(party.id.value.toString())
                                     value = party.id.value
                                     label = partyName
                                     if (partyName != null) {

@@ -10,13 +10,14 @@ import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.type.PartyInput
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val HistoryPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(HistoryPageQuery(PartyInput(partyId))),
-        key = partyId.value.toString(),
+        key = Key(partyId.value.toString()),
     ) { reload, commandFunc, result ->
         val (party, history) = result.toHistoryData()
             ?: return@CouplingQuery

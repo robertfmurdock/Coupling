@@ -7,6 +7,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import kotools.types.text.toNotBlankString
+import react.Key
 import react.Props
 import web.cssom.Angle
 import web.cssom.AnimationIterationCount
@@ -68,7 +69,7 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
                     animationIterationCount = AnimationIterationCount.infinite
                 }
             },
-            key = pinnedPlayer.player.id.value.toString(),
+            key = Key(pinnedPlayer.player.id.value.toString()),
         )
     }
 }

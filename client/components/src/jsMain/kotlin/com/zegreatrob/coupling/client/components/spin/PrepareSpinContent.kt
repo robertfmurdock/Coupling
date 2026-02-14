@@ -22,6 +22,7 @@ import emotion.css.ClassName
 import emotion.react.css
 import js.objects.unsafeJso
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.div
@@ -159,7 +160,7 @@ private fun ChildrenBuilder.batchSelectButton(
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean,
 ) = CouplingButton {
-    key = text
+    key = Key(text)
     onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
     +text
 }
@@ -218,9 +219,8 @@ private fun List<Pin>.removeByIds(pinSelections: List<PinId?>) = filterNot { pin
 
 private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = Flipped {
     flipId = pin.id.value.toString()
-    key = pin.id.value.toString()
+    key = Key(pin.id.value.toString())
     div {
-        key = pin.id.value.toString()
         css { display = Display.inlineBlock }
         PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick)
     }
@@ -249,7 +249,7 @@ private fun ChildrenBuilder.selectablePlayerCardList(
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
 ) = playerSelections.forEach { (player, isSelected) ->
     div {
-        key = player.id.value.toString()
+        key = Key(player.id.value.toString())
         css {
             paddingBottom = 30.px
             display = Display.inlineBlock

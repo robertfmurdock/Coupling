@@ -20,6 +20,7 @@ import csstype.PropertiesBuilder
 import emotion.react.css
 import org.w3c.dom.HTMLInputElement
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
@@ -284,7 +285,7 @@ private fun ChildrenBuilder.badgeConfig(
 
 private fun ChildrenBuilder.altBadgeOption(party: PartyDetails) = option {
     id = ElementId("alt-badge-option")
-    key = Badge.Alternate.name
+    key = Key(Badge.Alternate.name)
     value = Badge.Alternate.name
     label = party.alternateBadgeName
     ariaLabel = "Alt Badge Option"
@@ -292,7 +293,7 @@ private fun ChildrenBuilder.altBadgeOption(party: PartyDetails) = option {
 
 private fun ChildrenBuilder.defaultBadgeOption(party: PartyDetails) = option {
     id = ElementId("default-badge-option")
-    key = Badge.Default.name
+    key = Key(Badge.Default.name)
     value = Badge.Default.name
     label = party.defaultBadgeName
     ariaLabel = "Default Badge Option"
@@ -324,7 +325,7 @@ private fun ChildrenBuilder.avatarTypeConfig(
         AvatarType.entries.forEach { avatarType ->
             option {
                 id = ElementId(avatarType.name)
-                key = avatarType.name
+                key = Key(avatarType.name)
                 value = avatarType.name
                 this.label = avatarType.name
                 ariaLabel = avatarType.name

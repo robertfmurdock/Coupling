@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
@@ -22,7 +23,7 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(PlayerPageQuery(partyId)),
-        key = "${partyId.value}-$playerId",
+        key = Key("${partyId.value}-$playerId"),
     ) { reload, commandFunc, data ->
         val partyDetails = data.party?.partyDetails?.toDomain() ?: return@CouplingQuery
         val playerList = data.party.playerList.map { it.playerDetails.toDomain() }

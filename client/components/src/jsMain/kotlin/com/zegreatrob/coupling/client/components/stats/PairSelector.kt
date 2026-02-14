@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
@@ -57,11 +58,11 @@ val PairSelector by nfc<PairSelectorProps> { props ->
 
         pairs.forEach { pair: CouplingPair ->
             PairPanel {
-                key = pair.pairId
+                key = Key(pair.pairId)
                 label {
                     ariaLabel = pair.pairName
                     TiltedPlayerList(playerList = pair) { tilt: Angle, player: Player ->
-                        PlayerCard(player, tilt = tilt, size = 25, key = player.id.value.toString())
+                        PlayerCard(player, tilt = tilt, size = 25, key = Key(player.id.value.toString()))
                     }
                     input {
                         type = InputType.checkbox

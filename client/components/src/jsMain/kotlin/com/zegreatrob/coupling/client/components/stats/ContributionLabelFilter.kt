@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.contribution.contributionConten
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
+import react.Key
 import react.Props
 import react.ReactNode
 import react.dom.events.ChangeEvent
@@ -33,7 +34,7 @@ val ContributionLabelFilter by nfc<ContributionLabelFilterProps> { props ->
         }
         allLabels.forEach { label ->
             option {
-                key = label
+                key = Key(label)
                 value = label
                 +label
             }

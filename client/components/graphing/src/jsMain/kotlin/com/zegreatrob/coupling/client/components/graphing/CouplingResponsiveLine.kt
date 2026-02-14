@@ -23,6 +23,7 @@ import js.objects.Object
 import js.objects.recordOf
 import js.objects.unsafeJso
 import react.FC
+import react.Key
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
@@ -105,7 +106,7 @@ val CouplingResponsiveLine = FC<CouplingResponsiveLineProps> { props ->
                 lineIds.forEachIndexed { index, lineId ->
                     Line {
                         connectNulls = true
-                        key = lineId
+                        key = Key(lineId)
                         type = "monotone"
                         dataKey = lineId
                         hide = activeSeries.contains(lineId)

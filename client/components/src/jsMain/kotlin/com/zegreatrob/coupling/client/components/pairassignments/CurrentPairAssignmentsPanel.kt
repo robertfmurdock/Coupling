@@ -23,6 +23,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotools.types.collection.NotEmptyList
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.Navigate
@@ -89,7 +90,7 @@ private fun ChildrenBuilder.pairAssignmentList(
             pinDropFunc = { pinId: PinId, targetId: String ->
                 setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, targetId))
             },
-            key = "$index",
+            key = Key("$index"),
         )
     }
 }
@@ -106,8 +107,7 @@ private fun PairingSet.copyWithDroppedPin(pinId: PinId, pairId: String): Pairing
 private fun findDroppedPin(id: PinId, pairAssignments: PairingSet) = pairAssignments
     .pairs
     .toList()
-    .map(PinnedCouplingPair::pins)
-    .flatten()
+    .flatMap(PinnedCouplingPair::pins)
     .first { it.id == id }
 
 private fun NotEmptyList<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->

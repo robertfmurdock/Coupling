@@ -10,6 +10,7 @@ import emotion.react.css
 import kotools.types.text.NotBlankString
 import react.ChildrenBuilder
 import react.Fragment
+import react.Key
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -83,7 +84,7 @@ val ContributionCard by nfc<ContributionCardProps> { props ->
                         }
                         contribution.participantEmails.forEach { email ->
                             div {
-                                key = email
+                                key = Key(email)
                                 +email
                             }
                         }
@@ -123,7 +124,7 @@ private fun <T> ChildrenBuilder.showProperty(attributeName: String, value: T & A
 
 private fun ChildrenBuilder.showProperty(attributeName: String, value: ChildrenBuilder.() -> Unit) {
     Fragment {
-        key = attributeName
+        key = Key(attributeName)
         div {
             css { justifySelf = JustifySelf.left }
             +"$attributeName:"

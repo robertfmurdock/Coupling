@@ -20,6 +20,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.css.ClassName
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
@@ -58,7 +59,7 @@ val PairAssignments by nfc<PairAssignmentsProps> { props ->
             }
             ControlPanel(party)
             PlayerRoster(label = "Unpaired players", partyId = party.id, players = notPairedPlayers)
-            ServerMessage(message, key = "${message.text} ${message.players.size}")
+            ServerMessage(message, key = Key("${message.text} ${message.players.size}"))
         }
     }
 }

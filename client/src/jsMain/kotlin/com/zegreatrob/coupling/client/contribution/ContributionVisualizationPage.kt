@@ -7,13 +7,14 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val ContributionVisualizationPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(ContributionVisualizationPageQuery(partyId)),
-        key = partyId.value.toString(),
+        key = Key(partyId.value.toString()),
     ) { _, _, queryResult ->
         val party = queryResult.party?.partyDetails?.toDomain() ?: return@CouplingQuery
         val spinsUntilFullRotation = queryResult.party.spinsUntilFullRotation ?: return@CouplingQuery

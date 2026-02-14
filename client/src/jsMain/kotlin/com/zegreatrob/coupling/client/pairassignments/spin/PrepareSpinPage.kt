@@ -7,13 +7,14 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val PrepareSpinPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(PrepareSpinPageQuery(partyId)),
-        key = partyId.value.toString(),
+        key = Key(partyId.value.toString()),
     ) { _, dispatcher, result ->
         val party = result.party
         PrepareSpin(

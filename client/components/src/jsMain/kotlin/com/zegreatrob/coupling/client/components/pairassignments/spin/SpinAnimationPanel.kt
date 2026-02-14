@@ -14,6 +14,7 @@ import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.Fragment
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML
 import web.cssom.Display
@@ -44,7 +45,7 @@ val SpinAnimationPanel by nfc<SpinAnimationPanelProps> { (party, rosteredPairAss
 
 private fun ChildrenBuilder.assignedPairs(party: PartyDetails, revealedPairs: List<PinnedCouplingPair>) = ReactHTML.div {
     asDynamic()["data-testid"] = "assigned-pairs"
-    revealedPairs.forEachIndexed { index, it -> AssignedPair(party, it, false, key = "$index") }
+    revealedPairs.forEachIndexed { index, it -> AssignedPair(party, it, false, key = Key("$index")) }
 }
 
 val playerSpotlightStyles = ClassName {
@@ -76,7 +77,7 @@ private fun ChildrenBuilder.placeholderPlayerCard() = ReactHTML.div {
 
 private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) = Flipped {
     flipId = player.id.value.toString()
-    this.key = key ?: ""
+    this.key = Key(key ?: "")
     ReactHTML.div {
         css { display = Display.inlineBlock }
         PlayerCard(player)
@@ -87,7 +88,7 @@ private fun ChildrenBuilder.playerRoster(players: List<Player>) = ReactHTML.div 
     asDynamic()["data-testid"] = "player-roster"
     players.forEach { player ->
         Fragment {
-            key = player.id.value.toString()
+            key = Key(player.id.value.toString())
             if (player.id.value.toString().startsWith("?")) {
                 placeholderPlayerCard()
             } else {

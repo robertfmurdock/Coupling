@@ -21,6 +21,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -75,7 +76,7 @@ val PairAssignmentRow by nfc<PairAssignmentRowProps> { props ->
             boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
         }
         asDynamic()["data-pair-assignments-id"] = document.id.value.toString()
-        key = document.id.value.toString()
+        key = Key(document.id.value.toString())
         PairAssignmentBlock {
             +document.dateText()
         }
@@ -103,8 +104,8 @@ private fun ChildrenBuilder.showPairs(document: PairingSet) = div {
                 margin = Margin(0.px, 2.px, 0.px, 2.px)
                 position = Position.relative
             }
-            key = "$index"
-            pair.pinnedPlayers.toList().map(::showPlayer)
+            key = Key("$index")
+            pair.pinnedPlayers.toList().forEach(::showPlayer)
             PinSection(
                 pinList = pair.pins.toList(),
                 scale = PinButtonScale.ExtraSmall,
@@ -136,7 +137,7 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
         color = NamedColor.black
         margin = Margin(0.px, 2.px, 0.px, 2.px)
     }
-    key = pinnedPlayer.player.id.value.toString()
+    key = Key(pinnedPlayer.player.id.value.toString())
     div {
         css {
             backgroundColor = NamedColor.darkcyan

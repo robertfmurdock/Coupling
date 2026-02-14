@@ -8,6 +8,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
@@ -47,11 +48,11 @@ val PlayerRoster by nfc<PlayerRosterProps> { (label, players, partyId, className
                     }
                     +(label ?: "Players")
                 }
-                players.map { player ->
+                players.forEach { player ->
                     Link {
                         to = partyId.with(player).playerConfigPath()
                         draggable = false
-                        key = player.id.value.toString()
+                        key = Key(player.id.value.toString())
                         val tilt = random.nextInt(7) - 3
                         PlayerCard(player, tilt = tilt.deg)
                     }

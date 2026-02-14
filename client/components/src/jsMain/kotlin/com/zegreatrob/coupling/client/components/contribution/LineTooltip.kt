@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.components.contribution
 import com.zegreatrob.coupling.client.components.graphing.external.recharts.TooltipProps
 import emotion.react.css
 import react.FC
+import react.Key
 import react.PropsWithValue
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
@@ -19,7 +20,7 @@ val LineTooltip = FC<PropsWithValue<TooltipProps>> { props ->
         }
         args.payload?.forEach { payload ->
             div {
-                key = payload.name.toString()
+                key = Key(payload.name.toString())
                 +"${payload.name} - ${payload.value}"
             }
         }

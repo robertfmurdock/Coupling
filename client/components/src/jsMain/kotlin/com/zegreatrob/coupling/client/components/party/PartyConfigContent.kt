@@ -13,6 +13,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.dom.events.ChangeEvent
 import react.dom.events.ChangeEventHandler
@@ -145,7 +146,7 @@ private fun ChildrenBuilder.animationSpeedSelect(party: PartyDetails, onChange: 
         listOf(0.25, 0.5, 1.0, 1.25, 1.5, 2, 3, 4)
             .forEach { speed ->
                 option {
-                    key = "$speed"
+                    key = Key("$speed")
                     value = "$speed"
                     label = "${speed}x"
                 }
@@ -167,7 +168,7 @@ private fun ChildrenBuilder.pairingRuleSelect(party: PartyDetails, onChange: (Ch
         pairingRuleDescriptions
             .map { (rule, description) ->
                 option {
-                    key = "${PairingRule.toValue(rule)}"
+                    key = Key("${PairingRule.toValue(rule)}")
                     value = "${PairingRule.toValue(rule)}"
                     ariaLabel = description
                     label = description

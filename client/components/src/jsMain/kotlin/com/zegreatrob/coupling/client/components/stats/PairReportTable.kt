@@ -11,6 +11,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
 import react.FC
+import react.Key
 import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
@@ -41,7 +42,7 @@ val PairReportTable by nfc<PairReportTableProps> { (pairReports) ->
             whiteSpace = WhiteSpace.normal
         }
         pairReports.mapIndexed { index, pairReport ->
-            PairReportView(pairReport, key = "$index")
+            PairReportView(pairReport, key = Key("$index"))
         }
     }
 }
@@ -98,6 +99,6 @@ private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = div 
     css {
         display = Display.inlineBlock
     }
-    key = player.id.value.toString()
+    key = Key(player.id.value.toString())
     PlayerCard(player, size = 50, tilt = tilt)
 }
