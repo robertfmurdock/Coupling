@@ -10,6 +10,7 @@ import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.formUrlEncode
 import kotlinx.browser.window
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
@@ -53,7 +54,7 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
                             }
                             props.partyList.forEach {
                                 option {
-                                    key = it.id.value.toString()
+                                    key = Key(it.id.value.toString())
                                     value = it.id.value
                                     +it.name
                                 }

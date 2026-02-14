@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.player.Player
 import emotion.react.css
 import react.FC
+import react.Key
 import react.dom.html.ReactHTML.div
 import react.dom.svg.ReactSVG.foreignObject
 import react.dom.svg.ReactSVG.g
@@ -87,7 +88,7 @@ val PairTickMark = FC<AxisTickProps> { props ->
                                 paddingBottom = 4.px
                             }
                             TiltedPlayerList(playerList = pair) { tilt: Angle, player: Player ->
-                                PlayerCard(player, tilt = tilt, size = 25, key = player.id.value.toString())
+                                PlayerCard(player, tilt = tilt, size = 25, key = Key(player.id.value.toString()))
                             }
                         }
                     }

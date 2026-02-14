@@ -15,6 +15,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import popper.core.ReferenceElement
+import react.Key
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
@@ -117,7 +118,7 @@ val ContributionListContent by nfc<ContributionListContentProps> { props ->
                     }
                     filteredContributions.forEach { contribution ->
                         ContributionCard(
-                            key = contribution.id.value.toString(),
+                            key = Key(contribution.id.value.toString()),
                             partyId = party.id,
                             contribution = contribution,
                             players = props.players,

@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Fragment
+import react.Key
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -37,7 +38,7 @@ val PartyList by nfc<PartyListProps> { (parties) ->
         }
         div {
             parties.forEach { party ->
-                PartyCard(party, key = party.id.value.toString())
+                PartyCard(party, key = Key(party.id.value.toString()))
             }
         }
         div { NewPartyButton() }

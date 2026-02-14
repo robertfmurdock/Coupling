@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotools.types.text.toNotBlankString
+import react.Key
 import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML
@@ -79,7 +80,7 @@ private val playerHeader by nfc<Props> {
                 imageURL = CouplingImages.images.robPng,
             ),
             tilt = (-8).deg,
-            key = "1",
+            key = Key("1"),
         )
         PlayerCard(
             defaultPlayer.copy(
@@ -88,7 +89,7 @@ private val playerHeader by nfc<Props> {
                 imageURL = CouplingImages.images.autumnPng,
             ),
             tilt = 8.deg,
-            key = "2",
+            key = Key("2"),
         )
     }
 }

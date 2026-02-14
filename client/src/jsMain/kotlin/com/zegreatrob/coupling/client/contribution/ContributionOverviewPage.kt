@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.type.ContributionsInput
 import com.zegreatrob.coupling.sdk.schema.type.PartyInput
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val ContributionOverviewPage = partyPageFunction { props, partyId ->
@@ -24,7 +25,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
                 contributionReportInput = ContributionsInput(limit = Optional.present(5)),
             ),
         ),
-        key = partyId.value.toString(),
+        key = Key(partyId.value.toString()),
     ) { _, dispatchFunc, queryResult ->
         val party = queryResult.party?.partyDetails?.toDomain()
             ?: return@CouplingQuery

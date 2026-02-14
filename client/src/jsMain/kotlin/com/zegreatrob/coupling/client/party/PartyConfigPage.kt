@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
+import react.Key
 import kotlin.uuid.Uuid
 
 @Lazy
@@ -21,7 +22,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
         CouplingQuery(
             commander = props.commander,
             query = GqlQuery(PartyQuery(partyId)),
-            key = partyId.value.toString(),
+            key = Key(partyId.value.toString()),
         ) { _, commandFunc, result ->
             PartyConfig(
                 party = result.party?.partyDetails?.toDomain() ?: return@CouplingQuery,

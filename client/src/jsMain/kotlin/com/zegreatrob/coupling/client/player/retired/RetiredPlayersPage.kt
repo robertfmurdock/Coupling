@@ -6,13 +6,14 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val RetiredPlayersPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(RetiredPlayersPageQuery(partyId)),
-        key = partyId.value.toString(),
+        key = Key(partyId.value.toString()),
     ) { _, _, result ->
         RetiredPlayers(
             party = result.party?.partyDetails?.toDomain() ?: return@CouplingQuery,

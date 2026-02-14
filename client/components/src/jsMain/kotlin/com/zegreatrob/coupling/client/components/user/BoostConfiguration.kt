@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import react.Key
 import react.Props
 import react.dom.DangerouslySetInnerHTML
 import react.dom.html.ReactHTML.div
@@ -50,7 +51,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
 
             if (boostedParty == null) {
                 option {
-                    key = "placeholder"
+                    key = Key("placeholder")
                     value = ""
                     label = "Select a party to boost"
                 }
@@ -59,7 +60,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
             props.parties.forEach { party ->
                 val partyName = party.name
                 option {
-                    key = party.id.value.toString()
+                    key = Key(party.id.value.toString())
                     value = party.id.value
                     label = partyName
                     if (partyName != null) {

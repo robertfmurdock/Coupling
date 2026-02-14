@@ -11,6 +11,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
@@ -44,7 +45,7 @@ val PinList by nfc<PinListProps> { (party, pins) ->
         }
 
         div {
-            pins.map { PinCard(partyId = party.id, pin = it, shouldLink = true, key = it.id.toString()) }
+            pins.forEach { PinCard(partyId = party.id, pin = it, shouldLink = true, key = Key(it.id.toString())) }
         }
         div {
             Link {

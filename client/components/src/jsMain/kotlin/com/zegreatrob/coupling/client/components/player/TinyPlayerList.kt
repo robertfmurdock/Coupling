@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import react.Key
 import react.Props
 import react.router.dom.Link
 import react.useState
@@ -24,7 +25,7 @@ val TinyPlayerList by nfc<TinyPlayerListProps> { (party, players) ->
     val random = Random(ref)
     players.forEach { player ->
         Link {
-            key = player.id.value.toString()
+            key = Key(player.id.value.toString())
             to = party.id.with(player).playerConfigPath()
             draggable = false
             val tilt = random.nextInt(7) - 3

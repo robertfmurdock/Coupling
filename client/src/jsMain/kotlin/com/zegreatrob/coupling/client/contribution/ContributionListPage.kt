@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val ContributionListPage = partyPageFunction { props, partyId ->
@@ -17,7 +18,7 @@ val ContributionListPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(ContributionListPageQuery(partyId, window.toGql())),
-        key = "${partyId.value}$window",
+        key = Key("${partyId.value}$window"),
     ) { _, dispatchFunc, queryResult ->
         val party = queryResult.party?.partyDetails?.toDomain() ?: return@CouplingQuery
         val contributions =

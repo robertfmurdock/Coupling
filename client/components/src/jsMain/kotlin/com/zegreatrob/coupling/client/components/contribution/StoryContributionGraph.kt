@@ -28,6 +28,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
+import react.Key
 import react.Props
 import react.ReactNode
 import react.create
@@ -115,7 +116,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                     stories.forEach { story ->
                         val color = myColor(story)
                         Area {
-                            key = "$story-area"
+                            key = Key("$story-area")
                             type = "monotone"
                             dataKey = story
                             stackId = "2"
@@ -123,7 +124,7 @@ val StoryContributionGraph by nfc<StoryContributionGraphProps> { props ->
                             fill = color
                         }
                         Bar {
-                            key = "$story-bar"
+                            key = Key("$story-bar")
                             type = "monotone"
                             if (!byPercent) {
                                 barSize = 2

@@ -7,6 +7,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.useMemo
@@ -39,11 +40,11 @@ val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
                 width = 62.px
             }
         }
-        players.forEach { player -> TopRowPlayer(player, key = player.id.value.toString()) }
+        players.forEach { player -> TopRowPlayer(player, key = Key(player.id.value.toString())) }
     }
     div {
         className = heatmapSideRow
-        players.forEach { player -> SidePlayer(player, key = player.id.value.toString()) }
+        players.forEach { player -> SidePlayer(player, key = Key(player.id.value.toString())) }
     }
     Heatmap(
         heatmapData,
@@ -67,7 +68,7 @@ val TopRowPlayer by nfc<TopRowPlayerProps> { props ->
             width = 90.px
             textAlign = TextAlign.center
         }
-        key = props.player.id.value.toString()
+        key = Key(props.player.id.value.toString())
         PlayerCard(props.player, size = 50, tilt = tweak.deg)
     }
 }
@@ -87,7 +88,7 @@ val SidePlayer by nfc<SidePlayerProps> { props ->
                 verticalAlign = VerticalAlign.middle
             }
         }
-        key = props.player.id.value.toString()
+        key = Key(props.player.id.value.toString())
         PlayerCard(props.player, size = 50, tilt = tweak.deg)
     }
 }

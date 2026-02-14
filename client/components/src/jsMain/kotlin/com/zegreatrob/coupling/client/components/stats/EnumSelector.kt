@@ -4,6 +4,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.unsafeJso
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.option
@@ -35,9 +36,9 @@ val EnumSelector by nfc<EnumSelectorProps<Any>> { props ->
                 event.target.value.let(props.valueOf).let(props.onChange)
             }
         }
-        props.entries.map { entry ->
+        props.entries.forEach { entry ->
             option {
-                key = props.enumName(entry)
+                key = Key(props.enumName(entry))
                 value = props.enumName(entry)
                 +props.enumName(entry)
             }

@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import react.Key
 import react.Props
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.button
@@ -68,7 +69,7 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
                 div {
                     players.forEach { player ->
                         button {
-                            key = player.id.value.toString()
+                            key = Key(player.id.value.toString())
                             ariaLabel = player.id.value.toString()
                             onClick = addEmailToExistingPlayer(player)
                             PlayerCard(player, size = 20)

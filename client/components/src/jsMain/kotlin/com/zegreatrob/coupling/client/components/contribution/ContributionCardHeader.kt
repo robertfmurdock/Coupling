@@ -16,6 +16,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import org.kotools.types.ExperimentalKotoolsTypesApi
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -125,7 +126,7 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
             }
             TiltedPlayerList(playerList = contributionPlayerList) { tilt, player ->
                 span {
-                    key = player.id.value.toString()
+                    key = Key(player.id.value.toString())
                     onClick = { props.onPlayerClick?.invoke(player, it.currentTarget) }
                     PlayerCard(player = player, tilt = tilt, size = 30)
                 }

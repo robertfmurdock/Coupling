@@ -17,6 +17,7 @@ import emotion.css.ClassName
 import emotion.react.css
 import kotools.types.text.toNotBlankString
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.RefObject
 import react.dom.html.ReactHTML.div
@@ -177,7 +178,7 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
             animationIterationCount = number(1.0)
             hover { cardZoom() }
         }
-        PlayerCard(pair.player1, leftCardStyles, size = 100, tilt = (-8).deg, key = "player-1")
+        PlayerCard(pair.player1, leftCardStyles, size = 100, tilt = (-8).deg, key = Key("player-1"))
         val rightCardStyles = ClassName {
             transitionProperty = TransitionProperty.all
             transitionDuration = 0.25.s
@@ -187,7 +188,7 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
             animationIterationCount = number(1.0)
             hover { cardZoom() }
         }
-        PlayerCard(pair.player2, rightCardStyles, size = 100, tilt = 8.deg, key = "player-2")
+        PlayerCard(pair.player2, rightCardStyles, size = 100, tilt = 8.deg, key = Key("player-2"))
     }
 }
 

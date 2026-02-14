@@ -11,13 +11,14 @@ import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val StatisticsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = GqlQuery(StatisticsPageQuery(partyId)),
-        key = partyId.value.toString(),
+        key = Key(partyId.value.toString()),
     ) { _, _, queryResult ->
         PartyStatistics(
             party = queryResult.party?.partyDetails?.toDomain() ?: return@CouplingQuery,

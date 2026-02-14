@@ -13,6 +13,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Key
 import react.Props
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
@@ -82,7 +83,7 @@ val PinConfigContent by nfc<PinConfigContentProps> { (party, boost, pin, pinList
 }
 
 private fun ChildrenBuilder.pinBag(party: PartyDetails, pinList: List<Pin>) = div {
-    pinList.forEach { pin -> PinCard(party.id, pin, key = pin.id.value.toString()) }
+    pinList.forEach { pin -> PinCard(party.id, pin, key = Key(pin.id.value.toString())) }
 }
 
 private fun ChildrenBuilder.pinConfigForm(
@@ -154,7 +155,7 @@ private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*, *>) -> Unit) {
             PinTarget.Pair to "Pair",
         ).map { (_, description) ->
             option {
-                key = "0"
+                key = Key("0")
                 value = ""
                 label = description
             }

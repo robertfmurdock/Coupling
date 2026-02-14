@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
@@ -62,7 +63,7 @@ val RetiredPlayers by nfc<RetiredPlayersProps> { (party, players) ->
                     Link {
                         to = party.id.with(player).playerConfigPath()
                         draggable = false
-                        key = player.id.value.toString()
+                        key = Key(player.id.value.toString())
                         PlayerCard(player, deselected = true)
                     }
                 }

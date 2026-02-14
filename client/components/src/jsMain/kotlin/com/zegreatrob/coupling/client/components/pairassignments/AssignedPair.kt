@@ -21,6 +21,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
 import react.Fragment
+import react.Key
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML
@@ -121,7 +122,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
             div {
                 pair.pinnedPlayers.toList().forEachIndexed { index, player ->
                     Fragment {
-                        key = player.player.id.value.toString()
+                        key = Key(player.player.id.value.toString())
                         playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
                     }
                 }
@@ -175,7 +176,7 @@ private fun playerCardComponent(
 
 private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNode) = Flipped {
     flipId = player.id.value.toString()
-    this.key = player.id.value.toString()
+    this.key = Key(player.id.value.toString())
     div {
         css {
             display = Display.inlineBlock

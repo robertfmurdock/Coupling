@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.minreact.nfc
 import js.lazy.Lazy
+import react.Key
 
 @Lazy
 val PartySecretsPage by nfc<PageProps> { props ->
@@ -20,7 +21,7 @@ val PartySecretsPage by nfc<PageProps> { props ->
         CouplingQuery(
             commander = props.commander,
             query = GqlQuery(PartySecretsPageQuery(partyId)),
-            key = props.partyId?.value?.toString(),
+            key = props.partyId?.value?.toString()?.let { Key(it) },
         ) { reload, dispatcher, result ->
             PartySecretLayout(
                 partyDetails = result.party?.partyDetails?.toDomain() ?: return@CouplingQuery,
