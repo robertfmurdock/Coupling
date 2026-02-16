@@ -11064,10 +11064,10 @@ socks@^2.8.3:
     ip-address "^10.0.1"
     smart-buffer "^4.2.0"
 
-sonda@^0.10.2:
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.10.2.tgz#653d5cf3262f6d94141b5456275cdf12179fb497"
-  integrity sha512-LYStDIhOipXMRC9BQGL05SUZrYqfm//hfccCS+jo0HhJc3N4uChZXap0cqqyOE6iWWUs0uJbHgX/+2bin0FqPg==
+sonda@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.11.0.tgz#b99b0327343ca54b15f1d9079e9fd37d4db563d1"
+  integrity sha512-m+nV0HjFRIsGga+632zpM2PleUPG5vxorNHzqlpqcGV4QQtUrNyg6PEc9yDW/k0yw2S5S/oyO7UvyuwvWNm8/A==
   dependencies:
     "@jridgewell/remapping" "^2.3.5"
     open "^11.0.0"
