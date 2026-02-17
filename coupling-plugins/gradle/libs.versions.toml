@@ -7,8 +7,8 @@ org-jlleitschuh-gradle-ktlint = "14.0.1"
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.21.0"
 com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.10.72"
-com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.5.39"
-com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.8.76"
+com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.5.42"
+com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.9.0"
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.0.1"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
