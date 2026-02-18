@@ -5,11 +5,11 @@ import io.github.oshai.kotlinlogging.Level
 
 @JsName("initializeLogging")
 fun initializeLogging(developmentMode: Boolean) {
-    KotlinLoggingConfiguration.logLevel = if (developmentMode) {
+    KotlinLoggingConfiguration.direct.logLevel = if (developmentMode) {
         Level.DEBUG
     } else {
         Level.INFO
     }
 
-    KotlinLoggingConfiguration.formatter = JsonFormatter
+    KotlinLoggingConfiguration.direct.formatter = JsonFormatter
 }
