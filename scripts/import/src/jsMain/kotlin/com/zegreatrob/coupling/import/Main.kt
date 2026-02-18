@@ -44,7 +44,7 @@ val user = UserDetails(
 private val logger = KotlinLogging.logger("import")
 
 fun main() {
-    KotlinLoggingConfiguration.logLevel = Level.WARN
+    KotlinLoggingConfiguration.direct.logLevel = Level.WARN
     MainScope().launch {
         val catalog = DynamoRepositoryCatalog(user.id, Clock.System)
 
