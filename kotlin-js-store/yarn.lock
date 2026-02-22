@@ -1839,10 +1839,10 @@
     "@graphql-codegen/plugin-helpers" "^6.0.0"
     tslib "~2.6.0"
 
-"@graphql-codegen/cli@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-6.1.1.tgz#2bd7c14267e53b570039926b2a837b281fc78de2"
-  integrity sha512-Ni8UdZ6D/UTvLvDtPb6PzshI0lTqtLDnmv/2t1w2SYP92H0MMEdAzxB/ujDWwIXm2LzVPvvrGvzzCTMsyXa+mA==
+"@graphql-codegen/cli@^6.1.2":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-6.1.2.tgz#05207899737a6a357dec725c9f4eb8dca2780205"
+  integrity sha512-BQ49LF0jnQNL12rU1RucTemoX1bHx8slR4B11nOrp4k5NTojhcc1A1czzU5wXCK/1+ezNHrVGONWg3jxZUy08w==
   dependencies:
     "@babel/generator" "^7.18.13"
     "@babel/template" "^7.18.10"
@@ -11091,10 +11091,10 @@ socks@^2.8.3:
     ip-address "^10.0.1"
     smart-buffer "^4.2.0"
 
-sonda@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.11.0.tgz#b99b0327343ca54b15f1d9079e9fd37d4db563d1"
-  integrity sha512-m+nV0HjFRIsGga+632zpM2PleUPG5vxorNHzqlpqcGV4QQtUrNyg6PEc9yDW/k0yw2S5S/oyO7UvyuwvWNm8/A==
+sonda@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.11.1.tgz#bbcbdce28e42513521c6b14c0955e3eaf79b0597"
+  integrity sha512-WruAwwzdjQ4U2c4dst8EMzFKf0s8EOWrr9ZOUrkjeQdxCjsFFo0/Em49NiLm5Op1yOXGT0VFDMcM4k5kl3wrCA==
   dependencies:
     "@jridgewell/remapping" "^2.3.5"
     open "^11.0.0"
