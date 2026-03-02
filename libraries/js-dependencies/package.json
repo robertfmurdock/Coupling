@@ -72,7 +72,7 @@
     "sonda": "^0.11.1",
     "stripe": "^20.4.0",
     "vite-plugin-html": "^3.2.2",
-    "webpack": "5.105.2",
+    "webpack": "5.105.3",
     "webpack-cli": "^6.0.1"
   }
 }
