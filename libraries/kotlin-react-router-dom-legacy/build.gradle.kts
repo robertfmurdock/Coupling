@@ -1,57 +1,58 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     alias(libs.plugins.io.github.turansky.seskar)
 }
 
-val COMMON_FREE_COMPILER_ARGS = listOf(
-    "-Xexpect-actual-classes",
-    "-Xdont-warn-on-error-suppression",
-
-    "-Xwarning-level=NOTHING_TO_INLINE:disabled",
-)
-
-val COMMON_OPT_INS = listOf(
-    "kotlin.ExperimentalStdlibApi",
-    "kotlin.ExperimentalUnsignedTypes",
-    "kotlin.ExperimentalMultiplatform",
-    "kotlin.contracts.ExperimentalContracts",
-    "kotlin.js.ExperimentalJsExport",
-)
-
-val COMMON_INTERNAL_OPT_INS = listOf(
-    "js.internal.InternalApi",
-    "kotlin.js.ExperimentalWasmJsInterop",
-)
-
-val JS_FREE_COMPILER_ARGS = listOf(
-    "-Xes-long-as-bigint",
-    "-Xir-generate-inline-anonymous-functions",
-)
-
 kotlin {
     applyDefaultHierarchyTemplate()
 
-
-
-
     compilerOptions {
         allWarningsAsErrors = true
-        freeCompilerArgs.addAll(COMMON_FREE_COMPILER_ARGS)
-        optIn.addAll(COMMON_OPT_INS)
+        freeCompilerArgs.addAll(
+            listOf(
+                "-Xexpect-actual-classes",
+                "-Xdont-warn-on-error-suppression",
 
-        if (project.name != "kotlin-css") {
-            optIn.addAll(COMMON_INTERNAL_OPT_INS)
-        }
+                "-Xwarning-level=NOTHING_TO_INLINE:disabled",
+            )
+        )
+        optIn.addAll(
+            listOf(
+                "kotlin.ExperimentalStdlibApi",
+                "kotlin.ExperimentalUnsignedTypes",
+                "kotlin.ExperimentalMultiplatform",
+                "kotlin.contracts.ExperimentalContracts",
+                "kotlin.js.ExperimentalJsExport",
+            )
+        )
+        optIn.addAll(
+            listOf(
+                "js.internal.InternalApi",
+                "kotlin.js.ExperimentalWasmJsInterop",
+            )
+        )
     }
 
 
     js {
-        configureJsTarget()
+        outputModuleName = project.name
+
+        nodejs()
+
+        compilerOptions {
+            target = "es2015"
+
+            freeCompilerArgs.addAll(
+                listOf(
+                    "-Xes-long-as-bigint",
+                    "-Xir-generate-inline-anonymous-functions",
+                )
+            )
+        }
     }
 
     sourceSets {
@@ -68,18 +69,6 @@ kotlin {
 
     sourceSets.jsMain {
         kotlin.srcDir(projectDir.resolve("src/jsMain/generated"))
-    }
-}
-
-fun KotlinJsTargetDsl.configureJsTarget() {
-    outputModuleName = project.name
-
-    nodejs()
-
-    compilerOptions {
-        target = "es2015"
-
-        freeCompilerArgs.addAll(JS_FREE_COMPILER_ARGS)
     }
 }
 
