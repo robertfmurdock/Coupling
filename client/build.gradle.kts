@@ -132,7 +132,17 @@ tasks {
         val cdnLookupFile = cdnLookupConfiguration.resolve().first()
         arguments = listOf("--no-warnings", cdnLookupFile.absolutePath) + settings.fieldNames().asSequence().toList()
         outputFile = file(cdnBuildOutput)
+        outputs.upToDateWhen { cdnBuildOutput.get().asFile.length() > 0L }
         outputs.cacheIf { true }
+    }
+    val sanitizeCdnJson by registering {
+        dependsOn(lookupCdnUrls)
+        doLast {
+            val cdnFile = cdnBuildOutput.get().asFile
+            if (!cdnFile.exists() || cdnFile.length() == 0L) {
+                throw GradleException("cdn.json was not generated. Run :client:lookupCdnUrls and verify cdn-lookup output.")
+            }
+        }
     }
     val projectResultPath = rootProject.layout.buildDirectory
         .file("test-output/${project.path}/results".replace(":", "/"))
@@ -151,7 +161,8 @@ tasks {
     compileProductionExecutableKotlinJs {}
 
     jsBrowserProductionVite {
-        dependsOn(lookupCdnUrls, copyCdnSettings, jsProcessResources)
+        notCompatibleWithConfigurationCache("Kotlin Vite tasks use lazy Node.js runtime access.")
+        dependsOn(sanitizeCdnJson, copyCdnSettings, jsProcessResources)
         mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
         inputs.file(project.layout.projectDirectory.file("vite.config.mjs"))
@@ -163,6 +174,9 @@ tasks {
         outputs.file(outputDirectory.file("client-kotlinx.js"))
         outputs.file(outputDirectory.file("client-ktor.js"))
         outputs.cacheIf { true }
+    }
+    named("jsBrowserProductionVitePrepare") {
+        notCompatibleWithConfigurationCache("Kotlin Vite tasks use lazy Node.js runtime access.")
     }
     named("jsBrowserDevelopmentRun") {
         dependsOn(lookupCdnUrls, jsProcessResources)
