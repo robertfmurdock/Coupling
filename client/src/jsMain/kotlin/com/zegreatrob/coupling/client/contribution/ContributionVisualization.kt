@@ -37,6 +37,7 @@ import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.type.PairListInput
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import react.Key
 import react.Props
 
 external interface ContributionVisualizationProps : Props {
@@ -52,6 +53,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     CouplingQuery(
         commander = commander,
         query = GqlQuery(ContributionVisualizationDataQuery(party.id, window.toGql(), PairListInput(Optional.Present(true)))),
+        key = Key("${party.id.value}-${window.name}"),
     ) { reload, _, queryResult ->
         PairFrequencyControls(
             pairsContributions = queryResult.party?.pairList?.toPairContributions() ?: return@CouplingQuery,
