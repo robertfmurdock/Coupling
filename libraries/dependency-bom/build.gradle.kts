@@ -33,6 +33,7 @@ dependencies {
         api(libs.com.lemonappdev.konsist)
         api(libs.eu.anifantakis.ksafe)
         api(libs.io.github.oshai.kotlin.logging)
+        api(libs.org.jetbrains.kotlin.wrappers.kotlin.react.popper)
         api(libs.org.jetbrains.kotlinx.kotlinx.datetime)
         api(libs.org.kotools.types)
         api(libs.org.kotools.types.kotlinx.serialization)

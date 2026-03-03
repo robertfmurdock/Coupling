@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.15.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1000.0",
-    "@aws-sdk/client-dynamodb": "3.1000.0",
-    "@aws-sdk/client-lambda": "~3.1000.0",
-    "@aws-sdk/lib-dynamodb": "3.1000.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1001.0",
+    "@aws-sdk/client-dynamodb": "3.1001.0",
+    "@aws-sdk/client-lambda": "~3.1001.0",
+    "@aws-sdk/lib-dynamodb": "3.1001.0",
     "@graphql-codegen/cli": "^6.1.2",
     "@graphql-codegen/java-common": "^3.0.1",
     "@graphql-codegen/kotlin": "^3.0.2",
@@ -43,7 +43,7 @@
     "express-jwt": "8.5.1",
     "favicons": "^7.2.0",
     "fitty": "^2.4.2",
-    "fs-extra": "^11.3.3",
+    "fs-extra": "^11.3.4",
     "global-jsdom": "28.0.0",
     "graphql": "^16.13.0",
     "graphql-http": "^1.22.4",
@@ -75,7 +75,7 @@
     "sonda": "^0.11.1",
     "stripe": "^20.4.0",
     "vite-plugin-html": "^3.2.2",
-    "webpack": "5.105.3",
+    "webpack": "5.105.4",
     "webpack-cli": "^6.0.1"
   }
 }
