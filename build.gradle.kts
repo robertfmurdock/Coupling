@@ -45,18 +45,6 @@ tagger {
 }
 
 tasks {
-    val testDistributionServer = providers.gradleProperty("develocity.testDistribution.server")
-        .orElse(providers.gradleProperty("gradle.enterprise.testDistribution.server"))
-        .orElse(providers.systemProperty("develocity.testDistribution.server"))
-        .orElse(providers.systemProperty("gradle.enterprise.testDistribution.server"))
-        .orElse("")
-
-    matching { it.name == "testDistributionWebSocketCheck" }.configureEach {
-        if (testDistributionServer.get().isBlank()) {
-            enabled = false
-        }
-    }
-
     named<ComposeUp>("composeUp") {
         mustRunAfter("caddyComposeUp", "libraries:repository:dynamo:composeUp")
         dependsOn(":server:buildImage")
