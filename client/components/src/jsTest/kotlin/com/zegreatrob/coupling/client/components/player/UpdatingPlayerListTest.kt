@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components.player
 
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommandWrapper
-import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommandWrapper
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.stubDispatchFunc
@@ -21,15 +21,15 @@ import kotlin.test.Test
 class UpdatingPlayerListTest {
 
     @Test
-    fun whenSavePlayerCommandSucceedsWillAddPlayerToList() = asyncSetup(object {
+    fun whenSavePartyCommandSucceedsWillAddPlayerToList() = asyncSetup(object {
         val newPlayer = stubPlayer()
         val partyId = stubPartyId()
         val players = stubPlayers(3)
-        val stubCannon = StubCannon<SavePlayerCommand.Dispatcher>(mutableListOf()).apply {
-            givenAny(SavePlayerCommandWrapper::class, VoidResult.Accepted)
+        val stubCannon = StubCannon<SavePartyCommand.Dispatcher>(mutableListOf()).apply {
+            givenAny(SavePartyCommandWrapper::class, VoidResult.Accepted)
         }
         var lastPlayersCallback: List<Player>? = null
-        var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>? = null
+        var dispatchFunc: DispatchFunc<SavePartyCommand.Dispatcher>? = null
     }) {
         render {
             UpdatingPlayerList(players, dispatchFunc = stubDispatchFunc(stubCannon)) { players, dispatcher ->
@@ -39,22 +39,22 @@ class UpdatingPlayerListTest {
             }
         }
     } exercise {
-        act { dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, newPlayer)) }() }
+        act { dispatchFunc?.invoke { fire(SavePartyCommand(partyId = partyId, players = listOf(newPlayer))) }() }
     } verify {
-        stubCannon.receivedActions.contains(SavePlayerCommand(partyId, newPlayer))
+        stubCannon.receivedActions.contains(SavePartyCommand(partyId = partyId, players = listOf(newPlayer)))
         lastPlayersCallback.assertIsEqualTo(players + newPlayer)
     }
 
     @Test
-    fun whenSavePlayerCommandSucceedsWillReplacePlayerInList() = asyncSetup(object {
+    fun whenSavePartyCommandSucceedsWillReplacePlayerInList() = asyncSetup(object {
         val targetPlayer = stubPlayer()
         val partyId = stubPartyId()
         val players = stubPlayers(3)
-        val stubCannon = StubCannon<SavePlayerCommand.Dispatcher>(mutableListOf()).apply {
-            givenAny(SavePlayerCommandWrapper::class, VoidResult.Accepted)
+        val stubCannon = StubCannon<SavePartyCommand.Dispatcher>(mutableListOf()).apply {
+            givenAny(SavePartyCommandWrapper::class, VoidResult.Accepted)
         }
         var lastPlayersCallback: List<Player>? = null
-        var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>? = null
+        var dispatchFunc: DispatchFunc<SavePartyCommand.Dispatcher>? = null
         val updatedPlayer = targetPlayer.copy(name = "Bill")
     }) {
         render {
@@ -68,20 +68,20 @@ class UpdatingPlayerListTest {
             }
         }
     } exercise {
-        act { dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, updatedPlayer)) }() }
+        act { dispatchFunc?.invoke { fire(SavePartyCommand(partyId = partyId, players = listOf(updatedPlayer))) }() }
     } verify {
-        stubCannon.receivedActions.contains(SavePlayerCommand(partyId, updatedPlayer))
+        stubCannon.receivedActions.contains(SavePartyCommand(partyId = partyId, players = listOf(updatedPlayer)))
         lastPlayersCallback.assertIsEqualTo(players + updatedPlayer)
     }
 
     @Test
-    fun whenSavePlayerCommandFailsWillNotAddPlayerToList() = asyncSetup(object {
+    fun whenSavePartyCommandFailsWillNotAddPlayerToList() = asyncSetup(object {
         val newPlayer = stubPlayer()
         val partyId = stubPartyId()
         val players = stubPlayers(3)
         val stubDispatcher = StubDispatcher.Channel()
         var lastPlayersCallback: List<Player>? = null
-        var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>? = null
+        var dispatchFunc: DispatchFunc<SavePartyCommand.Dispatcher>? = null
     }) {
         render {
             UpdatingPlayerList(players, dispatchFunc = stubDispatcher.func()) { players, dispatcher ->
@@ -92,7 +92,7 @@ class UpdatingPlayerListTest {
         }
     } exercise {
         act {
-            dispatchFunc?.invoke { fire(SavePlayerCommand(partyId, newPlayer)) }()
+            dispatchFunc?.invoke { fire(SavePartyCommand(partyId = partyId, players = listOf(newPlayer))) }()
             stubDispatcher.onActionReturn(VoidResult.Rejected)
         }
     } verify {

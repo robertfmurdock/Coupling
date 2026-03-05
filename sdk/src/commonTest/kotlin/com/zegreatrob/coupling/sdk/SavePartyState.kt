@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
@@ -19,10 +17,8 @@ suspend fun savePartyState(
 ) = coroutineScope {
     with(sdk()) {
         fire(SavePartyCommand(party))
-        players.forEach {
-            launch {
-                fire(SavePlayerCommand(party.id, it))
-            }
+        launch {
+            fire(SavePartyCommand(partyId = party.id, players = players))
         }
         pairAssignmentDocs.forEach {
             launch {
@@ -40,7 +36,7 @@ suspend fun savePartyStateWithFixedPlayerOrder(
     with(sdk()) {
         fire(SavePartyCommand(party))
         launch {
-            players.forEach { fire(SavePlayerCommand(party.id, it)) }
+            fire(SavePartyCommand(partyId = party.id, players = players))
         }
         pairAssignmentDocs.forEach {
             launch {

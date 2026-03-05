@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.components.pin
 
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
-import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.pinListPath
@@ -24,7 +25,7 @@ import react.router.dom.usePrompt
 import react.useState
 import kotlin.js.Json
 
-external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatcher, D : SavePinCommand.Dispatcher {
+external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatcher, D : SavePartyCommand.Dispatcher {
     var party: PartyDetails
     var boost: Boost?
     var pin: Pin
@@ -41,7 +42,7 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
     val updatedPin = values.fromJsonDynamic<GqlPinSnapshot>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSubmit = dispatchFunc {
-        fire(SavePinCommand(party.id, updatedPin))
+        fire(SavePartyCommand(partyId = party.id, pins = listOf(updatedPin)))
         reload()
     }
     val onRemove = if (!pinList.contains(pin)) {

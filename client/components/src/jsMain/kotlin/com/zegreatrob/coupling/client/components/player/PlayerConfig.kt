@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.components.player
 
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPath
@@ -26,7 +27,7 @@ import react.useState
 import kotlin.js.Json
 
 external interface PlayerConfigProps<P> : Props
-    where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher {
+    where P : SavePartyCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher {
     var party: PartyDetails
     var boost: Boost?
     var player: Player
@@ -51,10 +52,12 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     )
     val onSubmit = dispatchFunc {
         fire(
-            SavePlayerCommand(
+            SavePartyCommand(
                 partyId = party.id,
-                player = updatedPlayer.copy(
-                    additionalEmails = updatedPlayer.additionalEmails.filterNot(String::isBlank).toSet(),
+                players = listOf(
+                    updatedPlayer.copy(
+                        additionalEmails = updatedPlayer.additionalEmails.filterNot(String::isBlank).toSet(),
+                    ),
                 ),
             ),
         )

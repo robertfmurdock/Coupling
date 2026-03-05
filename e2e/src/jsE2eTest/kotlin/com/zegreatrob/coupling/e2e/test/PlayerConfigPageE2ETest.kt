@@ -5,7 +5,6 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.e2e.gql.PartyPlayerListQuery
 import com.zegreatrob.coupling.e2e.test.ConfigForm.retireButton
@@ -37,8 +36,7 @@ class PlayerConfigPageE2ETest {
             val party = buildParty()
             val player = buildPlayer()
             sdk.await().apply {
-                fire(SavePartyCommand(party))
-                fire(SavePlayerCommand(party.id, player))
+                fire(SavePartyCommand(partyId = party.id, party = party, players = listOf(player)))
             }
             Triple(player, party, sdk.await())
         })
@@ -207,8 +205,7 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfigPage
         }) {
             sdk.await().apply {
-                fire(SavePartyCommand(party))
-                players.forEach { player -> fire(SavePlayerCommand(party.id, player)) }
+                fire(SavePartyCommand(partyId = party.id, party = party, players = players))
             }
             PlayerConfigPage.goTo(party.id, players[0].id)
         } exercise {
@@ -332,8 +329,7 @@ class PlayerConfigPageE2ETest {
             val party = stubPartyDetails()
             val player = stubPlayer()
         }) {
-            sdk().fire(SavePartyCommand(party))
-            sdk().fire(SavePlayerCommand(party.id, player))
+            sdk().fire(SavePartyCommand(partyId = party.id, party = party, players = listOf(player)))
             sdk().fire(DeletePlayerCommand(party.id, player.id))
         } exercise {
             PlayerConfigPage.goTo(party.id, player.id)

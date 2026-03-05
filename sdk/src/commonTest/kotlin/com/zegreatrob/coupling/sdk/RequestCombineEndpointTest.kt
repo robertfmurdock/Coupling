@@ -2,10 +2,6 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.pin.SavePinCommand
-import com.zegreatrob.coupling.action.pin.fire
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
@@ -40,8 +36,8 @@ class RequestCombineEndpointTest {
         }
     }) {
         sdk.fire(SavePartyCommand(party))
-        pinsToSave.forEach { setupScope.launch { sdk.fire(SavePinCommand(party.id, it)) } }
-        playersToSave.forEach { setupScope.launch { sdk.fire(SavePlayerCommand(party.id, it)) } }
+        pinsToSave.forEach { setupScope.launch { sdk.fire(SavePartyCommand(partyId = party.id, pins = listOf(it))) } }
+        playersToSave.forEach { setupScope.launch { sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(it))) } }
     } exercise {
         coroutineScope {
             sdk.fire(GqlQuery(PlayersAndPinsQuery(party.id)))

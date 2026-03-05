@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.e2e.test.PartyConfigPage.findByRole
 import com.zegreatrob.coupling.model.ContributionId
@@ -36,8 +35,7 @@ class ContributionVisualizationPageE2ETest {
         val deletedPlayers = listOf(stubPlayer())
         val allPlayers = players + deletedPlayers
     }) {
-        sdk().fire(SavePartyCommand(party))
-        allPlayers.forEach { sdk().fire(SavePlayerCommand(party.id, it)) }
+        sdk().fire(SavePartyCommand(partyId = party.id, party = party, players = allPlayers))
         deletedPlayers.forEach { sdk().fire(DeletePlayerCommand(party.id, it.id)) }
         sdk().fire(
             SaveContributionCommand(
@@ -66,8 +64,7 @@ class ContributionVisualizationPageE2ETest {
         suspend fun styleSelector() = findByRole("combobox", RoleOptions(name = "Visualization Style"))
         suspend fun styleOptions() = within(styleSelector()).getAllByRole("option", RoleOptions())
     }) {
-        sdk().fire(SavePartyCommand(party))
-        players.forEach { sdk().fire(SavePlayerCommand(party.id, it)) }
+        sdk().fire(SavePartyCommand(partyId = party.id, party = party, players = players))
         ContributionVisualizationPage.goTo(party.id)
     } exercise {
         (0..<styleOptions().count()).forEach { index ->
@@ -89,8 +86,7 @@ class ContributionVisualizationPageE2ETest {
         suspend fun styleOptions() = within(styleSelector()).getAllByRole("option", RoleOptions())
         suspend fun playerCard() = findByText(players.first().name)
     }) {
-        sdk().fire(SavePartyCommand(party))
-        players.forEach { sdk().fire(SavePlayerCommand(party.id, it)) }
+        sdk().fire(SavePartyCommand(partyId = party.id, party = party, players = players))
         sdk().fire(
             SaveContributionCommand(
                 party.id,

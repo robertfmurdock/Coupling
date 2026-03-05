@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.stubmodel.stubContributionInput
@@ -27,8 +26,7 @@ class ContributionListPageE2ETest {
         val deletedPlayers = listOf(stubPlayer())
         val allPlayers = players + deletedPlayers
     }) {
-        sdk().fire(SavePartyCommand(party))
-        allPlayers.forEach { sdk().fire(SavePlayerCommand(party.id, it)) }
+        sdk().fire(SavePartyCommand(partyId = party.id, party = party, players = allPlayers))
         deletedPlayers.forEach { sdk().fire(DeletePlayerCommand(party.id, it.id)) }
         sdk().fire(
             SaveContributionCommand(

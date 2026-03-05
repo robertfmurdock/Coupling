@@ -52,7 +52,7 @@ include("server:slack")
 
 develocity {
     buildScan {
-        publishing.onlyIf { System.getenv().containsKey("CI") }
+        publishing.onlyIf { false }
         termsOfUseUrl = "https://gradle.com/help/legal-terms-of-use"
         termsOfUseAgree = "yes"
         tag("CI")

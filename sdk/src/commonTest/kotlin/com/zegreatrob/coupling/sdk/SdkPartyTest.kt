@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.AccessType
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -95,7 +94,7 @@ class SdkPartyTest {
         val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_EMAIL)
     }) {
         sdk().fire(SavePartyCommand(party))
-        sdk().fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
+        sdk().fire(SavePartyCommand(partyId = party.id, players = listOf(playerMatchingSdkUser)))
     } exercise {
         sdk().fire(GqlQuery(PartyAccessTypeAndListQuery(party.id)))
     } verify { result ->
@@ -130,7 +129,7 @@ class SdkPartyTest {
     fun getWillReturnAnyPartyThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
         with(altSdk()) {
             fire(SavePartyCommand(party))
-            fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
+            fire(SavePartyCommand(partyId = party.id, players = listOf(playerMatchingSdkUser)))
         }
     } exercise {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
@@ -149,9 +148,9 @@ class SdkPartyTest {
         with(altSdk()) {
             fire(SavePartyCommand(party))
             fire(
-                SavePlayerCommand(
-                    party.id,
-                    stubPlayer().copy(additionalEmails = setOf(PRIMARY_AUTHORIZED_USER_EMAIL)),
+                SavePartyCommand(
+                    partyId = party.id,
+                    players = listOf(stubPlayer().copy(additionalEmails = setOf(PRIMARY_AUTHORIZED_USER_EMAIL))),
                 ),
             )
         }
@@ -168,8 +167,8 @@ class SdkPartyTest {
     fun getWillNotReturnPartyIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
         with(altSdk()) {
             fire(SavePartyCommand(party))
-            fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
-            fire(SavePlayerCommand(party.id, playerMatchingSdkUser.copy(email = "something else")))
+            fire(SavePartyCommand(partyId = party.id, players = listOf(playerMatchingSdkUser)))
+            fire(SavePartyCommand(partyId = party.id, players = listOf(playerMatchingSdkUser.copy(email = "something else"))))
         }
     } exercise {
         sdk().fire(GqlQuery(PartyAccessTypeDetailsListQuery()))
@@ -183,7 +182,7 @@ class SdkPartyTest {
     fun getWillNotReturnPartyIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
         with(altSdk()) {
             fire(SavePartyCommand(party))
-            fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
+            fire(SavePartyCommand(partyId = party.id, players = listOf(playerMatchingSdkUser)))
             fire(DeletePlayerCommand(party.id, playerMatchingSdkUser.id))
         }
     } exercise {

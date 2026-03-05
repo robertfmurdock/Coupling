@@ -270,6 +270,12 @@ input SaveSlackIntegrationInput {
 
 input SavePartyInput {
     partyId: PartyId!
+    party: SavePartyDetailsInput
+    players: SavePartyPlayersInput
+    pins: SavePartyPinsInput
+}
+
+input SavePartyDetailsInput {
     name: String
     email: String
     pairingRule: Int
@@ -279,6 +285,32 @@ input SavePartyInput {
     callSignsEnabled: Boolean
     animationsEnabled: Boolean
     animationSpeed: Float
+}
+
+input SavePartyPlayersInput {
+    items: [SavePartyPlayerInput!]!
+}
+
+input SavePartyPinsInput {
+    items: [SavePartyPinInput!]!
+}
+
+input SavePartyPlayerInput {
+    playerId: PlayerId!
+    name: String!
+    email: String!
+    badge: Badge!
+    callSignAdjective: String!
+    callSignNoun: String!
+    imageURL: String
+    avatarType: String
+    unvalidatedEmails: [String!]!
+}
+
+input SavePartyPinInput {
+    pinId: PinId!
+    icon: String!
+    name: String!
 }
 
 input SavePlayerInput {
@@ -392,9 +424,9 @@ type Mutation {
     saveParty(input: SavePartyInput!): Boolean
     deleteParty(input: DeletePartyInput!): Boolean
     saveSlackIntegration(input: SaveSlackIntegrationInput!): Boolean
-    savePin(input: SavePinInput!): Boolean
+    savePin(input: SavePinInput!): Boolean @deprecated(reason: "Use saveParty with pins input.")
     deletePin(input: DeletePinInput!): Boolean
-    savePlayer(input: SavePlayerInput!): Boolean
+    savePlayer(input: SavePlayerInput!): Boolean @deprecated(reason: "Use saveParty with players input.")
     deletePlayer(input: DeletePlayerInput!): Boolean
     savePairAssignments(input: SavePairAssignmentsInput!): Boolean
     deletePairAssignments(input: DeletePairAssignmentsInput!): Boolean

@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.action.user.ConnectUserCommand
 import com.zegreatrob.coupling.action.user.CreateConnectUserSecretCommand
 import com.zegreatrob.coupling.action.user.DisconnectUserCommand
@@ -41,7 +39,7 @@ class SdkUserTest {
         val player = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_EMAIL)
     }) {
         sdk().fire(SavePartyCommand(party))
-        sdk().fire(SavePlayerCommand(party.id, player))
+        sdk().fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
     } exercise {
         sdk().fire(GqlQuery(UserPlayersQuery()))
     } verify { result ->
