@@ -36,6 +36,19 @@ fun GqlSavePlayerInput.toModel(): Player = Player(
 )
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
+fun GqlSavePartyPlayerInput.toModel(): Player = Player(
+    id = playerId,
+    badge = badge.toModel(),
+    name = name,
+    email = email,
+    callSignAdjective = callSignAdjective,
+    callSignNoun = callSignNoun,
+    imageURL = imageURL,
+    avatarType = avatarType?.let(AvatarType::valueOf),
+    additionalEmails = unvalidatedEmails.toSet(),
+)
+
+@OptIn(ExperimentalKotoolsTypesApi::class)
 fun GqlPlayer.toModel(): PartyRecord<Player> = PartyRecord(
     partyId.with(
         Player(

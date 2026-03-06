@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -26,8 +25,7 @@ class StatisticsE2ETest {
         }
             .take(6).toList()
     }) {
-        sdk.fire(SavePartyCommand(party))
-        players.forEach { player -> sdk.fire(SavePlayerCommand(party.id, player)) }
+        sdk.fire(SavePartyCommand(partyId = party.id, party = party, players = players))
     } exercise {
         StatisticsPage.goTo(party.id)
     } verify {
@@ -49,8 +47,7 @@ class StatisticsE2ETest {
         }
             .take(2).toList()
     }) {
-        sdk.fire(SavePartyCommand(party))
-        players.forEach { player -> sdk.fire(SavePlayerCommand(party.id, player)) }
+        sdk.fire(SavePartyCommand(partyId = party.id, party = party, players = players))
         sdk.fire(DeletePlayerCommand(party.id, players[0].id))
     } exercise {
         StatisticsPage.goTo(party.id)

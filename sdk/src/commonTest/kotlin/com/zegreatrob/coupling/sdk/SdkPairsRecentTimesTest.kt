@@ -5,8 +5,6 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -150,7 +148,7 @@ class SdkPairsRecentTimesTest {
         with(sdk()) {
             fire(SavePartyCommand(party))
             players.forEach {
-                fire(SavePlayerCommand(party.id, it))
+                fire(SavePartyCommand(partyId = party.id, players = listOf(it)))
             }
             history.forEach {
                 fire(SavePairAssignmentsCommand(party.id, it))

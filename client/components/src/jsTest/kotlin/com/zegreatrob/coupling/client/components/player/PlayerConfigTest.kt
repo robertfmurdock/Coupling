@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.components.player
 
 import com.zegreatrob.coupling.action.VoidResult
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.client.components.assertNotNull
@@ -71,9 +71,9 @@ class PlayerConfigTest {
     } exercise {
         act { actor.click(screen.getByRole("button", RoleOptions(name = "Save"))) }
     } verify {
-        val expectedCommand = SavePlayerCommand(
+        val expectedCommand = SavePartyCommand(
             partyId = party.id,
-            player = player.copy(avatarType = AvatarType.DicebearAdventurer),
+            players = listOf(player.copy(avatarType = AvatarType.DicebearAdventurer)),
         )
         stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(expectedCommand))
@@ -105,9 +105,9 @@ class PlayerConfigTest {
             actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
         }
     } verify {
-        val expectedCommand = SavePlayerCommand(
+        val expectedCommand = SavePartyCommand(
             partyId = party.id,
-            player = player.copy(avatarType = null),
+            players = listOf(player.copy(avatarType = null)),
         )
         stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(expectedCommand))
@@ -195,9 +195,9 @@ class PlayerConfigTest {
     } exercise {
         actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
-        val expectedCommand = SavePlayerCommand(
+        val expectedCommand = SavePartyCommand(
             partyId = party.id,
-            player = player.copy(additionalEmails = setOf(secondEmail)),
+            players = listOf(player.copy(additionalEmails = setOf(secondEmail))),
         )
         stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(expectedCommand))
@@ -228,7 +228,7 @@ class PlayerConfigTest {
         act { actor.click(screen.getByRole("button", RoleOptions(name = "Save"))) }
     } verify {
         stubDispatcher.receivedActions
-            .assertIsEqualTo(listOf(SavePlayerCommand(partyId = party.id, player = player)))
+            .assertIsEqualTo(listOf(SavePartyCommand(partyId = party.id, players = listOf(player))))
     }
 
     @Test
@@ -282,7 +282,7 @@ class PlayerConfigTest {
         fireEvent.submit(screen.getByRole("form"))
         act { altStubDispatcher.onActionReturn(VoidResult.Accepted) }
     } verify { action ->
-        action.assertIsEqualTo(SavePlayerCommand(party.id, player.copy(name = "nonsense")))
+        action.assertIsEqualTo(SavePartyCommand(partyId = party.id, players = listOf(player.copy(name = "nonsense"))))
         reloaderSpy.callCount.assertIsEqualTo(1)
     }
 

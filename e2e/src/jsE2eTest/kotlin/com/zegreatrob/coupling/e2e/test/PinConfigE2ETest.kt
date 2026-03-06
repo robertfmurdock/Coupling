@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.e2e.test.ConfigForm.retireButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
@@ -101,7 +100,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            sdk.fire(SavePinCommand(party.id, pin))
+            sdk.fire(SavePartyCommand(partyId = party.id, pins = listOf(pin)))
         } exercise {
             PinConfigPage.goTo(party.id, pin.id)
         } verify {
@@ -119,7 +118,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            sdk.fire(SavePinCommand(party.id, pin))
+            sdk.fire(SavePartyCommand(partyId = party.id, pins = listOf(pin)))
             PinConfigPage.goTo(party.id, pin.id)
         } exercise {
             acceptDialogAndGetMessage { retireButton().click() }

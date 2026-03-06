@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.contributor
 
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.TestRouter
@@ -84,17 +84,21 @@ class ContributorMenuTest {
     } verify {
         stubDispatcher.receivedActions
             .map {
-                if (it !is SavePlayerCommand) {
+                if (it !is SavePartyCommand) {
                     it
                 } else {
-                    it.copy(player = it.player.copy(id = PlayerId("generated".toNotBlankString().getOrThrow())))
+                    it.copy(
+                        players = it.players.map { player ->
+                            player.copy(id = PlayerId("generated".toNotBlankString().getOrThrow()))
+                        },
+                    )
                 }
             }
             .assertIsEqualTo(
                 listOf(
-                    SavePlayerCommand(
-                        partyId,
-                        contributor.copy(id = PlayerId("generated".toNotBlankString().getOrThrow())),
+                    SavePartyCommand(
+                        partyId = partyId,
+                        players = listOf(contributor.copy(id = PlayerId("generated".toNotBlankString().getOrThrow()))),
                     ),
                 ),
             )
@@ -122,9 +126,11 @@ class ContributorMenuTest {
         stubDispatcher.receivedActions
             .assertIsEqualTo(
                 listOf(
-                    SavePlayerCommand(
+                    SavePartyCommand(
                         partyId = partyId,
-                        player = targetPlayer.copy(additionalEmails = targetPlayer.additionalEmails + contributor.email),
+                        players = listOf(
+                            targetPlayer.copy(additionalEmails = targetPlayer.additionalEmails + contributor.email),
+                        ),
                     ),
                 ),
             )

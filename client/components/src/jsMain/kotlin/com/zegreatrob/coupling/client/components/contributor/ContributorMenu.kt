@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.contributor
 
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPath
@@ -27,7 +27,7 @@ external interface ContributorMenuProps : Props {
 
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var partyId: PartyId
-    var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>
+    var dispatchFunc: DispatchFunc<SavePartyCommand.Dispatcher>
 }
 
 @ReactFunc
@@ -36,12 +36,12 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
     val navigate = useNavigate()
 
     val createPlayer = dispatchFunc {
-        fire(SavePlayerCommand(partyId, contributor))
+        fire(SavePartyCommand(partyId = partyId, players = listOf(contributor)))
     }
     val addEmailToExistingPlayer = { player: Player ->
         fun(_: MouseEvent<HTMLButtonElement, *>) {
             val updatedPlayer = player.copy(additionalEmails = player.additionalEmails + contributor.email)
-            dispatchFunc { fire(SavePlayerCommand(partyId, updatedPlayer)) }()
+            dispatchFunc { fire(SavePartyCommand(partyId = partyId, players = listOf(updatedPlayer))) }()
         }
     }
 
