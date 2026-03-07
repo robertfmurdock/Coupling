@@ -93,6 +93,7 @@ tasks {
         from("$rootDir/sdk/build/processedResources/js/main")
     }
     e2eRun {
+        val testLogFile = rootProject.layout.buildDirectory.file("test-output/test.jsonl")
         dependsOn(
             dependencyResources,
             appConfiguration,
@@ -105,8 +106,12 @@ tasks {
             clientConfiguration,
             testLoggingLib
         )
+        doFirst {
+            testLogFile.get().asFile.parentFile.mkdirs()
+        }
         environment(
             "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
+            "COUPLING_TEST_LOG_PATH" to testLogFile.get().asFile.absolutePath,
         )
     }
 

@@ -41,7 +41,8 @@ dependencies {
     "jvmMainImplementation"(kotlin("reflect"))
     "jvmMainImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmMainImplementation"("org.junit.jupiter:junit-jupiter-engine")
-    "jvmMainImplementation"("org.slf4j:slf4j-simple")
+    "jvmMainImplementation"(libs.org.apache.logging.log4j.core)
+    "jvmMainImplementation"(libs.org.apache.logging.log4j.slf4j2.impl)
 }
 
 artifacts {

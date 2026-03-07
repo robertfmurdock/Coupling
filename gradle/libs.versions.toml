@@ -22,6 +22,8 @@ org-junit-junit-bom = "org.junit:junit-bom:6.0.3"
 org-kotlincrypto-hash-bom = "org.kotlincrypto.hash:bom:0.8.0"
 org-kotools-types = { module = "org.kotools:types", version.ref = "org-kotools" }
 org-kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-serialization", version.ref = "org-kotools" }
+org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
+org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
 org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 
 [plugins]
@@ -36,4 +38,5 @@ nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update
 
 [versions]
 com-apollographql-adapters = "0.7.0"
+org-apache-logging-log4j = "2.24.3"
 org-kotools = "5.1.1"

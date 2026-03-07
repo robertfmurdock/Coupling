@@ -16,9 +16,13 @@ suspend fun checkLogs() {
 
 fun List<Json>.forwardLogs() = forEach {
     try {
-        console.log(JSON.stringify(parseForForwarding(it)))
+        val forwarded = JSON.stringify(parseForForwarding(it))
+        console.log(forwarded)
+        appendToTestLog(forwarded)
     } catch (_: Throwable) {
-        console.log(it["message"])
+        val fallback = it["message"].toString()
+        console.log(fallback)
+        appendToTestLog(fallback)
     }
 }
 
@@ -35,3 +39,25 @@ private fun errorsWarnings(browserLog: List<Json>) = browserLog.filter {
         else -> false
     }
 }.map { it["message"] }
+
+private fun appendToTestLog(message: String) {
+    val logPath = testLogPath() ?: return
+    if (!isNodeRuntime()) {
+        return
+    }
+    try {
+        val fs = js("require('fs')")
+        fs.appendFileSync(logPath, message + "\n")
+    } catch (_: dynamic) {
+    }
+}
+
+private fun testLogPath(): String? {
+    val envVar = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_LOG_PATH : null")
+    return envVar as? String
+}
+
+private fun isNodeRuntime(): Boolean {
+    val hasNode = js("typeof process !== 'undefined' && process.versions && process.versions.node")
+    return hasNode as? String != null
+}

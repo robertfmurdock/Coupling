@@ -7,7 +7,11 @@ import kotlin.time.Clock
 
 data object JsonFormatter : Formatter {
 
-    override fun formatMessage(loggingEvent: KLoggingEvent): String = loggingEvent.formatMessage()
+    override fun formatMessage(loggingEvent: KLoggingEvent): String {
+        val message = loggingEvent.formatMessage()
+        appendToTestLog(message)
+        return message
+    }
 
     private fun KLoggingEvent.formatMessage() = Json.encodeToString(
         Message.serializer(),
@@ -21,6 +25,22 @@ data object JsonFormatter : Formatter {
             stackTrace = cause.throwableToString(),
         ),
     )
+
+    private fun appendToTestLog(message: String) {
+        val logPath = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_LOG_PATH : null")
+        if (logPath == null) {
+            return
+        }
+        val hasNode = js("typeof process !== 'undefined' && process.versions && process.versions.node")
+        if (hasNode as? String == null) {
+            return
+        }
+        try {
+            val fs = js("require('fs')")
+            fs.appendFileSync(logPath, message + "\n")
+        } catch (_: dynamic) {
+        }
+    }
 
     private fun Throwable?.throwableToString(): List<String> {
         if (this == null) {

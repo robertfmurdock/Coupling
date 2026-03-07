@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
 @Suppress("unused")
 class JsMappingsTest {
-
     class PlayerMappings {
         @Test
         fun typicalPlayerRoundTrip() = setup(object {
