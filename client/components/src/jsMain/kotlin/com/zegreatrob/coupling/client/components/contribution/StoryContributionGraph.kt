@@ -19,8 +19,8 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.core.toPrecision
 import js.date.Date
+import js.numbers.toPrecision
 import js.objects.Object
 import js.objects.recordOf
 import js.objects.unsafeJso

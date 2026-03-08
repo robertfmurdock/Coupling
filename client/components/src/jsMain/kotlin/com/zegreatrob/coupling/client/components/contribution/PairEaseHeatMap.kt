@@ -20,7 +20,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.core.toPrecision
+import js.numbers.toPrecision
 import react.Props
 import react.useEffect
 import react.useState
