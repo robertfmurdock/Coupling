@@ -5,8 +5,8 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.coroutines.DelicateCoroutinesApi
 import react.PropsWithClassName
-import react.dom.html.ReactHTML
-import react.raw.useLayoutEffectRaw
+import react.dom.html.ReactHTML.div
+import react.useLayoutEffectOnce
 import react.useRef
 import web.cssom.AlignItems
 import web.cssom.BackgroundRepeat
@@ -38,11 +38,10 @@ external interface CardHeaderProps : PropsWithClassName {
 val CardHeader by nfc<CardHeaderProps> { props ->
     val size = props.size
     val headerContainerRef = useRef<HTMLDivElement>(null)
-    useLayoutEffectRaw({
-        headerContainerRef.current?.fitContent(size);
-        {}
-    }, emptyArray())
-    ReactHTML.div {
+    useLayoutEffectOnce {
+        headerContainerRef.current?.fitContent(size)
+    }
+    div {
         css(props.className) {
             margin = Margin((size * 0.02).px, 0.px)
             height = (size * 0.33).px
@@ -55,7 +54,7 @@ val CardHeader by nfc<CardHeaderProps> { props ->
             transform = scale(1.1)
             perspective = 10.em
         }
-        ReactHTML.div {
+        div {
             css {
                 position = Position.absolute
                 overflow = Overflow.hidden
@@ -74,13 +73,13 @@ val CardHeader by nfc<CardHeaderProps> { props ->
                 fontWeight = FontWeight.bold
             }
         }
-        ReactHTML.div {
+        div {
             css {
                 height = (size * 0.33).px
                 zIndex = integer(100)
             }
             ref = headerContainerRef
-            ReactHTML.div {
+            div {
                 css {
                     display = Display.flex
                     alignItems = AlignItems.center

@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.core.toPrecision
+import js.numbers.toPrecision
 import react.FC
 import react.Props
 import react.ReactNode
@@ -50,7 +50,7 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
     val (pairsToReports, window) = props
     var storyContributions = pairsToReports.contributionsByStory()
 
-    if (pairsToReports.flatMap { it.second.contributions ?: emptyList() }.isEmpty()) {
+    if (pairsToReports.flatMap { it.second.contributions }.isEmpty()) {
         return@nfc
     }
     ResponsiveContainer {
@@ -104,7 +104,7 @@ val StoryEaseGraph by nfc<StoryEaseGraphProps> { props ->
 }
 
 fun List<Pair<CouplingPair, ContributionReport>>.contributionsByStory(): Map<String, List<Contribution>> {
-    val allContributions = flatMap { it.second.contributions?.elements ?: emptyList() }
+    val allContributions = flatMap { it.second.contributions.elements }
         .distinctBy { it.id }
     val rawStoryContributions: Map<String, List<Contribution>> =
         allContributions.groupBy { it.story }
