@@ -2,12 +2,13 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.defaultParty
 import kotlinx.serialization.Serializable
 import org.kotools.types.ExperimentalKotoolsTypesApi
 
 @OptIn(ExperimentalKotoolsTypesApi::class)
-fun GqlSavePartyInput.toModel() = PartyDetails(
+fun GqlSavePartyDetailsInput.toModel(partyId: PartyId) = PartyDetails(
     id = partyId,
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled ?: defaultParty.badgesEnabled,

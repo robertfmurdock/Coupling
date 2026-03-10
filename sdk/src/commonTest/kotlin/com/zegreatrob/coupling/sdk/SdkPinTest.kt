@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
-import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
@@ -47,7 +46,7 @@ class SdkPinTest {
             }
         },
     ) exercise {
-        pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
+        pins.forEach { sdk.fire(SavePartyCommand(partyId = party.id, pins = listOf(it))) }
     } verifyWithWait {
         sdk.fire(GqlQuery(PinListQuery(party.id)))
             ?.party
@@ -85,7 +84,7 @@ class SdkPinTest {
             )
         }
     }) exercise {
-        pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
+        pins.forEach { sdk.fire(SavePartyCommand(partyId = party.id, pins = listOf(it))) }
         sdk.fire(DeletePinCommand(party.id, this.pins[1].id))
     } verifyWithWait {
         sdk.fire(GqlQuery(PinListQuery(party.id)))
@@ -105,7 +104,7 @@ class SdkPinTest {
         suspend fun otherSdk() = altAuthorizedSdkDeferred.await()
     }) {
         otherSdk().fire(SavePartyCommand(otherParty))
-        otherSdk().fire(SavePinCommand(otherParty.id, stubPin()))
+        otherSdk().fire(SavePartyCommand(partyId = otherParty.id, pins = listOf(stubPin())))
     } exercise {
         sdk().fire(GqlQuery(PinListQuery(otherParty.id)))
             ?.party
@@ -124,7 +123,7 @@ class SdkPinTest {
     }) {
         sdk = sdk()
         sdk.fire(SavePartyCommand(party))
-        sdk.fire(SavePinCommand(party.id, pin))
+        sdk.fire(SavePartyCommand(partyId = party.id, pins = listOf(pin)))
     } exercise {
         sdk.fire(GqlQuery(PinRecordListQuery(party.id)))
             ?.party

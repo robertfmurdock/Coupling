@@ -27,6 +27,7 @@ kotlin {
 
 dependencies {
     commonMainApi(project(":libraries:model"))
+    commonMainImplementation(project(":libraries:action"))
     commonMainImplementation("io.ktor:ktor-client-content-negotiation")
     commonMainImplementation("io.ktor:ktor-client-core")
     commonMainImplementation("io.ktor:ktor-client-logging")

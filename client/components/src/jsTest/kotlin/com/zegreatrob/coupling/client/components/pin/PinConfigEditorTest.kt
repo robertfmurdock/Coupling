@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.pin
 
-import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.assertNotNull
@@ -100,6 +100,8 @@ class PinConfigEditorTest {
         act { fireEvent.submit(screen.getByRole("form")) }
     } verify {
         stubDispatcher.receivedActions
-            .assertIsEqualTo(listOf(SavePinCommand(party.id, pin.copy(name = newName, icon = newIcon))))
+            .assertIsEqualTo(
+                listOf(SavePartyCommand(partyId = party.id, pins = listOf(pin.copy(name = newName, icon = newIcon)))),
+            )
     }
 }

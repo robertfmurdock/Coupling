@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.player
 
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.perform
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.json.GqlSavePlayerInput
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
@@ -21,4 +21,7 @@ val savePlayerResolver = dispatch(
     toSerializable = { true },
 )
 
-private fun GqlSavePlayerInput.command() = SavePlayerCommand(partyId, toModel())
+private fun GqlSavePlayerInput.command() = SavePartyCommand(
+    partyId = partyId,
+    players = listOf(toModel()),
+)

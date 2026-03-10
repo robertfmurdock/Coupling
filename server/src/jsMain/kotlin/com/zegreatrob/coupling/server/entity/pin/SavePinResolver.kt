@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pin
 
-import com.zegreatrob.coupling.action.pin.SavePinCommand
-import com.zegreatrob.coupling.action.pin.perform
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.json.GqlSavePinInput
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
@@ -21,7 +21,10 @@ val savePinResolver = dispatch(
     toSerializable = { true },
 )
 
-private fun GqlSavePinInput.toCommand() = SavePinCommand(partyId, toPin())
+private fun GqlSavePinInput.toCommand() = SavePartyCommand(
+    partyId = partyId,
+    pins = listOf(toPin()),
+)
 
 private fun GqlSavePinInput.toPin() = Pin(
     id = pinId,

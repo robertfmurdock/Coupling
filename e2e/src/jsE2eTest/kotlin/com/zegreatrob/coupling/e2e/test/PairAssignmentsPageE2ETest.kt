@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairCallSigns
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
@@ -41,9 +40,7 @@ class PairAssignmentsPageE2ETest {
 
     companion object {
         private suspend fun ActionCannon<CouplingSdkDispatcher>.save(party: PartyDetails, players: List<Player>) = coroutineScope {
-            fire(SavePartyCommand(party))
-            players.map { SavePlayerCommand(party.id, it) }
-                .forEach { fire(it) }
+            fire(SavePartyCommand(partyId = party.id, party = party, players = players))
         }
     }
 
@@ -187,7 +184,7 @@ class PairAssignmentsPageE2ETest {
                 sdk.await().apply {
                     fire(SavePartyCommand(party))
                     coroutineScope {
-                        launch { players.forEach { fire(SavePlayerCommand(party.id, it)) } }
+                        launch { fire(SavePartyCommand(partyId = party.id, party = party, players = players)) }
                         launch { sdk.await().fire(SavePairAssignmentsCommand(party.id, pairingSet)) }
                     }
                 }

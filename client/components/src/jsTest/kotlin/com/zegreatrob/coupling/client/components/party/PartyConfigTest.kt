@@ -115,7 +115,11 @@ class PartyConfigTest {
         stubDispatcher.receivedActions
             .filterIsInstance<SavePartyCommand>()
             .first()
-            .party.id.value.toString().run {
+            .party
+            ?.id
+            ?.value
+            .toString()
+            .run {
                 assertIsNotEqualTo("")
                 assertIsEqualTo(automatedPartyId)
             }

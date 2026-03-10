@@ -5,6 +5,9 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.model.user.UserDetails
@@ -12,6 +15,8 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.party.PartySaveSyntax
+import com.zegreatrob.coupling.repository.pin.PinSave
+import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -29,6 +34,8 @@ interface ServerSavePartyCommandDispatcher :
     CurrentUserProvider {
 
     override val partyRepository: PartyRepository
+    val playerSaveRepository: PlayerSave
+    val pinSaveRepository: PinSave
 
     override suspend fun perform(command: SavePartyCommand) = if (command.isAuthorizedToSave()) {
         command.savePartyAndUser()
@@ -38,11 +45,15 @@ interface ServerSavePartyCommandDispatcher :
     }
 
     private suspend fun SavePartyCommand.savePartyAndUser() = withContext(currentCoroutineContext()) {
-        launch { party.save() }
-        launch {
-            currentUser.copy(authorizedPartyIds = currentUser.authorizedPartyIds + party.id)
-                .saveIfUserChanged()
+        party?.let { partyDetails ->
+            launch { partyDetails.save() }
+            launch {
+                currentUser.copy(authorizedPartyIds = currentUser.authorizedPartyIds + partyDetails.id)
+                    .saveIfUserChanged()
+            }
         }
+        launch { players.forEach { playerSaveRepository.save(PartyElement(partyId, it)) } }
+        launch { pins.forEach { pinSaveRepository.save(PartyElement(partyId, it)) } }
     }
 
     private suspend fun UserDetails.saveIfUserChanged() = if (this != currentUser) save() else Unit
@@ -51,11 +62,15 @@ interface ServerSavePartyCommandDispatcher :
         val (connectedUsers, loadedParty, players) = coroutineScope {
             await(
                 async { loadCurrentConnectedUsers() },
-                async { party.id.get() },
+                async { partyId.get() },
                 async { currentUser.loadPlayers() },
             )
         }
-        return loadedParty.partyIsNew() || authorizedPartyIds(connectedUsers, players).contains(party.id)
+        val isNewParty = loadedParty.partyIsNew()
+        if (isNewParty && party == null) {
+            return false
+        }
+        return isNewParty || authorizedPartyIds(connectedUsers, players).contains(partyId)
     }
 
     private fun authorizedPartyIds(users: List<UserDetails>, players: List<PartyRecord<Player>>) = players.map { it.data.partyId } + users.flatMap { it.authorizedPartyIds }

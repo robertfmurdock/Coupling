@@ -7,10 +7,6 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.pin.SavePinCommand
-import com.zegreatrob.coupling.action.pin.fire
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.forEach
 import com.zegreatrob.coupling.model.get
 import com.zegreatrob.coupling.model.map
@@ -63,7 +59,7 @@ class SpinTest {
     }) {
         coroutineScope {
             sdk.fire(SavePartyCommand(party))
-            players.forEach { launch { sdk.fire(SavePlayerCommand(party.id, it)) } }
+            players.forEach { launch { sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(it))) } }
         }
     } exercise {
         sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
@@ -232,9 +228,9 @@ class SpinTest {
         ) = coroutineScope {
             with(sdk) {
                 fire(SavePartyCommand(party))
-                players.forEach { launch { fire(SavePlayerCommand(party.id, it)) } }
+                players.forEach { launch { fire(SavePartyCommand(partyId = party.id, players = listOf(it))) } }
                 history.forEach { launch { sdk.fire(SavePairAssignmentsCommand(party.id, it)) } }
-                pins.forEach { launch { sdk.fire(SavePinCommand(party.id, it)) } }
+                pins.forEach { launch { sdk.fire(SavePartyCommand(partyId = party.id, pins = listOf(it))) } }
             }
         }
     }

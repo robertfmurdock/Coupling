@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.coupling.repository.validation.assertHasIds
@@ -58,9 +57,9 @@ class SdkPlayerTest {
             val updatedPlayer = player.copy(name = "Timmy!")
         }
     }) {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
     } exercise {
-        sdk.fire(SavePlayerCommand(party.id, updatedPlayer))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(updatedPlayer)))
         sdk().fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
             ?.party
             ?.playerList
@@ -77,7 +76,7 @@ class SdkPlayerTest {
             val player = stubPlayer()
         }
     }) {
-        sdk.fire(SavePlayerCommand(partyId, player))
+        sdk.fire(SavePartyCommand(partyId = partyId, players = listOf(player)))
     } exercise {
         sdk.fire(DeletePlayerCommand(partyId, player.id))
         sdk().fire(GqlQuery(PartyPlayersDetailsQuery(partyId)))
@@ -113,7 +112,7 @@ class SdkPlayerTest {
             }
         },
     ) {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
     } exercise {
         sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
@@ -139,9 +138,9 @@ class SdkPlayerTest {
             }
         },
     ) {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
-        sdk.fire(SavePlayerCommand(party.id, similarPlayer))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(similarPlayer)))
         sdk.fire(DeletePlayerCommand(party.id, similarPlayer.id))
     } exercise {
         sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
@@ -166,9 +165,9 @@ class SdkPlayerTest {
             }
         },
     ) {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
-        sdk.fire(SavePlayerCommand(party.id, player2))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player2)))
         sdk.fire(DeletePlayerCommand(party.id, player2.id))
     } exercise {
         sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
@@ -188,9 +187,9 @@ class SdkPlayerTest {
             val playerId = player.id
         }
     }) exercise {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
         sdk.fire(DeletePlayerCommand(party.id, playerId))
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
         sdk.fire(DeletePlayerCommand(party.id, playerId))
     } verifyWithWait {
         sdk().fire(GqlQuery(PartyRetiredPlayersDetailsQuery(party.id)))
@@ -208,7 +207,7 @@ class SdkPlayerTest {
             val players = stubPlayers(3)
         }
     }) {
-        players.forEach { setupScope.launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
+        players.forEach { setupScope.launch { sdk.fire(SavePartyCommand(partyId = partyId, players = listOf(it))) } }
     } exercise {
         sdk().fire(GqlQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
@@ -227,7 +226,7 @@ class SdkPlayerTest {
         }
     }) {
         coroutineScope {
-            players.forEach { launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
+            players.forEach { launch { sdk.fire(SavePartyCommand(partyId = partyId, players = listOf(it))) } }
         }
     } exercise {
         sdk().fire(GqlQuery(PartySpinsUntilFullRotationQuery(partyId)))
@@ -251,7 +250,7 @@ class SdkPlayerTest {
             )
         }
     }) {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
     } exercise {
         sdk().fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
             ?.party
@@ -273,8 +272,8 @@ class SdkPlayerTest {
         }
     }) {
         sdk.fire(SavePartyCommand(stubPartyDetails().copy(id = partyId2)))
-        sdk.fire(SavePlayerCommand(partyId, player1))
-        sdk.fire(SavePlayerCommand(partyId2, player2))
+        sdk.fire(SavePartyCommand(partyId = partyId, players = listOf(player1)))
+        sdk.fire(SavePartyCommand(partyId = partyId2, players = listOf(player2)))
     } exercise {
         sdk().fire(GqlQuery(PartyPlayersDetailsQuery(partyId)))
             ?.party
@@ -294,7 +293,7 @@ class SdkPlayerTest {
             val player = stubPlayer()
         }
     }) exercise {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
         sdk.fire(DeletePlayerCommand(party.id, player.id))
         sdk().fire(GqlQuery(PartyRetiredPlayersDataQuery(party.id)))
             ?.party
@@ -317,7 +316,7 @@ class SdkPlayerTest {
             val player = stubPlayer()
         }
     }) exercise {
-        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
         sdk().fire(GqlQuery(PartyPlayersDataQuery(party.id)))
             ?.party
             ?.playerList
@@ -340,7 +339,7 @@ class SdkPlayerTest {
                     val party = stubPartyDetails()
                 }) {
                     otherSdk.fire(SavePartyCommand(party))
-                    otherSdk.fire(SavePlayerCommand(party.id, stubPlayer()))
+                    otherSdk.fire(SavePartyCommand(partyId = party.id, players = listOf(stubPlayer())))
                 } exercise {
                     sdk.fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
                         ?.party
@@ -367,7 +366,7 @@ class SdkPlayerTest {
                 }) {
                     otherSdk.fire(SavePartyCommand(party))
                 } exercise {
-                    sdk.fire(SavePlayerCommand(party.id, player))
+                    sdk.fire(SavePartyCommand(partyId = party.id, players = listOf(player)))
                     otherSdk.fire(GqlQuery(PartyPlayersDetailsQuery(party.id)))
                         ?.party
                         ?.playerList
