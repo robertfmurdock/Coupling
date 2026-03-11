@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1005.0":
-  version "3.1005.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1005.0.tgz#957342cca11b1c239c3f81fee3d44ec82f74e71d"
-  integrity sha512-cRFY/mOLtM/8Jl0ZhkpZ0an7e9xuJRMqkEBtGamqtmFGizec9L2kQWHEtn7CtOGNOUtG0yMYS+Fcdmit4rYpig==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1006.0":
+  version "3.1006.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1006.0.tgz#4366f992cb12570ed0e5361d0ecd55922e2441d2"
+  integrity sha512-bUFqKquROXhBChQqm9+LUipA7sqwnhCdMjhzx5JtEs4ggC78J7j5CL67YIrDl2m4RRxsEiKesC2GnKa4fCtWdg==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -139,10 +139,10 @@
     "@smithy/util-utf8" "^4.2.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1005.0":
-  version "3.1005.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1005.0.tgz#499565f05e03bd192f58839f6d33c6a452dba890"
-  integrity sha512-lPkeRwkXhXEjyO3YENmxseFMfAQQAjecT9BjohoZqurvceLrqTml94Dt84OYtJpAvAVQua5SK7rOrjk2vEeU5A==
+"@aws-sdk/client-dynamodb@3.1006.0":
+  version "3.1006.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1006.0.tgz#f8e070ac1285e483dc3d3b265b10d153937c4236"
+  integrity sha512-PTGnTtTdOezfg7UsICBeS8BtxAxYfWI2/JNLflWjjryiJdHIl7aAprsHrIzlsD6qwQOloxhmwqp7C9JFY5BT2Q==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -184,7 +184,7 @@
     "@smithy/util-middleware" "^4.2.11"
     "@smithy/util-retry" "^4.2.11"
     "@smithy/util-utf8" "^4.2.2"
-    "@smithy/util-waiter" "^4.2.11"
+    "@smithy/util-waiter" "^4.2.12"
     tslib "^2.6.2"
 
 "@aws-sdk/client-lambda@^3.636.0":
@@ -237,10 +237,10 @@
     "@smithy/util-waiter" "^4.2.5"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1005.0":
-  version "3.1005.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1005.0.tgz#8b7528764983f8597f9b87fa75af493de4b14a6f"
-  integrity sha512-Wwef/fjArT5h+nEiW+rvhh15xT+6Lx3boZPFz+P5RA3quAyeSEKWx5aSOrRin59tINidRuy1lwhGPLCS4c4DHA==
+"@aws-sdk/client-lambda@~3.1006.0":
+  version "3.1006.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1006.0.tgz#cff4d63d16f9d9f850506f02cacdb0e39306527c"
+  integrity sha512-PBjuZ8930AWQGPZ/A2BXCkclPh5ZkJ8+Rp89BFmfr/OqaVea+iBS9bIdb5FWTK8Kndp/MSpspsQhlRLVZ8ZOug==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -284,7 +284,7 @@
     "@smithy/util-retry" "^4.2.11"
     "@smithy/util-stream" "^4.5.17"
     "@smithy/util-utf8" "^4.2.2"
-    "@smithy/util-waiter" "^4.2.11"
+    "@smithy/util-waiter" "^4.2.12"
     tslib "^2.6.2"
 
 "@aws-sdk/client-sso@3.948.0":
@@ -625,10 +625,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1005.0":
-  version "3.1005.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1005.0.tgz#04e8ab08a43ec9b6597f8fde55490bcb4b1d31a6"
-  integrity sha512-XNZyBXA2cUAU4Crg9uUMhFDs6IYi5RsMavlIxQIax9UJ4Ra379IIMG2dlVpbLcHBTGjV6mCRxxje6Pb3hTVjvA==
+"@aws-sdk/lib-dynamodb@3.1006.0":
+  version "3.1006.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1006.0.tgz#c23860c1a67784991d8561781c39e62eaad5010a"
+  integrity sha512-fn/OeYKdf0Z+4+0zHLllm1q/O4O8dYbt/sE3tHj1YBaCmZqVi8ydvnjJkAZEbejM/BBMaxKJH7VJdFKSoc0mOA==
   dependencies:
     "@aws-sdk/core" "^3.973.19"
     "@aws-sdk/util-dynamodb" "^3.996.2"
@@ -4268,10 +4268,10 @@
     "@smithy/util-buffer-from" "^4.2.2"
     tslib "^2.6.2"
 
-"@smithy/util-waiter@^4.2.11":
-  version "4.2.11"
-  resolved "https://registry.yarnpkg.com/@smithy/util-waiter/-/util-waiter-4.2.11.tgz#afe08ad75c9b51e35c83e3c11926855d886741f6"
-  integrity sha512-x7Rh2azQPs3XxbvCzcttRErKKvLnbZfqRf/gOjw2pb+ZscX88e5UkRPCB67bVnsFHxayvMvmePfKTqsRb+is1A==
+"@smithy/util-waiter@^4.2.12":
+  version "4.2.12"
+  resolved "https://registry.yarnpkg.com/@smithy/util-waiter/-/util-waiter-4.2.12.tgz#8cbe8f0fe586c7901fb66d21544339f1da1c6bef"
+  integrity sha512-ek5hyDrzS6mBFsNCEX8LpM+EWSLq6b9FdmPRlkpXXhiJE6aIZehKT9clC6+nFpZAA+i/Yg0xlaPeWGNbf5rzQA==
   dependencies:
     "@smithy/abort-controller" "^4.2.11"
     "@smithy/types" "^4.13.0"
@@ -5705,10 +5705,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@146.0.1:
-  version "146.0.1"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-146.0.1.tgz#e9dfe7e6e6bd71fd689b8473eb2df8c8cd2bed3d"
-  integrity sha512-XT1FnStrsGAS6l3M0yLtLjqSZWcOK0cBoR/QKLzA0rvf4oGtxnxYtCv6G0j8/0xNZTY2Zv9GOARZ5uBNc3bjTw==
+chromedriver@146.0.2:
+  version "146.0.2"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-146.0.2.tgz#91d246d627d3b8d8c19150ec8020f96e94d10a83"
+  integrity sha512-/A6ht59pGGrV3bU6eC//yH6W+NRexVGXy/KEe+pNn1MP5Xb34krSA02bGlYuA5XCrfdXPsFI//slvsOBwH//4Q==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.13.5"
