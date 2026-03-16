@@ -1,12 +1,12 @@
 [versions]
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.25.3"
-org-jlleitschuh-gradle-ktlint = "14.1.0"
+org-jlleitschuh-gradle-ktlint = "14.2.0"
 
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.21.1"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.18"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.20"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.4"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.9.13"
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.1.0"
@@ -14,13 +14,13 @@ org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j
 org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-js-plain-objects = { module = "org.jetbrains.kotlin.plugin.js-plain-objects:org.jetbrains.kotlin.plugin.js-plain-objects.gradle.plugin", version.ref = "kotlin" }
-org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:2.3.10"
+org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:2.3.20"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
 org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.4.2"
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.17"
 
 [plugins]
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.0"
-org-jetbrains-kotlin-plugin-js-plain-objects = "org.jetbrains.kotlin.plugin.js-plain-objects:2.3.10"
-org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:2.3.10"
+org-jetbrains-kotlin-plugin-js-plain-objects = "org.jetbrains.kotlin.plugin.js-plain-objects:2.3.20"
+org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:2.3.20"
 org-jmailen-kotlinter = "org.jmailen.kotlinter:5.4.2"
