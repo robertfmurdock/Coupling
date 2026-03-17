@@ -38,7 +38,7 @@
     "d3-selection": "^3.0.0",
     "date-fns": "^4.1.0",
     "drag-drop-webkit-mobile": "^1.4.1",
-    "entities": "^7.0.1",
+    "entities": "^8.0.0",
     "express": "^5.2.1",
     "express-jwt": "8.5.1",
     "favicons": "^7.2.0",
@@ -76,6 +76,6 @@
     "stripe": "^20.4.1",
     "vite-plugin-html": "^3.2.2",
     "webpack": "5.105.4",
-    "webpack-cli": "^7.0.1"
+    "webpack-cli": "^7.0.2"
   }
 }
