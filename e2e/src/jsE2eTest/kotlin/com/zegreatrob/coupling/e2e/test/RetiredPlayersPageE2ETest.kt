@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -45,8 +44,7 @@ class RetiredPlayersPageE2ETest {
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer
     }) {
-        sdk.fire(SavePartyCommand(party))
-        players.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
+        sdk.fire(SavePartyCommand(partyId = party.id, party = party, players = players))
         delete(retiredPlayers, sdk, party)
     } exercise {
         RetiredPlayersPage.goTo(party.id)

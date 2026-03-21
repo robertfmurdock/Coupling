@@ -45,7 +45,6 @@ import com.zegreatrob.coupling.server.action.party.PartyIntegrationQuery
 import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
-import com.zegreatrob.coupling.server.action.pin.ServerSavePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairListQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
@@ -54,7 +53,6 @@ import com.zegreatrob.coupling.server.action.player.RecentTimesPairedQuery
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
 import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerPairCountQueryDispatcher
-import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSpinsSinceLastPairedQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.SpinsUntilFullRotationQuery
 import com.zegreatrob.coupling.server.action.player.UserPlayersQuery
@@ -137,6 +135,8 @@ class CommandDispatcher(
     TraceIdProvider,
     BroadcastAction.Dispatcher<ICommandDispatcher>,
     ConnectPartyUserCommand.Dispatcher<ICommandDispatcher> {
+    override val playerSaveRepository get() = playerRepository
+    override val pinSaveRepository get() = pinRepository
     override val cannon: ActionCannon<ICommandDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
     override val secretGenerator = object : JwtSecretHandler {
         override val secretIssuer: String = Config.publicUrl
@@ -181,7 +181,6 @@ class CurrentPartyDispatcher(
     ServerSpinCommandDispatcher<CurrentPartyDispatcher>,
     ServerSaveSlackIntegrationCommandDispatcher,
     ServerCreateSecretCommandDispatcher,
-    ServerSavePlayerCommandDispatcher,
     ServerDeletePlayerCommandDispatcher,
     ServerDeleteSecretCommandDispatcher,
     RetiredPlayersQuery.Dispatcher,
@@ -189,7 +188,6 @@ class CurrentPartyDispatcher(
     ServerDeletePairAssignmentsCommandDispatcher,
     ServerDeletePartyCommandDispatcher,
     ServerDeletePinCommandDispatcher,
-    ServerSavePinCommandDispatcher,
     CurrentConnectedUsersProvider,
     CannonProvider<CurrentPartyDispatcher> {
     override val userId: UserId get() = commandDispatcher.userId

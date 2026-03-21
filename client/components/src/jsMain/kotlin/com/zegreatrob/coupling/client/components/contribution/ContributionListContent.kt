@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.graphing.ContributionWindow
@@ -38,7 +38,7 @@ external interface ContributionListContentProps : Props {
     var window: ContributionWindow
     var setWindow: (ContributionWindow) -> Unit
     var players: List<Player>
-    var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>
+    var dispatchFunc: DispatchFunc<SavePartyCommand.Dispatcher>
 }
 
 @ReactFunc

@@ -27,3 +27,15 @@ fun GqlPin.toModel(): Record<PartyElement<Pin>> = Record(
     isDeleted = isDeleted,
     timestamp = timestamp,
 )
+
+fun GqlSavePinInput.toModel() = Pin(
+    id = pinId,
+    name = name,
+    icon = icon,
+)
+
+fun GqlSavePartyPinInput.toModel() = Pin(
+    id = pinId,
+    name = name,
+    icon = icon,
+)

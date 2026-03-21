@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.player
 
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -13,7 +13,7 @@ import react.Props
 import react.ReactNode
 import react.useState
 
-external interface UpdatingPlayerListProps<D> : Props where D : SavePlayerCommand.Dispatcher {
+external interface UpdatingPlayerListProps<D> : Props where D : SavePartyCommand.Dispatcher {
     var players: List<Player>
     var dispatchFunc: DispatchFunc<D>
     var children: (List<Player>, DispatchFunc<D>) -> ReactNode
@@ -62,8 +62,8 @@ private class SecretCannon(
     ) {
         val unwrappedAction = action.unwrap()
         @Suppress("USELESS_IS_CHECK")
-        if (unwrappedAction is SavePlayerCommand && result == VoidResult.Accepted) {
-            addPlayer(unwrappedAction.player)
+        if (unwrappedAction is SavePartyCommand && result == VoidResult.Accepted) {
+            unwrappedAction.players.forEach(addPlayer)
         }
     }
 }

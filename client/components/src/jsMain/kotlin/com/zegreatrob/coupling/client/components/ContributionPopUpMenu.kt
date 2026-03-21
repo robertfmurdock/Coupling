@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.contributor.ContributorMenu
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
@@ -34,7 +34,7 @@ external interface ContributionPopUpMenuProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var partyId: PartyId
     var players: List<Player>
-    var dispatchFunc: DispatchFunc<SavePlayerCommand.Dispatcher>
+    var dispatchFunc: DispatchFunc<SavePartyCommand.Dispatcher>
     var children: ((ReferenceElement, Player) -> Unit) -> ReactNode
 }
 
