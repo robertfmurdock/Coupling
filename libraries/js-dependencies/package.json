@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.15.1",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1014.0",
-    "@aws-sdk/client-dynamodb": "3.1014.0",
-    "@aws-sdk/client-lambda": "~3.1014.0",
-    "@aws-sdk/lib-dynamodb": "3.1014.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1015.0",
+    "@aws-sdk/client-dynamodb": "3.1015.0",
+    "@aws-sdk/client-lambda": "~3.1015.0",
+    "@aws-sdk/lib-dynamodb": "3.1015.0",
     "@graphql-codegen/cli": "^6.2.1",
     "@graphql-codegen/java-common": "^4.0.0",
     "@graphql-codegen/kotlin": "^4.0.0",
@@ -45,7 +45,7 @@
     "fitty": "^2.4.2",
     "fs-extra": "^11.3.4",
     "global-jsdom": "29.0.0",
-    "graphql": "^16.13.1",
+    "graphql": "^16.13.2",
     "graphql-http": "^1.22.4",
     "html2canvas": "^1.4.1",
     "jose": "^6.2.2",
