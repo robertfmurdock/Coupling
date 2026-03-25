@@ -30,17 +30,17 @@
     jose "^6.0.8"
     openid-client "^6.8.0"
 
-"@auth0/auth0-react@2.15.1":
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.15.1.tgz#c18e7dfb26f9d621165a6e8c18336b0e80c66be0"
-  integrity sha512-zcBh8xWO1cgUeN19tQueZHVzq7/O+yWc6MhKdQvoU0ima0wagl9SeyVmahg8aiBQqRcqT6C+y2+IOcnPGnI2Vw==
+"@auth0/auth0-react@2.16.0":
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.16.0.tgz#5613ead36721031b430f7e446cbc7b9b71b10468"
+  integrity sha512-vQJdfkcNsPsZqhQ2KLRX+XhnC2FtbNdYGLkIRcoVaQMvOZeTOnsU45uu5HoNw61Am6j8vvf6YaUrXBlFOnJlZA==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.17.1"
+    "@auth0/auth0-spa-js" "^2.18.0"
 
-"@auth0/auth0-spa-js@^2.17.1":
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.17.1.tgz#206f96a4d5ed895e05dc02d39bb8235e9fcc8384"
-  integrity sha512-ae51cZUZro2sGmztY/EwGuQaSoXouTKYByKymHMeybYA6QneV/iurL5CRDZZVg9uqeLUdmnpxtIgakYfaSNY5Q==
+"@auth0/auth0-spa-js@^2.18.0":
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.18.0.tgz#c44c26dc06fa859df953f37b57e47f8da6c6be75"
+  integrity sha512-2oKnn6cD4zQUWDfZ4bWWmLxEbOnxjMYakMFOJCJ5Z5OobVeOBtUTVkYKB8LaDksQrK3F41IRzcP97ffsqEUYEA==
   dependencies:
     "@auth0/auth0-auth-js" "1.5.0"
     browser-tabs-lock "1.3.0"
@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1015.0.tgz#47c5b643fd58a89c4c9732249db323ac864e9f49"
-  integrity sha512-HqsaRlSZoKHfyd6Bo+Enm/6eQpd0aTqaemvMCPlIO8D5q1WvKwukHhXejBIWreFkd0auSsYln9XzoBNHUUXLqg==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1016.0":
+  version "3.1016.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1016.0.tgz#3ea39a4a25def37838f4c3dce047464e50c78c8f"
+  integrity sha512-K7FDbcEPET3PUkLbV/7wPJwg3YowJbWW9W4QR5QDU9v0gdiSwl/E6W0pdnF0zPABfBRuLtF1JS2W2odIx3PVxw==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -139,10 +139,10 @@
     "@smithy/util-utf8" "^4.2.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1015.0.tgz#befc6083cc7699103f64c4c881517c875aa405a2"
-  integrity sha512-jbGXLmsl9jNRHtUrP9bj4c+3h5EyDF/Zs84ynqsntA/0n+GjqNeSpALAQzcvO/6FKMOS8igfCF/T6SzDXchRGA==
+"@aws-sdk/client-dynamodb@3.1016.0":
+  version "3.1016.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1016.0.tgz#994da88c7d82b731e11373e874ba8ca3c36dd0a3"
+  integrity sha512-Owy1wQEJuLQ1WAc7QUQQ+3vSPWY6/JWBsPEDn9GM2F3+vDAtPL/HrZlfpY2BMeo6lxhm3/PfTg9wGy/TmK6buw==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -237,10 +237,10 @@
     "@smithy/util-waiter" "^4.2.5"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1015.0.tgz#725d89dec9d97bbcd9a689ced6ba99e252acbbe2"
-  integrity sha512-03oRSKMFxPSXIfZsB7RpYopynPn714nS/0SI5OJ0izxld+qdwzkcnlvb/NGONXh7emn62iPxF1X32wInXM6lZw==
+"@aws-sdk/client-lambda@~3.1016.0":
+  version "3.1016.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1016.0.tgz#8d447c7181bb0c0438469194295461814c280e05"
+  integrity sha512-1HdTLlBX1B5zcLVNCq4ID9XnVNV9P8tQgc2Fz7cDdO5o6guIUw00UxpTS/EYclZ7Ipe5JvyZZYL7zX5IYY0CYQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -625,10 +625,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1015.0.tgz#d2cb0297716351e5e262f38a96a4e4ce0b930c21"
-  integrity sha512-rPUsusjJSdUXbXV+h/0VlwuPhOUY3Ow9EbQEOiH70rKihasvqiedsIFRujqTs72EyT5zobv48hHnHIew5Pok2g==
+"@aws-sdk/lib-dynamodb@3.1016.0":
+  version "3.1016.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1016.0.tgz#bd552c34b14171e28c97cf8ed76087d36458a2ed"
+  integrity sha512-vyhNmcF30CpErFMM5z86NUcQ8V64eSbSLnLGbkgE2oYqWFNctZwPJF/FWUOV6SEAEEW35oK3QvK2K0woMdDflw==
   dependencies:
     "@aws-sdk/core" "^3.973.24"
     "@aws-sdk/util-dynamodb" "^3.996.2"
@@ -5753,10 +5753,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@146.0.5:
-  version "146.0.5"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-146.0.5.tgz#063e74f34a4556984077c26bcea4889eae8e721b"
-  integrity sha512-i6P88kVrEbUeBAZWOIJSltid9DuYCV6+ybCEZiIy3+N0MykdCJTvpXRdy5V6fur8egU0U5HhPc1UbNEjjv9rsg==
+chromedriver@146.0.6:
+  version "146.0.6"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-146.0.6.tgz#8c5e726b3d690a0879d5d3db9a963707777fc178"
+  integrity sha512-FIRi3hy0nRiyirK03etVXEpYTIodevFcvTBAM5ZCq+pX3w31jLm6JE8BVW1ypAVLvSp6HJDvboCcdgUroS3miw==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.13.5"
@@ -10494,10 +10494,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recharts@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.8.0.tgz#461025818cbb858e7ff2e5820b67c6143e9b418d"
-  integrity sha512-Z/m38DX3L73ExO4Tpc9/iZWHmHnlzWG4njQbxsF5aSjwqmHNDDIm0rdEBArkwsBvR8U6EirlEHiQNYWCVh9sGQ==
+recharts@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.8.1.tgz#1784b14784dab9a27eb426c475e6a9187f14cf01"
+  integrity sha512-mwzmO1s9sFL0TduUpwndxCUNoXsBw3u3E/0+A+cLcrSfQitSG62L32N69GhqUrrT5qKcAE3pCGVINC6pqkBBQg==
   dependencies:
     "@reduxjs/toolkit" "^1.9.0 || 2.x.x"
     clsx "^2.1.1"
