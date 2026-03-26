@@ -22,27 +22,27 @@
     "@csstools/css-tokenizer" "^3.0.3"
     lru-cache "^10.4.3"
 
-"@auth0/auth0-auth-js@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.5.0.tgz#7dce0f46d92a6e29ea7aea1d917e43d7b08c581f"
-  integrity sha512-shahG7sRw6VxduRvnNcmbgL8V42z+kNR9LDih9ofY4eM8ygt07RUh58x7S1M80ENx9wcMqYUsJWMaVudgQHyjQ==
+"@auth0/auth0-auth-js@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.6.0.tgz#be80c2945d1baeb9eb3946646dabfb7316a749d8"
+  integrity sha512-/WYYNlsqhWA6I60pMVLFVeOgjOUCLdJThEAsjN8pAgYY09BTxbPaRIEVDgGu6ckoJpkmKvEYlHPO/vwRNrvX6w==
   dependencies:
     jose "^6.0.8"
     openid-client "^6.8.0"
 
-"@auth0/auth0-react@2.15.1":
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.15.1.tgz#c18e7dfb26f9d621165a6e8c18336b0e80c66be0"
-  integrity sha512-zcBh8xWO1cgUeN19tQueZHVzq7/O+yWc6MhKdQvoU0ima0wagl9SeyVmahg8aiBQqRcqT6C+y2+IOcnPGnI2Vw==
+"@auth0/auth0-react@2.16.0":
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.16.0.tgz#5613ead36721031b430f7e446cbc7b9b71b10468"
+  integrity sha512-vQJdfkcNsPsZqhQ2KLRX+XhnC2FtbNdYGLkIRcoVaQMvOZeTOnsU45uu5HoNw61Am6j8vvf6YaUrXBlFOnJlZA==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.17.1"
+    "@auth0/auth0-spa-js" "^2.18.0"
 
-"@auth0/auth0-spa-js@^2.17.1":
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.17.1.tgz#206f96a4d5ed895e05dc02d39bb8235e9fcc8384"
-  integrity sha512-ae51cZUZro2sGmztY/EwGuQaSoXouTKYByKymHMeybYA6QneV/iurL5CRDZZVg9uqeLUdmnpxtIgakYfaSNY5Q==
+"@auth0/auth0-spa-js@^2.18.0":
+  version "2.18.2"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.18.2.tgz#28d81f4bd23d4113ca97e6e16cbe06c517cfed57"
+  integrity sha512-Dq6ZpwM8wIIs3RLDEmPgXka24J/+X3TKzKpcPu0K9Yw2jFaY5/CGAJCNxBJP1qf3uIyRidICnQ75QhvFbR3HLg==
   dependencies:
-    "@auth0/auth0-auth-js" "1.5.0"
+    "@auth0/auth0-auth-js" "1.6.0"
     browser-tabs-lock "1.3.0"
     dpop "2.1.1"
     es-cookie "1.3.2"
@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1015.0.tgz#47c5b643fd58a89c4c9732249db323ac864e9f49"
-  integrity sha512-HqsaRlSZoKHfyd6Bo+Enm/6eQpd0aTqaemvMCPlIO8D5q1WvKwukHhXejBIWreFkd0auSsYln9XzoBNHUUXLqg==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1017.0":
+  version "3.1017.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1017.0.tgz#e79923e090b3fd4c275c0426d24476a9a7f19075"
+  integrity sha512-MW2wjRpIuwVG2KpyD5uotJ6KCMZhsQQ6xTiPtI5WDYERnCsIGdOglFbOT2HHUJ5ql7MeJSRJ0KgilWWsQ6HBew==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -139,10 +139,10 @@
     "@smithy/util-utf8" "^4.2.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1015.0.tgz#befc6083cc7699103f64c4c881517c875aa405a2"
-  integrity sha512-jbGXLmsl9jNRHtUrP9bj4c+3h5EyDF/Zs84ynqsntA/0n+GjqNeSpALAQzcvO/6FKMOS8igfCF/T6SzDXchRGA==
+"@aws-sdk/client-dynamodb@3.1017.0":
+  version "3.1017.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1017.0.tgz#f7eb310c14044d8f4137c52de74770ddb637a956"
+  integrity sha512-qHP8f3MKTZTW13EknRzQZ9K14FLziSOWgymJNRyBLyzerBqeJN9xJII+dHmphQ9+yEo9zISZEzGyI2LbE4Smnw==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -237,10 +237,10 @@
     "@smithy/util-waiter" "^4.2.5"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1015.0.tgz#725d89dec9d97bbcd9a689ced6ba99e252acbbe2"
-  integrity sha512-03oRSKMFxPSXIfZsB7RpYopynPn714nS/0SI5OJ0izxld+qdwzkcnlvb/NGONXh7emn62iPxF1X32wInXM6lZw==
+"@aws-sdk/client-lambda@~3.1017.0":
+  version "3.1017.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1017.0.tgz#d54277fa8ae2237eb23a41dae83d3a81231f2587"
+  integrity sha512-dtzyoZfHLJ5pdNMHhd8/+hukM7fJc1PMbjSXNOCFIAlG5bc2tum3sxxA/5AQWUvGH+UXIolVaqGUni3YXfezDQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -625,10 +625,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1015.0":
-  version "3.1015.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1015.0.tgz#d2cb0297716351e5e262f38a96a4e4ce0b930c21"
-  integrity sha512-rPUsusjJSdUXbXV+h/0VlwuPhOUY3Ow9EbQEOiH70rKihasvqiedsIFRujqTs72EyT5zobv48hHnHIew5Pok2g==
+"@aws-sdk/lib-dynamodb@3.1017.0":
+  version "3.1017.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1017.0.tgz#885ca5b03f1567c94f83a00bd3f107e242d920bb"
+  integrity sha512-TJIi6wqxHnDfP74re9XTfB33smXzLNma+r77PsLnjzZPJxMZBQoYuD/t0LrSrZDYw2GKleJZVt7CabahUZsAaw==
   dependencies:
     "@aws-sdk/core" "^3.973.24"
     "@aws-sdk/util-dynamodb" "^3.996.2"
@@ -4368,17 +4368,17 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-5.6.1.tgz#e6f6989651ce65b39bf59ac0b5a2cea459ec3070"
-  integrity sha512-5xBrjkGmFvKvpMod6VvpOaFaa67eRbmieKeFTePZyOr/sUXzm7A3YY91l330pS0usUst5PxTZDUZHWfOc0v1GA==
+"@stripe/react-stripe-js@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.0.0.tgz#5912b1e57bc496a8374659259b5d706a47da82cc"
+  integrity sha512-vJW37/uyRAJEkD3YKCh3aISmMIMrQGR3ViVBkUVQDB7CqbRCnOUyhwDe8zKg+d6K8V4d0MUcthcQdHL4meqG7A==
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^8.11.0":
-  version "8.11.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-8.11.0.tgz#1f17759a4040e553746e76bd673ba27cb85e5a63"
-  integrity sha512-3fVF4z3efsgwgyj64nFK+6F4/vMw0mUXD2TBbOfftJtKVNx4JNv3CSfe1fY4DCtCk0JFp8/YPNcRkzgV0HJ8cg==
+"@stripe/stripe-js@^9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-9.0.0.tgz#10d9a22e437fe7704e015909ece43acb6abb1fc0"
+  integrity sha512-UtUK7LFglQSNVIOwcRBaxfzq4wkfU8CT2f2uQVEeu65jTP6wicxFshYdYCke9Tfd0PCxhOe/b8rwJjr5EiDCfQ==
 
 "@sventschui/webdriverio-testing-library@4.0.1":
   version "4.0.1"
@@ -5753,10 +5753,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@146.0.5:
-  version "146.0.5"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-146.0.5.tgz#063e74f34a4556984077c26bcea4889eae8e721b"
-  integrity sha512-i6P88kVrEbUeBAZWOIJSltid9DuYCV6+ybCEZiIy3+N0MykdCJTvpXRdy5V6fur8egU0U5HhPc1UbNEjjv9rsg==
+chromedriver@146.0.6:
+  version "146.0.6"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-146.0.6.tgz#8c5e726b3d690a0879d5d3db9a963707777fc178"
+  integrity sha512-FIRi3hy0nRiyirK03etVXEpYTIodevFcvTBAM5ZCq+pX3w31jLm6JE8BVW1ypAVLvSp6HJDvboCcdgUroS3miw==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.13.5"
@@ -10494,10 +10494,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recharts@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.8.0.tgz#461025818cbb858e7ff2e5820b67c6143e9b418d"
-  integrity sha512-Z/m38DX3L73ExO4Tpc9/iZWHmHnlzWG4njQbxsF5aSjwqmHNDDIm0rdEBArkwsBvR8U6EirlEHiQNYWCVh9sGQ==
+recharts@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.8.1.tgz#1784b14784dab9a27eb426c475e6a9187f14cf01"
+  integrity sha512-mwzmO1s9sFL0TduUpwndxCUNoXsBw3u3E/0+A+cLcrSfQitSG62L32N69GhqUrrT5qKcAE3pCGVINC6pqkBBQg==
   dependencies:
     "@reduxjs/toolkit" "^1.9.0 || 2.x.x"
     clsx "^2.1.1"
@@ -11365,10 +11365,10 @@ strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stripe@^20.4.1:
-  version "20.4.1"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-20.4.1.tgz#547d8a22a97e85a239895f0ffe14de21d96f060a"
-  integrity sha512-axCguHItc8Sxt0HC6aSkdVRPffjYPV7EQqZRb2GkIa8FzWDycE7nHJM19C6xAIynH1Qp1/BHiopSi96jGBxT0w==
+stripe@^21.0.1:
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-21.0.1.tgz#e26d90051442ef7d0d1aa79b6346f1c941d8dc63"
+  integrity sha512-ocv0j7dWttswDWV2XL/kb6+yiLpDXNXL3RQAOB5OB2kr49z0cEatdQc12+zP/j5nrXk6rAsT4N3y/NUvBbK7Pw==
 
 strnum@^2.1.0:
   version "2.1.2"
