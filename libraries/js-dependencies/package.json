@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.16.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1017.0",
-    "@aws-sdk/client-dynamodb": "3.1017.0",
-    "@aws-sdk/client-lambda": "~3.1017.0",
-    "@aws-sdk/lib-dynamodb": "3.1017.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1018.0",
+    "@aws-sdk/client-dynamodb": "3.1018.0",
+    "@aws-sdk/client-lambda": "~3.1018.0",
+    "@aws-sdk/lib-dynamodb": "3.1018.0",
     "@graphql-codegen/cli": "^6.2.1",
     "@graphql-codegen/java-common": "^4.0.0",
     "@graphql-codegen/kotlin": "^4.0.0",
@@ -30,7 +30,7 @@
     "@remix-run/router": "^1.23.2",
     "react-router": "^7.13.2",
     "react-router-dom": "^7.13.2",
-    "chromedriver": "146.0.6",
+    "chromedriver": "147.0.0",
     "compression": "^1.8.1",
     "d3": "^7.9.0",
     "d3-array": "^3.2.4",
