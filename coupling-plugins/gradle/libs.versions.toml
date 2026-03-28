@@ -1,13 +1,13 @@
 [versions]
 kotlin = "2.3.20"
 ktlint = "0.45.2"
-org-apache-logging-log4j = "2.25.3"
+org-apache-logging-log4j = "2.25.4"
 org-jlleitschuh-gradle-ktlint = "14.2.0"
 
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.21.2"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.28"
-com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.6"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.29"
+com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.7"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.9.15"
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.1.0"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
