@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.cli.party
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
+import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.multiple
@@ -24,6 +25,7 @@ class SaveContribution(
     private val clock: Clock,
 ) : SuspendingCliktCommand(name = "save"),
     ContributionCliCommand {
+    private val contributionContext by requireObject<ContributionContext>()
     private val inputJson by option().prompt()
     private val contributionId by option().default("")
     private val participantEmail by option().multiple()
@@ -36,8 +38,7 @@ class SaveContribution(
     override val link by option().default("")
     override val label by option().default("")
     override suspend fun run() {
-        val contributionContext = currentContext.findObject<ContributionContext>()
-        val partyId = contributionContext!!.partyId
+        val partyId = contributionContext.partyId
         val data = inputJson.trim()
         val action = SaveContributionCommand(
             partyId = partyId,

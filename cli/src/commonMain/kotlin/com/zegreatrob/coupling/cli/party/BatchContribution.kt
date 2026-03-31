@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.cli.party
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
+import com.github.ajalt.clikt.core.CliktError
+import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
@@ -15,16 +17,17 @@ class BatchContribution(
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
 ) : SuspendingCliktCommand(name = "batch"),
     ContributionCliCommand {
+    private val contributionContext by requireObject<ContributionContext>()
     private val file by option().default("")
     private val inputJson by option()
     override val label by option().default("")
     override val link by option().default("")
     private val cycleTimeFromFirstCommit by option().flag()
     override suspend fun run() {
-        val inputJson = inputJson ?: loadFile(file) ?: error("Could not load file")
+        val inputJson = inputJson ?: loadFile(file)
+            ?: throw CliktError("Could not load file", printError = true)
         val contributions = ContributionParser.parseContributions(inputJson.trim())
-        val contributionContext = currentContext.findObject<ContributionContext>()
-        val partyId = contributionContext!!.partyId
+        val partyId = contributionContext.partyId
         val inputs = contributions.map { contribution ->
             contribution.contributionInput(
                 link = link.takeIf(String::isNotBlank),
