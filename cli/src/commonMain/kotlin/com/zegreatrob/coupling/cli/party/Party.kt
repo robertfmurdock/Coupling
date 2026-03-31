@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.cli.party
 
 import com.github.ajalt.clikt.command.SuspendingCliktCommand
+import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
 import com.zegreatrob.coupling.cli.ConfigFileSource
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
@@ -20,11 +20,16 @@ private class Party : SuspendingCliktCommand() {
 
     private val partyId by option()
         .convert { PartyId(it) }
-        .required()
 
     private val env by option().default("production")
     override suspend fun run() {
-        currentContext.findOrSetObject<PartyId>("partyId") { partyId }
+        val commandName = currentContext.invokedSubcommand?.commandName
+        if (partyId == null && commandName != "list") {
+            throw UsageError("missing option --party-id")
+        }
+        partyId?.let {
+            currentContext.findOrSetObject<PartyId>("partyId") { it }
+        }
         currentContext.findOrSetObject { PartyContext(partyId, env) }
     }
 }
@@ -32,7 +37,7 @@ private class Party : SuspendingCliktCommand() {
 data class PartyContext(val partyId: PartyId?, val env: String)
 
 fun party(cannon: ActionCannon<CouplingSdkDispatcher>?): SuspendingCliktCommand = Party()
-    .subcommands(PartyList())
+    .subcommands(PartyList(cannon))
     .subcommands(PartyDetails(cannon))
     .subcommands(CurrentPairs(cannon))
     .subcommands(Players(cannon))
