@@ -16,10 +16,12 @@ suspend fun main(args: Array<String>) {
         .main(platformArgCorrection(args))
 }
 
-fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): CouplingCli = CouplingCli()
+fun cli(cannon: ActionCannon<CouplingSdkDispatcher>? = null): CouplingCli = cli(cannonSdkProvider(cannon))
+
+fun cli(sdkProvider: SdkProvider): CouplingCli = CouplingCli()
     .subcommands(Login())
     .subcommands(ConfigCommand())
-    .subcommands(party(cannon))
+    .subcommands(party(sdkProvider))
 
 expect fun platformArgCorrection(args: Array<String>): Array<String>
 

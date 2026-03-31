@@ -9,6 +9,8 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.cli.SdkProvider
+import com.zegreatrob.coupling.cli.cannonSdkProvider
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.model.ContributionInput
@@ -21,10 +23,15 @@ import kotlin.time.Duration
 import kotlin.time.Instant
 
 class SaveContribution(
-    private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
+    private val sdkProvider: SdkProvider,
     private val clock: Clock,
 ) : SuspendingCliktCommand(name = "save"),
     ContributionCliCommand {
+    constructor(cannon: ActionCannon<CouplingSdkDispatcher>? = null, clock: Clock) : this(
+        sdkProvider = cannonSdkProvider(cannon),
+        clock = clock,
+    )
+
     private val contributionContext by requireObject<ContributionContext>()
     private val inputJson by option().prompt()
     private val contributionId by option().default("")
@@ -76,7 +83,7 @@ class SaveContribution(
             withSdk(
                 env = contributionContext.env,
                 echo = ::echo,
-                cannon = cannon,
+                sdkProvider = sdkProvider,
             ) { sdk -> sdk.fire(action) }
         }
     }

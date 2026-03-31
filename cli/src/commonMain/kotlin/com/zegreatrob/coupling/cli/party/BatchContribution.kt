@@ -8,15 +8,19 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.cli.SdkProvider
+import com.zegreatrob.coupling.cli.cannonSdkProvider
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.tools.digger.json.ContributionParser
 
 class BatchContribution(
-    private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
+    private val sdkProvider: SdkProvider,
 ) : SuspendingCliktCommand(name = "batch"),
     ContributionCliCommand {
+    constructor(cannon: ActionCannon<CouplingSdkDispatcher>? = null) : this(cannonSdkProvider(cannon))
+
     private val contributionContext by requireObject<ContributionContext>()
     private val file by option().default("")
     private val inputJson by option()
@@ -40,7 +44,7 @@ class BatchContribution(
             )
         }
         val commands = inputs.chunked(100).map { SaveContributionCommand(partyId = partyId, contributionList = it) }
-        withSdk(contributionContext.env, ::echo, cannon = cannon) { sdk ->
+        withSdk(contributionContext.env, ::echo, sdkProvider = sdkProvider) { sdk ->
             commands.forEach { command ->
                 sdk.fire(command)
             }

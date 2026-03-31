@@ -8,9 +8,8 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.cli.ConfigFileSource
+import com.zegreatrob.coupling.cli.SdkProvider
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
-import com.zegreatrob.testmints.action.ActionCannon
 import kotlin.time.Clock
 
 private class Party : SuspendingCliktCommand() {
@@ -36,13 +35,13 @@ private class Party : SuspendingCliktCommand() {
 
 data class PartyContext(val partyId: PartyId?, val env: String)
 
-fun party(cannon: ActionCannon<CouplingSdkDispatcher>?): SuspendingCliktCommand = Party()
-    .subcommands(PartyList(cannon))
-    .subcommands(PartyDetails(cannon))
-    .subcommands(CurrentPairs(cannon))
-    .subcommands(Players(cannon))
+fun party(sdkProvider: SdkProvider): SuspendingCliktCommand = Party()
+    .subcommands(PartyList(sdkProvider))
+    .subcommands(PartyDetails(sdkProvider))
+    .subcommands(CurrentPairs(sdkProvider))
+    .subcommands(Players(sdkProvider))
     .subcommands(
         Contribution()
-            .subcommands(SaveContribution(clock = Clock.System))
-            .subcommands(BatchContribution()),
+            .subcommands(SaveContribution(clock = Clock.System, sdkProvider = sdkProvider))
+            .subcommands(BatchContribution(sdkProvider = sdkProvider)),
     )

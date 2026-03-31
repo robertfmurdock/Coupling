@@ -8,12 +8,33 @@ import com.zegreatrob.testmints.action.ActionCannon
 import io.ktor.client.plugins.HttpRequestRetry
 import kotlin.uuid.Uuid
 
+interface SdkProvider {
+    suspend fun sdk(
+        env: String,
+        echo: (String) -> Unit,
+    ): ActionCannon<CouplingSdkDispatcher>?
+}
+
+object DefaultSdkProvider : SdkProvider {
+    override suspend fun sdk(
+        env: String,
+        echo: (String) -> Unit,
+    ): ActionCannon<CouplingSdkDispatcher>? = loadSdk(env, echo)
+}
+
+fun cannonSdkProvider(cannon: ActionCannon<CouplingSdkDispatcher>?): SdkProvider = object : SdkProvider {
+    override suspend fun sdk(
+        env: String,
+        echo: (String) -> Unit,
+    ): ActionCannon<CouplingSdkDispatcher>? = cannon ?: loadSdk(env, echo)
+}
+
 suspend fun withSdk(
     env: String,
     echo: (String) -> Unit,
-    cannon: ActionCannon<CouplingSdkDispatcher>? = null,
+    sdkProvider: SdkProvider = DefaultSdkProvider,
     doWork: suspend (ActionCannon<CouplingSdkDispatcher>) -> Unit,
-) = (cannon ?: loadSdk(env, echo))
+) = sdkProvider.sdk(env, echo)
     ?.let { doWork(it) }
 
 suspend fun loadSdk(
