@@ -43,5 +43,6 @@ fun party(sdkProvider: SdkProvider): SuspendingCliktCommand = Party()
     .subcommands(
         Contribution()
             .subcommands(SaveContribution(clock = Clock.System, sdkProvider = sdkProvider))
-            .subcommands(BatchContribution(sdkProvider = sdkProvider)),
+            .subcommands(BatchContribution(sdkProvider = sdkProvider))
+            .subcommands(ListContribution(sdkProvider = sdkProvider)),
     )
