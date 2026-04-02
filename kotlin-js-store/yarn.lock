@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1021.0":
-  version "3.1021.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1021.0.tgz#ca673bec8984b88ab73fe473d4bd37afd006a111"
-  integrity sha512-XVaqap2KI72q6okyhXz5OyTM1Y8zNNKhopp6hNfdj6I7O4+MPTsOYgo1EGfrhKU6n+XSvYVVO/Nnrs2gBOzeyQ==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1022.0":
+  version "3.1022.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1022.0.tgz#31e4dbe75940402710ae1a14031fc798df7ce20c"
+  integrity sha512-vIvWQQH5pUHxbQeoI2SvLkd+jRKqBRfe1yKyK5XKmEQovnVSTYIiJsjVd//sIY7ULb9xZnSDnv0zJEXLc669Dg==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -139,10 +139,10 @@
     "@smithy/util-utf8" "^4.2.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1021.0":
-  version "3.1021.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1021.0.tgz#e92fe2faf2605a95fcd60735ad7495ca77249f4c"
-  integrity sha512-Yp7p5HZh4ZAOqV7kbOP8ClPGJxFUTm+FRYLQAsA3x22rB3Q+rgcr+avBNxjS2AX7NeRCI6LY4zoeVYvILWEq3Q==
+"@aws-sdk/client-dynamodb@3.1022.0":
+  version "3.1022.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1022.0.tgz#08a76a71c1f2ca6d097c4449d15999bcb57e37f0"
+  integrity sha512-k7tJEp+nfj5zTvvPCmZl7GsoF8TIBxwiDS5KdMbTDVKqdg7uoM05P13lr9+HwwlfbYmzVzFIfaSalifOnkr91g==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -237,10 +237,10 @@
     "@smithy/util-waiter" "^4.2.5"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1021.0":
-  version "3.1021.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1021.0.tgz#6f757ba466b686fb04128e931522fa5a33cf00d8"
-  integrity sha512-CkhVZXhZ/+xjDJEVm8QPXGH0Dndx2joeGvHuObmTnxa58qdXe3zxSz5LX8Ss/01Vqkt6gja5G/E6PD1B4uRC+Q==
+"@aws-sdk/client-lambda@~3.1022.0":
+  version "3.1022.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1022.0.tgz#85242944a90311296133de57b9cc97b5f5a4757a"
+  integrity sha512-i08VpxNeiHTmD3vZqHI1VKoXlfn9smhXgQfhnGy7DQCCvZNLPhzjPnnhbEm6eCcxAfEQb4yy6VVscKbxYbAM5A==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -625,10 +625,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1021.0":
-  version "3.1021.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1021.0.tgz#4327a1437243cfac8da5a9679f2c7127c3147e95"
-  integrity sha512-GTZmjJ5ZpoNmcmMGrBut/0Daq78lxjf9sTokkCSb0U97GMA0I+AtvHN1v/HuZNb69AzmOKY8guUHW5OleeP3mQ==
+"@aws-sdk/lib-dynamodb@3.1022.0":
+  version "3.1022.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1022.0.tgz#c126bd64a654f25e5f8889c63590bd978b358226"
+  integrity sha512-X0uiSCLY3xAYOYJxTe9gaCt0W6ubglurDIY10fvocvNRbAj531jnNrjZnR5X75XjbOWU2ihv3Qt3llr3nUfyMQ==
   dependencies:
     "@aws-sdk/core" "^3.973.26"
     "@aws-sdk/util-dynamodb" "^3.996.2"
@@ -10915,10 +10915,10 @@ serverless-offline@^14.5.0:
     velocityjs "^2.0.6"
     ws "^8.18.0"
 
-serverless@^4.33.2:
-  version "4.33.2"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.33.2.tgz#0913071319fdefc9823b7cc1796007160fbd911d"
-  integrity sha512-rvuE1FUzkvOrLPfMeUis8zywdvsoACnfTdng05/JcpqShVjx7mUtViDAZXgbN4X5koy1FH3ob4IMGS6aSP/gbw==
+serverless@^4.33.3:
+  version "4.33.3"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.33.3.tgz#df19e417133c78cd8c6af477d12fb3276a8737df"
+  integrity sha512-uTVCNJyw5bbGJFDncvQ2PWUGnw4dtODzVrQM7urEiBsQy4wq6mWtiqmvHEBd4yTWOI12dYadvq+DV61nBidOUA==
   dependencies:
     rimraf "5.0.10"
     undici "6.24.1"
