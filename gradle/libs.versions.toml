@@ -1,25 +1,25 @@
 [libraries]
 com-apollographql-adapters-apollo-adapters-core = { module = "com.apollographql.adapters:apollo-adapters-core", version.ref = "com-apollographql-adapters" }
 com-apollographql-adapters-apollo-adapters-kotlinx-datetime = { module = "com.apollographql.adapters:apollo-adapters-kotlinx-datetime", version.ref = "com-apollographql-adapters" }
-com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:4.4.2"
+com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:4.4.3"
 com-apollographql-ktor-apollo-engine-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 com-auth0-java-jwt = "com.auth0:java-jwt:4.5.1"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.21.2"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.1.0"
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.32"
-com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.7"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.37"
+com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.8"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.9.15"
-eu-anifantakis-ksafe = "eu.anifantakis:ksafe:1.7.1"
+eu-anifantakis-ksafe = "eu.anifantakis:ksafe:1.8.0"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:8.0.01"
 io-ktor-ktor-bom = "io.ktor:ktor-bom:3.4.2"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-wrappers-kotlin-react-popper = "org.jetbrains.kotlin-wrappers:kotlin-react-popper:2026.3.1-2.3.0"
-org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.4.1"
+org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.4.8"
 org-jetbrains-kotlinx-kotlinx-coroutines-bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2"
 org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat"
-org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.10.0"
+org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.11.0"
 org-junit-junit-bom = "org.junit:junit-bom:6.0.3"
 org-kotlincrypto-hash-bom = "org.kotlincrypto.hash:bom:0.8.0"
 org-kotools-types = { module = "org.kotools:types", version.ref = "org-kotools" }
@@ -27,12 +27,12 @@ org-kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-
 org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 
 [plugins]
-com-apollographql-apollo = "com.apollographql.apollo:4.4.2"
+com-apollographql-apollo = "com.apollographql.apollo:4.4.3"
 com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.21"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:1.9.15"
 com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:1.9.15"
-io-github-turansky-kfc-application = "io.github.turansky.kfc.application:18.1.0"
+io-github-turansky-kfc-application = "io.github.turansky.kfc.application:18.4.0"
 io-github-turansky-seskar = "io.github.turansky.seskar:4.40.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.0"
 
