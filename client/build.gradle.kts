@@ -1,8 +1,11 @@
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.JsonNode
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
 import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
@@ -129,8 +132,18 @@ tasks {
         inputs.files(jsRuntimeClasspath)
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)
+        val settingsImports = settings["imports"] ?: settings
+        val lookupSettings = settings["query"] ?: ObjectMapper().readTree("{}")
+        val lookupSettingsWrapped = ObjectMapper().createObjectNode().set<JsonNode>("query", lookupSettings)
+        val lookupSettingsBase64 = Base64.getEncoder().encodeToString(
+            lookupSettingsWrapped.toString().toByteArray(StandardCharsets.UTF_8),
+        )
         val cdnLookupFile = cdnLookupConfiguration.resolve().first()
-        arguments = listOf("--no-warnings", cdnLookupFile.absolutePath) + settings.fieldNames().asSequence().toList()
+        arguments = listOf(
+            "--no-warnings",
+            cdnLookupFile.absolutePath,
+            "--lookup-config-base64=$lookupSettingsBase64",
+        ) + settingsImports.fieldNames().asSequence().toList()
         outputFile = file(cdnBuildOutput)
         outputs.upToDateWhen { cdnBuildOutput.get().asFile.length() > 0L }
         outputs.cacheIf { true }

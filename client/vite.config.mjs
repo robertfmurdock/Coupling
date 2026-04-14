@@ -39,10 +39,10 @@ function generateCdnInformation(isServing) {
             .filter((line) => !line.includes("TRACE"))
             .join("\n")
     )
-    const cdnSettings = JSON.parse(fs.readFileSync('cdn.settings.json'))
-    const cdnLibraries = Object.entries(cdnSettings);
+    const parsedCdnSettings = JSON.parse(fs.readFileSync('cdn.settings.json'))
+    const cdnSettings = parsedCdnSettings.imports ?? parsedCdnSettings
     const cdnImportMap = Object.fromEntries(
-        cdnLibraries.map(([key, value], index) => [key, cdnResources[key] + '?' + cdnLibraries.slice(0, index).map(([lib]) => `external=${lib}`).join("&") ])
+        Object.keys(cdnSettings).map((key) => [key, cdnResources[key]])
     );
     return {isServing, cdnSettings, cdnImportMap};
 }

@@ -11,7 +11,7 @@ class GenerateCdnRefsTest {
         val lib = "react"
         val cdnLibs = listOf(lib)
     }) exercise {
-        generateCdnRef(cdnLibs)
+        generateCdnRef(cdnLibs, lookupConfig)
     } verify { result ->
         val version = getVersionForLibrary(lib)
         val expected = "https://esm.sh/react@$version"
@@ -23,7 +23,7 @@ class GenerateCdnRefsTest {
         val lib = "kotlin"
         val cdnLibs = listOf(lib)
     }) exercise {
-        generateCdnRef(cdnLibs)
+        generateCdnRef(cdnLibs, lookupConfig)
     } verify { result ->
         val version = getVersionForLibrary(lib)
         val expected = "https://esm.sh/kotlin@$version"
@@ -35,10 +35,53 @@ class GenerateCdnRefsTest {
         val lib = "@auth0/auth0-react"
         val cdnLibs = listOf(lib)
     }) exercise {
-        generateCdnRef(cdnLibs)
+        generateCdnRef(cdnLibs, lookupConfig)
     } verify { result ->
         val version = getVersionForLibrary(lib)
-        val expected = "https://esm.sh/@auth0/auth0-react@$version"
+        val reactVersion = getVersionForLibrary("react")
+        val reactDomVersion = getVersionForLibrary("react-dom")
+        val expected =
+            "https://esm.sh/@auth0/auth0-react@$version" +
+                "?deps=react@$reactVersion,react-dom@$reactDomVersion&external=react,react-dom,react%2Fjsx-runtime"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
+    }
+
+    @Test
+    fun generateRefWorksForReactRouterDom() = asyncSetup(object {
+        val lib = "react-router-dom"
+        val cdnLibs = listOf(lib)
+    }) exercise {
+        generateCdnRef(cdnLibs, lookupConfig)
+    } verify { result ->
+        val version = getVersionForLibrary(lib)
+        val reactVersion = getVersionForLibrary("react")
+        val reactDomVersion = getVersionForLibrary("react-dom")
+        val expected =
+            "https://esm.sh/react-router-dom@$version" +
+                "?deps=react@$reactVersion,react-dom@$reactDomVersion" +
+                "&external=react,react-dom,react%2Fjsx-runtime,react-router,react-router%2Fdom,%40remix-run%2Frouter"
+        result.assertIsEqualTo(listOf(Pair(lib, expected)))
+    }
+
+    private companion object {
+        val lookupConfig = CdnLookupConfig(
+            query = mapOf(
+                "@auth0/auth0-react" to CdnLookupProfile(
+                    deps = listOf("react", "react-dom"),
+                    external = listOf("react", "react-dom", "react/jsx-runtime"),
+                ),
+                "react-router-dom" to CdnLookupProfile(
+                    deps = listOf("react", "react-dom"),
+                    external = listOf(
+                        "react",
+                        "react-dom",
+                        "react/jsx-runtime",
+                        "react-router",
+                        "react-router/dom",
+                        "@remix-run/router",
+                    ),
+                ),
+            ),
+        )
     }
 }
