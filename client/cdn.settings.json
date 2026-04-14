@@ -1,27 +1,6 @@
 {
-  "imports": {
-    "react": "React",
-    "react-dom": "ReactDOMRoot",
-    "react-dom/client": "ReactDOMClient",
-    "react-use-websocket": "ReactUseWebsocket",
-    "recharts": "Recharts",
-    "react-router": "ReactRouter",
-    "react-router/dom": "ReactRouterDomInternal",
-    "react-router-dom": "ReactRouterDom",
-    "html2canvas": "html2canvas",
-    "react-dnd": "ReactDnd",
-    "@remix-run/router": "RemixRouter",
-    "@auth0/auth0-react": "Auth0React",
-    "@js-joda/core": "Joda",
-    "react-flip-toolkit": "ReactFlipToolkit",
-    "marked": "Marked",
-    "@emotion/css": "EmotionCss",
-    "fitty": "Fitty",
-    "drag-drop-webkit-mobile": "DDWM",
-    "react/jsx-runtime": "ReactJsxRuntime"
-  },
-  "query": {
-    "@auth0/auth0-react": {
+  "profiles": {
+    "reactProfile": {
       "deps": [
         "react",
         "react-dom"
@@ -32,51 +11,7 @@
         "react/jsx-runtime"
       ]
     },
-    "react-use-websocket": {
-      "deps": [
-        "react",
-        "react-dom"
-      ],
-      "external": [
-        "react",
-        "react-dom",
-        "react/jsx-runtime"
-      ]
-    },
-    "react-dnd": {
-      "deps": [
-        "react",
-        "react-dom"
-      ],
-      "external": [
-        "react",
-        "react-dom",
-        "react/jsx-runtime"
-      ]
-    },
-    "recharts": {
-      "deps": [
-        "react",
-        "react-dom"
-      ],
-      "external": [
-        "react",
-        "react-dom",
-        "react/jsx-runtime"
-      ]
-    },
-    "react-flip-toolkit": {
-      "deps": [
-        "react",
-        "react-dom"
-      ],
-      "external": [
-        "react",
-        "react-dom",
-        "react/jsx-runtime"
-      ]
-    },
-    "react-router": {
+    "reactRouterProfile": {
       "deps": [
         "react",
         "react-dom"
@@ -88,19 +23,7 @@
         "@remix-run/router"
       ]
     },
-    "react-router/dom": {
-      "deps": [
-        "react",
-        "react-dom"
-      ],
-      "external": [
-        "react",
-        "react-dom",
-        "react/jsx-runtime",
-        "@remix-run/router"
-      ]
-    },
-    "react-router-dom": {
+    "reactRouterDomProfile": {
       "deps": [
         "react",
         "react-dom"
@@ -113,6 +36,73 @@
         "react-router/dom",
         "@remix-run/router"
       ]
+    }
+  },
+  "modules": {
+    "react": {
+      "global": "React"
+    },
+    "react-dom": {
+      "global": "ReactDOMRoot"
+    },
+    "react-dom/client": {
+      "global": "ReactDOMClient"
+    },
+    "react-use-websocket": {
+      "global": "ReactUseWebsocket",
+      "inherits": "reactProfile"
+    },
+    "recharts": {
+      "global": "Recharts",
+      "inherits": "reactProfile"
+    },
+    "react-router": {
+      "global": "ReactRouter",
+      "inherits": "reactRouterProfile"
+    },
+    "react-router/dom": {
+      "global": "ReactRouterDomInternal",
+      "inherits": "reactRouterProfile"
+    },
+    "react-router-dom": {
+      "global": "ReactRouterDom",
+      "inherits": "reactRouterDomProfile"
+    },
+    "html2canvas": {
+      "global": "html2canvas"
+    },
+    "react-dnd": {
+      "global": "ReactDnd",
+      "inherits": "reactProfile"
+    },
+    "@remix-run/router": {
+      "global": "RemixRouter"
+    },
+    "@auth0/auth0-react": {
+      "global": "Auth0React",
+      "inherits": "reactProfile"
+    },
+    "@js-joda/core": {
+      "global": "Joda"
+    },
+    "react-flip-toolkit": {
+      "global": "ReactFlipToolkit",
+      "inherits": "reactProfile"
+    },
+    "marked": {
+      "global": "Marked"
+    },
+    "@emotion/css": {
+      "global": "EmotionCss"
+    },
+    "fitty": {
+      "global": "Fitty"
+    },
+    "drag-drop-webkit-mobile": {
+      "global": "DDWM"
+    },
+    "react/jsx-runtime": {
+      "global": "ReactJsxRuntime"
     }
   }
 }

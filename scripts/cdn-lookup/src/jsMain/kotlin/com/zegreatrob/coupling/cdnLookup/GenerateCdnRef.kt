@@ -16,7 +16,11 @@ suspend fun generateCdnRef(
     cdnLibs: List<String>,
     lookupConfig: CdnLookupConfig = CdnLookupConfig(),
 ): List<Pair<String, String>> = coroutineScope {
-    val versionLibs = (cdnLibs + lookupConfig.query.values.flatMap { it.deps }).distinct()
+    val versionLibs = (
+        cdnLibs +
+            lookupConfig.profiles.values.flatMap { it.deps } +
+            lookupConfig.modules.values.flatMap { module -> module.query.deps + module.query.depsAdd }
+        ).distinct()
     val versions = versionLibs
         .map { lib -> async { lib to getVersionForLibrary(lib) } }
         .awaitAll()
@@ -45,7 +49,9 @@ private fun queryParametersFor(
     versions: Map<String, String>,
     lookupConfig: CdnLookupConfig,
 ): String {
-    val profile = lookupConfig.query[lib] ?: return ""
+    val module = lookupConfig.modules[lib] ?: return ""
+    val inheritedProfile = module.inherits?.let(lookupConfig.profiles::get)
+    val profile = resolveModuleQuery(module.query, inheritedProfile)
     val params = mutableListOf<String>()
     if (profile.deps.isNotEmpty()) {
         val deps = profile.deps
@@ -63,7 +69,8 @@ private fun queryParametersFor(
 
 @Serializable
 data class CdnLookupConfig(
-    val query: Map<String, CdnLookupProfile> = emptyMap(),
+    val profiles: Map<String, CdnLookupProfile> = emptyMap(),
+    val modules: Map<String, CdnLookupModule> = emptyMap(),
 )
 
 @Serializable
@@ -71,6 +78,35 @@ data class CdnLookupProfile(
     val deps: List<String> = emptyList(),
     val external: List<String> = emptyList(),
 )
+
+@Serializable
+data class CdnLookupModule(
+    val global: String? = null,
+    val inherits: String? = null,
+    val query: CdnLookupModuleQuery = CdnLookupModuleQuery(),
+)
+
+@Serializable
+data class CdnLookupModuleQuery(
+    val deps: List<String> = emptyList(),
+    val external: List<String> = emptyList(),
+    val depsAdd: List<String> = emptyList(),
+    val externalAdd: List<String> = emptyList(),
+)
+
+private fun resolveModuleQuery(moduleQuery: CdnLookupModuleQuery, inheritedProfile: CdnLookupProfile?): CdnLookupProfile {
+    val deps = if (moduleQuery.deps.isNotEmpty()) {
+        moduleQuery.deps
+    } else {
+        ((inheritedProfile?.deps ?: emptyList()) + moduleQuery.depsAdd).distinct()
+    }
+    val external = if (moduleQuery.external.isNotEmpty()) {
+        moduleQuery.external
+    } else {
+        ((inheritedProfile?.external ?: emptyList()) + moduleQuery.externalAdd).distinct()
+    }
+    return CdnLookupProfile(deps = deps, external = external)
+}
 
 suspend fun getVersionForLibrary(lib: String): String {
     val libPackage = resolvePkg(lib, json("cwd" to contextPath))

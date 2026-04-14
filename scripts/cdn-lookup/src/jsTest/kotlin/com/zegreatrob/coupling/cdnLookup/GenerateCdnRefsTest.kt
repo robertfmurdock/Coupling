@@ -65,12 +65,12 @@ class GenerateCdnRefsTest {
 
     private companion object {
         val lookupConfig = CdnLookupConfig(
-            query = mapOf(
-                "@auth0/auth0-react" to CdnLookupProfile(
+            profiles = mapOf(
+                "reactProfile" to CdnLookupProfile(
                     deps = listOf("react", "react-dom"),
                     external = listOf("react", "react-dom", "react/jsx-runtime"),
                 ),
-                "react-router-dom" to CdnLookupProfile(
+                "reactRouterDomProfile" to CdnLookupProfile(
                     deps = listOf("react", "react-dom"),
                     external = listOf(
                         "react",
@@ -80,6 +80,16 @@ class GenerateCdnRefsTest {
                         "react-router/dom",
                         "@remix-run/router",
                     ),
+                ),
+            ),
+            modules = mapOf(
+                "@auth0/auth0-react" to CdnLookupModule(
+                    global = "Auth0React",
+                    inherits = "reactProfile",
+                ),
+                "react-router-dom" to CdnLookupModule(
+                    global = "ReactRouterDom",
+                    inherits = "reactRouterDomProfile",
                 ),
             ),
         )
