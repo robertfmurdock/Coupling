@@ -122,6 +122,9 @@
     "marked": {
       "global": "Marked"
     },
+    "lodash": {
+      "global": "_"
+    },
     "@emotion/css": {
       "global": "EmotionCss"
     },
