@@ -10,7 +10,9 @@ import kotlinx.serialization.Serializable
 import kotlin.js.Json
 import kotlin.js.json
 
-val contextPath = js("__dirname").unsafeCast<String>()
+// Resolve packages from the caller's working directory (the generated npm project),
+// not from this script's build output directory.
+val contextPath = js("process.cwd()").unsafeCast<String>()
 
 suspend fun generateCdnRef(
     cdnLibs: List<String>,
@@ -127,7 +129,35 @@ private fun validateLookupConfig(cdnLibs: List<String>, lookupConfig: CdnLookupC
 }
 
 suspend fun getVersionForLibrary(lib: String): String {
+    val declaredVersion = getDeclaredDependencyVersion(lib)
+    if (declaredVersion != null) {
+        return declaredVersion
+    }
+
     val libPackage = resolvePkg(lib, json("cwd" to contextPath))
     val pkg = readPkgUp(json("cwd" to libPackage)).await()
-    return pkg["pkg"].unsafeCast<Json>()["version"].unsafeCast<String>()
+    val resolvedVersion = pkg["pkg"].unsafeCast<Json>()["version"]?.unsafeCast<String?>()
+    return resolvedVersion ?: error("Unable to determine version for '$lib'")
+}
+
+private fun getDeclaredDependencyVersion(lib: String): String? {
+    val pkg = readWorkingDirectoryPackageJson()
+    val candidates = listOf("dependencies", "devDependencies", "peerDependencies", "optionalDependencies")
+        .mapNotNull { sectionName ->
+            val section = pkg[sectionName]?.unsafeCast<Json?>() ?: return@mapNotNull null
+            section[lib]?.unsafeCast<String?>()
+        }
+    return candidates.firstNotNullOfOrNull(::normalizeVersionConstraint)
+}
+
+private fun readWorkingDirectoryPackageJson(): Json {
+    val fileContents = js(
+        """require("fs").readFileSync(require("path").join(process.cwd(), "package.json"), "utf8")""",
+    ).unsafeCast<String>()
+    return js("JSON.parse")(fileContents).unsafeCast<Json>()
+}
+
+private fun normalizeVersionConstraint(versionConstraint: String): String? {
+    val match = Regex("""\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?""").find(versionConstraint)
+    return match?.value
 }

@@ -85,9 +85,50 @@
     "@js-joda/core": {
       "global": "Joda"
     },
+    "@nivo/bar": {
+      "global": "NivoBar",
+      "profile": "react"
+    },
+    "@nivo/boxplot": {
+      "global": "NivoBoxplot",
+      "profile": "react"
+    },
+    "@nivo/core": {
+      "global": "NivoCore",
+      "profile": "react"
+    },
+    "@nivo/heatmap": {
+      "global": "NivoHeatmap",
+      "profile": "react"
+    },
+    "@nivo/line": {
+      "global": "NivoLine",
+      "profile": "react"
+    },
+    "@popperjs/core": {
+      "global": "PopperCore"
+    },
     "react-flip-toolkit": {
       "global": "ReactFlipToolkit",
       "profile": "react"
+    },
+    "react-dnd-html5-backend": {
+      "global": "ReactDndHtml5Backend"
+    },
+    "react-popper": {
+      "global": "ReactPopper",
+      "profile": "react"
+    },
+    "react-virtualized-auto-sizer": {
+      "global": "ReactVirtualizedAutoSizer",
+      "profile": "react"
+    },
+    "reactjs-popup": {
+      "global": "ReactjsPopup",
+      "profile": "react"
+    },
+    "date-fns": {
+      "global": "DateFns"
     },
     "marked": {
       "global": "Marked"
