@@ -53,8 +53,7 @@
       "profile": "react"
     },
     "recharts": {
-      "global": "Recharts",
-      "profile": "react"
+      "global": "Recharts"
     },
     "react-router": {
       "global": "ReactRouter",
@@ -79,53 +78,43 @@
       "global": "RemixRouter"
     },
     "@auth0/auth0-react": {
-      "global": "Auth0React",
-      "profile": "react"
+      "global": "Auth0React"
     },
     "@js-joda/core": {
       "global": "Joda"
     },
     "@nivo/bar": {
-      "global": "NivoBar",
-      "profile": "react"
+      "global": "NivoBar"
     },
     "@nivo/boxplot": {
-      "global": "NivoBoxplot",
-      "profile": "react"
+      "global": "NivoBoxplot"
     },
     "@nivo/core": {
-      "global": "NivoCore",
-      "profile": "react"
+      "global": "NivoCore"
     },
     "@nivo/heatmap": {
-      "global": "NivoHeatmap",
-      "profile": "react"
+      "global": "NivoHeatmap"
     },
     "@nivo/line": {
-      "global": "NivoLine",
-      "profile": "react"
+      "global": "NivoLine"
     },
     "@popperjs/core": {
       "global": "PopperCore"
     },
     "react-flip-toolkit": {
-      "global": "ReactFlipToolkit",
-      "profile": "react"
+      "global": "ReactFlipToolkit"
     },
     "react-dnd-html5-backend": {
       "global": "ReactDndHtml5Backend"
     },
     "react-popper": {
-      "global": "ReactPopper",
-      "profile": "react"
+      "global": "ReactPopper"
     },
     "react-virtualized-auto-sizer": {
-      "global": "ReactVirtualizedAutoSizer",
-      "profile": "react"
+      "global": "ReactVirtualizedAutoSizer"
     },
     "reactjs-popup": {
-      "global": "ReactjsPopup",
-      "profile": "react"
+      "global": "ReactjsPopup"
     },
     "date-fns": {
       "global": "DateFns"

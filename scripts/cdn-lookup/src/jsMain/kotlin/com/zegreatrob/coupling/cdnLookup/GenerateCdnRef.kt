@@ -13,6 +13,7 @@ import kotlin.js.json
 // Resolve packages from the caller's working directory (the generated npm project),
 // not from this script's build output directory.
 val contextPath = js("process.cwd()").unsafeCast<String>()
+private val packageJsonCache = mutableMapOf<String, Json?>()
 
 suspend fun generateCdnRef(
     cdnLibs: List<String>,
@@ -47,27 +48,146 @@ private suspend fun lookupCdnUrl(
 
 private fun encodeQueryParamValue(value: String): String = js("encodeURIComponent")(value).unsafeCast<String>()
 
-private fun queryParametersFor(
+private suspend fun queryParametersFor(
     lib: String,
     versions: Map<String, String>,
     lookupConfig: CdnLookupConfig,
 ): String {
     val item = lookupConfig.imports[lib] ?: return ""
+    val singletonDependencies = configuredSingletonDependencies(lookupConfig)
+    val dependencyGroups = configuredDependencyGroups(lookupConfig)
     val inheritedProfile = item.profile?.let(lookupConfig.profiles::get)
     val profile = resolveImportQuery(item.query, inheritedProfile)
+    val effectiveProfile = if (profile.dependencies.isNotEmpty() || profile.external.isNotEmpty()) {
+        profile
+    } else {
+        deriveImportQueryFromPackage(
+            lib,
+            singletonDependencies,
+            dependencyGroups,
+            lookupConfig.imports.keys,
+        )
+    }
     val params = mutableListOf<String>()
-    if (profile.dependencies.isNotEmpty()) {
-        val deps = profile.dependencies
+    if (effectiveProfile.dependencies.isNotEmpty()) {
+        val deps = effectiveProfile.dependencies
             .map { dependency -> "$dependency@${versions.getValue(dependency)}" }
             .joinToString(",")
         params.add("deps=$deps")
     }
-    if (profile.external.isNotEmpty()) {
-        val external = profile.external
+    if (effectiveProfile.external.isNotEmpty()) {
+        val external = effectiveProfile.external
             .joinToString(",") { dependency -> encodeQueryParamValue(dependency) }
         params.add("external=$external")
     }
     return if (params.isEmpty()) "" else "?${params.joinToString("&")}"
+}
+
+private suspend fun deriveImportQueryFromPackage(
+    lib: String,
+    singletonDependencies: Set<String>,
+    dependencyGroups: List<Set<String>>,
+    availableImports: Set<String>,
+): CdnLookupProfile {
+    val packageName = packageNameForImport(lib)
+    val derivedDependencies = collectPeerDependenciesFromPackageGraph(packageName, availableImports)
+        .filter(singletonDependencies::contains)
+        .let { expandDependencyGroups(it.toSet(), dependencyGroups, availableImports) }
+    if (derivedDependencies.isEmpty()) {
+        return CdnLookupProfile()
+    }
+    val derivedExternal = buildList {
+        addAll(derivedDependencies)
+        derivedDependencies.forEach { dependency ->
+            val jsxRuntimeImport = "$dependency/jsx-runtime"
+            if (availableImports.contains(jsxRuntimeImport)) {
+                add(jsxRuntimeImport)
+            }
+        }
+    }.distinct()
+    return CdnLookupProfile(
+        dependencies = derivedDependencies,
+        external = derivedExternal,
+    )
+}
+
+private suspend fun collectPeerDependenciesFromPackageGraph(
+    packageName: String,
+    availableImports: Set<String>,
+): List<String> {
+    val queue = ArrayDeque<Pair<String, Int>>()
+    val visitedDepth = mutableMapOf<String, Int>()
+    val peers = linkedSetOf<String>()
+    var minimumPeerDepth: Int? = null
+    queue.add(packageName to 0)
+
+    while (queue.isNotEmpty() && visitedDepth.size < 128) {
+        val (current, depth) = queue.removeFirst()
+        val priorDepth = visitedDepth[current]
+        if (priorDepth != null && priorDepth <= depth) continue
+        visitedDepth[current] = depth
+
+        if (minimumPeerDepth != null && depth > minimumPeerDepth) {
+            continue
+        }
+        val pkg = getPackageJsonForPackage(current) ?: continue
+
+        val peerDependencies = pkg["peerDependencies"]?.unsafeCast<Json?>()
+        if (peerDependencies != null) {
+            val matchingPeers = objectKeys(peerDependencies)
+                .filter(availableImports::contains)
+            if (matchingPeers.isNotEmpty()) {
+                when {
+                    minimumPeerDepth == null || depth < minimumPeerDepth -> {
+                        minimumPeerDepth = depth
+                        peers.clear()
+                        peers.addAll(matchingPeers)
+                    }
+
+                    depth == minimumPeerDepth -> {
+                        peers.addAll(matchingPeers)
+                    }
+                }
+            }
+        }
+
+        if (minimumPeerDepth != null && depth >= minimumPeerDepth) {
+            continue
+        }
+        val dependencies = pkg["dependencies"]?.unsafeCast<Json?>()
+        if (dependencies != null) {
+            objectKeys(dependencies).forEach { dependency ->
+                queue.addLast(dependency to depth + 1)
+            }
+        }
+    }
+
+    return peers.toList().distinct()
+}
+
+private fun configuredSingletonDependencies(lookupConfig: CdnLookupConfig): Set<String> = (
+    lookupConfig.profiles.values.flatMap { it.dependencies } +
+        lookupConfig.imports.values.flatMap { it.query.dependencies }
+    ).toSet()
+
+private fun configuredDependencyGroups(lookupConfig: CdnLookupConfig): List<Set<String>> = buildList {
+    addAll(lookupConfig.profiles.values.map { it.dependencies.toSet() })
+    addAll(lookupConfig.imports.values.map { it.query.dependencies.toSet() })
+}.filter { it.isNotEmpty() }
+
+private fun expandDependencyGroups(
+    derivedDependencies: Set<String>,
+    dependencyGroups: List<Set<String>>,
+    availableImports: Set<String>,
+): List<String> {
+    val expanded = linkedSetOf<String>()
+    expanded.addAll(derivedDependencies)
+    dependencyGroups.forEach { group ->
+        if (group.any(derivedDependencies::contains)) {
+            expanded.addAll(group.filter(availableImports::contains))
+        }
+    }
+    return expanded.toList()
 }
 
 @Serializable
@@ -134,10 +254,26 @@ suspend fun getVersionForLibrary(lib: String): String {
         return declaredVersion
     }
 
-    val libPackage = resolvePkg(lib, json("cwd" to contextPath))
-    val pkg = readPkgUp(json("cwd" to libPackage)).await()
-    val resolvedVersion = pkg["pkg"].unsafeCast<Json>()["version"]?.unsafeCast<String?>()
+    val pkg = getPackageJsonForLibrary(lib)
+        ?: error("Unable to locate package metadata for '$lib'")
+    val resolvedVersion = pkg["version"]?.unsafeCast<String?>()
     return resolvedVersion ?: error("Unable to determine version for '$lib'")
+}
+
+private suspend fun getPackageJsonForLibrary(lib: String): Json? {
+    val packageName = packageNameForImport(lib)
+    return getPackageJsonForPackage(packageName)
+}
+
+private suspend fun getPackageJsonForPackage(packageName: String): Json? {
+    if (packageJsonCache.containsKey(packageName)) {
+        return packageJsonCache[packageName]
+    }
+    val libPackage = resolvePkg(packageName, json("cwd" to contextPath))
+    val pkg = readPkgUp(json("cwd" to libPackage)).await()
+    val parsed = pkg["pkg"]?.unsafeCast<Json?>()
+    packageJsonCache[packageName] = parsed
+    return parsed
 }
 
 private fun getDeclaredDependencyVersion(lib: String): String? {
@@ -160,4 +296,15 @@ private fun readWorkingDirectoryPackageJson(): Json {
 private fun normalizeVersionConstraint(versionConstraint: String): String? {
     val match = Regex("""\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?""").find(versionConstraint)
     return match?.value
+}
+
+private fun objectKeys(json: Json): List<String> = js("Object.keys")(json).unsafeCast<Array<String>>().toList()
+
+private fun packageNameForImport(importName: String): String {
+    val segments = importName.split("/")
+    return if (importName.startsWith("@")) {
+        segments.take(2).joinToString("/")
+    } else {
+        segments.first()
+    }
 }
