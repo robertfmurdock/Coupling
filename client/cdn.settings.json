@@ -1,7 +1,7 @@
 {
   "profiles": {
-    "reactProfile": {
-      "deps": [
+    "react": {
+      "dependencies": [
         "react",
         "react-dom"
       ],
@@ -11,8 +11,8 @@
         "react/jsx-runtime"
       ]
     },
-    "reactRouterProfile": {
-      "deps": [
+    "reactRouter": {
+      "dependencies": [
         "react",
         "react-dom"
       ],
@@ -23,8 +23,8 @@
         "@remix-run/router"
       ]
     },
-    "reactRouterDomProfile": {
-      "deps": [
+    "reactRouterDom": {
+      "dependencies": [
         "react",
         "react-dom"
       ],
@@ -38,7 +38,7 @@
       ]
     }
   },
-  "modules": {
+  "imports": {
     "react": {
       "global": "React"
     },
@@ -50,44 +50,44 @@
     },
     "react-use-websocket": {
       "global": "ReactUseWebsocket",
-      "inherits": "reactProfile"
+      "profile": "react"
     },
     "recharts": {
       "global": "Recharts",
-      "inherits": "reactProfile"
+      "profile": "react"
     },
     "react-router": {
       "global": "ReactRouter",
-      "inherits": "reactRouterProfile"
+      "profile": "reactRouter"
     },
     "react-router/dom": {
       "global": "ReactRouterDomInternal",
-      "inherits": "reactRouterProfile"
+      "profile": "reactRouter"
     },
     "react-router-dom": {
       "global": "ReactRouterDom",
-      "inherits": "reactRouterDomProfile"
+      "profile": "reactRouterDom"
     },
     "html2canvas": {
       "global": "html2canvas"
     },
     "react-dnd": {
       "global": "ReactDnd",
-      "inherits": "reactProfile"
+      "profile": "react"
     },
     "@remix-run/router": {
       "global": "RemixRouter"
     },
     "@auth0/auth0-react": {
       "global": "Auth0React",
-      "inherits": "reactProfile"
+      "profile": "react"
     },
     "@js-joda/core": {
       "global": "Joda"
     },
     "react-flip-toolkit": {
       "global": "ReactFlipToolkit",
-      "inherits": "reactProfile"
+      "profile": "react"
     },
     "marked": {
       "global": "Marked"

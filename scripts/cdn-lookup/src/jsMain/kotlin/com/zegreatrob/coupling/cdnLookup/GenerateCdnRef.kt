@@ -16,10 +16,11 @@ suspend fun generateCdnRef(
     cdnLibs: List<String>,
     lookupConfig: CdnLookupConfig = CdnLookupConfig(),
 ): List<Pair<String, String>> = coroutineScope {
+    validateLookupConfig(cdnLibs, lookupConfig)
     val versionLibs = (
         cdnLibs +
-            lookupConfig.profiles.values.flatMap { it.deps } +
-            lookupConfig.modules.values.flatMap { module -> module.query.deps + module.query.depsAdd }
+            lookupConfig.profiles.values.flatMap { it.dependencies } +
+            lookupConfig.imports.values.flatMap { item -> item.query.dependencies }
         ).distinct()
     val versions = versionLibs
         .map { lib -> async { lib to getVersionForLibrary(lib) } }
@@ -49,12 +50,12 @@ private fun queryParametersFor(
     versions: Map<String, String>,
     lookupConfig: CdnLookupConfig,
 ): String {
-    val module = lookupConfig.modules[lib] ?: return ""
-    val inheritedProfile = module.inherits?.let(lookupConfig.profiles::get)
-    val profile = resolveModuleQuery(module.query, inheritedProfile)
+    val item = lookupConfig.imports[lib] ?: return ""
+    val inheritedProfile = item.profile?.let(lookupConfig.profiles::get)
+    val profile = resolveImportQuery(item.query, inheritedProfile)
     val params = mutableListOf<String>()
-    if (profile.deps.isNotEmpty()) {
-        val deps = profile.deps
+    if (profile.dependencies.isNotEmpty()) {
+        val deps = profile.dependencies
             .map { dependency -> "$dependency@${versions.getValue(dependency)}" }
             .joinToString(",")
         params.add("deps=$deps")
@@ -70,42 +71,59 @@ private fun queryParametersFor(
 @Serializable
 data class CdnLookupConfig(
     val profiles: Map<String, CdnLookupProfile> = emptyMap(),
-    val modules: Map<String, CdnLookupModule> = emptyMap(),
+    val imports: Map<String, CdnLookupImport> = emptyMap(),
 )
 
 @Serializable
 data class CdnLookupProfile(
-    val deps: List<String> = emptyList(),
+    val dependencies: List<String> = emptyList(),
     val external: List<String> = emptyList(),
 )
 
 @Serializable
-data class CdnLookupModule(
+data class CdnLookupImport(
     val global: String? = null,
-    val inherits: String? = null,
-    val query: CdnLookupModuleQuery = CdnLookupModuleQuery(),
+    val profile: String? = null,
+    val query: CdnLookupProfile = CdnLookupProfile(),
 )
 
-@Serializable
-data class CdnLookupModuleQuery(
-    val deps: List<String> = emptyList(),
-    val external: List<String> = emptyList(),
-    val depsAdd: List<String> = emptyList(),
-    val externalAdd: List<String> = emptyList(),
-)
+private fun resolveImportQuery(query: CdnLookupProfile, inheritedProfile: CdnLookupProfile?): CdnLookupProfile {
+    val dependencies = if (query.dependencies.isNotEmpty()) {
+        query.dependencies
+    } else {
+        inheritedProfile?.dependencies ?: emptyList()
+    }
+    val external = if (query.external.isNotEmpty()) {
+        query.external
+    } else {
+        inheritedProfile?.external ?: emptyList()
+    }
+    return CdnLookupProfile(dependencies = dependencies, external = external)
+}
 
-private fun resolveModuleQuery(moduleQuery: CdnLookupModuleQuery, inheritedProfile: CdnLookupProfile?): CdnLookupProfile {
-    val deps = if (moduleQuery.deps.isNotEmpty()) {
-        moduleQuery.deps
-    } else {
-        ((inheritedProfile?.deps ?: emptyList()) + moduleQuery.depsAdd).distinct()
+private fun validateLookupConfig(cdnLibs: List<String>, lookupConfig: CdnLookupConfig) {
+    val missingImports = cdnLibs.filterNot { lookupConfig.imports.containsKey(it) }
+    if (missingImports.isNotEmpty()) {
+        error("Missing import configuration for: ${missingImports.joinToString(", ")}")
     }
-    val external = if (moduleQuery.external.isNotEmpty()) {
-        moduleQuery.external
-    } else {
-        ((inheritedProfile?.external ?: emptyList()) + moduleQuery.externalAdd).distinct()
+
+    lookupConfig.imports.forEach { (lib, import) ->
+        import.profile?.let { profileName ->
+            if (!lookupConfig.profiles.containsKey(profileName)) {
+                error("Import '$lib' references unknown profile '$profileName'")
+            }
+        }
     }
-    return CdnLookupProfile(deps = deps, external = external)
+
+    val availableDependencies = lookupConfig.imports.keys
+    val configuredDependencies = (
+        lookupConfig.profiles.values.flatMap { it.dependencies } +
+            lookupConfig.imports.values.flatMap { it.query.dependencies }
+        ).distinct()
+    val unknownDependencies = configuredDependencies.filterNot { availableDependencies.contains(it) }
+    if (unknownDependencies.isNotEmpty()) {
+        error("Unknown dependencies in CDN settings: ${unknownDependencies.joinToString(", ")}")
+    }
 }
 
 suspend fun getVersionForLibrary(lib: String): String {

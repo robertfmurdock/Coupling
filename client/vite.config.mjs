@@ -40,8 +40,8 @@ function generateCdnInformation(isServing) {
             .join("\n")
     )
     const parsedCdnSettings = JSON.parse(fs.readFileSync('cdn.settings.json'))
-    const cdnSettings = parsedCdnSettings.modules
-        ? Object.fromEntries(Object.entries(parsedCdnSettings.modules).map(([key, value]) => [key, value.global]))
+    const cdnSettings = parsedCdnSettings.imports
+        ? Object.fromEntries(Object.entries(parsedCdnSettings.imports).map(([key, value]) => [key, value.global]))
         : (parsedCdnSettings.imports ?? parsedCdnSettings)
     const cdnImportMap = Object.fromEntries(
         Object.keys(cdnSettings).map((key) => [key, cdnResources[key]])

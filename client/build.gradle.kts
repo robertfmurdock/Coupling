@@ -132,11 +132,11 @@ tasks {
         inputs.files(jsRuntimeClasspath)
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)
-        val settingsModules = settings["modules"] ?: settings["imports"] ?: settings
+        val settingsImports = settings["imports"] ?: settings
         val emptyObject = ObjectMapper().createObjectNode()
         val lookupSettingsWrapped = ObjectMapper().createObjectNode().apply {
             set<JsonNode>("profiles", settings["profiles"] ?: emptyObject)
-            set<JsonNode>("modules", settings["modules"] ?: emptyObject)
+            set<JsonNode>("imports", settings["imports"] ?: emptyObject)
         }
         val lookupSettingsBase64 = Base64.getEncoder().encodeToString(
             lookupSettingsWrapped.toString().toByteArray(StandardCharsets.UTF_8),
@@ -146,7 +146,7 @@ tasks {
             "--no-warnings",
             cdnLookupFile.absolutePath,
             "--lookup-config-base64=$lookupSettingsBase64",
-        ) + settingsModules.fieldNames().asSequence().toList()
+        ) + settingsImports.fieldNames().asSequence().toList()
         outputFile = file(cdnBuildOutput)
         outputs.upToDateWhen { cdnBuildOutput.get().asFile.length() > 0L }
         outputs.cacheIf { true }
