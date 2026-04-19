@@ -4,9 +4,7 @@ import kotlinx.js.JsPlainObject
 import kotlin.js.Promise
 
 @JsModule("stripe")
-external fun stripe(secretKey: String): Stripe
-
-external interface Stripe {
+external class Stripe(secretKey: String) {
     val customers: StripeCustomersApi
     val subscriptions: StripeSubscriptionsApi
 }
