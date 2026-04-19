@@ -1189,29 +1189,29 @@
     auto-bind "~4.0.0"
     tslib "^2.8.0"
 
-"@graphql-codegen/java-common@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/java-common/-/java-common-4.0.0.tgz#27dde76e8d24fe2d8708591bc5e12e2b788ce947"
-  integrity sha512-39DJ4fkKK4DHhpQ2aCBopOamsGitRVOV+HvrT9zYJ6c+ve3mc45ogDEcsSrrm+I8TwZwUd4WgYnfTqpT6/YfEw==
+"@graphql-codegen/java-common@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/java-common/-/java-common-4.0.1.tgz#5aa345ee949646e697ab7aa0f4e46585d163b514"
+  integrity sha512-5N+ccnLmLwiDnfnjcUxf3fEb3GgPV3w+xo8LZ+XC2OTN0JBFD6gcHGYqfPufKDQ7Zn+RlWTs4FjWCsM5EecnkQ==
   dependencies:
-    "@graphql-codegen/plugin-helpers" "^6.1.1"
-    "@graphql-codegen/visitor-plugin-common" "^6.2.4"
+    "@graphql-codegen/plugin-helpers" "^6.3.0"
+    "@graphql-codegen/visitor-plugin-common" "^6.3.0"
     auto-bind "~4.0.0"
     min-indent "1.0.1"
     tslib "^2.8.1"
     unixify "^1.0.0"
 
-"@graphql-codegen/kotlin@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/kotlin/-/kotlin-4.0.0.tgz#4018031bcf93e7b3fc098e5e29c35d8a3e34d222"
-  integrity sha512-CqTUIAgqvwMb1ta39OsDTIzQgLMoCzeGMGQ3cDOMtDIvonF5L8nylxrMt4ZqQSFYNwHTIrNtfu2+ZpWZceVlYA==
+"@graphql-codegen/kotlin@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/kotlin/-/kotlin-4.0.1.tgz#3d3f0ca8151aac2b6a5bfe8e253064650dd5b24c"
+  integrity sha512-SmPHN6Fp8mHoEhh0JpKxYdNHA3ZeiC0P/9z4C87p7+MW9aNSwMKOuli4dsuHUdVmU7whyber8yxyiSIzPXjuTA==
   dependencies:
-    "@graphql-codegen/java-common" "^4.0.0"
-    "@graphql-codegen/plugin-helpers" "^6.1.1"
-    "@graphql-codegen/visitor-plugin-common" "^6.2.4"
+    "@graphql-codegen/java-common" "^4.0.1"
+    "@graphql-codegen/plugin-helpers" "^6.3.0"
+    "@graphql-codegen/visitor-plugin-common" "^6.3.0"
     tslib "^2.8.1"
 
-"@graphql-codegen/plugin-helpers@^6.1.1", "@graphql-codegen/plugin-helpers@^6.3.0":
+"@graphql-codegen/plugin-helpers@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-6.3.0.tgz#d4ba4660c68cb703291fbc6616a6510df26dd5f3"
   integrity sha512-Auc+/B7okDx9+pVgLVliZtZLYh6iltWXlnzzM+bRE+zh1T4r3hKbnr8xAmtT937ArfSgk5GHcQHr8LfPYnrRBg==
@@ -1264,7 +1264,7 @@
     auto-bind "~4.0.0"
     tslib "^2.8.0"
 
-"@graphql-codegen/visitor-plugin-common@6.3.0", "@graphql-codegen/visitor-plugin-common@^6.2.4", "@graphql-codegen/visitor-plugin-common@^6.3.0":
+"@graphql-codegen/visitor-plugin-common@6.3.0", "@graphql-codegen/visitor-plugin-common@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-6.3.0.tgz#5c3d1b6397acd27a552beab989c5d8af155e2aef"
   integrity sha512-vGBoE+4huzZyNhyGSAhXAkdROHlwKxxuziZm4XtP1mxe7nuI+VgyOmXebafLijbmuDsptPXQN0C/htL54O8hrg==
