@@ -45,6 +45,9 @@ tagger {
 }
 
 tasks {
+    check {
+        dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
+    }
     named<ComposeUp>("composeUp") {
         mustRunAfter("caddyComposeUp", "libraries:repository:dynamo:composeUp")
         dependsOn(":server:buildImage")
