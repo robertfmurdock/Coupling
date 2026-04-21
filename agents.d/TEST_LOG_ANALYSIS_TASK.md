@@ -4,17 +4,21 @@ Goal
 - Make `build/test-output/test.jsonl` fully machine-readable and consistent across JVM + JS test suites.
 - Enable reliable automated performance analysis (durations, pass/fail rates, slow tests, per-suite metrics).
 
-Current State (2026-04-21)
-- Validation is now wired to Gradle via `validateTestJsonl` and runs from root `check`.
-- Validator has two modes:
+Current State (2026-04-21, end-of-day snapshot)
+- Validation is wired to Gradle via `validateTestJsonl` and runs from root `check`.
+- Validator modes are in place:
   - `compat` (default): report-only, does not fail build.
   - `strict` (`--strict`): fails on any schema violation.
-- JS console hook now emits JSON `Log` records with `type`, `platform=js`, `run_id`, `task`, `timestamp`.
-- JS task start/finish markers are emitted as structured JSON.
-- Full-suite output still contains legacy/unnormalized records:
-  - Log4j events with event payload nested under `message`.
-  - Missing top-level `type`, `run_id`, `platform` on many JVM/forwarded entries.
-  - Some non-JSON remnants in full mixed runs.
+- Validator is contract-first again (no legacy-shape inference/parsing heuristics).
+- JS emitters now write structured `Log` events (`type`, `platform=js`, `run_id`, `task`, `timestamp`).
+- JVM `JsonLoggingTestListener` now emits canonical top-level events directly:
+  - `TestStart`/`TestEnd` with top-level schema fields.
+  - Numeric `duration_ms` on `TestEnd`.
+  - Forwarded stdout/stderr mapped to `type=Log`.
+- `resetTestJsonl` is opt-in only:
+  - `-Pcoupling.testLog.reset=true` or `COUPLING_TEST_LOG_RESET=true`.
+  - Default behavior remains append (supports multi-run/week-long analysis).
+- Focused verification (`:libraries:json:jsNodeTest` + `:libraries:action:jvmTest`) passes strict with zero violations on fresh log output.
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
@@ -37,14 +41,13 @@ Near-Term Plan (delivery-first)
    - Keep validator in `compat` mode as default for `check`.
    - Keep strict mode runnable in CI/nightly (`node scripts/validate-test-jsonl.mjs --strict ...`) for tracking.
 
-2) Normalize JVM listener output (highest impact)
-   - Update `JsonLoggingTestListener` to emit top-level schema keys (`type`, `task`, `suite`, `test`, `run_id`, `platform=jvm`, `timestamp`).
-   - Convert `TestEnd.duration` to numeric `duration_ms`.
-   - Keep legacy payload under `properties.legacy` temporarily when needed.
+2) Broaden strict verification scope
+   - Run strict checks across larger task sets (beyond focused JS+JVM sample) to identify remaining outliers.
+   - Capture offending task paths and event types for targeted cleanup.
 
-3) Remove remaining non-JSON ingress
-   - Ensure forwarded test output lines are wrapped as `type=Log` JSON events only.
-   - Eliminate raw TeamCity/plain text append paths to `test.jsonl`.
+3) Remove remaining non-canonical ingress
+   - Eliminate any remaining legacy/non-JSON writers to `test.jsonl`.
+   - Ensure all producers emit schema-compliant top-level JSON fields.
 
 4) Tighten validator progressively
    - Phase A: fail only on non-JSON lines in default mode.

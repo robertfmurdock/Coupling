@@ -35,10 +35,28 @@ val writeJsLogHook =
             logFilePath.set(logFilePathProvider)
             outputFile.set(jsLogHookFile)
         }
+val resetTestJsonl =
+    rootProject.tasks.findByName("resetTestJsonl")
+        ?.let { rootProject.tasks.named(it.name) }
+        ?: rootProject.tasks.register("resetTestJsonl") {
+            val shouldReset =
+                (providers.gradleProperty("coupling.testLog.reset").orNull == "true") ||
+                    (System.getenv("COUPLING_TEST_LOG_RESET") == "true")
+            val resetPath = logFilePathProvider.get()
+            doFirst {
+                if (!shouldReset) {
+                    return@doFirst
+                }
+                val logFile = java.io.File(resetPath)
+                logFile.parentFile.mkdirs()
+                logFile.writeText("")
+            }
+        }
 
 tasks.withType(AbstractTestTask::class).configureEach {
+    dependsOn(resetTestJsonl)
     dependsOn(writeLogConfig)
-    val jsonLoggingListener = JsonLoggingTestListener(path, testRunIdentifier)
+    val jsonLoggingListener = JsonLoggingTestListener(path, testRunIdentifier, logFilePathProvider.get())
     addTestListener(jsonLoggingListener)
     addTestOutputListener(jsonLoggingListener)
 }
