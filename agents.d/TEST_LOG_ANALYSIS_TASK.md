@@ -4,11 +4,17 @@ Goal
 - Make `build/test-output/test.jsonl` fully machine-readable and consistent across JVM + JS test suites.
 - Enable reliable automated performance analysis (durations, pass/fail rates, slow tests, per-suite metrics).
 
-Current Issues
-- Mixed log formats: Log4j JSON, TeamCity `testStdOut` text, and plain console strings.
-- Missing fields on many lines (no `taskName`, `testName`, `duration_ms`, `status`).
-- JS mint logs are wrapped in TeamCity output and not structured JSON.
-- Durations are inconsistent: JVM has `duration` as string in TestEnd, JS mint steps are text only.
+Current State (2026-04-21)
+- Validation is now wired to Gradle via `validateTestJsonl` and runs from root `check`.
+- Validator has two modes:
+  - `compat` (default): report-only, does not fail build.
+  - `strict` (`--strict`): fails on any schema violation.
+- JS console hook now emits JSON `Log` records with `type`, `platform=js`, `run_id`, `task`, `timestamp`.
+- JS task start/finish markers are emitted as structured JSON.
+- Full-suite output still contains legacy/unnormalized records:
+  - Log4j events with event payload nested under `message`.
+  - Missing top-level `type`, `run_id`, `platform` on many JVM/forwarded entries.
+  - Some non-JSON remnants in full mixed runs.
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
@@ -26,52 +32,39 @@ Deliverable
   - `message`: string (optional)
   - `properties`: map (optional)
 
-Plan of Work
-1) JVM test event normalization
-   - Replace Log4j `message` ObjectMessage outputs with a normalized JSON event payload.
-   - For `JsonLoggingTestListener`, emit:
-     - `TestStart` event with `task`, `suite`, `test`, `timestamp`, `run_id`, `platform=jvm`.
-     - `TestEnd` event with `status`, `duration_ms`, and any failure summary.
-   - Ensure timestamps are ISO-8601 and `duration_ms` is numeric.
-   - Use a single `logger` name, e.g. `test-events`, to make filtering easy.
+Near-Term Plan (delivery-first)
+1) Keep CI green while preserving visibility
+   - Keep validator in `compat` mode as default for `check`.
+   - Keep strict mode runnable in CI/nightly (`node scripts/validate-test-jsonl.mjs --strict ...`) for tracking.
 
-2) JS test event normalization
-   - Replace TeamCity stdout log capture with a structured JSON emitter.
-   - Preferred approach: add a JS-side test reporter or hook that emits JSON with the schema above.
-     - If using Kotlin/JS test framework hooks, emit on test start/end and for mint steps.
-     - If using console output, override console methods in `js-test-log-hook.js` to emit JSON with `type=Log`.
-   - Ensure the JS test runner writes to `COUPLING_TEST_LOG_PATH` directly and never emits mixed text.
+2) Normalize JVM listener output (highest impact)
+   - Update `JsonLoggingTestListener` to emit top-level schema keys (`type`, `task`, `suite`, `test`, `run_id`, `platform=jvm`, `timestamp`).
+   - Convert `TestEnd.duration` to numeric `duration_ms`.
+   - Keep legacy payload under `properties.legacy` temporarily when needed.
 
-3) Mint logger integration
-   - Map mint “setup/exercise/verify” steps to:
-     - `StepStart`/`StepEnd` events with `phase` field (e.g. `setup`, `exercise`, `verify`).
-   - Record `duration_ms` for each step if possible.
-   - Include `test` and `suite` fields in every mint event.
+3) Remove remaining non-JSON ingress
+   - Ensure forwarded test output lines are wrapped as `type=Log` JSON events only.
+   - Eliminate raw TeamCity/plain text append paths to `test.jsonl`.
 
-4) Event filtering + validation
-   - Add a small verifier (script or Gradle task) that:
-     - Reads `test.jsonl`.
-     - Validates every line against the schema.
-     - Fails if any line is non-JSON or missing required keys.
-   - Add a summary report step (counts, slowest tests) as proof-of-utility.
+4) Tighten validator progressively
+   - Phase A: fail only on non-JSON lines in default mode.
+   - Phase B: fail on missing `type/timestamp/run_id/platform`.
+   - Phase C: fail full schema by event type (end-event requirements included).
 
-5) Backward compatibility
-   - If old formats must remain, add a `legacy` field that retains the original line.
-   - Otherwise, enforce “JSON only” output in `test.jsonl`.
+5) Flip default to strict
+   - Once full test suite passes strict mode consistently, make strict the default for `check`.
 
 Suggested Implementation Details
 - Create a dedicated Kotlin data class for test events and serialize with Jackson.
-- In JVM listener, replace `ObjectMessage` with a serialized JSON string.
+- In JVM listener, replace `ObjectMessage`/nested message payloads with top-level schema fields.
 - For JS, add a test framework hook or reporter that writes JSON directly (avoid TeamCity output).
 - Use `run_id` sourced from existing `testRunIdentifier`.
 - Ensure the output file is always created even if no tests are executed.
 
 Verification Steps
-- Run a JVM test task with known testmints activity and verify:
-  - Only JSON lines in `test.jsonl`.
-  - `TestStart`/`TestEnd` entries include `duration_ms`.
-  - Mint steps map to `StepStart`/`StepEnd`.
-- Run a JS test task and verify:
-  - JSON lines contain `platform=js` and `task` is the JS task path.
-  - No TeamCity `testStdOut` strings appear.
-- Run combined tasks and confirm all lines conform to schema.
+- Quick pass check:
+  - `./gradlew validateTestJsonl` succeeds (compat mode).
+- Strict progress check:
+  - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` reports declining violations over time.
+- Cutover check:
+  - Full-suite strict run has zero violations before switching `check` to strict mode.

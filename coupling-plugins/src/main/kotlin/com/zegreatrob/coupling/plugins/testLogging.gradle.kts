@@ -51,6 +51,8 @@ tasks.withType(KotlinJsTest::class).configureEach {
     val taskPath = path
     dependsOn(writeJsLogHook)
     environment("COUPLING_TEST_LOG_PATH", logFilePath)
+    environment("COUPLING_TEST_TASK_PATH", taskPath)
+    environment("COUPLING_TEST_RUN_ID", testRunIdentifier)
     val existingNodeOptions = System.getenv("NODE_OPTIONS")
     val nodeOptions = listOf(existingNodeOptions, "--require $hookPath")
         .filterNotNull()
@@ -58,10 +60,12 @@ tasks.withType(KotlinJsTest::class).configureEach {
         .trim()
     environment("NODE_OPTIONS", nodeOptions)
     doFirst {
-        TestLoggingFileAppender.appendTestmintsLog(logFilePath, taskPath, "js-test-start")
+        val runId = System.getProperty("testRunIdentifier") ?: "unknown-run"
+        TestLoggingFileAppender.appendTestmintsLog(logFilePath, taskPath, runId, "js-test-start")
     }
     doLast {
-        TestLoggingFileAppender.appendTestmintsLog(logFilePath, taskPath, "js-test-finish")
+        val runId = System.getProperty("testRunIdentifier") ?: "unknown-run"
+        TestLoggingFileAppender.appendTestmintsLog(logFilePath, taskPath, runId, "js-test-finish")
     }
 }
 

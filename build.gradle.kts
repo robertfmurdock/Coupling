@@ -1,6 +1,7 @@
 
 import com.avast.gradle.dockercompose.tasks.ComposeUp
 import com.gradle.scan.plugin.internal.dep.com.fasterxml.jackson.databind.ObjectMapper
+import org.gradle.api.tasks.Exec
 import java.time.Duration
 
 plugins {
@@ -45,8 +46,19 @@ tagger {
 }
 
 tasks {
+    val validateTestJsonl by registering(Exec::class) {
+        group = "verification"
+        description = "Validates build/test-output/test.jsonl for minimum required schema."
+        commandLine(
+            "node",
+            "scripts/validate-test-jsonl.mjs",
+            rootProject.layout.buildDirectory.file("test-output/test.jsonl").get().asFile.absolutePath
+        )
+    }
+
     check {
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
+        finalizedBy(validateTestJsonl)
     }
     named<ComposeUp>("composeUp") {
         mustRunAfter("caddyComposeUp", "libraries:repository:dynamo:composeUp")

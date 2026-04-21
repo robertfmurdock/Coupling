@@ -27,6 +27,8 @@ abstract class WriteJsTestLogHook : DefaultTask() {
             return """
                 const fs = require('fs');
                 const logPath = process.env.COUPLING_TEST_LOG_PATH || ${jsonEscape(logFilePath)};
+                const runId = process.env.COUPLING_TEST_RUN_ID || 'unknown-run';
+                const taskPath = process.env.COUPLING_TEST_TASK_PATH || '';
                 if (logPath) {
                   const append = (args) => {
                     try {
@@ -34,7 +36,16 @@ abstract class WriteJsTestLogHook : DefaultTask() {
                         if (typeof a === 'string') return a;
                         try { return JSON.stringify(a); } catch (e) { return String(a); }
                       }).join(' ');
-                      fs.appendFileSync(logPath, line + '\n');
+                      const event = {
+                        type: 'Log',
+                        platform: 'js',
+                        run_id: runId,
+                        task: taskPath,
+                        logger: 'console',
+                        message: line,
+                        timestamp: new Date().toISOString()
+                      };
+                      fs.appendFileSync(logPath, JSON.stringify(event) + '\n');
                     } catch (e) {}
                   };
                   const origLog = console.log;
