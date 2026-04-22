@@ -31,11 +31,3 @@ dependencies {
 
     "jsMainImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-core")
 }
-
-tasks {
-    named<Test>("jvmTest") {
-        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
-
-        useJUnitPlatform()
-    }
-}

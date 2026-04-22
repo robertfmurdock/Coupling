@@ -137,6 +137,28 @@ Current State (2026-04-21, late-night snapshot)
   - Resume priority:
     - Investigate why `:sdk:jvmTest` suites importing TestMints produce no TestMints Log events in `test.jsonl` while other JVM tasks (e.g. `:libraries:action:jvmTest`) do.
     - Treat as upstream/plugin integration issue if confirmed; do not compensate by weakening analyzer semantics.
+- Continuation update (2026-04-22, sdk:jvmTest TestMints phase recovery):
+  - Investigation findings:
+    - `:sdk:jvmTest` was emitting TestMints phase text (`test-start`, `setup-start`, etc.) as plain forwarded console output.
+    - Listener normalization required either `logger=testmints` or explicit `[testmints]` markers, so phase-only messages stayed `logger=forwarded-output`.
+    - Strict analyzer therefore reported false-negative coverage (`tests_with_testmints=0`) despite phase lines being present.
+  - Fixes applied:
+    - `sdk/build.gradle.kts`
+      - enabled JUnit Platform + extension autodetection for `jvmTest` (aligns with modules that already emit canonical TestMints lifecycle phases).
+      - added `jvmTestImplementation(kotlin("test-junit5"))`.
+      - excluded transitive `org.jetbrains.kotlin:kotlin-test-junit` from `:libraries:repository:validation` in `commonTestImplementation` to resolve JUnit4/JUnit5 capability conflict.
+    - `coupling-plugins/src/main/kotlin/.../JsonLoggingTestListener.kt`
+      - expanded TestMints detection to classify known phase messages as TestMints events even when logger metadata is missing.
+      - added camelCase-to-canonical phase mapping (`exerciseStart` -> `exercise-start`, etc.) and preserved canonical phase tagging in `properties.testmints_phase`.
+  - Verification:
+    - `./gradlew :coupling-plugins:compileKotlin -Pcoupling.testLog.reset=true --rerun-tasks :sdk:jvmTest`
+    - `node scripts/analyze-test-jsonl.mjs --strict build/test-output/test.jsonl`
+    - strict result: **0 violations** with recovered coverage:
+      - `tests_with_testmints=112`
+      - `expected_testmints_tests=80`
+      - `tests_missing_expected_testmints=0`
+      - `tests_missing_required_testmints_phases=0`
+      - `phase_counts={ setup-start:112, setup-finish:112, exercise-start:112, exercise-finish:112, verify-start:112, verify-finish:112, test-start:112, test-finish:112 }`
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.

@@ -23,5 +23,5 @@ dependencies {
 
     "jvmMainApi"(kotlin("reflect"))
     "jvmMainImplementation"(kotlin("reflect"))
-    "jvmMainImplementation"("org.jetbrains.kotlin:kotlin-test-junit")
+    "jvmMainImplementation"(kotlin("test-junit5"))
 }

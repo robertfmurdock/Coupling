@@ -85,7 +85,9 @@ class JsonLoggingTestListener(
         message: String,
         properties: Map<String, Any?>,
     ): NormalizedLogEvent {
+        val phase = testmintsPhase(message)
         val isTestmints = loggerName.equals("testmints", ignoreCase = true) ||
+            phase != null ||
             message.contains("[testmints]") ||
             message.contains("testmints -")
         if (!isTestmints) {
@@ -96,7 +98,6 @@ class JsonLoggingTestListener(
             )
         }
 
-        val phase = testmintsPhase(message)
         val step = testmintsValue(message, "step")
         val state = testmintsValue(message, "state")
         val name = testmintsName(message)
@@ -116,7 +117,7 @@ class JsonLoggingTestListener(
     }
 
     private fun testmintsPhase(message: String): String? {
-        return listOf(
+        val canonicalPhases = listOf(
             "setup-start",
             "setup-finish",
             "exercise-start",
@@ -125,7 +126,20 @@ class JsonLoggingTestListener(
             "verify-finish",
             "test-start",
             "test-finish",
-        ).firstOrNull { message.contains(it) }
+        )
+        canonicalPhases.firstOrNull { message.contains(it) }?.let { return it }
+
+        return when {
+            message.contains("setupStart") -> "setup-start"
+            message.contains("setupFinish") -> "setup-finish"
+            message.contains("exerciseStart") -> "exercise-start"
+            message.contains("exerciseFinish") -> "exercise-finish"
+            message.contains("verifyStart") -> "verify-start"
+            message.contains("verifyFinish") -> "verify-finish"
+            message.contains("testStart") -> "test-start"
+            message.contains("testFinish") -> "test-finish"
+            else -> null
+        }
     }
 
     private fun testmintsValue(message: String, key: String): String? {

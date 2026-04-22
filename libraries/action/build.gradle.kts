@@ -52,10 +52,6 @@ dependencies {
 }
 
 tasks {
-    named<Test>("jvmTest") {
-        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
-        useJUnitPlatform()
-    }
     withType<FormatTask> {
         dependsOn("kspCommonMainKotlinMetadata")
     }

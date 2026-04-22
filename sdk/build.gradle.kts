@@ -114,14 +114,14 @@ tasks {
         dependsOn(":composeUp")
         outputs.cacheIf { true }
     }
-    installCert {
-        dependsOn(":caddyComposeUp")
-        jdkSelector = "22"
-        certificatePath = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
-    }
     "jvmTest" {
         mustRunAfter(jsNodeTest)
         dependsOn(":composeUp")
         dependsOn(installCert)
+    }
+    installCert {
+        dependsOn(":caddyComposeUp")
+        jdkSelector = "22"
+        certificatePath = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
     }
 }

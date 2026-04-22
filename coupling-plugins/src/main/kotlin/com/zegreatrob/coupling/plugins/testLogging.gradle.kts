@@ -54,6 +54,14 @@ tasks.withType(AbstractTestTask::class).configureEach {
 }
 tasks.withType(Test::class).configureEach {
     systemProperty("log4j2.configurationFile", logConfigFile.get().asFile.absolutePath)
+    systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
+    useJUnitPlatform()
+}
+val slf4jTestBackend = "org.slf4j:slf4j-simple"
+configurations.configureEach {
+    if (name == "testRuntimeOnly" || name == "jvmTestRuntimeOnly") {
+        project.dependencies.add(name, slf4jTestBackend)
+    }
 }
 tasks.withType(KotlinJsTest::class).configureEach {
     val logFilePath = logFilePathProvider.get()
