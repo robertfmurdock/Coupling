@@ -23,13 +23,13 @@ abstract class WriteTestLog4j2Config : DefaultTask() {
     }
 
     companion object {
-        fun buildConfig(logFilePath: String): String {
+        fun buildConfig(@Suppress("UNUSED_PARAMETER") logFilePath: String): String {
             val dollar = '$'
             return """
                 {
                   "Configuration": {
                     "Appenders": {
-                      "File": {
+                      "Console": {
                         "JsonLayout": {
                           "keyValuePair": [{
                             "key": "timestamp",
@@ -43,16 +43,15 @@ abstract class WriteTestLog4j2Config : DefaultTask() {
                           "compact": true,
                           "objectMessageAsJsonObject": true
                         },
-                        "name": "File",
-                        "fileName": "$logFilePath",
-                        "createOnDemand": true
+                        "name": "Console",
+                        "target": "SYSTEM_OUT"
                       }
                     },
                     "Loggers": {
                       "Root": {
                         "AppenderRef": [
                           {
-                            "ref": "File"
+                            "ref": "Console"
                           }
                         ],
                         "level": "trace"

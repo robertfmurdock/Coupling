@@ -4,7 +4,7 @@ Goal
 - Make `build/test-output/test.jsonl` fully machine-readable and consistent across JVM + JS test suites.
 - Enable reliable automated performance analysis (durations, pass/fail rates, slow tests, per-suite metrics).
 
-Current State (2026-04-21, end-of-day snapshot)
+Current State (2026-04-21, late-night snapshot)
 - Validation is wired to Gradle via `validateTestJsonl` and runs from root `check`.
 - Validator modes are in place:
   - `compat` (default): report-only, does not fail build.
@@ -18,7 +18,16 @@ Current State (2026-04-21, end-of-day snapshot)
 - `resetTestJsonl` is opt-in only:
   - `-Pcoupling.testLog.reset=true` or `COUPLING_TEST_LOG_RESET=true`.
   - Default behavior remains append (supports multi-run/week-long analysis).
-- Focused verification (`:libraries:json:jsNodeTest` + `:libraries:action:jvmTest`) passes strict with zero violations on fresh log output.
+- Root cause found for broad-run JVM violations:
+  - Test Log4j config was writing raw Log4j JSON directly to `test.jsonl` (bypassing canonical listener fields).
+  - This produced `missing core: type,run_id,platform` violations on fresh JVM runs.
+- Fix applied:
+  - `WriteTestLog4j2Config` now routes root logger to `Console` (stdout) instead of `File(test.jsonl)`.
+  - Listener normalization (`JsonLoggingTestListener.onOutput`) now remains the single ingress path for JVM log lines.
+- Fresh strict checks after fix:
+  - `./gradlew -Pcoupling.testLog.reset=true :sdk:jvmTest :sdk:jsNodeTest :client:components:jsNodeTest`
+  - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :sdk:jvmTest :libraries:action:jvmTest`
+  - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations**.
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
@@ -42,11 +51,11 @@ Near-Term Plan (delivery-first)
    - Keep strict mode runnable in CI/nightly (`node scripts/validate-test-jsonl.mjs --strict ...`) for tracking.
 
 2) Broaden strict verification scope
-   - Run strict checks across larger task sets (beyond focused JS+JVM sample) to identify remaining outliers.
+   - Continue strict checks across larger task sets (beyond current targeted JS/JVM slices) to identify any remaining outliers.
    - Capture offending task paths and event types for targeted cleanup.
 
 3) Remove remaining non-canonical ingress
-   - Eliminate any remaining legacy/non-JSON writers to `test.jsonl`.
+   - Verify no other writers bypass listener normalization.
    - Ensure all producers emit schema-compliant top-level JSON fields.
 
 4) Tighten validator progressively
