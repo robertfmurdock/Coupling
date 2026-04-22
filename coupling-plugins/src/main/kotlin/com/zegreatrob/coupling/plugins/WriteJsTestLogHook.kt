@@ -36,13 +36,20 @@ abstract class WriteJsTestLogHook : DefaultTask() {
                         if (typeof a === 'string') return a;
                         try { return JSON.stringify(a); } catch (e) { return String(a); }
                       }).join(' ');
+                      if (line.startsWith('##teamcity[')) {
+                        return;
+                      }
+                      const maxMessageLength = 12000;
+                      const message = line.length > maxMessageLength
+                        ? line.slice(0, maxMessageLength) + '...[truncated]'
+                        : line;
                       const event = {
                         type: 'Log',
                         platform: 'js',
                         run_id: runId,
                         task: taskPath,
                         logger: 'console',
-                        message: line,
+                        message,
                         timestamp: new Date().toISOString()
                       };
                       fs.appendFileSync(logPath, JSON.stringify(event) + '\n');

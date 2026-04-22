@@ -28,6 +28,21 @@ Current State (2026-04-21, late-night snapshot)
   - `./gradlew -Pcoupling.testLog.reset=true :sdk:jvmTest :sdk:jsNodeTest :client:components:jsNodeTest`
   - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :sdk:jvmTest :libraries:action:jvmTest`
   - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations**.
+- Continuation update (2026-04-21, later):
+  - Found remaining JS non-canonical ingress:
+    - `libraries/logging/src/jsMain/kotlin/.../JsonFormatter.kt` appended raw logger JSON directly to `test.jsonl`.
+    - This produced lines missing canonical fields (`type/run_id/platform`) and contributed to parse instability.
+  - Fix applied:
+    - Removed direct `test.jsonl` writes from JS `JsonFormatter`; logging now relies on canonical test-log emitters.
+  - Found remaining JS parse issue:
+    - Oversized `##teamcity[...]` console payload lines could interleave at append time and create `non-json` fragments.
+  - Fix applied:
+    - `WriteJsTestLogHook` now ignores TeamCity control lines (`##teamcity[...]`).
+    - Hook also truncates oversized console messages (12k chars) before append.
+  - Fresh strict checks after continuation fixes:
+    - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :sdk:jsNodeTest :client:components:jsNodeTest`
+    - `./gradlew --rerun-tasks :sdk:jvmTest`
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations** (`non_json_lines=0`, `missing_core_fields=0`).
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
