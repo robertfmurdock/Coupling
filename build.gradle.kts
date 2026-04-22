@@ -49,11 +49,19 @@ tasks {
     val validateTestJsonl by registering(Exec::class) {
         group = "verification"
         description = "Validates build/test-output/test.jsonl for minimum required schema."
-        commandLine(
+        val baseCommand = mutableListOf(
             "node",
-            "scripts/validate-test-jsonl.mjs",
-            rootProject.layout.buildDirectory.file("test-output/test.jsonl").get().asFile.absolutePath
+            "scripts/validate-test-jsonl.mjs"
         )
+        val failOnNonJsonEnabled = providers
+            .gradleProperty("coupling.testLog.failNonJson")
+            .map { it.equals("true", ignoreCase = true) }
+            .getOrElse(false)
+        if (failOnNonJsonEnabled) {
+            baseCommand.add("--fail-on-non-json")
+        }
+        baseCommand.add(rootProject.layout.buildDirectory.file("test-output/test.jsonl").get().asFile.absolutePath)
+        commandLine(baseCommand)
     }
 
     check {

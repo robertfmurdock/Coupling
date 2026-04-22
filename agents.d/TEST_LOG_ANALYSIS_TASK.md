@@ -60,6 +60,17 @@ Current State (2026-04-21, late-night snapshot)
     - Broad sweep (excluding failing unrelated `:konsist:jvmTest`):
       - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/:[^ ]+:(jvmTest|jsNodeTest) -/{print ":"$1}' | grep -v '^:konsist:jvmTest$')`
       - strict validator result: **0 violations**, `non_json_lines=0`, `missing_core_fields=0`.
+- Continuation update (2026-04-22, phase-A tightening):
+  - Implemented progressive validator tightening for default `check` path:
+    - Added validator flag `--fail-on-non-json` in `scripts/validate-test-jsonl.mjs`.
+    - Non-strict mode now supports `mode=compat-fail-non-json` where only `non_json_lines` are build-failing; all schema violations remain reported.
+  - Adjusted rollout to opt-in (same day hotfix):
+    - Full-suite `check` still contains non-canonical browser/e2e console lines, so default fail-on-non-json was too aggressive.
+    - Gradle root `validateTestJsonl` now enables phase-A mode only with `-Pcoupling.testLog.failNonJson=true`.
+    - Default behavior remains compat report-only until remaining ingress cleanup is complete.
+  - Verification:
+    - `./gradlew validateTestJsonl` (default) reports `mode=compat`.
+    - `./gradlew -Pcoupling.testLog.failNonJson=true validateTestJsonl` reports `mode=compat-fail-non-json`.
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
