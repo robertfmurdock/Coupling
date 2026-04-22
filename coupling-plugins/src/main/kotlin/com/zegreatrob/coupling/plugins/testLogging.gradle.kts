@@ -13,7 +13,6 @@ val logConfigFile = rootProject.layout.buildDirectory.file("test-output/log4j2-t
 val logFilePathProvider = rootProject.layout.buildDirectory
     .file("test-output/test.jsonl")
     .map { it.asFile.absolutePath }
-val jsLogHookFile = rootProject.layout.buildDirectory.file("test-output/js-test-log-hook.js")
 val logConfigPath = logConfigFile.get().asFile
 
 logConfigPath.parentFile.mkdirs()
@@ -27,13 +26,6 @@ val writeLogConfig =
         ?: rootProject.tasks.register("writeTestLog4j2Config", WriteTestLog4j2Config::class.java) {
             logFilePath.set(logFilePathProvider)
             outputFile.set(logConfigFile)
-        }
-val writeJsLogHook =
-    rootProject.tasks.findByName("writeJsTestLogHook")
-        ?.let { rootProject.tasks.named(it.name) }
-        ?: rootProject.tasks.register("writeJsTestLogHook", WriteJsTestLogHook::class.java) {
-            logFilePath.set(logFilePathProvider)
-            outputFile.set(jsLogHookFile)
         }
 val resetTestJsonl =
     rootProject.tasks.findByName("resetTestJsonl")
@@ -65,18 +57,7 @@ tasks.withType(Test::class).configureEach {
 }
 tasks.withType(KotlinJsTest::class).configureEach {
     val logFilePath = logFilePathProvider.get()
-    val hookPath = jsLogHookFile.get().asFile.absolutePath
     val taskPath = path
-    dependsOn(writeJsLogHook)
-    environment("COUPLING_TEST_LOG_PATH", logFilePath)
-    environment("COUPLING_TEST_TASK_PATH", taskPath)
-    environment("COUPLING_TEST_RUN_ID", testRunIdentifier)
-    val existingNodeOptions = System.getenv("NODE_OPTIONS")
-    val nodeOptions = listOf(existingNodeOptions, "--require $hookPath")
-        .filterNotNull()
-        .joinToString(" ")
-        .trim()
-    environment("NODE_OPTIONS", nodeOptions)
     doFirst {
         val runId = System.getProperty("testRunIdentifier") ?: "unknown-run"
         TestLoggingFileAppender.appendTestmintsLog(logFilePath, taskPath, runId, "js-test-start")

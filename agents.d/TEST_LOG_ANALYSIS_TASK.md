@@ -43,6 +43,23 @@ Current State (2026-04-21, late-night snapshot)
     - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :sdk:jsNodeTest :client:components:jsNodeTest`
     - `./gradlew --rerun-tasks :sdk:jvmTest`
     - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations** (`non_json_lines=0`, `missing_core_fields=0`).
+- Continuation update (2026-04-21, broad-sweep follow-up):
+  - Broad strict run surfaced residual `non-json` lines in `:libraries:repository:dynamo:jsNodeTest` only:
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` on wide run showed `non_json_lines=4`.
+  - Root cause:
+    - Two concurrent JS writers appended to the same `test.jsonl` file:
+      - Gradle-side `JsonLoggingTestListener` (canonical output listener).
+      - Node-side `WriteJsTestLogHook` (via `NODE_OPTIONS=--require ...`).
+    - Under very large `testmints` payload logs, writes interleaved and split JSON objects across lines.
+  - Fix applied:
+    - Removed JS hook injection from `KotlinJsTest` configuration in `coupling-plugins/.../testLogging.gradle.kts`.
+    - JS logging now uses a single ingress path (`JsonLoggingTestListener`) for `test.jsonl`.
+  - Post-fix strict verification:
+    - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :libraries:repository:dynamo:jsNodeTest`
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations**.
+    - Broad sweep (excluding failing unrelated `:konsist:jvmTest`):
+      - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/:[^ ]+:(jvmTest|jsNodeTest) -/{print ":"$1}' | grep -v '^:konsist:jvmTest$')`
+      - strict validator result: **0 violations**, `non_json_lines=0`, `missing_core_fields=0`.
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
