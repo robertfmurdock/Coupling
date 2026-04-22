@@ -111,6 +111,32 @@ Current State (2026-04-21, late-night snapshot)
   - Verification:
     - `./gradlew validateTestJsonl` reports `mode=compat-fail-non-json`.
     - `./gradlew -Pcoupling.testLog.failNonJson=false validateTestJsonl` reports `mode=compat`.
+- Continuation update (2026-04-22, testmints queryability + resume checkpoint):
+  - Added structured TestMints normalization in JVM listener output path:
+    - `coupling-plugins/src/main/kotlin/com/zegreatrob/coupling/plugins/JsonLoggingTestListener.kt`
+    - For Log events recognized as TestMints, listener now emits:
+      - `logger=testmints`
+      - `properties.testmints=true`
+      - `properties.testmints_phase` (e.g. `setup-start`, `verify-finish`)
+      - optional `properties.testmints_step`, `properties.testmints_state`, `properties.testmints_name`
+    - This makes TestMints phase analysis queryable as JSON fields instead of only message-string parsing.
+  - Added dedicated analyzer for coverage + TestMints phase checks:
+    - New script: `scripts/analyze-test-jsonl.mjs`
+    - New root Gradle task: `analyzeTestJsonl`
+      - default: report mode (never fails build)
+      - strict: `-Pcoupling.testLog.analyze.strict=true` (fails on detected coverage/TestMints violations)
+  - Verification (passing/safe default path):
+    - `./gradlew :coupling-plugins:compileKotlin validateTestJsonl analyzeTestJsonl` => **success**
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations**
+  - Verification (strict analyzer, expected current failure on gap):
+    - `./gradlew -Pcoupling.testLog.analyze.strict=true analyzeTestJsonl`
+    - On current `:sdk:jvmTest` snapshot, strict analyzer reports:
+      - `tests_missing_expected_testmints=43`
+      - `tests_with_testmints=0`
+    - This indicates a real TestMints emission gap in that JVM runtime path (likely plugin/runtime behavior), not JSON parser noise.
+  - Resume priority:
+    - Investigate why `:sdk:jvmTest` suites importing TestMints produce no TestMints Log events in `test.jsonl` while other JVM tasks (e.g. `:libraries:action:jvmTest`) do.
+    - Treat as upstream/plugin integration issue if confirmed; do not compensate by weakening analyzer semantics.
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.

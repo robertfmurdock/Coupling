@@ -64,6 +64,24 @@ tasks {
         commandLine(baseCommand)
     }
 
+    val analyzeTestJsonl by registering(Exec::class) {
+        group = "verification"
+        description = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl."
+        val command = mutableListOf(
+            "node",
+            "scripts/analyze-test-jsonl.mjs"
+        )
+        val strict = providers
+            .gradleProperty("coupling.testLog.analyze.strict")
+            .map { it.equals("true", ignoreCase = true) }
+            .getOrElse(false)
+        if (strict) {
+            command.add("--strict")
+        }
+        command.add(rootProject.layout.buildDirectory.file("test-output/test.jsonl").get().asFile.absolutePath)
+        commandLine(command)
+    }
+
     check {
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
         finalizedBy(validateTestJsonl)
