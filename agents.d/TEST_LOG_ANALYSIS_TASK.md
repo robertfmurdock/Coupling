@@ -71,6 +71,18 @@ Current State (2026-04-21, late-night snapshot)
   - Verification:
     - `./gradlew validateTestJsonl` (default) reports `mode=compat`.
     - `./gradlew -Pcoupling.testLog.failNonJson=true validateTestJsonl` reports `mode=compat-fail-non-json`.
+- Continuation update (2026-04-22, e2e canonicalization):
+  - Root cause for residual broad-run `non-json` lines was e2e browser-log forwarding:
+    - `e2e/src/jsE2eTest/kotlin/com/zegreatrob/coupling/e2e/test/CheckLogs.kt` appended raw browser console strings directly to `test.jsonl`.
+  - Fix applied:
+    - Replaced raw append path with canonical event writes:
+      - `type=Log`, `platform=e2e`, `run_id`, `task`, `timestamp`, `logger`, `message`, optional `properties`.
+    - Wired e2e task metadata into runtime env:
+      - `COUPLING_TEST_RUN_ID` and `COUPLING_TEST_TASK` are now passed from `:e2e:e2eRun`.
+  - Verification:
+    - `./gradlew :e2e:compileE2eTestKotlinJs` (build validation) => success.
+    - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :e2e:e2eRun`
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations** (`parsed_json_lines=305`, `non_json_lines=0`).
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.

@@ -112,6 +112,8 @@ tasks {
         environment(
             "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
             "COUPLING_TEST_LOG_PATH" to testLogFile.get().asFile.absolutePath,
+            "COUPLING_TEST_RUN_ID" to (System.getProperty("testRunIdentifier") ?: "unknown-run"),
+            "COUPLING_TEST_TASK" to path,
         )
     }
 

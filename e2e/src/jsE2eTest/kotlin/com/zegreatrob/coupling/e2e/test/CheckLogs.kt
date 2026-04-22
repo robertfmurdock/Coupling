@@ -16,13 +16,22 @@ suspend fun checkLogs() {
 
 fun List<Json>.forwardLogs() = forEach {
     try {
-        val forwarded = JSON.stringify(parseForForwarding(it))
-        console.log(forwarded)
-        appendToTestLog(forwarded)
+        val forwarded = parseForForwarding(it)
+        val forwardedText = JSON.stringify(forwarded)
+        console.log(forwardedText)
+        appendCanonicalToTestLog(
+            message = forwarded["message"]?.toString() ?: forwardedText,
+            logger = forwarded["name"]?.toString() ?: "browser",
+            properties = forwarded,
+        )
     } catch (_: Throwable) {
         val fallback = it["message"].toString()
         console.log(fallback)
-        appendToTestLog(fallback)
+        appendCanonicalToTestLog(
+            message = fallback,
+            logger = "browser",
+            properties = json("source" to "browser", "raw" to fallback),
+        )
     }
 }
 
@@ -40,14 +49,24 @@ private fun errorsWarnings(browserLog: List<Json>) = browserLog.filter {
     }
 }.map { it["message"] }
 
-private fun appendToTestLog(message: String) {
+private fun appendCanonicalToTestLog(message: String, logger: String, properties: Json) {
     val logPath = testLogPath() ?: return
     if (!isNodeRuntime()) {
         return
     }
     try {
         val fs = js("require('fs')")
-        fs.appendFileSync(logPath, message + "\n")
+        val event = json(
+            "type" to "Log",
+            "platform" to "e2e",
+            "run_id" to testRunId(),
+            "task" to testTaskPath(),
+            "logger" to logger,
+            "message" to message,
+            "timestamp" to nowIsoTimestamp(),
+            "properties" to properties,
+        )
+        fs.appendFileSync(logPath, JSON.stringify(event) + "\n")
     } catch (_: dynamic) {
     }
 }
@@ -56,6 +75,18 @@ private fun testLogPath(): String? {
     val envVar = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_LOG_PATH : null")
     return envVar as? String
 }
+
+private fun testRunId(): String {
+    val envVar = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_RUN_ID : null")
+    return envVar as? String ?: "unknown-run"
+}
+
+private fun testTaskPath(): String {
+    val envVar = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_TASK : null")
+    return envVar as? String ?: ":e2e:e2eRun"
+}
+
+private fun nowIsoTimestamp(): String = js("new Date().toISOString()") as String
 
 private fun isNodeRuntime(): Boolean {
     val hasNode = js("typeof process !== 'undefined' && process.versions && process.versions.node")
