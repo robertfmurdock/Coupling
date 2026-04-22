@@ -55,8 +55,8 @@ tasks {
         )
         val failOnNonJsonEnabled = providers
             .gradleProperty("coupling.testLog.failNonJson")
-            .map { it.equals("true", ignoreCase = true) }
-            .getOrElse(false)
+            .map { !it.equals("false", ignoreCase = true) }
+            .getOrElse(true)
         if (failOnNonJsonEnabled) {
             baseCommand.add("--fail-on-non-json")
         }

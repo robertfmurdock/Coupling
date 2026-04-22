@@ -83,6 +83,34 @@ Current State (2026-04-21, late-night snapshot)
     - `./gradlew :e2e:compileE2eTestKotlinJs` (build validation) => success.
     - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :e2e:e2eRun`
     - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations** (`parsed_json_lines=305`, `non_json_lines=0`).
+- Continuation update (2026-04-22, broad JVM+JS re-check):
+  - Re-ran broad strict verification after phase-A and e2e canonicalization changes:
+    - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/:[^ ]+:(jvmTest|jsNodeTest) -/{print ":"$1}' | grep -v '^:konsist:jvmTest$')`
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl`
+  - Result: **0 violations** with no parse or schema issues:
+    - `non_json_lines=0`
+    - `missing_core_fields=0`
+    - `missing_end_fields=0`
+    - `bad_duration_ms=0`
+  - Snapshot from strict report:
+    - `parsed_json_lines=4928`
+    - `type_counts={ Log: 4016, TestStart: 456, TestEnd: 456 }`
+    - `platform_counts={ js: 4590, jvm: 338 }`
+- Continuation update (2026-04-22, phase-A default-on):
+  - Re-validated broad JVM+JS sweep and strict schema status:
+    - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/:[^ ]+:(jvmTest|jsNodeTest|e2eRun) -/{print ":"$1}' | grep -v '^:konsist:jvmTest$')`
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl`
+    - strict result: **0 violations**.
+  - Re-ran e2e flow and strict validation to ensure `platform=e2e` lines stay canonical:
+    - `./gradlew --rerun-tasks :e2e:e2eRun`
+    - strict report snapshot: `parsed_json_lines=5193`, `non_json_lines=0`, `missing_core_fields=0`, `platform_counts={ js: 4546, jvm: 338, e2e: 309 }`.
+  - Tightening change applied:
+    - Root `validateTestJsonl` now defaults to `--fail-on-non-json` (phase A on by default for `check` finalizer path).
+    - Backward-compat override remains available:
+      - `-Pcoupling.testLog.failNonJson=false` forces `mode=compat`.
+  - Verification:
+    - `./gradlew validateTestJsonl` reports `mode=compat-fail-non-json`.
+    - `./gradlew -Pcoupling.testLog.failNonJson=false validateTestJsonl` reports `mode=compat`.
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
@@ -102,7 +130,8 @@ Deliverable
 
 Near-Term Plan (delivery-first)
 1) Keep CI green while preserving visibility
-   - Keep validator in `compat` mode as default for `check`.
+   - Keep validator in phase-A default mode (`compat-fail-non-json`) for `check`.
+   - Retain escape hatch `-Pcoupling.testLog.failNonJson=false` if a temporary unblock is needed.
    - Keep strict mode runnable in CI/nightly (`node scripts/validate-test-jsonl.mjs --strict ...`) for tracking.
 
 2) Broaden strict verification scope
@@ -114,7 +143,7 @@ Near-Term Plan (delivery-first)
    - Ensure all producers emit schema-compliant top-level JSON fields.
 
 4) Tighten validator progressively
-   - Phase A: fail only on non-JSON lines in default mode.
+   - Phase A: complete (default fail on non-JSON lines).
    - Phase B: fail on missing `type/timestamp/run_id/platform`.
    - Phase C: fail full schema by event type (end-event requirements included).
 
@@ -130,8 +159,9 @@ Suggested Implementation Details
 
 Verification Steps
 - Quick pass check:
-  - `./gradlew validateTestJsonl` succeeds (compat mode).
+  - `./gradlew validateTestJsonl` succeeds (`mode=compat-fail-non-json`).
+  - `./gradlew -Pcoupling.testLog.failNonJson=false validateTestJsonl` succeeds (`mode=compat`).
 - Strict progress check:
-  - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` reports declining violations over time.
+  - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` reports zero violations on broad JVM/JS/e2e runs.
 - Cutover check:
   - Full-suite strict run has zero violations before switching `check` to strict mode.
