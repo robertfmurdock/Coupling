@@ -271,3 +271,108 @@ Verification Steps
   - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` reports zero violations on broad JVM/JS/e2e runs.
 - Cutover check:
   - Full-suite strict run has zero violations before switching `check` to strict mode.
+
+Continuation update (2026-04-23, Kotlin-first migration plan for log verification)
+- Objective shift:
+  - Replace Node-based `scripts/validate-test-jsonl.mjs` and `scripts/analyze-test-jsonl.mjs` with Kotlin/JVM tooling while preserving behavior and Gradle UX.
+  - Keep migration resumable in ~15-minute commit increments with explicit continuation markers.
+
+Execution Strategy (best path)
+- Use `library + thin CLI` from the start:
+  - core rules/parsing/report models in a reusable library module (recommended: `libraries:test-log-analysis`)
+  - operational entrypoint in a thin Kotlin/JVM CLI module (recommended: `cli:test-log-tools`) with commands:
+    - `validate` (parity with current validator flags/modes)
+    - `analyze` (parity with current analyzer strict/report behavior)
+- Wire root Gradle tasks (`validateTestJsonl`, `analyzeTestJsonl`) to JavaExec/Kotlin main instead of `node ...mjs`.
+- During migration, run dual validation (Kotlin + JS) until parity is proven, then remove JS scripts.
+- Use a strict TDD loop within each migration slice:
+  - Step A: add/adjust Kotlin tests that encode expected JS parity behavior (initially failing/red).
+  - Step B: implement minimal Kotlin changes to make those tests pass (green), then checkpoint.
+
+15-Minute Commit Log Plan (resume-friendly)
+- [x] Slice 1 (~15m) - Bootstrap library + CLI modules
+  - Add reusable analysis library module (`libraries:test-log-analysis`) with API skeleton.
+  - Add CLI module (`cli:test-log-tools`) with `main()` + arg parser that calls library stubs.
+  - Add commands `validate` and `analyze` as no-op stubs returning success.
+  - Commit: `test-log-tools: scaffold kotlin library and cli modules`
+  - Resume marker: `NEXT=SLICE_2_PORT_VALIDATE_IO`
+
+- [ ] Slice 2 (~15m) - Port validator core parsing + counters
+  - Test-first: add validator parity tests for line parsing, non-JSON detection, required-core checks, and failing-violation math.
+  - Implement line reader, JSON parse, core counters, offender capture.
+  - Support flags: `--strict`, `--fail-on-non-json`, `--fail-on-missing-core`, `--max-offenders`.
+  - Implement in library; keep CLI as transport-only wrapper.
+  - Match JSON report shape from current JS validator.
+  - Pass step: implement until new validator parity tests are green.
+  - Commit: `test-log-tools: port validate-test-jsonl core to library`
+  - Resume marker: `NEXT=SLICE_3_VALIDATE_PARITY`
+
+- [ ] Slice 3 (~15m) - Validator parity guardrail (dual-run)
+  - Test-first: add tests for parity task diff behavior (pass when key metrics match, fail when mismatched).
+  - Add Gradle helper task to run both validators and diff key metrics for same input.
+  - Keep root `validateTestJsonl` on JS for now; add `validateTestJsonlKotlin` side-by-side.
+  - Pass step: implement parity task and make parity-task tests green.
+  - Commit: `test-log-tools: add validator parity task`
+  - Resume marker: `NEXT=SLICE_4_WIRE_VALIDATE_DEFAULT`
+
+- [ ] Slice 4 (~15m) - Switch Gradle validate task to Kotlin
+  - Test-first: add Gradle/task wiring tests or scripted checks proving flags + exit codes match current JS task contract.
+  - Change root `validateTestJsonl` from `Exec(node ...)` to `JavaExec` Kotlin command.
+  - Keep temporary fallback task `validateTestJsonlJs`.
+  - Pass step: switch wiring and make new contract checks green.
+  - Commit: `build: route validateTestJsonl through kotlin tool`
+  - Resume marker: `NEXT=SLICE_5_PORT_ANALYZE_CORE`
+
+- [ ] Slice 5 (~15m) - Port analyzer core
+  - Test-first: add analyzer parity tests for test lifecycle accounting, TestMints detection, phase completeness, and strict/report fail behavior.
+  - Implement test lifecycle aggregation and TestMints phase analysis.
+  - Preserve strict/report mode and output JSON field names.
+  - Implement in library; keep CLI as transport-only wrapper.
+  - Pass step: implement until new analyzer parity tests are green.
+  - Commit: `test-log-tools: port analyze-test-jsonl core to library`
+  - Resume marker: `NEXT=SLICE_6_ANALYZE_PARITY`
+
+- [ ] Slice 6 (~15m) - Analyzer parity + source scan parity
+  - Test-first: add source-scan parity tests for `*Test.kt` discovery and skipped directory behavior.
+  - Port `collectTestmintsSuiteNames` filesystem walk behavior and skip dirs logic.
+  - Add side-by-side parity task (`analyzeTestJsonlParity`) against JS output.
+  - Pass step: implement parity task + source scan and make tests green.
+  - Commit: `test-log-tools: add analyzer parity checks`
+  - Resume marker: `NEXT=SLICE_7_WIRE_ANALYZE_DEFAULT`
+
+- [ ] Slice 7 (~15m) - Switch analyze task to Kotlin
+  - Test-first: add Gradle/task wiring tests or scripted checks proving analyze output and strict exit semantics match JS contract.
+  - Change root `analyzeTestJsonl` to Kotlin `JavaExec`.
+  - Keep temporary fallback `analyzeTestJsonlJs`.
+  - Pass step: switch wiring and make new contract checks green.
+  - Commit: `build: route analyzeTestJsonl through kotlin tool`
+  - Resume marker: `NEXT=SLICE_8_REMOVE_JS`
+
+- [ ] Slice 8 (~15m) - Remove JS scripts + finalize docs
+  - Test-first: add final cutover checks ensuring no JS analyzer entrypoints remain in Gradle wiring.
+  - Delete `scripts/validate-test-jsonl.mjs` and `scripts/analyze-test-jsonl.mjs` after parity pass.
+  - Update README/task log command examples to Kotlin-backed Gradle tasks.
+  - Pass step: remove JS scripts and make cutover checks green.
+  - Commit: `cleanup: remove node test log analysis scripts`
+  - Resume marker: `NEXT=DONE_KOTLIN_CUTOVER`
+
+Continuation Protocol (how to restart from last point)
+- At end of each slice:
+  - mark completed checkbox in this file,
+  - append a one-line status block:
+    - `checkpoint: <git-sha>`
+    - `next: <NEXT marker>`
+    - `verify: <exact command(s) run>`
+    - `tests: <red test command> -> <green test command>`
+- Restart command recipe:
+  - `git log --oneline -n 20`
+  - open this file and continue from latest `next:` marker.
+
+Immediate next slice to execute
+- `SLICE_2_PORT_VALIDATE_IO`
+
+Slice status
+- checkpoint: pending-commit
+- next: `NEXT=SLICE_2_PORT_VALIDATE_IO`
+- verify: `./gradlew :libraries:test-log-analysis:compileKotlinJvm :cli:test-log-tools:compileKotlinJvm`
+- tests: `N/A (slice 1 scaffolding)` -> `N/A`
