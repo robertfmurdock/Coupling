@@ -27,7 +27,8 @@ fun main(args: Array<String>) {
             args = args.drop(1),
         ),
     )
-    println(result.outputJson)
+    result.outputJson?.let(::println)
+    result.errorOutput?.let(System.err::println)
     if (result.exitCode != 0) {
         kotlin.system.exitProcess(result.exitCode)
     }

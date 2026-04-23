@@ -289,6 +289,22 @@ Execution Strategy (best path)
   - Step A: add/adjust Kotlin tests that encode expected JS parity behavior (initially failing/red).
   - Step B: implement minimal Kotlin changes to make those tests pass (green), then checkpoint.
 
+Test Style Standard (for all remaining slices)
+- New Kotlin tests in this migration must follow project conventions:
+  - use TestMints flow (`setup { } exercise { } verify { }`) for behavioral tests.
+  - use `com.zegreatrob.minassert` assertions (for example `assertIsEqualTo`) instead of raw `kotlin.test` assertions where practical.
+  - keep `kotlin.test.Test` annotations for test discovery.
+- If a case cannot be expressed cleanly with TestMints, document the reason inline and keep the exception minimal.
+
+Red-Phase Quality Gate (required per slice)
+- Before implementing behavior, run the newly added/changed tests and confirm they fail for the intended reason.
+- Capture the expected failure signal in slice notes (`tests:` line), including:
+  - failing test name(s)
+  - key assertion or error proving the missing behavior
+- If a test fails for an unexpected reason (wiring, fixture, syntax, unrelated dependency), fix the test setup first and rerun red-phase before feature code changes.
+- Only proceed to implementation once red-phase intent is confirmed.
+- After implementation, rerun the same scope and record green-phase command/result.
+
 15-Minute Commit Log Plan (resume-friendly)
 - [x] Slice 1 (~15m) - Bootstrap library + CLI modules
   - Add reusable analysis library module (`libraries:test-log-analysis`) with API skeleton.
@@ -297,7 +313,7 @@ Execution Strategy (best path)
   - Commit: `test-log-tools: scaffold kotlin library and cli modules`
   - Resume marker: `NEXT=SLICE_2_PORT_VALIDATE_IO`
 
-- [ ] Slice 2 (~15m) - Port validator core parsing + counters
+- [x] Slice 2 (~15m) - Port validator core parsing + counters
   - Test-first: add validator parity tests for line parsing, non-JSON detection, required-core checks, and failing-violation math.
   - Implement line reader, JSON parse, core counters, offender capture.
   - Support flags: `--strict`, `--fail-on-non-json`, `--fail-on-missing-core`, `--max-offenders`.
@@ -363,16 +379,16 @@ Continuation Protocol (how to restart from last point)
     - `checkpoint: <git-sha>`
     - `next: <NEXT marker>`
     - `verify: <exact command(s) run>`
-    - `tests: <red test command> -> <green test command>`
+    - `tests: <red test command + expected failure reason> -> <green test command>`
 - Restart command recipe:
   - `git log --oneline -n 20`
   - open this file and continue from latest `next:` marker.
 
 Immediate next slice to execute
-- `SLICE_2_PORT_VALIDATE_IO`
+- `SLICE_3_VALIDATE_PARITY`
 
 Slice status
 - checkpoint: pending-commit
-- next: `NEXT=SLICE_2_PORT_VALIDATE_IO`
-- verify: `./gradlew :libraries:test-log-analysis:compileKotlinJvm :cli:test-log-tools:compileKotlinJvm`
-- tests: `N/A (slice 1 scaffolding)` -> `N/A`
+- next: `NEXT=SLICE_3_VALIDATE_PARITY`
+- verify: `./gradlew :libraries:test-log-analysis:jvmTest` ; `./gradlew :cli:test-log-tools:compileKotlinJvm`
+- tests: `./gradlew :libraries:test-log-analysis:jvmTest` (new parity tests introduced; red during implementation) -> `./gradlew :libraries:test-log-analysis:jvmTest` (green)
