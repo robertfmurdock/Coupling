@@ -159,6 +159,61 @@ Current State (2026-04-21, late-night snapshot)
       - `tests_missing_expected_testmints=0`
       - `tests_missing_required_testmints_phases=0`
       - `phase_counts={ setup-start:112, setup-finish:112, exercise-start:112, exercise-finish:112, verify-start:112, verify-finish:112, test-start:112, test-finish:112 }`
+- Continuation update (2026-04-23, JVM convention cleanup + konsist stabilization):
+  - Standardization cleanup:
+    - Centralized JVM test conventions in `coupling-plugins/.../testLogging.gradle.kts`:
+      - `useJUnitPlatform()`
+      - `junit.jupiter.extensions.autodetection.enabled=true`
+    - Removed duplicated per-module JVM test platform wiring from:
+      - `libraries/action/build.gradle.kts`
+      - `libraries/test-action/build.gradle.kts`
+      - `sdk/build.gradle.kts` (kept only sdk-specific task ordering/dependencies for compose/cert).
+  - JUnit backend alignment (remove sdk-local workaround):
+    - Root cause for sdk conflict was upstream dependency export from `libraries/repository/validation`.
+    - Replaced `kotlin-test-junit` with `kotlin("test-junit5")` in:
+      - `libraries/repository/validation/build.gradle.kts`
+    - Removed sdk-specific conflict handling:
+      - removed transitive exclude of `kotlin-test-junit`
+      - removed sdk-local explicit `kotlin("test-junit5")` add
+    - Verified dependency resolution:
+      - `:sdk:jvmTestRuntimeClasspath` resolves `kotlin-test-junit5` and no `kotlin-test-junit`.
+  - Konsist follow-up after convention changes:
+    - `:konsist:jvmTest` initially failed with `NoClassDefFoundError` in `Slf4jLoggerFactory` (missing SLF4J backend).
+    - Fixed by centralizing test runtime backend in plugin (instead of module-local dependency):
+      - Added `org.slf4j:slf4j-simple` to `testRuntimeOnly`/`jvmTestRuntimeOnly` via `configurations.configureEach` in `testLogging.gradle.kts`.
+    - Confirmed `:konsist:jvmTest` passes after centralized backend wiring.
+  - Verification snapshot:
+    - `./gradlew :konsist:jvmTest --rerun-tasks` => **success**
+    - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks :sdk:jvmTest` => **success**
+    - `node scripts/analyze-test-jsonl.mjs --strict build/test-output/test.jsonl` => **0 violations**
+      - `tests_with_testmints=112`
+      - `tests_missing_expected_testmints=0`
+      - `tests_missing_required_testmints_phases=0`
+- Continuation update (2026-04-23, phase-B default-on):
+  - Re-ran broad JVM/JS/e2e strict verification after latest plugin/schema hardening:
+    - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/(^|:)[^ ]+:(jvmTest|jsNodeTest|e2eRun) -/{print ":"$1}' | grep -v '^:konsist:jvmTest$')`
+    - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl`
+    - `node scripts/analyze-test-jsonl.mjs --strict build/test-output/test.jsonl`
+  - Result: **0 strict violations** (validator + analyzer), including e2e lines:
+    - strict validator snapshot:
+      - `parsed_json_lines=19758`
+      - `non_json_lines=0`
+      - `missing_core_fields=0`
+      - `platform_counts={ js: 8176, jvm: 11273, e2e: 309 }`
+    - strict analyzer snapshot:
+      - `unique_tests=727`
+      - `tests_missing_expected_testmints=0`
+      - `tests_missing_required_testmints_phases=0`
+  - Tightening change applied:
+    - Added validator flag `--fail-on-missing-core` (build-failing in compat mode for missing `type/timestamp/run_id/platform`).
+    - Root `validateTestJsonl` now enables both by default:
+      - `--fail-on-non-json` (phase A)
+      - `--fail-on-missing-core` (phase B)
+    - Backward-compat overrides remain available:
+      - `-Pcoupling.testLog.failNonJson=false`
+      - `-Pcoupling.testLog.failMissingCore=false`
+  - Effective default mode:
+    - `compat-fail-non-json-core`
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
@@ -178,8 +233,10 @@ Deliverable
 
 Near-Term Plan (delivery-first)
 1) Keep CI green while preserving visibility
-   - Keep validator in phase-A default mode (`compat-fail-non-json`) for `check`.
-   - Retain escape hatch `-Pcoupling.testLog.failNonJson=false` if a temporary unblock is needed.
+   - Keep validator in phase-B default mode (`compat-fail-non-json-core`) for `check`.
+   - Retain escape hatches if a temporary unblock is needed:
+     - `-Pcoupling.testLog.failNonJson=false`
+     - `-Pcoupling.testLog.failMissingCore=false`
    - Keep strict mode runnable in CI/nightly (`node scripts/validate-test-jsonl.mjs --strict ...`) for tracking.
 
 2) Broaden strict verification scope
@@ -192,7 +249,7 @@ Near-Term Plan (delivery-first)
 
 4) Tighten validator progressively
    - Phase A: complete (default fail on non-JSON lines).
-   - Phase B: fail on missing `type/timestamp/run_id/platform`.
+   - Phase B: complete (default fail on missing `type/timestamp/run_id/platform`).
    - Phase C: fail full schema by event type (end-event requirements included).
 
 5) Flip default to strict
@@ -207,8 +264,9 @@ Suggested Implementation Details
 
 Verification Steps
 - Quick pass check:
-  - `./gradlew validateTestJsonl` succeeds (`mode=compat-fail-non-json`).
-  - `./gradlew -Pcoupling.testLog.failNonJson=false validateTestJsonl` succeeds (`mode=compat`).
+  - `./gradlew validateTestJsonl` succeeds (`mode=compat-fail-non-json-core`).
+  - `./gradlew -Pcoupling.testLog.failMissingCore=false validateTestJsonl` succeeds (`mode=compat-fail-non-json`).
+  - `./gradlew -Pcoupling.testLog.failNonJson=false -Pcoupling.testLog.failMissingCore=false validateTestJsonl` succeeds (`mode=compat`).
 - Strict progress check:
   - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` reports zero violations on broad JVM/JS/e2e runs.
 - Cutover check:

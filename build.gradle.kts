@@ -57,8 +57,15 @@ tasks {
             .gradleProperty("coupling.testLog.failNonJson")
             .map { !it.equals("false", ignoreCase = true) }
             .getOrElse(true)
+        val failOnMissingCoreEnabled = providers
+            .gradleProperty("coupling.testLog.failMissingCore")
+            .map { !it.equals("false", ignoreCase = true) }
+            .getOrElse(true)
         if (failOnNonJsonEnabled) {
             baseCommand.add("--fail-on-non-json")
+        }
+        if (failOnMissingCoreEnabled) {
+            baseCommand.add("--fail-on-missing-core")
         }
         baseCommand.add(rootProject.layout.buildDirectory.file("test-output/test.jsonl").get().asFile.absolutePath)
         commandLine(baseCommand)

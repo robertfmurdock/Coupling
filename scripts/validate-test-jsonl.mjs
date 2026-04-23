@@ -9,6 +9,7 @@ const maxOffendersArg = args.find((arg) => arg.startsWith('--max-offenders='));
 const maxOffenders = Number(maxOffendersArg?.split('=')[1] || 20);
 const strictMode = args.includes('--strict');
 const failOnNonJson = args.includes('--fail-on-non-json');
+const failOnMissingCore = args.includes('--fail-on-missing-core');
 
 const requiredByAny = ['type', 'timestamp', 'run_id', 'platform'];
 const endEventTypes = new Set(['TestEnd', 'StepEnd']);
@@ -97,10 +98,15 @@ const totalViolations =
 
 const failingViolations = strictMode
   ? totalViolations
-  : (failOnNonJson ? results.non_json_lines : 0);
+  : ((failOnNonJson ? results.non_json_lines : 0) +
+    (failOnMissingCore ? results.missing_core_fields : 0));
 const mode = strictMode
   ? 'strict'
-  : (failOnNonJson ? 'compat-fail-non-json' : 'compat');
+  : (failOnNonJson && failOnMissingCore
+    ? 'compat-fail-non-json-core'
+    : (failOnNonJson
+      ? 'compat-fail-non-json'
+      : (failOnMissingCore ? 'compat-fail-core' : 'compat')));
 
 console.log(JSON.stringify({
   ...results,
