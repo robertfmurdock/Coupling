@@ -422,13 +422,13 @@ Continuation Protocol (how to restart from last point)
   - open this file and continue from latest `next:` marker.
 
 Immediate next slice to execute
-- `DONE_STRICT_DEFAULT_CUTOVER`
+- `DONE_STRICT_ONLY_CLEANUP`
 
 Slice status
-- checkpoint: `f25c5b541`
-- next: `NEXT=DONE_STRICT_DEFAULT_CUTOVER`
-- verify: `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew validateTestJsonl -Pcoupling.testLog.strict=false --no-configuration-cache` ; `./gradlew validateTestJsonl -Pcoupling.testLog.strict=false -Pcoupling.testLog.failNonJson=false -Pcoupling.testLog.failMissingCore=false -Pcoupling.testLog.failMissingEnd=false -Pcoupling.testLog.failBadDuration=false --no-configuration-cache`
-- tests: `N/A (slice-11 is task-default wiring + mode verification)`
+- checkpoint: `85689e856`
+- next: `NEXT=DONE_STRICT_ONLY_CLEANUP`
+- verify: `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
+- tests: `N/A (post-hardening cleanup + strict task verification)`
 
 Continuation update (2026-04-23, slice-3 validator parity guardrail completed)
 - Added Kotlin parity comparison coverage in `libraries:test-log-analysis`:
@@ -608,3 +608,14 @@ Continuation update (2026-04-24, strict-only cleanup finalized)
 - Verification:
   - `./gradlew validateTestJsonl --no-configuration-cache` => success (`mode=strict`, `total_violations=0`, `failing_violations=0`).
   - `./gradlew analyzeTestJsonl --no-configuration-cache` => success (`mode=strict`, `total_violations=0`, `failing_violations=0`).
+
+Continuation update (2026-04-24, resume checkpoint normalized)
+- Refreshed task-file checkpoint metadata to align with strict-only cleanup completion.
+- Re-ran strict tasks to confirm green status on current head:
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success (`mode=strict`, `total_violations=0`, `failing_violations=0`).
+- Status block:
+  - checkpoint: `85689e856`
+  - next: `NEXT=DONE_STRICT_ONLY_CLEANUP`
+  - verify: `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
+  - tests: `N/A (strict-only verification rerun)`

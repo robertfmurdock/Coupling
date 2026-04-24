@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.testlog.analysis
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
+import java.time.Instant
 
 enum class TestLogCommand {
     VALIDATE,
@@ -252,6 +253,7 @@ object TestLogTools {
         val phaseCounts = linkedMapOf<String, Int>().apply {
             knownTestMintsPhases.forEach { put(it, 0) }
         }
+        val commandMetrics = CommandMetrics()
 
         var parsedJsonLines = 0
         var nonJsonLines = 0
@@ -285,6 +287,7 @@ object TestLogTools {
                 val record = tests[key] ?: makeAnalyzeRecord(event)
                 record.ends += 1
                 record.status = event.get("status")?.asText() ?: record.status
+                record.durationMs = event.get("duration_ms")?.asDouble()
                 tests[key] = record
             }
 
@@ -297,6 +300,10 @@ object TestLogTools {
                     phaseCounts[phase] = (phaseCounts[phase] ?: 0) + 1
                 }
                 tests[key] = record
+            }
+
+            if (event.get("type")?.asText() == "Log") {
+                processCommandLogEvent(event, key, commandMetrics)
             }
         }
 
@@ -379,6 +386,16 @@ object TestLogTools {
         }
 
         val totalViolations = missingStart + missingEnd + duplicateStart + duplicateEnd + missingExpectedTestMints + missingPhaseTests
+        val commandSummary = commandMetrics.summary()
+        val testCommandShares = tests.mapNotNull { (key, record) ->
+            val duration = record.durationMs
+            val commandDuration = commandMetrics.testCommandDurationsMs[key]
+            if (duration == null || duration <= 0.0 || commandDuration == null) {
+                null
+            } else {
+                (commandDuration / duration).coerceAtLeast(0.0)
+            }
+        }
         val report = linkedMapOf(
             "file" to options.filePath,
             "mode" to if (options.strictMode) "strict" else "report",
@@ -398,6 +415,19 @@ object TestLogTools {
             "tests_missing_expected_testmints" to missingExpectedTestMints,
             "tests_missing_required_testmints_phases" to missingPhaseTests,
             "phase_counts" to phaseCounts,
+            "command_log_events_total" to commandSummary.logEventsTotal,
+            "command_log_events_parsed" to commandSummary.logEventsParsed,
+            "command_start_events" to commandSummary.startEvents,
+            "command_end_events" to commandSummary.endEvents,
+            "command_end_events_with_duration" to commandSummary.endEventsWithDuration,
+            "command_unique_actions" to commandSummary.actionCount,
+            "command_events_by_task" to commandSummary.eventsByTask,
+            "command_parse_failures_by_task" to commandSummary.parseFailuresByTask,
+            "command_duration_ms_by_action" to commandSummary.durationByAction,
+            "slowest_command_actions" to commandSummary.slowestActions,
+            "tests_with_command_timings" to testCommandShares.size,
+            "tests_command_time_share_p50" to percentile(testCommandShares, 0.5).roundTo3(),
+            "tests_command_time_share_p95" to percentile(testCommandShares, 0.95).roundTo3(),
             "total_violations" to totalViolations,
             "failing_violations" to if (options.strictMode) totalViolations else 0,
             "offenders" to offenders,
@@ -515,6 +545,161 @@ object TestLogTools {
         return suites
     }
 
+    private fun processCommandLogEvent(
+        event: JsonNode,
+        testKey: String?,
+        metrics: CommandMetrics,
+    ) {
+        val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
+        val likelyCommand = mightContainCommandData(event)
+        if (!likelyCommand) {
+            return
+        }
+        metrics.logEventsTotal += 1
+        val timestampEpochMs = event.get("timestamp")?.asText()?.let { parseInstantToEpochMs(it) }
+        val parsedCommand = parseCommandEvent(event) ?: run {
+            metrics.parseFailuresByTask[task] = (metrics.parseFailuresByTask[task] ?: 0) + 1
+            return
+        }
+
+        metrics.logEventsParsed += 1
+        metrics.eventsByTask[task] = (metrics.eventsByTask[task] ?: 0) + 1
+        metrics.actionEventCount[parsedCommand.action] = (metrics.actionEventCount[parsedCommand.action] ?: 0) + 1
+
+        val commandKey = listOf(
+            event.get("run_id")?.asText().orEmpty(),
+            task,
+            event.get("suite")?.asText().orEmpty(),
+            event.get("test")?.asText().orEmpty(),
+            parsedCommand.traceId ?: "",
+            parsedCommand.action,
+        ).joinToString("||")
+
+        val phase = parsedCommand.phase.lowercase()
+        if (phase == "start") {
+            metrics.startEvents += 1
+            if (timestampEpochMs != null) {
+                val starts = metrics.pendingStarts.getOrPut(commandKey) { ArrayDeque() }
+                starts.addLast(timestampEpochMs)
+            }
+            return
+        }
+
+        if (phase != "end") {
+            return
+        }
+
+        metrics.endEvents += 1
+        val durationMs = parsedCommand.durationMs ?: run {
+            val starts = metrics.pendingStarts[commandKey]
+            val startEpochMs = starts?.removeLastOrNull()
+            if (timestampEpochMs != null && startEpochMs != null) {
+                (timestampEpochMs - startEpochMs).coerceAtLeast(0.0)
+            } else {
+                null
+            }
+        }
+
+        if (durationMs == null) {
+            return
+        }
+
+        metrics.endEventsWithDuration += 1
+        val durations = metrics.actionDurationsMs.getOrPut(parsedCommand.action) { mutableListOf() }
+        durations += durationMs
+
+        if (testKey != null) {
+            metrics.testCommandDurationsMs[testKey] = (metrics.testCommandDurationsMs[testKey] ?: 0.0) + durationMs
+        }
+    }
+
+    private fun mightContainCommandData(event: JsonNode): Boolean {
+        val logger = event.get("logger")?.asText() ?: ""
+        if (logger == "ActionLogger" || logger == "command") {
+            return true
+        }
+        val properties = event.get("properties")
+        if (properties != null && properties.isObject && properties.get("command_action") != null) {
+            return true
+        }
+        val message = event.get("message")?.asText() ?: ""
+        return message.contains("ActionLogger - {action=")
+    }
+
+    private fun parseCommandEvent(event: JsonNode): ParsedCommandEvent? {
+        val logger = event.get("logger")?.asText()
+        val message = event.get("message")?.asText() ?: return null
+        val properties = event.get("properties")
+
+        val propertyAction = properties?.get("command_action")?.asText()?.takeIf { it.isNotBlank() }
+        val propertyPhase = properties?.get("command_phase")?.asText()?.takeIf { it.isNotBlank() }
+        if (propertyAction != null && propertyPhase != null) {
+            val propertyTraceId = properties?.get("command_trace_id")?.asText()?.takeIf { it.isNotBlank() }
+            val propertyDurationMs = properties?.get("command_duration_ms")?.let { node ->
+                if (node.isNumber) {
+                    node.asDouble()
+                } else {
+                    parseCommandDurationMs(node.asText())
+                }
+            }
+            return ParsedCommandEvent(
+                action = propertyAction,
+                phase = propertyPhase.lowercase(),
+                traceId = propertyTraceId,
+                durationMs = propertyDurationMs,
+            )
+        }
+
+        val payload = when {
+            logger == "ActionLogger" && message.startsWith("{") && message.endsWith("}") -> message
+            "ActionLogger - {" in message -> message.substringAfter("ActionLogger - ").trim()
+            else -> return null
+        }
+
+        val action = commandField(payload, "action") ?: return null
+        val phase = commandField(payload, "type") ?: return null
+        val traceId = commandField(payload, "traceId")
+        val durationMs = parseCommandDurationMs(commandField(payload, "duration"))
+        return ParsedCommandEvent(
+            action = action,
+            phase = phase.lowercase(),
+            traceId = traceId,
+            durationMs = durationMs,
+        )
+    }
+
+    private fun commandField(payload: String, key: String): String? {
+        val regex = Regex("""\b${Regex.escape(key)}=([^,}]+)""")
+        return regex.find(payload)?.groupValues?.get(1)?.trim()
+    }
+
+    private fun parseCommandDurationMs(raw: String?): Double? {
+        if (raw.isNullOrBlank()) {
+            return null
+        }
+        return when {
+            raw.endsWith("ms") -> raw.removeSuffix("ms").toDoubleOrNull()
+            raw.endsWith("s") -> raw.removeSuffix("s").toDoubleOrNull()?.times(1000.0)
+            else -> raw.toDoubleOrNull()
+        }
+    }
+
+    private fun parseInstantToEpochMs(value: String): Double? = runCatching {
+        Instant.parse(value).toEpochMilli().toDouble()
+    }.getOrNull()
+
+    private fun percentile(values: List<Double>, percentile: Double): Double {
+        if (values.isEmpty()) {
+            return 0.0
+        }
+        val sorted = values.sorted()
+        val clamped = percentile.coerceIn(0.0, 1.0)
+        val index = ((sorted.size - 1) * clamped).toInt()
+        return sorted[index]
+    }
+
+    private fun Double.roundTo3(): Double = String.format("%.3f", this).toDouble()
+
     private fun addAnalyzeOffender(
         offenders: MutableList<String>,
         maxOffenders: Int,
@@ -608,7 +793,85 @@ object TestLogTools {
         var starts: Int = 0,
         var ends: Int = 0,
         var status: String? = null,
+        var durationMs: Double? = null,
         var hasTestMints: Boolean = false,
         val phases: MutableSet<String> = mutableSetOf(),
     )
+
+    private data class ParsedCommandEvent(
+        val action: String,
+        val phase: String,
+        val traceId: String?,
+        val durationMs: Double?,
+    )
+
+    private data class CommandSummary(
+        val logEventsTotal: Int,
+        val logEventsParsed: Int,
+        val startEvents: Int,
+        val endEvents: Int,
+        val endEventsWithDuration: Int,
+        val actionCount: Int,
+        val eventsByTask: Map<String, Int>,
+        val parseFailuresByTask: Map<String, Int>,
+        val durationByAction: Map<String, Map<String, Double>>,
+        val slowestActions: List<Map<String, Any>>,
+    )
+
+    private class CommandMetrics {
+        var logEventsTotal: Int = 0
+        var logEventsParsed: Int = 0
+        var startEvents: Int = 0
+        var endEvents: Int = 0
+        var endEventsWithDuration: Int = 0
+        val eventsByTask: MutableMap<String, Int> = linkedMapOf()
+        val parseFailuresByTask: MutableMap<String, Int> = linkedMapOf()
+        val actionEventCount: MutableMap<String, Int> = linkedMapOf()
+        val actionDurationsMs: MutableMap<String, MutableList<Double>> = linkedMapOf()
+        val pendingStarts: MutableMap<String, ArrayDeque<Double>> = mutableMapOf()
+        val testCommandDurationsMs: MutableMap<String, Double> = mutableMapOf()
+
+        fun summary(): CommandSummary {
+            val durationByAction = actionDurationsMs.mapValues { (_, durations) ->
+                val count = durations.size.toDouble()
+                val total = durations.sum()
+                mapOf(
+                    "count" to count,
+                    "total_ms" to total.roundTo3(),
+                    "avg_ms" to if (count > 0) (total / count).roundTo3() else 0.0,
+                    "p50_ms" to percentile(durations, 0.5).roundTo3(),
+                    "p95_ms" to percentile(durations, 0.95).roundTo3(),
+                    "max_ms" to durations.maxOrNull()?.roundTo3().orZero(),
+                )
+            }
+
+            val slowestActions = actionDurationsMs.entries
+                .sortedByDescending { (_, durations) -> durations.maxOrNull() ?: 0.0 }
+                .take(10)
+                .map { (action, durations) ->
+                    mapOf(
+                        "action" to action,
+                        "count" to durations.size,
+                        "max_ms" to durations.maxOrNull()?.roundTo3().orZero(),
+                        "p95_ms" to percentile(durations, 0.95).roundTo3(),
+                        "avg_ms" to if (durations.isEmpty()) 0.0 else (durations.sum() / durations.size).roundTo3(),
+                    )
+                }
+
+            return CommandSummary(
+                logEventsTotal = logEventsTotal,
+                logEventsParsed = logEventsParsed,
+                startEvents = startEvents,
+                endEvents = endEvents,
+                endEventsWithDuration = endEventsWithDuration,
+                actionCount = actionDurationsMs.size,
+                eventsByTask = eventsByTask,
+                parseFailuresByTask = parseFailuresByTask,
+                durationByAction = durationByAction,
+                slowestActions = slowestActions,
+            )
+        }
+    }
+
+    private fun Double?.orZero(): Double = this ?: 0.0
 }
