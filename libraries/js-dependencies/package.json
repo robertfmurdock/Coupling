@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.16.2",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1035.0",
-    "@aws-sdk/client-dynamodb": "3.1035.0",
-    "@aws-sdk/client-lambda": "~3.1035.0",
-    "@aws-sdk/lib-dynamodb": "3.1035.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1036.0",
+    "@aws-sdk/client-dynamodb": "3.1036.0",
+    "@aws-sdk/client-lambda": "~3.1036.0",
+    "@aws-sdk/lib-dynamodb": "3.1036.0",
     "@graphql-codegen/cli": "^6.3.1",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
@@ -73,7 +73,7 @@
     "serverless-offline": "^14.5.0",
     "serverless-offline-ssm": "^6.2.0",
     "sonda": "^0.11.1",
-    "stripe": "^22.0.2",
+    "stripe": "^22.1.0",
     "vite-plugin-html": "^3.2.2",
     "webpack": "5.106.2",
     "webpack-cli": "^7.0.2"
