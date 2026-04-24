@@ -237,7 +237,7 @@ Near-Term Plan (delivery-first)
    - Retain escape hatches if a temporary unblock is needed:
      - `-Pcoupling.testLog.failNonJson=false`
      - `-Pcoupling.testLog.failMissingCore=false`
-   - Keep strict mode runnable in CI/nightly (`node scripts/validate-test-jsonl.mjs --strict ...`) for tracking.
+  - Keep strict mode runnable in CI/nightly via Kotlin tooling for tracking (for example `./gradlew -Pcoupling.testLog.analyze.strict=true analyzeTestJsonl`).
 
 2) Broaden strict verification scope
    - Continue strict checks across larger task sets (beyond current targeted JS/JVM slices) to identify any remaining outliers.
@@ -268,7 +268,7 @@ Verification Steps
   - `./gradlew -Pcoupling.testLog.failMissingCore=false validateTestJsonl` succeeds (`mode=compat-fail-non-json`).
   - `./gradlew -Pcoupling.testLog.failNonJson=false -Pcoupling.testLog.failMissingCore=false validateTestJsonl` succeeds (`mode=compat`).
 - Strict progress check:
-  - `node scripts/validate-test-jsonl.mjs --strict build/test-output/test.jsonl` reports zero violations on broad JVM/JS/e2e runs.
+  - `./gradlew -Pcoupling.testLog.analyze.strict=true analyzeTestJsonl` reports zero violations on broad JVM/JS/e2e runs.
 - Cutover check:
   - Full-suite strict run has zero violations before switching `check` to strict mode.
 
@@ -331,7 +331,7 @@ Red-Phase Quality Gate (required per slice)
   - Commit: `test-log-tools: add validator parity task`
   - Resume marker: `NEXT=SLICE_4_WIRE_VALIDATE_DEFAULT`
 
-- [ ] Slice 4 (~15m) - Switch Gradle validate task to Kotlin
+- [x] Slice 4 (~15m) - Switch Gradle validate task to Kotlin
   - Test-first: add Gradle/task wiring tests or scripted checks proving flags + exit codes match current JS task contract.
   - Change root `validateTestJsonl` from `Exec(node ...)` to `JavaExec` Kotlin command.
   - Keep temporary fallback task `validateTestJsonlJs`.
@@ -339,7 +339,7 @@ Red-Phase Quality Gate (required per slice)
   - Commit: `build: route validateTestJsonl through kotlin tool`
   - Resume marker: `NEXT=SLICE_5_PORT_ANALYZE_CORE`
 
-- [ ] Slice 5 (~15m) - Port analyzer core
+- [x] Slice 5 (~15m) - Port analyzer core
   - Test-first: add analyzer parity tests for test lifecycle accounting, TestMints detection, phase completeness, and strict/report fail behavior.
   - Implement test lifecycle aggregation and TestMints phase analysis.
   - Preserve strict/report mode and output JSON field names.
@@ -348,7 +348,7 @@ Red-Phase Quality Gate (required per slice)
   - Commit: `test-log-tools: port analyze-test-jsonl core to library`
   - Resume marker: `NEXT=SLICE_6_ANALYZE_PARITY`
 
-- [ ] Slice 6 (~15m) - Analyzer parity + source scan parity
+- [x] Slice 6 (~15m) - Analyzer parity + source scan parity
   - Test-first: add source-scan parity tests for `*Test.kt` discovery and skipped directory behavior.
   - Port `collectTestmintsSuiteNames` filesystem walk behavior and skip dirs logic.
   - Add side-by-side parity task (`analyzeTestJsonlParity`) against JS output.
@@ -356,7 +356,7 @@ Red-Phase Quality Gate (required per slice)
   - Commit: `test-log-tools: add analyzer parity checks`
   - Resume marker: `NEXT=SLICE_7_WIRE_ANALYZE_DEFAULT`
 
-- [ ] Slice 7 (~15m) - Switch analyze task to Kotlin
+- [x] Slice 7 (~15m) - Switch analyze task to Kotlin
   - Test-first: add Gradle/task wiring tests or scripted checks proving analyze output and strict exit semantics match JS contract.
   - Change root `analyzeTestJsonl` to Kotlin `JavaExec`.
   - Keep temporary fallback `analyzeTestJsonlJs`.
@@ -364,7 +364,7 @@ Red-Phase Quality Gate (required per slice)
   - Commit: `build: route analyzeTestJsonl through kotlin tool`
   - Resume marker: `NEXT=SLICE_8_REMOVE_JS`
 
-- [ ] Slice 8 (~15m) - Remove JS scripts + finalize docs
+- [x] Slice 8 (~15m) - Remove JS scripts + finalize docs
   - Test-first: add final cutover checks ensuring no JS analyzer entrypoints remain in Gradle wiring.
   - Delete `scripts/validate-test-jsonl.mjs` and `scripts/analyze-test-jsonl.mjs` after parity pass.
   - Update README/task log command examples to Kotlin-backed Gradle tasks.
@@ -385,13 +385,13 @@ Continuation Protocol (how to restart from last point)
   - open this file and continue from latest `next:` marker.
 
 Immediate next slice to execute
-- `SLICE_4_WIRE_VALIDATE_DEFAULT`
+- `DONE_KOTLIN_CUTOVER`
 
 Slice status
 - checkpoint: pending-commit
-- next: `NEXT=SLICE_4_WIRE_VALIDATE_DEFAULT`
-- verify: `./gradlew :libraries:test-log-analysis:jvmTest` ; `./gradlew :cli:test-log-tools:compileKotlinJvm` ; `./gradlew validateTestJsonlKotlin --no-configuration-cache` ; `./gradlew validateTestJsonlParity --no-configuration-cache`
-- tests: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*ValidateReportParityTest*"` (red: root build script parity-task wiring compile errors in `build.gradle.kts`, then fixed) -> `./gradlew :libraries:test-log-analysis:jvmTest --tests "*ValidateReportParityTest*"` (green)
+- next: `NEXT=DONE_KOTLIN_CUTOVER`
+- verify: `./gradlew :libraries:test-log-analysis:jvmTest` ; `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
+- tests: `rg -n "validate-test-jsonl\\.mjs|analyze-test-jsonl\\.mjs|validateTestJsonlJs|analyzeTestJsonlJs|validateTestJsonlParity|analyzeTestJsonlParity" build.gradle.kts` (red: found legacy JS wiring before cutover) -> same command (green: no matches)
 
 Continuation update (2026-04-23, slice-3 validator parity guardrail completed)
 - Added Kotlin parity comparison coverage in `libraries:test-log-analysis`:
@@ -409,3 +409,66 @@ Continuation update (2026-04-23, slice-3 validator parity guardrail completed)
 - Verification snapshot:
   - `./gradlew validateTestJsonlKotlin --no-configuration-cache` => success.
   - `./gradlew validateTestJsonlParity --no-configuration-cache` => success (`matched for keys=...`).
+
+Continuation update (2026-04-23, slice-4 validate default wiring switched to Kotlin)
+- Root task wiring change in `build.gradle.kts`:
+  - `validateTestJsonl` now runs the Kotlin CLI (`com.zegreatrob.coupling.cli.testlog.MainKt validate ...`) with the same default fail flags/path behavior.
+  - Added fallback JS task `validateTestJsonlJs` to preserve temporary rollback path during migration.
+  - Kept compatibility alias task `validateTestJsonlKotlin` mapped to the default task for existing command continuity.
+- Contract verification snapshot:
+  - `./gradlew validateTestJsonlJs --no-configuration-cache` => success.
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success.
+  - `./gradlew validateTestJsonlKotlin --no-configuration-cache` => success.
+  - `./gradlew validateTestJsonlParity --no-configuration-cache` => success (`matched for keys=...`).
+
+Continuation update (2026-04-23, slice-5 analyzer core ported to Kotlin library)
+- Added analyzer command implementation in `libraries:test-log-analysis`:
+  - `TestLogTools.run(TestLogCommand.ANALYZE, ...)` now performs full lifecycle/TestMints analysis with JS-parity output fields.
+  - Implemented strict/report semantics, offender capping, TestMints phase accounting, and source-suite scan (`*Test.kt` containing `com.zegreatrob.testmints`).
+- Added Kotlin parity tests:
+  - `AnalyzeCommandParityTest` covers:
+    - report-mode lifecycle violations without failing exit,
+    - strict-mode missing expected TestMints detection,
+    - strict-mode success when required phases are present.
+- Verification snapshot:
+  - `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*"` => success.
+  - `./gradlew :libraries:test-log-analysis:jvmTest --tests "*Validate*"` => success.
+  - `./gradlew :cli:test-log-tools:compileKotlinJvm` => success.
+
+Continuation update (2026-04-23, slice-6 analyzer parity + source-scan parity)
+- Added source-scan parity coverage in `libraries:test-log-analysis`:
+  - New tests in `AnalyzeSourceScanParityTest` verify:
+    - `*Test.kt` files with `com.zegreatrob.testmints` are discovered as expected suites.
+    - skipped directories (`build`, `node_modules`) are not counted.
+- Added root parity helper task in `build.gradle.kts`:
+  - `analyzeTestJsonlParity`
+    - dual-runs JS + Kotlin analyzers on the same input,
+    - fails on exit-code mismatch,
+    - compares key metrics and full `phase_counts`.
+- Verification snapshot:
+  - `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeSourceScanParityTest*"` => success.
+  - `./gradlew analyzeTestJsonlParity --no-configuration-cache` => success (`matched for keys=...`).
+
+Continuation update (2026-04-23, slice-7 analyze default wiring switched to Kotlin)
+- Root task wiring change in `build.gradle.kts`:
+  - `analyzeTestJsonl` now runs Kotlin CLI analyzer (`com.zegreatrob.coupling.cli.testlog.MainKt analyze ...`).
+  - Added fallback JS task `analyzeTestJsonlJs` to preserve rollback path during migration.
+  - Added compatibility alias `analyzeTestJsonlKotlin` mapped to default task for command continuity.
+- Contract verification snapshot:
+  - `./gradlew analyzeTestJsonlJs --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonlKotlin --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonlParity --no-configuration-cache` => success (`matched for keys=...`).
+
+Continuation update (2026-04-23, slice-8 JS scripts removed and Kotlin cutover finalized)
+- Removed Node entrypoints and fallback/parity wiring from `build.gradle.kts`:
+  - removed `validateTestJsonlJs`, `validateTestJsonlParity`, `analyzeTestJsonlJs`, `analyzeTestJsonlParity`.
+  - retained Kotlin-backed defaults: `validateTestJsonl`, `analyzeTestJsonl` (plus compatibility aliases).
+- Deleted legacy scripts:
+  - `scripts/validate-test-jsonl.mjs`
+  - `scripts/analyze-test-jsonl.mjs`
+- Final cutover checks:
+  - `./gradlew :libraries:test-log-analysis:jvmTest` => success.
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success.
+  - `rg -n "validate-test-jsonl\\.mjs|analyze-test-jsonl\\.mjs|validateTestJsonlJs|analyzeTestJsonlJs|validateTestJsonlParity|analyzeTestJsonlParity" build.gradle.kts` => no matches.

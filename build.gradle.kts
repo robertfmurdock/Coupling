@@ -2,7 +2,6 @@
 import com.avast.gradle.dockercompose.tasks.ComposeUp
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.tasks.Exec
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Duration
 
@@ -84,26 +83,21 @@ tasks {
             }
         }
     }
+    val analyzeTaskFlags = providers.provider {
+        buildList {
+            val strict = providers
+                .gradleProperty("coupling.testLog.analyze.strict")
+                .map { it.equals("true", ignoreCase = true) }
+                .getOrElse(false)
+            if (strict) {
+                add("--strict")
+            }
+        }
+    }
 
     val validateTestJsonl by registering(Exec::class) {
         group = "verification"
         description = "Validates build/test-output/test.jsonl for minimum required schema."
-        val baseCommand = mutableListOf<String>().apply {
-            addAll(
-                listOf(
-            "node",
-            "scripts/validate-test-jsonl.mjs"
-                ),
-            )
-            addAll(validateTaskFlags.get())
-            add(testJsonlFilePath.get())
-        }
-        commandLine(baseCommand)
-    }
-
-    val validateTestJsonlKotlin by registering(Exec::class) {
-        group = "verification"
-        description = "Validates build/test-output/test.jsonl using the Kotlin test-log tool."
         notCompatibleWithConfigurationCache("Resolves CLI runtime classpath dynamically for a helper migration task.")
         dependsOn(":cli:test-log-tools:jvmJar")
         doFirst {
@@ -119,99 +113,34 @@ tasks {
         }
     }
 
-    val validateTestJsonlParity by registering {
+    val validateTestJsonlKotlin by registering {
         group = "verification"
-        description = "Runs JS and Kotlin validators and fails when key metrics diverge."
-        notCompatibleWithConfigurationCache("Uses ProcessBuilder to capture command output for parity comparison.")
-        val parityKeys = listOf(
-            "total_lines",
-            "non_empty_lines",
-            "parsed_json_lines",
-            "non_json_lines",
-            "missing_core_fields",
-            "missing_end_fields",
-            "bad_duration_ms",
-            "total_violations",
-            "failing_violations",
-            "mode",
-        )
-        doLast {
-            val jsCommand = listOf("node", "scripts/validate-test-jsonl.mjs") +
-                validateTaskFlags.get() +
-                listOf(testJsonlFilePath.get())
-            val jsStdout = ByteArrayOutputStream()
-            val jsResult = ProcessBuilder(jsCommand)
-                .directory(rootProject.projectDir)
-                .redirectErrorStream(true)
-                .start()
-                .also { process ->
-                    process.inputStream.copyTo(jsStdout)
-                }
-                .waitFor()
-
-            val kotlinCommand = listOf(
-                "java",
-                "-cp",
-                testLogToolsClasspath.get(),
-                "com.zegreatrob.coupling.cli.testlog.MainKt",
-                "validate",
-            ) + validateTaskFlags.get() + listOf(testJsonlFilePath.get())
-            val kotlinStdout = ByteArrayOutputStream()
-            val kotlinResult = ProcessBuilder(kotlinCommand)
-                .directory(rootProject.projectDir)
-                .redirectErrorStream(true)
-                .start()
-                .also { process ->
-                    process.inputStream.copyTo(kotlinStdout)
-                }
-                .waitFor()
-
-            val mapper = ObjectMapper()
-            val jsReport = mapper.readTree(jsStdout.toString("UTF-8"))
-            val kotlinReport = mapper.readTree(kotlinStdout.toString("UTF-8"))
-            val mismatches = parityKeys.mapNotNull { key ->
-                val jsValue = jsReport.get(key)
-                val kotlinValue = kotlinReport.get(key)
-                if (jsValue == kotlinValue) {
-                    null
-                } else {
-                    "$key js=${jsValue ?: "null"} kotlin=${kotlinValue ?: "null"}"
-                }
-            }
-
-            val exitCodeMismatch = jsResult != kotlinResult
-            if (exitCodeMismatch || mismatches.isNotEmpty()) {
-                val message = buildString {
-                    appendLine("validateTestJsonlParity mismatch detected.")
-                    appendLine("js_exit=$jsResult kotlin_exit=$kotlinResult")
-                    if (mismatches.isNotEmpty()) {
-                        appendLine("metric_mismatches:")
-                        mismatches.forEach { appendLine("  - $it") }
-                    }
-                }
-                throw GradleException(message)
-            }
-
-            logger.lifecycle("validateTestJsonlParity matched for keys=${parityKeys.joinToString(",")}")
-        }
+        description = "Compatibility alias for validateTestJsonl during Kotlin migration."
+        dependsOn(validateTestJsonl)
     }
 
     val analyzeTestJsonl by registering(Exec::class) {
         group = "verification"
         description = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl."
-        val command = mutableListOf(
-            "node",
-            "scripts/analyze-test-jsonl.mjs"
-        )
-        val strict = providers
-            .gradleProperty("coupling.testLog.analyze.strict")
-            .map { it.equals("true", ignoreCase = true) }
-            .getOrElse(false)
-        if (strict) {
-            command.add("--strict")
+        notCompatibleWithConfigurationCache("Resolves CLI runtime classpath dynamically for a helper migration task.")
+        dependsOn(":cli:test-log-tools:jvmJar")
+        doFirst {
+            commandLine(
+                listOf(
+                    "java",
+                    "-cp",
+                    testLogToolsClasspath.get(),
+                    "com.zegreatrob.coupling.cli.testlog.MainKt",
+                    "analyze",
+                ) + analyzeTaskFlags.get() + listOf(testJsonlFilePath.get()),
+            )
         }
-        command.add(rootProject.layout.buildDirectory.file("test-output/test.jsonl").get().asFile.absolutePath)
-        commandLine(command)
+    }
+
+    val analyzeTestJsonlKotlin by registering {
+        group = "verification"
+        description = "Compatibility alias for analyzeTestJsonl during Kotlin migration."
+        dependsOn(analyzeTestJsonl)
     }
 
     check {
