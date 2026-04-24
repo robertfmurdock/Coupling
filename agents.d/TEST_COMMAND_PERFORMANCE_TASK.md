@@ -80,7 +80,7 @@ Next slices
 - [x] Slice 1 - canonical command schema + emission
   - Define and document canonical command fields in log events.
   - Update emitters (`ActionLoggingSyntax`/related logging paths) to write structured command fields, not only message text.
-- [ ] Slice 2 - listener normalization (jvm/js/e2e)
+- [x] Slice 2 - listener normalization (jvm/js/e2e)
   - Ensure `JsonLoggingTestListener` normalizes command logs into canonical structured fields across platforms.
   - Add e2e command instrumentation path if commands are expected in e2e runs.
 - [ ] Slice 3 - strict contract enforcement
@@ -123,6 +123,31 @@ Continuation update (2026-04-24, slice-1 canonical command schema + emission)
 
 Continuation status
 - checkpoint: `85689e856`
-- next: `NEXT=SLICE_2_LISTENER_NORMALIZATION_JS_E2E`
-- verify: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --no-configuration-cache` ; `./gradlew -Pcoupling.testLog.reset=true :sdk:jvmTest --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
+- next: `NEXT=SLICE_3_STRICT_CONTRACT_ENFORCEMENT`
+- verify: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --no-configuration-cache` ; `./gradlew :e2e:compileE2eTestKotlinJs --no-configuration-cache` ; `./gradlew resetTestJsonl --no-configuration-cache` ; `./gradlew :e2e:e2eRun --rerun-tasks --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
 - tests: `AnalyzeCommandParityTest analyze prefers canonical command properties without message parsing`
+
+Continuation update (2026-04-24, slice-2 listener normalization js/e2e)
+- Implemented E2E command normalization at the E2E log ingress:
+  - `e2e/src/jsE2eTest/kotlin/com/zegreatrob/coupling/e2e/test/CheckLogs.kt`
+  - Added robust embedded JSON extraction from browser log lines.
+  - Added command normalization parity with listener behavior:
+    - emits `logger=command`
+    - emits `properties.command=true`
+    - emits canonical `command_action`, `command_phase`, `command_trace_id`, `command_duration_ms`
+- Added non-command ActionLogger handling in E2E forwarding:
+  - ActionLogger records without parseable command fields are mapped to `logger=forwarded-output`.
+  - Original source logger is preserved as `properties.forwarded_logger=ActionLogger`.
+- Clean E2E-only verification:
+  - `./gradlew resetTestJsonl --no-configuration-cache` => `build/test-output/test.jsonl` cleared to 0 lines.
+  - `./gradlew :e2e:e2eRun --rerun-tasks --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success, strict mode, `total_violations=0`.
+  - `jq` verification on `build/test-output/test.jsonl` for `:e2e:e2eRun`:
+    - logger counts: `command=234`, `browser=71`, `forwarded-output=3`.
+    - `command_parse_failures_by_task={}`.
+    - no `logger=ActionLogger` entries.
+  - analyzer snapshot (clean e2e-only run):
+    - `command_log_events_total=234`
+    - `command_log_events_parsed=234`
+    - `command_events_by_task={ :e2e:e2eRun:234 }`
+    - `command_unique_actions=9`
