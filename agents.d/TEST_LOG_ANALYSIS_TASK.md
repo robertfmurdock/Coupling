@@ -323,7 +323,7 @@ Red-Phase Quality Gate (required per slice)
   - Commit: `test-log-tools: port validate-test-jsonl core to library`
   - Resume marker: `NEXT=SLICE_3_VALIDATE_PARITY`
 
-- [ ] Slice 3 (~15m) - Validator parity guardrail (dual-run)
+- [x] Slice 3 (~15m) - Validator parity guardrail (dual-run)
   - Test-first: add tests for parity task diff behavior (pass when key metrics match, fail when mismatched).
   - Add Gradle helper task to run both validators and diff key metrics for same input.
   - Keep root `validateTestJsonl` on JS for now; add `validateTestJsonlKotlin` side-by-side.
@@ -385,10 +385,27 @@ Continuation Protocol (how to restart from last point)
   - open this file and continue from latest `next:` marker.
 
 Immediate next slice to execute
-- `SLICE_3_VALIDATE_PARITY`
+- `SLICE_4_WIRE_VALIDATE_DEFAULT`
 
 Slice status
 - checkpoint: pending-commit
-- next: `NEXT=SLICE_3_VALIDATE_PARITY`
-- verify: `./gradlew :libraries:test-log-analysis:jvmTest` ; `./gradlew :cli:test-log-tools:compileKotlinJvm`
-- tests: `./gradlew :libraries:test-log-analysis:jvmTest` (new parity tests introduced; red during implementation) -> `./gradlew :libraries:test-log-analysis:jvmTest` (green)
+- next: `NEXT=SLICE_4_WIRE_VALIDATE_DEFAULT`
+- verify: `./gradlew :libraries:test-log-analysis:jvmTest` ; `./gradlew :cli:test-log-tools:compileKotlinJvm` ; `./gradlew validateTestJsonlKotlin --no-configuration-cache` ; `./gradlew validateTestJsonlParity --no-configuration-cache`
+- tests: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*ValidateReportParityTest*"` (red: root build script parity-task wiring compile errors in `build.gradle.kts`, then fixed) -> `./gradlew :libraries:test-log-analysis:jvmTest --tests "*ValidateReportParityTest*"` (green)
+
+Continuation update (2026-04-23, slice-3 validator parity guardrail completed)
+- Added Kotlin parity comparison coverage in `libraries:test-log-analysis`:
+  - New API in `TestLogTools`:
+    - `compareValidateReports(expectedReportJson, actualReportJson, keys=...)`
+    - result model: `ValidateReportParityResult` with keyed mismatch detail.
+  - New tests:
+    - `ValidateReportParityTest` verifies pass-on-match and fail-on-metric-diff behavior.
+- Added side-by-side Gradle helper tasks in root:
+  - `validateTestJsonlKotlin`
+    - runs Kotlin CLI validator (`com.zegreatrob.coupling.cli.testlog.MainKt validate ...`) with same fail flags/path as JS default mode.
+  - `validateTestJsonlParity`
+    - dual-runs JS + Kotlin validators for same input and fails if any key metrics or exit codes diverge.
+    - compared keys: `total_lines`, `non_empty_lines`, `parsed_json_lines`, `non_json_lines`, `missing_core_fields`, `missing_end_fields`, `bad_duration_ms`, `total_violations`, `failing_violations`, `mode`.
+- Verification snapshot:
+  - `./gradlew validateTestJsonlKotlin --no-configuration-cache` => success.
+  - `./gradlew validateTestJsonlParity --no-configuration-cache` => success (`matched for keys=...`).

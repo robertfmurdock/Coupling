@@ -20,10 +20,33 @@ data class TestLogRunResult(
     val errorOutput: String? = null,
 )
 
+data class ValidateReportMismatch(
+    val key: String,
+    val expected: String,
+    val actual: String,
+)
+
+data class ValidateReportParityResult(
+    val matches: Boolean,
+    val mismatches: List<ValidateReportMismatch>,
+)
+
 object TestLogTools {
     private val mapper = ObjectMapper()
     private const val DEFAULT_LOG_PATH = "build/test-output/test.jsonl"
     private const val DEFAULT_MAX_OFFENDERS = 20
+    val defaultValidateParityKeys = listOf(
+        "total_lines",
+        "non_empty_lines",
+        "parsed_json_lines",
+        "non_json_lines",
+        "missing_core_fields",
+        "missing_end_fields",
+        "bad_duration_ms",
+        "total_violations",
+        "failing_violations",
+        "mode",
+    )
     private val requiredByAny = listOf("type", "timestamp", "run_id", "platform")
     private val requiredByEnd = listOf("status", "duration_ms", "task", "suite", "test")
     private val endEventTypes = setOf("TestEnd", "StepEnd")
@@ -34,6 +57,32 @@ object TestLogTools {
         TestLogCommand.ANALYZE -> TestLogRunResult(
             exitCode = 0,
             outputJson = """{"mode":"stub-analyze","status":"ok"}""",
+        )
+    }
+
+    fun compareValidateReports(
+        expectedReportJson: String,
+        actualReportJson: String,
+        keys: List<String> = defaultValidateParityKeys,
+    ): ValidateReportParityResult {
+        val expected = mapper.readTree(expectedReportJson)
+        val actual = mapper.readTree(actualReportJson)
+        val mismatches = keys.mapNotNull { key ->
+            val expectedValue = normalizeForParity(expected.get(key))
+            val actualValue = normalizeForParity(actual.get(key))
+            if (expectedValue == actualValue) {
+                null
+            } else {
+                ValidateReportMismatch(
+                    key = key,
+                    expected = expectedValue,
+                    actual = actualValue,
+                )
+            }
+        }
+        return ValidateReportParityResult(
+            matches = mismatches.isEmpty(),
+            mismatches = mismatches,
         )
     }
 
@@ -197,6 +246,14 @@ object TestLogTools {
             else -> value.toString()
         }
         bucket[label] = (bucket[label] ?: 0) + 1
+    }
+
+    private fun normalizeForParity(value: JsonNode?): String = when {
+        value == null || value.isNull -> "null"
+        value.isTextual -> value.asText()
+        value.isNumber -> value.numberValue().toString()
+        value.isBoolean -> value.booleanValue().toString()
+        else -> value.toString()
     }
 
     private fun addOffender(
