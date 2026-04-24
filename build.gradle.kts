@@ -66,49 +66,8 @@ tasks {
             .resolve()
             .joinToString(File.pathSeparator) { it.absolutePath }
     }
-    val validateTaskFlags = providers.provider {
-        buildList {
-            val failOnNonJsonEnabled = providers
-                .gradleProperty("coupling.testLog.failNonJson")
-                .map { !it.equals("false", ignoreCase = true) }
-                .getOrElse(true)
-            val failOnMissingCoreEnabled = providers
-                .gradleProperty("coupling.testLog.failMissingCore")
-                .map { !it.equals("false", ignoreCase = true) }
-                .getOrElse(true)
-            val failOnMissingEndEnabled = providers
-                .gradleProperty("coupling.testLog.failMissingEnd")
-                .map { it.equals("true", ignoreCase = true) }
-                .getOrElse(false)
-            val failOnBadDurationEnabled = providers
-                .gradleProperty("coupling.testLog.failBadDuration")
-                .map { it.equals("true", ignoreCase = true) }
-                .getOrElse(false)
-            if (failOnNonJsonEnabled) {
-                add("--fail-on-non-json")
-            }
-            if (failOnMissingCoreEnabled) {
-                add("--fail-on-missing-core")
-            }
-            if (failOnMissingEndEnabled) {
-                add("--fail-on-missing-end")
-            }
-            if (failOnBadDurationEnabled) {
-                add("--fail-on-bad-duration")
-            }
-        }
-    }
-    val analyzeTaskFlags = providers.provider {
-        buildList {
-            val strict = providers
-                .gradleProperty("coupling.testLog.analyze.strict")
-                .map { it.equals("true", ignoreCase = true) }
-                .getOrElse(false)
-            if (strict) {
-                add("--strict")
-            }
-        }
-    }
+    val validateTaskFlags = listOf("--strict")
+    val analyzeTaskFlags = listOf("--strict")
 
     val validateTestJsonl by registering(Exec::class) {
         group = "verification"
@@ -127,15 +86,9 @@ tasks {
                     validateReportFilePath.get(),
                     "--quiet-success",
                     "--failure-summary",
-                ) + validateTaskFlags.get() + listOf(testJsonlFilePath.get()),
+                ) + validateTaskFlags + listOf(testJsonlFilePath.get()),
             )
         }
-    }
-
-    val validateTestJsonlKotlin by registering {
-        group = "verification"
-        description = "Compatibility alias for validateTestJsonl during Kotlin migration."
-        dependsOn(validateTestJsonl)
     }
 
     val analyzeTestJsonl by registering(Exec::class) {
@@ -151,15 +104,9 @@ tasks {
                     testLogToolsClasspath.get(),
                     "com.zegreatrob.coupling.cli.testlog.MainKt",
                     "analyze",
-                ) + analyzeTaskFlags.get() + listOf(testJsonlFilePath.get()),
+                ) + analyzeTaskFlags + listOf(testJsonlFilePath.get()),
             )
         }
-    }
-
-    val analyzeTestJsonlKotlin by registering {
-        group = "verification"
-        description = "Compatibility alias for analyzeTestJsonl during Kotlin migration."
-        dependsOn(analyzeTestJsonl)
     }
 
     check {

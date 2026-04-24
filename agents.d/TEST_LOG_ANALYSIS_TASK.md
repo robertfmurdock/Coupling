@@ -388,21 +388,21 @@ Red-Phase Quality Gate (required per slice)
   - Resume marker: `NEXT=DONE_KOTLIN_CUTOVER`
 
 Post-Cutover Remaining Objectives (delivery backlog)
-- [ ] Slice 9 (~15m) - Refresh strict broad-run evidence on Kotlin-only tooling
+- [x] Slice 9 (~15m) - Refresh strict broad-run evidence on Kotlin-only tooling
   - Run broad JVM/JS/e2e task sweep with fresh reset and strict checks.
   - Verify strict validator/analyzer outputs are still clean after recent CLI/tooling refactors.
   - Append latest strict metric snapshots in continuation updates.
   - Commit: `test-log-tools: refresh broad strict verification snapshot`
   - Resume marker: `NEXT=SLICE_10_PHASE_C_DEFAULT`
 
-- [ ] Slice 10 (~15m) - Phase C default-on (full event-type schema failure)
+- [x] Slice 10 (~15m) - Phase C default-on (full event-type schema failure)
   - Tighten default `validateTestJsonl` behavior from `compat-fail-non-json-core` to full event-type schema failure semantics.
   - Keep temporary escape hatch property for emergency rollback during rollout.
   - Verify legacy compat mode remains reachable when explicitly requested.
   - Commit: `build: enable phase-c validation defaults`
   - Resume marker: `NEXT=SLICE_11_STRICT_DEFAULT`
 
-- [ ] Slice 11 (~15m) - Flip default validation mode to strict
+- [x] Slice 11 (~15m) - Flip default validation mode to strict
   - Make strict validation the default for root `check` finalizer path.
   - Keep temporary opt-out property for controlled rollback window.
   - Re-run full verification matrix and record final strict-default status.
@@ -422,13 +422,13 @@ Continuation Protocol (how to restart from last point)
   - open this file and continue from latest `next:` marker.
 
 Immediate next slice to execute
-- `SLICE_9_STRICT_BROAD_REFRESH`
+- `DONE_STRICT_DEFAULT_CUTOVER`
 
 Slice status
-- checkpoint: pending-commit
-- next: `NEXT=SLICE_9_STRICT_BROAD_REFRESH`
-- verify: `./gradlew :libraries:test-log-analysis:jvmTest` ; `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
-- tests: `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/(^|:)[^ ]+:(jvmTest|jsNodeTest|e2eRun) -/{print ":"$1}')` + strict analyzer/validator checks (red/green to be captured in slice-9 update)
+- checkpoint: `f25c5b541`
+- next: `NEXT=DONE_STRICT_DEFAULT_CUTOVER`
+- verify: `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew validateTestJsonl -Pcoupling.testLog.strict=false --no-configuration-cache` ; `./gradlew validateTestJsonl -Pcoupling.testLog.strict=false -Pcoupling.testLog.failNonJson=false -Pcoupling.testLog.failMissingCore=false -Pcoupling.testLog.failMissingEnd=false -Pcoupling.testLog.failBadDuration=false --no-configuration-cache`
+- tests: `N/A (slice-11 is task-default wiring + mode verification)`
 
 Continuation update (2026-04-23, slice-3 validator parity guardrail completed)
 - Added Kotlin parity comparison coverage in `libraries:test-log-analysis`:
@@ -518,3 +518,93 @@ Continuation update (2026-04-24, remaining-objectives planning reset)
 - Added post-cutover slices 9-11 with explicit markers to execute these remaining objectives in order.
 - New active marker:
   - `next: NEXT=SLICE_9_STRICT_BROAD_REFRESH`
+
+Continuation update (2026-04-24, slice-9 strict broad-run evidence refreshed)
+- Ran broad JVM/JS/e2e rerun with fresh log reset:
+  - `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/(^|:)[^ ]+:(jvmTest|jsNodeTest|e2eRun) -/{print ":"$1}')`
+  - result: **BUILD SUCCESSFUL** (`463 actionable tasks: 463 executed`).
+- Ran strict validator using Kotlin CLI on the refreshed log:
+  - `java -cp <resolved testLogToolsRunner classpath> com.zegreatrob.coupling.cli.testlog.MainKt validate --strict --report-file build/reports/test-logs/validate-test-jsonl.json --quiet-success --failure-summary build/test-output/test.jsonl`
+  - strict report snapshot (`build/reports/test-logs/validate-test-jsonl.json`):
+    - `mode=strict`
+    - `total_lines=20207`
+    - `parsed_json_lines=20206`
+    - `non_json_lines=0`
+    - `missing_core_fields=0`
+    - `missing_end_fields=0`
+    - `bad_duration_ms=0`
+    - `total_violations=0`
+    - `failing_violations=0`
+    - `platform_counts={ js: 8176, jvm: 11721, e2e: 309 }`
+- Ran strict analyzer:
+  - `./gradlew -Pcoupling.testLog.analyze.strict=true analyzeTestJsonl --no-configuration-cache`
+  - strict analyzer snapshot:
+    - `mode=strict`
+    - `parsed_json_lines=20206`
+    - `non_json_lines=0`
+    - `unique_tests=740`
+    - `tests_missing_expected_testmints=0`
+    - `tests_missing_required_testmints_phases=0`
+    - `total_violations=0`
+    - `failing_violations=0`
+- Outcome:
+  - Slice 9 objective met on Kotlin-only tooling with fresh broad-run strict evidence.
+  - Advanced active marker to `NEXT=SLICE_10_PHASE_C_DEFAULT`.
+
+Continuation update (2026-04-24, slice-10 phase-C default-on enabled)
+- Tightening change applied in `build.gradle.kts`:
+  - `coupling.testLog.failMissingEnd` now defaults to enabled unless explicitly set to `false`.
+  - `coupling.testLog.failBadDuration` now defaults to enabled unless explicitly set to `false`.
+  - This makes phase-C compat gates default-on in `validateTestJsonl`.
+- Verification:
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success.
+    - report mode: `compat-fail-non-json-core-end-duration`
+    - violations: `total_violations=0`, `failing_violations=0`
+  - `./gradlew validateTestJsonl -Pcoupling.testLog.failMissingEnd=false -Pcoupling.testLog.failBadDuration=false --no-configuration-cache` => success.
+    - report mode: `compat-fail-non-json-core`
+  - `./gradlew validateTestJsonl -Pcoupling.testLog.failNonJson=false -Pcoupling.testLog.failMissingCore=false -Pcoupling.testLog.failMissingEnd=false -Pcoupling.testLog.failBadDuration=false --no-configuration-cache` => success.
+    - report mode: `compat` (legacy report-only compat remains explicitly reachable).
+- Outcome:
+  - Slice 10 objective met; phase-C defaults are on with rollback properties preserved.
+  - Advanced active marker to `NEXT=SLICE_11_STRICT_DEFAULT`.
+
+Continuation update (2026-04-24, slice-11 strict-default cutover)
+- Strict-default wiring change in `build.gradle.kts`:
+  - `validateTestJsonl` now enables strict mode by default via new property gate:
+    - `coupling.testLog.strict` (default `true`)
+    - set `-Pcoupling.testLog.strict=false` for temporary rollback to compat behavior.
+  - When strict is disabled, existing compat fail-category properties still apply:
+    - `coupling.testLog.failNonJson`
+    - `coupling.testLog.failMissingCore`
+    - `coupling.testLog.failMissingEnd`
+    - `coupling.testLog.failBadDuration`
+- Verification:
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success.
+    - report mode: `strict`
+    - `total_violations=0`, `failing_violations=0`
+  - `./gradlew validateTestJsonl -Pcoupling.testLog.strict=false --no-configuration-cache` => success.
+    - report mode: `compat-fail-non-json-core-end-duration`
+  - `./gradlew validateTestJsonl -Pcoupling.testLog.strict=false -Pcoupling.testLog.failNonJson=false -Pcoupling.testLog.failMissingCore=false -Pcoupling.testLog.failMissingEnd=false -Pcoupling.testLog.failBadDuration=false --no-configuration-cache` => success.
+    - report mode: `compat`
+- Outcome:
+  - Slice 11 objective met; strict validation is now default with controlled rollback path.
+  - Advanced active marker to `NEXT=DONE_STRICT_DEFAULT_CUTOVER`.
+
+Continuation update (2026-04-24, post-hardening strict-only cleanup)
+- Rollback/compat toggles removed from root `validateTestJsonl` wiring in `build.gradle.kts`.
+- `validateTestJsonl` now always invokes Kotlin CLI with `--strict` (no `coupling.testLog.strict` or compat fail-category Gradle properties).
+- Operational posture is now strict-only for validation: no Gradle escape hatch flags retained.
+- Verification:
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success (`mode=strict`, `total_violations=0`, `failing_violations=0`).
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success (`mode=report`, `total_violations=0`, `failing_violations=0`).
+
+Continuation update (2026-04-24, strict-only cleanup finalized)
+- Removed compatibility alias tasks from root Gradle wiring:
+  - removed `validateTestJsonlKotlin`
+  - removed `analyzeTestJsonlKotlin`
+- `analyzeTestJsonl` is now strict-only:
+  - task always invokes Kotlin CLI with `--strict`
+  - removed `-Pcoupling.testLog.analyze.strict` task wiring path
+- Verification:
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success (`mode=strict`, `total_violations=0`, `failing_violations=0`).
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success (`mode=strict`, `total_violations=0`, `failing_violations=0`).
