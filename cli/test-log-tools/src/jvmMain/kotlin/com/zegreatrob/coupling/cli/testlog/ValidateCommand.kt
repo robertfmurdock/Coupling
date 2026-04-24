@@ -13,6 +13,8 @@ class ValidateCommand : SuspendingCliktCommand("validate") {
     private val strict by option("--strict").flag(default = false)
     private val failOnNonJson by option("--fail-on-non-json").flag(default = false)
     private val failOnMissingCore by option("--fail-on-missing-core").flag(default = false)
+    private val failOnMissingEnd by option("--fail-on-missing-end").flag(default = false)
+    private val failOnBadDuration by option("--fail-on-bad-duration").flag(default = false)
     private val maxOffenders by option("--max-offenders")
     private val reportFile by option("--report-file")
     private val quietSuccess by option("--quiet-success").flag(default = false)
@@ -24,6 +26,8 @@ class ValidateCommand : SuspendingCliktCommand("validate") {
             if (strict) add("--strict")
             if (failOnNonJson) add("--fail-on-non-json")
             if (failOnMissingCore) add("--fail-on-missing-core")
+            if (failOnMissingEnd) add("--fail-on-missing-end")
+            if (failOnBadDuration) add("--fail-on-bad-duration")
             maxOffenders?.let { add("--max-offenders=$it") }
             add(path)
         }

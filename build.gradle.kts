@@ -76,11 +76,25 @@ tasks {
                 .gradleProperty("coupling.testLog.failMissingCore")
                 .map { !it.equals("false", ignoreCase = true) }
                 .getOrElse(true)
+            val failOnMissingEndEnabled = providers
+                .gradleProperty("coupling.testLog.failMissingEnd")
+                .map { it.equals("true", ignoreCase = true) }
+                .getOrElse(false)
+            val failOnBadDurationEnabled = providers
+                .gradleProperty("coupling.testLog.failBadDuration")
+                .map { it.equals("true", ignoreCase = true) }
+                .getOrElse(false)
             if (failOnNonJsonEnabled) {
                 add("--fail-on-non-json")
             }
             if (failOnMissingCoreEnabled) {
                 add("--fail-on-missing-core")
+            }
+            if (failOnMissingEndEnabled) {
+                add("--fail-on-missing-end")
+            }
+            if (failOnBadDurationEnabled) {
+                add("--fail-on-bad-duration")
             }
         }
     }

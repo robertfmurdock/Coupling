@@ -56,8 +56,14 @@ class ValidateCommandParityTest {
                 listOf("--fail-on-non-json", "--fail-on-missing-core", file.toString()),
             ),
         )
-        nonJsonOnly to both
-    } verify { (nonJsonOnly, both) ->
+        val phaseC = TestLogTools.run(
+            TestLogRequest(
+                TestLogCommand.VALIDATE,
+                listOf("--fail-on-missing-end", "--fail-on-bad-duration", file.toString()),
+            ),
+        )
+        Triple(nonJsonOnly, both, phaseC)
+    } verify { (nonJsonOnly, both, phaseC) ->
         val nonJsonOnlyJson = parseOutput(nonJsonOnly)
         nonJsonOnly.exitCode.assertIsEqualTo(1)
         nonJsonOnlyJson.get("mode").asText().assertIsEqualTo("compat-fail-non-json")
@@ -67,6 +73,11 @@ class ValidateCommandParityTest {
         both.exitCode.assertIsEqualTo(1)
         bothJson.get("mode").asText().assertIsEqualTo("compat-fail-non-json-core")
         bothJson.get("failing_violations").asInt().assertIsEqualTo(2)
+
+        val phaseCJson = parseOutput(phaseC)
+        phaseC.exitCode.assertIsEqualTo(1)
+        phaseCJson.get("mode").asText().assertIsEqualTo("compat-fail-end-duration")
+        phaseCJson.get("failing_violations").asInt().assertIsEqualTo(2)
     }
 
     @Test

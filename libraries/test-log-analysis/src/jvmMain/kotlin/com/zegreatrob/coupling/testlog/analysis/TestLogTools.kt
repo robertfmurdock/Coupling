@@ -167,19 +167,25 @@ object TestLogTools {
             totalViolations
         } else {
             (if (options.failOnNonJson) counts.nonJsonLines else 0) +
-                (if (options.failOnMissingCore) counts.missingCoreFields else 0)
+                (if (options.failOnMissingCore) counts.missingCoreFields else 0) +
+                (if (options.failOnMissingEnd) counts.missingEndFields else 0) +
+                (if (options.failOnBadDuration) counts.badDurationMs else 0)
         }
 
         val mode = if (options.strictMode) {
             "strict"
-        } else if (options.failOnNonJson && options.failOnMissingCore) {
-            "compat-fail-non-json-core"
-        } else if (options.failOnNonJson) {
-            "compat-fail-non-json"
-        } else if (options.failOnMissingCore) {
-            "compat-fail-core"
         } else {
-            "compat"
+            val failCategories = buildList {
+                if (options.failOnNonJson) add("non-json")
+                if (options.failOnMissingCore) add("core")
+                if (options.failOnMissingEnd) add("end")
+                if (options.failOnBadDuration) add("duration")
+            }
+            if (failCategories.isEmpty()) {
+                "compat"
+            } else {
+                "compat-fail-${failCategories.joinToString("-")}"
+            }
         }
 
         val report = linkedMapOf<String, Any>(
@@ -224,6 +230,8 @@ object TestLogTools {
             strictMode = args.contains("--strict"),
             failOnNonJson = args.contains("--fail-on-non-json"),
             failOnMissingCore = args.contains("--fail-on-missing-core"),
+            failOnMissingEnd = args.contains("--fail-on-missing-end"),
+            failOnBadDuration = args.contains("--fail-on-bad-duration"),
         )
     }
 
@@ -564,6 +572,8 @@ object TestLogTools {
         val strictMode: Boolean,
         val failOnNonJson: Boolean,
         val failOnMissingCore: Boolean,
+        val failOnMissingEnd: Boolean,
+        val failOnBadDuration: Boolean,
     )
 
     private data class AnalyzeOptions(

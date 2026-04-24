@@ -214,6 +214,21 @@ Current State (2026-04-21, late-night snapshot)
       - `-Pcoupling.testLog.failMissingCore=false`
   - Effective default mode:
     - `compat-fail-non-json-core`
+- Continuation update (2026-04-23, phase-C compat controls added):
+  - Added phase-C compat fail categories to Kotlin validator/CLI:
+    - `--fail-on-missing-end` (fails on missing end-event required fields)
+    - `--fail-on-bad-duration` (fails on non-numeric `duration_ms` for end events)
+  - Gradle wiring added (opt-in, default-off to keep `check` stable while broadening strict coverage):
+    - `-Pcoupling.testLog.failMissingEnd=true`
+    - `-Pcoupling.testLog.failBadDuration=true`
+  - Mode rendering now composes enabled compat fail categories:
+    - example with all four compat gates enabled: `compat-fail-non-json-core-end-duration`
+  - Verification:
+    - `./gradlew :libraries:test-log-analysis:jvmTest --rerun-tasks` => **success**
+    - `./gradlew validateTestJsonl -Pcoupling.testLog.failMissingEnd=true -Pcoupling.testLog.failBadDuration=true` => **success**
+    - Report snapshot (`build/reports/test-logs/validate-test-jsonl.json`):
+      - `mode=compat-fail-non-json-core-end-duration`
+      - `total_violations=0`, `failing_violations=0`
 
 Deliverable
 - A single, consistent JSON schema for every line in `test.jsonl`.
@@ -372,6 +387,28 @@ Red-Phase Quality Gate (required per slice)
   - Commit: `cleanup: remove node test log analysis scripts`
   - Resume marker: `NEXT=DONE_KOTLIN_CUTOVER`
 
+Post-Cutover Remaining Objectives (delivery backlog)
+- [ ] Slice 9 (~15m) - Refresh strict broad-run evidence on Kotlin-only tooling
+  - Run broad JVM/JS/e2e task sweep with fresh reset and strict checks.
+  - Verify strict validator/analyzer outputs are still clean after recent CLI/tooling refactors.
+  - Append latest strict metric snapshots in continuation updates.
+  - Commit: `test-log-tools: refresh broad strict verification snapshot`
+  - Resume marker: `NEXT=SLICE_10_PHASE_C_DEFAULT`
+
+- [ ] Slice 10 (~15m) - Phase C default-on (full event-type schema failure)
+  - Tighten default `validateTestJsonl` behavior from `compat-fail-non-json-core` to full event-type schema failure semantics.
+  - Keep temporary escape hatch property for emergency rollback during rollout.
+  - Verify legacy compat mode remains reachable when explicitly requested.
+  - Commit: `build: enable phase-c validation defaults`
+  - Resume marker: `NEXT=SLICE_11_STRICT_DEFAULT`
+
+- [ ] Slice 11 (~15m) - Flip default validation mode to strict
+  - Make strict validation the default for root `check` finalizer path.
+  - Keep temporary opt-out property for controlled rollback window.
+  - Re-run full verification matrix and record final strict-default status.
+  - Commit: `build: make strict test-log validation default`
+  - Resume marker: `NEXT=DONE_STRICT_DEFAULT_CUTOVER`
+
 Continuation Protocol (how to restart from last point)
 - At end of each slice:
   - mark completed checkbox in this file,
@@ -385,13 +422,13 @@ Continuation Protocol (how to restart from last point)
   - open this file and continue from latest `next:` marker.
 
 Immediate next slice to execute
-- `DONE_KOTLIN_CUTOVER`
+- `SLICE_9_STRICT_BROAD_REFRESH`
 
 Slice status
 - checkpoint: pending-commit
-- next: `NEXT=DONE_KOTLIN_CUTOVER`
+- next: `NEXT=SLICE_9_STRICT_BROAD_REFRESH`
 - verify: `./gradlew :libraries:test-log-analysis:jvmTest` ; `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
-- tests: `rg -n "validate-test-jsonl\\.mjs|analyze-test-jsonl\\.mjs|validateTestJsonlJs|analyzeTestJsonlJs|validateTestJsonlParity|analyzeTestJsonlParity" build.gradle.kts` (red: found legacy JS wiring before cutover) -> same command (green: no matches)
+- tests: `./gradlew -Pcoupling.testLog.reset=true --rerun-tasks $(./gradlew tasks --all | awk '/(^|:)[^ ]+:(jvmTest|jsNodeTest|e2eRun) -/{print ":"$1}')` + strict analyzer/validator checks (red/green to be captured in slice-9 update)
 
 Continuation update (2026-04-23, slice-3 validator parity guardrail completed)
 - Added Kotlin parity comparison coverage in `libraries:test-log-analysis`:
@@ -472,3 +509,12 @@ Continuation update (2026-04-23, slice-8 JS scripts removed and Kotlin cutover f
   - `./gradlew validateTestJsonl --no-configuration-cache` => success.
   - `./gradlew analyzeTestJsonl --no-configuration-cache` => success.
   - `rg -n "validate-test-jsonl\\.mjs|analyze-test-jsonl\\.mjs|validateTestJsonlJs|analyzeTestJsonlJs|validateTestJsonlParity|analyzeTestJsonlParity" build.gradle.kts` => no matches.
+
+Continuation update (2026-04-24, remaining-objectives planning reset)
+- Kotlin migration/cutover slices are complete, but final delivery objectives remain:
+  - fresh strict broad-run evidence on current head,
+  - phase-C default-on behavior,
+  - strict-by-default for `check`.
+- Added post-cutover slices 9-11 with explicit markers to execute these remaining objectives in order.
+- New active marker:
+  - `next: NEXT=SLICE_9_STRICT_BROAD_REFRESH`
