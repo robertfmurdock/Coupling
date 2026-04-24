@@ -60,6 +60,7 @@ dependencies {
 
 tasks {
     val testJsonlFilePath = rootProject.layout.buildDirectory.file("test-output/test.jsonl").map { it.asFile.absolutePath }
+    val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }
     val testLogToolsClasspath = providers.provider {
         testLogToolsRunner
             .resolve()
@@ -108,6 +109,10 @@ tasks {
                     testLogToolsClasspath.get(),
                     "com.zegreatrob.coupling.cli.testlog.MainKt",
                     "validate",
+                    "--report-file",
+                    validateReportFilePath.get(),
+                    "--quiet-success",
+                    "--failure-summary",
                 ) + validateTaskFlags.get() + listOf(testJsonlFilePath.get()),
             )
         }
