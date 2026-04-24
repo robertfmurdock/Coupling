@@ -9,4 +9,5 @@ kotlin {
 dependencies {
     "jvmMainImplementation"(project(":libraries:test-log-analysis"))
     "jvmMainImplementation"("com.fasterxml.jackson.core:jackson-databind")
+    "jvmMainImplementation"("com.github.ajalt.clikt:clikt")
 }
