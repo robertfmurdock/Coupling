@@ -83,10 +83,10 @@ Next slices
 - [x] Slice 2 - listener normalization (jvm/js/e2e)
   - Ensure `JsonLoggingTestListener` normalizes command logs into canonical structured fields across platforms.
   - Add e2e command instrumentation path if commands are expected in e2e runs.
-- [ ] Slice 3 - strict contract enforcement
+- [x] Slice 3 - strict contract enforcement
   - Add analyzer/validator checks for command field presence/typing when command logs exist.
   - Keep message parsing fallback temporarily; track and drive fallback usage to zero.
-- [ ] Slice 4 - remove fallback parsing + external-query examples
+- [x] Slice 4 - remove fallback parsing + external-query examples
   - Remove message-text command parsing after migration completion.
   - Add `jq`/Splunk query examples and CI artifacts proving no custom tooling is required.
 - [ ] Slice 5 - bottleneck report ergonomics
@@ -193,4 +193,44 @@ Continuation update (2026-04-24, slice-3 strict contract enforcement)
 Continuation status
 - checkpoint: working tree (uncommitted)
 - next: `NEXT=SLICE_4_REMOVE_FALLBACK_PARSING_AND_ADD_EXTERNAL_QUERY_EXAMPLES`
+- verify: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
+
+Continuation update (2026-04-24, slice-4 remove fallback parsing + external query examples)
+- Removed analyzer message-text fallback parsing from Kotlin tooling (`libraries:test-log-analysis`):
+  - command ingestion now accepts canonical structured fields only (`logger=command`/`properties.command_*`).
+  - removed fallback-related analyzer metrics:
+    - `command_events_using_message_fallback`
+    - `command_message_fallback_by_task`
+  - legacy `ActionLogger` message payload lines are no longer counted as command events by analyzer.
+- Updated tests:
+  - `AnalyzeCommandParityTest`
+    - converted sdk-style command timing case to canonical `logger=command` events.
+    - added canonical-only guard: `analyze ignores legacy action logger message payloads`.
+    - removed fallback telemetry migration test.
+- Verification:
+  - `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success, strict mode, `total_violations=0`.
+  - analyzer snapshot after fallback removal:
+    - `command_log_events_total=5284`
+    - `command_canonical_events_total=5284`
+    - `command_log_events_parsed=5284`
+    - `command_parse_failures_by_task={}`
+    - `command_contract_violations=0`
+
+External query examples (no custom parser required)
+- `jq`: command event counts by task directly from raw `test.jsonl`
+  - `jq -r 'select(.type=="Log" and .logger=="command") | .task' build/test-output/test.jsonl | sort | uniq -c | sort -nr`
+- `jq`: direct p95 by action from canonical command end events
+  - `jq -s '
+      map(select(.type=="Log" and .logger=="command" and .properties.command_phase=="end" and (.properties.command_duration_ms|type)=="number")) |
+      group_by(.properties.command_action) |
+      map({action: .[0].properties.command_action, p95_ms: (map(.properties.command_duration_ms)|sort|.[((length-1)*0.95|floor)])}) |
+      sort_by(.p95_ms) | reverse
+    ' build/test-output/test.jsonl`
+- Splunk (example SPL using canonical fields in indexed JSON):
+  - `index=coupling sourcetype=test_jsonl type=Log logger=command properties.command_phase=end | stats count as events avg(properties.command_duration_ms) as avg_ms perc95(properties.command_duration_ms) as p95_ms max(properties.command_duration_ms) as max_ms by properties.command_action, task | sort - p95_ms`
+
+Continuation status
+- checkpoint: working tree (uncommitted)
+- next: `NEXT=SLICE_5_BOTTLENECK_REPORT_ERGONOMICS`
 - verify: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`

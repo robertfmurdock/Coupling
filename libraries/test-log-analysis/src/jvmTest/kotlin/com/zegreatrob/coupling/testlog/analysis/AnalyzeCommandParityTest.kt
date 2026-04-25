@@ -134,14 +134,14 @@ class AnalyzeCommandParityTest {
     }
 
     @Test
-    fun `analyze reports parseable command timing metrics for sdk style logs`() = setup(object {
+    fun `analyze reports parseable command timing metrics for canonical command logs`() = setup(object {
         val file = writeTempJsonl(
             """
             {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"forwarded-output","message":"[DefaultDispatcher-worker-2] INFO ActionLogger - {action=GqlQuery, type=Start, traceId=t1}"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"forwarded-output","message":"[DefaultDispatcher-worker-2] INFO ActionLogger - {action=GqlQuery, type=End, duration=120.500ms, traceId=t1}"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.350Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"ActionLogger","message":"{action=DeletePartyCommand, type=Start, traceId=t2}"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.650Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"ActionLogger","message":"{action=DeletePartyCommand, type=End, duration=250ms, traceId=t2}"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"GqlQuery","command_phase":"start","command_trace_id":"t1"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"GqlQuery","command_phase":"end","command_trace_id":"t1","command_duration_ms":120.500}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.350Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"DeletePartyCommand","command_phase":"start","command_trace_id":"t2"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.650Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"DeletePartyCommand","command_phase":"end","command_trace_id":"t2","command_duration_ms":250.0}}
             {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","status":"SUCCESS","duration_ms":1000}
             """.trimIndent(),
         )
@@ -157,10 +157,8 @@ class AnalyzeCommandParityTest {
 
         result.exitCode.assertIsEqualTo(0)
         report["command_log_events_total"].asInt().assertIsEqualTo(4)
-        report["command_canonical_events_total"].asInt().assertIsEqualTo(0)
+        report["command_canonical_events_total"].asInt().assertIsEqualTo(4)
         report["command_log_events_parsed"].asInt().assertIsEqualTo(4)
-        report["command_events_using_message_fallback"].asInt().assertIsEqualTo(4)
-        report["command_message_fallback_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(4)
         report["command_start_events"].asInt().assertIsEqualTo(2)
         report["command_end_events"].asInt().assertIsEqualTo(2)
         report["command_end_events_with_duration"].asInt().assertIsEqualTo(2)
@@ -196,7 +194,6 @@ class AnalyzeCommandParityTest {
         report["command_log_events_total"].asInt().assertIsEqualTo(2)
         report["command_canonical_events_total"].asInt().assertIsEqualTo(2)
         report["command_log_events_parsed"].asInt().assertIsEqualTo(2)
-        report["command_events_using_message_fallback"].asInt().assertIsEqualTo(0)
         report["command_parse_failures_by_task"].size().assertIsEqualTo(0)
         report["command_contract_violations"].asInt().assertIsEqualTo(0)
         report["command_duration_ms_by_action"]["SpinCommand"]["max_ms"].asDouble().assertIsEqualTo(175.25)
@@ -232,13 +229,13 @@ class AnalyzeCommandParityTest {
     }
 
     @Test
-    fun `analyze tracks message fallback usage while migration is in progress`() = setup(object {
+    fun `analyze ignores legacy action logger message payloads`() = setup(object {
         val file = writeTempJsonl(
             """
-            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine","logger":"ActionLogger","message":"{action=SpinCommand, type=Start, traceId=t1}"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine","logger":"ActionLogger","message":"{action=SpinCommand, type=End, duration=175ms, traceId=t1}"}
-            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine","status":"SUCCESS","duration_ms":1000}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.LegacySuite","test":"legacyActionLoggerLine"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.LegacySuite","test":"legacyActionLoggerLine","logger":"ActionLogger","message":"{action=SpinCommand, type=Start, traceId=t1}"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.LegacySuite","test":"legacyActionLoggerLine","logger":"forwarded-output","message":"[DefaultDispatcher-worker-2] INFO ActionLogger - {action=SpinCommand, type=End, duration=175ms, traceId=t1}"}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.LegacySuite","test":"legacyActionLoggerLine","status":"SUCCESS","duration_ms":1000}
             """.trimIndent(),
         )
     }) exercise {
@@ -252,10 +249,10 @@ class AnalyzeCommandParityTest {
         val report = parseOutput(result)
 
         result.exitCode.assertIsEqualTo(0)
-        report["command_canonical_events_total"].asInt().assertIsEqualTo(0)
-        report["command_events_using_message_fallback"].asInt().assertIsEqualTo(2)
-        report["command_message_fallback_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(2)
+        report["command_log_events_total"].asInt().assertIsEqualTo(0)
+        report["command_log_events_parsed"].asInt().assertIsEqualTo(0)
         report["command_contract_violations"].asInt().assertIsEqualTo(0)
+        report["tests_with_command_timings"].asInt().assertIsEqualTo(0)
     }
 
     private fun parseOutput(result: TestLogRunResult): JsonNode = mapper.readTree(requireNotNull(result.outputJson))

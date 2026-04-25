@@ -285,7 +285,6 @@ object TestLogTools {
         var testStartCount = 0
         var testEndCount = 0
         var commandCanonicalEvents = 0
-        var commandMessageFallbackEvents = 0
         var commandContractViolations = 0
         val commandContractViolationsByTask = linkedMapOf<String, Int>()
 
@@ -335,9 +334,6 @@ object TestLogTools {
                 val commandResult = processCommandLogEvent(event, key, commandMetrics)
                 if (commandResult.canonicalEvent) {
                     commandCanonicalEvents += 1
-                }
-                if (commandResult.usedMessageFallback) {
-                    commandMessageFallbackEvents += 1
                 }
                 if (commandResult.contractViolationReasons.isNotEmpty()) {
                     val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
@@ -471,8 +467,6 @@ object TestLogTools {
             "command_end_events" to commandSummary.endEvents,
             "command_end_events_with_duration" to commandSummary.endEventsWithDuration,
             "command_unique_actions" to commandSummary.actionCount,
-            "command_events_using_message_fallback" to commandMessageFallbackEvents,
-            "command_message_fallback_by_task" to commandSummary.messageFallbackByTask,
             "command_events_by_task" to commandSummary.eventsByTask,
             "command_parse_failures_by_task" to commandSummary.parseFailuresByTask,
             "command_contract_violations" to commandContractViolations,
@@ -616,7 +610,6 @@ object TestLogTools {
             metrics.parseFailuresByTask[task] = (metrics.parseFailuresByTask[task] ?: 0) + 1
             return CommandProcessResult(
                 canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                usedMessageFallback = false,
                 contractViolationReasons = contractViolations.reasons,
             )
         }
@@ -624,9 +617,6 @@ object TestLogTools {
         metrics.logEventsParsed += 1
         metrics.eventsByTask[task] = (metrics.eventsByTask[task] ?: 0) + 1
         metrics.actionEventCount[parsedCommand.action] = (metrics.actionEventCount[parsedCommand.action] ?: 0) + 1
-        if (parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK) {
-            metrics.messageFallbackByTask[task] = (metrics.messageFallbackByTask[task] ?: 0) + 1
-        }
 
         val commandKey = listOf(
             event.get("run_id")?.asText().orEmpty(),
@@ -646,7 +636,6 @@ object TestLogTools {
             }
             return CommandProcessResult(
                 canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
                 contractViolationReasons = contractViolations.reasons,
             )
         }
@@ -654,7 +643,6 @@ object TestLogTools {
         if (phase != "end") {
             return CommandProcessResult(
                 canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
                 contractViolationReasons = contractViolations.reasons,
             )
         }
@@ -673,7 +661,6 @@ object TestLogTools {
         if (durationMs == null) {
             return CommandProcessResult(
                 canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
                 contractViolationReasons = contractViolations.reasons,
             )
         }
@@ -688,27 +675,23 @@ object TestLogTools {
 
         return CommandProcessResult(
             canonicalEvent = contractViolations.isCanonicalCommandEvent,
-            usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
             contractViolationReasons = contractViolations.reasons,
         )
     }
 
     private fun mightContainCommandData(event: JsonNode): Boolean {
         val logger = event.get("logger")?.asText() ?: ""
-        if (logger == "ActionLogger" || logger == "command") {
+        if (logger == "command") {
             return true
         }
         val properties = event.get("properties")
         if (properties != null && properties.isObject && properties.get("command_action") != null) {
             return true
         }
-        val message = event.get("message")?.asText() ?: ""
-        return message.contains("ActionLogger - {action=")
+        return false
     }
 
     private fun parseCommandEvent(event: JsonNode): ParsedCommandEvent? {
-        val logger = event.get("logger")?.asText()
-        val message = event.get("message")?.asText() ?: return null
         val properties = event.get("properties")
 
         val propertyAction = properties?.get("command_action")?.asText()?.takeIf { it.isNotBlank() }
@@ -716,38 +699,16 @@ object TestLogTools {
         if (propertyAction != null && propertyPhase != null) {
             val propertyTraceId = properties?.get("command_trace_id")?.asText()?.takeIf { it.isNotBlank() }
             val propertyDurationMs = properties?.get("command_duration_ms")?.let { node ->
-                if (node.isNumber) {
-                    node.asDouble()
-                } else {
-                    parseCommandDurationMs(node.asText())
-                }
+                if (node.isNumber) node.asDouble() else null
             }
             return ParsedCommandEvent(
                 action = propertyAction,
                 phase = propertyPhase.lowercase(),
                 traceId = propertyTraceId,
                 durationMs = propertyDurationMs,
-                source = CommandParseSource.CANONICAL_PROPERTIES,
             )
         }
-
-        val payload = when {
-            logger == "ActionLogger" && message.startsWith("{") && message.endsWith("}") -> message
-            "ActionLogger - {" in message -> message.substringAfter("ActionLogger - ").trim()
-            else -> return null
-        }
-
-        val action = commandField(payload, "action") ?: return null
-        val phase = commandField(payload, "type") ?: return null
-        val traceId = commandField(payload, "traceId")
-        val durationMs = parseCommandDurationMs(commandField(payload, "duration"))
-        return ParsedCommandEvent(
-            action = action,
-            phase = phase.lowercase(),
-            traceId = traceId,
-            durationMs = durationMs,
-            source = CommandParseSource.MESSAGE_FALLBACK,
-        )
+        return null
     }
 
     private fun canonicalCommandContractViolations(event: JsonNode): CommandContractViolations {
@@ -826,22 +787,6 @@ object TestLogTools {
             return true
         }
         return properties.fieldNames().asSequence().any { it.startsWith("command_") }
-    }
-
-    private fun commandField(payload: String, key: String): String? {
-        val regex = Regex("""\b${Regex.escape(key)}=([^,}]+)""")
-        return regex.find(payload)?.groupValues?.get(1)?.trim()
-    }
-
-    private fun parseCommandDurationMs(raw: String?): Double? {
-        if (raw.isNullOrBlank()) {
-            return null
-        }
-        return when {
-            raw.endsWith("ms") -> raw.removeSuffix("ms").toDoubleOrNull()
-            raw.endsWith("s") -> raw.removeSuffix("s").toDoubleOrNull()?.times(1000.0)
-            else -> raw.toDoubleOrNull()
-        }
     }
 
     private fun parseInstantToEpochMs(value: String): Double? = runCatching {
@@ -966,17 +911,10 @@ object TestLogTools {
         val phase: String,
         val traceId: String?,
         val durationMs: Double?,
-        val source: CommandParseSource,
     )
-
-    private enum class CommandParseSource {
-        CANONICAL_PROPERTIES,
-        MESSAGE_FALLBACK,
-    }
 
     private data class CommandProcessResult(
         val canonicalEvent: Boolean = false,
-        val usedMessageFallback: Boolean = false,
         val contractViolationReasons: List<String> = emptyList(),
     )
 
@@ -997,7 +935,6 @@ object TestLogTools {
         val actionCount: Int,
         val eventsByTask: Map<String, Int>,
         val parseFailuresByTask: Map<String, Int>,
-        val messageFallbackByTask: Map<String, Int>,
         val durationByAction: Map<String, Map<String, Double>>,
         val slowestActions: List<Map<String, Any>>,
     )
@@ -1010,7 +947,6 @@ object TestLogTools {
         var endEventsWithDuration: Int = 0
         val eventsByTask: MutableMap<String, Int> = linkedMapOf()
         val parseFailuresByTask: MutableMap<String, Int> = linkedMapOf()
-        val messageFallbackByTask: MutableMap<String, Int> = linkedMapOf()
         val actionEventCount: MutableMap<String, Int> = linkedMapOf()
         val actionDurationsMs: MutableMap<String, MutableList<Double>> = linkedMapOf()
         val pendingStarts: MutableMap<String, ArrayDeque<Double>> = mutableMapOf()
@@ -1052,7 +988,6 @@ object TestLogTools {
                 actionCount = actionDurationsMs.size,
                 eventsByTask = eventsByTask,
                 parseFailuresByTask = parseFailuresByTask,
-                messageFallbackByTask = messageFallbackByTask,
                 durationByAction = durationByAction,
                 slowestActions = slowestActions,
             )
