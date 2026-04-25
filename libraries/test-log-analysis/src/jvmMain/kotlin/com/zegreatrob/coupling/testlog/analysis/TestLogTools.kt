@@ -37,6 +37,8 @@ object TestLogTools {
     private const val DEFAULT_LOG_PATH = "build/test-output/test.jsonl"
     private const val DEFAULT_MAX_OFFENDERS = 20
     private const val DEFAULT_ANALYZE_MAX_OFFENDERS = 30
+    private const val TOP_SLOW_COMMANDS_PER_SCOPE = 5
+    private const val TOP_TEST_COMMAND_SHARE_LIMIT = 10
     val defaultValidateParityKeys = listOf(
         "total_lines",
         "non_empty_lines",
@@ -432,15 +434,38 @@ object TestLogTools {
         val totalViolations =
             missingStart + missingEnd + duplicateStart + duplicateEnd + missingExpectedTestMints + missingPhaseTests + commandContractViolations
         val commandSummary = commandMetrics.summary()
-        val testCommandShares = tests.mapNotNull { (key, record) ->
+        val testCommandShareDetails = tests.mapNotNull { (key, record) ->
             val duration = record.durationMs
             val commandDuration = commandMetrics.testCommandDurationsMs[key]
             if (duration == null || duration <= 0.0 || commandDuration == null) {
                 null
             } else {
-                (commandDuration / duration).coerceAtLeast(0.0)
+                TestCommandShare(
+                    runId = record.runId,
+                    task = record.task,
+                    suite = record.suite,
+                    test = record.test,
+                    testDurationMs = duration.roundTo3(),
+                    commandDurationMs = commandDuration.roundTo3(),
+                    share = (commandDuration / duration).coerceAtLeast(0.0).roundTo3(),
+                )
             }
         }
+        val testCommandShares = testCommandShareDetails.map { it.share }
+        val topTestsByCommandTimeShare = testCommandShareDetails
+            .sortedByDescending { it.share }
+            .take(TOP_TEST_COMMAND_SHARE_LIMIT)
+            .map { detail ->
+                mapOf(
+                    "run_id" to detail.runId,
+                    "task" to detail.task,
+                    "suite" to detail.suite,
+                    "test" to detail.test,
+                    "share" to detail.share,
+                    "command_duration_ms" to detail.commandDurationMs,
+                    "test_duration_ms" to detail.testDurationMs,
+                )
+            }
         val report = linkedMapOf(
             "file" to options.filePath,
             "mode" to if (options.strictMode) "strict" else "report",
@@ -473,9 +498,12 @@ object TestLogTools {
             "command_contract_violations_by_task" to commandContractViolationsByTask,
             "command_duration_ms_by_action" to commandSummary.durationByAction,
             "slowest_command_actions" to commandSummary.slowestActions,
+            "slowest_command_actions_by_task" to commandSummary.slowestActionsByTask,
+            "slowest_command_actions_by_platform" to commandSummary.slowestActionsByPlatform,
             "tests_with_command_timings" to testCommandShares.size,
             "tests_command_time_share_p50" to percentile(testCommandShares, 0.5).roundTo3(),
             "tests_command_time_share_p95" to percentile(testCommandShares, 0.95).roundTo3(),
+            "top_tests_by_command_time_share" to topTestsByCommandTimeShare,
             "total_violations" to totalViolations,
             "failing_violations" to if (options.strictMode) totalViolations else 0,
             "offenders" to offenders,
@@ -531,6 +559,7 @@ object TestLogTools {
     }
 
     private fun makeAnalyzeRecord(event: JsonNode) = AnalyzeTestRecord(
+        runId = event.get("run_id")?.asText()?.ifEmpty { null } ?: "unknown-run",
         task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task",
         suite = event.get("suite")?.asText()?.ifEmpty { null } ?: "unknown-suite",
         test = event.get("test")?.asText()?.ifEmpty { null } ?: "unknown-test",
@@ -599,6 +628,7 @@ object TestLogTools {
         metrics: CommandMetrics,
     ): CommandProcessResult {
         val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
+        val platform = event.get("platform")?.asText()?.ifEmpty { null } ?: "unknown-platform"
         val likelyCommand = mightContainCommandData(event)
         if (!likelyCommand) {
             return CommandProcessResult()
@@ -668,6 +698,8 @@ object TestLogTools {
         metrics.endEventsWithDuration += 1
         val durations = metrics.actionDurationsMs.getOrPut(parsedCommand.action) { mutableListOf() }
         durations += durationMs
+        metrics.addScopedDuration(metrics.taskActionDurationsMs, task, parsedCommand.action, durationMs)
+        metrics.addScopedDuration(metrics.platformActionDurationsMs, platform, parsedCommand.action, durationMs)
 
         if (testKey != null) {
             metrics.testCommandDurationsMs[testKey] = (metrics.testCommandDurationsMs[testKey] ?: 0.0) + durationMs
@@ -895,6 +927,7 @@ object TestLogTools {
     )
 
     private data class AnalyzeTestRecord(
+        val runId: String,
         val task: String,
         val suite: String,
         val test: String,
@@ -937,6 +970,8 @@ object TestLogTools {
         val parseFailuresByTask: Map<String, Int>,
         val durationByAction: Map<String, Map<String, Double>>,
         val slowestActions: List<Map<String, Any>>,
+        val slowestActionsByTask: Map<String, List<Map<String, Any>>>,
+        val slowestActionsByPlatform: Map<String, List<Map<String, Any>>>,
     )
 
     private class CommandMetrics {
@@ -949,35 +984,27 @@ object TestLogTools {
         val parseFailuresByTask: MutableMap<String, Int> = linkedMapOf()
         val actionEventCount: MutableMap<String, Int> = linkedMapOf()
         val actionDurationsMs: MutableMap<String, MutableList<Double>> = linkedMapOf()
+        val taskActionDurationsMs: MutableMap<String, MutableMap<String, MutableList<Double>>> = linkedMapOf()
+        val platformActionDurationsMs: MutableMap<String, MutableMap<String, MutableList<Double>>> = linkedMapOf()
         val pendingStarts: MutableMap<String, ArrayDeque<Double>> = mutableMapOf()
         val testCommandDurationsMs: MutableMap<String, Double> = mutableMapOf()
 
-        fun summary(): CommandSummary {
-            val durationByAction = actionDurationsMs.mapValues { (_, durations) ->
-                val count = durations.size.toDouble()
-                val total = durations.sum()
-                mapOf(
-                    "count" to count,
-                    "total_ms" to total.roundTo3(),
-                    "avg_ms" to if (count > 0) (total / count).roundTo3() else 0.0,
-                    "p50_ms" to percentile(durations, 0.5).roundTo3(),
-                    "p95_ms" to percentile(durations, 0.95).roundTo3(),
-                    "max_ms" to durations.maxOrNull()?.roundTo3().orZero(),
-                )
-            }
+        fun addScopedDuration(
+            scopedDurations: MutableMap<String, MutableMap<String, MutableList<Double>>>,
+            scope: String,
+            action: String,
+            durationMs: Double,
+        ) {
+            val actionDurations = scopedDurations.getOrPut(scope) { linkedMapOf() }
+            val durations = actionDurations.getOrPut(action) { mutableListOf() }
+            durations += durationMs
+        }
 
-            val slowestActions = actionDurationsMs.entries
-                .sortedByDescending { (_, durations) -> durations.maxOrNull() ?: 0.0 }
-                .take(10)
-                .map { (action, durations) ->
-                    mapOf(
-                        "action" to action,
-                        "count" to durations.size,
-                        "max_ms" to durations.maxOrNull()?.roundTo3().orZero(),
-                        "p95_ms" to percentile(durations, 0.95).roundTo3(),
-                        "avg_ms" to if (durations.isEmpty()) 0.0 else (durations.sum() / durations.size).roundTo3(),
-                    )
-                }
+        fun summary(): CommandSummary {
+            val durationByAction = actionDurationsMs.mapValues { (_, durations) -> durationStats(durations) }
+            val slowestActions = slowestActionRollup(actionDurationsMs, 10)
+            val slowestActionsByTask = scopedSlowestActionRollup(taskActionDurationsMs)
+            val slowestActionsByPlatform = scopedSlowestActionRollup(platformActionDurationsMs)
 
             return CommandSummary(
                 logEventsTotal = logEventsTotal,
@@ -990,9 +1017,61 @@ object TestLogTools {
                 parseFailuresByTask = parseFailuresByTask,
                 durationByAction = durationByAction,
                 slowestActions = slowestActions,
+                slowestActionsByTask = slowestActionsByTask,
+                slowestActionsByPlatform = slowestActionsByPlatform,
             )
+        }
+
+        private fun durationStats(durations: List<Double>): Map<String, Double> {
+            val count = durations.size.toDouble()
+            val total = durations.sum()
+            return mapOf(
+                "count" to count,
+                "total_ms" to total.roundTo3(),
+                "avg_ms" to if (count > 0) (total / count).roundTo3() else 0.0,
+                "p50_ms" to percentile(durations, 0.5).roundTo3(),
+                "p95_ms" to percentile(durations, 0.95).roundTo3(),
+                "max_ms" to durations.maxOrNull()?.roundTo3().orZero(),
+            )
+        }
+
+        private fun slowestActionRollup(
+            actionDurations: Map<String, List<Double>>,
+            limit: Int,
+        ): List<Map<String, Any>> = actionDurations.entries
+            .sortedByDescending { (_, durations) -> durations.maxOrNull() ?: 0.0 }
+            .take(limit)
+            .map { (action, durations) ->
+                mapOf(
+                    "action" to action,
+                    "count" to durations.size,
+                    "max_ms" to durations.maxOrNull()?.roundTo3().orZero(),
+                    "p95_ms" to percentile(durations, 0.95).roundTo3(),
+                    "avg_ms" to if (durations.isEmpty()) 0.0 else (durations.sum() / durations.size).roundTo3(),
+                )
+            }
+
+        private fun scopedSlowestActionRollup(
+            scopedDurations: Map<String, Map<String, List<Double>>>,
+        ): Map<String, List<Map<String, Any>>> {
+            val result = linkedMapOf<String, List<Map<String, Any>>>()
+            scopedDurations.keys.sorted().forEach { scope ->
+                val actionDurations = scopedDurations[scope].orEmpty()
+                result[scope] = slowestActionRollup(actionDurations, TOP_SLOW_COMMANDS_PER_SCOPE)
+            }
+            return result
         }
     }
 
     private fun Double?.orZero(): Double = this ?: 0.0
+
+    private data class TestCommandShare(
+        val runId: String,
+        val task: String,
+        val suite: String,
+        val test: String,
+        val testDurationMs: Double,
+        val commandDurationMs: Double,
+        val share: Double,
+    )
 }

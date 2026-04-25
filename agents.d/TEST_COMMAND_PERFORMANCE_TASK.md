@@ -234,3 +234,29 @@ Continuation status
 - checkpoint: working tree (uncommitted)
 - next: `NEXT=SLICE_5_BOTTLENECK_REPORT_ERGONOMICS`
 - verify: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
+
+Continuation update (2026-04-24, slice-5 bottleneck report ergonomics)
+- Added command bottleneck rollups in analyzer output (`libraries:test-log-analysis`):
+  - `slowest_command_actions_by_task` (top 5 actions by max duration per task)
+  - `slowest_command_actions_by_platform` (top 5 actions by max duration per platform)
+- Added per-test bottleneck ranking:
+  - `top_tests_by_command_time_share` (top 10 tests by `sum(command_duration_ms)/test duration`)
+  - each entry includes `run_id`, `task`, `suite`, `test`, `share`, `command_duration_ms`, `test_duration_ms`.
+- Updated tests:
+  - `AnalyzeCommandParityTest`
+    - extended canonical metrics case with assertions for new task/platform rollups and top-test share output.
+    - added `analyze emits per-task per-platform rollups and top test shares`.
+- Verification:
+  - `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success, strict mode, `total_violations=0`.
+  - analyzer snapshot (same run, highlighting new ergonomics fields):
+    - `slowest_command_actions_by_task` includes `:e2e:e2eRun`, `:sdk:jsNodeTest`, `:sdk:jvmTest`.
+    - `slowest_command_actions_by_platform` includes `e2e`, `js`, `jvm`.
+    - `top_tests_by_command_time_share` populated (10 entries), top examples:
+      - `:sdk:jsNodeTest jsNodeTest.com.zegreatrob.coupling.sdk.SdkPartyTest.deleteWillMakePartyInaccessible` (`share=10.767`)
+      - `:sdk:jvmTest com.zegreatrob.coupling.sdk.RequestCombineEndpointTest.postPlayersAndPinsThenGet()` (`share=9.131`)
+
+Continuation status
+- checkpoint: working tree (uncommitted)
+- next: `NEXT=COMPLETE`
+- verify: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`

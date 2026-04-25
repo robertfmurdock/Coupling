@@ -166,8 +166,52 @@ class AnalyzeCommandParityTest {
         report["command_events_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(4)
         report["command_duration_ms_by_action"]["GqlQuery"]["max_ms"].asDouble().assertIsEqualTo(120.5)
         report["command_duration_ms_by_action"]["DeletePartyCommand"]["max_ms"].asDouble().assertIsEqualTo(250.0)
+        report["slowest_command_actions_by_task"][":sdk:jvmTest"].size().assertIsEqualTo(2)
+        report["slowest_command_actions_by_task"][":sdk:jvmTest"][0]["action"].asText()
+            .assertIsEqualTo("DeletePartyCommand")
+        report["slowest_command_actions_by_platform"]["jvm"][0]["action"].asText()
+            .assertIsEqualTo("DeletePartyCommand")
         report["tests_with_command_timings"].asInt().assertIsEqualTo(1)
         report["tests_command_time_share_p50"].asDouble().assertIsEqualTo(0.371)
+        report["top_tests_by_command_time_share"].size().assertIsEqualTo(1)
+        report["top_tests_by_command_time_share"][0]["share"].asDouble().assertIsEqualTo(0.371)
+        report["top_tests_by_command_time_share"][0]["command_duration_ms"].asDouble().assertIsEqualTo(370.5)
+    }
+
+    @Test
+    fun `analyze emits per-task per-platform rollups and top test shares`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","logger":"command","properties":{"command":true,"command_action":"JvmCommand","command_phase":"start","command_trace_id":"j1"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","logger":"command","properties":{"command":true,"command_action":"JvmCommand","command_phase":"end","command_trace_id":"j1","command_duration_ms":500.0}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","status":"SUCCESS","duration_ms":1000}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:05Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:05.100Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","logger":"command","properties":{"command":true,"command_action":"JsCommand","command_phase":"start","command_trace_id":"s1"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:05.200Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","logger":"command","properties":{"command":true,"command_action":"JsCommand","command_phase":"end","command_trace_id":"s1","command_duration_ms":300.0}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:06Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","status":"SUCCESS","duration_ms":400}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(
+            TestLogRequest(
+                command = TestLogCommand.ANALYZE,
+                args = listOf(file.toString()),
+            ),
+        )
+    } verify { result ->
+        val report = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(0)
+        report["slowest_command_actions_by_task"][":sdk:jvmTest"][0]["action"].asText().assertIsEqualTo("JvmCommand")
+        report["slowest_command_actions_by_task"][":sdk:jsNodeTest"][0]["action"].asText().assertIsEqualTo("JsCommand")
+        report["slowest_command_actions_by_platform"]["jvm"][0]["max_ms"].asDouble().assertIsEqualTo(500.0)
+        report["slowest_command_actions_by_platform"]["js"][0]["max_ms"].asDouble().assertIsEqualTo(300.0)
+        report["top_tests_by_command_time_share"].size().assertIsEqualTo(2)
+        report["top_tests_by_command_time_share"][0]["task"].asText().assertIsEqualTo(":sdk:jsNodeTest")
+        report["top_tests_by_command_time_share"][0]["share"].asDouble().assertIsEqualTo(0.75)
+        report["top_tests_by_command_time_share"][1]["task"].asText().assertIsEqualTo(":sdk:jvmTest")
+        report["top_tests_by_command_time_share"][1]["share"].asDouble().assertIsEqualTo(0.5)
     }
 
     @Test
