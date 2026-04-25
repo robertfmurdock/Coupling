@@ -32,6 +32,9 @@ class ValidateCommandParityTest {
         json.get("missing_core_fields").asInt().assertIsEqualTo(1)
         json.get("missing_end_fields").asInt().assertIsEqualTo(1)
         json.get("bad_duration_ms").asInt().assertIsEqualTo(1)
+        json.get("command_missing_canonical_fields").asInt().assertIsEqualTo(0)
+        json.get("command_bad_phase").asInt().assertIsEqualTo(0)
+        json.get("command_bad_duration_ms").asInt().assertIsEqualTo(0)
     }
 
     @Test
@@ -103,6 +106,26 @@ class ValidateCommandParityTest {
         json.get("non_json_lines").asInt().assertIsEqualTo(3)
         json.get("offenders").size().assertIsEqualTo(2)
         json.get("offenders").get(0).get("reason").asText().assertIsEqualTo("non-json")
+    }
+
+    @Test
+    fun `strict mode validates canonical command field contract`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"contract","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"finish","command_duration_ms":"120ms"}}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(TestLogRequest(TestLogCommand.VALIDATE, listOf("--strict", file.toString())))
+    } verify { result ->
+        val json = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(1)
+        json.get("command_missing_canonical_fields").asInt().assertIsEqualTo(1)
+        json.get("command_bad_phase").asInt().assertIsEqualTo(1)
+        json.get("command_bad_duration_ms").asInt().assertIsEqualTo(1)
+        json.get("total_violations").asInt().assertIsEqualTo(3)
+        json.get("failing_violations").asInt().assertIsEqualTo(3)
     }
 
     @Test

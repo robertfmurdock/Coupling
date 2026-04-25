@@ -157,7 +157,10 @@ class AnalyzeCommandParityTest {
 
         result.exitCode.assertIsEqualTo(0)
         report["command_log_events_total"].asInt().assertIsEqualTo(4)
+        report["command_canonical_events_total"].asInt().assertIsEqualTo(0)
         report["command_log_events_parsed"].asInt().assertIsEqualTo(4)
+        report["command_events_using_message_fallback"].asInt().assertIsEqualTo(4)
+        report["command_message_fallback_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(4)
         report["command_start_events"].asInt().assertIsEqualTo(2)
         report["command_end_events"].asInt().assertIsEqualTo(2)
         report["command_end_events_with_duration"].asInt().assertIsEqualTo(2)
@@ -191,10 +194,68 @@ class AnalyzeCommandParityTest {
 
         result.exitCode.assertIsEqualTo(0)
         report["command_log_events_total"].asInt().assertIsEqualTo(2)
+        report["command_canonical_events_total"].asInt().assertIsEqualTo(2)
         report["command_log_events_parsed"].asInt().assertIsEqualTo(2)
+        report["command_events_using_message_fallback"].asInt().assertIsEqualTo(0)
         report["command_parse_failures_by_task"].size().assertIsEqualTo(0)
+        report["command_contract_violations"].asInt().assertIsEqualTo(0)
         report["command_duration_ms_by_action"]["SpinCommand"]["max_ms"].asDouble().assertIsEqualTo(175.25)
         report["tests_with_command_timings"].asInt().assertIsEqualTo(1)
+    }
+
+    @Test
+    fun `strict mode fails when canonical command fields are malformed`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"finish","command_duration_ms":"175ms"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand","status":"SUCCESS","duration_ms":1000}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(
+            TestLogRequest(
+                command = TestLogCommand.ANALYZE,
+                args = listOf("--strict", file.toString()),
+            ),
+        )
+    } verify { result ->
+        val report = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(1)
+        report["mode"].asText().assertIsEqualTo("strict")
+        report["command_canonical_events_total"].asInt().assertIsEqualTo(1)
+        report["command_contract_violations"].asInt().assertIsEqualTo(3)
+        report["command_contract_violations_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(3)
+        report["total_violations"].asInt().assertIsEqualTo(3)
+        report["failing_violations"].asInt().assertIsEqualTo(3)
+    }
+
+    @Test
+    fun `analyze tracks message fallback usage while migration is in progress`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine","logger":"ActionLogger","message":"{action=SpinCommand, type=Start, traceId=t1}"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine","logger":"ActionLogger","message":"{action=SpinCommand, type=End, duration=175ms, traceId=t1}"}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.FallbackSuite","test":"legacyActionLoggerLine","status":"SUCCESS","duration_ms":1000}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(
+            TestLogRequest(
+                command = TestLogCommand.ANALYZE,
+                args = listOf(file.toString()),
+            ),
+        )
+    } verify { result ->
+        val report = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(0)
+        report["command_canonical_events_total"].asInt().assertIsEqualTo(0)
+        report["command_events_using_message_fallback"].asInt().assertIsEqualTo(2)
+        report["command_message_fallback_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(2)
+        report["command_contract_violations"].asInt().assertIsEqualTo(0)
     }
 
     private fun parseOutput(result: TestLogRunResult): JsonNode = mapper.readTree(requireNotNull(result.outputJson))

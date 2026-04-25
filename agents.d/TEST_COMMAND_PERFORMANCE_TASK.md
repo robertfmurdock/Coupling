@@ -151,3 +151,46 @@ Continuation update (2026-04-24, slice-2 listener normalization js/e2e)
     - `command_log_events_parsed=234`
     - `command_events_by_task={ :e2e:e2eRun:234 }`
     - `command_unique_actions=9`
+
+Continuation update (2026-04-24, slice-3 strict contract enforcement)
+- Added strict command contract checks in Kotlin test-log tooling (`libraries:test-log-analysis`):
+  - Validate path (`validate`):
+    - `command_missing_canonical_fields`
+    - `command_bad_phase`
+    - `command_bad_duration_ms`
+    - Included in `total_violations`/`failing_violations` behavior.
+  - Analyze path (`analyze`):
+    - Enforces canonical command contract for canonical command events (`logger=command` or `properties.command*`), adding strict violations for:
+      - missing `command_action` / `command_phase` / `command_trace_id`
+      - non-`start|end` `command_phase`
+      - non-numeric `command_duration_ms` when present
+    - Added migration telemetry to drive fallback usage to zero:
+      - `command_canonical_events_total`
+      - `command_events_using_message_fallback`
+      - `command_message_fallback_by_task`
+      - `command_contract_violations`
+      - `command_contract_violations_by_task`
+- Kept fallback parser in place (transitional):
+  - Legacy `ActionLogger`/forwarded message parsing still supported.
+  - Fallback usage is now explicitly counted instead of hidden.
+- Tests added/updated:
+  - `AnalyzeCommandParityTest`
+    - canonical contract strict failure case
+    - fallback usage telemetry case
+    - assertions for canonical/fallback counters
+  - `ValidateCommandParityTest`
+    - strict validator contract case for malformed canonical command log event
+- Verification:
+  - `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success, strict mode.
+  - Analyzer snapshot after strict re-run:
+    - `command_log_events_total=2642`
+    - `command_canonical_events_total=2642`
+    - `command_events_using_message_fallback=0`
+    - `command_contract_violations=0`
+    - `command_events_by_task={ :e2e:e2eRun:234, :sdk:jsNodeTest:1204, :sdk:jvmTest:1204 }`
+
+Continuation status
+- checkpoint: working tree (uncommitted)
+- next: `NEXT=SLICE_4_REMOVE_FALLBACK_PARSING_AND_ADD_EXTERNAL_QUERY_EXAMPLES`
+- verify: `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`

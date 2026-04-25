@@ -619,3 +619,33 @@ Continuation update (2026-04-24, resume checkpoint normalized)
   - next: `NEXT=DONE_STRICT_ONLY_CLEANUP`
   - verify: `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
   - tests: `N/A (strict-only verification rerun)`
+
+Continuation update (2026-04-24, strict-only verification rerun on current head)
+- Re-ran strict validation tasks on current repository head:
+  - `./gradlew validateTestJsonl --no-configuration-cache` => success.
+  - `./gradlew analyzeTestJsonl --no-configuration-cache` => success.
+- Strict validator report snapshot (`build/reports/test-logs/validate-test-jsonl.json`):
+  - `mode=strict`
+  - `total_lines=16383`
+  - `parsed_json_lines=16382`
+  - `non_json_lines=0`
+  - `missing_core_fields=0`
+  - `missing_end_fields=0`
+  - `bad_duration_ms=0`
+  - `total_violations=0`
+  - `failing_violations=0`
+  - `platform_counts={ e2e: 308, js: 4867, jvm: 11207 }`
+- Strict analyzer snapshot (stdout report):
+  - `mode=strict`
+  - `parsed_json_lines=16382`
+  - `non_json_lines=0`
+  - `unique_tests=455`
+  - `tests_missing_expected_testmints=0`
+  - `tests_missing_required_testmints_phases=0`
+  - `total_violations=0`
+  - `failing_violations=0`
+- Status block:
+  - checkpoint: `16631ab5b`
+  - next: `NEXT=DONE_STRICT_ONLY_CLEANUP`
+  - verify: `./gradlew validateTestJsonl --no-configuration-cache` ; `./gradlew analyzeTestJsonl --no-configuration-cache`
+  - tests: `N/A (strict-only verification rerun)`

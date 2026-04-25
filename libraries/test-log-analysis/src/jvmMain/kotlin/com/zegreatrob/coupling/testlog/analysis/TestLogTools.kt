@@ -45,6 +45,9 @@ object TestLogTools {
         "missing_core_fields",
         "missing_end_fields",
         "bad_duration_ms",
+        "command_missing_canonical_fields",
+        "command_bad_phase",
+        "command_bad_duration_ms",
         "total_violations",
         "failing_violations",
         "mode",
@@ -156,13 +159,32 @@ object TestLogTools {
                     addOffender(offenders, options.maxOffenders, index + 1, "duration_ms not numeric", line)
                 }
             }
+
+            if (type == "Log") {
+                val contractViolations = canonicalCommandContractViolations(parsed)
+                if (contractViolations.missingFields > 0) {
+                    counts.commandMissingCanonicalFields += 1
+                }
+                if (contractViolations.badPhase > 0) {
+                    counts.commandBadPhase += 1
+                }
+                if (contractViolations.badDurationMs > 0) {
+                    counts.commandBadDurationMs += 1
+                }
+                contractViolations.reasons.forEach { reason ->
+                    addOffender(offenders, options.maxOffenders, index + 1, "command contract: $reason", line)
+                }
+            }
         }
 
         val totalViolations =
             counts.nonJsonLines +
                 counts.missingCoreFields +
                 counts.missingEndFields +
-                counts.badDurationMs
+                counts.badDurationMs +
+                counts.commandMissingCanonicalFields +
+                counts.commandBadPhase +
+                counts.commandBadDurationMs
 
         val failingViolations = if (options.strictMode) {
             totalViolations
@@ -198,6 +220,9 @@ object TestLogTools {
             "missing_core_fields" to counts.missingCoreFields,
             "missing_end_fields" to counts.missingEndFields,
             "bad_duration_ms" to counts.badDurationMs,
+            "command_missing_canonical_fields" to counts.commandMissingCanonicalFields,
+            "command_bad_phase" to counts.commandBadPhase,
+            "command_bad_duration_ms" to counts.commandBadDurationMs,
             "type_counts" to counts.typeCounts,
             "platform_counts" to counts.platformCounts,
             "mode" to mode,
@@ -259,6 +284,10 @@ object TestLogTools {
         var nonJsonLines = 0
         var testStartCount = 0
         var testEndCount = 0
+        var commandCanonicalEvents = 0
+        var commandMessageFallbackEvents = 0
+        var commandContractViolations = 0
+        val commandContractViolationsByTask = linkedMapOf<String, Int>()
 
         lines.forEach { line ->
             if (line.isBlank()) {
@@ -303,7 +332,26 @@ object TestLogTools {
             }
 
             if (event.get("type")?.asText() == "Log") {
-                processCommandLogEvent(event, key, commandMetrics)
+                val commandResult = processCommandLogEvent(event, key, commandMetrics)
+                if (commandResult.canonicalEvent) {
+                    commandCanonicalEvents += 1
+                }
+                if (commandResult.usedMessageFallback) {
+                    commandMessageFallbackEvents += 1
+                }
+                if (commandResult.contractViolationReasons.isNotEmpty()) {
+                    val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
+                    commandContractViolations += commandResult.contractViolationReasons.size
+                    commandContractViolationsByTask[task] =
+                        (commandContractViolationsByTask[task] ?: 0) + commandResult.contractViolationReasons.size
+                    commandResult.contractViolationReasons.forEach { reason ->
+                        addAnalyzeOffender(
+                            offenders,
+                            options.maxOffenders,
+                            "command-contract-$reason $task",
+                        )
+                    }
+                }
             }
         }
 
@@ -385,7 +433,8 @@ object TestLogTools {
             }
         }
 
-        val totalViolations = missingStart + missingEnd + duplicateStart + duplicateEnd + missingExpectedTestMints + missingPhaseTests
+        val totalViolations =
+            missingStart + missingEnd + duplicateStart + duplicateEnd + missingExpectedTestMints + missingPhaseTests + commandContractViolations
         val commandSummary = commandMetrics.summary()
         val testCommandShares = tests.mapNotNull { (key, record) ->
             val duration = record.durationMs
@@ -416,13 +465,18 @@ object TestLogTools {
             "tests_missing_required_testmints_phases" to missingPhaseTests,
             "phase_counts" to phaseCounts,
             "command_log_events_total" to commandSummary.logEventsTotal,
+            "command_canonical_events_total" to commandCanonicalEvents,
             "command_log_events_parsed" to commandSummary.logEventsParsed,
             "command_start_events" to commandSummary.startEvents,
             "command_end_events" to commandSummary.endEvents,
             "command_end_events_with_duration" to commandSummary.endEventsWithDuration,
             "command_unique_actions" to commandSummary.actionCount,
+            "command_events_using_message_fallback" to commandMessageFallbackEvents,
+            "command_message_fallback_by_task" to commandSummary.messageFallbackByTask,
             "command_events_by_task" to commandSummary.eventsByTask,
             "command_parse_failures_by_task" to commandSummary.parseFailuresByTask,
+            "command_contract_violations" to commandContractViolations,
+            "command_contract_violations_by_task" to commandContractViolationsByTask,
             "command_duration_ms_by_action" to commandSummary.durationByAction,
             "slowest_command_actions" to commandSummary.slowestActions,
             "tests_with_command_timings" to testCommandShares.size,
@@ -549,22 +603,30 @@ object TestLogTools {
         event: JsonNode,
         testKey: String?,
         metrics: CommandMetrics,
-    ) {
+    ): CommandProcessResult {
         val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
         val likelyCommand = mightContainCommandData(event)
         if (!likelyCommand) {
-            return
+            return CommandProcessResult()
         }
+        val contractViolations = canonicalCommandContractViolations(event)
         metrics.logEventsTotal += 1
         val timestampEpochMs = event.get("timestamp")?.asText()?.let { parseInstantToEpochMs(it) }
         val parsedCommand = parseCommandEvent(event) ?: run {
             metrics.parseFailuresByTask[task] = (metrics.parseFailuresByTask[task] ?: 0) + 1
-            return
+            return CommandProcessResult(
+                canonicalEvent = contractViolations.isCanonicalCommandEvent,
+                usedMessageFallback = false,
+                contractViolationReasons = contractViolations.reasons,
+            )
         }
 
         metrics.logEventsParsed += 1
         metrics.eventsByTask[task] = (metrics.eventsByTask[task] ?: 0) + 1
         metrics.actionEventCount[parsedCommand.action] = (metrics.actionEventCount[parsedCommand.action] ?: 0) + 1
+        if (parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK) {
+            metrics.messageFallbackByTask[task] = (metrics.messageFallbackByTask[task] ?: 0) + 1
+        }
 
         val commandKey = listOf(
             event.get("run_id")?.asText().orEmpty(),
@@ -582,11 +644,19 @@ object TestLogTools {
                 val starts = metrics.pendingStarts.getOrPut(commandKey) { ArrayDeque() }
                 starts.addLast(timestampEpochMs)
             }
-            return
+            return CommandProcessResult(
+                canonicalEvent = contractViolations.isCanonicalCommandEvent,
+                usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
+                contractViolationReasons = contractViolations.reasons,
+            )
         }
 
         if (phase != "end") {
-            return
+            return CommandProcessResult(
+                canonicalEvent = contractViolations.isCanonicalCommandEvent,
+                usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
+                contractViolationReasons = contractViolations.reasons,
+            )
         }
 
         metrics.endEvents += 1
@@ -601,7 +671,11 @@ object TestLogTools {
         }
 
         if (durationMs == null) {
-            return
+            return CommandProcessResult(
+                canonicalEvent = contractViolations.isCanonicalCommandEvent,
+                usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
+                contractViolationReasons = contractViolations.reasons,
+            )
         }
 
         metrics.endEventsWithDuration += 1
@@ -611,6 +685,12 @@ object TestLogTools {
         if (testKey != null) {
             metrics.testCommandDurationsMs[testKey] = (metrics.testCommandDurationsMs[testKey] ?: 0.0) + durationMs
         }
+
+        return CommandProcessResult(
+            canonicalEvent = contractViolations.isCanonicalCommandEvent,
+            usedMessageFallback = parsedCommand.source == CommandParseSource.MESSAGE_FALLBACK,
+            contractViolationReasons = contractViolations.reasons,
+        )
     }
 
     private fun mightContainCommandData(event: JsonNode): Boolean {
@@ -647,6 +727,7 @@ object TestLogTools {
                 phase = propertyPhase.lowercase(),
                 traceId = propertyTraceId,
                 durationMs = propertyDurationMs,
+                source = CommandParseSource.CANONICAL_PROPERTIES,
             )
         }
 
@@ -665,7 +746,86 @@ object TestLogTools {
             phase = phase.lowercase(),
             traceId = traceId,
             durationMs = durationMs,
+            source = CommandParseSource.MESSAGE_FALLBACK,
         )
+    }
+
+    private fun canonicalCommandContractViolations(event: JsonNode): CommandContractViolations {
+        if (!isCanonicalCommandEvent(event)) {
+            return CommandContractViolations()
+        }
+
+        val reasons = mutableListOf<String>()
+        var missingFields = 0
+        var badPhase = 0
+        var badDurationMs = 0
+
+        val properties = event.get("properties")
+        if (properties == null || !properties.isObject) {
+            reasons += "missing-properties"
+            return CommandContractViolations(
+                isCanonicalCommandEvent = true,
+                missingFields = 1,
+                reasons = reasons,
+            )
+        }
+
+        val action = properties.get("command_action")?.asText()?.takeIf { it.isNotBlank() }
+        if (action == null) {
+            missingFields += 1
+            reasons += "missing-command_action"
+        }
+
+        val phaseRaw = properties.get("command_phase")?.asText()?.takeIf { it.isNotBlank() }
+        val phase = phaseRaw?.lowercase()
+        if (phase == null) {
+            missingFields += 1
+            reasons += "missing-command_phase"
+        } else if (phase != "start" && phase != "end") {
+            badPhase += 1
+            reasons += "invalid-command_phase"
+        }
+
+        val traceId = properties.get("command_trace_id")?.asText()?.takeIf { it.isNotBlank() }
+        if (traceId == null) {
+            missingFields += 1
+            reasons += "missing-command_trace_id"
+        }
+
+        val duration = properties.get("command_duration_ms")
+        val isErrorEvent = properties.get("command_error")?.asBoolean() == true
+        if (phase == "end" && !isErrorEvent) {
+            if (duration != null && !duration.isNull && !duration.isNumber) {
+                badDurationMs += 1
+                reasons += "non-numeric-command_duration_ms"
+            }
+        } else if (duration != null && !duration.isNull && !duration.isNumber) {
+            badDurationMs += 1
+            reasons += "non-numeric-command_duration_ms"
+        }
+
+        return CommandContractViolations(
+            isCanonicalCommandEvent = true,
+            missingFields = missingFields,
+            badPhase = badPhase,
+            badDurationMs = badDurationMs,
+            reasons = reasons,
+        )
+    }
+
+    private fun isCanonicalCommandEvent(event: JsonNode): Boolean {
+        val logger = event.get("logger")?.asText()
+        if (logger == "command") {
+            return true
+        }
+        val properties = event.get("properties")
+        if (properties == null || !properties.isObject) {
+            return false
+        }
+        if (properties.get("command")?.asBoolean() == true) {
+            return true
+        }
+        return properties.fieldNames().asSequence().any { it.startsWith("command_") }
     }
 
     private fun commandField(payload: String, key: String): String? {
@@ -776,6 +936,9 @@ object TestLogTools {
         var missingCoreFields: Int = 0,
         var missingEndFields: Int = 0,
         var badDurationMs: Int = 0,
+        var commandMissingCanonicalFields: Int = 0,
+        var commandBadPhase: Int = 0,
+        var commandBadDurationMs: Int = 0,
         val typeCounts: MutableMap<String, Int> = linkedMapOf(),
         val platformCounts: MutableMap<String, Int> = linkedMapOf(),
     )
@@ -803,6 +966,26 @@ object TestLogTools {
         val phase: String,
         val traceId: String?,
         val durationMs: Double?,
+        val source: CommandParseSource,
+    )
+
+    private enum class CommandParseSource {
+        CANONICAL_PROPERTIES,
+        MESSAGE_FALLBACK,
+    }
+
+    private data class CommandProcessResult(
+        val canonicalEvent: Boolean = false,
+        val usedMessageFallback: Boolean = false,
+        val contractViolationReasons: List<String> = emptyList(),
+    )
+
+    private data class CommandContractViolations(
+        val isCanonicalCommandEvent: Boolean = false,
+        val missingFields: Int = 0,
+        val badPhase: Int = 0,
+        val badDurationMs: Int = 0,
+        val reasons: List<String> = emptyList(),
     )
 
     private data class CommandSummary(
@@ -814,6 +997,7 @@ object TestLogTools {
         val actionCount: Int,
         val eventsByTask: Map<String, Int>,
         val parseFailuresByTask: Map<String, Int>,
+        val messageFallbackByTask: Map<String, Int>,
         val durationByAction: Map<String, Map<String, Double>>,
         val slowestActions: List<Map<String, Any>>,
     )
@@ -826,6 +1010,7 @@ object TestLogTools {
         var endEventsWithDuration: Int = 0
         val eventsByTask: MutableMap<String, Int> = linkedMapOf()
         val parseFailuresByTask: MutableMap<String, Int> = linkedMapOf()
+        val messageFallbackByTask: MutableMap<String, Int> = linkedMapOf()
         val actionEventCount: MutableMap<String, Int> = linkedMapOf()
         val actionDurationsMs: MutableMap<String, MutableList<Double>> = linkedMapOf()
         val pendingStarts: MutableMap<String, ArrayDeque<Double>> = mutableMapOf()
@@ -867,6 +1052,7 @@ object TestLogTools {
                 actionCount = actionDurationsMs.size,
                 eventsByTask = eventsByTask,
                 parseFailuresByTask = parseFailuresByTask,
+                messageFallbackByTask = messageFallbackByTask,
                 durationByAction = durationByAction,
                 slowestActions = slowestActions,
             )
