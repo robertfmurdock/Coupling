@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1036.0":
-  version "3.1036.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1036.0.tgz#c66d386988aaa0344809c1c50f3fad4b5c154c56"
-  integrity sha512-QAmccu7nDS30MZ1b1v4i2X4qc69rnyYh0UWy2/y4cJ0t0qaXC6orCZUNplmKmHa8zOrjzQa3fDXvyVV7Vn9DnA==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1037.0":
+  version "3.1037.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1037.0.tgz#0708a1037f21f3934f8881c04077cb4f8b88d45c"
+  integrity sha512-7OqKsSObGkMUOlvn0trTkWd9saIxqsdXRpJxLSny0yD0xeBmGArhY3Wym3OV/UMpuB0dnCaaeqHGPFnH94YZkQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -139,10 +139,10 @@
     "@smithy/util-utf8" "^4.2.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1036.0":
-  version "3.1036.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1036.0.tgz#c19c5626a7f56c599566db99b0e6cc718e2543af"
-  integrity sha512-9kD7CvQVIHS2Zn1e8TxkRrj4FXu0ftqR4ab9GOvvsk8PzGjToWqBll7qMMluK/ofOYnG+NpXO3V/GjfiVfvWqw==
+"@aws-sdk/client-dynamodb@3.1037.0":
+  version "3.1037.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1037.0.tgz#eed68ff1949d4af2ebbb5dc4e1e6531f827ba369"
+  integrity sha512-jwMx18M1YgP0O2VAjXDxa0goja+slM0c8yxfuXjRctyVAeKlhHFyPaXR0muoz0eEbAaZUpQn2fnzrIl44P2a2g==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -237,10 +237,10 @@
     "@smithy/util-waiter" "^4.2.16"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1036.0":
-  version "3.1036.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1036.0.tgz#4db209d2a6470bebb5a6f800ab3adf9b27ccf1c9"
-  integrity sha512-1JwkI5NXsYrwyEhtBWb441c87DJAn+JFa1/7i1xtizuWX1ibEq9jQBGiz+eQfUZNkVMRnpIGiGDOETJobj+i9w==
+"@aws-sdk/client-lambda@~3.1037.0":
+  version "3.1037.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1037.0.tgz#5f571ad1ed951734346d939fda12b48c4f1ca1ea"
+  integrity sha512-QGlFTYge89OcrCJXO2fMkqbYrASOd5Ut3V58EYcuajGONIKOxxP6UYwrZE5vDMebNJi2mPLesDKaM7aH7oqcrA==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -581,10 +581,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1036.0":
-  version "3.1036.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1036.0.tgz#3bd8b9af71799b0a288fb248bd67e3b108c5a571"
-  integrity sha512-f/i2kH3ME1NUdyfc09XmhoPU4HuDuvldDrioBpDyxIbrAqorHW0bv751EyVQ0z/hSqHDjY530Wd2UHhXwdy2qA==
+"@aws-sdk/lib-dynamodb@3.1037.0":
+  version "3.1037.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1037.0.tgz#dc784369ee1b6b97d565e397e5d3efbc4836aa21"
+  integrity sha512-aKtUYTHnxvtQvgOdGgxwUa2c6umY2hNHjoQlE/MZpH4vmUFxFdJiyVdBkJaTc0u6VECNUsXrkEe34zhRrmonWQ==
   dependencies:
     "@aws-sdk/core" "^3.974.5"
     "@aws-sdk/util-dynamodb" "^3.996.2"
@@ -5189,10 +5189,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@147.0.4:
-  version "147.0.4"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-147.0.4.tgz#83297192daf2c84a0bdbf9f472910cc0eade0817"
-  integrity sha512-eRNbfkoTvAsSfFODM4QVhs3cXB/B4/nFHeI6+ycuKan5e3bJrq8njuLTBHHOLbL0dggxEpMHLiczJUQa+Gw3JA==
+chromedriver@148.0.0:
+  version "148.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-148.0.0.tgz#84b251cc8eecbc89d1d1b98c1bdbc0ec92bff87e"
+  integrity sha512-H8doVBjmPAyC1z7qYtf/CDPsmOtFqPaMo96O9fNPN9niMacNLZgsuBuHyNxHZM8N7ciB4f4s8IGKDFt3YmvlCw==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.15.0"
