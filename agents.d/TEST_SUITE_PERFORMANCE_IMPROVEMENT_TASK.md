@@ -53,7 +53,7 @@ Baseline protocol (must run before changes)
 
 Rollout slices
 
-- [ ] Slice 1 - reproducibility + measurement harness
+- [x] Slice 1 - reproducibility + measurement harness
   - Add a repeatable local script in `scripts/` to run N iterations and aggregate key metrics.
   - Report median/p95/min/max/CV by task and key actions.
   - Keep this script read-only against test semantics (measurement only).
@@ -133,4 +133,152 @@ Definition of done
 
 Continuation status
 - checkpoint: working tree (uncommitted)
-- next: `NEXT=SLICE_1_REPRODUCIBILITY_AND_MEASUREMENT_HARNESS`
+- next: `NEXT=SLICE_2_REDUCE_ARTIFICIAL_CONTENTION_IN_TEST_ORCHESTRATION`
+
+Continuation update (2026-04-25, slice-1 reproducibility + measurement harness)
+- Added repeatable performance harness script:
+  - `scripts/test-suite-performance-harness.sh`
+  - runs configurable N iterations against configurable task list (default `:sdk:jsNodeTest :sdk:jvmTest`)
+  - executes baseline flow per run:
+    - `./gradlew -Pcoupling.testLog.reset=true <tasks> --no-configuration-cache --rerun-tasks`
+    - `./gradlew analyzeTestJsonl --no-configuration-cache`
+  - captures per-run artifacts in `build/test-output/perf-harness-<timestamp>/run-<n>/`:
+    - `test.jsonl`
+    - `analyze.json`
+    - `metrics.json`
+- Added aggregation outputs:
+  - `summary.json` with median/p95/min/max/CV for:
+    - task-level `avg_command_ms` and `p95_command_ms`
+    - key action `avg_ms` and `p95_ms` for configured actions (`DeletePartyCommand`, `ApplyBoostCommand`, `GqlQuery` by default)
+  - `summary.txt` human-readable table report.
+- Script is measurement-only and does not alter test semantics.
+- Smoke verification:
+  - `scripts/test-suite-performance-harness.sh --iterations 1 --tasks ":sdk:jsNodeTest" --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-smoke`
+  - output contains:
+    - task-level summary row for `:sdk:jsNodeTest`
+    - key-action rows for `DeletePartyCommand`, `ApplyBoostCommand`, `GqlQuery`
+
+Baseline run snapshot (2026-04-25)
+- Command:
+  - `scripts/test-suite-performance-harness.sh --iterations 5 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-baseline-20260425`
+- Artifacts:
+  - `build/test-output/perf-harness-baseline-20260425/summary.json`
+  - `build/test-output/perf-harness-baseline-20260425/summary.txt`
+- Task-level baseline (median of per-run values):
+  - `:sdk:jsNodeTest`
+    - `avg_command_ms.median=134.390`
+    - `p95_command_ms.median=683.215`
+    - `avg_command_ms.cv=0.054`
+    - `p95_command_ms.cv=0.057`
+  - `:sdk:jvmTest`
+    - `avg_command_ms.median=104.864`
+    - `p95_command_ms.median=374.565`
+    - `avg_command_ms.cv=0.061`
+    - `p95_command_ms.cv=0.069`
+- Key-action baseline (median of per-run values):
+  - `DeletePartyCommand`: `avg_ms.median=242.497`, `p95_ms.median=820.842`
+  - `ApplyBoostCommand`: `avg_ms.median=318.335`, `p95_ms.median=363.119`
+  - `GqlQuery`: `avg_ms.median=99.306`, `p95_ms.median=728.350`
+
+Slice-2 experiment log (2026-04-25, bounded Gradle workers candidate)
+- Hypothesis:
+  - Bound Gradle worker concurrency to reduce orchestration contention and command latency variance.
+- Candidate tested:
+  - `org.gradle.workers.max=6` (temporary local change, reverted after measurement).
+- Command:
+  - `scripts/test-suite-performance-harness.sh --iterations 3 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-slice2-workers6-20260425`
+- Result (vs baseline median):
+  - Task `p95_command_ms`:
+    - `:sdk:jsNodeTest`: `683.215 -> 652.615` (`-4.48%`)
+    - `:sdk:jvmTest`: `374.565 -> 416.374` (`+11.16%`)
+  - Key action `p95_ms`:
+    - `DeletePartyCommand`: `820.842 -> 775.059` (`-5.58%`)
+    - `ApplyBoostCommand`: `363.119 -> 378.042` (`+4.11%`)
+    - `GqlQuery`: `728.350 -> 925.923` (`+27.13%`)
+- Decision:
+  - Reject this candidate; net impact is negative due JVM and `GqlQuery` regressions.
+  - Keep `gradle.properties` unchanged from baseline state.
+
+Slice-2 experiment log (2026-04-25, split sdk task invocations candidate)
+- Hypothesis:
+  - Running `:sdk:jsNodeTest` and `:sdk:jvmTest` as separate Gradle invocations per iteration will reduce cross-task contention and improve p95.
+- Harness support added:
+  - `scripts/test-suite-performance-harness.sh --split-task-invocations`
+  - behavior: for each iteration run tasks sequentially (`task[0]` with log reset, remaining tasks without reset) before analysis capture.
+- Commands attempted:
+  - `scripts/test-suite-performance-harness.sh --iterations 3 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --split-task-invocations --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-slice2-split-invocations-20260425`
+  - rerun after failure:
+    - `scripts/test-suite-performance-harness.sh --iterations 3 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --split-task-invocations --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-slice2-split-invocations-rerun-20260425`
+- Blocker encountered (both attempts):
+  - `:sdk:jvmTest` failed on:
+    - `SdkPartyTest[jvm] > saveWillIncludeModificationInformation()[jvm]`
+    - `org.opentest4j.AssertionFailedError`
+  - failure report:
+    - `sdk/build/reports/tests/jvmTest/index.html`
+- Partial signal from successful runs only (`run-1` + `run-2` of first attempt):
+  - summary artifact:
+    - `build/test-output/perf-harness-slice2-split-invocations-20260425/summary-partial-2runs.json`
+  - Task `p95_command_ms` vs baseline:
+    - `:sdk:jsNodeTest`: `683.215 -> 711.116` (`+4.08%`)
+    - `:sdk:jvmTest`: `374.565 -> 654.172` (`+74.65%`)
+  - Key action `p95_ms` vs baseline:
+    - `DeletePartyCommand`: `820.842 -> 861.068` (`+4.90%`)
+    - `ApplyBoostCommand`: `363.119 -> 443.138` (`+22.04%`)
+    - `GqlQuery`: `728.350 -> 1093.868` (`+50.18%`)
+- Decision:
+  - Reject this candidate based on partial data and instability.
+  - Treat `SdkPartyTest[jvm] saveWillIncludeModificationInformation()` as an active blocker for repeatable Slice-2 experimentation.
+
+Pause / Resume Handoff (2026-04-25)
+- Current status:
+  - Slice 1 is complete (harness + 5-run baseline captured).
+  - Slice 2 has two rejected candidates so far:
+    - bounded workers (`org.gradle.workers.max=6`)
+    - split task invocations (`--split-task-invocations`)
+  - continuation marker remains:
+    - `NEXT=SLICE_2_REDUCE_ARTIFICIAL_CONTENTION_IN_TEST_ORCHESTRATION`
+- Active blocker:
+  - Intermittent/recurring failure during repeat experiments:
+    - `:sdk:jvmTest`
+    - `SdkPartyTest[jvm] > saveWillIncludeModificationInformation()[jvm]`
+    - `org.opentest4j.AssertionFailedError`
+  - report path:
+    - `sdk/build/reports/tests/jvmTest/index.html`
+- Canonical baseline artifacts (do not overwrite; use for comparisons):
+  - `build/test-output/perf-harness-baseline-20260425/summary.json`
+  - `build/test-output/perf-harness-baseline-20260425/summary.txt`
+- Slice-2 experiment artifacts:
+  - workers cap candidate:
+    - `build/test-output/perf-harness-slice2-workers6-20260425/summary.json`
+    - `build/test-output/perf-harness-slice2-workers6-20260425/summary.txt`
+  - split-invocation candidate:
+    - `build/test-output/perf-harness-slice2-split-invocations-20260425/run-1/`
+    - `build/test-output/perf-harness-slice2-split-invocations-20260425/run-2/`
+    - partial aggregate:
+      - `build/test-output/perf-harness-slice2-split-invocations-20260425/summary-partial-2runs.json`
+    - failed rerun root:
+      - `build/test-output/perf-harness-slice2-split-invocations-rerun-20260425/`
+- Harness script status:
+  - local script exists and is executable:
+    - `scripts/test-suite-performance-harness.sh`
+  - important options now:
+    - `--split-task-invocations`
+    - `--gradle-args "-x kotlinStoreYarnLock"` (needed in current environment)
+  - script behavior:
+    - always uses `--rerun-tasks`
+    - fails fast if a run captures zero command end events
+- Environment / execution notes:
+  - local runs currently require excluding `kotlinStoreYarnLock` to avoid lockfile guard failure in this environment.
+  - compose/server startup contributes large fixed overhead in each run; this is expected in current setup.
+  - there are frequent non-failing webpack warnings (`bufferutil`, `utf-8-validate`, `express` dynamic require); these are noise for this task.
+- Recommended resume order:
+  - 1. Stabilize `:sdk:jvmTest` failure first (or isolate it) before further p95 tuning experiments.
+  - 2. Re-run a short 3-iteration control on unchanged baseline settings to reconfirm current variance envelope.
+  - 3. Continue Slice 2 only with candidates that can be measured across complete runs.
+- Quick restart commands:
+  - full baseline replay:
+    - `scripts/test-suite-performance-harness.sh --iterations 5 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-baseline-<date>`
+  - short control:
+    - `scripts/test-suite-performance-harness.sh --iterations 3 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-control-<date>`
+  - split candidate replay (if needed):
+    - `scripts/test-suite-performance-harness.sh --iterations 3 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --split-task-invocations --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-split-<date>`
