@@ -134,6 +134,51 @@ class AnalyzeCommandParityTest {
     }
 
     @Test
+    fun `strict mode includes e2e task testmints phases when suite and test are present`() = setup(object {
+        val tempRoot = createTempDirectory(prefix = "analyze-source-root-")
+        val sourceFile = (tempRoot / "e2e" / "src" / "jsE2eTest" / "kotlin" / "com" / "example" / "WelcomeE2ETest.kt")
+            .also {
+                it.parent.createDirectories()
+                it.writeText(
+                    """
+                    package com.example
+                    import com.zegreatrob.testmints.async.asyncTestTemplate
+                    class WelcomeE2ETest
+                    """.trimIndent(),
+                )
+            }
+        val file = writeTempJsonl(
+            """
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders","logger":"testmints","properties":{"testmints_phase":"setup-start"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders","logger":"testmints","properties":{"testmints_phase":"setup-finish"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders","logger":"testmints","properties":{"testmints_phase":"exercise-start"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders","logger":"testmints","properties":{"testmints_phase":"exercise-finish"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders","logger":"testmints","properties":{"testmints_phase":"verify-start"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders","logger":"testmints","properties":{"testmints_phase":"verify-finish"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"e2e","task":":e2e:e2eRun","suite":"com.example.WelcomeE2ETest","test":"welcome renders","status":"SUCCESS","duration_ms":12}
+            """.trimIndent(),
+        )
+    }) exercise {
+        withUserDir(tempRoot.pathString) {
+            TestLogTools.run(
+                TestLogRequest(
+                    command = TestLogCommand.ANALYZE,
+                    args = listOf("--strict", file.toString()),
+                ),
+            )
+        }
+    } verify { result ->
+        val report = parseOutput(result)
+        result.exitCode.assertIsEqualTo(0)
+        report["mode"].asText().assertIsEqualTo("strict")
+        report["phase_counts"]["setup-start"].asInt().assertIsEqualTo(1)
+        report["phase_counts"]["verify-finish"].asInt().assertIsEqualTo(1)
+        report["tests_missing_required_testmints_phases"].asInt().assertIsEqualTo(0)
+        tempRoot.toFile().deleteRecursively()
+    }
+
+    @Test
     fun `analyze reports parseable command timing metrics for canonical command logs`() = setup(object {
         val file = writeTempJsonl(
             """

@@ -26,35 +26,37 @@ Non-goals
 
 Implementation slices
 
-- [ ] Slice 1 - map current e2e logging path
+- [x] Slice 1 - map current e2e logging path
   - Trace e2e test execution/log pipeline:
     - e2e test runtime entry points
     - existing `CheckLogs.kt` ingestion
     - listener/writer path to JSONL
   - Document where `testmints` events should be emitted or forwarded.
 
-- [ ] Slice 2 - e2e testmints emission
+- [x] Slice 2 - e2e testmints emission
   - Add/enable `testmints` markers in e2e test harness at semantic phase boundaries.
   - Use canonical phase names to match analyzer expectations.
   - Ensure emitted records include task/platform/run context.
 
-- [ ] Slice 3 - normalization and persistence
+- [x] Slice 3 - normalization and persistence
   - Ensure e2e-emitted `testmints` events reach JSONL unchanged (or canonically normalized) via current log listener path.
   - Confirm no marker loss across browser-to-runner forwarding.
 
-- [ ] Slice 4 - strict validation + tests
+- [x] Slice 4 - strict validation + tests
   - Add/adjust analyzer/validator tests to cover e2e `testmints` presence and phase integrity.
   - Keep strict-mode posture: missing required phases in expected e2e tests should be visible in report/violations.
   - Preserve existing sdk parity tests.
 
-- [ ] Slice 5 - query examples and diagnostics
+- [x] Slice 5 - query examples and diagnostics
   - Add `jq` examples for e2e phase timing and counts.
   - Add a quick diagnostic query to detect regressions (e.g., e2e run with zero `testmints` events).
 
 Verification commands
 - `./gradlew :e2e:compileE2eTestKotlinJs --no-configuration-cache`
 - `./gradlew resetTestJsonl --no-configuration-cache`
-- `./gradlew :e2e:e2eRun --rerun-tasks --no-configuration-cache`
+- `./gradlew :e2e:e2eRun --tests "ContributionVisualizationPageE2ETest" --no-configuration-cache`
+- `./gradlew :e2e:e2eRun --tests "ContributionVisualizationPageE2ETest" --tests "PartyHomeE2ETest" --no-configuration-cache`
+- `./gradlew :e2e:e2eRun --rerun-tasks --no-configuration-cache` (full run)
 - `./gradlew analyzeTestJsonl --no-configuration-cache`
 - `./gradlew :libraries:test-log-analysis:jvmTest --tests "*AnalyzeCommandParityTest*" --tests "*ValidateCommandParityTest*" --no-configuration-cache`
 
@@ -82,4 +84,4 @@ Definition of done
 
 Continuation status
 - checkpoint: working tree (uncommitted)
-- next: `NEXT=SLICE_1_MAP_E2E_LOGGING_PATH`
+- next: `NEXT=DONE_PENDING_REVIEW`

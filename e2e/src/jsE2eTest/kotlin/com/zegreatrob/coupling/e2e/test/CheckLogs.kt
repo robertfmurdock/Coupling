@@ -150,23 +150,57 @@ private fun commandValue(message: String, key: String): String? {
     return regex.find(message)?.groupValues?.get(1)?.trim()
 }
 
-private fun appendCanonicalToTestLog(message: String, logger: String, properties: Json) {
+internal fun appendCanonicalToTestLog(message: String, logger: String, properties: Json) {
     val logPath = testLogPath() ?: return
     if (!isNodeRuntime()) {
         return
     }
     try {
         val fs = js("require('fs')")
+        val testIdentity = currentTestIdentity()
+        val enrichedProperties = properties
+            .let {
+                val withSuite = testIdentity.suite?.let { suite -> it.add(json("test_suite" to suite)) } ?: it
+                val withTest = testIdentity.test?.let { test -> withSuite.add(json("test_name" to test)) } ?: withSuite
+                testIdentity.testId?.let { testId -> withTest.add(json("test_id" to testId)) } ?: withTest
+            }
         val event = json(
             "type" to "Log",
             "platform" to "e2e",
             "run_id" to testRunId(),
             "task" to testTaskPath(),
+            "suite" to testIdentity.suite,
+            "test" to testIdentity.test,
             "logger" to logger,
             "message" to message,
             "timestamp" to nowIsoTimestamp(),
-            "properties" to properties,
+            "properties" to enrichedProperties,
         )
+        fs.appendFileSync(logPath, JSON.stringify(event) + "\n")
+    } catch (_: dynamic) {
+    }
+}
+
+internal fun appendTestLifecycleToTestLog(type: String, status: String? = null, durationMs: Double? = null) {
+    val logPath = testLogPath() ?: return
+    if (!isNodeRuntime()) {
+        return
+    }
+    try {
+        val fs = js("require('fs')")
+        val testIdentity = currentTestIdentity()
+        val event = json(
+            "type" to type,
+            "platform" to "e2e",
+            "run_id" to testRunId(),
+            "task" to testTaskPath(),
+            "suite" to testIdentity.suite,
+            "test" to testIdentity.test,
+            "timestamp" to nowIsoTimestamp(),
+        ).let {
+            val withStatus = status?.let { testStatus -> it.add(json("status" to testStatus)) } ?: it
+            durationMs?.let { duration -> withStatus.add(json("duration_ms" to duration)) } ?: withStatus
+        }
         fs.appendFileSync(logPath, JSON.stringify(event) + "\n")
     } catch (_: dynamic) {
     }
@@ -192,4 +226,29 @@ private fun nowIsoTimestamp(): String = js("new Date().toISOString()") as String
 private fun isNodeRuntime(): Boolean {
     val hasNode = js("typeof process !== 'undefined' && process.versions && process.versions.node")
     return hasNode as? String != null
+}
+
+private data class TestIdentity(
+    val suite: String?,
+    val test: String?,
+    val testId: String?,
+)
+
+private fun currentTestIdentity(): TestIdentity {
+    val suiteFromEnv = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_SUITE : null") as? String
+    val testFromEnv = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_NAME : null") as? String
+    val testIdFromEnv = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_ID : null") as? String
+    if (suiteFromEnv != null || testFromEnv != null || testIdFromEnv != null) {
+        return TestIdentity(
+            suite = suiteFromEnv,
+            test = testFromEnv,
+            testId = testIdFromEnv,
+        )
+    }
+    val context = js("globalThis.__couplingCurrentTest")
+    return TestIdentity(
+        suite = context?.suite as? String,
+        test = context?.test as? String,
+        testId = context?.testId as? String,
+    )
 }
