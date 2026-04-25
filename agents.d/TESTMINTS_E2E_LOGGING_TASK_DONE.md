@@ -84,4 +84,19 @@ Definition of done
 
 Continuation status
 - checkpoint: working tree (uncommitted)
-- next: `NEXT=DONE_PENDING_REVIEW`
+- next: `NEXT=DONE`
+
+Continuation update (2026-04-25, final verification and closeout)
+- Full e2e run completed successfully (manual run by user on current head).
+- Local acceptance checks on fresh `build/test-output/test.jsonl`:
+  - e2e `testmints` event count: `1368` (`> 0`).
+  - e2e phase markers include canonical required phases:
+    - `setup-start` / `setup-finish`
+    - `exercise-start` / `exercise-finish`
+    - `verify-start` / `verify-finish`
+  - (additional canonical markers observed: `test-start` / `test-finish`).
+- Analyzer report snapshot (`build/reports/test-logs/analyze-test-jsonl.json`):
+  - `mode=strict`
+  - `tests_missing_required_testmints_phases=0`
+  - `total_violations=0`
+  - `failing_violations=0`
