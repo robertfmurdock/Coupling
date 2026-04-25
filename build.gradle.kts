@@ -1,7 +1,9 @@
 
 import com.avast.gradle.dockercompose.tasks.ComposeUp
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.gradle.api.GradleException
 import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.time.Duration
 
@@ -61,50 +63,94 @@ dependencies {
 tasks {
     val testJsonlFilePath = rootProject.layout.buildDirectory.file("test-output/test.jsonl").map { it.asFile.absolutePath }
     val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }
+    val analyzeReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/analyze-test-jsonl.json").map { it.asFile.absolutePath }
     val testLogToolsClasspath = providers.provider {
         testLogToolsRunner
             .resolve()
             .joinToString(File.pathSeparator) { it.absolutePath }
     }
-    val validateTaskFlags = listOf("--strict")
-    val analyzeTaskFlags = listOf("--strict")
-
-    val validateTestJsonl by registering(Exec::class) {
+    fun registerTestLogCliTask(
+        name: String,
+        command: String,
+        reportFilePath: () -> String,
+        descriptionText: String,
+        strictFlags: List<String> = listOf("--strict"),
+    ): TaskProvider<Exec> = register<Exec>(name) {
         group = "verification"
-        description = "Validates build/test-output/test.jsonl for minimum required schema."
+        description = descriptionText
         notCompatibleWithConfigurationCache("Resolves CLI runtime classpath dynamically for a helper migration task.")
         dependsOn(":cli:test-log-tools:jvmJar")
         doFirst {
             commandLine(
-                listOf(
-                    "java",
-                    "-cp",
-                    testLogToolsClasspath.get(),
-                    "com.zegreatrob.coupling.cli.testlog.MainKt",
-                    "validate",
-                    "--report-file",
-                    validateReportFilePath.get(),
-                    "--quiet-success",
-                    "--failure-summary",
-                ) + validateTaskFlags + listOf(testJsonlFilePath.get()),
+                buildList {
+                    addAll(
+                        listOf(
+                            "java",
+                            "-cp",
+                            testLogToolsClasspath.get(),
+                            "com.zegreatrob.coupling.cli.testlog.MainKt",
+                            command,
+                            "--report-file",
+                            reportFilePath(),
+                            "--quiet-success",
+                            "--failure-summary",
+                        ),
+                    )
+                    addAll(strictFlags)
+                    add(testJsonlFilePath.get())
+                },
             )
         }
     }
 
-    val analyzeTestJsonl by registering(Exec::class) {
+    val validateTestJsonl = registerTestLogCliTask(
+        name = "validateTestJsonl",
+        command = "validate",
+        reportFilePath = { validateReportFilePath.get() },
+        descriptionText = "Validates build/test-output/test.jsonl for minimum required schema.",
+    )
+
+    val analyzeTestJsonl = registerTestLogCliTask(
+        name = "analyzeTestJsonl",
+        command = "analyze",
+        reportFilePath = { analyzeReportFilePath.get() },
+        descriptionText = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl.",
+    )
+
+    data class AttributionCoverage(
+        val inScope: Int,
+        val fullyAttributed: Int,
+        val missingAny: Int,
+        val ratio: Double,
+    )
+
+    fun readAttributionCoverage(reportFilePath: String): AttributionCoverage {
+        val reportFile = File(reportFilePath)
+        if (!reportFile.exists()) {
+            throw GradleException("analyze report file not found: $reportFilePath")
+        }
+        val report = ObjectMapper().readTree(reportFile)
+        return AttributionCoverage(
+            inScope = report.get("command_events_in_attribution_scope")?.asInt() ?: 0,
+            fullyAttributed = report.get("command_events_with_full_test_attribution")?.asInt() ?: 0,
+            missingAny = report.get("command_events_missing_any_test_attribution")?.asInt() ?: 0,
+            ratio = report.get("command_events_with_full_test_attribution_ratio")?.asDouble() ?: 0.0,
+        )
+    }
+
+    val assertCommandAttributionCoverage by registering {
         group = "verification"
-        description = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl."
-        notCompatibleWithConfigurationCache("Resolves CLI runtime classpath dynamically for a helper migration task.")
-        dependsOn(":cli:test-log-tools:jvmJar")
-        doFirst {
-            commandLine(
-                listOf(
-                    "java",
-                    "-cp",
-                    testLogToolsClasspath.get(),
-                    "com.zegreatrob.coupling.cli.testlog.MainKt",
-                    "analyze",
-                ) + analyzeTaskFlags + listOf(testJsonlFilePath.get()),
+        description = "Asserts command logs are 100% test-attributed for attribution-required tasks."
+        dependsOn(analyzeTestJsonl)
+        doLast {
+            val coverage = readAttributionCoverage(analyzeReportFilePath.get())
+            if (coverage.missingAny > 0 || (coverage.inScope > 0 && coverage.ratio < 1.0)) {
+                throw GradleException(
+                    "command attribution coverage check failed: in_scope=${coverage.inScope} fully_attributed=${coverage.fullyAttributed} missing_any=${coverage.missingAny} ratio=${coverage.ratio}",
+                )
+            }
+            logger.lifecycle(
+                "command attribution coverage check passed: in_scope=${coverage.inScope} fully_attributed=${coverage.fullyAttributed} missing_any=${coverage.missingAny} ratio=${coverage.ratio}",
             )
         }
     }

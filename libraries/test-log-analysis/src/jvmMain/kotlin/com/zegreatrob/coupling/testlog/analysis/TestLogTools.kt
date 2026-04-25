@@ -39,6 +39,11 @@ object TestLogTools {
     private const val DEFAULT_ANALYZE_MAX_OFFENDERS = 30
     private const val TOP_SLOW_COMMANDS_PER_SCOPE = 5
     private const val TOP_TEST_COMMAND_SHARE_LIMIT = 10
+    private val commandAttributionRequiredTasks = setOf(
+        ":sdk:jvmTest",
+        ":sdk:jsNodeTest",
+        ":e2e:e2eRun",
+    )
     val defaultValidateParityKeys = listOf(
         "total_lines",
         "non_empty_lines",
@@ -50,6 +55,7 @@ object TestLogTools {
         "command_missing_canonical_fields",
         "command_bad_phase",
         "command_bad_duration_ms",
+        "command_missing_test_attribution_fields",
         "total_violations",
         "failing_violations",
         "mode",
@@ -176,6 +182,14 @@ object TestLogTools {
                 contractViolations.reasons.forEach { reason ->
                     addOffender(offenders, options.maxOffenders, index + 1, "command contract: $reason", line)
                 }
+
+                val commandAttributionViolations = commandTestAttributionViolations(parsed)
+                if (commandAttributionViolations.isNotEmpty()) {
+                    counts.commandMissingTestAttributionFields += 1
+                    commandAttributionViolations.forEach { reason ->
+                        addOffender(offenders, options.maxOffenders, index + 1, "command attribution: $reason", line)
+                    }
+                }
             }
         }
 
@@ -186,7 +200,8 @@ object TestLogTools {
                 counts.badDurationMs +
                 counts.commandMissingCanonicalFields +
                 counts.commandBadPhase +
-                counts.commandBadDurationMs
+                counts.commandBadDurationMs +
+                counts.commandMissingTestAttributionFields
 
         val failingViolations = if (options.strictMode) {
             totalViolations
@@ -225,6 +240,7 @@ object TestLogTools {
             "command_missing_canonical_fields" to counts.commandMissingCanonicalFields,
             "command_bad_phase" to counts.commandBadPhase,
             "command_bad_duration_ms" to counts.commandBadDurationMs,
+            "command_missing_test_attribution_fields" to counts.commandMissingTestAttributionFields,
             "type_counts" to counts.typeCounts,
             "platform_counts" to counts.platformCounts,
             "mode" to mode,
@@ -289,6 +305,8 @@ object TestLogTools {
         var commandCanonicalEvents = 0
         var commandContractViolations = 0
         val commandContractViolationsByTask = linkedMapOf<String, Int>()
+        var commandMissingTestAttributionFields = 0
+        val commandMissingTestAttributionFieldsByTask = linkedMapOf<String, Int>()
 
         lines.forEach { line ->
             if (line.isBlank()) {
@@ -336,6 +354,19 @@ object TestLogTools {
                 val commandResult = processCommandLogEvent(event, key, commandMetrics)
                 if (commandResult.canonicalEvent) {
                     commandCanonicalEvents += 1
+                }
+                if (commandResult.attributionViolationReasons.isNotEmpty()) {
+                    val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
+                    commandMissingTestAttributionFields += commandResult.attributionViolationReasons.size
+                    commandMissingTestAttributionFieldsByTask[task] =
+                        (commandMissingTestAttributionFieldsByTask[task] ?: 0) + commandResult.attributionViolationReasons.size
+                    commandResult.attributionViolationReasons.forEach { reason ->
+                        addAnalyzeOffender(
+                            offenders,
+                            options.maxOffenders,
+                            "command-attribution-$reason $task",
+                        )
+                    }
                 }
                 if (commandResult.contractViolationReasons.isNotEmpty()) {
                     val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
@@ -432,8 +463,24 @@ object TestLogTools {
         }
 
         val totalViolations =
-            missingStart + missingEnd + duplicateStart + duplicateEnd + missingExpectedTestMints + missingPhaseTests + commandContractViolations
+            missingStart +
+                missingEnd +
+                duplicateStart +
+                duplicateEnd +
+                missingExpectedTestMints +
+                missingPhaseTests +
+                commandContractViolations +
+                commandMissingTestAttributionFields
         val commandSummary = commandMetrics.summary()
+        val commandEventsInAttributionScope = commandMetrics.commandEventsInAttributionScope
+        val commandEventsWithFullTestAttribution = commandMetrics.commandEventsWithFullTestAttribution
+        val commandEventsMissingAnyTestAttribution =
+            (commandEventsInAttributionScope - commandEventsWithFullTestAttribution).coerceAtLeast(0)
+        val commandEventsWithFullTestAttributionRatio = if (commandEventsInAttributionScope == 0) {
+            1.0
+        } else {
+            (commandEventsWithFullTestAttribution.toDouble() / commandEventsInAttributionScope.toDouble()).roundTo3()
+        }
         val testCommandShareDetails = tests.mapNotNull { (key, record) ->
             val duration = record.durationMs
             val commandDuration = commandMetrics.testCommandDurationsMs[key]
@@ -445,6 +492,7 @@ object TestLogTools {
                     task = record.task,
                     suite = record.suite,
                     test = record.test,
+                    testId = record.testId,
                     testDurationMs = duration.roundTo3(),
                     commandDurationMs = commandDuration.roundTo3(),
                     share = (commandDuration / duration).coerceAtLeast(0.0).roundTo3(),
@@ -461,6 +509,7 @@ object TestLogTools {
                     "task" to detail.task,
                     "suite" to detail.suite,
                     "test" to detail.test,
+                    "test_id" to detail.testId,
                     "share" to detail.share,
                     "command_duration_ms" to detail.commandDurationMs,
                     "test_duration_ms" to detail.testDurationMs,
@@ -496,6 +545,12 @@ object TestLogTools {
             "command_parse_failures_by_task" to commandSummary.parseFailuresByTask,
             "command_contract_violations" to commandContractViolations,
             "command_contract_violations_by_task" to commandContractViolationsByTask,
+            "command_missing_test_attribution_fields" to commandMissingTestAttributionFields,
+            "command_missing_test_attribution_fields_by_task" to commandMissingTestAttributionFieldsByTask,
+            "command_events_in_attribution_scope" to commandEventsInAttributionScope,
+            "command_events_with_full_test_attribution" to commandEventsWithFullTestAttribution,
+            "command_events_missing_any_test_attribution" to commandEventsMissingAnyTestAttribution,
+            "command_events_with_full_test_attribution_ratio" to commandEventsWithFullTestAttributionRatio,
             "command_duration_ms_by_action" to commandSummary.durationByAction,
             "slowest_command_actions" to commandSummary.slowestActions,
             "slowest_command_actions_by_task" to commandSummary.slowestActionsByTask,
@@ -547,15 +602,33 @@ object TestLogTools {
     )
 
     private fun testKey(event: JsonNode): String? {
+        val testId = event.get("test_id")?.asText()?.takeIf { it.isNotEmpty() }
         val task = event.get("task")?.asText()?.takeIf { it.isNotEmpty() }
         val suite = event.get("suite")?.asText()?.takeIf { it.isNotEmpty() }
         val test = event.get("test")?.asText()?.takeIf { it.isNotEmpty() }
         val runId = event.get("run_id")?.asText()?.takeIf { it.isNotEmpty() }
-        return if (task == null || suite == null || test == null || runId == null) {
+        return if (task == null || runId == null) {
             null
-        } else {
+        } else if (testId != null) {
+            "$runId||$task||$testId"
+        } else if (suite != null && test != null) {
             "$runId||$task||$suite||$test"
+        } else {
+            null
         }
+    }
+
+    private fun commandTestAttributionKey(event: JsonNode): String? {
+        val runId = event.get("run_id")?.asText()?.takeIf { it.isNotEmpty() } ?: return null
+        val task = event.get("task")?.asText()?.takeIf { it.isNotEmpty() } ?: return null
+        val properties = event.get("properties")?.takeIf { it.isObject } ?: return null
+        val testId = properties.get("test_id")?.asText()?.takeIf { it.isNotBlank() }
+        if (testId != null) {
+            return "$runId||$task||$testId"
+        }
+        val suite = properties.get("test_suite")?.asText()?.takeIf { it.isNotBlank() }
+        val test = properties.get("test_name")?.asText()?.takeIf { it.isNotBlank() }
+        return if (suite != null && test != null) "$runId||$task||$suite||$test" else null
     }
 
     private fun makeAnalyzeRecord(event: JsonNode) = AnalyzeTestRecord(
@@ -563,6 +636,7 @@ object TestLogTools {
         task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task",
         suite = event.get("suite")?.asText()?.ifEmpty { null } ?: "unknown-suite",
         test = event.get("test")?.asText()?.ifEmpty { null } ?: "unknown-test",
+        testId = event.get("test_id")?.asText()?.ifEmpty { null },
     )
 
     private fun isTestMintsLog(event: JsonNode): Boolean {
@@ -629,19 +703,31 @@ object TestLogTools {
     ): CommandProcessResult {
         val task = event.get("task")?.asText()?.ifEmpty { null } ?: "unknown-task"
         val platform = event.get("platform")?.asText()?.ifEmpty { null } ?: "unknown-platform"
-        val likelyCommand = mightContainCommandData(event)
-        if (!likelyCommand) {
+        if (!mightContainCommandData(event)) {
             return CommandProcessResult()
         }
         val contractViolations = canonicalCommandContractViolations(event)
+        val attributionViolations = commandTestAttributionViolations(event)
+        val requiresAttribution = isCommandAttributionRequiredTask(event.get("task")?.asText()) && contractViolations.isCanonicalCommandEvent
+        val hasCompleteAttribution = attributionViolations.isEmpty()
+        fun buildProcessResult() = CommandProcessResult(
+            canonicalEvent = contractViolations.isCanonicalCommandEvent,
+            contractViolationReasons = contractViolations.reasons,
+            attributionViolationReasons = attributionViolations,
+            requiresAttribution = requiresAttribution,
+            hasCompleteAttribution = hasCompleteAttribution,
+        )
+
+        recordCommandAttributionCoverage(
+            metrics = metrics,
+            requiresAttribution = requiresAttribution,
+            hasCompleteAttribution = hasCompleteAttribution,
+        )
         metrics.logEventsTotal += 1
         val timestampEpochMs = event.get("timestamp")?.asText()?.let { parseInstantToEpochMs(it) }
         val parsedCommand = parseCommandEvent(event) ?: run {
             metrics.parseFailuresByTask[task] = (metrics.parseFailuresByTask[task] ?: 0) + 1
-            return CommandProcessResult(
-                canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                contractViolationReasons = contractViolations.reasons,
-            )
+            return buildProcessResult()
         }
 
         metrics.logEventsParsed += 1
@@ -651,8 +737,7 @@ object TestLogTools {
         val commandKey = listOf(
             event.get("run_id")?.asText().orEmpty(),
             task,
-            event.get("suite")?.asText().orEmpty(),
-            event.get("test")?.asText().orEmpty(),
+            commandTestAttributionKey(event) ?: "",
             parsedCommand.traceId ?: "",
             parsedCommand.action,
         ).joinToString("||")
@@ -664,17 +749,11 @@ object TestLogTools {
                 val starts = metrics.pendingStarts.getOrPut(commandKey) { ArrayDeque() }
                 starts.addLast(timestampEpochMs)
             }
-            return CommandProcessResult(
-                canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                contractViolationReasons = contractViolations.reasons,
-            )
+            return buildProcessResult()
         }
 
         if (phase != "end") {
-            return CommandProcessResult(
-                canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                contractViolationReasons = contractViolations.reasons,
-            )
+            return buildProcessResult()
         }
 
         metrics.endEvents += 1
@@ -689,10 +768,7 @@ object TestLogTools {
         }
 
         if (durationMs == null) {
-            return CommandProcessResult(
-                canonicalEvent = contractViolations.isCanonicalCommandEvent,
-                contractViolationReasons = contractViolations.reasons,
-            )
+            return buildProcessResult()
         }
 
         metrics.endEventsWithDuration += 1
@@ -701,14 +777,26 @@ object TestLogTools {
         metrics.addScopedDuration(metrics.taskActionDurationsMs, task, parsedCommand.action, durationMs)
         metrics.addScopedDuration(metrics.platformActionDurationsMs, platform, parsedCommand.action, durationMs)
 
-        if (testKey != null) {
-            metrics.testCommandDurationsMs[testKey] = (metrics.testCommandDurationsMs[testKey] ?: 0.0) + durationMs
+        val attributedTestKey = commandTestAttributionKey(event) ?: testKey
+        if (attributedTestKey != null) {
+            metrics.testCommandDurationsMs[attributedTestKey] = (metrics.testCommandDurationsMs[attributedTestKey] ?: 0.0) + durationMs
         }
 
-        return CommandProcessResult(
-            canonicalEvent = contractViolations.isCanonicalCommandEvent,
-            contractViolationReasons = contractViolations.reasons,
-        )
+        return buildProcessResult()
+    }
+
+    private fun recordCommandAttributionCoverage(
+        metrics: CommandMetrics,
+        requiresAttribution: Boolean,
+        hasCompleteAttribution: Boolean,
+    ) {
+        if (!requiresAttribution) {
+            return
+        }
+        metrics.commandEventsInAttributionScope += 1
+        if (hasCompleteAttribution) {
+            metrics.commandEventsWithFullTestAttribution += 1
+        }
     }
 
     private fun mightContainCommandData(event: JsonNode): Boolean {
@@ -717,10 +805,7 @@ object TestLogTools {
             return true
         }
         val properties = event.get("properties")
-        if (properties != null && properties.isObject && properties.get("command_action") != null) {
-            return true
-        }
-        return false
+        return properties != null && properties.isObject && properties.get("command_action") != null
     }
 
     private fun parseCommandEvent(event: JsonNode): ParsedCommandEvent? {
@@ -806,6 +891,33 @@ object TestLogTools {
         )
     }
 
+    private fun commandTestAttributionViolations(event: JsonNode): List<String> {
+        if (!isCanonicalCommandEvent(event)) {
+            return emptyList()
+        }
+        if (!isCommandAttributionRequiredTask(event.get("task")?.asText())) {
+            return emptyList()
+        }
+        val properties = event.get("properties")
+        if (properties == null || !properties.isObject) {
+            return listOf("missing-properties")
+        }
+        val reasons = mutableListOf<String>()
+        val testSuite = properties.get("test_suite")?.asText()?.takeIf { it.isNotBlank() }
+        if (testSuite == null) {
+            reasons += "missing-test_suite"
+        }
+        val testName = properties.get("test_name")?.asText()?.takeIf { it.isNotBlank() }
+        if (testName == null) {
+            reasons += "missing-test_name"
+        }
+        val testId = properties.get("test_id")?.asText()?.takeIf { it.isNotBlank() }
+        if (testId == null) {
+            reasons += "missing-test_id"
+        }
+        return reasons
+    }
+
     private fun isCanonicalCommandEvent(event: JsonNode): Boolean {
         val logger = event.get("logger")?.asText()
         if (logger == "command") {
@@ -819,6 +931,11 @@ object TestLogTools {
             return true
         }
         return properties.fieldNames().asSequence().any { it.startsWith("command_") }
+    }
+
+    private fun isCommandAttributionRequiredTask(task: String?): Boolean {
+        val normalized = task?.takeIf { it.isNotBlank() } ?: return false
+        return commandAttributionRequiredTasks.contains(normalized)
     }
 
     private fun parseInstantToEpochMs(value: String): Double? = runCatching {
@@ -916,6 +1033,7 @@ object TestLogTools {
         var commandMissingCanonicalFields: Int = 0,
         var commandBadPhase: Int = 0,
         var commandBadDurationMs: Int = 0,
+        var commandMissingTestAttributionFields: Int = 0,
         val typeCounts: MutableMap<String, Int> = linkedMapOf(),
         val platformCounts: MutableMap<String, Int> = linkedMapOf(),
     )
@@ -931,6 +1049,7 @@ object TestLogTools {
         val task: String,
         val suite: String,
         val test: String,
+        val testId: String? = null,
         var starts: Int = 0,
         var ends: Int = 0,
         var status: String? = null,
@@ -949,6 +1068,9 @@ object TestLogTools {
     private data class CommandProcessResult(
         val canonicalEvent: Boolean = false,
         val contractViolationReasons: List<String> = emptyList(),
+        val attributionViolationReasons: List<String> = emptyList(),
+        val requiresAttribution: Boolean = false,
+        val hasCompleteAttribution: Boolean = false,
     )
 
     private data class CommandContractViolations(
@@ -980,6 +1102,8 @@ object TestLogTools {
         var startEvents: Int = 0
         var endEvents: Int = 0
         var endEventsWithDuration: Int = 0
+        var commandEventsInAttributionScope: Int = 0
+        var commandEventsWithFullTestAttribution: Int = 0
         val eventsByTask: MutableMap<String, Int> = linkedMapOf()
         val parseFailuresByTask: MutableMap<String, Int> = linkedMapOf()
         val actionEventCount: MutableMap<String, Int> = linkedMapOf()
@@ -1070,6 +1194,7 @@ object TestLogTools {
         val task: String,
         val suite: String,
         val test: String,
+        val testId: String?,
         val testDurationMs: Double,
         val commandDurationMs: Double,
         val share: Double,

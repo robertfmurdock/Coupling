@@ -35,6 +35,7 @@ class ValidateCommandParityTest {
         json.get("command_missing_canonical_fields").asInt().assertIsEqualTo(0)
         json.get("command_bad_phase").asInt().assertIsEqualTo(0)
         json.get("command_bad_duration_ms").asInt().assertIsEqualTo(0)
+        json.get("command_missing_test_attribution_fields").asInt().assertIsEqualTo(0)
     }
 
     @Test
@@ -112,7 +113,7 @@ class ValidateCommandParityTest {
     fun `strict mode validates canonical command field contract`() = setup(object {
         val file = writeTempJsonl(
             """
-            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"contract","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"finish","command_duration_ms":"120ms"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"contract","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"finish","command_duration_ms":"120ms","test_suite":"com.example.CommandSuite","test_name":"contract","test_id":"tid-1"}}
             """.trimIndent(),
         )
     }) exercise {
@@ -124,8 +125,27 @@ class ValidateCommandParityTest {
         json.get("command_missing_canonical_fields").asInt().assertIsEqualTo(1)
         json.get("command_bad_phase").asInt().assertIsEqualTo(1)
         json.get("command_bad_duration_ms").asInt().assertIsEqualTo(1)
+        json.get("command_missing_test_attribution_fields").asInt().assertIsEqualTo(0)
         json.get("total_violations").asInt().assertIsEqualTo(3)
         json.get("failing_violations").asInt().assertIsEqualTo(3)
+    }
+
+    @Test
+    fun `strict mode fails when canonical command log in sdk task is missing test attribution`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"contract","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"start","command_trace_id":"t1"}}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(TestLogRequest(TestLogCommand.VALIDATE, listOf("--strict", file.toString())))
+    } verify { result ->
+        val json = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(1)
+        json.get("command_missing_test_attribution_fields").asInt().assertIsEqualTo(1)
+        json.get("total_violations").asInt().assertIsEqualTo(1)
+        json.get("failing_violations").asInt().assertIsEqualTo(1)
     }
 
     @Test

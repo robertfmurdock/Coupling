@@ -151,19 +151,9 @@ private fun commandValue(message: String, key: String): String? {
 }
 
 internal fun appendCanonicalToTestLog(message: String, logger: String, properties: Json) {
-    val logPath = testLogPath() ?: return
-    if (!isNodeRuntime()) {
-        return
-    }
-    try {
-        val fs = js("require('fs')")
+    withNodeTestLogAppender { fs, logPath ->
         val testIdentity = currentTestIdentity()
-        val enrichedProperties = properties
-            .let {
-                val withSuite = testIdentity.suite?.let { suite -> it.add(json("test_suite" to suite)) } ?: it
-                val withTest = testIdentity.test?.let { test -> withSuite.add(json("test_name" to test)) } ?: withSuite
-                testIdentity.testId?.let { testId -> withTest.add(json("test_id" to testId)) } ?: withTest
-            }
+        val enrichedProperties = addTestIdentityProperties(properties, testIdentity)
         val event = json(
             "type" to "Log",
             "platform" to "e2e",
@@ -171,23 +161,18 @@ internal fun appendCanonicalToTestLog(message: String, logger: String, propertie
             "task" to testTaskPath(),
             "suite" to testIdentity.suite,
             "test" to testIdentity.test,
+            "test_id" to testIdentity.testId,
             "logger" to logger,
             "message" to message,
             "timestamp" to nowIsoTimestamp(),
             "properties" to enrichedProperties,
         )
         fs.appendFileSync(logPath, JSON.stringify(event) + "\n")
-    } catch (_: dynamic) {
     }
 }
 
 internal fun appendTestLifecycleToTestLog(type: String, status: String? = null, durationMs: Double? = null) {
-    val logPath = testLogPath() ?: return
-    if (!isNodeRuntime()) {
-        return
-    }
-    try {
-        val fs = js("require('fs')")
+    withNodeTestLogAppender { fs, logPath ->
         val testIdentity = currentTestIdentity()
         val event = json(
             "type" to type,
@@ -196,30 +181,39 @@ internal fun appendTestLifecycleToTestLog(type: String, status: String? = null, 
             "task" to testTaskPath(),
             "suite" to testIdentity.suite,
             "test" to testIdentity.test,
+            "test_id" to testIdentity.testId,
             "timestamp" to nowIsoTimestamp(),
         ).let {
             val withStatus = status?.let { testStatus -> it.add(json("status" to testStatus)) } ?: it
             durationMs?.let { duration -> withStatus.add(json("duration_ms" to duration)) } ?: withStatus
         }
         fs.appendFileSync(logPath, JSON.stringify(event) + "\n")
+    }
+}
+
+private inline fun withNodeTestLogAppender(block: (fs: dynamic, logPath: String) -> Unit) {
+    val logPath = testLogPath() ?: return
+    if (!isNodeRuntime()) {
+        return
+    }
+    try {
+        val fs = js("require('fs')")
+        block(fs, logPath)
     } catch (_: dynamic) {
     }
 }
 
-private fun testLogPath(): String? {
-    val envVar = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_LOG_PATH : null")
-    return envVar as? String
+private fun addTestIdentityProperties(properties: Json, identity: TestIdentity): Json {
+    val withSuite = identity.suite?.let { suite -> properties.add(json("test_suite" to suite)) } ?: properties
+    val withName = identity.test?.let { test -> withSuite.add(json("test_name" to test)) } ?: withSuite
+    return identity.testId?.let { testId -> withName.add(json("test_id" to testId)) } ?: withName
 }
 
-private fun testRunId(): String {
-    val envVar = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_RUN_ID : null")
-    return envVar as? String ?: "unknown-run"
-}
+private fun testLogPath(): String? = processEnv(COUPLING_TEST_LOG_PATH)
 
-private fun testTaskPath(): String {
-    val envVar = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_TASK : null")
-    return envVar as? String ?: ":e2e:e2eRun"
-}
+private fun testRunId(): String = processEnv(COUPLING_TEST_RUN_ID) ?: "unknown-run"
+
+private fun testTaskPath(): String = processEnv(COUPLING_TEST_TASK) ?: ":e2e:e2eRun"
 
 private fun nowIsoTimestamp(): String = js("new Date().toISOString()") as String
 
@@ -235,9 +229,9 @@ private data class TestIdentity(
 )
 
 private fun currentTestIdentity(): TestIdentity {
-    val suiteFromEnv = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_SUITE : null") as? String
-    val testFromEnv = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_NAME : null") as? String
-    val testIdFromEnv = js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_ID : null") as? String
+    val suiteFromEnv = processEnv(COUPLING_CURRENT_TEST_SUITE)?.takeIf { it.isNotBlank() }
+    val testFromEnv = processEnv(COUPLING_CURRENT_TEST_NAME)?.takeIf { it.isNotBlank() }
+    val testIdFromEnv = processEnv(COUPLING_CURRENT_TEST_ID)?.takeIf { it.isNotBlank() }
     if (suiteFromEnv != null || testFromEnv != null || testIdFromEnv != null) {
         return TestIdentity(
             suite = suiteFromEnv,
@@ -247,8 +241,28 @@ private fun currentTestIdentity(): TestIdentity {
     }
     val context = js("globalThis.__couplingCurrentTest")
     return TestIdentity(
-        suite = context?.suite as? String,
-        test = context?.test as? String,
-        testId = context?.testId as? String,
+        suite = (context?.suite as? String)?.takeIf { it.isNotBlank() },
+        test = (context?.test as? String)?.takeIf { it.isNotBlank() },
+        testId = (context?.testId as? String)?.takeIf { it.isNotBlank() },
     )
 }
+
+private fun processEnv(name: String): String? {
+    val value = when (name) {
+        COUPLING_TEST_LOG_PATH -> js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_LOG_PATH : null")
+        COUPLING_TEST_RUN_ID -> js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_RUN_ID : null")
+        COUPLING_TEST_TASK -> js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_TEST_TASK : null")
+        COUPLING_CURRENT_TEST_SUITE -> js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_SUITE : null")
+        COUPLING_CURRENT_TEST_NAME -> js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_NAME : null")
+        COUPLING_CURRENT_TEST_ID -> js("typeof process !== 'undefined' && process.env ? process.env.COUPLING_CURRENT_TEST_ID : null")
+        else -> null
+    }
+    return value as? String
+}
+
+private const val COUPLING_TEST_LOG_PATH = "COUPLING_TEST_LOG_PATH"
+private const val COUPLING_TEST_RUN_ID = "COUPLING_TEST_RUN_ID"
+private const val COUPLING_TEST_TASK = "COUPLING_TEST_TASK"
+private const val COUPLING_CURRENT_TEST_SUITE = "COUPLING_CURRENT_TEST_SUITE"
+private const val COUPLING_CURRENT_TEST_NAME = "COUPLING_CURRENT_TEST_NAME"
+private const val COUPLING_CURRENT_TEST_ID = "COUPLING_CURRENT_TEST_ID"

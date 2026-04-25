@@ -8,6 +8,7 @@ import org.gradle.api.tasks.testing.TestOutputEvent
 import org.gradle.api.tasks.testing.TestOutputListener
 import org.gradle.api.tasks.testing.TestResult
 import java.time.Instant
+import java.util.UUID
 
 class JsonLoggingTestListener(
     private val taskName: String,
@@ -19,12 +20,32 @@ class JsonLoggingTestListener(
 
     companion object {
         val mapper = ObjectMapper()
+        private val canonicalTestMintsPhases = listOf(
+            "setup-start",
+            "setup-finish",
+            "exercise-start",
+            "exercise-finish",
+            "verify-start",
+            "verify-finish",
+            "test-start",
+            "test-finish",
+        )
     }
 
+    private val testIdentityByDescriptor = mutableMapOf<Int, TestIdentity>()
+    private val testOccurrenceByIdentityKey = mutableMapOf<String, Int>()
+
+    private data class TestIdentity(
+        val suite: String,
+        val test: String,
+        val testId: String,
+    )
+
     override fun beforeTest(testDescriptor: TestDescriptor) {
+        val testIdentity = identityForStart(testDescriptor)
         appendEvent(
             "TestStart",
-            testDescriptor = testDescriptor,
+            testIdentity = testIdentity,
             properties = emptyMap(),
         )
     }
@@ -36,19 +57,18 @@ class JsonLoggingTestListener(
             ?.joinToString("\n") { "${it::class.simpleName}: ${it.message}" }
         appendEvent(
             "TestEnd",
-            testDescriptor = testDescriptor,
+            testIdentity = identityForEnd(testDescriptor),
             status = "${result.resultType}",
             durationMs = durationMs,
             message = failureSummary,
             properties = mapOf("failure_count" to result.exceptions.size),
         )
+        synchronized(this) { testIdentityByDescriptor.remove(descriptorKey(testDescriptor)) }
     }
 
-    override fun beforeSuite(suite: TestDescriptor?) {
-    }
+    override fun beforeSuite(suite: TestDescriptor?) = Unit
 
-    override fun afterSuite(suite: TestDescriptor?, result: TestResult?) {
-    }
+    override fun afterSuite(suite: TestDescriptor?, result: TestResult?) = Unit
 
     override fun onOutput(testDescriptor: TestDescriptor?, outputEvent: TestOutputEvent?) {
         if (outputEvent == null) {
@@ -64,15 +84,21 @@ class JsonLoggingTestListener(
         val message = parsedMessage?.jsonString() ?: normalized
         val properties = parsed?.get("properties").propertiesValue().orEmpty()
         val commandNormalized = normalizeCommandLog(loggerName, message, properties)
+        val testIdentity = identityForLog(testDescriptor)
+        val attributedProperties = addTestAttribution(
+            properties = commandNormalized.properties,
+            logger = commandNormalized.logger,
+            testIdentity = testIdentity,
+        )
         val normalizedLog = normalizeTestmintsLog(
             loggerName = commandNormalized.logger,
             message = commandNormalized.message,
-            properties = commandNormalized.properties,
+            properties = attributedProperties,
         )
 
         appendEvent(
             type = "Log",
-            testDescriptor = testDescriptor,
+            testIdentity = testIdentity,
             message = normalizedLog.message,
             logger = normalizedLog.logger,
             properties = normalizedLog.properties,
@@ -174,6 +200,26 @@ class JsonLoggingTestListener(
         )
     }
 
+    private fun addTestAttribution(
+        properties: Map<String, Any?>,
+        logger: String,
+        testIdentity: TestIdentity?,
+    ): Map<String, Any?> {
+        if (testIdentity == null) {
+            return properties
+        }
+        val enriched = properties.toMutableMap().apply {
+            put("test_suite", testIdentity.suite)
+            put("test_name", testIdentity.test)
+            put("test_id", testIdentity.testId)
+            if (logger == "command") {
+                put("test_task", taskName)
+                put("test_platform", inferPlatform(taskName))
+            }
+        }
+        return enriched
+    }
+
     private fun numericDurationMs(raw: String?): Double? {
         if (raw.isNullOrBlank()) {
             return null
@@ -191,17 +237,7 @@ class JsonLoggingTestListener(
     }
 
     private fun testmintsPhase(message: String): String? {
-        val canonicalPhases = listOf(
-            "setup-start",
-            "setup-finish",
-            "exercise-start",
-            "exercise-finish",
-            "verify-start",
-            "verify-finish",
-            "test-start",
-            "test-finish",
-        )
-        canonicalPhases.firstOrNull { message.contains(it) }?.let { return it }
+        canonicalTestMintsPhases.firstOrNull { message.contains(it) }?.let { return it }
 
         return when {
             message.contains("setupStart") -> "setup-start"
@@ -269,7 +305,7 @@ class JsonLoggingTestListener(
 
     private fun appendEvent(
         type: String,
-        testDescriptor: TestDescriptor?,
+        testIdentity: TestIdentity?,
         status: String? = null,
         durationMs: Long? = null,
         message: String? = null,
@@ -279,8 +315,9 @@ class JsonLoggingTestListener(
         val event = linkedMapOf<String, Any?>(
             "type" to type,
             "task" to taskName,
-            "suite" to testDescriptor?.parent?.name,
-            "test" to testDescriptor?.name,
+            "suite" to testIdentity?.suite,
+            "test" to testIdentity?.test,
+            "test_id" to testIdentity?.testId,
             "run_id" to testRunIdentifier,
             "platform" to inferPlatform(taskName),
             "timestamp" to Instant.now().toString(),
@@ -294,6 +331,56 @@ class JsonLoggingTestListener(
         }
         TestLoggingFileAppender.appendEvent(logFilePath, event)
     }
+
+    private fun identityForLog(testDescriptor: TestDescriptor?): TestIdentity? = synchronized(this) {
+        testDescriptor ?: return null
+        testIdentityByDescriptor[descriptorKey(testDescriptor)]
+            ?: computeIdentity(testDescriptor, assignOccurrence = false)
+    }
+
+    private fun identityForStart(testDescriptor: TestDescriptor): TestIdentity = synchronized(this) {
+        computeIdentity(testDescriptor, assignOccurrence = true).also {
+            testIdentityByDescriptor[descriptorKey(testDescriptor)] = it
+        }
+    }
+
+    private fun identityForEnd(testDescriptor: TestDescriptor): TestIdentity = synchronized(this) {
+        testIdentityByDescriptor[descriptorKey(testDescriptor)]
+            ?: computeIdentity(testDescriptor, assignOccurrence = true).also {
+                testIdentityByDescriptor[descriptorKey(testDescriptor)] = it
+            }
+    }
+
+    private fun descriptorKey(testDescriptor: TestDescriptor): Int = System.identityHashCode(testDescriptor)
+
+    private fun computeIdentity(testDescriptor: TestDescriptor, assignOccurrence: Boolean): TestIdentity {
+        val suite = suiteName(testDescriptor)
+        val test = testName(testDescriptor)
+        val identityKey = "$taskName||$suite||$test"
+        val occurrence = if (assignOccurrence) {
+            val next = (testOccurrenceByIdentityKey[identityKey] ?: 0) + 1
+            testOccurrenceByIdentityKey[identityKey] = next
+            next
+        } else {
+            testOccurrenceByIdentityKey[identityKey] ?: 1
+        }
+        val opaque = UUID.nameUUIDFromBytes(
+            "$testRunIdentifier||$taskName||$suite||$test||$occurrence".toByteArray()
+        ).toString()
+        return TestIdentity(
+            suite = suite,
+            test = test,
+            testId = opaque,
+        )
+    }
+
+    private fun suiteName(testDescriptor: TestDescriptor): String =
+        testDescriptor.className?.takeIf { it.isNotBlank() }
+            ?: testDescriptor.parent?.name?.takeIf { it.isNotBlank() }
+            ?: "unknown-suite"
+
+    private fun testName(testDescriptor: TestDescriptor): String =
+        testDescriptor.name.takeIf { it.isNotBlank() } ?: "unknown-test"
 
     private fun inferPlatform(task: String): String {
         return when {

@@ -182,12 +182,12 @@ class AnalyzeCommandParityTest {
     fun `analyze reports parseable command timing metrics for canonical command logs`() = setup(object {
         val file = writeTempJsonl(
             """
-            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"GqlQuery","command_phase":"start","command_trace_id":"t1"}}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"GqlQuery","command_phase":"end","command_trace_id":"t1","command_duration_ms":120.500}}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.350Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"DeletePartyCommand","command_phase":"start","command_trace_id":"t2"}}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.650Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"DeletePartyCommand","command_phase":"end","command_trace_id":"t2","command_duration_ms":250.0}}
-            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","status":"SUCCESS","duration_ms":1000}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","test_id":"tid-1"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"GqlQuery","command_phase":"start","command_trace_id":"t1","test_suite":"com.example.CommandSuite","test_name":"capturesCommandDurations","test_id":"tid-1"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"GqlQuery","command_phase":"end","command_trace_id":"t1","command_duration_ms":120.500,"test_suite":"com.example.CommandSuite","test_name":"capturesCommandDurations","test_id":"tid-1"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.350Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"DeletePartyCommand","command_phase":"start","command_trace_id":"t2","test_suite":"com.example.CommandSuite","test_name":"capturesCommandDurations","test_id":"tid-1"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.650Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","logger":"command","message":"opaque","properties":{"command":true,"command_action":"DeletePartyCommand","command_phase":"end","command_trace_id":"t2","command_duration_ms":250.0,"test_suite":"com.example.CommandSuite","test_name":"capturesCommandDurations","test_id":"tid-1"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CommandSuite","test":"capturesCommandDurations","test_id":"tid-1","status":"SUCCESS","duration_ms":1000}
             """.trimIndent(),
         )
     }) exercise {
@@ -209,6 +209,10 @@ class AnalyzeCommandParityTest {
         report["command_end_events_with_duration"].asInt().assertIsEqualTo(2)
         report["command_unique_actions"].asInt().assertIsEqualTo(2)
         report["command_events_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(4)
+        report["command_events_in_attribution_scope"].asInt().assertIsEqualTo(4)
+        report["command_events_with_full_test_attribution"].asInt().assertIsEqualTo(4)
+        report["command_events_missing_any_test_attribution"].asInt().assertIsEqualTo(0)
+        report["command_events_with_full_test_attribution_ratio"].asDouble().assertIsEqualTo(1.0)
         report["command_duration_ms_by_action"]["GqlQuery"]["max_ms"].asDouble().assertIsEqualTo(120.5)
         report["command_duration_ms_by_action"]["DeletePartyCommand"]["max_ms"].asDouble().assertIsEqualTo(250.0)
         report["slowest_command_actions_by_task"][":sdk:jvmTest"].size().assertIsEqualTo(2)
@@ -227,14 +231,14 @@ class AnalyzeCommandParityTest {
     fun `analyze emits per-task per-platform rollups and top test shares`() = setup(object {
         val file = writeTempJsonl(
             """
-            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","logger":"command","properties":{"command":true,"command_action":"JvmCommand","command_phase":"start","command_trace_id":"j1"}}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","logger":"command","properties":{"command":true,"command_action":"JvmCommand","command_phase":"end","command_trace_id":"j1","command_duration_ms":500.0}}
-            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","status":"SUCCESS","duration_ms":1000}
-            {"type":"TestStart","timestamp":"2026-04-23T01:02:05Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:05.100Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","logger":"command","properties":{"command":true,"command_action":"JsCommand","command_phase":"start","command_trace_id":"s1"}}
-            {"type":"Log","timestamp":"2026-04-23T01:02:05.200Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","logger":"command","properties":{"command":true,"command_action":"JsCommand","command_phase":"end","command_trace_id":"s1","command_duration_ms":300.0}}
-            {"type":"TestEnd","timestamp":"2026-04-23T01:02:06Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","status":"SUCCESS","duration_ms":400}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","test_id":"tid-jvm"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","logger":"command","properties":{"command":true,"command_action":"JvmCommand","command_phase":"start","command_trace_id":"j1","test_suite":"com.example.RollupSuite","test_name":"slowJvm","test_id":"tid-jvm"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","logger":"command","properties":{"command":true,"command_action":"JvmCommand","command_phase":"end","command_trace_id":"j1","command_duration_ms":500.0,"test_suite":"com.example.RollupSuite","test_name":"slowJvm","test_id":"tid-jvm"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.RollupSuite","test":"slowJvm","test_id":"tid-jvm","status":"SUCCESS","duration_ms":1000}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:05Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","test_id":"tid-js"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:05.100Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","logger":"command","properties":{"command":true,"command_action":"JsCommand","command_phase":"start","command_trace_id":"s1","test_suite":"com.example.RollupSuite","test_name":"slowerShareJs","test_id":"tid-js"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:05.200Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","logger":"command","properties":{"command":true,"command_action":"JsCommand","command_phase":"end","command_trace_id":"s1","command_duration_ms":300.0,"test_suite":"com.example.RollupSuite","test_name":"slowerShareJs","test_id":"tid-js"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:06Z","run_id":"r2","platform":"js","task":":sdk:jsNodeTest","suite":"com.example.RollupSuite","test":"slowerShareJs","test_id":"tid-js","status":"SUCCESS","duration_ms":400}
             """.trimIndent(),
         )
     }) exercise {
@@ -263,10 +267,10 @@ class AnalyzeCommandParityTest {
     fun `analyze prefers canonical command properties without message parsing`() = setup(object {
         val file = writeTempJsonl(
             """
-            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"start","command_trace_id":"c1"}}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"end","command_trace_id":"c1","command_duration_ms":175.25}}
-            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields","status":"SUCCESS","duration_ms":1000}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields","test_id":"tid-canon"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"start","command_trace_id":"c1","test_suite":"com.example.CanonicalCommandSuite","test_name":"readsStructuredCommandFields","test_id":"tid-canon"}}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.300Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"end","command_trace_id":"c1","command_duration_ms":175.25,"test_suite":"com.example.CanonicalCommandSuite","test_name":"readsStructuredCommandFields","test_id":"tid-canon"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CanonicalCommandSuite","test":"readsStructuredCommandFields","test_id":"tid-canon","status":"SUCCESS","duration_ms":1000}
             """.trimIndent(),
         )
     }) exercise {
@@ -293,9 +297,9 @@ class AnalyzeCommandParityTest {
     fun `strict mode fails when canonical command fields are malformed`() = setup(object {
         val file = writeTempJsonl(
             """
-            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand"}
-            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"finish","command_duration_ms":"175ms"}}
-            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand","status":"SUCCESS","duration_ms":1000}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand","test_id":"tid-contract"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"finish","command_duration_ms":"175ms","test_suite":"com.example.ContractSuite","test_name":"invalidCanonicalCommand","test_id":"tid-contract"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.ContractSuite","test":"invalidCanonicalCommand","test_id":"tid-contract","status":"SUCCESS","duration_ms":1000}
             """.trimIndent(),
         )
     }) exercise {
@@ -313,6 +317,41 @@ class AnalyzeCommandParityTest {
         report["command_canonical_events_total"].asInt().assertIsEqualTo(1)
         report["command_contract_violations"].asInt().assertIsEqualTo(3)
         report["command_contract_violations_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(3)
+        report["total_violations"].asInt().assertIsEqualTo(3)
+        report["failing_violations"].asInt().assertIsEqualTo(3)
+        report["command_events_in_attribution_scope"].asInt().assertIsEqualTo(1)
+        report["command_events_with_full_test_attribution"].asInt().assertIsEqualTo(1)
+        report["command_events_missing_any_test_attribution"].asInt().assertIsEqualTo(0)
+        report["command_events_with_full_test_attribution_ratio"].asDouble().assertIsEqualTo(1.0)
+    }
+
+    @Test
+    fun `strict mode fails when canonical command logs are missing test attribution in sdk task`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:03Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.AttributionSuite","test":"missingAttribution","test_id":"tid-attrib"}
+            {"type":"Log","timestamp":"2026-04-23T01:02:03.100Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.AttributionSuite","test":"missingAttribution","logger":"command","message":"opaque","properties":{"command":true,"command_action":"SpinCommand","command_phase":"start","command_trace_id":"c1"}}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"r1","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.AttributionSuite","test":"missingAttribution","test_id":"tid-attrib","status":"SUCCESS","duration_ms":1000}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(
+            TestLogRequest(
+                command = TestLogCommand.ANALYZE,
+                args = listOf("--strict", file.toString()),
+            ),
+        )
+    } verify { result ->
+        val report = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(1)
+        report["mode"].asText().assertIsEqualTo("strict")
+        report["command_missing_test_attribution_fields"].asInt().assertIsEqualTo(3)
+        report["command_missing_test_attribution_fields_by_task"][":sdk:jvmTest"].asInt().assertIsEqualTo(3)
+        report["command_events_in_attribution_scope"].asInt().assertIsEqualTo(1)
+        report["command_events_with_full_test_attribution"].asInt().assertIsEqualTo(0)
+        report["command_events_missing_any_test_attribution"].asInt().assertIsEqualTo(1)
+        report["command_events_with_full_test_attribution_ratio"].asDouble().assertIsEqualTo(0.0)
         report["total_violations"].asInt().assertIsEqualTo(3)
         report["failing_violations"].asInt().assertIsEqualTo(3)
     }

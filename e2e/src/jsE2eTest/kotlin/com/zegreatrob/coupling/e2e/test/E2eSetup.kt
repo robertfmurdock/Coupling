@@ -37,10 +37,11 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
             }
         }
     }).extend { context, test ->
+        val syntheticTestIndex = nextSyntheticTestIndex()
         withTestIdentity(
             suite = "e2e.synthetic",
-            test = "spec-${nextSyntheticTestIndex()}",
-            testId = null,
+            test = "spec-$syntheticTestIndex",
+            testId = "e2e-synthetic-$syntheticTestIndex",
         ) {
             val startMillis = nowMillis()
             appendTestLifecycleToTestLog(type = "TestStart")
@@ -91,18 +92,18 @@ private suspend fun <T> withTestIdentity(
         "testId" to testId,
     )
     if (process != null) {
-        process.env.COUPLING_CURRENT_TEST_SUITE = suite
-        process.env.COUPLING_CURRENT_TEST_NAME = test
-        process.env.COUPLING_CURRENT_TEST_ID = testId ?: ""
+        setProcessEnv(process, "COUPLING_CURRENT_TEST_SUITE", suite)
+        setProcessEnv(process, "COUPLING_CURRENT_TEST_NAME", test)
+        setProcessEnv(process, "COUPLING_CURRENT_TEST_ID", testId)
     }
     return try {
         block()
     } finally {
         globalThis.__couplingCurrentTest = previous
         if (process != null) {
-            if (previousSuite != null) process.env.COUPLING_CURRENT_TEST_SUITE = previousSuite else js("delete process.env.COUPLING_CURRENT_TEST_SUITE")
-            if (previousTest != null) process.env.COUPLING_CURRENT_TEST_NAME = previousTest else js("delete process.env.COUPLING_CURRENT_TEST_NAME")
-            if (previousTestId != null) process.env.COUPLING_CURRENT_TEST_ID = previousTestId else js("delete process.env.COUPLING_CURRENT_TEST_ID")
+            setProcessEnv(process, "COUPLING_CURRENT_TEST_SUITE", previousSuite as? String)
+            setProcessEnv(process, "COUPLING_CURRENT_TEST_NAME", previousTest as? String)
+            setProcessEnv(process, "COUPLING_CURRENT_TEST_ID", previousTestId as? String)
         }
     }
 }
@@ -113,4 +114,13 @@ private fun nextSyntheticTestIndex(): Int {
     val next = current + 1
     globalThis.__couplingSyntheticTestCounter = next
     return next
+}
+
+private fun setProcessEnv(process: dynamic, name: String, value: String?) {
+    when {
+        value != null -> process.env[name] = value
+        name == "COUPLING_CURRENT_TEST_SUITE" -> js("delete process.env.COUPLING_CURRENT_TEST_SUITE")
+        name == "COUPLING_CURRENT_TEST_NAME" -> js("delete process.env.COUPLING_CURRENT_TEST_NAME")
+        name == "COUPLING_CURRENT_TEST_ID" -> js("delete process.env.COUPLING_CURRENT_TEST_ID")
+    }
 }
