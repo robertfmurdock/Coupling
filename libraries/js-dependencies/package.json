@@ -48,7 +48,7 @@
     "graphql": "^16.13.2",
     "graphql-http": "^1.22.4",
     "html2canvas": "^1.4.1",
-    "jose": "^6.2.2",
+    "jose": "^6.2.3",
     "jsdom": "26.1.0",
     "jwks-rsa": "4.0.1",
     "jwt-decode": "4.0.0",
