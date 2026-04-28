@@ -1,7 +1,7 @@
 [libraries]
 com-apollographql-adapters-apollo-adapters-core = { module = "com.apollographql.adapters:apollo-adapters-core", version.ref = "com-apollographql-adapters" }
 com-apollographql-adapters-apollo-adapters-kotlinx-datetime = { module = "com.apollographql.adapters:apollo-adapters-kotlinx-datetime", version.ref = "com-apollographql-adapters" }
-com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:5.0.0-rc.0"
+com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:4.4.3"
 com-apollographql-ktor-apollo-engine-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 com-auth0-java-jwt = "com.auth0:java-jwt:4.5.1"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.21.2"
@@ -16,8 +16,8 @@ io-ktor-ktor-bom = "io.ktor:ktor-bom:3.4.3"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-wrappers-kotlin-react-popper = "org.jetbrains.kotlin-wrappers:kotlin-react-popper:2026.3.1-2.3.0"
-org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.4.12"
-org-jetbrains-kotlinx-kotlinx-coroutines-bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.11.0-rc02"
+org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.4.13"
+org-jetbrains-kotlinx-kotlinx-coroutines-bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2"
 org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0-rc02-0.6.x-compat"
 org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.11.0"
 org-junit-junit-bom = "org.junit:junit-bom:6.0.3"
@@ -27,7 +27,7 @@ org-kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-
 org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.17"
 
 [plugins]
-com-apollographql-apollo = "com.apollographql.apollo:5.0.0-rc.0"
+com-apollographql-apollo = "com.apollographql.apollo:4.4.3"
 com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.21"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:1.9.16"

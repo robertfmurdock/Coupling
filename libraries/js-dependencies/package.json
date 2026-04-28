@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.16.2",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1037.0",
-    "@aws-sdk/client-dynamodb": "3.1037.0",
-    "@aws-sdk/client-lambda": "~3.1037.0",
-    "@aws-sdk/lib-dynamodb": "3.1037.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1038.0",
+    "@aws-sdk/client-dynamodb": "3.1038.0",
+    "@aws-sdk/client-lambda": "~3.1038.0",
+    "@aws-sdk/lib-dynamodb": "3.1038.0",
     "@graphql-codegen/cli": "^6.3.1",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
@@ -25,7 +25,7 @@
     "@slack/oauth": "^3.0.5",
     "@slack/web-api": "^7.15.1",
     "@slack/webhook": "^7.0.9",
-    "@stripe/react-stripe-js": "^6.2.0",
+    "@stripe/react-stripe-js": "^6.3.0",
     "@stripe/stripe-js": "^9.3.1",
     "@remix-run/router": "^1.23.2",
     "react-router": "^7.14.2",
