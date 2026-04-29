@@ -19,6 +19,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
 import kotlin.test.Test
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class SdkPinTest {
 
@@ -121,10 +123,14 @@ class SdkPinTest {
         val party = stubPartyDetails()
         val pin = stubPin()
         lateinit var sdk: ActionCannon<CouplingSdkDispatcher>
+        lateinit var pinSaveStartedAt: Instant
+        lateinit var pinSaveCompletedAt: Instant
     }) {
         sdk = sdk()
         sdk.fire(SavePartyCommand(party))
+        pinSaveStartedAt = Clock.System.now()
         sdk.fire(SavePinCommand(party.id, pin))
+        pinSaveCompletedAt = Clock.System.now()
     } exercise {
         sdk.fire(GqlQuery(PinRecordListQuery(party.id)))
             ?.party
@@ -133,7 +139,7 @@ class SdkPinTest {
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {
-            timestamp.isWithinOneSecondOfNow()
+            timestamp.isWithinWindow(pinSaveStartedAt, pinSaveCompletedAt)
             modifyingUserEmail.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
         }
     }

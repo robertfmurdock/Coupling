@@ -29,6 +29,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 class SdkPartyTest {
@@ -210,8 +212,12 @@ class SdkPartyTest {
     @Test
     fun saveWillIncludeModificationInformation() = asyncSetup(object {
         val party = stubPartyDetails()
+        lateinit var saveStartedAt: Instant
+        lateinit var saveCompletedAt: Instant
     }) {
+        saveStartedAt = Clock.System.now()
         sdk().fire(SavePartyCommand(party))
+        saveCompletedAt = Clock.System.now()
     } exercise {
         sdk().fire(GqlQuery(PartyListModificationDataQuery()))
             ?.partyList
@@ -219,7 +225,7 @@ class SdkPartyTest {
         partyList?.first { it.id == party.id }!!
             .apply {
                 modifyingUserEmail.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
-                timestamp.isWithinOneSecondOfNow()
+                timestamp.isWithinWindow(saveStartedAt, saveCompletedAt)
             }
     } teardown {
         sdk().fire(DeletePartyCommand(party.id))
@@ -230,10 +236,14 @@ class SdkPartyTest {
         val party = stubPartyDetails()
         val slackTeam = uuidString()
         val slackChannel = uuidString()
+        lateinit var integrationSaveStartedAt: Instant
+        lateinit var integrationSaveCompletedAt: Instant
     }) {
         sdk().fire(SavePartyCommand(party))
     } exercise {
+        integrationSaveStartedAt = Clock.System.now()
         sdk().fire(SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
+            .also { integrationSaveCompletedAt = Clock.System.now() }
     } verifyAnd { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
 
@@ -244,7 +254,7 @@ class SdkPartyTest {
         integration.slackTeam.assertIsEqualTo(slackTeam)
         integration.slackChannel.assertIsEqualTo(slackChannel)
         integration.modifyingUserEmail.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
-        integration.timestamp.isWithinOneSecondOfNow()
+        integration.timestamp.isWithinWindow(integrationSaveStartedAt, integrationSaveCompletedAt)
     } teardown {
         sdk().fire(DeletePartyCommand(party.id))
     }

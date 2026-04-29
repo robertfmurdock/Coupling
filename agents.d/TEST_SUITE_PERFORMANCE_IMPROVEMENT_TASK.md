@@ -282,3 +282,38 @@ Pause / Resume Handoff (2026-04-25)
     - `scripts/test-suite-performance-harness.sh --iterations 3 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-control-<date>`
   - split candidate replay (if needed):
     - `scripts/test-suite-performance-harness.sh --iterations 3 --tasks ":sdk:jsNodeTest :sdk:jvmTest" --split-task-invocations --gradle-args "-x kotlinStoreYarnLock" --output-dir build/test-output/perf-harness-split-<date>`
+
+Continuation update (2026-04-29, slice-2 blocker stabilization)
+- Focus:
+  - Stabilize the recurring `SdkPartyTest[jvm] > saveWillIncludeModificationInformation()[jvm]` failure before resuming further orchestration experiments.
+- Root cause:
+  - SDK modification-metadata tests were asserting `timestamp.isWithinOneSecondOfNow()` during verify.
+  - Under heavier or repeated test-task load, verify could run more than a second after the mutation completed, creating false negatives without any product regression.
+- Changes made:
+  - Added `isWithinWindow(earliest, latest)` helper in `sdk/src/commonTest/kotlin/com/zegreatrob/coupling/sdk/IsWithinOneSecondOfNow.kt`.
+  - Updated these tests to capture start/end timestamps around the mutation they are validating, then assert the returned timestamp falls inside that mutation window:
+    - `SdkPartyTest.saveWillIncludeModificationInformation()`
+    - `SdkPartyTest.saveIntegrationCanBeLoaded()`
+    - `SdkPinTest.savedPinsIncludeModificationDateAndUsername()`
+  - Follow-up adjustment:
+    - JS Node tests exposed small client/server clock skew, so `isWithinWindow` now applies a `250.milliseconds` tolerance around the captured mutation interval.
+- Semantics note:
+  - Assertions remain strict about modification metadata belonging to the mutation under test.
+  - This narrows the assertion from "close to verify time" to the stronger and less flaky condition "inside the actual mutation interval, allowing only small cross-process clock skew."
+- Validation status:
+  - Initial sandboxed attempt was blocked by the Gradle wrapper lock under `~/.gradle`.
+  - Re-ran with full filesystem access and the targeted verification now passes:
+    - `./gradlew :sdk:jvmTest --tests "*SdkPartyTest.saveWillIncludeModificationInformation*" --tests "*SdkPartyTest.saveIntegrationCanBeLoaded*" --tests "*SdkPinTest.savedPinsIncludeModificationDateAndUsername*" --no-configuration-cache -x kotlinStoreYarnLock`
+    - result: `BUILD SUCCESSFUL`
+  - After the initial check-in-ready state, `:sdk:jsNodeTest` exposed a remaining regression:
+    - `SdkPinTest.savedPinsIncludeModificationDateAndUsername[js, node]`
+    - failure shape: timestamp was slightly earlier than the client-captured mutation start (`~14ms`), consistent with cross-process clock skew rather than semantic failure.
+  - Re-ran targeted verification after adding bounded skew tolerance:
+    - `./gradlew :sdk:jsNodeTest --tests "*SdkPartyTest.saveWillIncludeModificationInformation*" --tests "*SdkPartyTest.saveIntegrationCanBeLoaded*" --tests "*SdkPinTest.savedPinsIncludeModificationDateAndUsername*" --no-configuration-cache -x kotlinStoreYarnLock`
+    - result: `BUILD SUCCESSFUL`
+    - `./gradlew :sdk:jvmTest --tests "*SdkPartyTest.saveWillIncludeModificationInformation*" --tests "*SdkPartyTest.saveIntegrationCanBeLoaded*" --tests "*SdkPinTest.savedPinsIncludeModificationDateAndUsername*" --no-configuration-cache -x kotlinStoreYarnLock`
+    - result: `BUILD SUCCESSFUL`
+- Recommended next step:
+  - Re-run a short control after this stabilization:
+    - `./gradlew :sdk:jvmTest --tests "*SdkPartyTest.saveWillIncludeModificationInformation*" --tests "*SdkPartyTest.saveIntegrationCanBeLoaded*" --tests "*SdkPinTest.savedPinsIncludeModificationDateAndUsername*" --no-configuration-cache -x kotlinStoreYarnLock`
+  - If green, resume Slice 2 with a 3-iteration control harness run on unchanged orchestration settings.
