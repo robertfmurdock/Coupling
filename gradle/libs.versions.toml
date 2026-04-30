@@ -16,7 +16,7 @@ io-ktor-ktor-bom = "io.ktor:ktor-bom:3.4.3"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-wrappers-kotlin-react-popper = "org.jetbrains.kotlin-wrappers:kotlin-react-popper:2026.3.1-2.3.0"
-org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.4.14"
+org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.4.15"
 org-jetbrains-kotlinx-kotlinx-coroutines-bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2"
 org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0-rc02-0.6.x-compat"
 org-jetbrains-kotlinx-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.11.0"
