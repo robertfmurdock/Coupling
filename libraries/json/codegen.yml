@@ -6,7 +6,7 @@ config:
 generates:
   ./build/generated/codegen/Types.kt:
     plugins:
-      - ./gql-kotlin-generator-fork
+      - ./gql-kotlin-generator-fork/cjs/index.js
     config:
       package: com.zegreatrob.coupling.json
       withTypes: true
