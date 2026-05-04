@@ -11,7 +11,7 @@ com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.49
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.14"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.9.17"
 eu-anifantakis-ksafe = "eu.anifantakis:ksafe:1.8.1"
-io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:8.0.01"
+io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:8.0.02"
 io-ktor-ktor-bom = "io.ktor:ktor-bom:3.4.3"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
