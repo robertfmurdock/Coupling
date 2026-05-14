@@ -10,9 +10,10 @@ import com.zegreatrob.coupling.model.ContributionId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyContributionReportContributionsQuery
-import com.zegreatrob.coupling.sdk.schema.type.buildContribution
-import com.zegreatrob.coupling.sdk.schema.type.buildContributionReport
-import com.zegreatrob.coupling.sdk.schema.type.buildParty
+import com.zegreatrob.coupling.sdk.schema.builder.Data
+import com.zegreatrob.coupling.sdk.schema.builder.buildContribution
+import com.zegreatrob.coupling.sdk.schema.builder.buildContributionReport
+import com.zegreatrob.coupling.sdk.schema.builder.buildParty
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
