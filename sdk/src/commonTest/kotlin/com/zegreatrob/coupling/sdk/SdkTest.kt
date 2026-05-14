@@ -5,7 +5,8 @@ import com.apollographql.apollo.api.toJson
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.UserDetailsQuery
-import com.zegreatrob.coupling.sdk.schema.type.buildUser
+import com.zegreatrob.coupling.sdk.schema.builder.Data
+import com.zegreatrob.coupling.sdk.schema.builder.buildUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import com.zegreatrob.testmints.async.asyncSetup
