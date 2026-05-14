@@ -11,12 +11,14 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.CurrentPairAssignmentsQuery
+import com.zegreatrob.coupling.sdk.schema.builder.Data
 import com.zegreatrob.coupling.sdk.schema.builder.PairingSetMap
-import com.zegreatrob.coupling.sdk.schema.type.PartyBuilder
-import com.zegreatrob.coupling.sdk.schema.type.buildPairSnapshot
-import com.zegreatrob.coupling.sdk.schema.type.buildPairingSet
-import com.zegreatrob.coupling.sdk.schema.type.buildParty
-import com.zegreatrob.coupling.sdk.schema.type.buildPlayerSnapshot
+import com.zegreatrob.coupling.sdk.schema.builder.PartyBuilder
+import com.zegreatrob.coupling.sdk.schema.builder.buildPairSnapshot
+import com.zegreatrob.coupling.sdk.schema.builder.buildPairingSet
+import com.zegreatrob.coupling.sdk.schema.builder.buildParty
+import com.zegreatrob.coupling.sdk.schema.builder.buildPlayerSnapshot
+import com.zegreatrob.coupling.sdk.schema.builder.resolver.DefaultFakeResolver
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
@@ -36,7 +38,7 @@ class CurrentPairsCLITest {
 
         val expectedPair = pairOf(stubPlayer(), stubPlayer())
 
-        val result = CurrentPairAssignmentsQuery.Data {
+        val result = CurrentPairAssignmentsQuery.Data(DefaultFakeResolver()) {
             this.party = buildParty {
                 this.id = partyId
                 this.currentPairingSet = buildCurrentPairingSet(this@buildParty, expectedPair, partyId)

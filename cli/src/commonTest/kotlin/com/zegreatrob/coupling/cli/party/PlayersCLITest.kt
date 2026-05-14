@@ -5,9 +5,11 @@ import com.zegreatrob.coupling.cli.cli
 import com.zegreatrob.coupling.cli.gql.PlayersQuery
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
+import com.zegreatrob.coupling.sdk.schema.builder.Data
+import com.zegreatrob.coupling.sdk.schema.builder.buildParty
+import com.zegreatrob.coupling.sdk.schema.builder.buildPlayer
+import com.zegreatrob.coupling.sdk.schema.builder.resolver.DefaultFakeResolver
 import com.zegreatrob.coupling.sdk.schema.type.PartyInput
-import com.zegreatrob.coupling.sdk.schema.type.buildParty
-import com.zegreatrob.coupling.sdk.schema.type.buildPlayer
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
@@ -24,7 +26,7 @@ class PlayersCLITest {
         val receivedActions = mutableListOf<Any?>()
         val players = listOf(stubPlayer(), stubPlayer(), stubPlayer())
         val expected = GqlQuery(PlayersQuery(PartyInput(partyId)))
-        val detailsSlice = PlayersQuery.Data {
+        val detailsSlice = PlayersQuery.Data(DefaultFakeResolver()) {
             this.party = buildParty {
                 this.playerList = players.map {
                     buildPlayer {

@@ -5,7 +5,9 @@ import com.zegreatrob.coupling.cli.cli
 import com.zegreatrob.coupling.cli.gql.PartyListQuery
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
-import com.zegreatrob.coupling.sdk.schema.type.buildParty
+import com.zegreatrob.coupling.sdk.schema.builder.Data
+import com.zegreatrob.coupling.sdk.schema.builder.buildParty
+import com.zegreatrob.coupling.sdk.schema.builder.resolver.DefaultFakeResolver
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -21,7 +23,7 @@ class PartyListCLITest {
         val partyId2 = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
         val expected = GqlQuery(PartyListQuery())
-        val result = PartyListQuery.Data {
+        val result = PartyListQuery.Data(DefaultFakeResolver()) {
             this.partyList = listOf(
                 buildParty {
                     this.id = partyId1

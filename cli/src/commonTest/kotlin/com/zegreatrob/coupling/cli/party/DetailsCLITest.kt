@@ -9,7 +9,9 @@ import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsQuery
-import com.zegreatrob.coupling.sdk.schema.type.buildParty
+import com.zegreatrob.coupling.sdk.schema.builder.Data
+import com.zegreatrob.coupling.sdk.schema.builder.buildParty
+import com.zegreatrob.coupling.sdk.schema.builder.resolver.DefaultFakeResolver
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -25,7 +27,7 @@ class DetailsCLITest {
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
         val expected = GqlQuery(PartyDetailsQuery(partyId))
-        val detailsSlice = PartyDetailsQuery.Data {
+        val detailsSlice = PartyDetailsQuery.Data(DefaultFakeResolver()) {
             this.party = buildParty {
                 this.id = partyId
             }
@@ -63,7 +65,7 @@ class DetailsCLITest {
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
         val expected = GqlQuery(PartyDetailsQuery(partyId))
-        val detailsSlice = PartyDetailsQuery.Data {
+        val detailsSlice = PartyDetailsQuery.Data(DefaultFakeResolver()) {
             this.party = buildParty {
                 this.id = partyId
             }
@@ -89,7 +91,7 @@ class DetailsCLITest {
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
         val expected = GqlQuery(PartyDetailsQuery(partyId))
-        val detailsSlice = PartyDetailsQuery.Data {
+        val detailsSlice = PartyDetailsQuery.Data(DefaultFakeResolver()) {
             this.party = buildParty {
                 this.id = partyId
             }
