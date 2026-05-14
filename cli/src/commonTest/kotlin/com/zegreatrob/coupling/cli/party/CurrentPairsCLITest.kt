@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.CurrentPairAssignmentsQuery
-import com.zegreatrob.coupling.sdk.schema.type.PairingSetMap
+import com.zegreatrob.coupling.sdk.schema.builder.PairingSetMap
 import com.zegreatrob.coupling.sdk.schema.type.PartyBuilder
 import com.zegreatrob.coupling.sdk.schema.type.buildPairSnapshot
 import com.zegreatrob.coupling.sdk.schema.type.buildPairingSet

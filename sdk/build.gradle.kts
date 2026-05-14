@@ -22,6 +22,9 @@ apollo {
         generateAsInternal = false
         generateSourcesDuringGradleSync = true
         generateDataBuilders = true
+        dataBuildersOutputDirConnection {
+            connectToKotlinSourceSet("commonMain")
+        }
         packageName = "com.zegreatrob.coupling.sdk.schema"
         schemaFiles.from(
             file("../server/src/jsMain/resources/prerelease-schema.graphqls"),
