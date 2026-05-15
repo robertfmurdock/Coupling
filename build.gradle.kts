@@ -1,10 +1,6 @@
 
 import com.avast.gradle.dockercompose.tasks.ComposeUp
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.gradle.api.GradleException
-import org.gradle.api.tasks.Exec
-import org.gradle.api.tasks.TaskProvider
-import java.io.File
 import java.time.Duration
 
 plugins {
@@ -15,7 +11,7 @@ plugins {
     alias(libs.plugins.com.zegreatrob.tools.digger)
     alias(libs.plugins.nl.littlerobots.version.catalog.update)
     alias(libs.plugins.com.apollographql.apollo) apply false
-    base
+    java
 }
 
 dockerCompose {
@@ -51,12 +47,21 @@ tagger {
 val testLogToolsRunner by configurations.creating {
     isCanBeResolved = true
     isCanBeConsumed = false
+    attributes {
+        attribute(Attribute.of("org.jetbrains.kotlin.platform.type", String::class.java), "jvm")
+        attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.LIBRARY))
+        attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+        attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.JAR))
+        attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
+        attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 22)
+    }
 }
 
 dependencies {
     add(testLogToolsRunner.name, enforcedPlatform(project(":libraries:dependency-bom")))
-    add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
-    add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0-rc01")
+    add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-serialization-core")
+    add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-coroutines-core")
     add(testLogToolsRunner.name, project(":cli:test-log-tools"))
 }
 
