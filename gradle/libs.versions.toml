@@ -12,7 +12,7 @@ com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:1.9.19"
 eu-anifantakis-ksafe = "eu.anifantakis:ksafe:2.0.0"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:8.0.02"
-io-ktor-ktor-bom = "io.ktor:ktor-bom:3.4.3"
+io-ktor-ktor-bom = "io.ktor:ktor-bom:3.5.0"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-wrappers-kotlin-react-popper = "org.jetbrains.kotlin-wrappers:kotlin-react-popper:2026.3.1-2.3.0"
