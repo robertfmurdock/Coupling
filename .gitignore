@@ -59,7 +59,5 @@ dynamodb_data
 out/
 
 # Generated AI-agent context outputs
-AGENTS.md
 CLAUDE.md
-.github/copilot-instructions.md
 agents.d/context/generated/

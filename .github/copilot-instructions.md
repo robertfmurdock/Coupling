@@ -1,6 +1,6 @@
 # Copilot Instructions
 
-This file is generated from `agents.d/context`. Do not hand-edit.
+This file is source-controlled and intentionally not generated.
 
 ## Project Context
 - Multi-module Gradle Kotlin project (JVM + JS).

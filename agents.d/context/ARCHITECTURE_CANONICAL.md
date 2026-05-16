@@ -19,6 +19,9 @@ instruction files should be short and link to this file, not duplicate it.
 ## Build and Test Norms
 - Use `./gradlew` for all build and test tasks.
 - Start agent sessions with `./gradlew agentBootstrap` before editing.
+- Generated artifacts are not version-controlled. This follows the standard Gradle
+  model: generated outputs belong in ignored output paths (primarily `build/`) or
+  explicitly gitignored generated paths when a non-`build/` location is required.
 - Baseline checks:
   - `./gradlew test`
   - `./gradlew build`

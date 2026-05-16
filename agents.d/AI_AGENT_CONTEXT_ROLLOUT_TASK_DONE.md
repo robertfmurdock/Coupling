@@ -161,30 +161,30 @@ derived outputs as needed.
   - Updated `syncAiContext` to copy from new filename.
   - Bootstrap confirmed working.
 
-- [ ] Slice 9 - Fresh-clone auto-load for Codex (AGENTS.md)
-  - Problem: renaming `AGENTS.base.md` → `AGENTS.md` in adapters/ only helps when
-    Codex is working in that specific subdirectory, not globally.
-  - Investigate options:
-    - Whether Codex loads `AGENTS.md` from any ancestor directory of files being edited
-      (which would make a root-adjacent placement viable).
-    - Whether a committed minimal root `AGENTS.md` stub (not generated, distinct from
-      the generated output) is acceptable, with `syncAiContext` overwriting it.
-    - Other Codex-specific conventions for project-level context.
-  - Implement best viable option and verify bootstrap still produces correct output.
+- [x] Slice 9 - Fresh-clone auto-load for Codex (AGENTS.md)
+  - Implemented committed root `AGENTS.md` as a source-controlled seed file.
+  - `AGENTS.md` is now intentionally non-generated and remains available on fresh clones
+    without running bootstrap first.
+  - Updated `syncAiContext` to stop writing `AGENTS.md`.
+  - Bootstrap verification: PASS
+    - `./gradlew agentBootstrap --no-configuration-cache --stacktrace`
 
-- [ ] Slice 10 - Fresh-clone auto-load for Copilot
-  - Problem: Copilot reads `.github/copilot-instructions.md` at the repo root only;
-    no subdirectory equivalent auto-loads globally.
-  - Investigate options:
-    - Whether a committed minimal `.github/copilot-instructions.md` stub (not generated)
-      that `syncAiContext` overwrites is the right approach.
-    - Whether Copilot has any other project-level context loading conventions.
-  - Implement best viable option and verify bootstrap still produces correct output.
+- [x] Slice 10 - Fresh-clone auto-load for Copilot
+  - Implemented committed `.github/copilot-instructions.md` as a source-controlled
+    seed file at Copilot’s required root path.
+  - `.github/copilot-instructions.md` is now intentionally non-generated and available
+    on fresh clones without bootstrap first.
+  - Updated `syncAiContext` to stop writing `.github/copilot-instructions.md`.
+  - Bootstrap verification: PASS
+    - `./gradlew agentBootstrap --no-configuration-cache --stacktrace`
 
-- [ ] Slice 11 - Final closeout
-  - Confirm all three agent runtimes have fresh-clone seed context.
-  - Add completion summary.
-  - Rename file to `agents.d/AI_AGENT_CONTEXT_ROLLOUT_TASK_DONE.md`.
+- [x] Slice 11 - Final closeout
+  - Confirmed fresh-clone seed context availability:
+    - Codex: root `AGENTS.md` (committed, non-generated)
+    - Claude: `agents.d/context/adapters/CLAUDE.md` (committed seed auto-load path)
+    - Copilot: `.github/copilot-instructions.md` (committed, non-generated)
+  - Completion summary added.
+  - Rename file to `agents.d/AI_AGENT_CONTEXT_ROLLOUT_TASK_DONE.md`: completed.
 
 ## Definition of Done (Revised)
 - Agent startup path is explicit and standardized on `./gradlew agentBootstrap`.
@@ -193,3 +193,5 @@ derived outputs as needed.
 - Canonical docs reflect evidence-driven guidance improvements.
 - All three agent runtimes (Claude, Codex, Copilot) have committed seed context
   that loads on fresh clones without requiring bootstrap first.
+- Generated files are not version-controlled; generated artifacts remain limited
+  to gitignored paths.

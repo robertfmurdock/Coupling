@@ -87,13 +87,7 @@ abstract class SyncAiContextTask : DefaultTask() {
     abstract val workflowsFilePath: Property<String>
 
     @get:Internal
-    abstract val agentsFilePath: Property<String>
-
-    @get:Internal
     abstract val claudeFilePath: Property<String>
-
-    @get:Internal
-    abstract val copilotFilePath: Property<String>
 
     init {
         outputs.upToDateWhen { false }
@@ -105,14 +99,11 @@ abstract class SyncAiContextTask : DefaultTask() {
         val adaptersDir = File(adaptersDirPath.get())
         val repoIndexFile = File(repoIndexFilePath.get())
         val workflowsFile = File(workflowsFilePath.get())
-        val agentsFile = File(agentsFilePath.get())
         val claudeFile = File(claudeFilePath.get())
-        val copilotFile = File(copilotFilePath.get())
         val settingsFile = File(settingsFilePath.get())
         val repoRootDir = File(repoRootDirPath.get())
 
         generatedDir.mkdirs()
-        copilotFile.parentFile.mkdirs()
 
         val includeRegex = Regex("""^include\("([^"]+)"\)""")
         val modules = settingsFile
@@ -166,14 +157,10 @@ abstract class SyncAiContextTask : DefaultTask() {
             """.trimIndent() + "\n",
         )
 
-        adaptersDir.resolve("AGENTS.base.md").copyTo(agentsFile, overwrite = true)
         adaptersDir.resolve("CLAUDE.md").copyTo(claudeFile, overwrite = true)
-        adaptersDir.resolve("COPILOT.base.md").copyTo(copilotFile, overwrite = true)
 
         logger.lifecycle("Synced AI context files:")
-        logger.lifecycle("- AGENTS.md")
         logger.lifecycle("- CLAUDE.md")
-        logger.lifecycle("- .github/copilot-instructions.md")
         logger.lifecycle("- agents.d/context/generated/repo-index.md")
         logger.lifecycle("- agents.d/context/generated/workflows.md")
     }
@@ -279,9 +266,7 @@ tasks {
     val aiGeneratedDir = aiContextDir.resolve("generated")
     val aiRepoIndexFile = aiGeneratedDir.resolve("repo-index.md")
     val aiWorkflowsFile = aiGeneratedDir.resolve("workflows.md")
-    val aiAgentsFile = rootProject.file("AGENTS.md")
     val aiClaudeFile = rootProject.file("CLAUDE.md")
-    val aiCopilotFile = rootProject.file(".github/copilot-instructions.md")
 
     val syncAiContext = register<SyncAiContextTask>("syncAiContext") {
         group = "documentation"
@@ -292,9 +277,7 @@ tasks {
         generatedDirPath.set(aiGeneratedDir.absolutePath)
         repoIndexFilePath.set(aiRepoIndexFile.absolutePath)
         workflowsFilePath.set(aiWorkflowsFile.absolutePath)
-        agentsFilePath.set(aiAgentsFile.absolutePath)
         claudeFilePath.set(aiClaudeFile.absolutePath)
-        copilotFilePath.set(aiCopilotFile.absolutePath)
     }
 
     register("agentBootstrap") {
