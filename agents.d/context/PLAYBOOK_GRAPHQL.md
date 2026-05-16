@@ -3,6 +3,8 @@
 Use this playbook for field add/rename/deprecation/removal and mutation routing.
 
 ## 1) Scope and Impact Scan
+0. Start session bootstrap:
+   - `./gradlew agentBootstrap`
 1. Identify target operation/field names.
 2. Run:
    - `scripts/graphql-ref-check.sh <pattern>`
@@ -31,7 +33,9 @@ Use this playbook for field add/rename/deprecation/removal and mutation routing.
 ## 5) Verification
 1. Re-run impact scan:
    - `scripts/graphql-ref-check.sh <pattern>`
-2. Run targeted tests first (`:module:task`).
+2. Run targeted tests first (`:module:task`) for each touched layer:
+   - server mutation/resolver path: `:server:actionz:jsTest`
+   - SDK dispatcher/document updates: `:sdk:commonTest`
 3. Run broader validation as needed:
    - `./gradlew test`
    - `./gradlew check`
@@ -40,4 +44,3 @@ Use this playbook for field add/rename/deprecation/removal and mutation routing.
 - Deprecated paths delegate (no duplicated legacy logic).
 - Schema + server + SDK + tests are aligned in one change set.
 - Validation results are reported with any known gaps.
-

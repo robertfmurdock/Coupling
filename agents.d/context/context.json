@@ -12,6 +12,7 @@
     "server_action_tests": "server/actionz/src/jsTest/kotlin"
   },
   "commands": {
+    "agent_bootstrap": "./gradlew agentBootstrap",
     "default": [
       "./gradlew test",
       "./gradlew build",
@@ -41,4 +42,3 @@
     "graphql": "agents.d/context/PLAYBOOK_GRAPHQL.md"
   }
 }
-

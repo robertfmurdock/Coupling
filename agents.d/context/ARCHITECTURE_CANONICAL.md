@@ -18,6 +18,7 @@ instruction files should be short and link to this file, not duplicate it.
 
 ## Build and Test Norms
 - Use `./gradlew` for all build and test tasks.
+- Start agent sessions with `./gradlew agentBootstrap` before editing.
 - Baseline checks:
   - `./gradlew test`
   - `./gradlew build`
@@ -34,6 +35,8 @@ instruction files should be short and link to this file, not duplicate it.
 ## GraphQL Change Rules
 - Deprecations must delegate through canonical command/mutation path.
 - Do not duplicate legacy resolver logic when deprecating fields.
+- GraphQL rename/deprecation work is cross-layer by default; update server + SDK +
+  tests in one change set unless a file-level impact scan proves otherwise.
 - Any field add/rename/deprecation/removal requires synchronized updates:
   1. Schema
   2. Server resolver/command path
@@ -56,6 +59,7 @@ instruction files should be short and link to this file, not duplicate it.
 
 ## Completion Criteria for Agent Tasks
 - Impacted modules identified up front.
+- Scoped validation command(s) listed before broad validation.
 - All linked artifacts updated for cross-layer changes.
 - Relevant Gradle tasks executed and reported.
 - Risks and follow-up items explicitly listed.

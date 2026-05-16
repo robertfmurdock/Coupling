@@ -91,3 +91,16 @@ Nope! Feel free to use this for anything - field trips and buddy systems, pairin
 fight clubs... All I ask is that you send me a nice note telling me about your innovative use of the program.
 
 Good luck!
+
+AI Agent Bootstrap
+------------------
+
+If you are using an AI coding agent in this repository, start each session with:
+
+`./gradlew agentBootstrap`
+
+This ensures the agent reads the canonical context and adapter instructions in the expected order.
+
+When updating any files under `agents.d/context/`, regenerate derived outputs with:
+
+`./gradlew syncAiContext`

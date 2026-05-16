@@ -8,10 +8,14 @@
 - Owns GraphQL schema and resolver behavior.
 - Deprecated fields should call canonical command/mutation paths.
 - Avoid duplicating logic across old/new resolver entry points.
+- When resolver/mutation behavior changes, update server action tests in the same
+  change set.
 
 ## SDK (`sdk/`)
 - Owns GraphQL operation documents and dispatcher integration surface.
 - Dispatchers should map to domain models through canonical paths.
+- GraphQL server operation renames/deprecations require synchronized SDK document
+  and dispatcher updates.
 
 ## Shared Libraries (`libraries/`)
 - Own shared domain models/utilities and cross-cutting abstractions.
@@ -25,4 +29,5 @@
 - GraphQL contract changes must be synchronized across schema/server/sdk/tests.
 - Run `scripts/graphql-ref-check.sh` before and after GraphQL changes.
 - Keep scope narrow: only touch modules required by the task.
-
+- Client-only UI changes should not modify server/schema/sdk unless explicitly
+  required.

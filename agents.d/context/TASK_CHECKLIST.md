@@ -3,6 +3,8 @@
 Use this checklist for every implementation task.
 
 ## Intake
+- Start with:
+  - `./gradlew agentBootstrap`
 - Read:
   - `agents.d/context/ARCHITECTURE_CANONICAL.md`
   - `agents.d/context/BOUNDARIES.md`
@@ -24,4 +26,3 @@ Use this checklist for every implementation task.
 - List files changed and intent.
 - List validation commands run and results.
 - State residual risks, skipped checks, or follow-ups.
-
