@@ -57,3 +57,9 @@ dynamodb_data
 
 # IntelliJ
 out/
+
+# Generated AI-agent context outputs
+AGENTS.md
+CLAUDE.md
+.github/copilot-instructions.md
+agents.d/context/generated/

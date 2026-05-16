@@ -1,0 +1,44 @@
+{
+  "project": {
+    "name": "Coupling",
+    "build_system": "gradle",
+    "languages": ["kotlin-jvm", "kotlin-js"]
+  },
+  "paths": {
+    "graphql_schema": "server/src/jsMain/resources/schema.graphqls",
+    "server_resolvers": "server/src/jsMain/kotlin",
+    "sdk_graphql_docs": "sdk/src/commonMain/graphql",
+    "sdk_dispatchers": "sdk/src/commonMain/kotlin",
+    "server_action_tests": "server/actionz/src/jsTest/kotlin"
+  },
+  "commands": {
+    "default": [
+      "./gradlew test",
+      "./gradlew build",
+      "./gradlew check"
+    ],
+    "module_task_pattern": "./gradlew :module:task",
+    "graphql_ref_check": "scripts/graphql-ref-check.sh <pattern>"
+  },
+  "rules": {
+    "deprecations_must_delegate": true,
+    "graphql_changes_require_sync": [
+      "schema",
+      "server-resolver-or-command-path",
+      "sdk-graphql-document",
+      "sdk-dispatcher",
+      "tests"
+    ],
+    "use_gradle_wrapper_only": true,
+    "keep_changes_scoped": true
+  },
+  "required_reads": [
+    "agents.d/context/ARCHITECTURE_CANONICAL.md",
+    "agents.d/context/BOUNDARIES.md",
+    "agents.d/context/TASK_CHECKLIST.md"
+  ],
+  "playbooks": {
+    "graphql": "agents.d/context/PLAYBOOK_GRAPHQL.md"
+  }
+}
+

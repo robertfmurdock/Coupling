@@ -160,6 +160,125 @@ tasks {
         }
     }
 
+    val aiContextDir = rootProject.file("agents.d/context")
+    val aiAdaptersDir = aiContextDir.resolve("adapters")
+    val aiGeneratedDir = aiContextDir.resolve("generated")
+    val aiRepoIndexFile = aiGeneratedDir.resolve("repo-index.md")
+    val aiWorkflowsFile = aiGeneratedDir.resolve("workflows.md")
+    val aiAgentsFile = rootProject.file("AGENTS.md")
+    val aiClaudeFile = rootProject.file("CLAUDE.md")
+    val aiCopilotFile = rootProject.file(".github/copilot-instructions.md")
+
+    fun readIncludedModules(): List<String> {
+        val includeRegex = Regex("""^include\("([^"]+)"\)""")
+        return rootProject.file("settings.gradle.kts")
+            .readLines()
+            .mapNotNull { line -> includeRegex.find(line.trim())?.groupValues?.get(1) }
+    }
+
+    fun readTopLevelDirectories(): List<String> =
+        rootProject.rootDir
+            .listFiles()
+            ?.asSequence()
+            ?.filter { it.isDirectory && !it.name.startsWith(".") }
+            ?.map { it.name }
+            ?.sorted()
+            ?.toList()
+            ?: emptyList()
+
+    fun writeRepoIndex(modules: List<String>, topLevelDirs: List<String>) {
+        aiRepoIndexFile.writeText(
+            buildString {
+                appendLine("# Repo Index (Generated)")
+                appendLine()
+                appendLine("Source: `settings.gradle.kts` includes + top-level directory layout.")
+                appendLine()
+                appendLine("## Top-Level Areas")
+                topLevelDirs.forEach { appendLine("- `$it/`") }
+                appendLine()
+                appendLine("## Included Gradle Modules")
+                modules.forEach { appendLine("- `$it`") }
+            },
+        )
+    }
+
+    fun writeWorkflows() {
+        aiWorkflowsFile.writeText(
+            """
+            # Workflows (Generated)
+
+            ## Standard Validation Commands
+            - `./gradlew test`
+            - `./gradlew build`
+            - `./gradlew check`
+
+            ## Scoped Validation Convention
+            - `./gradlew :module:task`
+
+            ## GraphQL Ref Workflow
+            1. Run `scripts/graphql-ref-check.sh <pattern>`.
+            2. Update schema/resolver/sdk/tests in same change set.
+            3. Re-run `scripts/graphql-ref-check.sh <pattern>`.
+            4. Run targeted module checks, then broader checks if needed.
+
+            ## CI-Relevant Notes
+            - Gradle wrapper required.
+            - Prefer module-scoped tasks first for faster iteration.
+            """.trimIndent() + "\n",
+        )
+    }
+
+    val syncAiContext by registering {
+        group = "documentation"
+        description = "Regenerates AI context generated files and syncs agent adapter outputs."
+        notCompatibleWithConfigurationCache("Uses Gradle script helper closures to generate repository context files.")
+        doLast {
+            aiGeneratedDir.mkdirs()
+            aiCopilotFile.parentFile.mkdirs()
+
+            val modules = readIncludedModules()
+            val topLevelDirs = readTopLevelDirectories()
+            writeRepoIndex(modules, topLevelDirs)
+            writeWorkflows()
+
+            aiAdaptersDir.resolve("AGENTS.base.md").copyTo(aiAgentsFile, overwrite = true)
+            aiAdaptersDir.resolve("CLAUDE.base.md").copyTo(aiClaudeFile, overwrite = true)
+            aiAdaptersDir.resolve("COPILOT.base.md").copyTo(aiCopilotFile, overwrite = true)
+
+            logger.lifecycle("Synced AI context files:")
+            logger.lifecycle("- AGENTS.md")
+            logger.lifecycle("- CLAUDE.md")
+            logger.lifecycle("- .github/copilot-instructions.md")
+            logger.lifecycle("- agents.d/context/generated/repo-index.md")
+            logger.lifecycle("- agents.d/context/generated/workflows.md")
+        }
+    }
+
+    register("agentBootstrap") {
+        group = "help"
+        description = "Prints the required AI agent context read order."
+        notCompatibleWithConfigurationCache("Uses Gradle script helper closures for task-local reporting.")
+        dependsOn(syncAiContext)
+        doLast {
+            val readOrder = listOf(
+                "agents.d/context/ARCHITECTURE_CANONICAL.md",
+                "agents.d/context/BOUNDARIES.md",
+                "agents.d/context/TASK_CHECKLIST.md",
+                "agents.d/context/PLAYBOOK_GRAPHQL.md",
+                "agents.d/context/generated/repo-index.md",
+                "agents.d/context/generated/workflows.md",
+                "agents.d/context/context.json",
+            )
+            logger.lifecycle("Agent bootstrap read order:")
+            readOrder.forEach { relPath ->
+                val marker = if (rootProject.file(relPath).exists()) "" else " (missing)"
+                logger.lifecycle("- $relPath$marker")
+            }
+            logger.lifecycle("")
+            logger.lifecycle("Run `./gradlew syncAiContext` to refresh generated files.")
+        }
+    }
+
     check {
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
         finalizedBy(validateTestJsonl)
