@@ -9,6 +9,7 @@ This file is generated from `agents.d/context`. Do not hand-edit.
 - `agents.d/context/PLAYBOOK_GRAPHQL.md` for GraphQL tasks
 
 ## Execution Norms
+- Start each session with `./gradlew agentBootstrap`.
 - Use `./gradlew` for all tasks.
 - Express repository automation as Gradle tasks, not ad hoc shell scripts.
 - Start with module-scoped validation, then broaden as needed.

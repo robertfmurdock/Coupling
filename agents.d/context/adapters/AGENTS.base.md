@@ -11,12 +11,12 @@ This file is generated from `agents.d/context`. Do not hand-edit.
 6. `agents.d/context/generated/workflows.md`
 
 ## Core Commands
+- `./gradlew agentBootstrap` (session start)
 - `./gradlew test`
 - `./gradlew build`
 - `./gradlew check`
 - `./gradlew :module:task`
-- `./gradlew syncAiContext`
-- `./gradlew agentBootstrap`
+- `./gradlew syncAiContext` (manual regeneration)
 
 ## Mandatory Rules
 - Use the Gradle wrapper (`./gradlew`).

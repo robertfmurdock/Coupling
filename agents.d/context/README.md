@@ -14,8 +14,10 @@ repository.
 - `adapters/`: short templates for agent-specific injection files.
 
 ## Update Flow
-1. Update canonical docs in this folder.
-2. Regenerate derived files:
-   - `./gradlew syncAiContext`
-3. Run the bootstrap reader to confirm read order:
+1. Start/refresh agent runtime context:
    - `./gradlew agentBootstrap`
+2. Update canonical docs in this folder.
+3. Re-run bootstrap to regenerate and validate derived outputs:
+   - `./gradlew agentBootstrap`
+4. Optional manual regeneration (without bootstrap readout):
+   - `./gradlew syncAiContext`

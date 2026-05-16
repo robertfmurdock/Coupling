@@ -33,18 +33,40 @@ derived outputs as needed.
   - `README.md` documents regeneration command:
     - `./gradlew syncAiContext`
 
-- [ ] Slice 3 - Automation entrypoint alignment
-  - Confirm all internal agent runbooks/entrypoints reference
-    `./gradlew agentBootstrap` at session start.
-  - Remove any guidance that implies relying on checked-in generated files.
+- [x] Slice 3 - Automation entrypoint alignment
+  - Confirmed bootstrap-first startup guidance in internal entrypoints/templates:
+    - `agents.d/context/adapters/AGENTS.base.md`
+    - `agents.d/context/adapters/CLAUDE.base.md`
+    - `agents.d/context/adapters/COPILOT.base.md`
+    - `agents.d/context/README.md`
+  - Updated `agentBootstrap` task output to clarify bootstrap already refreshes
+    generated AI context files.
+  - Regenerated synced outputs via `./gradlew agentBootstrap`.
 
-- [ ] Slice 4 - Trial matrix definition (bootstrap-aware)
-  - Define 4 representative task types:
+- [x] Slice 4 - Trial matrix definition (bootstrap-aware)
+  - Representative scenarios and scoped validation:
     1. GraphQL rename/deprecation
+       - Expected modules: `server/`, `sdk/`, `server/actionz/`
+       - Validation:
+         - `./gradlew :server:jsTest`
+         - `./gradlew :sdk:check`
+         - `./gradlew :server:actionz:jsTest`
+         - `scripts/graphql-ref-check.sh <field-or-operation>`
     2. Server mutation path change
+       - Expected modules: `server/`, `server/actionz/`
+       - Validation:
+         - `./gradlew :server:jsTest`
+         - `./gradlew :server:actionz:jsTest`
     3. Client-only UI change
+       - Expected modules: `client/` (and possibly `client/components/`)
+       - Validation:
+         - `./gradlew :client:jsTest`
     4. Shared library refactor
-  - For each: expected touched modules + module-scoped validation commands.
+       - Expected modules: impacted `libraries/*` module(s), plus direct dependents
+       - Validation (example for `libraries:model`):
+         - `./gradlew :libraries:model:check`
+         - Dependent-module checks when impacted (e.g. `:server:jsTest`,
+           `:sdk:check`)
 
 - [ ] Slice 5 - Trial evidence capture (Codex)
   - For each scenario, execute with bootstrap-first flow:

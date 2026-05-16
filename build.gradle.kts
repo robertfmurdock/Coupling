@@ -2,6 +2,8 @@
 import com.avast.gradle.dockercompose.tasks.ComposeUp
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.time.Duration
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.TaskAction
 
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
@@ -63,6 +65,118 @@ dependencies {
     add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-serialization-core")
     add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-coroutines-core")
     add(testLogToolsRunner.name, project(":cli:test-log-tools"))
+}
+
+abstract class SyncAiContextTask : DefaultTask() {
+    @get:Internal
+    abstract val repoRootDirPath: Property<String>
+
+    @get:Internal
+    abstract val settingsFilePath: Property<String>
+
+    @get:Internal
+    abstract val adaptersDirPath: Property<String>
+
+    @get:Internal
+    abstract val generatedDirPath: Property<String>
+
+    @get:Internal
+    abstract val repoIndexFilePath: Property<String>
+
+    @get:Internal
+    abstract val workflowsFilePath: Property<String>
+
+    @get:Internal
+    abstract val agentsFilePath: Property<String>
+
+    @get:Internal
+    abstract val claudeFilePath: Property<String>
+
+    @get:Internal
+    abstract val copilotFilePath: Property<String>
+
+    init {
+        outputs.upToDateWhen { false }
+    }
+
+    @TaskAction
+    fun sync() {
+        val generatedDir = File(generatedDirPath.get())
+        val adaptersDir = File(adaptersDirPath.get())
+        val repoIndexFile = File(repoIndexFilePath.get())
+        val workflowsFile = File(workflowsFilePath.get())
+        val agentsFile = File(agentsFilePath.get())
+        val claudeFile = File(claudeFilePath.get())
+        val copilotFile = File(copilotFilePath.get())
+        val settingsFile = File(settingsFilePath.get())
+        val repoRootDir = File(repoRootDirPath.get())
+
+        generatedDir.mkdirs()
+        copilotFile.parentFile.mkdirs()
+
+        val includeRegex = Regex("""^include\("([^"]+)"\)""")
+        val modules = settingsFile
+            .readLines()
+            .mapNotNull { line -> includeRegex.find(line.trim())?.groupValues?.get(1) }
+
+        val topLevelDirs = repoRootDir
+            .listFiles()
+            ?.asSequence()
+            ?.filter { it.isDirectory && !it.name.startsWith(".") }
+            ?.map { it.name }
+            ?.sorted()
+            ?.toList()
+            ?: emptyList()
+
+        repoIndexFile.writeText(
+            buildString {
+                appendLine("# Repo Index (Generated)")
+                appendLine()
+                appendLine("Source: `settings.gradle.kts` includes + top-level directory layout.")
+                appendLine()
+                appendLine("## Top-Level Areas")
+                topLevelDirs.forEach { appendLine("- `$it/`") }
+                appendLine()
+                appendLine("## Included Gradle Modules")
+                modules.forEach { appendLine("- `$it`") }
+            },
+        )
+
+        workflowsFile.writeText(
+            """
+            # Workflows (Generated)
+
+            ## Standard Validation Commands
+            - `./gradlew test`
+            - `./gradlew build`
+            - `./gradlew check`
+
+            ## Scoped Validation Convention
+            - `./gradlew :module:task`
+
+            ## GraphQL Ref Workflow
+            1. Run `scripts/graphql-ref-check.sh <pattern>`.
+            2. Update schema/resolver/sdk/tests in same change set.
+            3. Re-run `scripts/graphql-ref-check.sh <pattern>`.
+            4. Run targeted module checks, then broader checks if needed.
+
+            ## CI-Relevant Notes
+            - Gradle wrapper required.
+            - Prefer module-scoped tasks first for faster iteration.
+            """.trimIndent() + "\n",
+        )
+
+        adaptersDir.resolve("AGENTS.base.md").copyTo(agentsFile, overwrite = true)
+        adaptersDir.resolve("CLAUDE.base.md").copyTo(claudeFile, overwrite = true)
+        adaptersDir.resolve("COPILOT.base.md").copyTo(copilotFile, overwrite = true)
+
+        logger.lifecycle("Synced AI context files:")
+        logger.lifecycle("- AGENTS.md")
+        logger.lifecycle("- CLAUDE.md")
+        logger.lifecycle("- .github/copilot-instructions.md")
+        logger.lifecycle("- agents.d/context/generated/repo-index.md")
+        logger.lifecycle("- agents.d/context/generated/workflows.md")
+    }
 }
 
 tasks {
@@ -169,89 +283,18 @@ tasks {
     val aiClaudeFile = rootProject.file("CLAUDE.md")
     val aiCopilotFile = rootProject.file(".github/copilot-instructions.md")
 
-    fun readIncludedModules(): List<String> {
-        val includeRegex = Regex("""^include\("([^"]+)"\)""")
-        return rootProject.file("settings.gradle.kts")
-            .readLines()
-            .mapNotNull { line -> includeRegex.find(line.trim())?.groupValues?.get(1) }
-    }
-
-    fun readTopLevelDirectories(): List<String> =
-        rootProject.rootDir
-            .listFiles()
-            ?.asSequence()
-            ?.filter { it.isDirectory && !it.name.startsWith(".") }
-            ?.map { it.name }
-            ?.sorted()
-            ?.toList()
-            ?: emptyList()
-
-    fun writeRepoIndex(modules: List<String>, topLevelDirs: List<String>) {
-        aiRepoIndexFile.writeText(
-            buildString {
-                appendLine("# Repo Index (Generated)")
-                appendLine()
-                appendLine("Source: `settings.gradle.kts` includes + top-level directory layout.")
-                appendLine()
-                appendLine("## Top-Level Areas")
-                topLevelDirs.forEach { appendLine("- `$it/`") }
-                appendLine()
-                appendLine("## Included Gradle Modules")
-                modules.forEach { appendLine("- `$it`") }
-            },
-        )
-    }
-
-    fun writeWorkflows() {
-        aiWorkflowsFile.writeText(
-            """
-            # Workflows (Generated)
-
-            ## Standard Validation Commands
-            - `./gradlew test`
-            - `./gradlew build`
-            - `./gradlew check`
-
-            ## Scoped Validation Convention
-            - `./gradlew :module:task`
-
-            ## GraphQL Ref Workflow
-            1. Run `scripts/graphql-ref-check.sh <pattern>`.
-            2. Update schema/resolver/sdk/tests in same change set.
-            3. Re-run `scripts/graphql-ref-check.sh <pattern>`.
-            4. Run targeted module checks, then broader checks if needed.
-
-            ## CI-Relevant Notes
-            - Gradle wrapper required.
-            - Prefer module-scoped tasks first for faster iteration.
-            """.trimIndent() + "\n",
-        )
-    }
-
-    val syncAiContext by registering {
+    val syncAiContext = register<SyncAiContextTask>("syncAiContext") {
         group = "documentation"
         description = "Regenerates AI context generated files and syncs agent adapter outputs."
-        notCompatibleWithConfigurationCache("Uses Gradle script helper closures to generate repository context files.")
-        doLast {
-            aiGeneratedDir.mkdirs()
-            aiCopilotFile.parentFile.mkdirs()
-
-            val modules = readIncludedModules()
-            val topLevelDirs = readTopLevelDirectories()
-            writeRepoIndex(modules, topLevelDirs)
-            writeWorkflows()
-
-            aiAdaptersDir.resolve("AGENTS.base.md").copyTo(aiAgentsFile, overwrite = true)
-            aiAdaptersDir.resolve("CLAUDE.base.md").copyTo(aiClaudeFile, overwrite = true)
-            aiAdaptersDir.resolve("COPILOT.base.md").copyTo(aiCopilotFile, overwrite = true)
-
-            logger.lifecycle("Synced AI context files:")
-            logger.lifecycle("- AGENTS.md")
-            logger.lifecycle("- CLAUDE.md")
-            logger.lifecycle("- .github/copilot-instructions.md")
-            logger.lifecycle("- agents.d/context/generated/repo-index.md")
-            logger.lifecycle("- agents.d/context/generated/workflows.md")
-        }
+        repoRootDirPath.set(rootProject.rootDir.absolutePath)
+        settingsFilePath.set(rootProject.file("settings.gradle.kts").absolutePath)
+        adaptersDirPath.set(aiAdaptersDir.absolutePath)
+        generatedDirPath.set(aiGeneratedDir.absolutePath)
+        repoIndexFilePath.set(aiRepoIndexFile.absolutePath)
+        workflowsFilePath.set(aiWorkflowsFile.absolutePath)
+        agentsFilePath.set(aiAgentsFile.absolutePath)
+        claudeFilePath.set(aiClaudeFile.absolutePath)
+        copilotFilePath.set(aiCopilotFile.absolutePath)
     }
 
     register("agentBootstrap") {
@@ -275,11 +318,16 @@ tasks {
                 logger.lifecycle("- $relPath$marker")
             }
             logger.lifecycle("")
-            logger.lifecycle("Run `./gradlew syncAiContext` to refresh generated files.")
+            logger.lifecycle("`./gradlew agentBootstrap` already refreshes generated AI context files.")
         }
     }
 
+    assemble {
+        dependsOn(syncAiContext)
+    }
+
     check {
+        dependsOn(syncAiContext)
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
         finalizedBy(validateTestJsonl)
     }

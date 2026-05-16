@@ -13,12 +13,14 @@ This file is generated from `agents.d/context`. Do not hand-edit.
 - `agents.d/context/PLAYBOOK_GRAPHQL.md` (GraphQL work)
 
 ## Commands
+- `./gradlew agentBootstrap`
 - `./gradlew test`
 - `./gradlew build`
 - `./gradlew check`
 - `./gradlew :module:task`
 
 ## Rules
+- Start each session with `./gradlew agentBootstrap`.
 - Use the Gradle wrapper only.
 - Express repository automation as Gradle tasks, not ad hoc shell scripts.
 - Keep changes small and consistent with local patterns.
