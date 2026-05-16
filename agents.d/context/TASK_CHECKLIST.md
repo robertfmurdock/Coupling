@@ -5,6 +5,8 @@ Use this checklist for every implementation task.
 ## Intake
 - Start with:
   - `./gradlew agentBootstrap`
+  - If bootstrap fails with an AWS credential error, check whether `AWS_PROFILE`
+    is set to a profile unrelated to this repo; `unset AWS_PROFILE` if so.
 - Read:
   - `agents.d/context/ARCHITECTURE_CANONICAL.md`
   - `agents.d/context/BOUNDARIES.md`

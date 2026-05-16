@@ -167,7 +167,7 @@ abstract class SyncAiContextTask : DefaultTask() {
         )
 
         adaptersDir.resolve("AGENTS.base.md").copyTo(agentsFile, overwrite = true)
-        adaptersDir.resolve("CLAUDE.base.md").copyTo(claudeFile, overwrite = true)
+        adaptersDir.resolve("CLAUDE.md").copyTo(claudeFile, overwrite = true)
         adaptersDir.resolve("COPILOT.base.md").copyTo(copilotFile, overwrite = true)
 
         logger.lifecycle("Synced AI context files:")
