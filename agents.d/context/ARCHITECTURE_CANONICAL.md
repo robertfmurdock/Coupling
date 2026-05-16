@@ -39,23 +39,34 @@ instruction files should be short and link to this file, not duplicate it.
 - Deprecations must delegate through canonical command/mutation path.
 - Do not duplicate legacy resolver logic when deprecating fields.
 - GraphQL rename/deprecation work is cross-layer by default; update server + SDK +
-  tests in one change set unless a file-level impact scan proves otherwise.
+  tests in one change set unless a file-level impact review proves otherwise.
 - Any field add/rename/deprecation/removal requires synchronized updates:
   1. Schema
   2. Server resolver/command path
   3. SDK `.graphql` documents
   4. SDK dispatcher/model mapping
   5. Action tests and auth stubs as needed
-- Run `scripts/graphql-ref-check.sh <field-or-operation>` for impact analysis.
+- Run `agents.d/utilities/graphql-ref-scan.sh <field-or-operation>` for text-reference
+  discovery across common GraphQL paths. This is not a verification gate and can
+  miss indirect/dynamic usage.
 
 ## Editing Norms
 - Keep diffs minimal and pattern-consistent.
 - Do not introduce unrelated refactors in feature/bugfix changes.
 - Preserve existing behavior unless change request explicitly requires it.
+- Add or update behavioral/process conventions in canonical context files
+  (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `TASK_CHECKLIST.md`, and
+  `PLAYBOOK_GRAPHQL.md` when GraphQL-specific), not in `AGENTS.md` or generated
+  context outputs.
 
 ## Automation Norm
 - Repository automation and project scripting must be expressed as Gradle tasks
   (invoked via `./gradlew ...`), not ad hoc shell scripts.
+- Agent-only reusable helpers belong in `agents.d/utilities/`; check there first
+  before repeating a complex/common workflow, and add utilities there when reuse
+  is expected.
+- After convention updates, run `./gradlew syncAiContext` to propagate generated
+  context artifacts.
 - For AI context generation/bootstrap, use:
   - `./gradlew syncAiContext`
   - `./gradlew agentBootstrap`

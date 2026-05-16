@@ -27,7 +27,8 @@
 
 ## Cross-Cutting Constraints
 - GraphQL contract changes must be synchronized across schema/server/sdk/tests.
-- Run `scripts/graphql-ref-check.sh` before and after GraphQL changes.
+- Run `agents.d/utilities/graphql-ref-scan.sh` before and after GraphQL changes as a
+  discovery aid only; rely on Gradle tests/checks for verification.
 - Keep scope narrow: only touch modules required by the task.
 - Client-only UI changes should not modify server/schema/sdk unless explicitly
   required.

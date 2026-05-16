@@ -146,9 +146,9 @@ abstract class SyncAiContextTask : DefaultTask() {
             - `./gradlew :module:task`
 
             ## GraphQL Ref Workflow
-            1. Run `scripts/graphql-ref-check.sh <pattern>`.
+            1. Run `agents.d/utilities/graphql-ref-scan.sh <pattern>` (text-reference discovery only).
             2. Update schema/resolver/sdk/tests in same change set.
-            3. Re-run `scripts/graphql-ref-check.sh <pattern>`.
+            3. Re-run `agents.d/utilities/graphql-ref-scan.sh <pattern>`.
             4. Run targeted module checks, then broader checks if needed.
 
             ## CI-Relevant Notes

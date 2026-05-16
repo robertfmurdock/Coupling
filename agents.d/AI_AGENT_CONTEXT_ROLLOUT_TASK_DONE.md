@@ -51,7 +51,7 @@ derived outputs as needed.
          - `./gradlew :server:jsTest`
          - `./gradlew :sdk:check`
          - `./gradlew :server:actionz:jsTest`
-         - `scripts/graphql-ref-check.sh <field-or-operation>`
+         - `agents.d/utilities/graphql-ref-scan.sh <field-or-operation>`
     2. Server mutation path change
        - Expected modules: `server/`, `server/actionz/`
        - Validation:
@@ -81,7 +81,7 @@ derived outputs as needed.
        - Task execution/dry-run: PASS
          - `./gradlew :server:jsTest :sdk:check :server:actionz:jsTest --dry-run`
        - Scoped validation: PASS
-         - `scripts/graphql-ref-check.sh mutation`
+         - `agents.d/utilities/graphql-ref-scan.sh mutation`
     2. Server mutation path change scenario
        - Bootstrap: PASS
          - `./gradlew agentBootstrap --no-configuration-cache --stacktrace`
@@ -120,7 +120,7 @@ derived outputs as needed.
        - Task execution/dry-run: PASS
          - `./gradlew :server:jsTest :sdk:check :server:actionz:jsTest --dry-run`
        - Scoped validation: PASS
-         - `scripts/graphql-ref-check.sh mutation`
+         - `agents.d/utilities/graphql-ref-scan.sh mutation`
        - Ambiguity/ignored guidance: none
        - Corrections required: none (beyond AWS_PROFILE env var fix)
     2. Server mutation path change scenario

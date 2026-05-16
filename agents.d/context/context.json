@@ -19,7 +19,7 @@
       "./gradlew check"
     ],
     "module_task_pattern": "./gradlew :module:task",
-    "graphql_ref_check": "scripts/graphql-ref-check.sh <pattern>"
+    "graphql_ref_scan": "agents.d/utilities/graphql-ref-scan.sh <pattern>"
   },
   "rules": {
     "deprecations_must_delegate": true,

@@ -22,7 +22,8 @@ Use this checklist for every implementation task.
 ## Validation
 - Run smallest sufficient task set first.
 - Use Gradle wrapper (`./gradlew`) only.
-- For GraphQL changes, run `scripts/graphql-ref-check.sh`.
+- For GraphQL changes, run `agents.d/utilities/graphql-ref-scan.sh` for text-reference
+  discovery, then verify behavior with relevant Gradle tests/checks.
 
 ## Completion Report
 - List files changed and intent.

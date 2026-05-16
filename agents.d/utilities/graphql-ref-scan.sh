@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: scripts/graphql-ref-check.sh <pattern> [pattern...]"
+  echo "Usage: agents.d/utilities/graphql-ref-scan.sh <pattern> [pattern...]"
   exit 2
 fi
 
@@ -16,6 +16,7 @@ targets=(
 
 for pattern in "$@"; do
   echo "== ${pattern} =="
+  echo "# text-reference scan only (not schema/runtime verification)"
   rg -n --no-heading "${pattern}" "${targets[@]}" || true
   echo
 done

@@ -20,8 +20,10 @@ This file is source-controlled and intentionally not generated.
 
 ## Mandatory Rules
 - Use the Gradle wrapper (`./gradlew`).
+- Add/update conventions in canonical context files listed above; keep this file
+  as pointer/read-order guidance.
 - Express repository automation as Gradle tasks, not ad hoc shell scripts.
 - Keep changes scoped and pattern-consistent.
-- For GraphQL API changes, run `scripts/graphql-ref-check.sh`.
+- For GraphQL API changes, run `agents.d/utilities/graphql-ref-scan.sh` as a text-reference discovery helper (not a verification gate).
 - Deprecations must delegate through canonical command/mutation paths.
 - Keep schema/server/sdk/tests synchronized in one change set.

@@ -21,7 +21,8 @@ changes.
 
 ## 4) Change Safety Rules
 - Keep changes scoped to impacted modules.
-- For GraphQL API changes, run `scripts/graphql-ref-check.sh`.
+- For GraphQL API changes, run `agents.d/utilities/graphql-ref-scan.sh` as a
+  text-reference discovery helper.
 - Keep schema, SDK `.graphql`, SDK dispatcher, and server resolver behavior in
   sync in the same change set.
 
@@ -30,4 +31,3 @@ changes.
 - List changed files and why.
 - Report validations run and results.
 - Call out residual risks or skipped checks.
-
