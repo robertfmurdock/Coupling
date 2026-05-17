@@ -6,5 +6,5 @@
   agents.d/utilities/tcr-delete.sh <path/to/File.kt> ["optional reason"]
   ```
   The script deletes the file, runs `./gradlew check`, and automatically: reverts the file if the build fails, appends the verdict (`deleted` or `verified-in-use`) to cleanup-history.md, and writes the run header if not already present. You do not need to manually revert or write history for deletions.
-- Maximum candidates evaluated per run: **3**.
+- Maximum candidates evaluated **this session**: **3**. Count only candidates you invoke `tcr-delete.sh` on during this session — do not count entries already present in cleanup-history.md when you started.
 - If no safe target exists after evaluating candidates, stop without leaving any uncommitted deletions.

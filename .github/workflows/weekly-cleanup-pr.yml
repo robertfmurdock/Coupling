@@ -105,6 +105,7 @@ jobs:
         env:
           CLEANUP_FOCUS: ${{ steps.focus.outputs.focus }}
           CLEANUP_DATE: ${{ steps.focus.outputs.run_date }}
+          CLEANUP_RUN_ID: "${{ github.run_id }}-${{ github.run_attempt }}"
           CLEANUP_PROMPT_FILE: ${{ steps.prompt.outputs.prompt_file }}
           BEDROCK_INFERENCE_PROFILE_ID: "us.anthropic.claude-haiku-4-5-20251001-v1:0"
           WEEKLY_CLEANUP_MAX_TURNS: "60"

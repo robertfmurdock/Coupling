@@ -31,7 +31,7 @@ Read these before making changes:
 
 - **Write to `.github/weekly-cleanup/cleanup-history.md` immediately after each candidate verdict** — do not defer to the end.
 - **When you identify a new candidate, immediately write it as `queued` in history before investigating it.** This guarantees forward state even if the run is truncated.
-- After evaluating **3 candidates** without finding a safe deletion target, stop. Any remaining identified candidates are already in history as `queued`.
+- After evaluating **3 candidates** in this session without finding a safe deletion target, stop. Count only candidates you actually run `tcr-delete.sh` on now — do not count entries already in history when this session started. Any remaining identified candidates are already in history as `queued`.
 - If at any point you find yourself unsure how many turns remain, treat it as "low" — write history and stop rather than continue searching.
 
 __STRATEGY_CONTENT__
@@ -40,7 +40,7 @@ __STRATEGY_CONTENT__
 The TCR delete script writes history automatically for `deleted` and `verified-in-use` verdicts. For other verdicts, append manually to `.github/weekly-cleanup/cleanup-history.md` immediately after the verdict is reached — do not defer to the end:
 
 ```
-## __RUN_DATE__ — __FOCUS_AREA__
+## __RUN_DATE__ (run-<CLEANUP_RUN_ID>) — __FOCUS_AREA__
 - <FileName.kt>: <verdict> — <one-line reason>
 ```
 
