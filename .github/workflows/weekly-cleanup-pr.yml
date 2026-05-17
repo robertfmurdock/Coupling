@@ -8,11 +8,25 @@ on:
       focus_override:
         description: "Optional focus area override (for dry runs)"
         required: false
-        type: string
+        type: choice
+        options:
+          - ""
+          - client/components
+          - sdk
+          - server/actionz
+          - libraries/model
+          - libraries/repository/core
+          - e2e
       strategy_override:
-        description: "Optional strategy override (dead-code, boundary-check, suggest-new-strategy)"
+        description: "Optional strategy override"
         required: false
-        type: string
+        type: choice
+        options:
+          - ""
+          - dead-code
+          - boundary-check
+          - test-grooming
+          - suggest-new-strategy
 
 permissions:
   id-token: write
