@@ -5,6 +5,7 @@ ROOT_DIR="$(git rev-parse --show-toplevel)"
 PLAN_FILE="${ROOT_DIR}/build/weekly-cleanup/plan.env"
 PROMPT_FILE="${CLEANUP_PROMPT_FILE:-${ROOT_DIR}/build/weekly-cleanup/prompt.md}"
 BEDROCK_REGION="${AWS_REGION:-us-east-1}"
+MAX_TURNS="${WEEKLY_CLEANUP_MAX_TURNS:-40}"
 
 if [[ -n "${BEDROCK_INFERENCE_PROFILE_ID:-}" ]]; then
   BEDROCK_MODEL="${BEDROCK_INFERENCE_PROFILE_ID}"
@@ -32,4 +33,4 @@ fi
 CLAUDE_CODE_USE_BEDROCK=1 \
   AWS_REGION="${BEDROCK_REGION}" \
   ANTHROPIC_MODEL="${BEDROCK_MODEL}" \
-  claude -p "$(cat "${PROMPT_FILE}")"
+  claude -p --max-turns "${MAX_TURNS}" "$(cat "${PROMPT_FILE}")"

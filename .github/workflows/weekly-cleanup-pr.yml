@@ -92,11 +92,12 @@ jobs:
           CLEANUP_DATE: ${{ steps.focus.outputs.run_date }}
           CLEANUP_PROMPT_FILE: ${{ steps.prompt.outputs.prompt_file }}
           BEDROCK_INFERENCE_PROFILE_ID: "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+          WEEKLY_CLEANUP_MAX_TURNS: "40"
           AWS_REGION: "us-east-1"
         run: |
           set -euo pipefail
           echo "command_configured=true" >> "$GITHUB_OUTPUT"
-          ./scripts/weekly-cleanup/run-bedrock-cleanup.sh
+          ./scripts/weekly-cleanup/run-cleanup.sh
 
       - name: Detect Changes
         id: changes

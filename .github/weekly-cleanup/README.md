@@ -17,13 +17,13 @@ This directory contains policy and operator notes for the scheduled cleanup PR w
 ## Local Dry Run
 - `./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan`
 - `./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt`
-- `BEDROCK_MODEL_ID=<model-id> ./scripts/weekly-cleanup/run-bedrock-cleanup.sh`
+- `BEDROCK_MODEL_ID=<model-id> ./scripts/weekly-cleanup/run-cleanup.sh`
 - `./gradlew :scripts:weekly-cleanup:weeklyCleanupEvaluate`
 
 ## Configuration
 - Required repository variable for live agent execution:
   - `WEEKLY_CLEANUP_BEDROCK_MODEL_ID`
-    - Bedrock model id used by `scripts/weekly-cleanup/run-bedrock-cleanup.sh`.
+    - Bedrock model id used by `scripts/weekly-cleanup/run-cleanup.sh`.
     - Example: `anthropic.claude-3-5-sonnet-20241022-v2:0`
     - Required. If not configured, workflow fails with a summary and does not open a PR.
 - AWS auth:
