@@ -88,16 +88,11 @@ jobs:
           CLEANUP_FOCUS: ${{ steps.focus.outputs.focus }}
           CLEANUP_DATE: ${{ steps.focus.outputs.run_date }}
           CLEANUP_PROMPT_FILE: ${{ steps.prompt.outputs.prompt_file }}
-          BEDROCK_MODEL_ID: ${{ vars.WEEKLY_CLEANUP_BEDROCK_MODEL_ID }}
+          BEDROCK_MODEL_ID: "anthropic.claude-sonnet-4-20250514-v1:0"
           WEEKLY_CLEANUP_MAX_TURNS: "3"
           AWS_REGION: "us-east-1"
         run: |
           set -euo pipefail
-          if [ -z "${BEDROCK_MODEL_ID}" ]; then
-            echo "command_configured=false" >> "$GITHUB_OUTPUT"
-            echo "No Bedrock model configured in repo var WEEKLY_CLEANUP_BEDROCK_MODEL_ID; failing workflow." >> "$GITHUB_STEP_SUMMARY"
-            exit 1
-          fi
           echo "command_configured=true" >> "$GITHUB_OUTPUT"
           ./scripts/weekly-cleanup/run-bedrock-cleanup.sh
 
