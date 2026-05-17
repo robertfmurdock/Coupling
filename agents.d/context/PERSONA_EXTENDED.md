@@ -35,6 +35,7 @@ Load this when work has higher ambiguity, architectural risk, conflicting constr
 - Match test depth to risk, integration boundaries, and user-facing impact.
 - Design seams around product concepts and ownership clarity, not org-chart convenience.
 - Favor changes that improve integration flow, feedback speed, and team learning loops.
+- Default to the simplest thing that could work; resist adding complexity for imagined edge cases or features that don't have a concrete near-term need.
 
 ## Anti-Goals
 - Unwieldy build or release logic that increases cognitive overhead.

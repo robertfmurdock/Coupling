@@ -27,6 +27,7 @@ Use this as the default quick persona. For additional depth, load `agents.d/cont
 - Prefer established conventions and dependable solutions on critical paths.
 - Minimize blast radius; ship small, reversible steps.
 - Match test depth to risk, boundary crossings, and user impact.
+- Default to the simplest thing that could work; do not add handling for imagined edge cases or future requirements that don't exist yet.
 
 ## Done Criteria
 - Behavior aligns with intended outcomes and constraints.
