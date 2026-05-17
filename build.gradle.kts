@@ -89,6 +89,12 @@ abstract class SyncAiContextTask : DefaultTask() {
     @get:Internal
     abstract val claudeFilePath: Property<String>
 
+    @get:Internal
+    abstract val copilotFilePath: Property<String>
+
+    @get:Internal
+    abstract val contextManifestFilePath: Property<String>
+
     init {
         outputs.upToDateWhen { false }
     }
@@ -100,8 +106,10 @@ abstract class SyncAiContextTask : DefaultTask() {
         val repoIndexFile = File(repoIndexFilePath.get())
         val workflowsFile = File(workflowsFilePath.get())
         val claudeFile = File(claudeFilePath.get())
+        val copilotFile = File(copilotFilePath.get())
         val settingsFile = File(settingsFilePath.get())
         val repoRootDir = File(repoRootDirPath.get())
+        val manifestFile = File(contextManifestFilePath.get())
 
         generatedDir.mkdirs()
 
@@ -157,12 +165,36 @@ abstract class SyncAiContextTask : DefaultTask() {
             """.trimIndent() + "\n",
         )
 
-        adaptersDir.resolve("CLAUDE.md").copyTo(claudeFile, overwrite = true)
+        val playbookBullets = playbookBullets(manifestFile)
+
+        fun applyTemplate(adapterName: String, outputFile: File) {
+            val template = adaptersDir.resolve(adapterName).readText()
+            outputFile.writeText(template.replace("{{PLAYBOOKS}}", playbookBullets))
+        }
+
+        applyTemplate("CLAUDE.md", claudeFile)
+        applyTemplate("copilot-instructions.md", copilotFile)
 
         logger.lifecycle("Synced AI context files:")
         logger.lifecycle("- CLAUDE.md")
+        logger.lifecycle("- .github/copilot-instructions.md")
         logger.lifecycle("- agents.d/context/generated/repo-index.md")
         logger.lifecycle("- agents.d/context/generated/workflows.md")
+    }
+
+    private fun playbookBullets(manifestFile: File): String {
+        val manifest = ObjectMapper().readTree(manifestFile)
+        return manifest.path("playbooks")
+            .takeIf { it.isObject }
+            ?.properties()
+            ?.asSequence()
+            ?.mapNotNull { (_, node) ->
+                val path = node.path("path").asText(null) ?: return@mapNotNull null
+                val whenText = node.path("when").asText(null) ?: return@mapNotNull null
+                "- `$path` — $whenText"
+            }
+            ?.joinToString("\n")
+            ?: ""
     }
 }
 
@@ -184,16 +216,16 @@ abstract class ValidateAiContextManifestTask : DefaultTask() {
             .takeIf { it.isArray }
             ?.mapNotNull { it.asText(null) }
             ?: emptyList()
-        val playbooks = manifest
+        val playbookPaths = manifest
             .path("playbooks")
             .takeIf { it.isObject }
             ?.properties()
             ?.asSequence()
-            ?.mapNotNull { it.value.asText(null) }
+            ?.mapNotNull { (_, node) -> node.path("path").asText(null) }
             ?.toList()
             ?: emptyList()
 
-        val manifestPaths = (requiredReads + playbooks).distinct()
+        val manifestPaths = (requiredReads + playbookPaths).distinct()
         val missing = manifestPaths.filterNot { File(repoRootDir, it).exists() }
         if (missing.isNotEmpty()) {
             throw GradleException(
@@ -230,15 +262,26 @@ abstract class AgentBootstrapTask : DefaultTask() {
             .takeIf { it.isObject }
             ?.properties()
             ?.asSequence()
-            ?.mapNotNull { it.value.asText(null) }
+            ?.mapNotNull { (_, node) ->
+                val path = node.path("path").asText(null) ?: return@mapNotNull null
+                val whenText = node.path("when").asText(null) ?: ""
+                path to whenText
+            }
             ?.toList()
             ?: emptyList()
-        val readOrder = (requiredReads + playbooks + "agents.d/context/context.json").distinct()
 
         logger.lifecycle("Agent bootstrap read order:")
-        readOrder.forEach { relPath ->
-            val marker = if (File(repoRootDir, relPath).exists()) "" else " (missing)"
-            logger.lifecycle("- $relPath$marker")
+        logger.lifecycle("")
+        logger.lifecycle("Required reads:")
+        (requiredReads + "agents.d/context/context.json").forEach { relPath ->
+            val marker = if (File(repoRootDir, relPath).exists()) "" else " (MISSING)"
+            logger.lifecycle("  - $relPath$marker")
+        }
+        logger.lifecycle("")
+        logger.lifecycle("Conditional reads (load the matching playbook for your task type):")
+        playbooks.forEach { (path, whenText) ->
+            val marker = if (File(repoRootDir, path).exists()) "" else " (MISSING)"
+            logger.lifecycle("  - $path — $whenText$marker")
         }
         logger.lifecycle("")
         logger.lifecycle("`./gradlew agentBootstrap` already refreshes generated AI context files.")
@@ -359,6 +402,8 @@ tasks {
         repoIndexFilePath.set(aiRepoIndexFile.absolutePath)
         workflowsFilePath.set(aiWorkflowsFile.absolutePath)
         claudeFilePath.set(aiClaudeFile.absolutePath)
+        copilotFilePath.set(rootProject.file(".github/copilot-instructions.md").absolutePath)
+        contextManifestFilePath.set(aiContextManifestFile.absolutePath)
     }
 
     register<AgentBootstrapTask>("agentBootstrap") {

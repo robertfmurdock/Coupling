@@ -1,6 +1,6 @@
 # Copilot Instructions
 
-This file is source-controlled and intentionally not generated.
+This file is generated from `agents.d/context`. Do not hand-edit.
 
 ## Project Context
 - Multi-module Gradle Kotlin project (JVM + JS).
@@ -8,9 +8,11 @@ This file is source-controlled and intentionally not generated.
 
 ## Required References
 - `agents.d/context/ARCHITECTURE_CANONICAL.md`
-- `agents.d/context/BOUNDARIES.md`
 - `agents.d/context/TASK_CHECKLIST.md`
-- `agents.d/context/PLAYBOOK_GRAPHQL.md` (GraphQL work)
+
+## Conditional Reads
+Load the relevant playbook based on your task type:
+{{PLAYBOOKS}}
 
 ## Commands
 - `./gradlew agentBootstrap`
@@ -24,5 +26,5 @@ This file is source-controlled and intentionally not generated.
 - Use the Gradle wrapper only.
 - Express repository automation as Gradle tasks, not ad hoc shell scripts.
 - Keep changes small and consistent with local patterns.
-- For GraphQL API changes, run `scripts/graphql-ref-check.sh`.
+- For GraphQL API changes, run `agents.d/utilities/graphql-ref-scan.sh <pattern>`.
 - Keep schema + server + SDK + tests aligned in the same change.

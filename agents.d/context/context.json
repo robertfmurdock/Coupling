@@ -35,15 +35,25 @@
   },
   "required_reads": [
     "agents.d/context/ARCHITECTURE_CANONICAL.md",
-    "agents.d/context/BOUNDARIES.md",
     "agents.d/context/PERSONA.md",
-    "agents.d/context/TASK_CHECKLIST.md",
+    "agents.d/context/TASK_CHECKLIST.md"
+  ],
+  "optional_reads": [
     "agents.d/context/generated/repo-index.md",
     "agents.d/context/generated/workflows.md"
   ],
   "playbooks": {
-    "gradle": "agents.d/context/GRADLE_PLAYBOOK.md",
-    "graphql": "agents.d/context/PLAYBOOK_GRAPHQL.md",
-    "github_actions": "agents.d/context/GITHUB_ACTIONS_PLAYBOOK.md"
+    "graphql": {
+      "path": "agents.d/context/PLAYBOOK_GRAPHQL.md",
+      "when": "GraphQL field/mutation/deprecation changes"
+    },
+    "gradle": {
+      "path": "agents.d/context/GRADLE_PLAYBOOK.md",
+      "when": "Gradle build logic or dependency changes"
+    },
+    "github_actions": {
+      "path": "agents.d/context/GITHUB_ACTIONS_PLAYBOOK.md",
+      "when": "GitHub Actions workflow changes"
+    }
   }
 }

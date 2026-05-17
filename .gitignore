@@ -62,3 +62,4 @@ out/
 CLAUDE.md
 !agents.d/context/adapters/CLAUDE.md
 agents.d/context/generated/
+.github/copilot-instructions.md

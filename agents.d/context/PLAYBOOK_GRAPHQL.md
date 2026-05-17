@@ -3,8 +3,6 @@
 Use this playbook for field add/rename/deprecation/removal and mutation routing.
 
 ## 1) Scope and Text-Reference Scan
-0. Start session bootstrap:
-   - `./gradlew agentBootstrap`
 1. Identify target operation/field names.
 2. Run:
    - `agents.d/utilities/graphql-ref-scan.sh <pattern>`

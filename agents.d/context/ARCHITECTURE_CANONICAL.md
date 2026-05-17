@@ -16,9 +16,23 @@ instruction files should be short and link to this file, not duplicate it.
 - `sdk/`: shared GraphQL documents and dispatchers.
 - `cli/`, `e2e/`, `scripts/`, `deploy/`: tooling and operations.
 
+## Module Ownership Rules
+- **Client**: Do not embed server-side policy in client code. Treat server
+  contracts as external; do not infer undocumented behavior from
+  implementation details. Client-only UI changes should not touch
+  server/schema/sdk unless explicitly required.
+- **Libraries**: Do not embed app-specific policy in shared code. Introduce
+  shared abstractions only when multi-module demand and stable semantics are
+  already demonstrated in this codebase.
+- **SDK**: Dispatcher mappings must use explicit contract intent; avoid silent
+  fallback behavior that masks schema/contract drift.
+- **Tests**: Verify behavioral intent at the affected boundary, not just
+  internal implementation. When migrating command paths, preserve behavioral
+  assertions and add required authorization stubs. When proposing to move a
+  test between architectural levels, state why confidence is maintained.
+
 ## Build and Test Norms
 - Use `./gradlew` for all build and test tasks.
-- Start agent sessions with `./gradlew agentBootstrap` before editing.
 - Generated artifacts are not version-controlled. This follows the standard Gradle
   model: generated outputs belong in ignored output paths (primarily `build/`) or
   explicitly gitignored generated paths when a non-`build/` location is required.
@@ -98,9 +112,6 @@ instruction files should be short and link to this file, not duplicate it.
   is expected.
 - After convention updates, run `./gradlew syncAiContext` to propagate generated
   context artifacts.
-- For AI context generation/bootstrap, use:
-  - `./gradlew syncAiContext`
-  - `./gradlew agentBootstrap`
 
 ## Completion Criteria for Agent Tasks
 - Impacted modules identified up front.
