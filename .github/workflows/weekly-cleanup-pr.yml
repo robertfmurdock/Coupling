@@ -80,8 +80,13 @@ jobs:
           set -euo pipefail
           ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt
           echo "prompt_file=build/weekly-cleanup/prompt.md" >> "$GITHUB_OUTPUT"
-
-      - name: Verify Green and Prime Full Cache
+      - name: Create Caddy Directory to avoid permissions problems
+        run: mkdir -p ~/caddy_data
+      - name: Setup users for Docker
+        run: |-
+          echo "UID=$(id -u)" >> $GITHUB_ENV &&
+          echo "GID=$(id -g)" >> $GITHUB_ENV
+      - name: Initial Build
         run: ./gradlew check
 
       - name: Install Claude Code CLI
