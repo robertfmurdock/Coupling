@@ -46,6 +46,10 @@ TURN=1
 
 while [[ "${TURN}" -le "${MAX_TURNS}" ]]; do
   echo "Weekly cleanup turn ${TURN}/${MAX_TURNS}"
+  if [[ -n "${FEEDBACK}" ]]; then
+    echo "  [turn ${TURN}] Feedback from previous turn:"
+    echo "${FEEDBACK}"
+  fi
   RUN_DIR="${ROOT_DIR}/build/weekly-cleanup/turn-${TURN}"
   mkdir -p "${RUN_DIR}"
 
@@ -90,18 +94,24 @@ EOF
   ' "${RAW_TEXT_FILE}" > "${PATCH_FILE}"
 
   if [[ ! -s "${PATCH_FILE}" ]]; then
+    echo "  [turn ${TURN}] No diff block in response; retrying."
+    echo "  [turn ${TURN}] Model output:"
+    cat "${RAW_TEXT_FILE}"
     FEEDBACK="No valid diff block was returned. Return exactly one \`\`\`diff fenced block."
     TURN=$((TURN + 1))
     continue
   fi
 
   if rg -n '^(diff --git a/\.github/|diff --git b/\.github/|\+\+\+ b/\.github/|--- a/\.github/)' "${PATCH_FILE}" > "${RUN_DIR}/forbidden-paths.txt"; then
+    echo "  [turn ${TURN}] Patch touched forbidden path .github/; retrying."
     FEEDBACK="Patch touched forbidden path .github/. Do not modify .github files."
     TURN=$((TURN + 1))
     continue
   fi
 
   if ! git apply --whitespace=fix "${PATCH_FILE}" > "${RUN_DIR}/git-apply-stdout.txt" 2> "${RUN_DIR}/git-apply-stderr.txt"; then
+    echo "  [turn ${TURN}] git apply failed:"
+    cat "${RUN_DIR}/git-apply-stderr.txt"
     FEEDBACK="$(cat "${RUN_DIR}/git-apply-stderr.txt")"
     TURN=$((TURN + 1))
     continue
@@ -112,7 +122,12 @@ EOF
     exit 0
   fi
 
+  echo "  [turn ${TURN}] Scoped validation failed. Patch applied:"
+  cat "${PATCH_FILE}"
+  echo "  [turn ${TURN}] Validation output (last 50 lines):"
+  tail -n 50 "${TEST_OUTPUT_FILE}"
   FEEDBACK="$(tail -n 200 "${TEST_OUTPUT_FILE}")"
+  git checkout -- . 2>/dev/null || true
   TURN=$((TURN + 1))
 done
 
