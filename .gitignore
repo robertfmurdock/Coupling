@@ -60,4 +60,5 @@ out/
 
 # Generated AI-agent context outputs
 CLAUDE.md
+!agents.d/context/adapters/CLAUDE.md
 agents.d/context/generated/
