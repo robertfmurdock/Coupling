@@ -34,12 +34,10 @@ Read these before making changes:
 - If at any point you find yourself unsure how many turns remain, treat it as "low" — write history and stop rather than continue searching.
 
 ### Investigation Protocol
-- Complete all investigation **before** making any file changes.
 - Track findings as a ledger: record each candidate and its verdict (`deleted` / `verified-in-use` / `skipped`). Do not re-investigate a candidate once a verdict is reached.
-- After investigation, select exactly **one** cleanup target. If no safe target exists, stop without changing code.
-- Make changes, validate once with the command above, stop. Do not loop back to re-investigate alternatives.
-- Maximum investigation depth: 6 tool calls per candidate.
+- **Preferred investigation method for dead code candidates:** delete the symbol, run `__MODULE_TASK__ -q --console=plain 2>&1 | tail -50`. If it compiles clean, the deletion stands. If it fails, run `git checkout -- <file>` and mark the candidate `verified-in-use`. This is faster and more reliable than grep chains.
 - Maximum candidates evaluated per run: **3**.
+- If no safe target exists after evaluating candidates, stop without leaving any uncommitted deletions.
 
 ### Cleanup History
 **Write this immediately after reaching each candidate verdict, not at the end.** Append one entry to `.github/weekly-cleanup/cleanup-history.md` per run, whether or not changes were made:

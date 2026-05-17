@@ -30,30 +30,52 @@ if [[ ! -f "${PLAN_FILE}" ]]; then
   exit 1
 fi
 
-STREAM=$(mktemp)
-trap 'rm -f "$STREAM"' EXIT
+STREAM_DIR="${ROOT_DIR}/build/weekly-cleanup"
+mkdir -p "${STREAM_DIR}"
+STREAM="${STREAM_DIR}/agent-stream.jsonl"
+: > "$STREAM"
 
+dump_stream_tail() {
+  local n="${1:-30}"
+  echo "--- Stream size: $(wc -l < "$STREAM") lines ---" >&2
+  echo "--- Last ${n} stream events ---" >&2
+  tail -${n} "$STREAM" >&2
+}
+
+# Disable errexit for the pipeline so we can capture per-stage exit codes.
+set +e
 CLAUDE_CODE_USE_BEDROCK=1 \
   AWS_REGION="${BEDROCK_REGION}" \
   ANTHROPIC_MODEL="${BEDROCK_MODEL}" \
   claude --dangerously-skip-permissions -p --verbose --output-format stream-json --max-turns "${MAX_TURNS}" "$(cat "${PROMPT_FILE}")" \
   | tee "$STREAM" \
-  | jq -r 'select(.type == "assistant") | .message.content[] | select(.type == "text") | .text'
+  | jq -r 'select(.type == "assistant") | .message.content[]? | select(.type == "text") | .text'
+pipeline_exits=("${PIPESTATUS[@]}")
+set -e
+
+claude_exit="${pipeline_exits[0]}"
+jq_exit="${pipeline_exits[2]}"
+echo "Pipeline exit codes — claude: ${claude_exit}, jq: ${jq_exit}" >&2
 
 subtype=$(jq -r 'select(.type == "result") | .subtype' "$STREAM")
 result_error=$(jq -r 'select(.type == "result") | .error // ""' "$STREAM")
+
+echo "Agent result subtype: '${subtype:-<none>}'" >&2
 
 if [[ "$subtype" == "error_max_turns" ]]; then
   echo "Agent hit max turns — partial work may exist" >&2
   exit 0
 elif [[ "$subtype" == "success" ]]; then
   exit 0
+elif [[ -z "$subtype" && "$claude_exit" -ne 0 ]]; then
+  echo "claude process exited ${claude_exit} before producing a result event" >&2
+  dump_stream_tail 30
+  exit 1
 else
   echo "Agent failed: subtype='${subtype}'" >&2
   if [[ -n "$result_error" ]]; then
     echo "Error details: ${result_error}" >&2
   fi
-  echo "--- Last 30 stream events for debugging ---" >&2
-  tail -30 "$STREAM" >&2
+  dump_stream_tail 30
   exit 1
 fi

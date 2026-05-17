@@ -177,6 +177,15 @@ jobs:
             - Risk: low-to-moderate; cleanup-only scope with hard safety gates.
             - Rollback: revert this PR commit or close PR without merge.
 
+      - name: Upload Agent Stream Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-stream-log
+          path: build/weekly-cleanup/agent-stream.jsonl
+          retention-days: 7
+          if-no-files-found: ignore
+
       - name: Final Run Summary
         if: always()
         run: |
