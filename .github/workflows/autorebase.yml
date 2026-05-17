@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto rebase
-        uses: MoveLab-Studio/AutoRebase@v0.1.10
+        uses: MoveLab-Studio/AutoRebase@v0.2.0
         with:
           github_token: ${{ secrets.COUPLING_PAT }}
