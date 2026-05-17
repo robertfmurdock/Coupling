@@ -4,11 +4,14 @@ You are performing one small, architecture-aligned cleanup directly in this repo
 You have full tool access: read files, explore the codebase, and edit files directly.
 
 ### CI Context Overrides
-- `./gradlew agentBootstrap` was already run by the workflow before this prompt — do not run it again.
-- The Gradle build cache is pre-warmed for `__MODULE_TASK__` — validation runs fast.
-- To validate changes, run: `__MODULE_TASK__ -q --console=plain 2>&1 | tail -50`
-  - The `-q` flag suppresses download noise; `tail -50` keeps output small.
-  - Only read detailed output if the command fails.
+- `./gradlew agentBootstrap` and `./gradlew check` were already run by the workflow before this prompt — do not run them again at the start.
+- The full Gradle build cache is warm — targeted and full validation runs are fast.
+- **Validation strategy** (in order):
+  1. During investigation and after each change, run targeted tests for quick feedback:
+     `__MODULE_TASK__ -q --console=plain 2>&1 | tail -50`
+  2. Before finishing, run a full build to catch any cross-module surprises:
+     `./gradlew check -q --console=plain 2>&1 | tail -100`
+  - The `-q` flag suppresses download noise. Only read detailed output if a command fails.
 - These override the general CLAUDE.md execution norms for this automated context.
 
 ### Required Context Reads
@@ -42,10 +45,10 @@ Verdicts: `deleted`, `verified-in-use`, `skipped` (out of scope or exceeded limi
 Keep each line under 120 characters. Do not rewrite prior entries.
 
 ### Scope
-- Focus area: `__FOCUS_AREA__`
+- Focus area: `__FOCUS_AREA__` — this is an **entrypoint for investigation**, not a hard boundary.
+  Start here, but follow the trail where it leads. Let Gradle determine the actual impact of any change — do not try to anticipate cross-module effects yourself.
 - Date: `__RUN_DATE__`
 - Change limit: at most `__MAX_FILES__` files and `__MAX_LINES__` changed lines.
-- Keep cleanup in one bounded area only.
 - Allowed cleanup categories:
   - dead code deletion with local tests
   - naming/consistency cleanup without behavior changes

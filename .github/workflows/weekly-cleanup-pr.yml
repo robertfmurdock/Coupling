@@ -67,13 +67,11 @@ jobs:
             echo "run_date=${RUN_DATE}"
             echo "branch=${BRANCH}"
             echo "title=${TITLE}"
-            echo "module_task=${MODULE_TASK}"
           } >> "$GITHUB_OUTPUT"
           {
             echo "## Weekly Cleanup Context"
             echo "- Focus: ${FOCUS}"
             echo "- Branch: ${BRANCH}"
-            echo "- Scoped validation: ${MODULE_TASK}"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Prepare Prompt
@@ -83,8 +81,8 @@ jobs:
           ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt
           echo "prompt_file=build/weekly-cleanup/prompt.md" >> "$GITHUB_OUTPUT"
 
-      - name: Pre-warm Module Cache
-        run: ${{ steps.focus.outputs.module_task }}
+      - name: Verify Green and Prime Full Cache
+        run: ./gradlew check
 
       - name: Install Claude Code CLI
         run: npm install -g @anthropic-ai/claude-code
@@ -136,10 +134,10 @@ jobs:
           fi
           echo "gate_ok=$gate_ok" >> "$GITHUB_OUTPUT"
 
-      - name: Run Scoped Validation
+      - name: Run Full Validation
         id: validate
         if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
-        run: ${{ steps.focus.outputs.module_task }}
+        run: ./gradlew check
 
       - name: Configure Git Author
         if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
@@ -168,8 +166,7 @@ jobs:
             - Follows context contract from `agents.d/context/context.json` and canonical guidance files.
 
             ## Validation Commands and Results
-            - `${{ steps.focus.outputs.module_task }}`
-            - `./gradlew agentBootstrap`
+            - `./gradlew check` (pre-agent green verification + post-agent full validation)
 
             ## Risk and Rollback
             - Risk: low-to-moderate; cleanup-only scope with hard safety gates.
@@ -183,5 +180,5 @@ jobs:
             echo "- Agent command configured: ${{ steps.agent.outputs.command_configured || 'false' }}"
             echo "- Changes detected: ${{ steps.changes.outputs.has_changes || 'false' }}"
             echo "- Safety gates passed: ${{ steps.gates.outputs.gate_ok || 'n/a' }}"
-            echo "- Scoped validation command: ${{ steps.focus.outputs.module_task }}"
+            echo "- Full validation: ./gradlew check"
           } >> "$GITHUB_STEP_SUMMARY"

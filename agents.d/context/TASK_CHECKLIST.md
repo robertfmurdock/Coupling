@@ -25,8 +25,9 @@ Use this checklist for every implementation task.
 - Update all linked artifacts for cross-layer changes.
 
 ## Validation
-- Run smallest sufficient task set first.
+- Run smallest sufficient task set first for quick feedback.
 - Use Gradle wrapper (`./gradlew`) only.
+- Before completing any task, run `./gradlew check` to verify no cross-module surprises — let the build tooling determine impact, do not anticipate it.
 - Validate the test mix:
   - confidence-anchor coverage exists at the intended boundary level,
   - variation coverage is pushed downward where possible without reducing
