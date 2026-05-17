@@ -41,11 +41,19 @@ CLAUDE_CODE_USE_BEDROCK=1 \
   | jq -r 'select(.type == "assistant") | .message.content[] | select(.type == "text") | .text'
 
 subtype=$(jq -r 'select(.type == "result") | .subtype' "$STREAM")
+result_error=$(jq -r 'select(.type == "result") | .error // ""' "$STREAM")
 
 if [[ "$subtype" == "error_max_turns" ]]; then
   echo "Agent hit max turns — partial work may exist" >&2
   exit 0
-elif [[ "$subtype" != "success" ]]; then
-  echo "Agent failed: $subtype" >&2
+elif [[ "$subtype" == "success" ]]; then
+  exit 0
+else
+  echo "Agent failed: subtype='${subtype}'" >&2
+  if [[ -n "$result_error" ]]; then
+    echo "Error details: ${result_error}" >&2
+  fi
+  echo "--- Last 30 stream events for debugging ---" >&2
+  tail -30 "$STREAM" >&2
   exit 1
 fi

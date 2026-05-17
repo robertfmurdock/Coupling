@@ -24,7 +24,14 @@ Read these before making changes:
 - `agents.d/context/generated/workflows.md`
 - `agents.d/context/GRADLE_PLAYBOOK.md`
 - `agents.d/context/context.json`
-- `.github/weekly-cleanup/cleanup-history.md` — skip any candidate listed as `verified-in-use` here.
+- `.github/weekly-cleanup/cleanup-history.md` — skip candidates listed as `verified-in-use`; investigate `queued` candidates first before generating new ones.
+
+### Turn Budget and History Priority
+**The cleanup-history.md entry is the primary deliverable of every run.** A run that records "no safe target found" is a success. A run that exhausts all turns without writing history is a failure.
+
+- **Write to `.github/weekly-cleanup/cleanup-history.md` immediately after each candidate verdict** — do not defer to the end.
+- After evaluating **3 candidates** without finding a safe deletion target, stop investigating. Log any remaining identified-but-uninvestigated candidates as `queued` in history, then stop.
+- If at any point you find yourself unsure how many turns remain, treat it as "low" — write history and stop rather than continue searching.
 
 ### Investigation Protocol
 - Complete all investigation **before** making any file changes.
@@ -32,16 +39,17 @@ Read these before making changes:
 - After investigation, select exactly **one** cleanup target. If no safe target exists, stop without changing code.
 - Make changes, validate once with the command above, stop. Do not loop back to re-investigate alternatives.
 - Maximum investigation depth: 6 tool calls per candidate.
+- Maximum candidates evaluated per run: **3**.
 
 ### Cleanup History
-At the end of every run — whether or not changes were made — append one entry to `.github/weekly-cleanup/cleanup-history.md` in this format:
+**Write this immediately after reaching each candidate verdict, not at the end.** Append one entry to `.github/weekly-cleanup/cleanup-history.md` per run, whether or not changes were made:
 
 ```
 ## __RUN_DATE__ — __FOCUS_AREA__
 - <FileName.kt>: <verdict> — <one-line reason>
 ```
 
-Verdicts: `deleted`, `verified-in-use`, `skipped` (out of scope or exceeded limits).
+Verdicts: `deleted`, `verified-in-use`, `skipped` (out of scope or exceeded limits), `queued` (identified but not yet investigated — investigate these first in a future run).
 Keep each line under 120 characters. Do not rewrite prior entries.
 
 ### Scope
