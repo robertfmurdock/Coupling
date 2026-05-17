@@ -107,9 +107,15 @@ instruction files should be short and link to this file, not duplicate it.
 ## Automation Norm
 - Repository automation and project scripting must be expressed as Gradle tasks
   (invoked via `./gradlew ...`), not ad hoc shell scripts.
-- Agent-only reusable helpers belong in `agents.d/utilities/`; check there first
-  before repeating a complex/common workflow, and add utilities there when reuse
-  is expected.
+- When you need a shell script for agent use, the default location is `agents.d/utilities/`
+  — not `scripts/` (Gradle-invoked project automation) or `.github/` (CI workflow support).
+  Check there first before repeating a complex/common workflow; create a new utility there
+  when the pattern is likely to recur. Current utilities:
+  - `graphql-ref-scan.sh <pattern>` — text-reference discovery across GraphQL paths.
+  - `tcr-delete.sh <file> [reason]` — TCR-style dead code deletion: deletes the file,
+    runs `./gradlew check`, auto-reverts on failure, and appends the verdict to
+    `.github/weekly-cleanup/cleanup-history.md`. Use this instead of manual delete +
+    check + revert sequences when evaluating dead code candidates.
 - After convention updates, run `./gradlew syncAiContext` to propagate generated
   context artifacts.
 
