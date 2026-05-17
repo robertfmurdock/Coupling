@@ -21,6 +21,7 @@ Use this checklist for every implementation task.
 ## Implementation
 - If the task artifact has no `## Checklist` section, create one before writing any code.
   List each planned slice as an unchecked item (`- [ ] ...`). This is the first slice.
+  The final item must always be `- [ ] Move this file to agents.d/tasks_completed/`.
 - Keep changes focused on impacted modules.
 - Follow existing patterns and module ownership.
 - Before changing something that looks wrong (especially a flag or setting overriding a default), confirm it isn't intentional. Surface the ambiguity; don't silently "fix" it.

@@ -22,5 +22,8 @@ language used in this repository.
 
 ## General Style
 - Keep edits minimal and limited to task scope.
+- For a feature or bugfix task, "task scope" includes any method or function that
+  contains or references the touched lines — not just the touched lines themselves.
+- For arefactoring task, "task scope" includes any file containing the touched lines — not just the touched lines themselves.
 - Preserve existing behavior unless the task explicitly changes it.
 - Follow existing patterns and module ownership.

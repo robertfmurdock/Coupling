@@ -113,3 +113,14 @@ candidate as `test-grooming-gap` or `test-grooming-ambiguous` and stop.
 - Do not attempt test moves across `client/` ↔ `server/` boundaries; those
   require explicit cross-layer planning.
 - Do not modify test assertions — this strategy is placement/redundancy only.
+
+## Checklist
+
+- [x] Strategy document complete (this file)
+- [x] Create `agents.d/context/agent-strategy-test-grooming.md` (agent-facing prompt, distilled from this document)
+- [x] Add `test-grooming` to `allowedStrategies` and `strategyRotation` in `scripts/weekly-cleanup/build.gradle.kts`
+- [x] Update `WeeklyCleanupCandidatesTask` to generate test-file candidates when strategy is `test-grooming`
+- [x] Run `./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan -PweeklyCleanupStrategyOverride=test-grooming` and verify plan output
+- [x] Run `./gradlew :scripts:weekly-cleanup:weeklyCleanupCandidates` and verify candidates file lists test files
+- [x] Run `./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt` and verify rendered prompt includes strategy content
+- [ ] Move this file to `agents.d/tasks_completed/`

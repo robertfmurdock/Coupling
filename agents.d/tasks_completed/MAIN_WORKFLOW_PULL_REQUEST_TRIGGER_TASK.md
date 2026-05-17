@@ -26,10 +26,10 @@ The cleaner long-term fix is to add a `pull_request` trigger to `main.yml` so th
 - [x] `weekly-cleanup-pr.yml`: removed `ssh-key` from checkout step
 - [x] `dependency-update.yml`: removed `ssh-key` from checkout step
 
-### Validation (pending — requires merge to master)
-- [ ] Master push build completes successfully (deploy role, release steps)
-- [ ] Test PR triggers `main.yml` with exactly one run (no duplicate from `push`)
-- [ ] Manually triggered bot workflow (`dependency-update` or `weekly-cleanup-pr`) produces a PR that shows a `main.yml` check run
+### Validation
+- [x] Master push build completes successfully (deploy role, release steps)
+- [x] Test PR triggers `main.yml` with exactly one run (no duplicate from `push`)
+- [x] Manually triggered bot workflow (`dependency-update` or `weekly-cleanup-pr`) produces a PR that shows a `main.yml` check run
 
 ## Definition of done
 - `main.yml` has a `pull_request` trigger.

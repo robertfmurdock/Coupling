@@ -33,7 +33,7 @@ abstract class WeeklyCleanupPlanTask : DefaultTask() {
         val resolvedFocusOverride = focusOverride.get().trim()
         val runDate = runDateOverride.get().trim().takeUnless { it.isBlank() }
             ?: LocalDate.now().toString()
-        val allowedStrategies = listOf("dead-code", "boundary-check", "suggest-new-strategy")
+        val allowedStrategies = listOf("dead-code", "boundary-check", "test-grooming", "suggest-new-strategy")
         val resolvedStrategyOverride = strategyOverride.get().trim()
         val strategy = if (resolvedStrategyOverride.isNotBlank()) {
             require(allowedStrategies.contains(resolvedStrategyOverride)) {
@@ -42,7 +42,7 @@ abstract class WeeklyCleanupPlanTask : DefaultTask() {
             resolvedStrategyOverride
         } else {
             val week = LocalDate.now().get(WeekFields.of(Locale.ROOT).weekOfWeekBasedYear())
-            val strategyRotation = listOf("dead-code", "dead-code", "dead-code", "boundary-check", "suggest-new-strategy")
+            val strategyRotation = listOf("dead-code", "dead-code", "dead-code", "boundary-check", "test-grooming", "suggest-new-strategy")
             strategyRotation[week % strategyRotation.size]
         }
         val allowedFocuses = listOf(
@@ -176,10 +176,15 @@ abstract class WeeklyCleanupCandidatesTask : DefaultTask() {
                 line.substring(0, i) to line.substring(i + 1).trim('\'')
             }
         val focus = plan["FOCUS"] ?: throw GradleException("Missing FOCUS in plan file")
+        val strategy = plan["STRATEGY"] ?: "dead-code"
         val rootDir = project.rootDir
         val focusDir = rootDir.resolve(focus)
         if (!focusDir.exists()) throw GradleException("Focus directory does not exist: ${focusDir.absolutePath}")
-        val finalVerdicts = setOf("verified-in-use", "deleted", "skipped")
+        val finalVerdicts = setOf(
+            "verified-in-use", "deleted", "skipped",
+            "test-grooming-deleted", "test-grooming-revert", "test-grooming-gap",
+            "test-grooming-move-candidate", "test-grooming-orphan", "verified-anchor-or-variation",
+        )
 
         fun settledBaseNames(): Set<String> {
             val resolvedHistoryPath = historyFilePath.get()
@@ -222,26 +227,45 @@ abstract class WeeklyCleanupCandidatesTask : DefaultTask() {
             return stdout.toString().trim().lines().none { it.isNotBlank() && it != file.absolutePath }
         }
 
+        val candidateFilter: (File) -> Boolean
+        val candidateHeaders: List<String>
+        val emptyMessage: String
+
+        if (strategy == "test-grooming") {
+            candidateFilter = { it.isDiscoveredByTestRunner() }
+            candidateHeaders = listOf(
+                "# Weekly Cleanup Test-Grooming Candidates",
+                "# Focus: $focus",
+                "# Ranked by file size ascending",
+                "# All test files in focus area — evaluate for architectural placement",
+            )
+            emptyMessage = "(no test files found in focus area)"
+        } else {
+            candidateFilter = { !it.isDiscoveredByTestRunner() && hasNoImportReferences(it) }
+            candidateHeaders = listOf(
+                "# Weekly Cleanup Dead-Code Candidates",
+                "# Focus: $focus",
+                "# Ranked by file size ascending (lowest blast radius first)",
+                "# Files with zero import references outside their own file",
+            )
+            emptyMessage = "(no zero-import candidates found in focus area)"
+        }
+
         val settledBaseNames = settledBaseNames()
         val sorted = focusDir.walkTopDown()
             .filter { it.isFile && it.extension == "kt" }
             .filterNot { it.name in settledBaseNames }
-            .filterNot { it.isDiscoveredByTestRunner() }
-            .filter { hasNoImportReferences(it) }
+            .filter(candidateFilter)
             .map { it to it.length() }
             .sortedBy { it.second }
             .toList()
-
         val out = File(outputFilePath.get())
         out.parentFile.mkdirs()
         out.writeText(buildString {
-            appendLine("# Weekly Cleanup Dead-Code Candidates")
-            appendLine("# Focus: $focus")
-            appendLine("# Ranked by file size ascending (lowest blast radius first)")
-            appendLine("# Files with zero import references outside their own file")
+            candidateHeaders.forEach(::appendLine)
             appendLine()
             if (sorted.isEmpty()) {
-                appendLine("(no zero-import candidates found in focus area)")
+                appendLine(emptyMessage)
             } else {
                 sorted.forEach { (file, size) ->
                     appendLine("- ${file.relativeTo(rootDir).path} (${size} bytes)")
@@ -351,7 +375,7 @@ tasks {
 
     register<WeeklyCleanupCandidatesTask>("weeklyCleanupCandidates") {
         group = "automation"
-        description = "Produces a ranked dead-code candidate list for the weekly cleanup focus area."
+        description = "Produces a ranked candidate list for the weekly cleanup focus area (strategy-aware)."
         dependsOn(weeklyCleanupPlan)
         planFilePath.set(weeklyCleanupPlanFilePath)
         outputFilePath.set(weeklyCleanupCandidatesFilePath)
