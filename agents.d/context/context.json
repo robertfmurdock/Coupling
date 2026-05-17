@@ -43,6 +43,10 @@
     "agents.d/context/generated/workflows.md"
   ],
   "playbooks": {
+    "code_style": {
+      "path": "agents.d/context/PLAYBOOK_CODE_STYLE.md",
+      "when": "modifying source code"
+    },
     "graphql": {
       "path": "agents.d/context/PLAYBOOK_GRAPHQL.md",
       "when": "GraphQL field/mutation/deprecation changes"

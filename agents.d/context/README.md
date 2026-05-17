@@ -9,6 +9,7 @@ repository.
 - `PERSONA_EXTENDED.md`: extended persona for higher-ambiguity sessions.
 - `TASK_CHECKLIST.md`: required pre-flight and completion checks.
 - `CONTEXT_CONTRACT.md`: required context categories every agent must consume.
+- `PLAYBOOK_CODE_STYLE.md`: code style rules for source code modifications.
 - `GRADLE_PLAYBOOK.md`: Gradle build-logic and automation conventions.
 - `GITHUB_ACTIONS_PLAYBOOK.md`: workflow authoring conventions.
 - `PLAYBOOK_GRAPHQL.md`: high-risk GraphQL change recipe.

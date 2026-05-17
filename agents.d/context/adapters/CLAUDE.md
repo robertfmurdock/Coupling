@@ -15,5 +15,3 @@ Load the relevant playbook based on your task type:
 - Use `./gradlew` for all tasks.
 - Express repository automation as Gradle tasks, not ad hoc shell scripts.
 - Start with module-scoped validation, then broaden as needed.
-- Keep edits minimal and limited to task scope.
-- Preserve behavior unless task explicitly changes it.

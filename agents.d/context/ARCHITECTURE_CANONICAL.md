@@ -82,14 +82,6 @@ instruction files should be short and link to this file, not duplicate it.
 ## Editing Norms
 - Keep diffs minimal and pattern-consistent.
 - Do not introduce unrelated refactors in feature/bugfix changes.
-- After writing a comment, take a refactor pass to embed its content into the
-  code itself — better names, extracted functions, clearer structure. A comment
-  that survives this pass is one whose WHY genuinely cannot be expressed in code.
-- Prefer immutable data structures and functional transformations (`map`, `filter`,
-  `fold`, etc.) over mutable accumulators and imperative loops. Avoid loops whose
-  exit path depends on `break`, `continue`, or accumulated mutable state — these
-  obscure intent and complicate reasoning. When a loop is necessary, make its
-  termination condition and output unambiguous.
 - Preserve existing behavior unless change request explicitly requires it.
 - Task artifacts are stored under `agents.d/tasks/`.
 - Completed task artifacts are stored under `agents.d/tasks_completed/`.
@@ -97,8 +89,9 @@ instruction files should be short and link to this file, not duplicate it.
   or change pressure is already demonstrated in this codebase.
 - Add or update behavioral/process conventions in canonical context files
   (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `TASK_CHECKLIST.md`,
-  `GRADLE_PLAYBOOK.md` when Gradle-specific, and `PLAYBOOK_GRAPHQL.md` when
-  GraphQL-specific), not in `AGENTS.md` or generated context outputs.
+  `PLAYBOOK_CODE_STYLE.md` when code-style-specific, `GRADLE_PLAYBOOK.md` when
+  Gradle-specific, and `PLAYBOOK_GRAPHQL.md` when GraphQL-specific), not in
+  `AGENTS.md` or generated context outputs.
 
 ## Integration and Delivery Heuristics
 - Optimize for system flow, not local module neatness alone.
