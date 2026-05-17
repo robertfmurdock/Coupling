@@ -21,6 +21,7 @@ Use this checklist for every implementation task.
 ## Implementation
 - Keep changes focused on impacted modules.
 - Follow existing patterns and module ownership.
+- Prefer existing libraries and build tooling over custom implementations.
 - Update all linked artifacts for cross-layer changes.
 
 ## Validation
