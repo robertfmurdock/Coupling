@@ -54,10 +54,31 @@ instruction files should be short and link to this file, not duplicate it.
 - Keep diffs minimal and pattern-consistent.
 - Do not introduce unrelated refactors in feature/bugfix changes.
 - Preserve existing behavior unless change request explicitly requires it.
+- Prefer direct, local solutions first; only introduce abstractions when duplication
+  or change pressure is already demonstrated in this codebase.
 - Add or update behavioral/process conventions in canonical context files
   (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `TASK_CHECKLIST.md`,
   `GRADLE_PLAYBOOK.md` when Gradle-specific, and `PLAYBOOK_GRAPHQL.md` when
   GraphQL-specific), not in `AGENTS.md` or generated context outputs.
+
+## Integration and Delivery Heuristics
+- Optimize for system flow, not local module neatness alone.
+- When changing architecture-facing behavior, include expected impact on:
+  - integration path (what must still compose cleanly),
+  - build/test/deploy ergonomics,
+  - rollback or reversal strategy.
+- Avoid "activity without achievement": report outcomes and risks that influence
+  decisions, not only file/activity counts.
+
+## Multi-Agent Coordination Norms
+- Before implementation, state seam assumptions that affect correctness (module
+  ownership, contracts, invariants, auth/validation expectations).
+- Treat assumptions as provisional; if evidence conflicts, update assumptions and
+  note the change explicitly.
+- If parallel work is used, assign disjoint ownership and identify integration
+  touchpoints up front.
+- Surface conceptual conflicts immediately (different boundary/contract choices),
+  even when code compiles and tests pass.
 
 ## Automation Norm
 - Repository automation and project scripting must be expressed as Gradle tasks
@@ -73,7 +94,8 @@ instruction files should be short and link to this file, not duplicate it.
 
 ## Completion Criteria for Agent Tasks
 - Impacted modules identified up front.
+- Seam assumptions and invariants that govern the change are listed.
 - Scoped validation command(s) listed before broad validation.
 - All linked artifacts updated for cross-layer changes.
 - Relevant Gradle tasks executed and reported.
-- Risks and follow-up items explicitly listed.
+- Risks, follow-up items, and any unresolved contract questions are explicitly listed.

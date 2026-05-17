@@ -3,6 +3,8 @@
 ## Client (`client/`)
 - Owns UI behavior, rendering, and client-side interaction logic.
 - Avoid pushing server-side rules into client-only implementations.
+- Treat server contracts as external boundaries; do not infer undocumented behavior
+  from incidental implementation details.
 
 ## Server (`server/`)
 - Owns GraphQL schema and resolver behavior.
@@ -10,16 +12,22 @@
 - Avoid duplicating logic across old/new resolver entry points.
 - When resolver/mutation behavior changes, update server action tests in the same
   change set.
+- Keep authoritative validation and policy decisions on server command/mutation
+  paths, not spread across resolver entry points.
 
 ## SDK (`sdk/`)
 - Owns GraphQL operation documents and dispatcher integration surface.
 - Dispatchers should map to domain models through canonical paths.
 - GraphQL server operation renames/deprecations require synchronized SDK document
   and dispatcher updates.
+- SDK mappings should preserve explicit contract intent; avoid silent fallback
+  behavior that masks schema/contract drift.
 
 ## Shared Libraries (`libraries/`)
 - Own shared domain models/utilities and cross-cutting abstractions.
 - Do not embed app-specific policy where shared code is expected.
+- Introduce shared abstractions only with demonstrated multi-module demand and
+  stable semantics.
 
 ## Test Modules (`server/actionz`, `e2e`, test libraries)
 - Preserve behavioral assertions when migrating command paths.
@@ -32,3 +40,9 @@
 - Keep scope narrow: only touch modules required by the task.
 - Client-only UI changes should not modify server/schema/sdk unless explicitly
   required.
+- For boundary-crossing changes, explicitly record:
+  - boundary assumption(s),
+  - invariant(s) that must hold across modules,
+  - ownership of each changed seam.
+- Tests should verify behavioral intent at the affected boundary, not just internal
+  implementation details.
