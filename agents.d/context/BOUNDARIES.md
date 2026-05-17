@@ -32,6 +32,10 @@
 ## Test Modules (`server/actionz`, `e2e`, test libraries)
 - Preserve behavioral assertions when migrating command paths.
 - Add required authorization stubs for new command path coverage.
+- Keep one confidence-anchor test at the boundary level that proves the primary
+  cross-module behavior.
+- Prefer placing permutations and edge-case matrices in lower-level tests unless
+  they alter boundary behavior.
 
 ## Cross-Cutting Constraints
 - GraphQL contract changes must be synchronized across schema/server/sdk/tests.
@@ -46,3 +50,5 @@
   - ownership of each changed seam.
 - Tests should verify behavioral intent at the affected boundary, not just internal
   implementation details.
+- When proposing test changes, explicitly call out whether a test should move up
+  or down an architectural level and why confidence is maintained.

@@ -12,6 +12,10 @@ Use this checklist for every implementation task.
   - Context files listed in `agents.d/context/context.json` (`required_reads`)
   - Relevant playbooks in `agents.d/context/context.json` (`playbooks`) based on task type
 - Identify impacted modules and likely test scope.
+- Define test-level intent up front:
+  - primary property to prove,
+  - highest architecture level needed for confidence-anchor coverage,
+  - candidate variations/permutations to place at lower integration levels.
 - Confirm constraints and assumptions before coding.
 
 ## Implementation
@@ -22,6 +26,10 @@ Use this checklist for every implementation task.
 ## Validation
 - Run smallest sufficient task set first.
 - Use Gradle wrapper (`./gradlew`) only.
+- Validate the test mix:
+  - confidence-anchor coverage exists at the intended boundary level,
+  - variation coverage is pushed downward where possible without reducing
+    confidence.
 - For GraphQL changes, run `agents.d/utilities/graphql-ref-scan.sh` for text-reference
   discovery, then verify behavior with relevant Gradle tests/checks.
 

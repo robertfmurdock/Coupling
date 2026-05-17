@@ -22,6 +22,14 @@ instruction files should be short and link to this file, not duplicate it.
 - Generated artifacts are not version-controlled. This follows the standard Gradle
   model: generated outputs belong in ignored output paths (primarily `build/`) or
   explicitly gitignored generated paths when a non-`build/` location is required.
+- Testing level strategy:
+  - Place at least one confidence-anchor test at the highest architecture level
+    that best demonstrates the change's primary property.
+  - After that primary property is established, prefer adding variations,
+    permutations, and edge cases at less-integrated levels unless the variation
+    changes cross-boundary behavior.
+  - Treat moving tests between architectural levels as a valid optimization when
+    confidence is preserved and feedback speed improves.
 - Baseline checks:
   - `./gradlew test`
   - `./gradlew build`

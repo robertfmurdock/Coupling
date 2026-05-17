@@ -5,11 +5,20 @@ ROOT_DIR="$(git rev-parse --show-toplevel)"
 PLAN_FILE="${ROOT_DIR}/build/weekly-cleanup/plan.env"
 PROMPT_FILE="${CLEANUP_PROMPT_FILE:-${ROOT_DIR}/build/weekly-cleanup/prompt.md}"
 BEDROCK_MODEL_ID="${BEDROCK_MODEL_ID:-}"
+BEDROCK_INFERENCE_PROFILE_ID="${BEDROCK_INFERENCE_PROFILE_ID:-}"
 MAX_TURNS="${WEEKLY_CLEANUP_MAX_TURNS:-3}"
 BEDROCK_REGION="${AWS_REGION:-us-east-1}"
 
-if [[ -z "${BEDROCK_MODEL_ID}" ]]; then
-  echo "BEDROCK_MODEL_ID is required." >&2
+if [[ -n "${BEDROCK_INFERENCE_PROFILE_ID}" ]]; then
+  BEDROCK_MODEL_REF="${BEDROCK_INFERENCE_PROFILE_ID}"
+elif [[ -n "${BEDROCK_MODEL_ID}" ]]; then
+  BEDROCK_MODEL_REF="${BEDROCK_MODEL_ID}"
+else
+  cat >&2 <<EOF
+Either BEDROCK_INFERENCE_PROFILE_ID or BEDROCK_MODEL_ID is required.
+For Anthropic Claude Sonnet 4, use an inference profile ID/ARN because
+on-demand throughput with direct model IDs is not supported.
+EOF
   exit 1
 fi
 
@@ -66,7 +75,7 @@ EOF
 
   aws bedrock-runtime converse \
     --region "${BEDROCK_REGION}" \
-    --model-id "${BEDROCK_MODEL_ID}" \
+    --model-id "${BEDROCK_MODEL_REF}" \
     --messages "$(jq -cn --rawfile p "${USER_PROMPT_FILE}" '[{role:"user",content:[{text:$p}]}]')" \
     --inference-config '{"maxTokens":4096,"temperature":0.1,"topP":0.9}' \
     > "${RESPONSE_FILE}"
