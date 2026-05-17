@@ -23,6 +23,7 @@ Use this checklist for every implementation task.
   List each planned slice as an unchecked item (`- [ ] ...`). This is the first slice.
 - Keep changes focused on impacted modules.
 - Follow existing patterns and module ownership.
+- Before changing something that looks wrong (especially a flag or setting overriding a default), confirm it isn't intentional. Surface the ambiguity; don't silently "fix" it.
 - Prefer existing libraries and build tooling over custom implementations.
 - Update all linked artifacts for cross-layer changes.
 - **Each slice or step must be integration-oriented**: the repository should be in a safe,

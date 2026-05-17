@@ -166,7 +166,6 @@ jobs:
         with:
           branch: ${{ steps.focus.outputs.branch }}
           delete-branch: true
-          draft: true
           commit-message: "chore(cleanup): ${{ steps.focus.outputs.focus }} architecture-aligned cleanup"
           title: ${{ steps.focus.outputs.title }}
           labels: |
