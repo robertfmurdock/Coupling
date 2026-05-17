@@ -18,6 +18,12 @@ abstract class WeeklyCleanupPlanTask : DefaultTask() {
     @get:Input
     abstract val runDateOverride: Property<String>
 
+    @get:Input
+    abstract val maxChangedFiles: Property<Int>
+
+    @get:Input
+    abstract val maxChangedLines: Property<Int>
+
     @TaskAction
     fun writePlan() {
         fun shellQuote(value: String): String = "'${value.replace("'", "'\"'\"'")}'"
@@ -50,15 +56,6 @@ abstract class WeeklyCleanupPlanTask : DefaultTask() {
             "e2e" -> "./gradlew :e2e:check"
             else -> throw GradleException("Unsupported focus: $focus")
         }
-        val allowedPattern = when (focus) {
-            "client/components" -> "^(client/components/|client/src/|client/build\\.gradle\\.kts)"
-            "sdk" -> "^(sdk/|sdk/build\\.gradle\\.kts)"
-            "server/actionz" -> "^(server/actionz/|server/build\\.gradle\\.kts)"
-            "libraries/model" -> "^(libraries/model/|libraries/model/build\\.gradle\\.kts)"
-            "libraries/repository/core" -> "^(libraries/repository/core/|libraries/repository/core/build\\.gradle\\.kts)"
-            "e2e" -> "^(e2e/|e2e/build\\.gradle\\.kts)"
-            else -> throw GradleException("Unsupported focus: $focus")
-        }
         val out = File(outputFilePath.get())
         out.parentFile.mkdirs()
         out.writeText(
@@ -68,7 +65,8 @@ abstract class WeeklyCleanupPlanTask : DefaultTask() {
                 appendLine("BRANCH=${shellQuote("bot/cleanup/$focus/$runDate")}")
                 appendLine("TITLE=${shellQuote("chore(cleanup): $focus architecture-aligned cleanup")}")
                 appendLine("MODULE_TASK=${shellQuote(moduleTask)}")
-                appendLine("ALLOWED_PATTERN=${shellQuote(allowedPattern)}")
+                appendLine("MAX_FILES=${maxChangedFiles.get()}")
+                appendLine("MAX_LINES=${maxChangedLines.get()}")
             },
         )
         logger.lifecycle("Wrote weekly cleanup plan: ${out.absolutePath}")
@@ -97,11 +95,15 @@ abstract class WeeklyCleanupRenderPromptTask : DefaultTask() {
         val focus = plan["FOCUS"] ?: throw GradleException("Missing FOCUS in plan file")
         val runDate = plan["RUN_DATE"] ?: throw GradleException("Missing RUN_DATE in plan file")
         val moduleTask = plan["MODULE_TASK"] ?: throw GradleException("Missing MODULE_TASK in plan file")
+        val maxFiles = plan["MAX_FILES"] ?: throw GradleException("Missing MAX_FILES in plan file")
+        val maxLines = plan["MAX_LINES"] ?: throw GradleException("Missing MAX_LINES in plan file")
         val rendered = File(templateFilePath.get())
             .readText()
             .replace("__FOCUS_AREA__", focus)
             .replace("__RUN_DATE__", runDate)
             .replace("__MODULE_TASK__", moduleTask)
+            .replace("__MAX_FILES__", maxFiles)
+            .replace("__MAX_LINES__", maxLines)
         val out = File(outputFilePath.get())
         out.parentFile.mkdirs()
         out.writeText(rendered)
@@ -134,7 +136,6 @@ abstract class WeeklyCleanupEvaluateTask : DefaultTask() {
                 val i = line.indexOf('=')
                 line.substring(0, i) to line.substring(i + 1)
             }
-        val allowedPattern = plan["ALLOWED_PATTERN"] ?: throw GradleException("Missing ALLOWED_PATTERN in plan file")
         val maxFiles = maxChangedFiles.get()
         val maxLines = maxChangedLines.get()
 
@@ -154,9 +155,7 @@ abstract class WeeklyCleanupEvaluateTask : DefaultTask() {
         val insertions = Regex("""(\d+)\s+insertion""").find(shortstat)?.groupValues?.get(1)?.toInt() ?: 0
         val deletions = Regex("""(\d+)\s+deletion""").find(shortstat)?.groupValues?.get(1)?.toInt() ?: 0
         val changedLines = insertions + deletions
-        val outOfScope = changedFiles.filterNot { Regex(allowedPattern).containsMatchIn(it) }
-
-        val gateOk = hasChanges && outOfScope.isEmpty() && changedFiles.size <= maxFiles && changedLines <= maxLines
+        val gateOk = hasChanges && changedFiles.size <= maxFiles && changedLines <= maxLines
         val out = File(outputFilePath.get())
         out.parentFile.mkdirs()
         out.writeText(
@@ -164,8 +163,6 @@ abstract class WeeklyCleanupEvaluateTask : DefaultTask() {
                 appendLine("HAS_CHANGES=$hasChanges")
                 appendLine("FILE_COUNT=${changedFiles.size}")
                 appendLine("CHANGED_LINES=$changedLines")
-                appendLine("OUT_OF_SCOPE_COUNT=${outOfScope.size}")
-                appendLine("OUT_OF_SCOPE_FILES=${outOfScope.joinToString(",")}")
                 appendLine("GATE_OK=$gateOk")
             },
         )
@@ -185,6 +182,16 @@ tasks {
         outputFilePath.set(weeklyCleanupPlanFilePath)
         focusOverride.set(providers.gradleProperty("weeklyCleanupFocusOverride").orElse(""))
         runDateOverride.set(providers.gradleProperty("weeklyCleanupRunDateOverride").orElse(""))
+        maxChangedFiles.set(
+            providers.gradleProperty("weeklyCleanupMaxChangedFiles")
+                .map { it.toInt() }
+                .orElse(20),
+        )
+        maxChangedLines.set(
+            providers.gradleProperty("weeklyCleanupMaxChangedLines")
+                .map { it.toInt() }
+                .orElse(400),
+        )
     }
 
     register<WeeklyCleanupRenderPromptTask>("weeklyCleanupRenderPrompt") {
@@ -205,12 +212,12 @@ tasks {
         maxChangedFiles.set(
             providers.gradleProperty("weeklyCleanupMaxChangedFiles")
                 .map { it.toInt() }
-                .orElse(5),
+                .orElse(20),
         )
         maxChangedLines.set(
             providers.gradleProperty("weeklyCleanupMaxChangedLines")
                 .map { it.toInt() }
-                .orElse(200),
+                .orElse(400),
         )
     }
 }

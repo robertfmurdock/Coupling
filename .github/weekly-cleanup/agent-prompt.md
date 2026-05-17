@@ -44,7 +44,7 @@ Keep each line under 120 characters. Do not rewrite prior entries.
 ### Scope
 - Focus area: `__FOCUS_AREA__`
 - Date: `__RUN_DATE__`
-- Change limit: at most `5` files and `200` changed lines.
+- Change limit: at most `__MAX_FILES__` files and `__MAX_LINES__` changed lines.
 - Keep cleanup in one bounded area only.
 - Allowed cleanup categories:
   - dead code deletion with local tests

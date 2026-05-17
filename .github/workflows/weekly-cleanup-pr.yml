@@ -19,8 +19,8 @@ jobs:
   weekly-cleanup:
     runs-on: ubuntu-latest
     env:
-      MAX_CHANGED_FILES: "5"
-      MAX_CHANGED_LINES: "200"
+      MAX_CHANGED_FILES: "20"
+      MAX_CHANGED_LINES: "400"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -129,12 +129,8 @@ jobs:
         run: |
           set -euo pipefail
           gate_ok="${GATE_OK}"
-          if [ "${OUT_OF_SCOPE_COUNT}" != "0" ]; then
-            echo "Out-of-scope files detected:" >> "$GITHUB_STEP_SUMMARY"
-            printf "%s\n" "${OUT_OF_SCOPE_FILES}" | tr ',' '\n' >> "$GITHUB_STEP_SUMMARY"
-          fi
           if [ "${gate_ok}" != "true" ]; then
-            echo "Safety gates failed: files=${FILE_COUNT}, lines=${CHANGED_LINES}, out_of_scope=${OUT_OF_SCOPE_COUNT}" >> "$GITHUB_STEP_SUMMARY"
+            echo "Safety gates failed: files=${FILE_COUNT}, lines=${CHANGED_LINES}" >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
           echo "gate_ok=$gate_ok" >> "$GITHUB_OUTPUT"

@@ -21,6 +21,14 @@ Use this playbook when adding or changing GitHub Actions workflows.
   - If a declared safety gate fails, fail the step/job with a non-zero exit code.
   - Use `GITHUB_STEP_SUMMARY` for diagnostics, but never as a substitute for failing the run.
 
+## Configuration Values
+- Define each configuration value (limits, thresholds, names) in exactly one place.
+- For automation that generates both a plan and a rendered artifact (e.g. prompt templates),
+  write the value into the plan file once and substitute it via template placeholders —
+  do not duplicate it as a hardcoded literal in the template.
+- Hardcoding the same value in both a workflow env var and a prompt/template is a smell:
+  one will drift. Push it into the Gradle task that owns that decision.
+
 ## Decoupling Goals
 - A maintainer should be able to execute core automation locally with equivalent behavior.
 - Workflow behavior should be testable by running the same Gradle task graph outside GitHub.
