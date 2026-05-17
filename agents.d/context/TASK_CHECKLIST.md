@@ -19,6 +19,8 @@ Use this checklist for every implementation task.
 - Confirm constraints and assumptions before coding.
 
 ## Implementation
+- If the task artifact has no `## Checklist` section, create one before writing any code.
+  List each planned slice as an unchecked item (`- [ ] ...`). This is the first slice.
 - Keep changes focused on impacted modules.
 - Follow existing patterns and module ownership.
 - Prefer existing libraries and build tooling over custom implementations.

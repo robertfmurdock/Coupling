@@ -18,10 +18,18 @@ The cleaner long-term fix is to add a `pull_request` trigger to `main.yml` so th
 - Audit all `if: ${{ github.ref == 'refs/heads/master' }}` conditions to confirm they still guard deploy-only steps correctly under a `pull_request` event (they should, since a PR ref is not `refs/heads/master`).
 - After the trigger is confirmed working, the `ssh-key` lines in `weekly-cleanup-pr.yml` and `dependency-update.yml` can be removed as they are no longer needed.
 
-## Validation
-- Open a test PR (or trigger `workflow_dispatch`) and confirm `main.yml` runs.
-- Confirm master push still deploys correctly.
-- Confirm no unintended extra runs occur (e.g., on push to a branch that also has an open PR).
+## Checklist
+
+### Code changes
+- [x] `main.yml`: replaced `push: branches-ignore` with `push: branches: [master]` + `pull_request` trigger
+- [x] `main.yml`: audited all `if: github.ref == 'refs/heads/master'` guards — correct for both `push` and `pull_request` events (PR refs are `refs/pull/N/merge`)
+- [x] `weekly-cleanup-pr.yml`: removed `ssh-key` from checkout step
+- [x] `dependency-update.yml`: removed `ssh-key` from checkout step
+
+### Validation (pending — requires merge to master)
+- [ ] Master push build completes successfully (deploy role, release steps)
+- [ ] Test PR triggers `main.yml` with exactly one run (no duplicate from `push`)
+- [ ] Manually triggered bot workflow (`dependency-update` or `weekly-cleanup-pr`) produces a PR that shows a `main.yml` check run
 
 ## Definition of done
 - `main.yml` has a `pull_request` trigger.
