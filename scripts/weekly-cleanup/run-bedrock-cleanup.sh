@@ -77,7 +77,7 @@ EOF
     --region "${BEDROCK_REGION}" \
     --model-id "${BEDROCK_MODEL_REF}" \
     --messages "$(jq -cn --rawfile p "${USER_PROMPT_FILE}" '[{role:"user",content:[{text:$p}]}]')" \
-    --inference-config '{"maxTokens":4096,"temperature":0.1,"topP":0.9}' \
+    --inference-config '{"maxTokens":4096,"temperature":0.1}' \
     > "${RESPONSE_FILE}"
 
   jq -r '.output.message.content[] | select(has("text")) | .text' "${RESPONSE_FILE}" > "${RAW_TEXT_FILE}"
