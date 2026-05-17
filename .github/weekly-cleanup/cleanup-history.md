@@ -7,3 +7,6 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 
 ## 2026-05-17 — libraries/model
 - NotEmptyFlatMap.kt: verified-in-use — full build failed after deletion
+- PredictableWordPicker.kt: verified-in-use — unused extension function
+- CalculateTimeSinceLastPartnership.kt: verified-in-use — candidate for deletion
+- NotEmptyExtensions.kt: verified-in-use — candidate for deletion
