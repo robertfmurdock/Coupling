@@ -15,3 +15,6 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 - CalculateTimeSinceLastPartnership.kt: verified-in-use — candidate for deletion
 - NotEmptyExtensions.kt: verified-in-use — extension functions on NotEmptyList
 - AreEqualPairs.kt: verified-in-use — pair equality functions
+
+## 2026-05-17 (run-automated-cleanup-2) — libraries/model
+- (no safe targets found) — zero-import candidate scan found no deletion candidates
