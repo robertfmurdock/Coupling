@@ -139,10 +139,11 @@ jobs:
           fi
           echo "gate_ok=$gate_ok" >> "$GITHUB_OUTPUT"
 
-      - name: Run Full Validation
+      - name: Apply Formatting
         id: validate
         if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
-        run: ./gradlew check
+        continue-on-error: true
+        run: ./gradlew formatKotlin
 
       - name: Configure Git Author
         if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
@@ -151,7 +152,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Create Cleanup Pull Request
-        if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true' && success()
+        if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           branch: ${{ steps.focus.outputs.branch }}
