@@ -180,48 +180,58 @@ abstract class WeeklyCleanupCandidatesTask : DefaultTask() {
         val focusDir = rootDir.resolve(focus)
         if (!focusDir.exists()) throw GradleException("Focus directory does not exist: ${focusDir.absolutePath}")
         val finalVerdicts = setOf("verified-in-use", "deleted", "skipped")
-        val resolvedHistoryPath = historyFilePath.get()
-        val settledBaseNames: Set<String> = if (resolvedHistoryPath.isNotBlank()) {
+
+        fun settledBaseNames(): Set<String> {
+            val resolvedHistoryPath = historyFilePath.get()
+            if (resolvedHistoryPath.isBlank()) return emptySet()
             val historyFile = File(resolvedHistoryPath)
-            if (historyFile.exists()) {
-                val cutoff = java.time.LocalDate.now().minusMonths(3)
-                val sectionDateRegex = Regex("""^## (\d{4}-\d{2}-\d{2})""")
-                var sectionDate: java.time.LocalDate? = null
-                val result = mutableSetOf<String>()
-                for (line in historyFile.readLines()) {
+            if (!historyFile.exists()) return emptySet()
+            val cutoff = java.time.LocalDate.now().minusMonths(3)
+            val sectionDateRegex = Regex("""^## (\d{4}-\d{2}-\d{2})""")
+            return historyFile.readLines()
+                .fold(listOf<Pair<java.time.LocalDate?, List<String>>>()) { sections, line ->
                     val dateMatch = sectionDateRegex.find(line)
                     if (dateMatch != null) {
-                        sectionDate = java.time.LocalDate.parse(dateMatch.groupValues[1])
-                        continue
+                        sections + (java.time.LocalDate.parse(dateMatch.groupValues[1]) to emptyList())
+                    } else {
+                        val (date, lines) = sections.lastOrNull() ?: (null to emptyList<String>())
+                        sections.dropLast(1) + (date to (lines + line))
                     }
-                    if (sectionDate == null || sectionDate.isBefore(cutoff)) continue
-                    if (!line.trimStart().startsWith("- ")) continue
-                    if (finalVerdicts.none { verdict -> line.contains(": $verdict") }) continue
-                    val name = line.trimStart().removePrefix("- ").substringBefore(":").trim()
-                    if (name.isNotBlank()) result.add(name)
                 }
-                result
-            } else emptySet()
-        } else emptySet()
-        val ktFiles = focusDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.toList()
-        val candidates = mutableListOf<Pair<File, Long>>()
-        for (file in ktFiles) {
-            if (file.name in settledBaseNames) continue
-            val baseName = file.nameWithoutExtension
+                .filter { (date, _) -> date != null && !date.isBefore(cutoff) }
+                .flatMap { (_, lines) -> lines }
+                .filter { it.trimStart().startsWith("- ") }
+                .filter { finalVerdicts.any { verdict -> it.contains(": $verdict") } }
+                .map { it.trimStart().removePrefix("- ").substringBefore(":").trim() }
+                .filter { it.isNotBlank() }
+                .toSet()
+        }
+
+        fun File.isDiscoveredByTestRunner() = nameWithoutExtension.endsWith("Test")
+
+        fun hasNoImportReferences(file: File): Boolean {
             val stdout = ByteArrayOutputStream()
             execOperations.exec {
                 commandLine(
                     "bash", "-c",
-                    "grep -rl --include='*.kt' 'import.*\\b${baseName}\\b' '${rootDir.absolutePath}' 2>/dev/null || true",
+                    "grep -rl --include='*.kt' 'import.*\\b${file.nameWithoutExtension}\\b' '${rootDir.absolutePath}' 2>/dev/null || true",
                 )
                 standardOutput = stdout
                 isIgnoreExitValue = true
             }
-            val importingFiles = stdout.toString().trim().lines()
-                .filter { it.isNotBlank() && it != file.absolutePath }
-            if (importingFiles.isEmpty()) candidates.add(file to file.length())
+            return stdout.toString().trim().lines().none { it.isNotBlank() && it != file.absolutePath }
         }
-        val sorted = candidates.sortedBy { it.second }
+
+        val settledBaseNames = settledBaseNames()
+        val sorted = focusDir.walkTopDown()
+            .filter { it.isFile && it.extension == "kt" }
+            .filterNot { it.name in settledBaseNames }
+            .filterNot { it.isDiscoveredByTestRunner() }
+            .filter { hasNoImportReferences(it) }
+            .map { it to it.length() }
+            .sortedBy { it.second }
+            .toList()
+
         val out = File(outputFilePath.get())
         out.parentFile.mkdirs()
         out.writeText(buildString {

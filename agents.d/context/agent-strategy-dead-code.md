@@ -1,6 +1,7 @@
 ### Investigation Protocol
 - Track findings as a ledger: record each candidate and its verdict (`deleted` / `verified-in-use` / `skipped`). Do not re-investigate a candidate once a verdict is reached.
 - **Candidate list:** A pre-computed candidate list is available at `__CANDIDATES_FILE__`. Read this file first and use it as your starting point — do not grep for candidates from scratch if the list is non-empty.
+- **Test classes (`*Test.kt`) do not appear in the generated candidate list.** The zero-import heuristic is structurally invalid for test-runner-discovered files and produces false positives. If you believe a test class is redundant, use the test-grooming strategy instead, not this one.
 - **Preferred investigation method for dead code candidates:** use the TCR delete script:
   ```
   agents.d/utilities/tcr-delete.sh <path/to/File.kt> ["optional reason"]

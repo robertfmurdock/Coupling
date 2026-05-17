@@ -31,6 +31,13 @@ instruction files should be short and link to this file, not duplicate it.
   assertions and add required authorization stubs. When proposing to move a
   test between architectural levels, state why confidence is maintained.
 
+  **Tests as behavioral specifications:** Test files are auto-discovered by
+  the test runner — absence of import references is not a signal of deadness,
+  and a build passing after deletion only proves the *remaining* tests still
+  pass. Treat each test as a machine-executable constraint on future behavior:
+  removing it silently removes that constraint, with no build failure to
+  signal the gap.
+
 ## Build and Test Norms
 - Use `./gradlew` for all build and test tasks.
 - Generated artifacts are not version-controlled. This follows the standard Gradle
@@ -75,6 +82,14 @@ instruction files should be short and link to this file, not duplicate it.
 ## Editing Norms
 - Keep diffs minimal and pattern-consistent.
 - Do not introduce unrelated refactors in feature/bugfix changes.
+- After writing a comment, take a refactor pass to embed its content into the
+  code itself — better names, extracted functions, clearer structure. A comment
+  that survives this pass is one whose WHY genuinely cannot be expressed in code.
+- Prefer immutable data structures and functional transformations (`map`, `filter`,
+  `fold`, etc.) over mutable accumulators and imperative loops. Avoid loops whose
+  exit path depends on `break`, `continue`, or accumulated mutable state — these
+  obscure intent and complicate reasoning. When a loop is necessary, make its
+  termination condition and output unambiguous.
 - Preserve existing behavior unless change request explicitly requires it.
 - Task artifacts are stored under `agents.d/tasks/`.
 - Completed task artifacts are stored under `agents.d/tasks_completed/`.
