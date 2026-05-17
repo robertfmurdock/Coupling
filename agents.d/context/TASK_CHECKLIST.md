@@ -23,6 +23,10 @@ Use this checklist for every implementation task.
 - Follow existing patterns and module ownership.
 - Prefer existing libraries and build tooling over custom implementations.
 - Update all linked artifacts for cross-layer changes.
+- **Each slice or step must be integration-oriented**: the repository should be in a safe,
+  check-in-ready state after every slice, so work can be paused and resumed at any slice boundary.
+- **End every slice by marking it complete in the task artifact** (`agents.d/tasks/<TASK>.md`).
+  Do not batch task file updates to the end — update as you go.
 
 ## Validation
 - Run smallest sufficient task set first for quick feedback.
@@ -38,5 +42,5 @@ Use this checklist for every implementation task.
 ## Completion Report
 - List files changed and intent.
 - List validation commands run and results.
-- Move completed task artifacts to `agents.d/tasks_completed/`.
+- Confirm all slices are marked `[x]` in the task artifact, then move it to `agents.d/tasks_completed/`.
 - State residual risks, skipped checks, or follow-ups.

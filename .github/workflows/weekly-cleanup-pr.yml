@@ -9,6 +9,10 @@ on:
         description: "Optional focus area override (for dry runs)"
         required: false
         type: string
+      strategy_override:
+        description: "Optional strategy override (dead-code, boundary-check, suggest-new-strategy)"
+        required: false
+        type: string
 
 permissions:
   id-token: write
@@ -52,11 +56,11 @@ jobs:
         run: |
           set -euo pipefail
           focus_override="${{ github.event.inputs.focus_override }}"
-          if [ -n "$focus_override" ]; then
-            ./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan -PweeklyCleanupFocusOverride="$focus_override"
-          else
-            ./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan
-          fi
+          strategy_override="${{ github.event.inputs.strategy_override }}"
+          args=()
+          [ -n "$focus_override" ] && args+=("-PweeklyCleanupFocusOverride=$focus_override")
+          [ -n "$strategy_override" ] && args+=("-PweeklyCleanupStrategyOverride=$strategy_override")
+          ./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan "${args[@]}"
           plan_file="build/weekly-cleanup/plan.env"
           set -a
           . "$plan_file"
@@ -80,6 +84,11 @@ jobs:
           set -euo pipefail
           ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt
           echo "prompt_file=build/weekly-cleanup/prompt.md" >> "$GITHUB_OUTPUT"
+      - name: Generate Candidate List
+        run: |
+          set -euo pipefail
+          ./gradlew :scripts:weekly-cleanup:weeklyCleanupCandidates
+
       - name: Create Caddy Directory to avoid permissions problems
         run: mkdir -p ~/caddy_data
       - name: Setup users for Docker
@@ -99,7 +108,7 @@ jobs:
           CLEANUP_DATE: ${{ steps.focus.outputs.run_date }}
           CLEANUP_PROMPT_FILE: ${{ steps.prompt.outputs.prompt_file }}
           BEDROCK_INFERENCE_PROFILE_ID: "us.anthropic.claude-haiku-4-5-20251001-v1:0"
-          WEEKLY_CLEANUP_MAX_TURNS: "40"
+          WEEKLY_CLEANUP_MAX_TURNS: "60"
           AWS_REGION: "us-east-1"
         run: |
           set -euo pipefail

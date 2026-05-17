@@ -55,7 +55,7 @@ Initial strategy set (not all implemented in this task):
 
 ## Slices
 
-- [ ] Slice 1 — Fix history accuracy bug
+- [x] Slice 1 — Fix history accuracy bug
   - Root cause: TCR delete script recorded `NotEmptyExtensions.kt` instead of
     `NotEmptyFlatMap.kt` (the file actually passed to the script).
   - Investigate `agents.d/utilities/tcr-delete.sh`: confirm how the recorded filename is
@@ -65,7 +65,7 @@ Initial strategy set (not all implemented in this task):
   - Validation: dry-run the script against a known file; confirm the history line matches
     the argument.
 
-- [ ] Slice 2 — Turn budget and queuing fixes (quick wins)
+- [x] Slice 2 — Turn budget and queuing fixes (quick wins)
   - Increase `WEEKLY_CLEANUP_MAX_TURNS` in the workflow from 40 to 60.
   - Update agent prompt: change the queuing rule from "after 3 candidates, queue the rest"
     to "write each newly discovered candidate as `queued` immediately upon discovery,
@@ -75,7 +75,7 @@ Initial strategy set (not all implemented in this task):
     of the rendered prompt under a "**Start here:**" heading.
   - Validation: manually verify the rendered prompt for a run with queued history entries.
 
-- [ ] Slice 3 — Pre-agent candidate list for `dead-code` strategy
+- [x] Slice 3 — Pre-agent candidate list for `dead-code` strategy
   - Add a Gradle task `weeklyCleanupCandidates` in `:scripts:weekly-cleanup` that, for a
     given focus path, produces `build/weekly-cleanup/candidates.md`: a ranked list of
     Kotlin files within the focus scope that appear zero times as import targets outside
@@ -88,7 +88,7 @@ Initial strategy set (not all implemented in this task):
   - Validation: run `weeklyCleanupCandidates` against `libraries/model`; confirm output
     would have surfaced `NotEmptyFlatMap.kt` as a candidate.
 
-- [ ] Slice 4 — Refactor prompt into strategy-aware harness
+- [x] Slice 4 — Refactor prompt into strategy-aware harness
   - Split `agent-prompt.md` into:
     - `agent-prompt-harness.md` — thin orchestration: context reads, turn budget rules,
       history write contract, scope/limits, decline conditions. Strategy-agnostic.
@@ -103,7 +103,7 @@ Initial strategy set (not all implemented in this task):
   - Validation: rendered prompt for `dead-code` strategy is byte-for-byte equivalent to
     current rendered prompt modulo whitespace.
 
-- [ ] Slice 5 — Add `boundary-check` strategy
+- [x] Slice 5 — Add `boundary-check` strategy
   - Write `agent-strategy-boundary-check.md`:
     - Discovery: read `BOUNDARIES.md`; search focus module for imports or patterns that
       violate stated ownership rules.
@@ -115,7 +115,7 @@ Initial strategy set (not all implemented in this task):
   - Wire into strategy rotation.
   - Validation: run a dry-run against a known clean module; confirm no false positives.
 
-- [ ] Slice 6 — Add `suggest-new-strategy` meta-strategy
+- [x] Slice 6 — Add `suggest-new-strategy` meta-strategy
   - Write `agent-strategy-suggest-new-strategy.md`:
     - Purpose: when this strategy is selected, the agent does not perform any cleanup.
       Instead it surveys the codebase for patterns of misalignment that don't yet have a
