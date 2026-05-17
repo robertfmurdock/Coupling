@@ -30,9 +30,22 @@ if [[ ! -f "${PLAN_FILE}" ]]; then
   exit 1
 fi
 
+STREAM=$(mktemp)
+trap 'rm -f "$STREAM"' EXIT
+
 CLAUDE_CODE_USE_BEDROCK=1 \
   AWS_REGION="${BEDROCK_REGION}" \
   ANTHROPIC_MODEL="${BEDROCK_MODEL}" \
   claude --dangerously-skip-permissions -p --verbose --output-format stream-json --max-turns "${MAX_TURNS}" "$(cat "${PROMPT_FILE}")" \
-  | jq -r 'select(.type == "assistant") | .message.content[] | select(.type == "text") | .text' \
-  || true
+  | tee "$STREAM" \
+  | jq -r 'select(.type == "assistant") | .message.content[] | select(.type == "text") | .text'
+
+subtype=$(jq -r 'select(.type == "result") | .subtype' "$STREAM")
+
+if [[ "$subtype" == "error_max_turns" ]]; then
+  echo "Agent hit max turns — partial work may exist" >&2
+  exit 0
+elif [[ "$subtype" != "success" ]]; then
+  echo "Agent failed: $subtype" >&2
+  exit 1
+fi

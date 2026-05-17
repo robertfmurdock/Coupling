@@ -21,6 +21,25 @@ Read these before making changes:
 - `agents.d/context/generated/workflows.md`
 - `agents.d/context/GRADLE_PLAYBOOK.md`
 - `agents.d/context/context.json`
+- `.github/weekly-cleanup/cleanup-history.md` — skip any candidate listed as `verified-in-use` here.
+
+### Investigation Protocol
+- Complete all investigation **before** making any file changes.
+- Track findings as a ledger: record each candidate and its verdict (`deleted` / `verified-in-use` / `skipped`). Do not re-investigate a candidate once a verdict is reached.
+- After investigation, select exactly **one** cleanup target. If no safe target exists, stop without changing code.
+- Make changes, validate once with the command above, stop. Do not loop back to re-investigate alternatives.
+- Maximum investigation depth: 6 tool calls per candidate.
+
+### Cleanup History
+At the end of every run — whether or not changes were made — append one entry to `.github/weekly-cleanup/cleanup-history.md` in this format:
+
+```
+## __RUN_DATE__ — __FOCUS_AREA__
+- <FileName.kt>: <verdict> — <one-line reason>
+```
+
+Verdicts: `deleted`, `verified-in-use`, `skipped` (out of scope or exceeded limits).
+Keep each line under 120 characters. Do not rewrite prior entries.
 
 ### Scope
 - Focus area: `__FOCUS_AREA__`
