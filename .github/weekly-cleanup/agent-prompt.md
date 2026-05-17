@@ -3,6 +3,14 @@
 You are performing one small, architecture-aligned cleanup directly in this repository.
 You have full tool access: read files, explore the codebase, and edit files directly.
 
+### CI Context Overrides
+- `./gradlew agentBootstrap` was already run by the workflow before this prompt — do not run it again.
+- The Gradle build cache is pre-warmed for `__MODULE_TASK__` — validation runs fast.
+- To validate changes, run: `__MODULE_TASK__ -q --console=plain 2>&1 | tail -50`
+  - The `-q` flag suppresses download noise; `tail -50` keeps output small.
+  - Only read detailed output if the command fails.
+- These override the general CLAUDE.md execution norms for this automated context.
+
 ### Required Context Reads
 Read these before making changes:
 - `agents.d/context/ARCHITECTURE_CANONICAL.md`
@@ -30,7 +38,6 @@ Read these before making changes:
 - No broad refactors.
 - No product behavior changes.
 - No API schema shifts unless fully synchronized across server/sdk/tests in one change set.
-- Do not run validation commands — the workflow runs them after your changes.
 
 ### Decline Conditions
 If no safe in-scope cleanup is found, make no code changes.

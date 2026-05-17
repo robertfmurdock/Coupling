@@ -96,10 +96,12 @@ abstract class WeeklyCleanupRenderPromptTask : DefaultTask() {
             }
         val focus = plan["FOCUS"] ?: throw GradleException("Missing FOCUS in plan file")
         val runDate = plan["RUN_DATE"] ?: throw GradleException("Missing RUN_DATE in plan file")
+        val moduleTask = plan["MODULE_TASK"] ?: throw GradleException("Missing MODULE_TASK in plan file")
         val rendered = File(templateFilePath.get())
             .readText()
             .replace("__FOCUS_AREA__", focus)
             .replace("__RUN_DATE__", runDate)
+            .replace("__MODULE_TASK__", moduleTask)
         val out = File(outputFilePath.get())
         out.parentFile.mkdirs()
         out.writeText(rendered)

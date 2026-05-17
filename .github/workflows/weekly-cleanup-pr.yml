@@ -82,6 +82,9 @@ jobs:
           ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt
           echo "prompt_file=build/weekly-cleanup/prompt.md" >> "$GITHUB_OUTPUT"
 
+      - name: Pre-warm Module Cache
+        run: ${{ steps.focus.outputs.module_task }}
+
       - name: Install Claude Code CLI
         run: npm install -g @anthropic-ai/claude-code
 
