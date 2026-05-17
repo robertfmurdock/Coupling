@@ -18,3 +18,5 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 
 ## 2026-05-17 (run-automated-cleanup-2) — libraries/model
 - (no safe targets found) — zero-import candidate scan found no deletion candidates
+
+## 2026-05-17 (run-claude-session-cleanup) — libraries/model
