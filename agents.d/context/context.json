@@ -43,6 +43,7 @@
   ],
   "playbooks": {
     "gradle": "agents.d/context/GRADLE_PLAYBOOK.md",
-    "graphql": "agents.d/context/PLAYBOOK_GRAPHQL.md"
+    "graphql": "agents.d/context/PLAYBOOK_GRAPHQL.md",
+    "github_actions": "agents.d/context/GITHUB_ACTIONS_PLAYBOOK.md"
   }
 }

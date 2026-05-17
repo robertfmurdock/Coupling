@@ -1,5 +1,12 @@
 # Task: Weekly LLM Cleanup PR Workflow (GitHub Actions)
 
+## Completion notes
+- Implemented in:
+  - `.github/workflows/weekly-cleanup-pr.yml`
+  - `.github/weekly-cleanup/agent-prompt.md`
+  - `.github/weekly-cleanup/README.md`
+- Uses weekly rotation, draft PR pilot mode, no-op success path, scoped Gradle validation, and explicit safety gates.
+
 ## Goal
 - Create a scheduled GitHub Actions workflow that opens a cleanup PR once per week.
 - Each run targets one bounded area of the codebase (rotating focus) and proposes architecture-aligned improvements.
@@ -130,9 +137,9 @@
   - >=50% of PRs merged without major rewrite requests
 
 ## Completion checklist
-- [ ] Workflow file added and runnable via `workflow_dispatch`.
-- [ ] Prompt/policy template checked in and referenced by workflow.
-- [ ] Focus rotation logic implemented.
-- [ ] Safety gates implemented and tested.
-- [ ] Draft PR mode enabled for pilot.
-- [ ] README/agents note added for maintainers on operating/tuning the bot.
+- [x] Workflow file added and runnable via `workflow_dispatch`.
+- [x] Prompt/policy template checked in and referenced by workflow.
+- [x] Focus rotation logic implemented.
+- [x] Safety gates implemented and tested.
+- [x] Draft PR mode enabled for pilot.
+- [x] README/agents note added for maintainers on operating/tuning the bot.

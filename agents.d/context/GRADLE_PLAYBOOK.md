@@ -18,6 +18,11 @@ repository automation behavior.
 - Keep shared build behavior in convention/plugin code; avoid duplicating the
   same task/dependency/configuration across module build files.
 - Keep module-specific behavior local to the owning module.
+- Keep root build logic lean: do not accumulate unrelated automation tasks in
+  root `build.gradle.kts` when they fit an existing subproject or a dedicated
+  automation subproject (for example under `scripts/`).
+- Add root-level tasks only when they are true cross-repo orchestration entry
+  points that must coordinate multiple modules.
 
 ## Task and Automation Conventions
 - Express repository automation as Gradle tasks executed via `./gradlew`.

@@ -245,6 +245,7 @@ abstract class AgentBootstrapTask : DefaultTask() {
     }
 }
 
+
 tasks {
     val testJsonlFilePath = rootProject.layout.buildDirectory.file("test-output/test.jsonl").map { it.asFile.absolutePath }
     val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }
@@ -374,6 +375,7 @@ tasks {
         repoRootDirPath.set(rootProject.rootDir.absolutePath)
         contextManifestFilePath.set(aiContextManifestFile.absolutePath)
     }
+
 
     assemble {
         dependsOn(syncAiContext)

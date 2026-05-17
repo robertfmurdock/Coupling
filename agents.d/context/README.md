@@ -11,6 +11,7 @@ conditional context reads.
 - `ARCHITECTURE_CANONICAL.md`: canonical architecture and norms.
 - `BOUNDARIES.md`: module boundaries and non-goals.
 - `GRADLE_PLAYBOOK.md`: Gradle build-logic and automation conventions.
+- `GITHUB_ACTIONS_PLAYBOOK.md`: workflow authoring conventions that keep logic in Gradle tasks.
 - `PLAYBOOK_GRAPHQL.md`: high-risk GraphQL change recipe.
 - `TASK_CHECKLIST.md`: required pre-flight and completion checks.
 - `context.json`: machine-readable context for scripted agents.

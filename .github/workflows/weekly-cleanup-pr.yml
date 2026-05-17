@@ -1,0 +1,195 @@
+name: Weekly Cleanup PR
+
+on:
+  schedule:
+    - cron: "0 15 * * 1"
+  workflow_dispatch:
+    inputs:
+      focus_override:
+        description: "Optional focus area override (for dry runs)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  weekly-cleanup:
+    runs-on: ubuntu-latest
+    env:
+      MAX_CHANGED_FILES: "5"
+      MAX_CHANGED_LINES: "200"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "22"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
+
+      - name: Configure AWS credentials (Deploy)
+        uses: aws-actions/configure-aws-credentials@v4
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          role-to-assume: arn:aws:iam::174159267544:role/CouplingDeploy
+          aws-region: us-east-1
+
+      - name: Configure AWS credentials (Local)
+        uses: aws-actions/configure-aws-credentials@v4
+        if: ${{ github.ref != 'refs/heads/master' }}
+        with:
+          role-to-assume: arn:aws:iam::174159267544:role/LocalDevelopment
+          aws-region: us-east-1
+
+      - name: Bootstrap Agent Context
+        run: ./gradlew agentBootstrap
+
+      - name: Derive Weekly Plan
+        id: focus
+        run: |
+          set -euo pipefail
+          focus_override="${{ github.event.inputs.focus_override }}"
+          if [ -n "$focus_override" ]; then
+            ./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan -PweeklyCleanupFocusOverride="$focus_override"
+          else
+            ./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan
+          fi
+          plan_file="build/weekly-cleanup/plan.env"
+          set -a
+          . "$plan_file"
+          set +a
+          cat "$plan_file" >> "$GITHUB_ENV"
+          {
+            echo "focus=${FOCUS}"
+            echo "run_date=${RUN_DATE}"
+            echo "branch=${BRANCH}"
+            echo "title=${TITLE}"
+            echo "module_task=${MODULE_TASK}"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "## Weekly Cleanup Context"
+            echo "- Focus: ${FOCUS}"
+            echo "- Branch: ${BRANCH}"
+            echo "- Scoped validation: ${MODULE_TASK}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prepare Prompt
+        id: prompt
+        run: |
+          set -euo pipefail
+          ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt
+          echo "prompt_file=build/weekly-cleanup/prompt.md" >> "$GITHUB_OUTPUT"
+
+      - name: Run Cleanup Agent Command
+        id: agent
+        env:
+          CLEANUP_FOCUS: ${{ steps.focus.outputs.focus }}
+          CLEANUP_DATE: ${{ steps.focus.outputs.run_date }}
+          CLEANUP_PROMPT_FILE: ${{ steps.prompt.outputs.prompt_file }}
+          BEDROCK_MODEL_ID: ${{ vars.WEEKLY_CLEANUP_BEDROCK_MODEL_ID }}
+          WEEKLY_CLEANUP_MAX_TURNS: "3"
+          AWS_REGION: "us-east-1"
+        run: |
+          set -euo pipefail
+          if [ -z "${BEDROCK_MODEL_ID}" ]; then
+            echo "command_configured=false" >> "$GITHUB_OUTPUT"
+            echo "No Bedrock model configured in repo var WEEKLY_CLEANUP_BEDROCK_MODEL_ID; exiting with no-op summary." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "command_configured=true" >> "$GITHUB_OUTPUT"
+          ./scripts/weekly-cleanup/run-bedrock-cleanup.sh
+
+      - name: Detect Changes
+        id: changes
+        run: |
+          set -euo pipefail
+          ./gradlew :scripts:weekly-cleanup:weeklyCleanupEvaluate -PweeklyCleanupMaxChangedFiles="${MAX_CHANGED_FILES}" -PweeklyCleanupMaxChangedLines="${MAX_CHANGED_LINES}"
+          eval_file="build/weekly-cleanup/evaluation.env"
+          set -a
+          . "$eval_file"
+          set +a
+          cat "$eval_file" >> "$GITHUB_ENV"
+          if [ "${HAS_CHANGES}" != "true" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No file changes detected; no PR created." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          {
+            echo "has_changes=true"
+            echo "file_count=${FILE_COUNT}"
+            echo "changed_lines=${CHANGED_LINES}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Safety Gates
+        id: gates
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          set -euo pipefail
+          gate_ok="${GATE_OK}"
+          if [ "${OUT_OF_SCOPE_COUNT}" != "0" ]; then
+            echo "Out-of-scope files detected:" >> "$GITHUB_STEP_SUMMARY"
+            printf "%s\n" "${OUT_OF_SCOPE_FILES}" | tr ',' '\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "${gate_ok}" != "true" ]; then
+            echo "Safety gates failed: files=${FILE_COUNT}, lines=${CHANGED_LINES}, out_of_scope=${OUT_OF_SCOPE_COUNT}" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "gate_ok=$gate_ok" >> "$GITHUB_OUTPUT"
+
+      - name: Run Scoped Validation
+        id: validate
+        if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
+        run: ${{ steps.focus.outputs.module_task }}
+
+      - name: Configure Git Author
+        if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Create Cleanup Pull Request
+        if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true' && success()
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: ${{ steps.focus.outputs.branch }}
+          delete-branch: true
+          draft: true
+          commit-message: "chore(cleanup): ${{ steps.focus.outputs.focus }} architecture-aligned cleanup"
+          title: ${{ steps.focus.outputs.title }}
+          labels: |
+            cleanup
+            autorebase:opt-in
+          body: |
+            ## What Changed
+            - Weekly cleanup scoped to `${{ steps.focus.outputs.focus }}`.
+
+            ## Architecture Alignment
+            - Constrained to one focus area in weekly rotation.
+            - Follows context contract from `agents.d/context/context.json` and canonical guidance files.
+
+            ## Validation Commands and Results
+            - `${{ steps.focus.outputs.module_task }}`
+            - `./gradlew agentBootstrap`
+
+            ## Risk and Rollback
+            - Risk: low-to-moderate; cleanup-only scope with hard safety gates.
+            - Rollback: revert this PR commit or close PR without merge.
+
+      - name: Final Run Summary
+        if: always()
+        run: |
+          {
+            echo "## Final Status"
+            echo "- Agent command configured: ${{ steps.agent.outputs.command_configured || 'false' }}"
+            echo "- Changes detected: ${{ steps.changes.outputs.has_changes || 'false' }}"
+            echo "- Safety gates passed: ${{ steps.gates.outputs.gate_ok || 'n/a' }}"
+            echo "- Scoped validation command: ${{ steps.focus.outputs.module_task }}"
+          } >> "$GITHUB_STEP_SUMMARY"
