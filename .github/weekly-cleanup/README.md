@@ -25,7 +25,7 @@ This directory contains policy and operator notes for the scheduled cleanup PR w
   - `WEEKLY_CLEANUP_BEDROCK_MODEL_ID`
     - Bedrock model id used by `scripts/weekly-cleanup/run-bedrock-cleanup.sh`.
     - Example: `anthropic.claude-3-5-sonnet-20241022-v2:0`
-    - If not configured, workflow exits with a no-op summary and does not open a PR.
+    - Required. If not configured, workflow fails with a summary and does not open a PR.
 - AWS auth:
   - Workflow uses GitHub OIDC with `aws-actions/configure-aws-credentials`.
   - Current role in workflow: `arn:aws:iam::174159267544:role/LocalDevelopment`.

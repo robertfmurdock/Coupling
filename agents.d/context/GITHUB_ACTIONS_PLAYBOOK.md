@@ -16,6 +16,10 @@ Use this playbook when adding or changing GitHub Actions workflows.
   - artifact and PR plumbing
 - Keep business rules and gating logic in Gradle tasks under version control.
 - Avoid embedding non-trivial parsing/branching in workflow shell blocks.
+- Make failure conditions explicit and terminal:
+  - If a required precondition is missing (for example required repo vars/secrets), fail the step/job with a non-zero exit code.
+  - If a declared safety gate fails, fail the step/job with a non-zero exit code.
+  - Use `GITHUB_STEP_SUMMARY` for diagnostics, but never as a substitute for failing the run.
 
 ## Decoupling Goals
 - A maintainer should be able to execute core automation locally with equivalent behavior.

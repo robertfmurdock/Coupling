@@ -95,8 +95,8 @@ jobs:
           set -euo pipefail
           if [ -z "${BEDROCK_MODEL_ID}" ]; then
             echo "command_configured=false" >> "$GITHUB_OUTPUT"
-            echo "No Bedrock model configured in repo var WEEKLY_CLEANUP_BEDROCK_MODEL_ID; exiting with no-op summary." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
+            echo "No Bedrock model configured in repo var WEEKLY_CLEANUP_BEDROCK_MODEL_ID; failing workflow." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
           fi
           echo "command_configured=true" >> "$GITHUB_OUTPUT"
           ./scripts/weekly-cleanup/run-bedrock-cleanup.sh
@@ -134,6 +134,7 @@ jobs:
           fi
           if [ "${gate_ok}" != "true" ]; then
             echo "Safety gates failed: files=${FILE_COUNT}, lines=${CHANGED_LINES}, out_of_scope=${OUT_OF_SCOPE_COUNT}" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
           fi
           echo "gate_ok=$gate_ok" >> "$GITHUB_OUTPUT"
 
