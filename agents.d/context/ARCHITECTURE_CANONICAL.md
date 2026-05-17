@@ -55,9 +55,9 @@ instruction files should be short and link to this file, not duplicate it.
 - Do not introduce unrelated refactors in feature/bugfix changes.
 - Preserve existing behavior unless change request explicitly requires it.
 - Add or update behavioral/process conventions in canonical context files
-  (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `TASK_CHECKLIST.md`, and
-  `PLAYBOOK_GRAPHQL.md` when GraphQL-specific), not in `AGENTS.md` or generated
-  context outputs.
+  (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `TASK_CHECKLIST.md`,
+  `GRADLE_PLAYBOOK.md` when Gradle-specific, and `PLAYBOOK_GRAPHQL.md` when
+  GraphQL-specific), not in `AGENTS.md` or generated context outputs.
 
 ## Automation Norm
 - Repository automation and project scripting must be expressed as Gradle tasks

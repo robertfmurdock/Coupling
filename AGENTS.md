@@ -3,12 +3,11 @@
 This file is source-controlled and intentionally not generated.
 
 ## Required Read Order
-1. `agents.d/context/ARCHITECTURE_CANONICAL.md`
-2. `agents.d/context/BOUNDARIES.md`
-3. `agents.d/context/TASK_CHECKLIST.md`
-4. `agents.d/context/PLAYBOOK_GRAPHQL.md` (GraphQL tasks only)
-5. `agents.d/context/generated/repo-index.md`
-6. `agents.d/context/generated/workflows.md`
+Defined in `agents.d/context/context.json`:
+- `required_reads`: always-read context
+- `playbooks`: conditional context by task type
+
+Use `./gradlew agentBootstrap` to print the current manifest-driven read order.
 
 ## Core Commands
 - `./gradlew agentBootstrap` (session start)

@@ -166,6 +166,85 @@ abstract class SyncAiContextTask : DefaultTask() {
     }
 }
 
+abstract class ValidateAiContextManifestTask : DefaultTask() {
+    @get:Internal
+    abstract val repoRootDirPath: Property<String>
+
+    @get:Internal
+    abstract val contextManifestFilePath: Property<String>
+
+    @TaskAction
+    fun validate() {
+        val manifestFile = File(contextManifestFilePath.get())
+        val repoRootDir = File(repoRootDirPath.get())
+        val manifest = ObjectMapper().readTree(manifestFile)
+
+        val requiredReads = manifest
+            .path("required_reads")
+            .takeIf { it.isArray }
+            ?.mapNotNull { it.asText(null) }
+            ?: emptyList()
+        val playbooks = manifest
+            .path("playbooks")
+            .takeIf { it.isObject }
+            ?.properties()
+            ?.asSequence()
+            ?.mapNotNull { it.value.asText(null) }
+            ?.toList()
+            ?: emptyList()
+
+        val manifestPaths = (requiredReads + playbooks).distinct()
+        val missing = manifestPaths.filterNot { File(repoRootDir, it).exists() }
+        if (missing.isNotEmpty()) {
+            throw GradleException(
+                buildString {
+                    appendLine("AI context manifest contains missing files:")
+                    missing.forEach { appendLine("- $it") }
+                },
+            )
+        }
+
+        logger.lifecycle("AI context manifest validation passed (${manifestPaths.size} files).")
+    }
+}
+
+abstract class AgentBootstrapTask : DefaultTask() {
+    @get:Internal
+    abstract val repoRootDirPath: Property<String>
+
+    @get:Internal
+    abstract val contextManifestFilePath: Property<String>
+
+    @TaskAction
+    fun bootstrap() {
+        val manifestFile = File(contextManifestFilePath.get())
+        val repoRootDir = File(repoRootDirPath.get())
+        val manifest = ObjectMapper().readTree(manifestFile)
+        val requiredReads = manifest
+            .path("required_reads")
+            .takeIf { it.isArray }
+            ?.mapNotNull { it.asText(null) }
+            ?: emptyList()
+        val playbooks = manifest
+            .path("playbooks")
+            .takeIf { it.isObject }
+            ?.properties()
+            ?.asSequence()
+            ?.mapNotNull { it.value.asText(null) }
+            ?.toList()
+            ?: emptyList()
+        val readOrder = (requiredReads + playbooks + "agents.d/context/context.json").distinct()
+
+        logger.lifecycle("Agent bootstrap read order:")
+        readOrder.forEach { relPath ->
+            val marker = if (File(repoRootDir, relPath).exists()) "" else " (missing)"
+            logger.lifecycle("- $relPath$marker")
+        }
+        logger.lifecycle("")
+        logger.lifecycle("`./gradlew agentBootstrap` already refreshes generated AI context files.")
+    }
+}
+
 tasks {
     val testJsonlFilePath = rootProject.layout.buildDirectory.file("test-output/test.jsonl").map { it.asFile.absolutePath }
     val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }
@@ -266,6 +345,7 @@ tasks {
     val aiGeneratedDir = aiContextDir.resolve("generated")
     val aiRepoIndexFile = aiGeneratedDir.resolve("repo-index.md")
     val aiWorkflowsFile = aiGeneratedDir.resolve("workflows.md")
+    val aiContextManifestFile = aiContextDir.resolve("context.json")
     val aiClaudeFile = rootProject.file("CLAUDE.md")
 
     val syncAiContext = register<SyncAiContextTask>("syncAiContext") {
@@ -280,29 +360,19 @@ tasks {
         claudeFilePath.set(aiClaudeFile.absolutePath)
     }
 
-    register("agentBootstrap") {
+    register<AgentBootstrapTask>("agentBootstrap") {
         group = "help"
         description = "Prints the required AI agent context read order."
-        notCompatibleWithConfigurationCache("Uses Gradle script helper closures for task-local reporting.")
         dependsOn(syncAiContext)
-        doLast {
-            val readOrder = listOf(
-                "agents.d/context/ARCHITECTURE_CANONICAL.md",
-                "agents.d/context/BOUNDARIES.md",
-                "agents.d/context/TASK_CHECKLIST.md",
-                "agents.d/context/PLAYBOOK_GRAPHQL.md",
-                "agents.d/context/generated/repo-index.md",
-                "agents.d/context/generated/workflows.md",
-                "agents.d/context/context.json",
-            )
-            logger.lifecycle("Agent bootstrap read order:")
-            readOrder.forEach { relPath ->
-                val marker = if (rootProject.file(relPath).exists()) "" else " (missing)"
-                logger.lifecycle("- $relPath$marker")
-            }
-            logger.lifecycle("")
-            logger.lifecycle("`./gradlew agentBootstrap` already refreshes generated AI context files.")
-        }
+        repoRootDirPath.set(rootProject.rootDir.absolutePath)
+        contextManifestFilePath.set(aiContextManifestFile.absolutePath)
+    }
+
+    val validateAiContextManifest by register<ValidateAiContextManifestTask>("validateAiContextManifest") {
+        group = "verification"
+        description = "Validates agents.d/context/context.json entries point to existing files."
+        repoRootDirPath.set(rootProject.rootDir.absolutePath)
+        contextManifestFilePath.set(aiContextManifestFile.absolutePath)
     }
 
     assemble {
@@ -311,6 +381,7 @@ tasks {
 
     check {
         dependsOn(syncAiContext)
+        dependsOn(validateAiContextManifest)
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
         finalizedBy(validateTestJsonl)
     }

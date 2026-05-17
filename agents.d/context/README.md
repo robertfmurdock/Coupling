@@ -3,10 +3,14 @@
 This directory is the canonical source for AI-agent execution context in this
 repository.
 
+`context.json` is the machine-readable source of truth for required and
+conditional context reads.
+
 ## Layout
 - `CONTEXT_CONTRACT.md`: required context categories every agent must consume.
 - `ARCHITECTURE_CANONICAL.md`: canonical architecture and norms.
 - `BOUNDARIES.md`: module boundaries and non-goals.
+- `GRADLE_PLAYBOOK.md`: Gradle build-logic and automation conventions.
 - `PLAYBOOK_GRAPHQL.md`: high-risk GraphQL change recipe.
 - `TASK_CHECKLIST.md`: required pre-flight and completion checks.
 - `context.json`: machine-readable context for scripted agents.

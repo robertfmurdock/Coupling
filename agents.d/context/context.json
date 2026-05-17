@@ -36,9 +36,12 @@
   "required_reads": [
     "agents.d/context/ARCHITECTURE_CANONICAL.md",
     "agents.d/context/BOUNDARIES.md",
-    "agents.d/context/TASK_CHECKLIST.md"
+    "agents.d/context/TASK_CHECKLIST.md",
+    "agents.d/context/generated/repo-index.md",
+    "agents.d/context/generated/workflows.md"
   ],
   "playbooks": {
+    "gradle": "agents.d/context/GRADLE_PLAYBOOK.md",
     "graphql": "agents.d/context/PLAYBOOK_GRAPHQL.md"
   }
 }

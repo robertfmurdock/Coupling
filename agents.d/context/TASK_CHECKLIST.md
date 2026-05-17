@@ -8,9 +8,8 @@ Use this checklist for every implementation task.
   - If bootstrap fails with an AWS credential error, check whether `AWS_PROFILE`
     is set to a profile unrelated to this repo; `unset AWS_PROFILE` if so.
 - Read:
-  - `agents.d/context/ARCHITECTURE_CANONICAL.md`
-  - `agents.d/context/BOUNDARIES.md`
-  - `agents.d/context/PLAYBOOK_GRAPHQL.md` (when GraphQL-related)
+  - Context files listed in `agents.d/context/context.json` (`required_reads`)
+  - Relevant playbooks in `agents.d/context/context.json` (`playbooks`) based on task type
 - Identify impacted modules and likely test scope.
 - Confirm constraints and assumptions before coding.
 
