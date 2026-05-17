@@ -20,6 +20,7 @@ abstract class WeeklyCleanupPlanTask : DefaultTask() {
 
     @TaskAction
     fun writePlan() {
+        fun shellQuote(value: String): String = "'${value.replace("'", "'\"'\"'")}'"
         val resolvedFocusOverride = focusOverride.get().trim()
         val runDate = runDateOverride.get().trim().takeUnless { it.isBlank() }
             ?: LocalDate.now().toString()
@@ -62,12 +63,12 @@ abstract class WeeklyCleanupPlanTask : DefaultTask() {
         out.parentFile.mkdirs()
         out.writeText(
             buildString {
-                appendLine("FOCUS=$focus")
-                appendLine("RUN_DATE=$runDate")
-                appendLine("BRANCH=bot/cleanup/$focus/$runDate")
-                appendLine("TITLE=chore(cleanup): $focus architecture-aligned cleanup")
-                appendLine("MODULE_TASK=$moduleTask")
-                appendLine("ALLOWED_PATTERN=$allowedPattern")
+                appendLine("FOCUS=${shellQuote(focus)}")
+                appendLine("RUN_DATE=${shellQuote(runDate)}")
+                appendLine("BRANCH=${shellQuote("bot/cleanup/$focus/$runDate")}")
+                appendLine("TITLE=${shellQuote("chore(cleanup): $focus architecture-aligned cleanup")}")
+                appendLine("MODULE_TASK=${shellQuote(moduleTask)}")
+                appendLine("ALLOWED_PATTERN=${shellQuote(allowedPattern)}")
             },
         )
         logger.lifecycle("Wrote weekly cleanup plan: ${out.absolutePath}")
