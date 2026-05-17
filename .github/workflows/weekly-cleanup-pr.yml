@@ -37,16 +37,8 @@ jobs:
         with:
           cache-read-only: true
 
-      - name: Configure AWS credentials (Deploy)
-        uses: aws-actions/configure-aws-credentials@v4
-        if: ${{ github.ref == 'refs/heads/master' }}
-        with:
-          role-to-assume: arn:aws:iam::174159267544:role/CouplingDeploy
-          aws-region: us-east-1
-
       - name: Configure AWS credentials (Local)
         uses: aws-actions/configure-aws-credentials@v4
-        if: ${{ github.ref != 'refs/heads/master' }}
         with:
           role-to-assume: arn:aws:iam::174159267544:role/LocalDevelopment
           aws-region: us-east-1
