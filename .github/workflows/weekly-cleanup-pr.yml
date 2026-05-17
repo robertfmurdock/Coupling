@@ -88,7 +88,7 @@ jobs:
           CLEANUP_FOCUS: ${{ steps.focus.outputs.focus }}
           CLEANUP_DATE: ${{ steps.focus.outputs.run_date }}
           CLEANUP_PROMPT_FILE: ${{ steps.prompt.outputs.prompt_file }}
-          BEDROCK_INFERENCE_PROFILE_ID: "us.anthropic.claude-sonnet-4-20250514-v1:0"
+          BEDROCK_INFERENCE_PROFILE_ID: "us.anthropic.claude-3-5-haiku-20241022-v1:0"
           WEEKLY_CLEANUP_MAX_TURNS: "3"
           AWS_REGION: "us-east-1"
         run: |
