@@ -1,6 +1,7 @@
 ## Weekly Cleanup Prompt
 
-You are proposing one small, architecture-aligned cleanup in this repository.
+You are performing one small, architecture-aligned cleanup directly in this repository.
+You have full tool access: read files, explore the codebase, and edit files directly.
 
 ### Required Context Reads
 Read these before making changes:
@@ -29,25 +30,7 @@ Read these before making changes:
 - No broad refactors.
 - No product behavior changes.
 - No API schema shifts unless fully synchronized across server/sdk/tests in one change set.
-
-### Validation
-- Use Gradle wrapper commands only.
-- Run `./gradlew agentBootstrap` first.
-- Run scoped checks for impacted module(s), preferring exactly one of:
-  - `./gradlew :module:check`
-  - `./gradlew :module:test`
-
-### PR Content
-Output changes suitable for:
-- branch: `bot/cleanup/__FOCUS_AREA__/__RUN_DATE__`
-- title: `chore(cleanup): __FOCUS_AREA__ architecture-aligned cleanup`
-- body sections:
-  1. What changed
-  2. Architecture alignment
-  3. Validation commands and results
-  4. Risk and rollback
+- Do not run validation commands — the workflow runs them after your changes.
 
 ### Decline Conditions
-If no safe in-scope cleanup is found:
-- make no code changes
-- write a short run summary describing why no PR was created
+If no safe in-scope cleanup is found, make no code changes.

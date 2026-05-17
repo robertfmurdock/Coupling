@@ -82,6 +82,9 @@ jobs:
           ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt
           echo "prompt_file=build/weekly-cleanup/prompt.md" >> "$GITHUB_OUTPUT"
 
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
       - name: Run Cleanup Agent Command
         id: agent
         env:
@@ -89,7 +92,6 @@ jobs:
           CLEANUP_DATE: ${{ steps.focus.outputs.run_date }}
           CLEANUP_PROMPT_FILE: ${{ steps.prompt.outputs.prompt_file }}
           BEDROCK_INFERENCE_PROFILE_ID: "us.anthropic.claude-haiku-4-5-20251001-v1:0"
-          WEEKLY_CLEANUP_MAX_TURNS: "3"
           AWS_REGION: "us-east-1"
         run: |
           set -euo pipefail
