@@ -33,4 +33,6 @@ fi
 CLAUDE_CODE_USE_BEDROCK=1 \
   AWS_REGION="${BEDROCK_REGION}" \
   ANTHROPIC_MODEL="${BEDROCK_MODEL}" \
-  claude --dangerously-skip-permissions -p --max-turns "${MAX_TURNS}" "$(cat "${PROMPT_FILE}")"
+  claude --dangerously-skip-permissions -p --output-format stream-json --max-turns "${MAX_TURNS}" "$(cat "${PROMPT_FILE}")" \
+  | jq -r 'select(.type == "assistant") | .message.content[] | select(.type == "text") | .text' \
+  || true
