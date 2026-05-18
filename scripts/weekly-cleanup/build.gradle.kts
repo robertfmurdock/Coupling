@@ -1,3 +1,4 @@
+import groovy.json.JsonSlurper
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.temporal.WeekFields
@@ -335,11 +336,242 @@ abstract class WeeklyCleanupEvaluateTask : DefaultTask() {
     }
 }
 
+abstract class WeeklyCleanupRenderLogTask : DefaultTask() {
+    @get:Internal
+    abstract val jsonlFilePath: Property<String>
+
+    @get:Internal
+    abstract val outputFilePath: Property<String>
+
+    @TaskAction
+    fun render() {
+        val jsonlFile = File(jsonlFilePath.get())
+        if (!jsonlFile.exists()) {
+            logger.lifecycle("No agent stream JSONL at ${jsonlFile.absolutePath}; skipping render.")
+            return
+        }
+        val slurper = JsonSlurper()
+        val sb = StringBuilder()
+        var turnIndex = 0
+
+        jsonlFile.forEachLine { line ->
+            if (line.isBlank()) return@forEachLine
+            val event = try {
+                slurper.parseText(line) as? Map<*, *>
+            } catch (e: Exception) {
+                logger.warn("Skipping unparseable line: ${line.take(80)}")
+                null
+            } ?: return@forEachLine
+
+            when (event["type"] as? String) {
+                "assistant" -> {
+                    turnIndex++
+                    sb.appendLine("## Turn $turnIndex")
+                    sb.appendLine()
+                    val message = event["message"] as? Map<*, *> ?: return@forEachLine
+                    val content = message["content"] as? List<*> ?: return@forEachLine
+                    val blocks = content.filterIsInstance<Map<*, *>>()
+                    val textBlocks = blocks.filter { it["type"] == "text" }
+                    val toolUses = blocks.filter { it["type"] == "tool_use" }
+                    for (block in textBlocks) {
+                        val text = (block["text"] as? String)?.trim() ?: continue
+                        if (text.isNotBlank()) {
+                            sb.appendLine(text)
+                            sb.appendLine()
+                        }
+                    }
+                    for (tool in toolUses) {
+                        val name = tool["name"] as? String ?: "?"
+                        val input = tool["input"] as? Map<*, *> ?: emptyMap<String, Any?>()
+                        sb.appendLine("- $name: ${summarizeTool(name, input)}")
+                    }
+                    if (toolUses.isNotEmpty()) sb.appendLine()
+                }
+                "result" -> {
+                    sb.appendLine("## Result")
+                    sb.appendLine()
+                    val subtype = event["subtype"] as? String ?: "unknown"
+                    val error = event["error"] as? String
+                    val errorPart = if (!error.isNullOrBlank()) " — $error" else ""
+                    sb.appendLine("Outcome: **$subtype**$errorPart")
+                }
+            }
+        }
+
+        val out = File(outputFilePath.get())
+        out.parentFile.mkdirs()
+        out.writeText(sb.toString())
+        logger.lifecycle("Wrote agent log: ${out.absolutePath} ($turnIndex turns)")
+    }
+
+    private fun summarizeTool(name: String, input: Map<*, *>): String = when (name) {
+        "Bash" -> truncate(input["command"] as? String ?: "", 120)
+        "Read" -> input["file_path"] as? String ?: ""
+        "Edit" -> input["file_path"] as? String ?: ""
+        "Write" -> input["file_path"] as? String ?: ""
+        "Glob" -> buildString {
+            append(input["pattern"] as? String ?: "")
+            val path = input["path"] as? String
+            if (!path.isNullOrBlank()) append(" in $path")
+        }
+        "Grep" -> buildString {
+            append(input["pattern"] as? String ?: "")
+            val path = input["path"] as? String
+            if (!path.isNullOrBlank()) append(" in $path")
+            val glob = input["glob"] as? String
+            if (!glob.isNullOrBlank()) append(" ($glob)")
+        }
+        "TodoWrite" -> "(updated todo list)"
+        "Agent" -> truncate(input["description"] as? String ?: "", 80)
+        else -> input.entries.take(2).joinToString(", ") { (k, v) ->
+            "$k=${truncate(v?.toString() ?: "", 60)}"
+        }
+    }
+
+    private fun truncate(s: String, maxLen: Int): String =
+        if (s.length <= maxLen) s else s.take(maxLen - 1) + "…"
+}
+
+abstract class WeeklyCleanupLogTask : DefaultTask() {
+    protected fun File.parsePlanEnv(): Map<String, String> =
+        readLines()
+            .filter { it.contains("=") }
+            .associate { line ->
+                val i = line.indexOf('=')
+                line.substring(0, i) to line.substring(i + 1).trim('\'')
+            }
+
+    protected fun runIdHeader(runId: String): String = buildString {
+        appendLine("**GH Actions run:** https://github.com/robertfmurdock/Coupling/actions/runs/$runId")
+        appendLine()
+        appendLine("**Download raw JSONL:** `gh run download $runId -n agent-stream-log`")
+        appendLine()
+        appendLine("---")
+        appendLine()
+    }
+}
+
+abstract class WeeklyCleanupRenderLogSummaryTask : WeeklyCleanupLogTask() {
+    @get:Internal
+    abstract val jsonlFilePath: Property<String>
+
+    @get:Internal
+    abstract val outputFilePath: Property<String>
+
+    @get:Input
+    abstract val runId: Property<String>
+
+    @TaskAction
+    fun render() {
+        val jsonlFile = File(jsonlFilePath.get())
+        if (!jsonlFile.exists()) {
+            logger.lifecycle("No agent stream JSONL at ${jsonlFile.absolutePath}; skipping summary render.")
+            return
+        }
+        val slurper = JsonSlurper()
+        val lines = mutableListOf<String>()
+        val maxLines = 100
+
+        val resolvedRunId = runId.get()
+        if (resolvedRunId.isNotBlank()) {
+            lines += runIdHeader(resolvedRunId).trimEnd().split("\n")
+            lines += ""
+        }
+
+        var turnIndex = 0
+        var truncated = false
+
+        jsonlFile.useLines { lineSeq ->
+            for (line in lineSeq) {
+                if (line.isBlank()) continue
+                val event = try {
+                    slurper.parseText(line) as? Map<*, *>
+                } catch (e: Exception) {
+                    null
+                } ?: continue
+                when (event["type"] as? String) {
+                    "assistant" -> {
+                        if (lines.size >= maxLines) {
+                            truncated = true
+                            break
+                        }
+                        turnIndex++
+                        val message = event["message"] as? Map<*, *> ?: continue
+                        val content = message["content"] as? List<*> ?: continue
+                        val firstText = content.filterIsInstance<Map<*, *>>()
+                            .firstOrNull { it["type"] == "text" }
+                            ?.let { it["text"] as? String }
+                            ?.trim()
+                        if (!firstText.isNullOrBlank()) {
+                            lines += "**Turn $turnIndex:**"
+                            lines += ""
+                            lines += firstText
+                            lines += ""
+                        }
+                    }
+                    "result" -> {
+                        val subtype = event["subtype"] as? String ?: "unknown"
+                        lines += "**Result:** $subtype"
+                    }
+                }
+            }
+        }
+
+        if (truncated) {
+            lines += ""
+            lines += "_(truncated — see full log in `.github/weekly-cleanup/logs/`)_"
+        }
+
+        val out = File(outputFilePath.get())
+        out.parentFile.mkdirs()
+        out.writeText(lines.joinToString("\n") + "\n")
+        logger.lifecycle("Wrote agent log summary: ${out.absolutePath}")
+    }
+}
+
+abstract class WeeklyCleanupWriteLogEntryTask : WeeklyCleanupLogTask() {
+    @get:Internal
+    abstract val logFilePath: Property<String>
+
+    @get:Internal
+    abstract val planFilePath: Property<String>
+
+    @get:Input
+    abstract val runId: Property<String>
+
+    @get:Internal
+    abstract val outputDirPath: Property<String>
+
+    @TaskAction
+    fun writeEntry() {
+        val logFile = File(logFilePath.get())
+        if (!logFile.exists()) {
+            logger.lifecycle("No rendered log at ${logFilePath.get()}; skipping log entry write.")
+            return
+        }
+        val plan = File(planFilePath.get()).parsePlanEnv()
+        val runDate = plan["RUN_DATE"] ?: throw GradleException("Missing RUN_DATE in plan file")
+        val focus = plan["FOCUS"] ?: throw GradleException("Missing FOCUS in plan file")
+        val resolvedRunId = runId.get()
+        val safeFocus = focus.replace("/", "-")
+        val filename = "$runDate-$safeFocus.md"
+        val header = runIdHeader(resolvedRunId)
+        val outDir = File(outputDirPath.get())
+        outDir.mkdirs()
+        val outFile = outDir.resolve(filename)
+        outFile.writeText(header + logFile.readText())
+        logger.lifecycle("Wrote weekly cleanup log entry: ${outFile.absolutePath}")
+    }
+}
+
 val weeklyCleanupDir = rootProject.layout.buildDirectory.dir("weekly-cleanup")
 val weeklyCleanupPlanFilePath = weeklyCleanupDir.map { it.file("plan.env").asFile.absolutePath }
 val weeklyCleanupPromptFilePath = weeklyCleanupDir.map { it.file("prompt.md").asFile.absolutePath }
 val weeklyCleanupEvalFilePath = weeklyCleanupDir.map { it.file("evaluation.env").asFile.absolutePath }
 val weeklyCleanupCandidatesFilePath = weeklyCleanupDir.map { it.file("candidates.md").asFile.absolutePath }
+val weeklyCleanupJsonlFilePath = weeklyCleanupDir.map { it.file("agent-stream.jsonl").asFile.absolutePath }
+val weeklyCleanupLogFilePath = weeklyCleanupDir.map { it.file("agent-log.md").asFile.absolutePath }
+val weeklyCleanupLogSummaryFilePath = weeklyCleanupDir.map { it.file("agent-log-summary.md").asFile.absolutePath }
 
 tasks {
     val weeklyCleanupPlan = register<WeeklyCleanupPlanTask>("weeklyCleanupPlan") {
@@ -398,5 +630,31 @@ tasks {
                 .map { it.toInt() }
                 .orElse(400),
         )
+    }
+
+    val weeklyCleanupRenderLog = register<WeeklyCleanupRenderLogTask>("weeklyCleanupRenderLog") {
+        group = "automation"
+        description = "Renders agent reasoning log from JSONL stream to human-readable markdown."
+        jsonlFilePath.set(weeklyCleanupJsonlFilePath)
+        outputFilePath.set(weeklyCleanupLogFilePath)
+    }
+
+    register<WeeklyCleanupRenderLogSummaryTask>("weeklyCleanupRenderLogSummary") {
+        group = "automation"
+        description = "Renders condensed agent log summary (first text block per turn) for PR body injection."
+        jsonlFilePath.set(weeklyCleanupJsonlFilePath)
+        outputFilePath.set(weeklyCleanupLogSummaryFilePath)
+        runId.set(providers.gradleProperty("weeklyCleanupRunId").orElse(""))
+    }
+
+    register<WeeklyCleanupWriteLogEntryTask>("weeklyCleanupWriteLogEntry") {
+        group = "automation"
+        description = "Writes rendered agent log to .github/weekly-cleanup/logs/ for in-repo persistence."
+        dependsOn(weeklyCleanupRenderLog)
+        dependsOn(weeklyCleanupPlan)
+        logFilePath.set(weeklyCleanupLogFilePath)
+        planFilePath.set(weeklyCleanupPlanFilePath)
+        runId.set(providers.gradleProperty("weeklyCleanupRunId").orElse(""))
+        outputDirPath.set(rootProject.file(".github/weekly-cleanup/logs").absolutePath)
     }
 }

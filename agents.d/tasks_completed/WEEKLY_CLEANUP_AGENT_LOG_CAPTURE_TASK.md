@@ -73,3 +73,10 @@ Omit: tool result bodies, raw file contents echoed back, internal scaffolding no
 - All four slices merged and green in a live `workflow_dispatch` run
 - At least one `.github/weekly-cleanup/logs/` entry exists in the repo
 - PR body format reviewed and confirmed readable by a human in GitHub UI
+
+## Checklist
+- [x] Slice 1 — `weeklyCleanupRenderLog` Gradle task
+- [x] Slice 2 — Upload rendered log as GH artifact
+- [x] Slice 3 — `weeklyCleanupWriteLogEntry` Gradle task + workflow step
+- [x] Slice 4 — `weeklyCleanupRenderLogSummary` task + PR body `<details>` block
+- [x] Move this file to agents.d/tasks_completed/

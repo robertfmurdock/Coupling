@@ -131,6 +131,14 @@ jobs:
           echo "command_configured=true" >> "$GITHUB_OUTPUT"
           ./scripts/weekly-cleanup/run-cleanup.sh
 
+      - name: Render Agent Logs
+        if: always()
+        run: |
+          set -euo pipefail
+          ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderLog \
+                    :scripts:weekly-cleanup:weeklyCleanupRenderLogSummary \
+                    -PweeklyCleanupRunId="${{ github.run_id }}"
+
       - name: Detect Changes
         id: changes
         run: |
@@ -176,6 +184,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      - name: Write Log Entry
+        if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
+        run: ./gradlew :scripts:weekly-cleanup:weeklyCleanupWriteLogEntry -PweeklyCleanupRunId="${{ github.run_id }}"
+
       - name: Extract Cleanup Results
         id: results
         if: always()
@@ -190,6 +202,14 @@ jobs:
             } >> "$GITHUB_OUTPUT"
           else
             echo "history_tail=(no history file found)" >> "$GITHUB_OUTPUT"
+          fi
+          summary_file="build/weekly-cleanup/agent-log-summary.md"
+          if [ -f "$summary_file" ]; then
+            {
+              echo 'agent_log_summary<<EOF'
+              cat "$summary_file"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create Cleanup Pull Request
@@ -224,12 +244,27 @@ jobs:
             - Risk: low-to-moderate; cleanup-only scope with hard safety gates.
             - Rollback: revert this PR commit or close PR without merge.
 
+            <details><summary>Agent reasoning log</summary>
+
+            ${{ steps.results.outputs.agent_log_summary }}
+
+            </details>
+
       - name: Upload Agent Stream Log
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: agent-stream-log
           path: build/weekly-cleanup/agent-stream.jsonl
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload Agent Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-log
+          path: build/weekly-cleanup/agent-log.md
           retention-days: 7
           if-no-files-found: ignore
 
