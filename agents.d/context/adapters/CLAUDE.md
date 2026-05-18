@@ -2,7 +2,7 @@
 
 This file is generated from `agents.d/context`. Do not hand-edit.
 
-## Read First
+## At session start, immediately read these files
 {{REQUIRED_READS}}
 
 ## Conditional Reads

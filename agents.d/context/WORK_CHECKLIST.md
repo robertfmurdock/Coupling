@@ -2,6 +2,10 @@
 
 Use this checklist for every implementation task.
 
+## Terminology
+
+**Work Card (or "card")**: A markdown file in `agents.d/work/` that defines a task with goals, constraints, identified issues, and an implementation checklist. This is the project's task tracking system, NOT Claude Code's built-in task tracking tool. When the user asks you to "create a work card," you should create a markdown file in `agents.d/work/` following the format seen in existing work cards in that directory.
+
 ## Intake
 - Start with:
   - `./gradlew agentBootstrap`
