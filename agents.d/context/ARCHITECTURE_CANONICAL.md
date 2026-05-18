@@ -124,6 +124,9 @@ instruction files should be short and link to this file, not duplicate it.
     runs `./gradlew check`, auto-reverts on failure, and appends the verdict to
     `.github/weekly-cleanup/cleanup-history.md`. Use this instead of manual delete +
     check + revert sequences when evaluating dead code candidates.
+  - `chrome-e2e-diagnostics.sh [--check|--clean]` — diagnose and fix Chrome for Testing
+    issues that cause e2e test failures. See `CHROME_E2E_TROUBLESHOOTING.md` for details.
+  - `kill-chrome-processes.sh` — quick fix to kill stuck ChromeDriver processes.
 - After convention updates, run `./gradlew syncAiContext` to propagate generated
   context artifacts.
 
