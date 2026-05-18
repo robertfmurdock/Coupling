@@ -96,6 +96,8 @@ jobs:
         run: |
           set -euo pipefail
           ./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt
+          CLEANUP_RUN_ID="${{ github.run_id }}-${{ github.run_attempt }}"
+          sed -i "s/__CLEANUP_RUN_ID__/${CLEANUP_RUN_ID}/g" build/weekly-cleanup/prompt.md
           echo "prompt_file=build/weekly-cleanup/prompt.md" >> "$GITHUB_OUTPUT"
       - name: Generate Candidate List
         run: |
@@ -174,10 +176,27 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      - name: Extract Cleanup Results
+        id: results
+        if: always()
+        run: |
+          set -euo pipefail
+          history_file=".github/weekly-cleanup/cleanup-history.md"
+          if [ -f "$history_file" ]; then
+            {
+              echo 'history_tail<<EOF'
+              tail -25 "$history_file"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          else
+            echo "history_tail=(no history file found)" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create Cleanup Pull Request
         if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.COUPLING_PAT }}
           branch: ${{ steps.focus.outputs.branch }}
           delete-branch: true
           commit-message: "chore(cleanup): ${{ steps.focus.outputs.focus }} architecture-aligned cleanup"
@@ -188,6 +207,11 @@ jobs:
           body: |
             ## What Changed
             - Weekly cleanup scoped to `${{ steps.focus.outputs.focus }}`.
+
+            ## Cleanup History (recent)
+            ```
+            ${{ steps.results.outputs.history_tail }}
+            ```
 
             ## Architecture Alignment
             - Constrained to one focus area in weekly rotation.

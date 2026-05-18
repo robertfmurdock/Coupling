@@ -4,6 +4,13 @@ __QUEUED_CANDIDATES__
 You are performing one small, architecture-aligned cleanup directly in this repository.
 You have full tool access: read files, explore the codebase, and edit files directly.
 
+### Communication Style
+Be terse. Do not narrate what you are about to read or announce investigation steps. Output only:
+- Candidate names with their verdict when reached
+- Commands you are running and their outcome if relevant
+- Blockers that prevent progress
+No filler phrases ("Let me check...", "Now I will...", "Based on my review...", "I've completed..."). State results directly.
+
 ### CI Context Overrides
 - `./gradlew agentBootstrap` and `./gradlew check` were already run by the workflow before this prompt — do not run them again at the start.
 - The full Gradle build cache is warm — targeted and full validation runs are fast.
@@ -40,12 +47,13 @@ __STRATEGY_CONTENT__
 The TCR delete script writes history automatically for `deleted` and `verified-in-use` verdicts. For other verdicts, append manually to `.github/weekly-cleanup/cleanup-history.md` immediately after the verdict is reached — do not defer to the end:
 
 ```
-## __RUN_DATE__ (run-<CLEANUP_RUN_ID>) — __FOCUS_AREA__
+## __RUN_DATE__ (run-__CLEANUP_RUN_ID__) — __FOCUS_AREA__
 - <FileName.kt>: <verdict> — <one-line reason>
 ```
 
 Verdicts: `deleted`, `verified-in-use`, `skipped` (out of scope or exceeded limits), `queued` (identified but not yet investigated — investigate these first in a future run).
 Keep each line under 120 characters. Do not rewrite prior entries. The script writes the run header automatically; only add it manually if writing the first entry without using the script.
+**Never write a run header without at least one verdict line in the same edit.** A header with no following verdict is an invalid entry.
 
 ### Scope
 - Focus area: `__FOCUS_AREA__` — this is an **entrypoint for investigation**, not a hard boundary.

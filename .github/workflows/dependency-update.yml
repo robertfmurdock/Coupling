@@ -38,7 +38,7 @@ jobs:
         with:
           branch: "cpr-gradle-update/${{github.job}}/${{github.run_id}}"
           commit-message: "[update-deps] ${{github.workflow}}"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.COUPLING_PAT }}
           labels: autorebase:opt-in
           delete-branch: true
       - name: Enable Pull Request Auto-merge
