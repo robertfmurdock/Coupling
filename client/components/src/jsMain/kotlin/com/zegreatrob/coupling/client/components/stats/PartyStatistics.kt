@@ -34,15 +34,6 @@ import web.cssom.px
 import kotlin.time.Duration
 import kotlin.time.toJSDate
 
-@JsModule("date-fns/formatDistance")
-external val formatDistanceModule: dynamic
-
-val formatDistance: (Int?, Int) -> String = if (formatDistanceModule["formatDistance"] != undefined) {
-    formatDistanceModule["formatDistance"].unsafeCast<(Int?, Int) -> String>()
-} else {
-    formatDistanceModule.unsafeCast<(Int?, Int) -> String>()
-}
-
 external interface PartyStatisticsProps : Props {
     var party: PartyDetails
     var players: List<Player>

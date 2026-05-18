@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.external.formatDistance
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
