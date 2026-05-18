@@ -88,7 +88,7 @@ instruction files should be short and link to this file, not duplicate it.
 - Prefer direct, local solutions first; only introduce abstractions when duplication
   or change pressure is already demonstrated in this codebase.
 - Add or update behavioral/process conventions in canonical context files
-  (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `TASK_CHECKLIST.md`,
+  (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `WORK_CHECKLIST.md`,
   `PLAYBOOK_CODE_STYLE.md` when code-style-specific, `GRADLE_PLAYBOOK.md` when
   Gradle-specific, and `PLAYBOOK_GRAPHQL.md` when GraphQL-specific), not in
   `AGENTS.md` or generated context outputs.

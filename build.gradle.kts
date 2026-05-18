@@ -166,10 +166,21 @@ abstract class SyncAiContextTask : DefaultTask() {
         )
 
         val playbookBullets = playbookBullets(manifestFile)
+        val requiredReadsBullets = requiredReadsBullets(manifestFile)
+        val commandsBullets = commandsBullets(manifestFile)
+        val executionNormsBullets = executionNormsBullets(manifestFile)
+        val rulesBullets = rulesBullets(manifestFile)
 
         fun applyTemplate(adapterName: String, outputFile: File) {
             val template = adaptersDir.resolve(adapterName).readText()
-            outputFile.writeText(template.replace("{{PLAYBOOKS}}", playbookBullets))
+            outputFile.writeText(
+                template
+                    .replace("{{PLAYBOOKS}}", playbookBullets)
+                    .replace("{{REQUIRED_READS}}", requiredReadsBullets)
+                    .replace("{{COMMANDS}}", commandsBullets)
+                    .replace("{{EXECUTION_NORMS}}", executionNormsBullets)
+                    .replace("{{RULES}}", rulesBullets)
+            )
         }
 
         applyTemplate("CLAUDE.md", claudeFile)
@@ -195,6 +206,52 @@ abstract class SyncAiContextTask : DefaultTask() {
             }
             ?.joinToString("\n")
             ?: ""
+    }
+
+    private fun requiredReadsBullets(manifestFile: File): String {
+        val manifest = ObjectMapper().readTree(manifestFile)
+        return manifest.path("required_reads")
+            .takeIf { it.isArray }
+            ?.mapNotNull { it.asText(null) }
+            ?.joinToString("\n") { "- `$it`" }
+            ?: ""
+    }
+
+    private fun commandsBullets(manifestFile: File): String {
+        val manifest = ObjectMapper().readTree(manifestFile)
+        val commands = manifest.path("commands")
+
+        val bullets = buildList {
+            commands.path("agent_bootstrap").asText(null)?.let { add("- `$it`") }
+            commands.path("default")
+                .takeIf { it.isArray }
+                ?.mapNotNull { it.asText(null) }
+                ?.forEach { add("- `$it`") }
+            commands.path("module_task_pattern").asText(null)?.let { add("- `$it`") }
+        }
+
+        return bullets.joinToString("\n")
+    }
+
+    private fun executionNormsBullets(manifestFile: File): String {
+        val manifest = ObjectMapper().readTree(manifestFile)
+        val commands = manifest.path("commands")
+        val adaptersDir = File(adaptersDirPath.get())
+        val template = adaptersDir.resolve("execution-norms.md").readText()
+
+        return template
+            .replace("{{AGENT_BOOTSTRAP}}", commands.path("agent_bootstrap").asText(""))
+    }
+
+    private fun rulesBullets(manifestFile: File): String {
+        val manifest = ObjectMapper().readTree(manifestFile)
+        val commands = manifest.path("commands")
+        val adaptersDir = File(adaptersDirPath.get())
+        val template = adaptersDir.resolve("rules.md").readText()
+
+        return template
+            .replace("{{AGENT_BOOTSTRAP}}", commands.path("agent_bootstrap").asText(""))
+            .replace("{{GRAPHQL_REF_SCAN}}", commands.path("graphql_ref_scan").asText(""))
     }
 }
 

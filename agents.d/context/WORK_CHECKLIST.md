@@ -42,6 +42,7 @@ Use this checklist for every implementation task.
     confidence.
 - For GraphQL changes, run `agents.d/utilities/graphql-ref-scan.sh` for text-reference
   discovery, then verify behavior with relevant Gradle tests/checks.
+- Review changes against applicable playbooks (listed in `context.json`) to verify compliance before marking work complete.
 
 ## Completion Report
 - List files changed and intent.

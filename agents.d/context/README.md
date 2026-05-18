@@ -7,7 +7,7 @@ repository.
 - `ARCHITECTURE_CANONICAL.md`: canonical architecture, module ownership, and norms.
 - `PERSONA.md`: owner profile and collaboration preferences (brief version).
 - `PERSONA_EXTENDED.md`: extended persona for higher-ambiguity sessions.
-- `TASK_CHECKLIST.md`: required pre-flight and completion checks.
+- `WORK_CHECKLIST.md`: required pre-flight and completion checks.
 - `CONTEXT_CONTRACT.md`: required context categories every agent must consume.
 - `PLAYBOOK_CODE_STYLE.md`: code style rules for source code modifications.
 - `GRADLE_PLAYBOOK.md`: Gradle build-logic and automation conventions.

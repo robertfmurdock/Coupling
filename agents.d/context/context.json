@@ -36,7 +36,7 @@
   "required_reads": [
     "agents.d/context/ARCHITECTURE_CANONICAL.md",
     "agents.d/context/PERSONA.md",
-    "agents.d/context/TASK_CHECKLIST.md"
+    "agents.d/context/WORK_CHECKLIST.md"
   ],
   "optional_reads": [
     "agents.d/context/generated/repo-index.md",

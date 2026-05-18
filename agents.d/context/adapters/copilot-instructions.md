@@ -7,24 +7,14 @@ This file is generated from `agents.d/context`. Do not hand-edit.
 - Primary areas: `client/`, `server/`, `libraries/`, `sdk/`.
 
 ## Required References
-- `agents.d/context/ARCHITECTURE_CANONICAL.md`
-- `agents.d/context/TASK_CHECKLIST.md`
+{{REQUIRED_READS}}
 
 ## Conditional Reads
-Load the relevant playbook based on your task type:
+Load the relevant playbook based on need:
 {{PLAYBOOKS}}
 
 ## Commands
-- `./gradlew agentBootstrap`
-- `./gradlew test`
-- `./gradlew build`
-- `./gradlew check`
-- `./gradlew :module:task`
+{{COMMANDS}}
 
 ## Rules
-- Start each session with `./gradlew agentBootstrap`.
-- Use the Gradle wrapper only.
-- Express repository automation as Gradle tasks, not ad hoc shell scripts.
-- Keep changes small and consistent with local patterns.
-- For GraphQL API changes, run `agents.d/utilities/graphql-ref-scan.sh <pattern>`.
-- Keep schema + server + SDK + tests aligned in the same change.
+{{RULES}}

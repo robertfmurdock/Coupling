@@ -26,7 +26,7 @@ Read these before making changes:
 - `agents.d/context/ARCHITECTURE_CANONICAL.md`
 - `agents.d/context/BOUNDARIES.md`
 - `agents.d/context/PERSONA.md`
-- `agents.d/context/TASK_CHECKLIST.md`
+- `agents.d/context/WORK_CHECKLIST.md`
 - `agents.d/context/generated/repo-index.md`
 - `agents.d/context/generated/workflows.md`
 - `agents.d/context/GRADLE_PLAYBOOK.md`

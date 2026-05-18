@@ -1,0 +1,6 @@
+- Start each session with `{{AGENT_BOOTSTRAP}}`.
+- Use the Gradle wrapper only.
+- Express repository automation as Gradle tasks, not ad hoc shell scripts.
+- Keep changes small and consistent with local patterns.
+- For GraphQL API changes, run `{{GRAPHQL_REF_SCAN}}`.
+- Keep schema + server + SDK + tests aligned in the same change.
