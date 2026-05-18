@@ -123,4 +123,4 @@ candidate as `test-grooming-gap` or `test-grooming-ambiguous` and stop.
 - [x] Run `./gradlew :scripts:weekly-cleanup:weeklyCleanupPlan -PweeklyCleanupStrategyOverride=test-grooming` and verify plan output
 - [x] Run `./gradlew :scripts:weekly-cleanup:weeklyCleanupCandidates` and verify candidates file lists test files
 - [x] Run `./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt` and verify rendered prompt includes strategy content
-- [ ] Move this file to `agents.d/tasks_completed/`
+- [ ] Move this file to `agents.d/work_completed/`

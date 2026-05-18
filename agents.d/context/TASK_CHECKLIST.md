@@ -7,7 +7,7 @@ Use this checklist for every implementation task.
   - `./gradlew agentBootstrap`
   - If bootstrap fails with an AWS credential error, check whether `AWS_PROFILE`
     is set to a profile unrelated to this repo; `unset AWS_PROFILE` if so.
-- Task artifacts live in `agents.d/tasks/`.
+- Work cards live in `agents.d/work/`.
 - Read:
   - Context files listed in `agents.d/context/context.json` (`required_reads`)
   - Relevant playbooks in `agents.d/context/context.json` (`playbooks`) based on task type
@@ -19,9 +19,9 @@ Use this checklist for every implementation task.
 - Confirm constraints and assumptions before coding.
 
 ## Implementation
-- If the task artifact has no `## Checklist` section, create one before writing any code.
+- If the work card has no `## Checklist` section, create one before writing any code.
   List each planned slice as an unchecked item (`- [ ] ...`). This is the first slice.
-  The final item must always be `- [ ] Move this file to agents.d/tasks_completed/`.
+  The final item must always be `- [ ] Move this file to agents.d/work_completed/`.
 - Keep changes focused on impacted modules.
 - Follow existing patterns and module ownership.
 - Before changing something that looks wrong (especially a flag or setting overriding a default), confirm it isn't intentional. Surface the ambiguity; don't silently "fix" it.
@@ -29,8 +29,8 @@ Use this checklist for every implementation task.
 - Update all linked artifacts for cross-layer changes.
 - **Each slice or step must be integration-oriented**: the repository should be in a safe,
   check-in-ready state after every slice, so work can be paused and resumed at any slice boundary.
-- **End every slice by marking it complete in the task artifact** (`agents.d/tasks/<TASK>.md`).
-  Do not batch task file updates to the end — update as you go.
+- **End every slice by marking it complete in the work card** (`agents.d/work/<CARD>.md`).
+  Do not batch work card updates to the end — update as you go.
 
 ## Validation
 - Run smallest sufficient task set first for quick feedback.
@@ -46,5 +46,5 @@ Use this checklist for every implementation task.
 ## Completion Report
 - List files changed and intent.
 - List validation commands run and results.
-- Confirm all slices are marked `[x]` in the task artifact, then move it to `agents.d/tasks_completed/`.
+- Confirm all slices are marked `[x]` in the work card, then move it to `agents.d/work_completed/`.
 - State residual risks, skipped checks, or follow-ups.

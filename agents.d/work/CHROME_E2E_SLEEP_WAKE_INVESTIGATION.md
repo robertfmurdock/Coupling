@@ -254,4 +254,4 @@ Suggested priority: **P2 - Medium**
 - [ ] File bug reports if external issue confirmed
 - [ ] Implement best solution
 - [ ] Update documentation with permanent fix
-- [ ] Move this file to agents.d/tasks_completed/
+- [ ] Move this file to agents.d/work_completed/

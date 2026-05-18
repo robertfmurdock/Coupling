@@ -79,4 +79,4 @@ Omit: tool result bodies, raw file contents echoed back, internal scaffolding no
 - [x] Slice 2 — Upload rendered log as GH artifact
 - [x] Slice 3 — `weeklyCleanupWriteLogEntry` Gradle task + workflow step
 - [x] Slice 4 — `weeklyCleanupRenderLogSummary` task + PR body `<details>` block
-- [x] Move this file to agents.d/tasks_completed/
+- [x] Move this file to agents.d/work_completed/

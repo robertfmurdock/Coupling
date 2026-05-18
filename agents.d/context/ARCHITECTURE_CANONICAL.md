@@ -83,8 +83,8 @@ instruction files should be short and link to this file, not duplicate it.
 - Keep diffs minimal and pattern-consistent.
 - Do not introduce unrelated refactors in feature/bugfix changes.
 - Preserve existing behavior unless change request explicitly requires it.
-- Task artifacts are stored under `agents.d/tasks/`.
-- Completed task artifacts are stored under `agents.d/tasks_completed/`.
+- Work cards are stored under `agents.d/work/`.
+- Completed work cards are stored under `agents.d/work_completed/`.
 - Prefer direct, local solutions first; only introduce abstractions when duplication
   or change pressure is already demonstrated in this codebase.
 - Add or update behavioral/process conventions in canonical context files

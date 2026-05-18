@@ -123,8 +123,8 @@ Initial strategy set (not all implemented in this task):
     - Discovery: read `ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, the current strategy
       files, and the focus module. Look for recurring violation patterns, inconsistencies,
       or technical debt shapes that a future agent could act on systematically.
-    - Output: the agent creates a new task artifact under `agents.d/tasks/` named
-      `CLEANUP_STRATEGY_<NAME>_TASK.md` describing the proposed strategy: what it detects,
+    - Output: the agent creates a new work card under `agents.d/work/` named
+      `CLEANUP_STRATEGY_<NAME>_CARD.md` describing the proposed strategy: what it detects,
       what action it takes, what the history verdict shape is, and what false-positive risks
       to guard against. It does not implement the strategy — that is deferred to a separate
       task.

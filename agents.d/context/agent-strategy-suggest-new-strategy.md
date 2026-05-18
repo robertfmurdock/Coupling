@@ -23,15 +23,15 @@ and to propose one new strategy that a future agent run could act on systematica
 
 #### Output
 
-Identify the single most actionable recurring pattern you observe. Create a new task artifact at:
+Identify the single most actionable recurring pattern you observe. Create a new work card at:
 ```
-agents.d/tasks/CLEANUP_STRATEGY_<NAME>_TASK.md
+agents.d/work/CLEANUP_STRATEGY_<NAME>_CARD.md
 ```
 
 Where `<NAME>` is a short uppercase identifier for the strategy (e.g., `NAMING_CONSISTENCY`,
 `TEST_PLACEMENT`, `REDUNDANT_ABSTRACTIONS`).
 
-The task artifact must describe:
+The work card must describe:
 - **What it detects**: the violation pattern, with at least one concrete example from the current focus module
 - **Discovery heuristic**: how a future agent would find instances (grep pattern, structural scan, etc.)
 - **Action path**: what the agent does upon finding an instance (rename, delete, move, annotate)
@@ -41,7 +41,7 @@ The task artifact must describe:
 
 #### History Entry
 
-After creating the task artifact, append to `.github/weekly-cleanup/cleanup-history.md`:
+After creating the work card, append to `.github/weekly-cleanup/cleanup-history.md`:
 
 ```
 ## __RUN_DATE__ — __FOCUS_AREA__
@@ -51,6 +51,6 @@ After creating the task artifact, append to `.github/weekly-cleanup/cleanup-hist
 #### Constraints
 
 - **No code changes**: this strategy must never modify source files, test files, or build files.
-- The task artifact is the only output; no implementation is attempted.
+- The work card is the only output; no implementation is attempted.
 - If no actionable recurring pattern is found, write a history entry explaining what was surveyed and
   why no new strategy was proposed: `strategy-proposed: none — <reason>`.
