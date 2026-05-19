@@ -117,8 +117,9 @@ tasks {
     }
 
     register("dependencyResources", Copy::class) {
+        val destDir = jsProcessResources.flatMap { it.destinationDirectory }
         dependsOn(":sdk:jsProcessResources")
-        into(jsProcessResources.destinationDir)
+        into(destDir)
         from("$rootDir/sdk/build/processedResources/js/main")
     }
 

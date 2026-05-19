@@ -114,6 +114,8 @@ After each phase:
 - [x] Make JsonLoggingTestListener instantiation lazy (move to execution time)
 - [x] Convert doFirst/doLast blocks to use lazy Provider references
 - [x] Validate Phase 1: run sample test tasks and verify logging output
-- [ ] Run `./gradlew check --configuration-cache` to verify improvements
+- [x] Run `./gradlew check --configuration-cache` to verify Phase 1 eliminated all test logging issues
+- [x] Fix ProcessResources references in client/build.gradle.kts
+- [x] Fix ProcessResources references in cli/build.gradle.kts
 - [ ] Review changes against applicable playbooks and verify compliance
 - [ ] Move this file to agents.d/work_completed/
