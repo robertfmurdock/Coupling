@@ -34,6 +34,9 @@ Use this checklist for every implementation task.
 - Update all linked artifacts for cross-layer changes.
 - **Each slice or step must be integration-oriented**: the repository should be in a safe,
   check-in-ready state after every slice, so work can be paused and resumed at any slice boundary.
+- **Every commit must pass all tests**: Run `./gradlew check` before committing. In this project,
+  committing means the code is ready to share and safe to merge — a commit represents a working,
+  tested state. Let Gradle determine what needs to run based on your changes.
 - **End every slice by marking it complete in the work card** (`agents.d/work/<CARD>.md`).
   Do not batch work card updates to the end — update as you go.
 
