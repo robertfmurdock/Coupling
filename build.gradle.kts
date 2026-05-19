@@ -77,19 +77,19 @@ tasks {
     val validateTestJsonl = project.registerTestLogCliTask(
         name = "validateTestJsonl",
         command = "validate",
-        reportFilePath = { validateReportFilePath.get() },
+        reportFilePath = validateReportFilePath,
         descriptionText = "Validates build/test-output/test.jsonl for minimum required schema.",
-        testJsonlFilePath = { testJsonlFilePath.get() },
-        testLogToolsClasspath = { testLogToolsClasspath.get() },
+        testJsonlFilePath = testJsonlFilePath,
+        testLogToolsClasspath = testLogToolsClasspath,
     )
 
     val analyzeTestJsonl = project.registerTestLogCliTask(
         name = "analyzeTestJsonl",
         command = "analyze",
-        reportFilePath = { analyzeReportFilePath.get() },
+        reportFilePath = analyzeReportFilePath,
         descriptionText = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl.",
-        testJsonlFilePath = { testJsonlFilePath.get() },
-        testLogToolsClasspath = { testLogToolsClasspath.get() },
+        testJsonlFilePath = testJsonlFilePath,
+        testLogToolsClasspath = testLogToolsClasspath,
     )
 
     val assertCommandAttributionCoverage by registering {

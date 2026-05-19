@@ -25,6 +25,7 @@ Use this checklist for every implementation task.
 ## Implementation
 - If the work card has no `## Checklist` section, create one before writing any code.
   List each planned slice as an unchecked item (`- [ ] ...`). This is the first slice.
+  The second-to-last item must always be `- [ ] Review changes against applicable playbooks and verify compliance`.
   The final item must always be `- [ ] Move this file to agents.d/work_completed/`.
 - Keep changes focused on impacted modules.
 - Follow existing patterns and module ownership.

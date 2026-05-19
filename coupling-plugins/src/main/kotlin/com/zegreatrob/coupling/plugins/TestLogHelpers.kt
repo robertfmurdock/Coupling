@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.plugins
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
@@ -30,35 +31,33 @@ fun readAttributionCoverage(reportFilePath: String): AttributionCoverage {
 fun Project.registerTestLogCliTask(
     name: String,
     command: String,
-    reportFilePath: () -> String,
+    reportFilePath: Provider<String>,
     descriptionText: String,
-    testJsonlFilePath: () -> String,
-    testLogToolsClasspath: () -> String,
+    testJsonlFilePath: Provider<String>,
+    testLogToolsClasspath: Provider<String>,
     strictFlags: List<String> = listOf("--strict"),
 ): TaskProvider<Exec> = tasks.register(name, Exec::class.java) {
     group = "verification"
     description = descriptionText
-    notCompatibleWithConfigurationCache("Resolves CLI runtime classpath dynamically for a helper migration task.")
     dependsOn(":cli:test-log-tools:jvmJar")
-    doFirst {
-        commandLine(
-            buildList {
-                addAll(
+
+    executable("java")
+    argumentProviders.add {
+        testLogToolsClasspath.flatMap { classpath ->
+            reportFilePath.flatMap { report ->
+                testJsonlFilePath.map { jsonl ->
                     listOf(
-                        "java",
                         "-cp",
-                        testLogToolsClasspath(),
+                        classpath,
                         "com.zegreatrob.coupling.cli.testlog.MainKt",
                         command,
                         "--report-file",
-                        reportFilePath(),
+                        report,
                         "--quiet-success",
                         "--failure-summary",
-                    ),
-                )
-                addAll(strictFlags)
-                add(testJsonlFilePath())
-            },
-        )
+                    ) + strictFlags + jsonl
+                }
+            }
+        }.get()
     }
 }

@@ -92,5 +92,5 @@ import org.gradle.api.tasks.TaskAction
 - [x] Extract test log helper functions and data classes to buildSrc (registerTestLogCliTask, AttributionCoverage, readAttributionCoverage)
 - [x] Optimize dockerCompose AWS SSM parameter fetching (extract helper, add lazy evaluation)
 - [x] Organize imports into logical groups
-- [ ] Run `./gradlew check` to verify all functionality
+- [x] Run `./gradlew check` to verify all functionality
 - [ ] Move this file to agents.d/work_completed/
