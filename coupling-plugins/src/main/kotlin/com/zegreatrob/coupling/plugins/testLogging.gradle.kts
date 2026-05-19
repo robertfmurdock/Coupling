@@ -13,24 +13,22 @@ val logConfigFile = rootProject.layout.buildDirectory.file("test-output/log4j2-t
 val logFilePathProvider = rootProject.layout.buildDirectory
     .file("test-output/test.jsonl")
     .map { it.asFile.absolutePath }
-val logConfigPath = logConfigFile.get().asFile
 
-logConfigPath.parentFile.mkdirs()
-logConfigPath.writeText(WriteTestLog4j2Config.buildConfig(logFilePathProvider.get()))
-System.setProperty("log4j2.configurationFile", logConfigPath.absolutePath)
-Configurator.initialize(null, logConfigPath.absolutePath)
-
-val writeLogConfig =
-    rootProject.tasks.findByName("writeTestLog4j2Config")
-        ?.let { rootProject.tasks.named(it.name) }
-        ?: rootProject.tasks.register("writeTestLog4j2Config", WriteTestLog4j2Config::class.java) {
+val writeLogConfig = rootProject.tasks.let { tasks ->
+    tasks.findByName("writeTestLog4j2Config")?.let { tasks.named(it.name) }
+        ?: tasks.register("writeTestLog4j2Config", WriteTestLog4j2Config::class.java) {
             logFilePath.set(logFilePathProvider)
             outputFile.set(logConfigFile)
+            doFirst {
+                val configPath = outputFile.get().asFile
+                configPath.parentFile.mkdirs()
+            }
         }
-val resetTestJsonl =
-    rootProject.tasks.findByName("resetTestJsonl")
-        ?.let { rootProject.tasks.named(it.name) }
-        ?: rootProject.tasks.register("resetTestJsonl") {
+}
+
+val resetTestJsonl = rootProject.tasks.let { tasks ->
+    tasks.findByName("resetTestJsonl")?.let { tasks.named(it.name) }
+        ?: tasks.register("resetTestJsonl") {
             val shouldReset =
                 (providers.gradleProperty("coupling.testLog.reset").orNull == "true") ||
                     (System.getenv("COUPLING_TEST_LOG_RESET") == "true")
@@ -44,6 +42,7 @@ val resetTestJsonl =
                 logFile.writeText("")
             }
         }
+}
 
 tasks.withType(AbstractTestTask::class).configureEach {
     dependsOn(resetTestJsonl)
@@ -51,18 +50,28 @@ tasks.withType(AbstractTestTask::class).configureEach {
     val jsonLoggingListener = JsonLoggingTestListener(path, testRunIdentifier, logFilePathProvider.get())
     addTestListener(jsonLoggingListener)
     addTestOutputListener(jsonLoggingListener)
+    doFirst {
+        val logConfigPath = logConfigFile.get().asFile
+        if (logConfigPath.exists()) {
+            System.setProperty("log4j2.configurationFile", logConfigPath.absolutePath)
+            Configurator.initialize(null, logConfigPath.absolutePath)
+        }
+    }
 }
+
 tasks.withType(Test::class).configureEach {
     systemProperty("log4j2.configurationFile", logConfigFile.get().asFile.absolutePath)
     systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
     useJUnitPlatform()
 }
+
 val slf4jTestBackend = "org.slf4j:slf4j-simple"
 configurations.configureEach {
     if (name == "testRuntimeOnly" || name == "jvmTestRuntimeOnly") {
         project.dependencies.add(name, slf4jTestBackend)
     }
 }
+
 tasks.withType(KotlinJsTest::class).configureEach {
     val logFilePath = logFilePathProvider.get()
     val taskPath = path
