@@ -99,5 +99,8 @@ Work incrementally in focused slices, keeping the repository in check-in-ready s
 
 ## Checklist
 - [x] Audit current plugin code structure and identify specific improvement opportunities
-- [ ] Review changes against applicable playbooks and verify compliance
+- [x] Add proper inputs/outputs to custom tasks (completed in commit 3f16f183)
+- [x] Extract common opt-ins and configuration patterns to reduce duplication (completed in commit e09b0e91)
+- [x] Review changes against applicable playbooks and verify compliance
+- [x] Run `./gradlew check` to verify no regressions
 - [ ] Move this file to agents.d/work_completed/
