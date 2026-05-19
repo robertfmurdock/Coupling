@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -12,7 +13,7 @@ abstract class ValidateAiContextManifestTask : DefaultTask() {
     @get:Internal
     abstract val repoRootDirPath: Property<String>
 
-    @get:Internal
+    @get:InputFile
     abstract val contextManifestFilePath: Property<String>
 
     @TaskAction

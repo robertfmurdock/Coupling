@@ -4,6 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
 import java.io.ByteArrayOutputStream
@@ -14,7 +15,7 @@ abstract class WeeklyCleanupEvaluateTask : DefaultTask() {
     @get:Inject
     abstract val execOperations: ExecOperations
 
-    @get:Internal
+    @get:OutputFile
     abstract val outputFilePath: Property<String>
 
     @get:Input

@@ -5,6 +5,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 import java.time.LocalDate
@@ -12,7 +13,7 @@ import java.time.temporal.WeekFields
 import java.util.Locale
 
 abstract class WeeklyCleanupPlanTask : DefaultTask() {
-    @get:Internal
+    @get:OutputFile
     abstract val outputFilePath: Property<String>
 
     @get:Input

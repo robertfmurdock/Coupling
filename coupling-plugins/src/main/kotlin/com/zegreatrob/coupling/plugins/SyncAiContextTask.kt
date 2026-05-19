@@ -3,7 +3,10 @@ package com.zegreatrob.coupling.plugins
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
@@ -11,33 +14,29 @@ abstract class SyncAiContextTask : DefaultTask() {
     @get:Internal
     abstract val repoRootDirPath: Property<String>
 
-    @get:Internal
+    @get:InputFile
     abstract val settingsFilePath: Property<String>
 
-    @get:Internal
+    @get:InputDirectory
     abstract val adaptersDirPath: Property<String>
 
     @get:Internal
     abstract val generatedDirPath: Property<String>
 
-    @get:Internal
+    @get:OutputFile
     abstract val repoIndexFilePath: Property<String>
 
-    @get:Internal
+    @get:OutputFile
     abstract val workflowsFilePath: Property<String>
 
-    @get:Internal
+    @get:OutputFile
     abstract val claudeFilePath: Property<String>
 
-    @get:Internal
+    @get:OutputFile
     abstract val copilotFilePath: Property<String>
 
-    @get:Internal
+    @get:InputFile
     abstract val contextManifestFilePath: Property<String>
-
-    init {
-        outputs.upToDateWhen { false }
-    }
 
     @TaskAction
     fun sync() {
