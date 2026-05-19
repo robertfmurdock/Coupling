@@ -38,7 +38,7 @@ tasks {
             ":release",
             ":client:uploadToS3",
             ":server:check",
-            ":e2e:check"
+            ":e2e:check",
         )
         environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
         workingDir = deployDir.get().asFile
@@ -49,7 +49,7 @@ tasks {
             "--config",
             deployDir.get().file("serverless.yml").asFile.absolutePath,
             "--stage",
-            project.name
+            project.name,
         )
         dependsOn(copyDeployResources)
     }
@@ -60,7 +60,7 @@ tasks {
             ":release",
             ":client:uploadToS3",
             ":server:check",
-            ":e2e:check"
+            ":e2e:check",
         )
         dependsOn(prune)
         workingDir = deployDir.get().asFile
@@ -72,7 +72,7 @@ tasks {
             "--package",
             serverProject.layout.buildDirectory.dir("${project.name}/lambda-dist").get().asFile.absolutePath,
             "--stage",
-            project.name
+            project.name,
         )
         dependsOn(":release", copyDeployResources)
     }
@@ -88,4 +88,3 @@ tasks {
             finalizedBy(prune, deploy)
         }
 }
-

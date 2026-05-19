@@ -78,9 +78,9 @@ tasks.withType(KotlinJsTest::class).configureEach {
 
 fun Project.getTestRunIdentifier(): String {
     val testRunIdentifier: Any? by rootProject.extra
-    return if (testRunIdentifier != null)
+    return if (testRunIdentifier != null) {
         "$testRunIdentifier"
-    else {
+    } else {
         UUID.randomUUID().toString()
     }
 }

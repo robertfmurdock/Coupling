@@ -18,7 +18,7 @@ object TestLoggingFileAppender {
                 "logger" to "testmints",
                 "message" to message,
                 "timestamp" to Instant.now().toString(),
-            )
+            ),
         )
     }
 

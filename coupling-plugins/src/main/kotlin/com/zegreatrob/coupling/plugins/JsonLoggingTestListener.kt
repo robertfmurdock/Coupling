@@ -14,8 +14,7 @@ class JsonLoggingTestListener(
     private val taskName: String,
     private val testRunIdentifier: String,
     private val logFilePath: String,
-) :
-    TestListener,
+) : TestListener,
     TestOutputListener {
 
     companion object {
@@ -271,16 +270,14 @@ class JsonLoggingTestListener(
         }
     }
 
-    private fun JsonNode?.jsonString(): String? {
-        return when {
-            this == null -> null
-            this.isTextual -> this.textValue()
-            this.isNumber -> this.numberValue().toString()
-            this.isBoolean -> this.booleanValue().toString()
-            this.isNull -> null
-            this.isArray || this.isObject -> this.toString()
-            else -> this.toString()
-        }
+    private fun JsonNode?.jsonString(): String? = when {
+        this == null -> null
+        this.isTextual -> this.textValue()
+        this.isNumber -> this.numberValue().toString()
+        this.isBoolean -> this.booleanValue().toString()
+        this.isNull -> null
+        this.isArray || this.isObject -> this.toString()
+        else -> this.toString()
     }
 
     private fun JsonNode?.propertiesValue(): Map<String, Any?>? {
@@ -365,7 +362,7 @@ class JsonLoggingTestListener(
             testOccurrenceByIdentityKey[identityKey] ?: 1
         }
         val opaque = UUID.nameUUIDFromBytes(
-            "$testRunIdentifier||$taskName||$suite||$test||$occurrence".toByteArray()
+            "$testRunIdentifier||$taskName||$suite||$test||$occurrence".toByteArray(),
         ).toString()
         return TestIdentity(
             suite = suite,
@@ -374,19 +371,15 @@ class JsonLoggingTestListener(
         )
     }
 
-    private fun suiteName(testDescriptor: TestDescriptor): String =
-        testDescriptor.className?.takeIf { it.isNotBlank() }
-            ?: testDescriptor.parent?.name?.takeIf { it.isNotBlank() }
-            ?: "unknown-suite"
+    private fun suiteName(testDescriptor: TestDescriptor): String = testDescriptor.className?.takeIf { it.isNotBlank() }
+        ?: testDescriptor.parent?.name?.takeIf { it.isNotBlank() }
+        ?: "unknown-suite"
 
-    private fun testName(testDescriptor: TestDescriptor): String =
-        testDescriptor.name.takeIf { it.isNotBlank() } ?: "unknown-test"
+    private fun testName(testDescriptor: TestDescriptor): String = testDescriptor.name.takeIf { it.isNotBlank() } ?: "unknown-test"
 
-    private fun inferPlatform(task: String): String {
-        return when {
-            task.contains("jvm", ignoreCase = true) -> "jvm"
-            task.contains("e2e", ignoreCase = true) -> "e2e"
-            else -> "js"
-        }
+    private fun inferPlatform(task: String): String = when {
+        task.contains("jvm", ignoreCase = true) -> "jvm"
+        task.contains("e2e", ignoreCase = true) -> "e2e"
+        else -> "js"
     }
 }

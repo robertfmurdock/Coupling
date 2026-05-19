@@ -46,7 +46,7 @@ abstract class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
         environment(
             "NODE_PATH",
             listOfNotNull(nodeModulesDir, projectNodeModulesDir, moreNodeDirs)
-                .joinToString(":")
+                .joinToString(":"),
         )
         environment("PATH", "$nodeBinDir${System.getenv("PATH")}")
         npmProjectDir?.let { workingDir = it }
@@ -70,6 +70,5 @@ fun NodeExec.setup(project: Project) {
     nodeExecPath = nodeJs.requireConfigured().executable
     projectNodeModulesDir = project.nodeModulesDir
 }
-
 
 val Project.nodeModulesDir: File get() = rootProject.layout.buildDirectory.dir("js/node_modules").get().asFile

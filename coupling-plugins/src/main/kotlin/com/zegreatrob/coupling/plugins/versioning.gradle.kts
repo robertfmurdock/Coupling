@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.plugins
 
 import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
-
 import nl.littlerobots.vcu.plugin.versionSelector
 
 plugins {
@@ -20,7 +19,6 @@ versionCatalogUpdate {
         !rejectRegex.matches(versionCandidate.candidate.version)
     }
 }
-
 
 rootProject.apply<TaggerPlugin>()
 

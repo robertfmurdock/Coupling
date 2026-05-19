@@ -23,8 +23,7 @@ abstract class WriteJsTestLogHook : DefaultTask() {
     }
 
     companion object {
-        fun buildHookContents(logFilePath: String): String {
-            return """
+        fun buildHookContents(logFilePath: String): String = """
                 const fs = require('fs');
                 const logPath = process.env.COUPLING_TEST_LOG_PATH || ${jsonEscape(logFilePath)};
                 const runId = process.env.COUPLING_TEST_RUN_ID || 'unknown-run';
@@ -64,8 +63,7 @@ abstract class WriteJsTestLogHook : DefaultTask() {
                   console.warn = (...args) => { append(args); origWarn.apply(console, args); };
                   console.error = (...args) => { append(args); origError.apply(console, args); };
                 }
-            """.trimIndent()
-        }
+        """.trimIndent()
 
         private fun jsonEscape(value: String): String {
             val escaped = value

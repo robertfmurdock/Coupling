@@ -88,9 +88,9 @@ import org.gradle.api.tasks.TaskAction
 - Docker Compose tasks work
 
 ## Checklist
-- [ ] Extract AI context task classes to buildSrc (SyncAiContextTask, ValidateAiContextManifestTask, AgentBootstrapTask)
-- [ ] Extract test log helper functions and data classes to buildSrc (registerTestLogCliTask, AttributionCoverage, readAttributionCoverage)
-- [ ] Optimize dockerCompose AWS SSM parameter fetching (extract helper, add lazy evaluation)
-- [ ] Organize imports into logical groups
+- [x] Extract AI context task classes to buildSrc (SyncAiContextTask, ValidateAiContextManifestTask, AgentBootstrapTask)
+- [x] Extract test log helper functions and data classes to buildSrc (registerTestLogCliTask, AttributionCoverage, readAttributionCoverage)
+- [x] Optimize dockerCompose AWS SSM parameter fetching (extract helper, add lazy evaluation)
+- [x] Organize imports into logical groups
 - [ ] Run `./gradlew check` to verify all functionality
 - [ ] Move this file to agents.d/work_completed/

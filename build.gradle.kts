@@ -1,9 +1,12 @@
-
 import com.avast.gradle.dockercompose.tasks.ComposeUp
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.zegreatrob.coupling.plugins.AgentBootstrapTask
+import com.zegreatrob.coupling.plugins.SyncAiContextTask
+import com.zegreatrob.coupling.plugins.ValidateAiContextManifestTask
+import com.zegreatrob.coupling.plugins.fetchAwsSsmParameters
+import com.zegreatrob.coupling.plugins.readAttributionCoverage
+import com.zegreatrob.coupling.plugins.registerTestLogCliTask
 import java.time.Duration
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.GradleException
 
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
@@ -23,16 +26,10 @@ dockerCompose {
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
-    val (sak, pk, sk) = providers.exec {
-        commandLine(
-            "/bin/bash",
-            "-c",
-            "aws ssm get-parameters --names /local/SERVERLESS_ACCESS_KEY /prerelease/stripe_pk /prerelease/stripe_sk --with-decryption | jq '[.Parameters[].Value']"
-        )
-    }.standardOutput.asText.get().toByteArray().let { ObjectMapper().readValue(it, List::class.java) }
-    environment.put("SERVERLESS_ACCESS_KEY", sak.toString())
-    environment.put("STRIPE_PUBLISHABLE_KEY", pk.toString())
-    environment.put("STRIPE_SECRET_KEY", sk.toString())
+    val awsParams = providers.fetchAwsSsmParameters()
+    environment.put("SERVERLESS_ACCESS_KEY", awsParams.serverlessAccessKey)
+    environment.put("STRIPE_PUBLISHABLE_KEY", awsParams.stripePublishableKey)
+    environment.put("STRIPE_SECRET_KEY", awsParams.stripeSecretKey)
 
     nested("caddy").apply {
         setProjectName("Coupling-root")
@@ -67,285 +64,6 @@ dependencies {
     add(testLogToolsRunner.name, project(":cli:test-log-tools"))
 }
 
-abstract class SyncAiContextTask : DefaultTask() {
-    @get:Internal
-    abstract val repoRootDirPath: Property<String>
-
-    @get:Internal
-    abstract val settingsFilePath: Property<String>
-
-    @get:Internal
-    abstract val adaptersDirPath: Property<String>
-
-    @get:Internal
-    abstract val generatedDirPath: Property<String>
-
-    @get:Internal
-    abstract val repoIndexFilePath: Property<String>
-
-    @get:Internal
-    abstract val workflowsFilePath: Property<String>
-
-    @get:Internal
-    abstract val claudeFilePath: Property<String>
-
-    @get:Internal
-    abstract val copilotFilePath: Property<String>
-
-    @get:Internal
-    abstract val contextManifestFilePath: Property<String>
-
-    init {
-        outputs.upToDateWhen { false }
-    }
-
-    @TaskAction
-    fun sync() {
-        val generatedDir = File(generatedDirPath.get())
-        val adaptersDir = File(adaptersDirPath.get())
-        val repoIndexFile = File(repoIndexFilePath.get())
-        val workflowsFile = File(workflowsFilePath.get())
-        val claudeFile = File(claudeFilePath.get())
-        val copilotFile = File(copilotFilePath.get())
-        val settingsFile = File(settingsFilePath.get())
-        val repoRootDir = File(repoRootDirPath.get())
-        val manifestFile = File(contextManifestFilePath.get())
-
-        generatedDir.mkdirs()
-
-        val includeRegex = Regex("""^include\("([^"]+)"\)""")
-        val modules = settingsFile
-            .readLines()
-            .mapNotNull { line -> includeRegex.find(line.trim())?.groupValues?.get(1) }
-
-        val topLevelDirs = repoRootDir
-            .listFiles()
-            ?.asSequence()
-            ?.filter { it.isDirectory && !it.name.startsWith(".") }
-            ?.map { it.name }
-            ?.sorted()
-            ?.toList()
-            ?: emptyList()
-
-        repoIndexFile.writeText(
-            buildString {
-                appendLine("# Repo Index (Generated)")
-                appendLine()
-                appendLine("Source: `settings.gradle.kts` includes + top-level directory layout.")
-                appendLine()
-                appendLine("## Top-Level Areas")
-                topLevelDirs.forEach { appendLine("- `$it/`") }
-                appendLine()
-                appendLine("## Included Gradle Modules")
-                modules.forEach { appendLine("- `$it`") }
-            },
-        )
-
-        workflowsFile.writeText(
-            """
-            # Workflows (Generated)
-
-            ## Standard Validation Commands
-            - `./gradlew test`
-            - `./gradlew build`
-            - `./gradlew check`
-
-            ## Scoped Validation Convention
-            - `./gradlew :module:task`
-
-            ## GraphQL Ref Workflow
-            1. Run `agents.d/utilities/graphql-ref-scan.sh <pattern>` (text-reference discovery only).
-            2. Update schema/resolver/sdk/tests in same change set.
-            3. Re-run `agents.d/utilities/graphql-ref-scan.sh <pattern>`.
-            4. Run targeted module checks, then broader checks if needed.
-
-            ## CI-Relevant Notes
-            - Gradle wrapper required.
-            - Prefer module-scoped tasks first for faster iteration.
-            """.trimIndent() + "\n",
-        )
-
-        val playbookBullets = playbookBullets(manifestFile)
-        val requiredReadsBullets = requiredReadsBullets(manifestFile)
-        val commandsBullets = commandsBullets(manifestFile)
-        val executionNormsBullets = executionNormsBullets(manifestFile)
-        val rulesBullets = rulesBullets(manifestFile)
-
-        fun applyTemplate(adapterName: String, outputFile: File) {
-            val template = adaptersDir.resolve(adapterName).readText()
-            outputFile.writeText(
-                template
-                    .replace("{{PLAYBOOKS}}", playbookBullets)
-                    .replace("{{REQUIRED_READS}}", requiredReadsBullets)
-                    .replace("{{COMMANDS}}", commandsBullets)
-                    .replace("{{EXECUTION_NORMS}}", executionNormsBullets)
-                    .replace("{{RULES}}", rulesBullets)
-            )
-        }
-
-        applyTemplate("CLAUDE.md", claudeFile)
-        applyTemplate("copilot-instructions.md", copilotFile)
-
-        logger.lifecycle("Synced AI context files:")
-        logger.lifecycle("- CLAUDE.md")
-        logger.lifecycle("- .github/copilot-instructions.md")
-        logger.lifecycle("- agents.d/context/generated/repo-index.md")
-        logger.lifecycle("- agents.d/context/generated/workflows.md")
-    }
-
-    private fun playbookBullets(manifestFile: File): String {
-        val manifest = ObjectMapper().readTree(manifestFile)
-        return manifest.path("playbooks")
-            .takeIf { it.isObject }
-            ?.properties()
-            ?.asSequence()
-            ?.mapNotNull { (_, node) ->
-                val path = node.path("path").asText(null) ?: return@mapNotNull null
-                val whenText = node.path("when").asText(null) ?: return@mapNotNull null
-                "- `$path` — $whenText"
-            }
-            ?.joinToString("\n")
-            ?: ""
-    }
-
-    private fun requiredReadsBullets(manifestFile: File): String {
-        val manifest = ObjectMapper().readTree(manifestFile)
-        return manifest.path("required_reads")
-            .takeIf { it.isArray }
-            ?.mapNotNull { it.asText(null) }
-            ?.joinToString("\n") { "- `$it`" }
-            ?: ""
-    }
-
-    private fun commandsBullets(manifestFile: File): String {
-        val manifest = ObjectMapper().readTree(manifestFile)
-        val commands = manifest.path("commands")
-
-        val bullets = buildList {
-            commands.path("agent_bootstrap").asText(null)?.let { add("- `$it`") }
-            commands.path("default")
-                .takeIf { it.isArray }
-                ?.mapNotNull { it.asText(null) }
-                ?.forEach { add("- `$it`") }
-            commands.path("module_task_pattern").asText(null)?.let { add("- `$it`") }
-        }
-
-        return bullets.joinToString("\n")
-    }
-
-    private fun executionNormsBullets(manifestFile: File): String {
-        val manifest = ObjectMapper().readTree(manifestFile)
-        val commands = manifest.path("commands")
-        val adaptersDir = File(adaptersDirPath.get())
-        val template = adaptersDir.resolve("execution-norms.md").readText()
-
-        return template
-            .replace("{{AGENT_BOOTSTRAP}}", commands.path("agent_bootstrap").asText(""))
-    }
-
-    private fun rulesBullets(manifestFile: File): String {
-        val manifest = ObjectMapper().readTree(manifestFile)
-        val commands = manifest.path("commands")
-        val adaptersDir = File(adaptersDirPath.get())
-        val template = adaptersDir.resolve("rules.md").readText()
-
-        return template
-            .replace("{{AGENT_BOOTSTRAP}}", commands.path("agent_bootstrap").asText(""))
-            .replace("{{GRAPHQL_REF_SCAN}}", commands.path("graphql_ref_scan").asText(""))
-    }
-}
-
-abstract class ValidateAiContextManifestTask : DefaultTask() {
-    @get:Internal
-    abstract val repoRootDirPath: Property<String>
-
-    @get:Internal
-    abstract val contextManifestFilePath: Property<String>
-
-    @TaskAction
-    fun validate() {
-        val manifestFile = File(contextManifestFilePath.get())
-        val repoRootDir = File(repoRootDirPath.get())
-        val manifest = ObjectMapper().readTree(manifestFile)
-
-        val requiredReads = manifest
-            .path("required_reads")
-            .takeIf { it.isArray }
-            ?.mapNotNull { it.asText(null) }
-            ?: emptyList()
-        val playbookPaths = manifest
-            .path("playbooks")
-            .takeIf { it.isObject }
-            ?.properties()
-            ?.asSequence()
-            ?.mapNotNull { (_, node) -> node.path("path").asText(null) }
-            ?.toList()
-            ?: emptyList()
-
-        val manifestPaths = (requiredReads + playbookPaths).distinct()
-        val missing = manifestPaths.filterNot { File(repoRootDir, it).exists() }
-        if (missing.isNotEmpty()) {
-            throw GradleException(
-                buildString {
-                    appendLine("AI context manifest contains missing files:")
-                    missing.forEach { appendLine("- $it") }
-                },
-            )
-        }
-
-        logger.lifecycle("AI context manifest validation passed (${manifestPaths.size} files).")
-    }
-}
-
-abstract class AgentBootstrapTask : DefaultTask() {
-    @get:Internal
-    abstract val repoRootDirPath: Property<String>
-
-    @get:Internal
-    abstract val contextManifestFilePath: Property<String>
-
-    @TaskAction
-    fun bootstrap() {
-        val manifestFile = File(contextManifestFilePath.get())
-        val repoRootDir = File(repoRootDirPath.get())
-        val manifest = ObjectMapper().readTree(manifestFile)
-        val requiredReads = manifest
-            .path("required_reads")
-            .takeIf { it.isArray }
-            ?.mapNotNull { it.asText(null) }
-            ?: emptyList()
-        val playbooks = manifest
-            .path("playbooks")
-            .takeIf { it.isObject }
-            ?.properties()
-            ?.asSequence()
-            ?.mapNotNull { (_, node) ->
-                val path = node.path("path").asText(null) ?: return@mapNotNull null
-                val whenText = node.path("when").asText(null) ?: ""
-                path to whenText
-            }
-            ?.toList()
-            ?: emptyList()
-
-        logger.lifecycle("Agent bootstrap read order:")
-        logger.lifecycle("")
-        logger.lifecycle("Required reads:")
-        (requiredReads + "agents.d/context/context.json").forEach { relPath ->
-            val marker = if (File(repoRootDir, relPath).exists()) "" else " (MISSING)"
-            logger.lifecycle("  - $relPath$marker")
-        }
-        logger.lifecycle("")
-        logger.lifecycle("Conditional reads (load the matching playbook for your task type):")
-        playbooks.forEach { (path, whenText) ->
-            val marker = if (File(repoRootDir, path).exists()) "" else " (MISSING)"
-            logger.lifecycle("  - $path — $whenText$marker")
-        }
-        logger.lifecycle("")
-        logger.lifecycle("`./gradlew agentBootstrap` already refreshes generated AI context files.")
-    }
-}
-
-
 tasks {
     val testJsonlFilePath = rootProject.layout.buildDirectory.file("test-output/test.jsonl").map { it.asFile.absolutePath }
     val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }
@@ -355,74 +73,24 @@ tasks {
             .resolve()
             .joinToString(File.pathSeparator) { it.absolutePath }
     }
-    fun registerTestLogCliTask(
-        name: String,
-        command: String,
-        reportFilePath: () -> String,
-        descriptionText: String,
-        strictFlags: List<String> = listOf("--strict"),
-    ): TaskProvider<Exec> = register<Exec>(name) {
-        group = "verification"
-        description = descriptionText
-        notCompatibleWithConfigurationCache("Resolves CLI runtime classpath dynamically for a helper migration task.")
-        dependsOn(":cli:test-log-tools:jvmJar")
-        doFirst {
-            commandLine(
-                buildList {
-                    addAll(
-                        listOf(
-                            "java",
-                            "-cp",
-                            testLogToolsClasspath.get(),
-                            "com.zegreatrob.coupling.cli.testlog.MainKt",
-                            command,
-                            "--report-file",
-                            reportFilePath(),
-                            "--quiet-success",
-                            "--failure-summary",
-                        ),
-                    )
-                    addAll(strictFlags)
-                    add(testJsonlFilePath.get())
-                },
-            )
-        }
-    }
 
-    val validateTestJsonl = registerTestLogCliTask(
+    val validateTestJsonl = project.registerTestLogCliTask(
         name = "validateTestJsonl",
         command = "validate",
         reportFilePath = { validateReportFilePath.get() },
         descriptionText = "Validates build/test-output/test.jsonl for minimum required schema.",
+        testJsonlFilePath = { testJsonlFilePath.get() },
+        testLogToolsClasspath = { testLogToolsClasspath.get() },
     )
 
-    val analyzeTestJsonl = registerTestLogCliTask(
+    val analyzeTestJsonl = project.registerTestLogCliTask(
         name = "analyzeTestJsonl",
         command = "analyze",
         reportFilePath = { analyzeReportFilePath.get() },
         descriptionText = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl.",
+        testJsonlFilePath = { testJsonlFilePath.get() },
+        testLogToolsClasspath = { testLogToolsClasspath.get() },
     )
-
-    data class AttributionCoverage(
-        val inScope: Int,
-        val fullyAttributed: Int,
-        val missingAny: Int,
-        val ratio: Double,
-    )
-
-    fun readAttributionCoverage(reportFilePath: String): AttributionCoverage {
-        val reportFile = File(reportFilePath)
-        if (!reportFile.exists()) {
-            throw GradleException("analyze report file not found: $reportFilePath")
-        }
-        val report = ObjectMapper().readTree(reportFile)
-        return AttributionCoverage(
-            inScope = report.get("command_events_in_attribution_scope")?.asInt() ?: 0,
-            fullyAttributed = report.get("command_events_with_full_test_attribution")?.asInt() ?: 0,
-            missingAny = report.get("command_events_missing_any_test_attribution")?.asInt() ?: 0,
-            ratio = report.get("command_events_with_full_test_attribution_ratio")?.asDouble() ?: 0.0,
-        )
-    }
 
     val assertCommandAttributionCoverage by registering {
         group = "verification"
