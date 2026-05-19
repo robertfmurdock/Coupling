@@ -36,6 +36,82 @@ repository automation behavior.
   and compiler/tooling surfaces) so issues are surfaced early in local and CI
   feedback loops.
 
+### Task Reference Patterns for Configuration Cache Compatibility
+
+When referencing tasks from build configuration, use Provider APIs to avoid
+realizing tasks at configuration time:
+
+**Correct patterns (lazy, configuration-cache safe):**
+```kotlin
+// Access task outputs lazily via Provider
+val task = tasks.named<ProcessResources>("jsProcessResources")
+from(task.map { it.destinationDir })  // Provider stays lazy
+
+// Or with property delegation (still lazy)
+val task by tasks.named<ProcessResources>("jsProcessResources")
+from(task.map { it.destinationDir })  // Provider stays lazy
+```
+
+**Incorrect patterns (eager, breaks configuration cache):**
+```kotlin
+val task by tasks.named<ProcessResources>("jsProcessResources")
+from(task.destinationDir)  // BAD: realizes task at configuration time
+
+val task = tasks.named<ProcessResources>("jsProcessResources").get()
+from(task.destinationDir)  // BAD: .get() forces eager realization
+```
+
+**Key principle**: Never access task properties directly at configuration time.
+Always wrap access in `.map {}`, `.flatMap {}`, or similar Provider transformations.
+
+See: [Gradle Configuration Cache: Task access](https://docs.gradle.org/current/userguide/configuration_cache_requirements.html#config_cache:requirements:task_access)
+
+### Cross-Project Dependency Patterns
+
+For sharing build outputs between projects, prefer configuration-based artifact
+sharing over direct task references:
+
+**Correct pattern (configuration-based, fully lazy):**
+```kotlin
+// Producer (sdk/build.gradle.kts)
+val jsResourcesElements by configurations.creating {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+}
+artifacts {
+    add(jsResourcesElements.name, tasks.named("jsProcessResources").map { 
+        (it as ProcessResources).destinationDir 
+    })
+}
+
+// Consumer (client/build.gradle.kts)
+val sdkJsResources by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+dependencies {
+    sdkJsResources(project(":sdk"))
+}
+tasks.register("copyResources", Copy::class) {
+    from(sdkJsResources)  // Gradle handles task dependencies automatically
+    into(layout.buildDirectory.dir("resources"))
+}
+```
+
+**Avoid:**
+```kotlin
+// Anti-pattern: cross-project task reference
+from(project(":sdk").tasks.named("jsProcessResources").map { ... })
+
+// Anti-pattern: hardcoded paths
+from("$rootDir/sdk/build/processedResources/js/main")
+```
+
+Cross-project task references can fail with configuration cache, and hardcoded
+paths bypass Gradle's dependency tracking.
+
+See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/userguide/cross_project_publications.html)
+
 ## Validation Ladder
 - Run the smallest sufficient check first (for example `./gradlew :module:task`).
 - Then run affected module checks.
