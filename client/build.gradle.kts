@@ -216,10 +216,8 @@ tasks {
 
     val additionalResources by registering(Copy::class) {
         outputs.cacheIf { true }
-        val sdkResourcesDir = project(":sdk").tasks.named("jsProcessResources", ProcessResources::class)
-            .flatMap { it.destinationDirectory }
         dependsOn(":sdk:jsProcessResources")
-        from(sdkResourcesDir)
+        from("$rootDir/sdk/build/processedResources/js/main")
         into(project.layout.buildDirectory.file("additionalResources"))
     }
     jsProcessResources {

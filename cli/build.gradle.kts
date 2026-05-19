@@ -112,14 +112,13 @@ tasks {
         mustRunAfter(copyWebpackConfig)
     }
 
-    val jsProcessResources by named<ProcessResources>("jsProcessResources") {
+    jsProcessResources {
         dependsOn("dependencyResources")
     }
 
     register("dependencyResources", Copy::class) {
-        val destDir = jsProcessResources.flatMap { it.destinationDirectory }
         dependsOn(":sdk:jsProcessResources")
-        into(destDir)
+        into(jsProcessResources.map { it.destinationDir })
         from("$rootDir/sdk/build/processedResources/js/main")
     }
 
