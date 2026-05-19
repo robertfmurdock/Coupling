@@ -47,10 +47,13 @@ val resetTestJsonl = rootProject.tasks.let { tasks ->
 tasks.withType(AbstractTestTask::class).configureEach {
     dependsOn(resetTestJsonl)
     dependsOn(writeLogConfig)
-    val jsonLoggingListener = JsonLoggingTestListener(path, testRunIdentifier, logFilePathProvider.get())
-    addTestListener(jsonLoggingListener)
-    addTestOutputListener(jsonLoggingListener)
+    val taskPath = path
+    val logFilePath = logFilePathProvider
     doFirst {
+        val jsonLoggingListener = JsonLoggingTestListener(taskPath, testRunIdentifier, logFilePath.get())
+        addTestListener(jsonLoggingListener)
+        addTestOutputListener(jsonLoggingListener)
+
         val logConfigPath = logConfigFile.get().asFile
         if (logConfigPath.exists()) {
             System.setProperty("log4j2.configurationFile", logConfigPath.absolutePath)
@@ -73,15 +76,15 @@ configurations.configureEach {
 }
 
 tasks.withType(KotlinJsTest::class).configureEach {
-    val logFilePath = logFilePathProvider.get()
     val taskPath = path
+    val logFilePath = logFilePathProvider
     doFirst {
         val runId = System.getProperty("testRunIdentifier") ?: "unknown-run"
-        TestLoggingFileAppender.appendTestmintsLog(logFilePath, taskPath, runId, "js-test-start")
+        TestLoggingFileAppender.appendTestmintsLog(logFilePath.get(), taskPath, runId, "js-test-start")
     }
     doLast {
         val runId = System.getProperty("testRunIdentifier") ?: "unknown-run"
-        TestLoggingFileAppender.appendTestmintsLog(logFilePath, taskPath, runId, "js-test-finish")
+        TestLoggingFileAppender.appendTestmintsLog(logFilePath.get(), taskPath, runId, "js-test-finish")
     }
 }
 

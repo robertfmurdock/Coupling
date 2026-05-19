@@ -111,8 +111,8 @@ After each phase:
 
 - [x] Add implementation checklist to work card (this slice)
 - [x] Read and analyze testLogging.gradle.kts for config cache violations
-- [ ] Make JsonLoggingTestListener instantiation lazy (move to execution time)
-- [ ] Convert doFirst/doLast blocks to use lazy Provider references
+- [x] Make JsonLoggingTestListener instantiation lazy (move to execution time)
+- [x] Convert doFirst/doLast blocks to use lazy Provider references
 - [ ] Validate Phase 1: run sample test tasks and verify logging output
 - [ ] Run `./gradlew check --configuration-cache` to verify improvements
 - [ ] Review changes against applicable playbooks and verify compliance
