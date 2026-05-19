@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.js
 
 import org.gradle.api.Project
 import org.gradle.api.tasks.AbstractExecTask

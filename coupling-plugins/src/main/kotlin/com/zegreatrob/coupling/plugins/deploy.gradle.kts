@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.coupling.plugins.js.NodeExec
+import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.tools.tagger.ReleaseVersion
 
 plugins {

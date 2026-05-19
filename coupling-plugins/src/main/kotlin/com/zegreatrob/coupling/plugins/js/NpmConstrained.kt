@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.js
 
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler

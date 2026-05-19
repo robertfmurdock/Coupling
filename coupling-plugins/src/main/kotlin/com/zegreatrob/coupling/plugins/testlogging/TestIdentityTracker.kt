@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.testlogging
 
 import org.gradle.api.tasks.testing.TestDescriptor
 import java.util.UUID

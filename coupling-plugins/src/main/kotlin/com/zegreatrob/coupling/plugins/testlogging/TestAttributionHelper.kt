@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.testlogging
 
 internal object TestAttributionHelper {
     fun inferPlatform(task: String): String = when {

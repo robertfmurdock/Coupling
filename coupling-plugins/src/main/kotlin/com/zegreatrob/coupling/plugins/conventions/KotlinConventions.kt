@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.conventions
 
 import org.gradle.api.Action
 import org.gradle.api.Project

@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.coupling.plugins.conventions.KotlinConventions
+
 plugins {
     kotlin("jvm")
     id("com.zegreatrob.coupling.plugins.versioning")

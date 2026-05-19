@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.coupling.plugins.conventions.KotlinConventions
+import com.zegreatrob.coupling.plugins.js.JsConstraintExtension
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec

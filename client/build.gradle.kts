@@ -1,7 +1,7 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.JsonNode
-import com.zegreatrob.coupling.plugins.NodeExec
-import com.zegreatrob.coupling.plugins.setup
+import com.zegreatrob.coupling.plugins.js.NodeExec
+import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import java.nio.charset.StandardCharsets

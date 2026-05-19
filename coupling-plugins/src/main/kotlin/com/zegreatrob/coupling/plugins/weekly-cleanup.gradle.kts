@@ -1,5 +1,13 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.coupling.plugins.cleanup.WeeklyCleanupCandidatesTask
+import com.zegreatrob.coupling.plugins.cleanup.WeeklyCleanupEvaluateTask
+import com.zegreatrob.coupling.plugins.cleanup.WeeklyCleanupPlanTask
+import com.zegreatrob.coupling.plugins.cleanup.WeeklyCleanupRenderLogSummaryTask
+import com.zegreatrob.coupling.plugins.cleanup.WeeklyCleanupRenderLogTask
+import com.zegreatrob.coupling.plugins.cleanup.WeeklyCleanupRenderPromptTask
+import com.zegreatrob.coupling.plugins.cleanup.WeeklyCleanupWriteLogEntryTask
+
 val maxChangedFilesProvider = providers.gradleProperty("weeklyCleanupMaxChangedFiles")
     .map { it.toInt() }
     .orElse(20)

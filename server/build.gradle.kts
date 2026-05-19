@@ -1,5 +1,5 @@
-import com.zegreatrob.coupling.plugins.NodeExec
-import com.zegreatrob.coupling.plugins.setup
+import com.zegreatrob.coupling.plugins.js.NodeExec
+import com.zegreatrob.coupling.plugins.js.setup
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {

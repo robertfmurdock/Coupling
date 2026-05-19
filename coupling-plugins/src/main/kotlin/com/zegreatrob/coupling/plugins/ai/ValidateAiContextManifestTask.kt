@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.ai
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.DefaultTask

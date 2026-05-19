@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.testlogging
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty

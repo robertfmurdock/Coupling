@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.cleanup
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException

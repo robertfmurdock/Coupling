@@ -1,10 +1,10 @@
 import com.avast.gradle.dockercompose.tasks.ComposeUp
-import com.zegreatrob.coupling.plugins.AgentBootstrapTask
-import com.zegreatrob.coupling.plugins.SyncAiContextTask
-import com.zegreatrob.coupling.plugins.ValidateAiContextManifestTask
-import com.zegreatrob.coupling.plugins.fetchAwsSsmParameters
-import com.zegreatrob.coupling.plugins.readAttributionCoverage
-import com.zegreatrob.coupling.plugins.registerTestLogCliTask
+import com.zegreatrob.coupling.plugins.ai.AgentBootstrapTask
+import com.zegreatrob.coupling.plugins.ai.SyncAiContextTask
+import com.zegreatrob.coupling.plugins.ai.ValidateAiContextManifestTask
+import com.zegreatrob.coupling.plugins.testlogging.readAttributionCoverage
+import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameters
+import com.zegreatrob.coupling.plugins.testlogging.registerTestLogCliTask
 import java.time.Duration
 import org.gradle.api.GradleException
 

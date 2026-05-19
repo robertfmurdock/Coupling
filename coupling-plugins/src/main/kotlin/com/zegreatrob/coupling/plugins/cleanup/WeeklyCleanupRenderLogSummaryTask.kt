@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.cleanup
 
 import groovy.json.JsonSlurper
 import org.gradle.api.provider.Property

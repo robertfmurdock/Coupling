@@ -103,3 +103,16 @@ If full reorganization is too risky, start with just one or two sub-packages:
 - Better foundation for future growth
 - No performance impact
 - Some one-time import churn
+
+## Checklist
+- [x] Create sub-package directories (ai, cleanup, testlogging, js, conventions, util)
+- [x] Move AI context tasks to ai/ sub-package and update imports
+- [x] Move weekly cleanup tasks to cleanup/ sub-package and update imports
+- [x] Move test logging files to testlogging/ sub-package and update imports
+- [x] Move JS/npm utilities to js/ sub-package and update imports
+- [x] Move conventions and util files to their sub-packages and update imports
+- [x] Run ./gradlew :coupling-plugins:build to verify compilation
+- [x] Run ./gradlew agentBootstrap to verify AI tasks work
+- [ ] Run ./gradlew check to verify all tests pass
+- [ ] Review changes against applicable playbooks and verify compliance
+- [ ] Move this file to agents.d/work_completed/

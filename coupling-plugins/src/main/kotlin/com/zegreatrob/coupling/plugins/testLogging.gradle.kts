@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.coupling.plugins.testlogging.JsonLoggingTestListener
+import com.zegreatrob.coupling.plugins.testlogging.TestLoggingFileAppender
+import com.zegreatrob.coupling.plugins.testlogging.WriteTestLog4j2Config
 import org.apache.logging.log4j.core.config.Configurator
 import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest

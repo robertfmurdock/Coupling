@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.provider.ProviderFactory
