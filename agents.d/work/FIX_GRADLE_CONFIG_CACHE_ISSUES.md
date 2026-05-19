@@ -106,3 +106,14 @@ After each phase:
 - Gradle config cache requirements: https://docs.gradle.org/9.5.1/userguide/configuration_cache_requirements.html
 - Disallowed types: script objects, Task instances
 - Recommended patterns: lazy providers, task properties, `Provider.map {}`
+
+## Checklist
+
+- [x] Add implementation checklist to work card (this slice)
+- [x] Read and analyze testLogging.gradle.kts for config cache violations
+- [ ] Make JsonLoggingTestListener instantiation lazy (move to execution time)
+- [ ] Convert doFirst/doLast blocks to use lazy Provider references
+- [ ] Validate Phase 1: run sample test tasks and verify logging output
+- [ ] Run `./gradlew check --configuration-cache` to verify improvements
+- [ ] Review changes against applicable playbooks and verify compliance
+- [ ] Move this file to agents.d/work_completed/
