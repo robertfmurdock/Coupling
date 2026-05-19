@@ -6,7 +6,6 @@ import org.gradle.api.tasks.testing.TestOutputEvent
 import org.gradle.api.tasks.testing.TestOutputListener
 import org.gradle.api.tasks.testing.TestResult
 import java.time.Instant
-import java.util.UUID
 
 class JsonLoggingTestListener(
     private val taskName: String,
@@ -28,17 +27,10 @@ class JsonLoggingTestListener(
         )
     }
 
-    private val testIdentityByDescriptor = mutableMapOf<Int, TestIdentity>()
-    private val testOccurrenceByIdentityKey = mutableMapOf<String, Int>()
-
-    private data class TestIdentity(
-        val suite: String,
-        val test: String,
-        val testId: String,
-    )
+    private val identityTracker = TestIdentityTracker(taskName, testRunIdentifier)
 
     override fun beforeTest(testDescriptor: TestDescriptor) {
-        val testIdentity = identityForStart(testDescriptor)
+        val testIdentity = identityTracker.identityForStart(testDescriptor)
         appendEvent(
             "TestStart",
             testIdentity = testIdentity,
@@ -53,13 +45,13 @@ class JsonLoggingTestListener(
             ?.joinToString("\n") { "${it::class.simpleName}: ${it.message}" }
         appendEvent(
             "TestEnd",
-            testIdentity = identityForEnd(testDescriptor),
+            testIdentity = identityTracker.identityForEnd(testDescriptor),
             status = "${result.resultType}",
             durationMs = durationMs,
             message = failureSummary,
             properties = mapOf("failure_count" to result.exceptions.size),
         )
-        synchronized(this) { testIdentityByDescriptor.remove(descriptorKey(testDescriptor)) }
+        identityTracker.clearIdentity(testDescriptor)
     }
 
     override fun beforeSuite(suite: TestDescriptor?) = Unit
@@ -75,7 +67,7 @@ class JsonLoggingTestListener(
             return
         }
         val commandNormalized = normalizeCommandLog(parsed.logger, parsed.message, parsed.properties)
-        val testIdentity = identityForLog(testDescriptor)
+        val testIdentity = identityTracker.identityForLog(testDescriptor)
         val attributedProperties = addTestAttribution(
             properties = commandNormalized.properties,
             logger = commandNormalized.logger,
@@ -194,7 +186,7 @@ class JsonLoggingTestListener(
     private fun addTestAttribution(
         properties: Map<String, Any?>,
         logger: String,
-        testIdentity: TestIdentity?,
+        testIdentity: TestIdentityTracker.TestIdentity?,
     ): Map<String, Any?> {
         if (testIdentity == null) {
             return properties
@@ -255,7 +247,7 @@ class JsonLoggingTestListener(
 
     private fun appendEvent(
         type: String,
-        testIdentity: TestIdentity?,
+        testIdentity: TestIdentityTracker.TestIdentity?,
         status: String? = null,
         durationMs: Long? = null,
         message: String? = null,
@@ -281,54 +273,6 @@ class JsonLoggingTestListener(
         }
         TestLoggingFileAppender.appendEvent(logFilePath, event)
     }
-
-    private fun identityForLog(testDescriptor: TestDescriptor?): TestIdentity? = synchronized(this) {
-        testDescriptor ?: return null
-        testIdentityByDescriptor[descriptorKey(testDescriptor)]
-            ?: computeIdentity(testDescriptor, assignOccurrence = false)
-    }
-
-    private fun identityForStart(testDescriptor: TestDescriptor): TestIdentity = synchronized(this) {
-        computeIdentity(testDescriptor, assignOccurrence = true).also {
-            testIdentityByDescriptor[descriptorKey(testDescriptor)] = it
-        }
-    }
-
-    private fun identityForEnd(testDescriptor: TestDescriptor): TestIdentity = synchronized(this) {
-        testIdentityByDescriptor[descriptorKey(testDescriptor)]
-            ?: computeIdentity(testDescriptor, assignOccurrence = true).also {
-                testIdentityByDescriptor[descriptorKey(testDescriptor)] = it
-            }
-    }
-
-    private fun descriptorKey(testDescriptor: TestDescriptor): Int = System.identityHashCode(testDescriptor)
-
-    private fun computeIdentity(testDescriptor: TestDescriptor, assignOccurrence: Boolean): TestIdentity {
-        val suite = suiteName(testDescriptor)
-        val test = testName(testDescriptor)
-        val identityKey = "$taskName||$suite||$test"
-        val occurrence = if (assignOccurrence) {
-            val next = (testOccurrenceByIdentityKey[identityKey] ?: 0) + 1
-            testOccurrenceByIdentityKey[identityKey] = next
-            next
-        } else {
-            testOccurrenceByIdentityKey[identityKey] ?: 1
-        }
-        val opaque = UUID.nameUUIDFromBytes(
-            "$testRunIdentifier||$taskName||$suite||$test||$occurrence".toByteArray(),
-        ).toString()
-        return TestIdentity(
-            suite = suite,
-            test = test,
-            testId = opaque,
-        )
-    }
-
-    private fun suiteName(testDescriptor: TestDescriptor): String = testDescriptor.className?.takeIf { it.isNotBlank() }
-        ?: testDescriptor.parent?.name?.takeIf { it.isNotBlank() }
-        ?: "unknown-suite"
-
-    private fun testName(testDescriptor: TestDescriptor): String = testDescriptor.name.takeIf { it.isNotBlank() } ?: "unknown-test"
 
     private fun inferPlatform(task: String): String = when {
         task.contains("jvm", ignoreCase = true) -> "jvm"
