@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.plugins
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.tasks.testing.TestDescriptor
 import org.gradle.api.tasks.testing.TestListener
 import org.gradle.api.tasks.testing.TestOutputEvent
@@ -18,7 +16,6 @@ class JsonLoggingTestListener(
     TestOutputListener {
 
     companion object {
-        val mapper = ObjectMapper()
         private val canonicalTestMintsPhases = listOf(
             "setup-start",
             "setup-finish",
@@ -73,16 +70,11 @@ class JsonLoggingTestListener(
         if (outputEvent == null) {
             return
         }
-        val normalized = correctForPrefix(outputEvent.message).trimEnd()
-        if (normalized.isBlank()) {
+        val parsed = TestLogParser.parse(outputEvent.message)
+        if (parsed.message.isBlank()) {
             return
         }
-        val parsed = runCatching { mapper.readTree(normalized) }.getOrNull()
-        val loggerName = parsed?.get("name")?.textValue() ?: "forwarded-output"
-        val parsedMessage = parsed?.get("message")
-        val message = parsedMessage?.jsonString() ?: normalized
-        val properties = parsed?.get("properties").propertiesValue().orEmpty()
-        val commandNormalized = normalizeCommandLog(loggerName, message, properties)
+        val commandNormalized = normalizeCommandLog(parsed.logger, parsed.message, parsed.properties)
         val testIdentity = identityForLog(testDescriptor)
         val attributedProperties = addTestAttribution(
             properties = commandNormalized.properties,
@@ -259,45 +251,6 @@ class JsonLoggingTestListener(
     private fun testmintsName(message: String): String? {
         val regex = Regex("""\\bname=([^,}]+)""")
         return regex.find(message)?.groupValues?.get(1)?.trim()
-    }
-
-    private fun correctForPrefix(message: String): String {
-        val infoPrefix = "[info]"
-        return if (message.startsWith(infoPrefix)) {
-            message.substring(infoPrefix.lastIndex + 2)
-        } else {
-            message
-        }
-    }
-
-    private fun JsonNode?.jsonString(): String? = when {
-        this == null -> null
-        this.isTextual -> this.textValue()
-        this.isNumber -> this.numberValue().toString()
-        this.isBoolean -> this.booleanValue().toString()
-        this.isNull -> null
-        this.isArray || this.isObject -> this.toString()
-        else -> this.toString()
-    }
-
-    private fun JsonNode?.propertiesValue(): Map<String, Any?>? {
-        if (this?.isObject != true) {
-            return null
-        }
-        val values = mutableMapOf<String, Any?>()
-        val names = fieldNames()
-        while (names.hasNext()) {
-            val key = names.next()
-            val value = get(key)
-            values[key] = when {
-                value.isTextual -> value.textValue()
-                value.isNumber -> value.numberValue()
-                value.isBoolean -> value.booleanValue()
-                value.isNull -> null
-                else -> value.toString()
-            }
-        }
-        return values
     }
 
     private fun appendEvent(
