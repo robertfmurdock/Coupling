@@ -55,10 +55,11 @@ class JsonLoggingTestListener(
         }
         val commandNormalized = CommandLogNormalizer.normalize(parsed.logger, parsed.message, parsed.properties)
         val testIdentity = identityTracker.identityForLog(testDescriptor)
-        val attributedProperties = addTestAttribution(
+        val attributedProperties = TestAttributionHelper.addAttribution(
             properties = commandNormalized.properties,
             logger = commandNormalized.logger,
             testIdentity = testIdentity,
+            taskName = taskName,
         )
         val normalizedLog = TestmintsLogNormalizer.normalize(
             loggerName = commandNormalized.logger,
@@ -73,26 +74,6 @@ class JsonLoggingTestListener(
             logger = normalizedLog.logger,
             properties = normalizedLog.properties,
         )
-    }
-
-    private fun addTestAttribution(
-        properties: Map<String, Any?>,
-        logger: String,
-        testIdentity: TestIdentityTracker.TestIdentity?,
-    ): Map<String, Any?> {
-        if (testIdentity == null) {
-            return properties
-        }
-        val enriched = properties.toMutableMap().apply {
-            put("test_suite", testIdentity.suite)
-            put("test_name", testIdentity.test)
-            put("test_id", testIdentity.testId)
-            if (logger == "command") {
-                put("test_task", taskName)
-                put("test_platform", inferPlatform(taskName))
-            }
-        }
-        return enriched
     }
 
     private fun appendEvent(
@@ -111,7 +92,7 @@ class JsonLoggingTestListener(
             "test" to testIdentity?.test,
             "test_id" to testIdentity?.testId,
             "run_id" to testRunIdentifier,
-            "platform" to inferPlatform(taskName),
+            "platform" to TestAttributionHelper.inferPlatform(taskName),
             "timestamp" to Instant.now().toString(),
             "logger" to logger,
         )
@@ -122,11 +103,5 @@ class JsonLoggingTestListener(
             event["properties"] = properties
         }
         TestLoggingFileAppender.appendEvent(logFilePath, event)
-    }
-
-    private fun inferPlatform(task: String): String = when {
-        task.contains("jvm", ignoreCase = true) -> "jvm"
-        task.contains("e2e", ignoreCase = true) -> "e2e"
-        else -> "js"
     }
 }
