@@ -203,11 +203,20 @@ After changes:
 ## Rollout Strategy
 Work incrementally in focused slices:
 1. ✅ **This audit** — Catalog issues
-2. Fix inputs/outputs on custom tasks (highest impact)
+2. ✅ Fix inputs/outputs on custom tasks (completed in commit 3f16f183)
 3. Convert to lazy configuration patterns
-4. Extract common convention plugin code
+4. ✅ Extract common convention plugin code (completed in commit e09b0e91)
 5. Simplify complex logic
 6. Final validation and compliance check
+
+## Checklist
+- [x] Complete audit and catalog issues
+- [x] Fix inputs/outputs on custom tasks
+- [x] Extract common convention plugin code
+- [x] Convert to lazy configuration patterns (completed in commit 2d0631485)
+- [x] Review changes against applicable playbooks and verify compliance
+- [x] Run `./gradlew check` to verify no regressions
+- [ ] Move this file to agents.d/work_completed/
 
 ## Estimated Savings
 - **Lines reduced**: 20-30% (targeting 400+ lines through deduplication)
