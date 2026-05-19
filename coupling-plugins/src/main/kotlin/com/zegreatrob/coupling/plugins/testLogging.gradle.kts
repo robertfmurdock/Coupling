@@ -49,12 +49,14 @@ tasks.withType(AbstractTestTask::class).configureEach {
     dependsOn(writeLogConfig)
     val taskPath = path
     val logFilePath = logFilePathProvider
+    val runIdentifier = testRunIdentifier
+    val configFile = logConfigFile
     doFirst {
-        val jsonLoggingListener = JsonLoggingTestListener(taskPath, testRunIdentifier, logFilePath.get())
+        val jsonLoggingListener = JsonLoggingTestListener(taskPath, runIdentifier, logFilePath.get())
         addTestListener(jsonLoggingListener)
         addTestOutputListener(jsonLoggingListener)
 
-        val logConfigPath = logConfigFile.get().asFile
+        val logConfigPath = configFile.get().asFile
         if (logConfigPath.exists()) {
             System.setProperty("log4j2.configurationFile", logConfigPath.absolutePath)
             Configurator.initialize(null, logConfigPath.absolutePath)
