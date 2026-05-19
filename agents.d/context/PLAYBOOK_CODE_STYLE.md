@@ -3,6 +3,12 @@
 Use this playbook when a task involves writing or modifying source code in any
 language used in this repository.
 
+## Few-Shot Examples
+
+For concrete examples of preferred code style patterns from this codebase, see
+`agents.d/context/FEW_SHOT_CODE_STYLE.md`. Load this file when refactoring to
+understand what good code looks like in this project.
+
 ## Function Design
 - Prefer short, well-named functions: target fewer than 10 lines per function.
   Break this rule only when the alternative is less readable — clarity wins.
