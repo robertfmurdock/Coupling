@@ -90,3 +90,14 @@ Work incrementally:
 - Complexity reduced: Multiple responsibilities → single responsibility per class
 - Testability improved: Individual components can be tested in isolation
 - Maintainability improved: Changes localized to specific concerns
+
+## Checklist
+- [x] Extract JSON parsing logic into TestLogParser
+- [x] Extract test identity tracking into TestIdentityTracker
+- [x] Extract testmints log normalization into TestmintsLogNormalizer
+- [x] Extract command log normalization into CommandLogNormalizer
+- [x] Extract test attribution into TestAttributionHelper
+- [x] Refactor main listener to use extracted components
+- [x] Verify behavior unchanged with `:coupling-plugins:build`
+- [x] Review changes against applicable playbooks and verify compliance
+- [ ] Move this file to agents.d/work_completed/
