@@ -17,7 +17,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(22)
+    KotlinConventions.applyStrictCompilation(this)
     js {
         useEsModules()
         compilerOptions { target = "es2015" }
@@ -25,20 +25,9 @@ kotlin {
     }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
-        allWarningsAsErrors = true
         languageVersion.set(KotlinVersion.KOTLIN_2_2)
     }
-    sourceSets {
-        all {
-            languageSettings {
-                optIn("kotlin.js.ExperimentalJsExport")
-                optIn("kotlin.time.ExperimentalTime")
-                optIn("kotlin.uuid.ExperimentalUuidApi")
-                optIn("kotlinx.serialization.ExperimentalSerializationApi")
-                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-            }
-        }
-    }
+    KotlinConventions.applyCommonOptIns(this)
 }
 
 version = "0.0.0"

@@ -1,4 +1,6 @@
 import nl.littlerobots.vcu.plugin.versionSelector
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 repositories {
     maven { url = uri("https://plugins.gradle.org/m2/") }
@@ -16,6 +18,15 @@ plugins {
 kotlin {
     compilerOptions {
         allWarningsAsErrors.set(true)
+    }
+}
+
+tasks {
+    withType<FormatTask> {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
+    }
+    withType<LintTask> {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
     }
 }
 

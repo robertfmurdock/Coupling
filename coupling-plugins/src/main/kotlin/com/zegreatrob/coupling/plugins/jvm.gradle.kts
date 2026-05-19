@@ -12,24 +12,8 @@ plugins {
 version = "0.0.0"
 
 kotlin {
-    compilerOptions {
-        allWarningsAsErrors = true
-    }
-    jvmToolchain(22)
-    sourceSets {
-        all {
-            languageSettings {
-                optIn("kotlin.js.ExperimentalJsExport")
-                optIn("kotlin.time.ExperimentalTime")
-                optIn("kotlinx.serialization.ExperimentalSerializationApi")
-                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-            }
-        }
-    }
+    KotlinConventions.applyStrictCompilation(this)
+    KotlinConventions.applyCommonOptIns(this)
 }
 
-dependencies {
-    api(enforcedPlatform(project(":libraries:dependency-bom")))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-}
+KotlinConventions.applyCommonDependencies(project)

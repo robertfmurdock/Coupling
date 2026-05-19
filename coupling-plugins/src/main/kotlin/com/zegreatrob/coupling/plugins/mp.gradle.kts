@@ -16,30 +16,15 @@ version = "0.0.0"
 
 kotlin {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    jvmToolchain(22)
+    KotlinConventions.applyStrictCompilation(this)
     compilerOptions {
-        allWarningsAsErrors = true
         languageVersion.set(KotlinVersion.KOTLIN_2_2)
         apiVersion.set(KotlinVersion.KOTLIN_2_2)
     }
-    sourceSets {
-        all {
-            languageSettings {
-                optIn("kotlin.js.ExperimentalJsExport")
-                optIn("kotlin.time.ExperimentalTime")
-                optIn("kotlin.uuid.ExperimentalUuidApi")
-                optIn("kotlinx.serialization.ExperimentalSerializationApi")
-                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-            }
-        }
-    }
+    KotlinConventions.applyCommonOptIns(this)
 }
 
-dependencies {
-    commonMainApi(enforcedPlatform(project(":libraries:dependency-bom")))
-    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
-    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-}
+KotlinConventions.applyCommonDependencies(project)
 
 tasks.withType(KotlinJsTest::class).configureEach {
     outputs.cacheIf { true }
