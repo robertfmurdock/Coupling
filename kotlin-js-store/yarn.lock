@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1052.0":
-  version "3.1052.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1052.0.tgz#f7ee4cb791f28406b5f58b4714f53d5d2bec8f98"
-  integrity sha512-2hIhTgfBhjBgwMEU09QlrzwCkHsRYAXJaGPe/fAqna9v8HRTN0MHPcsVwJlBELoY7Guj7hI1CZsE827QQ2rw1w==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1053.0":
+  version "3.1053.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1053.0.tgz#1aebd74161f870ed3fe1daf32ff987336748ac6d"
+  integrity sha512-6xSS4hFbXs+FCn1ELFxuZ4DNXMpg+etfC1tqeXxxuFZogv52M/YBLRhCU0Aa+VV21bpB9UfUB/6q+D881mf7og==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -110,10 +110,10 @@
     "@smithy/types" "^4.14.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1052.0":
-  version "3.1052.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1052.0.tgz#86959e9536b194c9465326c1019df833680b0532"
-  integrity sha512-KfAfnURP5EoODMOqf5kCdidmOipc557TJCNuwazU1UY3DcWbaDkKT/iT6pPq0o+C3pE5DJdLOLGBjXWTTbzDIQ==
+"@aws-sdk/client-dynamodb@3.1053.0":
+  version "3.1053.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1053.0.tgz#2af7dc6e0d6359011358db6415b53f2115eefe90"
+  integrity sha512-tZKxImLQIF4xbNHYWI7kZjZguM7Ne3k0U4dGH0iglauzKjGS1hr2/M5ec5xiZ0KP+B2d+zQlQQqwz3gec23p4Q==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -128,10 +128,26 @@
     "@smithy/types" "^4.14.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@^3.1052.0", "@aws-sdk/client-lambda@~3.1052.0":
+"@aws-sdk/client-lambda@^3.1052.0":
   version "3.1052.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1052.0.tgz#e3615cb0e8c96711b934617e9a6b31cd6987fe95"
   integrity sha512-GmdEaDGPPD+SBF2kl3Xvb2jgSxJ/Eiuh4Vc2J2NbXoWbEkCZ3nE2b8SiZx1ckSog/F4/V/+FZUwtJwvLXV4Yuw==
+  dependencies:
+    "@aws-crypto/sha256-browser" "5.2.0"
+    "@aws-crypto/sha256-js" "5.2.0"
+    "@aws-sdk/core" "^3.974.13"
+    "@aws-sdk/credential-provider-node" "^3.972.44"
+    "@aws-sdk/types" "^3.973.9"
+    "@smithy/core" "^3.24.3"
+    "@smithy/fetch-http-handler" "^5.4.3"
+    "@smithy/node-http-handler" "^4.7.3"
+    "@smithy/types" "^4.14.2"
+    tslib "^2.6.2"
+
+"@aws-sdk/client-lambda@~3.1053.0":
+  version "3.1053.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1053.0.tgz#8dfef24b50423386427bee794f6651766a66a3ee"
+  integrity sha512-rIauaabLL/2C/5GYW6r/j4ptULlsTw2D/81leZ0nrjQVu9LSuAUZBJYLJpMsQobhDon4gfkdMIObOxQY1AHhRA==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -284,10 +300,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1052.0":
-  version "3.1052.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1052.0.tgz#b7ca1a3e4731427f8f7cf7e7e072ca174d4b3c89"
-  integrity sha512-EsmMUTdOjRvx3/KqRdDPrT0v4Vi7kmOXp6GHtwkGoRwPfW7gxITyNjtgCEhXyhiNt//wMpu/hEZpK9uPjfNQxA==
+"@aws-sdk/lib-dynamodb@3.1053.0":
+  version "3.1053.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1053.0.tgz#e3561b41a571f8a133f951a419ca7dd8ea8f28ab"
+  integrity sha512-ErTR3HxkN1lKw8jqcJ7WDcypMDUL/EBKG47OF1xvts/piWqGDFSInW9KHYadFbajbfpZi14J3LzgERddASwm/w==
   dependencies:
     "@aws-sdk/core" "^3.974.13"
     "@aws-sdk/util-dynamodb" "^3.996.2"
@@ -5049,10 +5065,10 @@ dataloader@^2.2.3:
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.2.3.tgz#42d10b4913515f5b37c6acedcb4960d6ae1b1517"
   integrity sha512-y2krtASINtPFS1rSDjacrFgn1dcUuoREVabwlOGOe4SdxenREqwjwjElAdwvbGM7kgZz9a3KVicWR7vcz8rnzA==
 
-date-fns@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-4.2.1.tgz#94092832dc4711781540e29102b35da84f8c378c"
-  integrity sha512-37RhSdxaG1suen6VDCza6rNrQfooyQh57HFVPwQGEq2QWliVLzPQZ8Oa017weOu+HZCnzI7N3Pf/wyoBKfEqrA==
+date-fns@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-4.3.0.tgz#95663b78f2be5ce664eb6606d94582acc39c77ba"
+  integrity sha512-OYcL+3N/jyWbYdFGqoMAhytDgxP9pbYPUUiRCOgn4Fewaadk9l/Wam4Avciiyp2BgkpfQyBV9B+ehnVJych+eQ==
 
 date-format@^4.0.14:
   version "4.0.14"
