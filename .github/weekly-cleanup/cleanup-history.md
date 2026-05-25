@@ -31,3 +31,6 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 
 ## 2026-05-19 (run-26095510557-1) — libraries/model
 - (no safe targets found) — prior runs exhaustively tested deletion candidates; scope sweep across sdk, server, client, coupling-plugins confirms no boundary violations; Gradle build logic clean
+
+## 2026-05-25 (run-auto-cleanup) — libraries/repository/core
+- (no safe targets found) — focus module contains only interface definitions and extension syntax; no test files (tested via integration in dynamo/compound modules); all public APIs verified in-use
