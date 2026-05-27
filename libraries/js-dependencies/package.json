@@ -1,15 +1,15 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.17.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1054.0",
-    "@aws-sdk/client-dynamodb": "3.1054.0",
-    "@aws-sdk/client-lambda": "~3.1054.0",
-    "@aws-sdk/lib-dynamodb": "3.1054.0",
-    "@graphql-codegen/cli": "^7.0.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1055.0",
+    "@aws-sdk/client-dynamodb": "3.1055.0",
+    "@aws-sdk/client-lambda": "~3.1055.0",
+    "@aws-sdk/lib-dynamodb": "3.1055.0",
+    "@graphql-codegen/cli": "^7.1.0",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
     "@graphql-codegen/plugin-helpers": "^7.0.1",
-    "@graphql-codegen/visitor-plugin-common": "7.0.2",
+    "@graphql-codegen/visitor-plugin-common": "7.0.4",
     "@graphql-tools/schema": "^10.0.33",
     "@graphql-tools/stitch": "^10.1.19",
     "@log4js-node/log4js-api": "1.0.2",
@@ -26,7 +26,7 @@
     "@slack/web-api": "^7.16.0",
     "@slack/webhook": "^7.0.9",
     "@stripe/react-stripe-js": "^6.4.0",
-    "@stripe/stripe-js": "^9.6.0",
+    "@stripe/stripe-js": "^9.7.0",
     "@remix-run/router": "^1.23.2",
     "react-router": "^7.15.1",
     "react-router-dom": "^7.15.1",
@@ -70,12 +70,12 @@
     "resolve-pkg": "^2.0.0",
     "serverless": "^4.36.1",
     "serverless-http": "^4.0.0",
-    "serverless-offline": "^14.7.0",
+    "serverless-offline": "^14.7.1",
     "serverless-offline-ssm": "^6.2.0",
     "sonda": "^0.11.1",
     "stripe": "^22.1.1",
     "vite-plugin-html": "^3.2.2",
     "webpack": "5.107.2",
-    "webpack-cli": "^7.0.2"
+    "webpack-cli": "^7.0.3"
   }
 }
