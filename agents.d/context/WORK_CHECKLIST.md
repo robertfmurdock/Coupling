@@ -12,10 +12,15 @@ One-sentence outcome.
 
 ## Constraints
 - Hard boundaries from PERSONA, playbooks, or architecture
+- **TDD required: test → fail → implement → pass → refactor per slice (see PLAYBOOK_CODE_STYLE.md)**
 
 ## Checklist
 - [ ] Review card for template compliance
+- [ ] Identify test files and patterns to follow
 - [ ] [Broad feature slice 1]
+  - [ ] Write test (verify fail reason)
+  - [ ] Implement
+  - [ ] Verify pass
 - [ ] Final refactor pass
 - [ ] Review against applicable playbooks
 - [ ] Move to agents.d/work_completed/
@@ -31,6 +36,7 @@ One-sentence outcome.
 ## Intake
 - `./gradlew agentBootstrap` (if AWS error: `unset AWS_PROFILE`)
 - Read `context.json` required_reads and relevant playbooks
+- **Search for test patterns**: `find . -name "*Test.kt" | grep <module>` to identify test file naming and structure
 - Identify impacted modules, test scope, test-level intent
 - Confirm constraints before coding
 

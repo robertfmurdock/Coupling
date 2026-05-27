@@ -3,12 +3,27 @@
 Load when writing or modifying source code. For examples: `FEW_SHOT_CODE_STYLE.md`.
 
 ## TDD: Red-Green-Refactor
-- **One test at a time** — write, fail, fix, pass, repeat (overrides task instructions)
-- Only add passing tests if their absence confuses readers
+**Required for every implementation slice.** Non-negotiable gate: cannot mark implementation complete without test.
+
+### The Cycle
+1. **Red**: Write one test for the next behavior. Run it. Confirm it fails for the **right reason** (e.g., "function not found", not "wrong assertion").
+2. **Green**: Write simplest code to make that test pass. No more.
+3. **Refactor**: Clean up what you just wrote (names, duplication, structure). Tests stay green.
+4. **Verify**: Run scoped tests (`./gradlew :module:test`) before moving to next slice.
+
+### Before You Start
+- Search for existing test patterns in the module: `find . -name "*Test.kt" | grep <module>`
+- Identify test utilities (builders, fakes, assertions) to reuse
+- Confirm test infrastructure exists (if not, add "setup tests" to checklist)
+
+### Test Granularity
 - One test = one focused objective
 - Verify multiple related outputs in one test
 - Multiple tests only for different scenarios/variations
-- "Chop down" chains: break before `?.` and `.assertIsEqualTo`
+- Only add passing tests if their absence confuses readers
+
+### Formatting
+"Chop down" chains: break before `?.` and `.assertIsEqualTo`
 
 ```kotlin
 // Good
