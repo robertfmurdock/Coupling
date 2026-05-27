@@ -1,35 +1,47 @@
 # Code Style Playbook
 
-Use this playbook when a task involves writing or modifying source code in any
-language used in this repository.
+Load when writing or modifying source code. For examples: `FEW_SHOT_CODE_STYLE.md`.
 
-## Few-Shot Examples
+## TDD: Red-Green-Refactor
+- **One test at a time** — write, fail, fix, pass, repeat (overrides task instructions)
+- Only add passing tests if their absence confuses readers
+- One test = one focused objective
+- Verify multiple related outputs in one test
+- Multiple tests only for different scenarios/variations
+- "Chop down" chains: break before `?.` and `.assertIsEqualTo`
 
-For concrete examples of preferred code style patterns from this codebase, see
-`agents.d/context/FEW_SHOT_CODE_STYLE.md`. Load this file when refactoring to
-understand what good code looks like in this project.
+```kotlin
+// Good
+data["version"]?.jsonPrimitive?.content.assertIsEqualTo("1.2.4")
 
-## Function Design
-- Prefer short, well-named functions: target fewer than 10 lines per function.
-  Break this rule only when the alternative is less readable — clarity wins.
-- Name functions to express intent, not implementation detail.
+// Better
+data["version"]
+    ?.jsonPrimitive
+    ?.content
+    .assertIsEqualTo("1.2.4")
+```
 
-## Comments
-- After writing a comment, take a refactor pass to embed its content into the
-  code itself — better names, extracted functions, clearer structure. A comment
-  that survives this pass is one whose WHY genuinely cannot be expressed in code.
+## Assertions
+- Prefer `assertIsEqualTo` (clearer diffs)
+- Test behavior, not structure (no symbolic assertNotNull/type checks)
+- When adding alternatives, test both old and new APIs
 
-## Data and Control Flow
-- Prefer immutable data structures and functional transformations (`map`, `filter`,
-  `fold`, etc.) over mutable accumulators and imperative loops. Avoid loops whose
-  exit path depends on `break`, `continue`, or accumulated mutable state — these
-  obscure intent and complicate reasoning. When a loop is necessary, make its
-  termination condition and output unambiguous.
+## Functions & Comments
+- Target <10 lines per function (clarity wins over brevity)
+- Name intent, not implementation
+- Refactor comments into code; keep only WHY that code can't express
 
-## General Style
-- Keep edits minimal and limited to task scope.
-- For a feature or bugfix task, "task scope" includes any method or function that
-  contains or references the touched lines — not just the touched lines themselves.
-- For arefactoring task, "task scope" includes any file containing the touched lines — not just the touched lines themselves.
-- Preserve existing behavior unless the task explicitly changes it.
-- Follow existing patterns and module ownership.
+## Data Flow
+- Prefer immutable + functional transforms (`map`, `filter`, `fold`)
+- Avoid loops with `break`, `continue`, mutable accumulators
+
+## Deprecation
+1. Build and test new feature first (full parity)
+2. Annotate: why, replacement, when removed
+3. Test both APIs
+
+## Scope
+- Keep edits minimal
+- Feature/bugfix: scope = any function touching changed lines
+- Refactor: scope = any file touching changed lines
+- Preserve behavior unless task changes it
