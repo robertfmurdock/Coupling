@@ -11,6 +11,12 @@ Load when writing or modifying source code. For examples: `FEW_SHOT_CODE_STYLE.m
 3. **Refactor**: Clean up what you just wrote (names, duplication, structure). Tests stay green.
 4. **Verify**: Run scoped tests (`./gradlew :module:test`) before moving to next slice.
 
+### Test the Behavior, Not the Plumbing
+- Test = executable specification of user-visible behavior or component contract
+- Plumbing changes (adding GraphQL query fields, updating imports, config changes) aren't TDD slices
+- Wrong: "Test that query includes field X" → this tests syntax, not behavior
+- Right: "Test that component renders value from field X" → this tests the feature
+
 ### Before You Start
 - Search for existing test patterns in the module: `find . -name "*Test.kt" | grep <module>`
 - Identify test utilities (builders, fakes, assertions) to reuse

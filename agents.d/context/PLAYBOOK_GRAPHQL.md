@@ -2,6 +2,13 @@
 
 Use this playbook for field add/rename/deprecation/removal and mutation routing.
 
+## TDD Note: Query Changes Are Plumbing, Not Features
+When adding fields to a client query:
+- The query change itself is setup, not a TDD slice
+- The feature = component/page rendering the data
+- Write component/integration tests first, then add query fields to make them compile
+- Don't create a "test the query has fields" slice - test the behavior that uses those fields
+
 ## 1) Scope and Text-Reference Scan
 1. Identify target operation/field names.
 2. Run:

@@ -12,21 +12,25 @@ Add stats panel above contribution list on `/:partyId/contributions` for immedia
 ## Checklist
 - [ ] Review card for template compliance
 - [ ] Identify test files and patterns to follow
-- [ ] Slice 1: Enhance GraphQL query to fetch report stats
-  - [ ] Write test: verify query includes count, medianCycleTime, withCycleTimeCount, contributors
-  - [ ] Add fields to `contributionOverviewPageQuery`
-  - [ ] Run codegen: `./gradlew :client:generateApolloSources`
-  - [ ] Verify test passes
-- [ ] Slice 2: Create ContributionQuickStats component
-  - [ ] Write test: component renders with stats data, handles null cycle time
+- [ ] Slice 1: Create ContributionQuickStats component that renders stats
+  - [ ] Write test: component renders count, medianCycleTime, withCycleTimeCount, contributor count
+  - [ ] Write test: component handles null medianCycleTime gracefully
   - [ ] Implement component (follow TeamStatistics.kt pattern)
-  - [ ] Verify test passes
-- [ ] Slice 3: Wire stats into ContributionOverviewPage and ContributionOverviewContent
-  - [ ] Write test: stats extracted from query result and passed to content
-  - [ ] Update ContributionOverviewPage to extract stats
-  - [ ] Update ContributionOverviewContent to accept and render stats
-  - [ ] Verify test passes
-- [ ] Visual verification in browser (after all slices pass)
+  - [ ] Verify tests pass
+  - [ ] Run: `./gradlew :client:components:test`
+- [ ] Slice 2: Wire stats into ContributionOverviewContent
+  - [ ] Write test: ContributionOverviewContent renders stats panel when stats provided
+  - [ ] Add stats parameter to ContributionOverviewContent
+  - [ ] Wire up ContributionQuickStats component
+  - [ ] Verify tests pass
+  - [ ] Run: `./gradlew :client:components:test`
+- [ ] Slice 3: Extract stats from query and pass to content
+  - [ ] Update GraphQL query to include: count, medianCycleTime, withCycleTimeCount, contributors
+  - [ ] Run codegen: `./gradlew :client:generateApolloSources`
+  - [ ] Update ContributionOverviewPage to extract stats from query result
+  - [ ] Pass stats to ContributionOverviewContent
+  - [ ] Verify compilation: `./gradlew :client:compileKotlinJs`
+- [ ] Visual verification in browser
   - Navigate to `/:partyId/contributions`
   - Verify stats display correctly
   - Test with null cycle time, zero contributions
@@ -43,6 +47,13 @@ Add stats panel above contribution list on `/:partyId/contributions` for immedia
 - Work card updated to enforce test-first approach per slice
 - Context docs updated to make TDD non-negotiable
 
+**Reverted (2026-05-29):**
+- Query change without test - same mistake
+- Treated GraphQL query change as "the feature" when it's just plumbing
+- Real feature = component rendering stats, not query having fields
+- Reorganized slices: component test → content test → wire query (setup, not TDD)
+- Contributor type has only `playerId` and `email` (no name field - for Slice 3)
+
 **Key Files:**
 - Query: `client/src/commonMain/graphql/queries.graphql` (line 197-206)
 - Page: `client/src/jsMain/kotlin/com/zegreatrob/coupling/client/contribution/ContributionOverviewPage.kt`
@@ -56,10 +67,8 @@ Add stats panel above contribution list on `/:partyId/contributions` for immedia
 
 ## Validation
 - Commands (run after each slice):
-  - `./gradlew :client:components:test` (component tests)
-  - `./gradlew :client:test` (integration tests)
-  - `./gradlew :client:generateApolloSources` (after query change)
-  - `./gradlew :client:compileKotlinJs`
-  - `./gradlew :client:lintKotlin`
+  - `./gradlew :client:components:test` (component tests - Slices 1 & 2)
+  - `./gradlew :client:compileKotlinJs` (compilation - Slice 3)
+  - `./gradlew :client:generateApolloSources` (codegen - Slice 3)
   - Visual test: dev server → `/:partyId/contributions` (final verification only)
 - Results: [fill as you go per slice]
