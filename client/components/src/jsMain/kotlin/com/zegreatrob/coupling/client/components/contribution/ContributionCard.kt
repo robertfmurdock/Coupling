@@ -110,7 +110,7 @@ val ContributionCard by nfc<ContributionCardProps> { props ->
 }
 
 fun NotBlankString.asShortId() = toString().substring(0, 7)
-fun String.asShortId() = toString().substring(0, 7)
+fun String.asShortId() = substring(0, 7)
 
 private fun <T> ChildrenBuilder.showOptionalProperty(attributeName: String, value: T?) {
     value?.let {
