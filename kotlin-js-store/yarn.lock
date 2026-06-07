@@ -8434,10 +8434,10 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
-npm-check-updates@22.2.2:
-  version "22.2.2"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-22.2.2.tgz#ce36d2208345b641f0e68a0e1b92d93c11870224"
-  integrity sha512-dgDPmR9FfONMrHdMKsPoYzb2NgR+NxlLGBi3nL/3yN3aFr8IKLyQJMBEMj4pKM5yuv9esV4nL5TX0TY2veliNw==
+npm-check-updates@22.2.3:
+  version "22.2.3"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-22.2.3.tgz#9dd55c2806ea591465674fbc10f89d013271e21c"
+  integrity sha512-n8HZ0ywZugYRgEqIm67hbZC5L/9S/gLX+MkGchJB43pP2xib1+u76OpVEJRZ4QP2BksPRi5M1CCStJVfc16+/A==
 
 npm-run-path@^5.1.0:
   version "5.3.0"
@@ -10096,10 +10096,10 @@ socks@^2.8.3:
     ip-address "^10.1.1"
     smart-buffer "^4.2.0"
 
-sonda@^0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.11.1.tgz#bbcbdce28e42513521c6b14c0955e3eaf79b0597"
-  integrity sha512-WruAwwzdjQ4U2c4dst8EMzFKf0s8EOWrr9ZOUrkjeQdxCjsFFo0/Em49NiLm5Op1yOXGT0VFDMcM4k5kl3wrCA==
+sonda@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/sonda/-/sonda-0.12.0.tgz#aa0e306da7b240234d1b713da8a2bf8eb8c00fa5"
+  integrity sha512-RxGX+3FSzIziT93L1EB6V6BQY211LrhgjIqpTz9C/iZ3SzrI7Bniz7UOv2U/OjMdmi/7CpKF96VKvQLMsYKazQ==
   dependencies:
     "@jridgewell/remapping" "^2.3.5"
     open "^11.0.0"
