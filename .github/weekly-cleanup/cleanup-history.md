@@ -34,3 +34,8 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 
 ## 2026-05-25 (run-auto-cleanup) — libraries/repository/core
 - (no safe targets found) — focus module contains only interface definitions and extension syntax; no test files (tested via integration in dynamo/compound modules); all public APIs verified in-use
+
+## 2026-06-08 (run-27156507882-1) — client/components
+- Dsl.kt: verified-in-use — marked DSL wrapper with zero imports
+- ColorContext.kt: verified-in-use — ColorContext with zero imports
+- External.kt: verified-in-use — d3 color external wrapper
