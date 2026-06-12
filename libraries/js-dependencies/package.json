@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.18.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1067.0",
-    "@aws-sdk/client-dynamodb": "3.1067.0",
-    "@aws-sdk/client-lambda": "~3.1067.0",
-    "@aws-sdk/lib-dynamodb": "3.1067.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1068.0",
+    "@aws-sdk/client-dynamodb": "3.1068.0",
+    "@aws-sdk/client-lambda": "~3.1068.0",
+    "@aws-sdk/lib-dynamodb": "3.1068.0",
     "@graphql-codegen/cli": "^7.1.2",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
