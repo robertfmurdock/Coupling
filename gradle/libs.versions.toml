@@ -7,7 +7,7 @@ com-auth0-java-jwt = "com.auth0:java-jwt:4.5.2"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.0"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.1.0"
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.74"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.75"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.27"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.1.4"
 eu-anifantakis-ksafe = "eu.anifantakis:ksafe:2.1.2"
@@ -16,7 +16,7 @@ io-ktor-ktor-bom = "io.ktor:ktor-bom:3.5.0"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-wrappers-kotlin-react-popper = "org.jetbrains.kotlin-wrappers:kotlin-react-popper:2026.3.1-2.3.0"
-org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.6.3"
+org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.6.4"
 org-jetbrains-kotlinx-kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "org-jetbrains-kotlinx" }
 org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0-0.6.x-compat"
 org-jetbrains-kotlinx-kotlinx-serialization-bom = { module = "org.jetbrains.kotlinx:kotlinx-serialization-bom", version.ref = "org-jetbrains-kotlinx" }
