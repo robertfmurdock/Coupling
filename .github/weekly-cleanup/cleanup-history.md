@@ -39,3 +39,8 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 - Dsl.kt: verified-in-use — marked DSL wrapper with zero imports
 - ColorContext.kt: verified-in-use — ColorContext with zero imports
 - External.kt: verified-in-use — d3 color external wrapper
+
+## 2026-06-15 (run-27569521241-1) — sdk
+- SetupFormatter.kt: verified-in-use — zero import references
+- Main.kt: verified-in-use — zero import references
+- PinDetailsMapper.kt: verified-in-use — zero import references
