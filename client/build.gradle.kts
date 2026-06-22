@@ -1,16 +1,17 @@
-import com.fasterxml.jackson.databind.ObjectMapper
+
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
-import java.nio.charset.StandardCharsets
-import java.util.Base64
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 
 plugins {
     id("com.zegreatrob.jsmints.plugins.minreact")
@@ -50,15 +51,15 @@ apollo {
     }
 }
 
-val jsRuntimeClasspath: Configuration by configurations.getting
-val clientConfiguration: Configuration by configurations.creating {
+val jsRuntimeClasspath: Configuration = configurations.getByName("jsRuntimeClasspath")
+val clientConfiguration: Configuration = configurations.create("clientConfiguration") {
     isCanBeConsumed = true
     isCanBeResolved = false
     attributes {
         attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "client")
     }
 }
-val cdnLookupConfiguration: Configuration by configurations.creating {
+val cdnLookupConfiguration: Configuration = configurations.create("cdnLookupConfiguration") {
     isCanBeConsumed = false
     isCanBeResolved = true
     attributes {
@@ -119,12 +120,12 @@ tasks {
     val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
     val cdnBuildOutput = npmProjectDir.map { it.file("cdn.json") }
     val settingsFile = File(project.projectDir, "cdn.settings.json")
-    val copyCdnSettings by registering(Copy::class) {
+    val copyCdnSettings = register<Copy>( "copyCdnSettings") {
         dependsOn(":kotlinNpmInstall")
         from(settingsFile)
         into(npmProjectDir)
     }
-    val lookupCdnUrls by registering(NodeExec::class) {
+    val lookupCdnUrls = register<NodeExec>( "lookupCdnUrls") {
         setup(project)
         this.npmProjectDir = npmProjectDir.get().asFile
         dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall")
@@ -151,7 +152,7 @@ tasks {
         outputs.upToDateWhen { cdnBuildOutput.get().asFile.length() > 0L }
         outputs.cacheIf { true }
     }
-    val sanitizeCdnJson by registering {
+    val sanitizeCdnJson = register("sanitizeCdnJson") {
         dependsOn(lookupCdnUrls)
         doLast {
             val cdnFile = cdnBuildOutput.get().asFile
@@ -162,7 +163,7 @@ tasks {
     }
     val projectResultPath = rootProject.layout.buildDirectory
         .file("test-output/${project.path}/results".replace(":", "/"))
-    val copyCdnJsonToResultDirectory by registering(Copy::class) {
+    val copyCdnJsonToResultDirectory = register<Copy>("copyCdnJsonToResultDirectory") {
         mustRunAfter(check)
         from(cdnBuildOutput)
         into(projectResultPath)
@@ -198,7 +199,7 @@ tasks {
         dependsOn(lookupCdnUrls, jsProcessResources)
     }
 
-    val uploadToS3 by registering(Exec::class) {
+    val uploadToS3 = register<Exec>("uploadToS3") {
         dependsOn(jsBrowserProductionVite)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
@@ -214,7 +215,7 @@ tasks {
             finalizedBy(uploadToS3)
         }
 
-    val additionalResources by registering(Copy::class) {
+    val additionalResources = register<Copy>("additionalResources") {
         outputs.cacheIf { true }
         dependsOn(":sdk:jsProcessResources")
         from("$rootDir/sdk/build/processedResources/js/main")

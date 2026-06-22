@@ -9,12 +9,12 @@ tasks {
         .dir("test-output/${project.path}/results".replace(":", "/"))
 
     val check = named("check")
-    val copyReportsToCircleCIDirectory by registering(Copy::class) {
+    val copyReportsToCircleCIDirectory = register<Copy>("copyReportsToCircleCIDirectory") {
         mustRunAfter(check)
         from("build/reports")
         into(projectResultPath)
     }
-    val copyTestResultsToCircleCIDirectory by registering(Copy::class) {
+    val copyTestResultsToCircleCIDirectory = register<Copy>("copyTestResultsToCircleCIDirectory") {
         mustRunAfter(check)
         from("build/test-results")
         into(projectResultPath)

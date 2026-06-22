@@ -53,7 +53,7 @@ dependencies {
 }
 
 tasks {
-    val gqlCodeGen by registering(NodeExec::class) {
+    val gqlCodeGen = register<NodeExec>( "gqlCodeGen") {
         dependsOn(
             "jsPackageJson",
             ":kotlinNpmInstall",

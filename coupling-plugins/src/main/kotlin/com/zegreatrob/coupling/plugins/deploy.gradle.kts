@@ -20,21 +20,21 @@ val serverProject: Project = project.project(":server")
 val deployDir: Provider<Directory> = layout.buildDirectory.dir("deploy")
 
 tasks {
-    val copyServerYml by registering(Copy::class) {
+    val copyServerYml = register<Copy>("copyServerYml") {
         into(deployDir)
         from("${serverProject.projectDir.absolutePath}/serverless.yml")
     }
-    val copyDeployConfigs by registering(Copy::class) {
+    val copyDeployConfigs = register<Copy>("copyDeployConfigs") {
         into(deployDir.map { it.dir("deploy") })
         from(serverProject.projectDir.resolve("deploy"))
     }
-    val copyDeployResources by registering(Copy::class) {
+    val copyDeployResources = register<Copy>("copyDeployResources") {
         dependsOn(copyServerYml, copyDeployConfigs, ":server:assemble")
         into(layout.buildDirectory.dir("deploy/build/executable"))
         from(serverProject.layout.buildDirectory.dir("executable"))
     }
 
-    val prune by registering(NodeExec::class) {
+    val prune = register<NodeExec>("prune") {
         setup(project)
         mustRunAfter(
             ":release",
@@ -55,7 +55,7 @@ tasks {
         )
         dependsOn(copyDeployResources)
     }
-    val deploy by registering(NodeExec::class) {
+    val deploy = register<NodeExec>("deploy") {
         setup(project)
         environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
         mustRunAfter(

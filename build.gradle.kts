@@ -1,12 +1,12 @@
+
 import com.avast.gradle.dockercompose.tasks.ComposeUp
 import com.zegreatrob.coupling.plugins.ai.AgentBootstrapTask
 import com.zegreatrob.coupling.plugins.ai.SyncAiContextTask
 import com.zegreatrob.coupling.plugins.ai.ValidateAiContextManifestTask
 import com.zegreatrob.coupling.plugins.testlogging.readAttributionCoverage
-import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameters
 import com.zegreatrob.coupling.plugins.testlogging.registerTestLogCliTask
+import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameters
 import java.time.Duration
-import org.gradle.api.GradleException
 
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
@@ -43,7 +43,7 @@ tagger {
     githubReleaseEnabled.set(true)
 }
 
-val testLogToolsRunner by configurations.creating {
+val testLogToolsRunner = configurations.create("testLogToolsRunner") {
     isCanBeResolved = true
     isCanBeConsumed = false
     attributes {
@@ -92,7 +92,7 @@ tasks {
         testLogToolsClasspath = testLogToolsClasspath,
     )
 
-    val assertCommandAttributionCoverage by registering {
+    val assertCommandAttributionCoverage = register("assertCommandAttributionCoverage") {
         group = "verification"
         description = "Asserts command logs are 100% test-attributed for attribution-required tasks."
         dependsOn(analyzeTestJsonl)
@@ -139,7 +139,7 @@ tasks {
         contextManifestFilePath.set(aiContextManifestFile.absolutePath)
     }
 
-    val validateAiContextManifest by register<ValidateAiContextManifestTask>("validateAiContextManifest") {
+    val validateAiContextManifest = register<ValidateAiContextManifestTask>("validateAiContextManifest") {
         group = "verification"
         description = "Validates agents.d/context/context.json entries point to existing files."
         repoRootDirPath.set(rootProject.rootDir.absolutePath)
