@@ -1,5 +1,6 @@
 {
   "reject": [
+    "react-router",
     "jsdom",
     "read-pkg-up",
     "resolve-pkg"
