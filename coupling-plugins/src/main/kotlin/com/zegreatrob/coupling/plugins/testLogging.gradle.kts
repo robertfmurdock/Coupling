@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.plugins.testlogging.JsonLoggingTestListener
 import com.zegreatrob.coupling.plugins.testlogging.TestLoggingFileAppender
 import com.zegreatrob.coupling.plugins.testlogging.WriteTestLog4j2Config
 import org.apache.logging.log4j.core.config.Configurator
-import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import java.util.UUID
 
@@ -94,7 +93,7 @@ tasks.withType(KotlinJsTest::class).configureEach {
 }
 
 fun Project.getTestRunIdentifier(): String {
-    val testRunIdentifier: Any? by rootProject.extra
+    val testRunIdentifier = extra.properties.get("testRunIdentifier")
     return if (testRunIdentifier != null) {
         "$testRunIdentifier"
     } else {

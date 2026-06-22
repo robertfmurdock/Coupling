@@ -113,7 +113,7 @@ dependencies {
 }
 
 tasks {
-    val jsNodeTest by getting {
+    val jsNodeTest = getByName("jsNodeTest") {
         dependsOn(":composeUp")
         outputs.cacheIf { true }
     }

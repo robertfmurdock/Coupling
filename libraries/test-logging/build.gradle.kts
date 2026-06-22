@@ -14,7 +14,7 @@ kotlin {
     }
 }
 
-val testLoggingLib: Configuration by configurations.creating {
+val testLoggingLib: Configuration = configurations.create("testLoggingLib") {
     isCanBeConsumed = true
     isCanBeResolved = false
     attributes {

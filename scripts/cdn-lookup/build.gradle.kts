@@ -33,7 +33,7 @@ dependencies {
     jsTestImplementation("com.zegreatrob.testmints:minassert")
 }
 
-val cdnLookupConfiguration: Configuration by configurations.creating {
+val cdnLookupConfiguration: Configuration = configurations.create("cdnLookupConfiguration") {
     isCanBeConsumed = true
     isCanBeResolved = false
     attributes {
@@ -41,7 +41,7 @@ val cdnLookupConfiguration: Configuration by configurations.creating {
     }
 }
 
-val outputFile: String? by project
+val outputFile: String? = project.findProperty("outputFile")?.toString()
 
 tasks {
     named("jsNodeProductionRun", NodeJsExec::class) {

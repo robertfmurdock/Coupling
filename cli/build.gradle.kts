@@ -104,7 +104,7 @@ tasks {
 
     val mainNpmProjectDir = kotlin.js().compilations.getByName("main").npmProject.dir
 
-    val copyWebpackConfig by registering(Copy::class) {
+    val copyWebpackConfig = register<Copy>( "copyWebpackConfig") {
         from(project.projectDir.resolve("webpack.config.js"))
         into(mainNpmProjectDir)
     }
@@ -126,7 +126,7 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.WARN
     }
 
-    val jsCliTar by registering(Tar::class) {
+    val jsCliTar = register<Tar>("jsCliTar") {
         dependsOn(
             "jsPackageJson",
             ":kotlinNpmInstall",
@@ -144,7 +144,7 @@ tasks {
         workingDir(mainNpmProjectDir)
         commandLine("npm", "link")
     }
-    val jsPublish by registering(Exec::class) {
+    val jsPublish = register<Exec>("jsPublish") {
         dependsOn(jsCliTar)
         enabled = !isSnapshot()
         mustRunAfter(check, ":release", ":deploy:prod:deploy")
@@ -155,7 +155,7 @@ tasks {
         dependsOn(jsPublish)
     }
 
-    val uploadToS3 by registering(Exec::class) {
+    val uploadToS3 = register<Exec>("uploadToS3") {
         dependsOn(jsCliTar, distTar)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
@@ -172,7 +172,7 @@ tasks {
             finalizedBy(uploadToS3)
         }
     val generatedDirectory = project.layout.buildDirectory.dir("generated-sources/templates/kotlin/main")
-    val copyTemplates by registering(Copy::class) {
+    val copyTemplates = register<Copy>("copyTemplates") {
         inputs.property("version", rootProject.version)
         filteringCharset = "UTF-8"
         from(project.projectDir.resolve("src/commonMain/templates")) {

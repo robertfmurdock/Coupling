@@ -15,7 +15,7 @@ kotlin {
     }
 }
 
-val appConfiguration: Configuration by configurations.creating {
+val appConfiguration: Configuration = configurations.create("appConfiguration") {
     isCanBeConsumed = false
     isCanBeResolved = true
     attributes {
@@ -23,7 +23,7 @@ val appConfiguration: Configuration by configurations.creating {
     }
 }
 
-val testLoggingLib: Configuration by configurations.creating {
+val testLoggingLib: Configuration = configurations.create("testLoggingLib") {
     isCanBeConsumed = false
     isCanBeResolved = true
     attributes {
@@ -31,7 +31,7 @@ val testLoggingLib: Configuration by configurations.creating {
     }
 }
 
-val clientConfiguration: Configuration by configurations.creating {
+val clientConfiguration: Configuration = configurations.create("clientConfiguration") {
     isCanBeConsumed = false
     isCanBeResolved = true
     attributes {
@@ -87,7 +87,7 @@ tasks {
         dependsOn("dependencyResources")
     }
 
-    val dependencyResources by registering(Copy::class) {
+    val dependencyResources = register<Copy>("dependencyResources") {
         dependsOn(":sdk:jsProcessResources")
         into(jsE2eTestProcessResources.map { it.destinationDir })
         from("$rootDir/sdk/build/processedResources/js/main")

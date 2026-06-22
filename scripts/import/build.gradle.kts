@@ -24,7 +24,7 @@ dependencies {
     "jsMainApi"(project(":libraries:repository:dynamo"))
 }
 
-val inputFile: String? by project
+val inputFile: String? = project.findProperty("inputFile")?.toString()
 
 tasks {
     named("jsNodeProductionRun", NodeJsExec::class) {

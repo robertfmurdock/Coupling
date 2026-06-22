@@ -21,7 +21,7 @@ kotlin {
     }
 }
 
-val appConfiguration: Configuration by configurations.creating {
+val appConfiguration: Configuration = configurations.create("appConfiguration") {
     isCanBeConsumed = true
     isCanBeResolved = false
     attributes {
@@ -29,7 +29,7 @@ val appConfiguration: Configuration by configurations.creating {
     }
 }
 
-val clientConfiguration: Configuration by configurations.creating {
+val clientConfiguration: Configuration = configurations.create("clientConfiguration") {
     isCanBeConsumed = false
     isCanBeResolved = true
     attributes {
@@ -82,14 +82,14 @@ dependencies {
 }
 
 tasks {
-    val cleanBuild by registering(Delete::class) {
+    val cleanBuild = register<Delete>("cleanBuild") {
         setDelete(file("build"))
     }
     clean {
         dependsOn(cleanBuild)
     }
 
-    val serverCompile by registering(NodeExec::class) {
+    val serverCompile = register<NodeExec>("serverCompile") {
         dependsOn(
             "jsPackageJson",
             ":kotlinNpmInstall",
@@ -141,27 +141,27 @@ tasks {
         workingDir = rootProject.layout.buildDirectory.file("js/packages/Coupling-server").get().asFile
     }
 
-    val copyServerIcons by registering(Copy::class) {
+    val copyServerIcons = register<Copy>("copyServerIcons") {
         from("public")
         into("build/executable/public")
     }
 
-    val copyServerViews by registering(Copy::class) {
+    val copyServerViews = register<Copy>("copyServerViews") {
         from("views")
         into("build/executable/views")
     }
 
-    val copyServerExecutable by registering(Copy::class) {
+    val copyServerExecutable = register<Copy>("copyServerExecutable") {
         dependsOn(serverCompile)
         from("build/webpack-output")
         into("build/executable")
     }
 
-    val copyServerResources by registering {
+    val copyServerResources = register("copyServerResources") {
         dependsOn(copyServerIcons, copyServerViews)
     }
 
-    val serverAssemble by registering {
+    val serverAssemble = register("serverAssemble") {
         dependsOn(copyServerResources, copyServerExecutable)
     }
 
@@ -175,7 +175,7 @@ tasks {
         environment("NODE_ENV", "production")
     }
 
-    val prepareDockerData by registering(Copy::class) {
+    val prepareDockerData = register<Copy>("prepareDockerData") {
         dependsOn(assemble, compileKotlinJs)
         from("build") {
             include("executable/**")

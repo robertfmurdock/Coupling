@@ -1,5 +1,5 @@
 tasks {
-    val buildImage by registering(Exec::class) {
+    val buildImage = register<Exec>("buildImage") {
         commandLine(
             "docker build --tag ghcr.io/robertfmurdock/coupling-serverless-base:latest ."
                 .split(" ")
