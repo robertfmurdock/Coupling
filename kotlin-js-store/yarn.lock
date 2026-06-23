@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1074.0":
-  version "3.1074.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1074.0.tgz#f3347c820a6209cd7e1af35dc87ee92ce572da40"
-  integrity sha512-mn4Tqzxf0cgfRXUfR/iD8E52D7VkyOWuxUuywhP5IvDoxELuu/jBOrU0qTpipOaEOuhXOziHZ/wh2djJXI6LDg==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1075.0":
+  version "3.1075.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1075.0.tgz#78e3246d98ccf66c87766f574a9d9dbf2927e262"
+  integrity sha512-mK5VAguQEvNmIDUUaVdI1iLCXBbZptNdifPuhj9CzpILBSyxXSUutfG82+nfWV8g+IPafUCjcwrC47zXIGS6qw==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -110,10 +110,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1074.0":
-  version "3.1074.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1074.0.tgz#a568236ff795ae19bb0187fc8af2164f6383f2d9"
-  integrity sha512-mFInRv2H7FqeyXnsBIgnO8VV+KGuC4bZZOSSSsOt2TW5eLT2AYEtNcSrZFDzz/qG2NvA7qk3mMTD9Zby547YOQ==
+"@aws-sdk/client-dynamodb@3.1075.0":
+  version "3.1075.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1075.0.tgz#4a7b10266175da3ef89ec8e019d2478677db417c"
+  integrity sha512-3KlTXh6U2nDqL+epT1XdxnszLtCEAvoeO7phI4UGiQeKMiibcyBsJvSlyEj1tBoNOsbdcmp1QLM8za415sDzzQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -144,10 +144,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1074.0":
-  version "3.1074.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1074.0.tgz#1d4100f12d987f97ed02bc1967a500f419570896"
-  integrity sha512-tgDW9kK5na7InYISCCC29x2yjhriyS1/4tNrpos3zVqccjhzRmcd/q3WZADZ9CgZPu+C9tziseVojkAiJ5ajHw==
+"@aws-sdk/client-lambda@~3.1075.0":
+  version "3.1075.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1075.0.tgz#e40bb4e7d7b197dd773cf3f5643d4b0ca7e199d2"
+  integrity sha512-S+sy0L7WEouGGys0kJZJ+br0sQGxgWC+0nR/4ySsym/CSg/k+VHXBdD697WJLli+X5a76tFBshx5bjgVKgLg4Q==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -422,10 +422,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1074.0":
-  version "3.1074.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1074.0.tgz#6c8e6da63371551321f00669bd023e762eec2bfc"
-  integrity sha512-4fgy1aQSKPD1DYyv9pniIze2i+PJe2R/tCNSd3+E+/pYQr1NC6a2F/noKiRuG1wUz1rkKiIPFP1cqJOB2qzMfA==
+"@aws-sdk/lib-dynamodb@3.1075.0":
+  version "3.1075.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1075.0.tgz#273588fc97cd707cc72947f81b0b371d68763565"
+  integrity sha512-3OxmMDgk8wvK6QOaVrQuOq9t6xlgS5047aDPxAZxTSwGBcEMc6FtiamtoK3kfClfOt7k3t+NWIo0bIfhWQ4Pzg==
   dependencies:
     "@aws-sdk/core" "^3.974.23"
     "@aws-sdk/util-dynamodb" "^3.996.5"
@@ -9364,10 +9364,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recharts@^3.8.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.8.1.tgz#1784b14784dab9a27eb426c475e6a9187f14cf01"
-  integrity sha512-mwzmO1s9sFL0TduUpwndxCUNoXsBw3u3E/0+A+cLcrSfQitSG62L32N69GhqUrrT5qKcAE3pCGVINC6pqkBBQg==
+recharts@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.9.0.tgz#b78a4822d1b1805a7529a9e8a82f7a043e94c3c9"
+  integrity sha512-dCEcE9y20c8H2tkVeByrAXhhnBJk6/QLbxKmn+dJUptOfc5NMjwRh1jo0vZPRLD+5dMrHrP+hPEsfbGBMfnf5Q==
   dependencies:
     "@reduxjs/toolkit" "^1.9.0 || 2.x.x"
     clsx "^2.1.1"
@@ -9376,7 +9376,7 @@ recharts@^3.8.1:
     eventemitter3 "^5.0.1"
     immer "^10.1.1"
     react-redux "8.x.x || 9.x.x"
-    reselect "5.1.1"
+    reselect "5.2.0"
     tiny-invariant "^1.3.3"
     use-sync-external-store "^1.2.2"
     victory-vendor "^37.0.2"
@@ -9452,7 +9452,12 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
 
-reselect@5.1.1, reselect@^5.1.0:
+reselect@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-5.2.0.tgz#f380ef7664332d26ea06c1cba04bdbbdcaa955f1"
+  integrity sha512-AgZ3UOZm3YndfrJ4OYjgrT7bmCm/1iqkjvEfH/oYjzh6PD2qw4QuT3jjnXIrpdt4MTpMXclMT3lXbmRY+XRakw==
+
+reselect@^5.1.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-5.1.1.tgz#c766b1eb5d558291e5e550298adb0becc24bb72e"
   integrity sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==
@@ -9776,10 +9781,10 @@ serverless-offline-ssm@^6.2.0:
   resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-6.2.0.tgz#f2db290a72631629579ce5f940ed76f254f96653"
   integrity sha512-Af7JeLbU4OHAx7ZgAs2OLP2DGKyp/g45rX7SWQ8KiBzn47jme+MqN+GOV6qd5oZ8V9khd3p62+RueHR3ezEZZQ==
 
-serverless-offline@^14.7.3:
-  version "14.7.3"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.7.3.tgz#e67322af6af6d0bff8d5cfb384fc1c3ae645299b"
-  integrity sha512-j7khRoMyvuJ5HTRzeR6wEQgZzloFHG6lk7xJ0aLnxPSCROgFgZJsIxVMxw1idCet7Fum8ElPGcYSvTz+NNP4GQ==
+serverless-offline@^14.7.4:
+  version "14.7.4"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.7.4.tgz#27eb6b86b6235a433c0c073f3e220b1d90f2cd7f"
+  integrity sha512-IqHZY39Gc805f/W4TLElpjW4yUjUejtPaueivQ4nE1j5+RBDctPYnCAlMLZb3zkpMYuwSWOL2gFH5uVHYLgSVg==
   dependencies:
     "@aws-sdk/client-lambda" "^3.1069.0"
     "@hapi/boom" "^10.0.1"
@@ -10279,10 +10284,10 @@ strip-json-comments@^5.0.3:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-5.0.3.tgz#b7304249dd402ee67fd518ada993ab3593458bcf"
   integrity sha512-1tB5mhVo7U+ETBKNf92xT4hrQa3pm0MZ0PQvuDnWgAAGHDsfp4lPSpiS6psrSiet87wyGPh9ft6wmhOMQ0hDiw==
 
-stripe@^22.2.2:
-  version "22.2.2"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-22.2.2.tgz#68b060def7624cb119523d50c95beb4aa417a081"
-  integrity sha512-lRXLiarjW/I2QVa6QuFfz1Ma7Dc2yBQ7vlYH6NEmp5htMJNQGfiWExmOv0McfqY5wMCGV8DLuCvsyVRIPJlUUQ==
+stripe@^22.2.3:
+  version "22.2.3"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-22.2.3.tgz#ae04876cc188b67ad318e54ff5d8f68e9e2e7273"
+  integrity sha512-9lrggvLtjO4Ef5WXH4t50ckHJcJgTD72xFB+KJgZCSszAH9zMV1BqU6PwmWbRLdcdX7LK6PbErBapiGK7pIb+g==
 
 strnum@^2.2.3, strnum@^2.3.0:
   version "2.3.0"
