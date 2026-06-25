@@ -73,9 +73,9 @@
     "serverless-offline": "^14.7.4",
     "serverless-offline-ssm": "^6.2.0",
     "sonda": "^0.13.1",
-    "stripe": "^22.2.3",
+    "stripe": "^22.3.0",
     "vite-plugin-html": "^3.2.2",
-    "webpack": "5.107.2",
+    "webpack": "5.108.0",
     "webpack-cli": "^7.0.3"
   }
 }
