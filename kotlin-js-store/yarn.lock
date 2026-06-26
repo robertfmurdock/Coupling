@@ -5761,7 +5761,7 @@ env-paths@^2.2.1:
   resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-2.2.1.tgz#420399d416ce1fbe9bc0a07c62fa68d67fd0f8f2"
   integrity sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==
 
-envinfo@^7.14.0:
+envinfo@^7.21.0:
   version "7.21.0"
   resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.21.0.tgz#04a251be79f92548541f37d13c8b6f22940c3bae"
   integrity sha512-Lw7I8Zp5YKHFCXL7+Dz95g4CcbMEpgvqZNNq3AmlT5XAV6CgAAk6gyAMqn2zjw08K9BHfcNuKrMiCPLByGafow==
@@ -6867,7 +6867,7 @@ import-from@4.0.0:
   resolved "https://registry.yarnpkg.com/import-from/-/import-from-4.0.0.tgz#2710b8d66817d232e16f4166e319248d3d5492e2"
   integrity sha512-P9J71vT5nLlDeV8FHs5nNxaLbrpfAV5cF5srvbZfpwpcJoM/xZR3hiv+q+SAnuSmuGbXMWud063iIMx/V/EWZQ==
 
-import-local@^3.0.2:
+import-local@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/import-local/-/import-local-3.2.0.tgz#c3d5c745798c02a6f8b897726aba5100186ee260"
   integrity sha512-2SPlun1JUPWoM6t3F0dw0FkCF/jWY8kttcY4f599GLTSjh2OCuuhdTkJQsEcZzBqbXZGKMK2OqW1oZsjtf/gQA==
@@ -10925,16 +10925,16 @@ webidl-conversions@^7.0.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-7.0.0.tgz#256b4e1882be7debbf01d05f0aa2039778ea080a"
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
-webpack-cli@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-7.0.3.tgz#62d3374b424bb4fabb27d088d8b2a9685b325b02"
-  integrity sha512-2E2C6A1e2El7791zQgTH7LPIuwLjRliow9OHS/qlJc9pwhZlCoL/uiwqd/1WSlXT83wJfmfDbkcqHXuXoPJZ3g==
+webpack-cli@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-7.1.0.tgz#0ce9fe20b611c47877ff14c5d70d16d2ea13b99f"
+  integrity sha512-pSJ5p5PkXRD88sfCq5Wo+coc42QykwRu5Md0DyESj0rT6PPPA2wTNabpHPKgqH8EMkfTDo3IWx3iiNXMu8XDBQ==
   dependencies:
     "@discoveryjs/json-ext" "^1.1.0"
     commander "^14.0.3"
     cross-spawn "^7.0.6"
-    envinfo "^7.14.0"
-    import-local "^3.0.2"
+    envinfo "^7.21.0"
+    import-local "^3.2.0"
     interpret "^3.1.1"
     rechoir "^0.8.0"
     webpack-merge "^6.0.1"
@@ -10960,10 +10960,10 @@ webpack-sources@^3.5.0:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.5.0.tgz#87bf7f5801a4e985b1f1c92b64b9620a02f76d08"
   integrity sha512-HPuy+uuoTCaaoEoI1LQ3JN9+vrPBvEesnnX1jADHy728cHSMlq4wUc4afYqahq2B1mhQVZxCXOkNTnXltr+2vQ==
 
-webpack@5.108.0:
-  version "5.108.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.108.0.tgz#f8bb9b554f25374e8dfa3e1b137b0791a56d7614"
-  integrity sha512-Ln1JuYGPRTXcHECapSFSvACtHmWEN5sQqFJeLLGQ0057S7qzT2eXUz0MZUedtmIrNy3nJgnITSubIYKGED9jSQ==
+webpack@5.108.1:
+  version "5.108.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.108.1.tgz#cd5856f9a88e55f344d64a6623c09bf34446cc9d"
+  integrity sha512-UUCihHQK3O7483Woa0SulNLDeAiOhHI2PN2PAPU4fVWJqbzhv04EJ8FaWtB9WWh3i8fRt28543U7VfuJTOrpgQ==
   dependencies:
     "@types/estree" "^1.0.8"
     "@types/json-schema" "^7.0.15"
