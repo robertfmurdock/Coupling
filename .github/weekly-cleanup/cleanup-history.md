@@ -44,3 +44,11 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 - SetupFormatter.kt: verified-in-use — zero import references
 - Main.kt: verified-in-use — zero import references
 - PinDetailsMapper.kt: verified-in-use — zero import references
+
+## 2026-06-29 (run-28391060946-1) — libraries/model
+- PinTarget.kt: queued — zero imports, single-value enum
+- Badge.kt: queued — zero imports, simple enum
+- PairingRule.kt: queued — zero imports, conversion enum
+- (no safe targets found) — all tested zero-import candidates verified-in-use; prior runs exhaustively tested; no boundary violations detected
+- PinTarget.kt: verified-in-use — full build failed after deletion
+- PairingRule.kt: verified-in-use — full build failed after deletion
