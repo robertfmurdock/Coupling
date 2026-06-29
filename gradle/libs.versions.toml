@@ -31,7 +31,7 @@ com-apollographql-apollo = "com.apollographql.apollo:5.0.1"
 com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.21"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:3.1.5"
-com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:3.1.5"
+com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:3.1.6"
 # @pin
 io-github-turansky-kfc-application = "io.github.turansky.kfc.application:18.8.0"
 io-github-turansky-seskar = "io.github.turansky.seskar:4.60.0"
