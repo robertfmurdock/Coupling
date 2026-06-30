@@ -19,6 +19,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
+import react.create
 import kotlin.test.Test
 import kotlin.time.Clock
 
@@ -67,7 +68,7 @@ class PairAssignmentsTest {
             .parentElement
             ?.querySelectorAll("[data-player-id]")
             ?.asList()
-            ?.mapNotNull { it as? HTMLElement }
+            ?.filterIsInstance<HTMLElement>()
             ?.map { it.getAttribute("data-player-id") }
             .assertIsEqualTo(
                 listOf(rigby, nerd, pantsmaster)
@@ -87,24 +88,25 @@ class PairAssignmentsTest {
         )
     }) exercise {
         render(
-            PairAssignments.create(
-                party = party,
-                boost = null,
-                players = players,
-                pairs = null,
-                setPairs = {},
-                controls = Controls({ { } }) {},
-                message = CouplingSocketMessage("", emptySet(), null),
-                allowSave = false,
-            ),
-            RenderOptions(wrapper = TestRouter),
+            TestRouter.create {
+                PairAssignments(
+                    party = party,
+                    boost = null,
+                    players = players,
+                    pairs = null,
+                    setPairs = {},
+                    controls = Controls({ { } }) {},
+                    message = CouplingSocketMessage("", emptySet(), null),
+                    allowSave = false,
+                )
+            },
         )
     } verify {
         screen.findByText("Unpaired players")
             .parentElement
             ?.querySelectorAll("[data-player-id]")
             ?.asList()
-            ?.mapNotNull { it as? HTMLElement }
+            ?.filterIsInstance<HTMLElement>()
             ?.map { it.getAttribute("data-player-id") }
             .assertIsEqualTo(players.map(Player::id).map { it.value.toString() })
     }
