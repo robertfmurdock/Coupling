@@ -5,7 +5,7 @@ import web.abort.internal.createCancellablePromise
 fun <Context> ActionFunction(
     block: suspend (args: ActionFunctionArgs<Context>, handlerCtx: Any?) -> DataFunctionValue,
 ): ActionFunction<Context> = ActionFunctionAsync { args, handlerCtx ->
-    createCancellablePromise(args.request) {
+    createCancellablePromise(args.request.signal) {
         block(args, handlerCtx)
     }
 }
