@@ -3077,10 +3077,10 @@
     p-retry "^4"
     retry "^0.13.1"
 
-"@slack/web-api@^7.17.0":
-  version "7.17.0"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.17.0.tgz#bf574f7203bc9f009dc28618ea1b279df1201edd"
-  integrity sha512-jejr34a8B4L5AS713wOAx1LAqNkW16HVMDEa6sYBvFDc/llUBl8hXaiI4BwF+Al+Sug19Vn2O7iokTVIhVvZ1Q==
+"@slack/web-api@^7.18.0":
+  version "7.18.0"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.18.0.tgz#a196077248149572544a541b289c4bcd68ef447b"
+  integrity sha512-EWBsKUhOFFp87beQg/ToSC+asWB7BrGHuh7uPC1ZI9vr41GjS+3WmmyWIMqs+mF6U+mh4d6HhtFlv67TrJFsvw==
   dependencies:
     "@slack/logger" "^4.0.1"
     "@slack/types" "^2.21.0"
@@ -3095,14 +3095,14 @@
     p-retry "^4"
     retry "^0.13.1"
 
-"@slack/webhook@^7.0.9":
-  version "7.0.9"
-  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-7.0.9.tgz#563f7605287bd844c3507084d62d1d5ecf0d95d8"
-  integrity sha512-hMfkQ5Y3Y7FtL+ZYhcxFblidx4Z2LPRFrhY1KJb6NqQdnK6kzTzTS1mjH5taVQIB496eqwpg9FE9mq9BFx0DWw==
+"@slack/webhook@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-7.1.0.tgz#00571a1b35b9e6d501ee5a47826118a69c357750"
+  integrity sha512-cVXjP1n5s9gF7EW0zi58gYhf9JQ+FDu9t0Tq4ufdJxSO6QkT4wBMjSWYGAz61Xi6eHaZlnyGu7RuzwpGERLYbw==
   dependencies:
     "@slack/types" "^2.20.1"
     "@types/node" ">=18"
-    axios "^1.15.0"
+    axios "^1.16.0"
 
 "@smithy/core@^3.24.6":
   version "3.24.6"
@@ -4184,7 +4184,7 @@ auto-bind@~4.0.0:
   resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-4.0.0.tgz#e3589fc6c2da8f7ca43ba9f84fa52a744fc997fb"
   integrity sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==
 
-axios@^1.12.0, axios@^1.15.0, axios@^1.16.0:
+axios@^1.12.0, axios@^1.16.0:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.16.1.tgz#517e29291d19d6e8cf919ff264f4fe157261ba12"
   integrity sha512-caYkukvroVPO8KrzuJEb50Hm07KwfBZPEC3VeFHTsqWHvKTsy54hjJz9BS/cdaypROE2rH6xvm9mHX4fgWkr3A==
@@ -6482,7 +6482,7 @@ fs-extra@^11.1.0:
     jsonfile "^6.0.1"
     universalify "^2.0.0"
 
-fs-extra@^11.3.5:
+fs-extra@^11.3.6:
   version "11.3.6"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.3.6.tgz#f7cb80e9df550cd1db6f537fa5cdd568d3e70d10"
   integrity sha512-w8ZNZr2mKIc7qeNaQ9AVPT1+iFaI+Avd4xudVOvdDJ8VytREi1Ft5Ih7hd9jjehod8vAM5GMsfQ/TpPf4EyoEA==
@@ -9480,7 +9480,7 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recharts@^3.9.0:
+recharts@^3.9.1:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.9.1.tgz#6fe1b4617147e2016fa6f4cd681c8c818255955e"
   integrity sha512-WMcwlXcB7l+BbxiEdyClkG+1sxrMHNZpzT577LEvU4+rXPd8oTAy1wXk72hnk2KOOmxuLvw3z5DtXT7HEAydtg==
@@ -11071,10 +11071,10 @@ webpack-sources@^3.5.0:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.5.0.tgz#87bf7f5801a4e985b1f1c92b64b9620a02f76d08"
   integrity sha512-HPuy+uuoTCaaoEoI1LQ3JN9+vrPBvEesnnX1jADHy728cHSMlq4wUc4afYqahq2B1mhQVZxCXOkNTnXltr+2vQ==
 
-webpack@5.108.2:
-  version "5.108.2"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.108.2.tgz#3b76d7fec173be8673ff45f6dcaf0442574ee286"
-  integrity sha512-sUWBWPJwWH+QHUObS4lfNaQ368Tj8NaHDBsRJcU/NmQpeOqxV5iQUT2c5nvDWi8WYR5ynF7az+PuMdc+oDLJOA==
+webpack@5.108.3:
+  version "5.108.3"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.108.3.tgz#39be3baba294fa9d93487199b8c7e3ce742d3498"
+  integrity sha512-hOpaCHmQVVY66IVTjofnH14IgSdmod2aquSGHGuYig/OIdWge01Hk2Wt988DZcwXumFUT4+FvJY5N+ikl8o/ww==
   dependencies:
     "@types/estree" "^1.0.8"
     "@types/json-schema" "^7.0.15"
