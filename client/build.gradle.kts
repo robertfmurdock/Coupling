@@ -3,7 +3,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
-import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
@@ -112,8 +111,6 @@ dependencies {
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
 }
 
-rootProject.apply<TaggerPlugin>()
-
 rootProject.yarn.ignoreScripts = false
 
 tasks {
@@ -178,7 +175,6 @@ tasks {
     compileProductionExecutableKotlinJs {}
 
     jsBrowserProductionVite {
-        notCompatibleWithConfigurationCache("Kotlin Vite tasks use lazy Node.js runtime access.")
         dependsOn(sanitizeCdnJson, copyCdnSettings, jsProcessResources)
         mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
@@ -191,9 +187,6 @@ tasks {
         outputs.file(outputDirectory.file("client-kotlinx.js"))
         outputs.file(outputDirectory.file("client-ktor.js"))
         outputs.cacheIf { true }
-    }
-    named("jsBrowserProductionVitePrepare") {
-        notCompatibleWithConfigurationCache("Kotlin Vite tasks use lazy Node.js runtime access.")
     }
     named("jsBrowserDevelopmentRun") {
         dependsOn(lookupCdnUrls, jsProcessResources)
