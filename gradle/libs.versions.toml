@@ -38,6 +38,6 @@ nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update
 
 [versions]
 com-apollographql-adapters = "0.7.0"
-org-apache-logging-log4j = "2.26.0"
+org-apache-logging-log4j = "2.26.1"
 org-jetbrains-kotlinx = "1.11.0"
 org-kotools = "5.2.0"
