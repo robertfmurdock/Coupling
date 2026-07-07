@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.20.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1080.0",
-    "@aws-sdk/client-dynamodb": "3.1080.0",
-    "@aws-sdk/client-lambda": "~3.1079.0",
-    "@aws-sdk/lib-dynamodb": "3.1080.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1081.0",
+    "@aws-sdk/client-dynamodb": "3.1081.0",
+    "@aws-sdk/client-lambda": "~3.1081.0",
+    "@aws-sdk/lib-dynamodb": "3.1081.0",
     "@graphql-codegen/cli": "^7.2.0",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
@@ -23,7 +23,7 @@
     "@nivo/tooltip": "^0.99.0",
     "@slack/bolt": "^4.7.3",
     "@slack/oauth": "^3.0.5",
-    "@slack/web-api": "^7.18.0",
+    "@slack/web-api": "^7.19.0",
     "@slack/webhook": "^7.1.0",
     "@stripe/react-stripe-js": "^6.7.0",
     "@stripe/stripe-js": "^9.9.0",
