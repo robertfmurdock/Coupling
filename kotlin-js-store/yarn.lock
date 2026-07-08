@@ -1524,10 +1524,10 @@
     "@graphql-tools/utils" "^11.1.0"
     tslib "^2.4.0"
 
-"@graphql-tools/merge@^9.1.11":
-  version "9.1.11"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.1.11.tgz#a39e4f1e7db7bc81d51f35f13ffe3084aac2335e"
-  integrity sha512-APuOIPBUm9NQQCl1qfKC39zclR1p8UVsEhCg9t9nYF3kSe859F9/wq4VmBqiz/ETuABS7Bm7WA+yDYWC6HoD8A==
+"@graphql-tools/merge@^9.2.0":
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.2.0.tgz#42a210c1f8ec0ab86b868b3c6da383cd214188ce"
+  integrity sha512-kChDH/sOxm3TCICup5NgTiz/aJBk+5GAuC0lfJS8FcRfsqZvlCkNwpsYTGAATBCJMrgZ9+csRugCjS97jPcNMw==
   dependencies:
     "@graphql-tools/utils" "^11.2.0"
     tslib "^2.4.0"
@@ -1557,12 +1557,12 @@
     "@graphql-tools/utils" "^11.1.0"
     tslib "^2.4.0"
 
-"@graphql-tools/schema@^10.0.35":
-  version "10.0.35"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.0.35.tgz#22c5f7556e0200a5f215556ce9dbbe83dabd3abf"
-  integrity sha512-g/7IUmuLr3y4xoK1PDUm3B7arLBEMZatcbCIMf2690CU66xncY+GlMH37G0Sbm2lJY1/ELFpXa/S50rHKmoEkQ==
+"@graphql-tools/schema@^10.0.36":
+  version "10.0.36"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.0.36.tgz#56f4b4d21ee68f94a2a393af0cc9b52a0266d450"
+  integrity sha512-g8S5aLirZInoi3NojzmBxwsZfVawOE0UBlVWYe8kDAR0FxS0riBDiyW7JnlAKayooHMRAMwGaze4RQU3VTTyig==
   dependencies:
-    "@graphql-tools/merge" "^9.1.11"
+    "@graphql-tools/merge" "^9.2.0"
     "@graphql-tools/utils" "^11.2.0"
     tslib "^2.4.0"
 
@@ -9940,10 +9940,10 @@ serverless-offline@^14.7.4:
     velocityjs "^2.1.6"
     ws "^8.21.0"
 
-serverless@^4.38.1:
-  version "4.38.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.38.1.tgz#8048e232b1aab4b8527baab4fce001e2317706ec"
-  integrity sha512-fQW3nGvlZRJ951Y1cF65IOOvPfyYjaViigZErV4JOLHjT+d79e3a9kB0xIkknWVRYpF4j/SiIDGRGZuwjGVdTg==
+serverless@^4.39.0:
+  version "4.39.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-4.39.0.tgz#defab19298d39d2a4411c7308bd325893ffbcefe"
+  integrity sha512-BKGwcJFbuOC3QCRf4wiKU2IT81OquxEGp69CA8cbvLz7N7gq6jZZEnrau3NcWWPMgsKJHOmqNpu9gReU9oS0aQ==
   dependencies:
     rimraf "5.0.10"
     undici "6.27.0"
