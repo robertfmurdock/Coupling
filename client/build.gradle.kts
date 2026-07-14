@@ -150,6 +150,7 @@ tasks {
         outputs.cacheIf { true }
     }
     val sanitizeCdnJson = register("sanitizeCdnJson") {
+        description = "Veriies CDN JSON was created"
         dependsOn(lookupCdnUrls)
         doLast {
             val cdnFile = cdnBuildOutput.get().asFile
@@ -161,6 +162,7 @@ tasks {
     val projectResultPath = rootProject.layout.buildDirectory
         .file("test-output/${project.path}/results".replace(":", "/"))
     val copyCdnJsonToResultDirectory = register<Copy>("copyCdnJsonToResultDirectory") {
+        description = "Moves CDN Json to test output results"
         mustRunAfter(check)
         from(cdnBuildOutput)
         into(projectResultPath)
@@ -175,7 +177,7 @@ tasks {
     compileProductionExecutableKotlinJs {}
 
     jsBrowserProductionVite {
-        dependsOn(sanitizeCdnJson, copyCdnSettings, jsProcessResources)
+        dependsOn(lookupCdnUrls, sanitizeCdnJson, copyCdnSettings, jsProcessResources)
         mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
         inputs.file(project.layout.projectDirectory.file("vite.config.mjs"))
