@@ -22,30 +22,30 @@
     "@csstools/css-tokenizer" "^3.0.3"
     lru-cache "^10.4.3"
 
-"@auth0/auth0-auth-js@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.10.0.tgz#8659154c814894a77832e192774123ba54fc9dcd"
-  integrity sha512-FDzc0lbaG1E++4sjx3zW7BB9gVK2ODLmuPStGxYPeclKwLMFKkmVyWR8bCyQVNXvTS1KCHeX0dC9HMTJ0WBCJg==
+"@auth0/auth0-auth-js@^1.10.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.12.0.tgz#ca46ae6fcd23f6dcd62b8678693f41b957d9b63f"
+  integrity sha512-94r29UxcFEdroO74TUqu5KYy5hSKa6mCXY8lu4hADiyES8qthlSCwaCPEW1adpM5hdheltQ7s1o9TsK8Btyjvg==
   dependencies:
     jose "^6.0.8"
     openid-client "^6.8.0"
 
-"@auth0/auth0-react@2.21.0":
-  version "2.21.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.21.0.tgz#4d5329f461c3663b4899dd2cc43db3066e700171"
-  integrity sha512-8QmHjRl1ZRNx+hVn6WkHjem2bT+ooojqPTkutZmHmWZIXx/nJd9b31Mombt7l1Cyqp3G+3airle0FSOZbBSxRA==
-  dependencies:
-    "@auth0/auth0-spa-js" "^2.22.0"
-
-"@auth0/auth0-spa-js@^2.22.0":
+"@auth0/auth0-react@2.22.0":
   version "2.22.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.22.0.tgz#385b2c19046d32b570b9432735f24a6980d8fff6"
-  integrity sha512-+2MeIGcXNPXaodEimx1F0YYTfajZ3oxbUI14nGhChcPqxOjRZQNwXrr9rRpHy+tMgNHOnM5YwIqvAfkZlB1WjA==
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.22.0.tgz#3a0922f05af976f1bb002b2b9d22cfa76fe40eed"
+  integrity sha512-/TqYPM7R/0sZuIeWHfsaqB+C/Oi/ssx3BMaOAOGZZZw8YBelIK00gCjIxozrmjZGawzz2Jl0VAsYyfS2KwB3Zw==
   dependencies:
-    "@auth0/auth0-auth-js" "1.10.0"
-    browser-tabs-lock "1.3.0"
-    dpop "2.1.1"
-    es-cookie "1.3.2"
+    "@auth0/auth0-spa-js" "^2.23.0"
+
+"@auth0/auth0-spa-js@^2.23.0":
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.23.0.tgz#bac6aa1c25f746c4cf42b765d324f545df5be5aa"
+  integrity sha512-fRiPlTIMLahes6eXq5C4CF8zFi9vLxUtii8e7CESmzWBJGSa3jRrnjgQVAPSaox2x+CwzTFcJbt4mR+UiVMk1Q==
+  dependencies:
+    "@auth0/auth0-auth-js" "^1.10.0"
+    browser-tabs-lock "^1.3.0"
+    dpop "^2.1.1"
+    es-cookie "~1.3.2"
 
 "@aws-crypto/crc32@5.2.0":
   version "5.2.0"
@@ -94,13 +94,13 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1088.0":
-  version "3.1088.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1088.0.tgz#9486aec98451995e28e3e1f641217273be50b64d"
-  integrity sha512-pYKWjhCSIHvg05kMl4HxzdBpsxgqnjfHlAIcVndAwjA5YuIo+Os7iruJ1s0+mZGawBxKV2cJ9zuD38gGO7XydA==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1090.0":
+  version "3.1090.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1090.0.tgz#b6d5846c0bf3cbaa2d6b7a3b01d47dda8b97c6c1"
+  integrity sha512-Td13bm5KAjALgzGNRq0ZRRYm4AhMuUfD50whHqI6BxRjavk7LuZt1MSsOW51+82Gvk/o7odn6JHYEcShRWAWlw==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
-    "@aws-sdk/credential-provider-node" "^3.972.69"
+    "@aws-sdk/credential-provider-node" "^3.972.70"
     "@aws-sdk/types" "^3.974.2"
     "@smithy/core" "^3.29.4"
     "@smithy/fetch-http-handler" "^5.6.6"
@@ -108,13 +108,13 @@
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1088.0":
-  version "3.1088.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1088.0.tgz#6b2b96f0fd989f384f0320c5ace858a226a39398"
-  integrity sha512-CVxp88YVq87tW9i2+y6/yjtmvVmVt9V6tz2XFBVC2T3zNG/LntIKS113ld321ZX9Bipc9VmKxhJ+l+JVb7m/dg==
+"@aws-sdk/client-dynamodb@3.1090.0":
+  version "3.1090.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1090.0.tgz#6764b87d0bed12c3c0f8eaa9f96c45c0ecb510c7"
+  integrity sha512-JjmuzG6XZG9vQFZ1Ob6kxJHz9U+x4Yxz+r717HeyYItRp+xRrGLNI5IggLDa9OfeYhq6mHJTZ6QMlyLI4EWK6w==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
-    "@aws-sdk/credential-provider-node" "^3.972.69"
+    "@aws-sdk/credential-provider-node" "^3.972.70"
     "@aws-sdk/dynamodb-codec" "^3.973.33"
     "@aws-sdk/middleware-endpoint-discovery" "^3.972.25"
     "@aws-sdk/types" "^3.974.2"
@@ -140,13 +140,13 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1088.0":
-  version "3.1088.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1088.0.tgz#3ac7e0e5eb2f0da673033573ac1235b7ebc069a6"
-  integrity sha512-wyg0qrN58C4Qckfwfs8zDFyMO/6Hbo6qcWWuf8gkZjDhLR3vj160h99mh7L16jBbQUUjJFasymOjJ0pxm0zj2w==
+"@aws-sdk/client-lambda@~3.1090.0":
+  version "3.1090.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1090.0.tgz#aef6899ad5a6ee426e86c1854da76d209a8308ef"
+  integrity sha512-Gu4bEgTr+f859KLdPkjINhzBCxwQctSmoJ3I5XlVdFGt565w6UCI5tw4sEbC+qltq1RMoORTTRjrbL5jExANaA==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
-    "@aws-sdk/credential-provider-node" "^3.972.69"
+    "@aws-sdk/credential-provider-node" "^3.972.70"
     "@aws-sdk/types" "^3.974.2"
     "@smithy/core" "^3.29.4"
     "@smithy/fetch-http-handler" "^5.6.6"
@@ -249,15 +249,15 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-ini@^3.973.3":
-  version "3.973.3"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.973.3.tgz#fd4647af51588f0fb53ff7655820783bb397c6e7"
-  integrity sha512-WpuqYX4gGkx++fCTSWE8+41JzkZVcrI50SH48Ml4CsG1pyuHKyMmpw/FixBHDrmjoQ553PmeCLa/fZIcst+WyA==
+"@aws-sdk/credential-provider-ini@^3.973.4":
+  version "3.973.4"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.973.4.tgz#492fe161263b3f8802295eb5dd88f64bad0eb33b"
+  integrity sha512-e6ZvVsj90aRALf1kHP+J4iqC1496ZpVgqI/+u0LJ5HL7q7ATauGy4gdDvRCP13L1pN/fMiZLah162PGIYkbUVQ==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
     "@aws-sdk/credential-provider-env" "^3.972.59"
     "@aws-sdk/credential-provider-http" "^3.972.61"
-    "@aws-sdk/credential-provider-login" "^3.972.65"
+    "@aws-sdk/credential-provider-login" "^3.972.66"
     "@aws-sdk/credential-provider-process" "^3.972.59"
     "@aws-sdk/credential-provider-sso" "^3.973.3"
     "@aws-sdk/credential-provider-web-identity" "^3.972.65"
@@ -280,10 +280,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-login@^3.972.65":
-  version "3.972.65"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-login/-/credential-provider-login-3.972.65.tgz#bd3f23895ac30f4bd0760d3dc7e4d9f8002659a2"
-  integrity sha512-xr9rgjYEdmC2Tpg2lwt9o+nOEaK9Qpd+dBjzrVCuWWyQfvhO91Ezu0Hh9ts2VUxOZxmS/k5T9msa34e4R1bnrQ==
+"@aws-sdk/credential-provider-login@^3.972.66":
+  version "3.972.66"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-login/-/credential-provider-login-3.972.66.tgz#29d21d71429e63f231f7425f98333ffcdfc68fb4"
+  integrity sha512-g2fsqm87r/nKthLZ0VkkDBElkGg0PvSa8d97HQ6EilMbJTZ6hxa8FxkSZyJfgPfFdZn0TTmkOffQmTSUcAHIng==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
     "@aws-sdk/nested-clients" "^3.997.33"
@@ -309,14 +309,14 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-node@^3.972.69":
-  version "3.972.69"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.972.69.tgz#461d33ff9a1ac18819660b7a7772ded15a8eeaf7"
-  integrity sha512-wbJGGesd0Tl18bmUcbj1xJ+e7CpuRJ6PIpMywLFuUttGy615lua87cJ0EA8pFpY/QgPuUXbnupWBtSPJ9tyZhg==
+"@aws-sdk/credential-provider-node@^3.972.70":
+  version "3.972.70"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.972.70.tgz#a7431d96eabe4582e89fe85c7704e1f2d3e3b7b8"
+  integrity sha512-3xzvkGdykBunxqh8WudmUpSyLWvIhfI6aBQo1b5rb3mDO5mNLadK+0hiI0qBQBMVynJbfLO+Ajy9dztMwy9O8w==
   dependencies:
     "@aws-sdk/credential-provider-env" "^3.972.59"
     "@aws-sdk/credential-provider-http" "^3.972.61"
-    "@aws-sdk/credential-provider-ini" "^3.973.3"
+    "@aws-sdk/credential-provider-ini" "^3.973.4"
     "@aws-sdk/credential-provider-process" "^3.972.59"
     "@aws-sdk/credential-provider-sso" "^3.973.3"
     "@aws-sdk/credential-provider-web-identity" "^3.972.65"
@@ -416,10 +416,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1088.0":
-  version "3.1088.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1088.0.tgz#828fe91e123a5e5462cf774c89dc3e7973a4976b"
-  integrity sha512-d57jl+BVQWiA1+5NRUtN3/ZKBnOipQjNuimF3T2LCtA2IcYdCAw37ESDer39ldN4C8BxWRC44RbCmLCkmsx3+w==
+"@aws-sdk/lib-dynamodb@3.1090.0":
+  version "3.1090.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1090.0.tgz#94420681f857a36bb3e9cabb607cdcae004b5e4f"
+  integrity sha512-WAKhaitoS0m6RB5uLtWHnZryOKdT36KUrlGhrJEh5h2Sl9pkp7MqMPEEJUZ3PEmXD7qvNQN5hym/B3L+ajlGTg==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
     "@aws-sdk/util-dynamodb" "^3.996.7"
@@ -1301,12 +1301,12 @@
     sync-fetch "0.6.0"
     tslib "^2.4.0"
 
-"@graphql-tools/batch-delegate@^10.0.26":
-  version "10.0.26"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-10.0.26.tgz#00f491dbe10c69cec8fd1c4cdf9e9a6853ff035b"
-  integrity sha512-3d7QrTvYb8Qe+pzP109vEwN/KxW+IGK88H48WEUPHQMrNeYaQL+XL/E96up+kUauBC8rkXdSZ5nNhxxgrkBG0A==
+"@graphql-tools/batch-delegate@^10.0.27":
+  version "10.0.27"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-10.0.27.tgz#8a1cf8219d378c9a1ef560f5817262544166ef91"
+  integrity sha512-PHNHeXQ3fnpVkk7C6OHYnmtBTcFdPxdW+MCKLNcc/wA9UwhyDlMQHW3BhAW/VAY+EGv2cBNr7DUiOcNJvncbew==
   dependencies:
-    "@graphql-tools/delegate" "^12.0.19"
+    "@graphql-tools/delegate" "^12.0.20"
     "@graphql-tools/utils" "^11.0.0"
     "@whatwg-node/promise-helpers" "^1.3.2"
     dataloader "^2.2.3"
@@ -1357,10 +1357,10 @@
     dataloader "^2.2.3"
     tslib "^2.8.1"
 
-"@graphql-tools/delegate@^12.0.19":
-  version "12.0.19"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-12.0.19.tgz#2c5b8c9b391354e967cf3862c3cda79d9aaa53ad"
-  integrity sha512-TFDKalXQub5dV7FO1y+3kwwJm337jwUFkTmXHlmYAtTZTxDuSVeHc74OfnepFe+6zEDriHqhHKvxSq5TpHCTvA==
+"@graphql-tools/delegate@^12.0.20":
+  version "12.0.20"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-12.0.20.tgz#48efacc2ec2cc9147a275c5eda5a94fc80145d36"
+  integrity sha512-87XNqi0Um62ecXCi/k0clvdIPCBvbIrAddZXY9rKWe1jMpHN8BgkEnHUOEI4S6LSOvyT/9y/22clVk0OOSTi9g==
   dependencies:
     "@graphql-tools/batch-execute" "^10.0.9"
     "@graphql-tools/executor" "^1.4.13"
@@ -1524,12 +1524,12 @@
     "@graphql-tools/utils" "^11.1.0"
     tslib "^2.4.0"
 
-"@graphql-tools/merge@^9.2.0":
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.2.0.tgz#42a210c1f8ec0ab86b868b3c6da383cd214188ce"
-  integrity sha512-kChDH/sOxm3TCICup5NgTiz/aJBk+5GAuC0lfJS8FcRfsqZvlCkNwpsYTGAATBCJMrgZ9+csRugCjS97jPcNMw==
+"@graphql-tools/merge@^9.2.2":
+  version "9.2.2"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.2.2.tgz#a67b790653012e83274c52bebfc39283bdd8ae90"
+  integrity sha512-DSLLAztOIQId7QE3m8Ehk5lV+0pjxNSSRDHPzlYQ9E4KJ9AoUMBprC4C+eX3v4srh05S2ujm5/veqAr5yEWFSQ==
   dependencies:
-    "@graphql-tools/utils" "^11.2.0"
+    "@graphql-tools/utils" "^11.2.2"
     tslib "^2.4.0"
 
 "@graphql-tools/optimize@^2.0.0":
@@ -1557,27 +1557,27 @@
     "@graphql-tools/utils" "^11.1.0"
     tslib "^2.4.0"
 
-"@graphql-tools/schema@^10.0.36":
-  version "10.0.36"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.0.36.tgz#56f4b4d21ee68f94a2a393af0cc9b52a0266d450"
-  integrity sha512-g8S5aLirZInoi3NojzmBxwsZfVawOE0UBlVWYe8kDAR0FxS0riBDiyW7JnlAKayooHMRAMwGaze4RQU3VTTyig==
+"@graphql-tools/schema@^10.0.38":
+  version "10.0.38"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.0.38.tgz#ac5e8c21a512ddcec7ae6adf4dff9fa08b1f3d28"
+  integrity sha512-Kckk2/vm+rELJ7ijvFaAn9ouWSVUTD0D4SJIvYF4rKeuQHAfCzE/jzMFonZVpTXleqJjPXLZjVbuaMorw7A5Og==
   dependencies:
-    "@graphql-tools/merge" "^9.2.0"
-    "@graphql-tools/utils" "^11.2.0"
+    "@graphql-tools/merge" "^9.2.2"
+    "@graphql-tools/utils" "^11.2.2"
     tslib "^2.4.0"
 
-"@graphql-tools/stitch@^10.1.24":
-  version "10.1.24"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.1.24.tgz#9f58c837f4b725209fcbe52287d3141dcf89dfb1"
-  integrity sha512-uRLUzGMtxHvyYE03PtPkqLsHEtAekQDkOK49V9hMp77cBaWWvw9zgrOJ0BUJp4mQSsqglu8hhd0XLoWYN2/94Q==
+"@graphql-tools/stitch@^10.1.25":
+  version "10.1.25"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.1.25.tgz#3ba3ad3303b465af7e1c75f3cf722b58de5b00e3"
+  integrity sha512-cCbH2JcYtB7Qa71G0vALu/JxC/OufSHCQreh5RRZAyAaI9hbGb7tIcaDhR6/gs5EgrY0FUf6H+xqzyam8TVc2Q==
   dependencies:
-    "@graphql-tools/batch-delegate" "^10.0.26"
-    "@graphql-tools/delegate" "^12.0.19"
+    "@graphql-tools/batch-delegate" "^10.0.27"
+    "@graphql-tools/delegate" "^12.0.20"
     "@graphql-tools/executor" "^1.4.13"
     "@graphql-tools/merge" "^9.1.5"
     "@graphql-tools/schema" "^10.0.29"
     "@graphql-tools/utils" "^11.0.0"
-    "@graphql-tools/wrap" "^11.1.18"
+    "@graphql-tools/wrap" "^11.1.19"
     "@whatwg-node/promise-helpers" "^1.3.2"
     tslib "^2.8.1"
 
@@ -1619,6 +1619,16 @@
     cross-inspect "1.0.1"
     tslib "^2.4.0"
 
+"@graphql-tools/utils@^11.2.2":
+  version "11.2.2"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-11.2.2.tgz#5e2c8458dc31d856c94cab0a02aabfd9a5e6e616"
+  integrity sha512-Do2A/t6ayqOma8m7PvpYMsCBswL+NB35BQSng4GWSBqafL2/BnfAZy/NSENPwV721Rm2fG0BHETFC0+FJJZmLw==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
+    "@whatwg-node/promise-helpers" "^1.0.0"
+    cross-inspect "1.0.1"
+    tslib "^2.4.0"
+
 "@graphql-tools/wrap@^11.1.1":
   version "11.1.15"
   resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-11.1.15.tgz#d0e19db5d4075e3768ffcd0f5249f9856141a792"
@@ -1630,12 +1640,12 @@
     "@whatwg-node/promise-helpers" "^1.3.2"
     tslib "^2.8.1"
 
-"@graphql-tools/wrap@^11.1.18":
-  version "11.1.18"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-11.1.18.tgz#533a10ae08308e511ceaf6a79203c51d7be4b685"
-  integrity sha512-qSstY1hw8rY3bTvy8NlRrJ4QOLtPdo6ykiv4y9EHaeYtNO3TWiIs0nLbUZX2F9wKT/i7T1aMbVysfeQoNmJvdQ==
+"@graphql-tools/wrap@^11.1.19":
+  version "11.1.19"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-11.1.19.tgz#8fc33fe9abf92c2e10f79386b2b980a4c1350a95"
+  integrity sha512-d7ZplubDSkPeFqH4hYYYSK0UjTA2s+2HoLMPIRG0vP7dsjxm3z+J5C7zFboE+bXiWA9cNEoP9puOR4ep4EMjiQ==
   dependencies:
-    "@graphql-tools/delegate" "^12.0.19"
+    "@graphql-tools/delegate" "^12.0.20"
     "@graphql-tools/schema" "^10.0.29"
     "@graphql-tools/utils" "^11.0.0"
     "@whatwg-node/promise-helpers" "^1.3.2"
@@ -4381,7 +4391,7 @@ browser-stdout@^1.3.1:
   resolved "https://registry.yarnpkg.com/browser-stdout/-/browser-stdout-1.3.1.tgz#baa559ee14ced73452229bad7326467c61fabd60"
   integrity sha512-qhAVI1+Av2X7qelOfAIYwXONood6XlZE/fXaBSmW/T5SzLAmCgzi+eiWE7fUvbHaeNBQH13UftjpXxsfLkMpgw==
 
-browser-tabs-lock@1.3.0:
+browser-tabs-lock@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/browser-tabs-lock/-/browser-tabs-lock-1.3.0.tgz#4c0381b47b55cd29feaaea5846b7bb97aac76053"
   integrity sha512-g6nHaobTiT0eMZ7jh16YpD2kcjAp+PInbiVq3M1x6KKaEIVhT4v9oURNIpZLOZ3LQbQ3XYfNhMAb/9hzNLIWrw==
@@ -5666,7 +5676,7 @@ dotenv@^17.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.4.2.tgz#c07e54a746e11eba021dd9e1047ced5afdc1c034"
   integrity sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==
 
-dpop@2.1.1:
+dpop@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/dpop/-/dpop-2.1.1.tgz#f132df2bdf97b8fd5f13afe14ef659d072d8d051"
   integrity sha512-J0Of2JTiM4h5si0tlbPQ/lkqfZ5wAEVkKYBhkwyyANnPJfWH4VsR5uIkZ+T+OSPIwDYUg1fbd5Mmodd25HjY1w==
@@ -5867,7 +5877,7 @@ error-ex@^1.3.1, error-ex@^1.3.2:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-cookie@1.3.2:
+es-cookie@~1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/es-cookie/-/es-cookie-1.3.2.tgz#80e831597f72a25721701bdcb21d990319acd831"
   integrity sha512-UTlYYhXGLOy05P/vKVT2Ui7WtC7NiRzGtJyAKKn32g5Gvcjn7KAClLPWlipCtxIus934dFg9o9jXiBL0nP+t9Q==
