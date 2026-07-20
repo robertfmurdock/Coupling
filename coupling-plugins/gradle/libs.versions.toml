@@ -9,7 +9,7 @@ org-jlleitschuh-gradle-ktlint = "14.2.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.1"
 com-google-devtools-ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 com-google-devtools-ksp-symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.92"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.93"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.36"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.1.7"
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.1.0"

@@ -94,10 +94,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1090.0":
-  version "3.1090.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1090.0.tgz#b6d5846c0bf3cbaa2d6b7a3b01d47dda8b97c6c1"
-  integrity sha512-Td13bm5KAjALgzGNRq0ZRRYm4AhMuUfD50whHqI6BxRjavk7LuZt1MSsOW51+82Gvk/o7odn6JHYEcShRWAWlw==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1091.0":
+  version "3.1091.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1091.0.tgz#558d254f49e968b76acc68b055bb918812d6e66a"
+  integrity sha512-AkAt1EdjcAOUkSKcvW8MYmJBzjIiBG9EtMtWWFhEtKrgBYJuxt3K3ManuYXH1jH/EWeBCNdGVzjBv1jVJxHaQg==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
     "@aws-sdk/credential-provider-node" "^3.972.70"
@@ -108,10 +108,10 @@
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1090.0":
-  version "3.1090.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1090.0.tgz#6764b87d0bed12c3c0f8eaa9f96c45c0ecb510c7"
-  integrity sha512-JjmuzG6XZG9vQFZ1Ob6kxJHz9U+x4Yxz+r717HeyYItRp+xRrGLNI5IggLDa9OfeYhq6mHJTZ6QMlyLI4EWK6w==
+"@aws-sdk/client-dynamodb@3.1091.0":
+  version "3.1091.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1091.0.tgz#b1eaade929d867c4d07b52d14217a14d164ec1c1"
+  integrity sha512-7NxnvP3pPAcUpSb9UxEKKSyppxfjvBV3MEoyFZ8NbxrAIMjCj0hUQxNbVBGTqvEf3hQBklf6ZlfE+WmGwczJRw==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
     "@aws-sdk/credential-provider-node" "^3.972.70"
@@ -140,10 +140,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1090.0":
-  version "3.1090.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1090.0.tgz#aef6899ad5a6ee426e86c1854da76d209a8308ef"
-  integrity sha512-Gu4bEgTr+f859KLdPkjINhzBCxwQctSmoJ3I5XlVdFGt565w6UCI5tw4sEbC+qltq1RMoORTTRjrbL5jExANaA==
+"@aws-sdk/client-lambda@~3.1091.0":
+  version "3.1091.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1091.0.tgz#d13cf534e0d4c004a1e34413a1af292dea9fa812"
+  integrity sha512-uSX0PCOBSZ28huCxxYwhKcv0WxhejEZnfioQDTrR7do0r3jnU8EZDpJ6dVjop2dnSLZ9uGtzQ+aF2Ry7uHS+Uw==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
     "@aws-sdk/credential-provider-node" "^3.972.70"
@@ -416,10 +416,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1090.0":
-  version "3.1090.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1090.0.tgz#94420681f857a36bb3e9cabb607cdcae004b5e4f"
-  integrity sha512-WAKhaitoS0m6RB5uLtWHnZryOKdT36KUrlGhrJEh5h2Sl9pkp7MqMPEEJUZ3PEmXD7qvNQN5hym/B3L+ajlGTg==
+"@aws-sdk/lib-dynamodb@3.1091.0":
+  version "3.1091.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1091.0.tgz#ce55dcd3ba7bbcf14e16a4de79da0a36e129994f"
+  integrity sha512-PV9SKp5Kwi/IaqejwPcJXBaY3A13g7XX4IYTNzVuq44wB2ffHw7VrarugLCaQSPFGbIlEmfkZNbcLrU3sv9MKA==
   dependencies:
     "@aws-sdk/core" "^3.975.3"
     "@aws-sdk/util-dynamodb" "^3.996.7"
@@ -1254,10 +1254,10 @@
     auto-bind "^5.0.0"
     tslib "~2.8.0"
 
-"@graphql-codegen/visitor-plugin-common@7.2.0", "@graphql-codegen/visitor-plugin-common@^7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.0.tgz#f22355a37c8761385a5029352bdf86fe87ad9a6c"
-  integrity sha512-qqtTY8taONuxlR0HvD8z+zgWC3CfJ47M2rATx+geWNIN8v8Itc5TflHYxjkWAtNL6E3q7WZRY5P7se+2S3EjBg==
+"@graphql-codegen/visitor-plugin-common@7.2.1":
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.1.tgz#2bcb99fa6d6bdb0b7f226da988c6ecf67c3618df"
+  integrity sha512-OfTs7yvdbG3LaDJ158vtlglF0QzRN6b/t2Xi02DqBDfJqUorUM72uzuG9BpeALTPNTxFU7aaauS57uTc5oJjsw==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^7.1.0"
     "@graphql-tools/optimize" "^2.0.0"
@@ -1286,6 +1286,22 @@
     parse-filepath "^1.0.2"
     tslib "^2.8.0"
 
+"@graphql-codegen/visitor-plugin-common@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.0.tgz#f22355a37c8761385a5029352bdf86fe87ad9a6c"
+  integrity sha512-qqtTY8taONuxlR0HvD8z+zgWC3CfJ47M2rATx+geWNIN8v8Itc5TflHYxjkWAtNL6E3q7WZRY5P7se+2S3EjBg==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^7.1.0"
+    "@graphql-tools/optimize" "^2.0.0"
+    "@graphql-tools/relay-operation-optimizer" "^7.1.1"
+    "@graphql-tools/utils" "^11.2.0"
+    auto-bind "^5.0.0"
+    change-case-all "^2.1.0"
+    dependency-graph "^1.0.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    tslib "^2.8.0"
+
 "@graphql-hive/signal@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@graphql-hive/signal/-/signal-2.0.0.tgz#205805328b118e1ae556417ed364257234800464"
@@ -1301,12 +1317,12 @@
     sync-fetch "0.6.0"
     tslib "^2.4.0"
 
-"@graphql-tools/batch-delegate@^10.0.27":
-  version "10.0.27"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-10.0.27.tgz#8a1cf8219d378c9a1ef560f5817262544166ef91"
-  integrity sha512-PHNHeXQ3fnpVkk7C6OHYnmtBTcFdPxdW+MCKLNcc/wA9UwhyDlMQHW3BhAW/VAY+EGv2cBNr7DUiOcNJvncbew==
+"@graphql-tools/batch-delegate@^10.0.28":
+  version "10.0.28"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-10.0.28.tgz#8122c46f43c7837be1a36a2d5e97f704b9b41235"
+  integrity sha512-pxheJV3BTlhEDYLHN0eL2mmyp9Qkt1GXCiVdvxQilp700qZ4SCfqU/+ZFzOo9Qf802Tst9Z57BvwIjJu0lV8AA==
   dependencies:
-    "@graphql-tools/delegate" "^12.0.20"
+    "@graphql-tools/delegate" "^12.1.0"
     "@graphql-tools/utils" "^11.0.0"
     "@whatwg-node/promise-helpers" "^1.3.2"
     dataloader "^2.2.3"
@@ -1357,10 +1373,10 @@
     dataloader "^2.2.3"
     tslib "^2.8.1"
 
-"@graphql-tools/delegate@^12.0.20":
-  version "12.0.20"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-12.0.20.tgz#48efacc2ec2cc9147a275c5eda5a94fc80145d36"
-  integrity sha512-87XNqi0Um62ecXCi/k0clvdIPCBvbIrAddZXY9rKWe1jMpHN8BgkEnHUOEI4S6LSOvyT/9y/22clVk0OOSTi9g==
+"@graphql-tools/delegate@^12.1.0":
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-12.1.0.tgz#307a98fe43998b8d3537582058d2ace9fe73c835"
+  integrity sha512-g1vDjYKzPwqnnxcBxwVUdAUqCZdx995RFtoyyy2CNzjXBxUOAZHgw/F2LKXhwnVWdtTsT20bb8hPqUIuNmetDQ==
   dependencies:
     "@graphql-tools/batch-execute" "^10.0.9"
     "@graphql-tools/executor" "^1.4.13"
@@ -1566,18 +1582,18 @@
     "@graphql-tools/utils" "^11.2.2"
     tslib "^2.4.0"
 
-"@graphql-tools/stitch@^10.1.25":
-  version "10.1.25"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.1.25.tgz#3ba3ad3303b465af7e1c75f3cf722b58de5b00e3"
-  integrity sha512-cCbH2JcYtB7Qa71G0vALu/JxC/OufSHCQreh5RRZAyAaI9hbGb7tIcaDhR6/gs5EgrY0FUf6H+xqzyam8TVc2Q==
+"@graphql-tools/stitch@^10.2.0":
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.2.0.tgz#b1e6fc5ce4606213af35274c4588a6f4f610285c"
+  integrity sha512-T2tHxmev+08KTwbrUpMbHxKBqwBXWkVmQ2TYpMA/hngkwfddh0dHGp8qKIJ8zTFf6U1CG48CTNYsYRHrfJHlKg==
   dependencies:
-    "@graphql-tools/batch-delegate" "^10.0.27"
-    "@graphql-tools/delegate" "^12.0.20"
+    "@graphql-tools/batch-delegate" "^10.0.28"
+    "@graphql-tools/delegate" "^12.1.0"
     "@graphql-tools/executor" "^1.4.13"
     "@graphql-tools/merge" "^9.1.5"
     "@graphql-tools/schema" "^10.0.29"
     "@graphql-tools/utils" "^11.0.0"
-    "@graphql-tools/wrap" "^11.1.19"
+    "@graphql-tools/wrap" "^11.1.20"
     "@whatwg-node/promise-helpers" "^1.3.2"
     tslib "^2.8.1"
 
@@ -1640,12 +1656,12 @@
     "@whatwg-node/promise-helpers" "^1.3.2"
     tslib "^2.8.1"
 
-"@graphql-tools/wrap@^11.1.19":
-  version "11.1.19"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-11.1.19.tgz#8fc33fe9abf92c2e10f79386b2b980a4c1350a95"
-  integrity sha512-d7ZplubDSkPeFqH4hYYYSK0UjTA2s+2HoLMPIRG0vP7dsjxm3z+J5C7zFboE+bXiWA9cNEoP9puOR4ep4EMjiQ==
+"@graphql-tools/wrap@^11.1.20":
+  version "11.1.20"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-11.1.20.tgz#17dc173c844ec0efc2fc9ee360aa74e702a4692b"
+  integrity sha512-nustNS7MhcyomrhSVJvb5HFjyPtWE+XAH7qBoy1n6zokC6UwFnagyHJFuHKllTz4ONcKw91BdDogHuW9KC3cUA==
   dependencies:
-    "@graphql-tools/delegate" "^12.0.20"
+    "@graphql-tools/delegate" "^12.1.0"
     "@graphql-tools/schema" "^10.0.29"
     "@graphql-tools/utils" "^11.0.0"
     "@whatwg-node/promise-helpers" "^1.3.2"
@@ -3098,10 +3114,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@smithy/core@^3.29.4", "@smithy/core@^3.29.5":
-  version "3.29.5"
-  resolved "https://registry.yarnpkg.com/@smithy/core/-/core-3.29.5.tgz#ea1012125719f4287b07aed67f7087b8f5eb70ee"
-  integrity sha512-i0dk2t5B+CwV/dcJdUHILYkOQF5lof8f44dFCfDWToGCxjT9YQ+CgHqTAvJxzc3+zqQwm2QtVoJ5IqiNar/CnQ==
+"@smithy/core@^3.29.4", "@smithy/core@^3.29.6":
+  version "3.29.6"
+  resolved "https://registry.yarnpkg.com/@smithy/core/-/core-3.29.6.tgz#37ef722115827e4e85fd8621731f0d0009494e6b"
+  integrity sha512-TO3w25cdGWBeYqKNDaqH3v4O3jjMPpKwf39YlG5X5xhqWfpOWJbi5gQi1lrllukuwohdhY0TPB8jBEv6UC50Vg==
   dependencies:
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
@@ -3116,11 +3132,11 @@
     tslib "^2.6.2"
 
 "@smithy/credential-provider-imds@^4.4.9":
-  version "4.4.10"
-  resolved "https://registry.yarnpkg.com/@smithy/credential-provider-imds/-/credential-provider-imds-4.4.10.tgz#8d702e16cc4abe5a1cbaa7a60717830493495d00"
-  integrity sha512-MJenAe4OKRZUo1LdYYFDCsSHxaHvInIU/z52GsheO9vl1/VSySVCr0zkyKD6TFiGkSUaWGxvKZ/70OvgUZR5HQ==
+  version "4.4.11"
+  resolved "https://registry.yarnpkg.com/@smithy/credential-provider-imds/-/credential-provider-imds-4.4.11.tgz#f967bbc8f0e9e91be70627ea0fbf8bca4981bc41"
+  integrity sha512-6CUvZwS0tCcVCrcvh2TpwTXxmAkuY6JGNPeKODYRLjHtUUhFLGS3dNkNdRvT/ttJyqimqnhFMTS2nqp4pDZ7oQ==
   dependencies:
-    "@smithy/core" "^3.29.5"
+    "@smithy/core" "^3.29.6"
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
@@ -3134,11 +3150,11 @@
     tslib "^2.6.2"
 
 "@smithy/fetch-http-handler@^5.6.6":
-  version "5.6.7"
-  resolved "https://registry.yarnpkg.com/@smithy/fetch-http-handler/-/fetch-http-handler-5.6.7.tgz#af6b9257a6c5bbd7f51c6766bc677306fd93c3f6"
-  integrity sha512-3zpg8yqqyXzoK2TsRDdkqVOj2RDBFfLXwCczOZ5c7TWB4eiaebfSCsbMjDPYB3PJ9ihV62QaeadZ+wLadZtNGA==
+  version "5.6.8"
+  resolved "https://registry.yarnpkg.com/@smithy/fetch-http-handler/-/fetch-http-handler-5.6.8.tgz#9f956fb3c8ff275f677ad477d0b7c6b5c03a8e42"
+  integrity sha512-AFuLou893FesRZeQcKMh87P9x4PF2/ksPOYLLI1ctW7WJxm55SWInFSHAhaNRBPBmbgZyUcCCDKepBX+1jZBBw==
   dependencies:
-    "@smithy/core" "^3.29.5"
+    "@smithy/core" "^3.29.6"
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
@@ -3159,11 +3175,11 @@
     tslib "^2.6.2"
 
 "@smithy/node-http-handler@^4.9.6":
-  version "4.9.7"
-  resolved "https://registry.yarnpkg.com/@smithy/node-http-handler/-/node-http-handler-4.9.7.tgz#006ea7ab886f44adb686e65a40a979c8458eb2d3"
-  integrity sha512-wCU8HCLjAtAVqxxe0j2xff9LcEPw3yjBbg5IdQDIYFnxnPxbxcSLc7rgex7kqm9L/WYOnJEgaWQlfDkZleozMA==
+  version "4.9.8"
+  resolved "https://registry.yarnpkg.com/@smithy/node-http-handler/-/node-http-handler-4.9.8.tgz#9fedaafa78c7d7330df53f86d3842b753e18f459"
+  integrity sha512-ArSSIN4t1wLutcIkHzaL6N11J7xpZK7W3T0pFz9cep9zIpEr9x5+lhJRcVUgObGI3OIMbnROq7w8bwzx+Nkf8A==
   dependencies:
-    "@smithy/core" "^3.29.5"
+    "@smithy/core" "^3.29.6"
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
@@ -3177,11 +3193,11 @@
     tslib "^2.6.2"
 
 "@smithy/signature-v4@^5.6.5":
-  version "5.6.6"
-  resolved "https://registry.yarnpkg.com/@smithy/signature-v4/-/signature-v4-5.6.6.tgz#8adc05a349147f94c4c176d62b6d0062077260a3"
-  integrity sha512-efP6DN3UTFrzIsGO42/xcabv8jU7+9nwEdphFUH7yL0k010ERyAWaO41KFQIDLcFZLZ8xzIQr4wplFxNzslSGQ==
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/@smithy/signature-v4/-/signature-v4-5.6.7.tgz#8b27ead306b77401bfc4756ea7d333bedf49fd19"
+  integrity sha512-32PmEsuZV9lz7SZk3gJcm+EfIAoIVu83AJyEzgALpwmSqLvuacdAu0fvCVNMbDbegyk1S0lHUDrMWIfR47Micw==
   dependencies:
-    "@smithy/core" "^3.29.5"
+    "@smithy/core" "^3.29.6"
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
