@@ -58,3 +58,8 @@ Entries are appended by the cleanup agent after each run. Do not hand-edit.
 
 ## 2026-07-13 — e2e
 - strategy-proposed: none — e2e module exhaustively tested in prior runs (dead-code heuristic finds no candidates); boundary rules do not apply (test-only code); test/page naming shows minor convention drift but carries no structural risk; no actionable recurring pattern identified warranting new cleanup strategy
+
+## 2026-07-20 (run-29759367416-1) — client/components
+- FormatDistance.kt: verified-in-use — suspected dead code: zero external imports
+- AnimationsDisabledContext.kt: verified-in-use — zero external imports
+- Exterrnal.kt: verified-in-use — zero external imports
