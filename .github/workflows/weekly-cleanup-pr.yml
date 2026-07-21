@@ -214,7 +214,7 @@ jobs:
 
       - name: Create Cleanup Pull Request
         if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.COUPLING_PAT }}
           branch: ${{ steps.focus.outputs.branch }}

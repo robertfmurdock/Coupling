@@ -78,7 +78,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "6215634+robertfmurdock@users.noreply.github.com"
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: 'yarn'
           cache-dependency-path: |
