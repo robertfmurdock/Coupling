@@ -30,6 +30,11 @@ dependencies {
         api(libs.com.auth0.java.jwt)
         api(libs.com.fasterxml.jackson.core.jackson.databind)
         api(libs.com.github.ajalt.clikt.clikt)
+        api(libs.com.google.devtools.ksp.symbol.processing.api) {
+            version {
+                strictly(libs.versions.com.google.devtools.ksp.get())
+            }
+        }
         api(libs.com.lemonappdev.konsist)
         api(libs.eu.anifantakis.ksafe)
         api(libs.io.github.oshai.kotlin.logging)
