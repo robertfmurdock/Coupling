@@ -48,13 +48,23 @@ dependencies {
     implementation(platform(libs.com.zegreatrob.jsmints.jsmints.bom))
     implementation(platform(libs.com.zegreatrob.testmints.testmints.bom))
     implementation(platform(libs.com.zegreatrob.tools.tools.bom))
+
+    constraints {
+        implementation(libs.com.google.devtools.ksp.symbol.processing.api) {
+            version {
+                strictly(libs.versions.ksp.get())
+            }
+        }
+        implementation(libs.com.google.devtools.ksp.symbol.processing.gradle.plugin) {
+            version {
+                strictly(libs.versions.ksp.get())
+            }
+        }
+    }
 }
 
 versionCatalogUpdate {
     sortByKey = true
-    keep {
-        keepUnusedVersions = true
-    }
     val rejectRegex = "^[0-9.]+[0-9](-RC|-M[0-9]*|-RC[0-9]*.*|-beta.*|-Beta.*|-alpha.*|-dev.*|-rc\\.[0-9]*.*|-rc[0-9]*)$".toRegex()
     versionSelector { versionCandidate ->
         !rejectRegex.matches(versionCandidate.candidate.version)
