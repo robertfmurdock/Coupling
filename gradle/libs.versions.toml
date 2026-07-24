@@ -8,7 +8,7 @@ com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackso
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.1.0"
 com-google-devtools-ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "com-google-devtools-ksp" }
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.94"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.11.96"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.36"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.1.7"
 eu-anifantakis-ksafe = "eu.anifantakis:ksafe:2.2.1"
