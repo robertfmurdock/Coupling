@@ -41,7 +41,7 @@ nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update
 [versions]
 com-apollographql-adapters = "0.7.0"
 # @pin
-com-google-devtools-ksp = "2.3.9"
+com-google-devtools-ksp = "2.3.10"
 org-apache-logging-log4j = "2.26.1"
 org-jetbrains-kotlinx = "1.11.0"
 org-kotools = "5.2.0"
