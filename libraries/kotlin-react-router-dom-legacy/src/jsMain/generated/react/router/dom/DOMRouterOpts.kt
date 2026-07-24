@@ -6,11 +6,9 @@ import react.router.PatchRoutesOnNavigationFunction
 import remix.run.router.DataStrategyFunction
 import remix.run.router.HydrationState
 import web.window.Window
-import remix.run.router.FutureConfig as RouterFutureConfig
 
 sealed external interface DOMRouterOpts {
     var basename: String?
-    var future: RouterFutureConfig?
     var hydrationData: HydrationState?
     var dataStrategy: DataStrategyFunction?
     var patchRoutesOnNavigation: PatchRoutesOnNavigationFunction?

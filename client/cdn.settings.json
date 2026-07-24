@@ -22,20 +22,6 @@
         "react/jsx-runtime",
         "@remix-run/router"
       ]
-    },
-    "reactRouterDom": {
-      "dependencies": [
-        "react",
-        "react-dom"
-      ],
-      "external": [
-        "react",
-        "react-dom",
-        "react/jsx-runtime",
-        "react-router",
-        "react-router/dom",
-        "@remix-run/router"
-      ]
     }
   },
   "imports": {
@@ -58,14 +44,6 @@
     "react-router": {
       "global": "ReactRouter",
       "profile": "reactRouter"
-    },
-    "react-router/dom": {
-      "global": "ReactRouterDomInternal",
-      "profile": "reactRouter"
-    },
-    "react-router-dom": {
-      "global": "ReactRouterDom",
-      "profile": "reactRouterDom"
     },
     "html2canvas": {
       "global": "html2canvas"

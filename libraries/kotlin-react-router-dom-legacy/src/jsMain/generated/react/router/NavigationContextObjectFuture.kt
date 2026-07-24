@@ -3,5 +3,4 @@
 package react.router
 
 sealed external interface NavigationContextObjectFuture {
-    var v7_relativeSplatPath: Boolean
 }

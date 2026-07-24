@@ -64,10 +64,6 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, thirdParty
             ).plus(routes(isSignedIn, config)),
             opts = unsafeJso {
                 basename = config.basename
-                future = unsafeJso {
-                    this.asDynamic()["v7_startTransition"] = true
-                    v7_relativeSplatPath = true
-                }
             },
         )
     }
