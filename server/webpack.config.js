@@ -15,6 +15,9 @@ const config = {
     },
     target: 'node',
     externals: [],
+    experiments: {
+        typescript: false
+    },
     resolve: {
         extensions: ['.js'],
         modules: [
