@@ -2,9 +2,35 @@ package com.zegreatrob.coupling.cdnLookup
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import kotlin.test.Test
 
 class GenerateCdnRefsTest {
+
+    @Test
+    fun generateRefWorksWithoutConfiguration() = asyncSetup(object {
+        val lib = "resolve-pkg"
+    }) exercise {
+        generateCdnRef(listOf(lib))
+    } verify { result ->
+        val version = getVersionForLibrary(lib)
+        result.assertIsEqualTo(listOf(lib to "https://esm.sh/resolve-pkg@$version"))
+    }
+
+    @Test
+    fun standaloneResultNamesGeneratedUrls() = asyncSetup(object {
+        val lib = "resolve-pkg"
+    }) exercise {
+        generateCdnLookup(listOf(lib))
+    } verify { result ->
+        val version = getVersionForLibrary(lib)
+        val expected = buildJsonObject {
+            put("urls", buildJsonObject { put(lib, "https://esm.sh/resolve-pkg@$version") })
+        }
+        Json.parseToJsonElement(result.toJson()).assertIsEqualTo(expected)
+    }
 
     @Test
     fun generateRefWorks() = asyncSetup(object {

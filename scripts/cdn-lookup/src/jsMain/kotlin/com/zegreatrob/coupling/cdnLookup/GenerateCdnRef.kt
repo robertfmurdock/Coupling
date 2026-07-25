@@ -7,14 +7,21 @@ import kotlinx.coroutines.coroutineScope
 suspend fun generateCdnRef(
     cdnLibs: List<String>,
     lookupConfig: CdnLookupConfig = CdnLookupConfig(),
-): List<Pair<String, String>> = coroutineScope {
+): List<Pair<String, String>> = generateCdnLookup(cdnLibs, lookupConfig).urls.toList()
+
+suspend fun generateCdnLookup(
+    cdnLibs: List<String>,
+    lookupConfig: CdnLookupConfig = CdnLookupConfig(),
+): CdnLookupResult = coroutineScope {
     validateLookupConfig(cdnLibs, lookupConfig)
     val versions = resolveVersions(cdnLibs, lookupConfig)
     val derivationContext = lookupConfig.toQueryDerivationContext()
 
-    cdnLibs
+    val urls = cdnLibs
         .map { lib -> async { lookupCdnUrl(lib, versions, lookupConfig, derivationContext) } }
         .awaitAll()
+        .toMap()
+    CdnLookupResult(urls)
 }
 
 private suspend fun resolveVersions(

@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.cdnLookup
 
 internal fun validateLookupConfig(cdnLibs: List<String>, lookupConfig: CdnLookupConfig) {
-    val missingImports = cdnLibs.filterNot { lookupConfig.imports.containsKey(it) }
-    if (missingImports.isNotEmpty()) {
-        error("Missing import configuration for: ${missingImports.joinToString(", ")}")
+    if (lookupConfig.imports.isNotEmpty()) {
+        val missingImports = cdnLibs.filterNot { lookupConfig.imports.containsKey(it) }
+        if (missingImports.isNotEmpty()) {
+            error("Missing import configuration for: ${missingImports.joinToString(", ")}")
+        }
     }
 
     lookupConfig.imports.forEach { (lib, import) ->
