@@ -1,6 +1,4 @@
 {
   "reject": [
-    "read-pkg-up",
-    "resolve-pkg"
   ]
 }

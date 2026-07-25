@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -8,7 +9,7 @@ plugins {
 
 kotlin {
     js {
-        useCommonJs()
+        useEsModules()
         nodejs {
             binaries.executable()
             testTask { useMocha { timeout = "400s" } }
@@ -31,6 +32,10 @@ dependencies {
     jsTestImplementation("com.zegreatrob.testmints:standard")
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")
+    jsTestImplementation(npmConstrained("@auth0/auth0-react"))
+    jsTestImplementation(npmConstrained("react-router"))
+    jsTestImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
+    jsTestImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
 }
 
 val cdnLookupConfiguration: Configuration = configurations.create("cdnLookupConfiguration") {
@@ -53,10 +58,13 @@ tasks {
 }
 
 artifacts {
-    val task = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class)
-    add(cdnLookupConfiguration.name, task.map {
-        it.destinationDirectory.file(it.compilerOptions.moduleName.map { moduleName -> "$moduleName.js" })
-    }) {
-        builtBy(task)
+    val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
+    val moduleName = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class)
+        .flatMap { it.compilerOptions.moduleName }
+    val executable = npmProjectDir.zip(moduleName) { directory, name ->
+        directory.file("kotlin/$name.mjs")
+    }
+    add(cdnLookupConfiguration.name, executable) {
+        builtBy(tasks.named("jsProductionExecutableCompileSync"))
     }
 }

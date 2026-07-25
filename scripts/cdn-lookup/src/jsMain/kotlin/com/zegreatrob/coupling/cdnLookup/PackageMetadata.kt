@@ -1,8 +1,12 @@
 package com.zegreatrob.coupling.cdnLookup
 
-import com.zegreatrob.coupling.cdnLookup.external.readpkgup.readPkgUp
+import com.zegreatrob.coupling.cdnLookup.external.readpkgup.readPackageUp
 import com.zegreatrob.coupling.cdnLookup.external.resolvepkg.resolvePkg
 import kotlinx.coroutines.await
+import node.buffer.BufferEncoding
+import node.buffer.utf8
+import node.fs.readFileSync
+import node.path.path
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -26,9 +30,9 @@ suspend fun getVersionForLibrary(lib: String): String {
 internal suspend fun getPackageJsonForPackage(packageName: String): Json? {
     packageJsonCache[packageName]?.let { return it }
 
-    val libPackage = resolvePkg(packageName, json("cwd" to contextPath))
-    val pkg = readPkgUp(json("cwd" to libPackage)).await()
-    val parsed = pkg["pkg"]?.unsafeCast<Json?>()
+    val libPackage = resolvePkg(packageName, json("cwd" to contextPath)) ?: return null
+    val pkg = readPackageUp(json("cwd" to libPackage)).await()
+    val parsed = pkg?.get("packageJson")?.unsafeCast<Json?>()
     packageJsonCache[packageName] = parsed
     return parsed
 }
@@ -46,9 +50,7 @@ private fun getDeclaredDependencyVersion(lib: String): String? {
 private fun readWorkingDirectoryPackageJson(): Json {
     workingDirectoryPackageJson?.let { return it }
 
-    val fileContents = js(
-        """require("fs").readFileSync(require("path").join(process.cwd(), "package.json"), "utf8")""",
-    ).unsafeCast<String>()
+    val fileContents = readFileSync(path.join(contextPath, "package.json"), BufferEncoding.utf8)
     return js("JSON.parse")(fileContents).unsafeCast<Json>().also { parsed ->
         workingDirectoryPackageJson = parsed
     }

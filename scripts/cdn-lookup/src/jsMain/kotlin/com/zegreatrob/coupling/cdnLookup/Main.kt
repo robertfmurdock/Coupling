@@ -15,6 +15,7 @@ fun main() {
             .let(::println)
     }.invokeOnCompletion { cause: Throwable? ->
         if (cause != null) {
+            js("console.error")(cause)
             js("process.exit(-1)")
         }
     }
