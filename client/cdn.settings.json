@@ -19,8 +19,7 @@
       "external": [
         "react",
         "react-dom",
-        "react/jsx-runtime",
-        "@remix-run/router"
+        "react/jsx-runtime"
       ]
     }
   },
@@ -51,9 +50,6 @@
     "react-dnd": {
       "global": "ReactDnd",
       "profile": "react"
-    },
-    "@remix-run/router": {
-      "global": "RemixRouter"
     },
     "@auth0/auth0-react": {
       "global": "Auth0React"
