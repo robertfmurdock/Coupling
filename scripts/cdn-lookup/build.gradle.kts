@@ -1,8 +1,10 @@
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -33,6 +35,7 @@ kotlin {
 }
 
 dependencies {
+    jsMainImplementation("com.github.ajalt.clikt:clikt")
     jsMainImplementation("io.ktor:ktor-client-content-negotiation")
     jsMainImplementation("io.ktor:ktor-client-core")
     jsMainImplementation("io.ktor:ktor-client-encoding")
@@ -62,6 +65,9 @@ val cdnLookupConfiguration: Configuration = configurations.create("cdnLookupConf
 }
 
 val outputFile: String? = project.findProperty("outputFile")?.toString()
+val cdnLookupPackageVersion = rootProject.version.toString()
+    .takeUnless { it.isBlank() || it == "unspecified" }
+    ?: "0.0.0"
 
 tasks {
     val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get().asFile }
@@ -95,6 +101,22 @@ tasks {
             archive.get().asFile.absolutePath,
             fixture.get().asFile.absolutePath,
         )
+    }
+
+    val generatedDirectory = project.layout.buildDirectory.dir("generated-sources/templates/kotlin/main")
+    val copyTemplates = register<Copy>("copyTemplates") {
+        inputs.property("version", cdnLookupPackageVersion)
+        filteringCharset = "UTF-8"
+        from(project.projectDir.resolve("src/jsMain/templates")) {
+            filter<ReplaceTokens>("tokens" to mapOf("CDN_LOOKUP_VERSION" to cdnLookupPackageVersion))
+        }
+        into(generatedDirectory)
+    }
+    withType<KotlinCompile> {
+        dependsOn(copyTemplates)
+    }
+    kotlin.sourceSets {
+        jsMain { kotlin.srcDir(copyTemplates) }
     }
 }
 
