@@ -6,7 +6,7 @@ Incrementally turn the existing command entry point into a documented public CLI
 ## Constraints
 
 - Requires completion of `03_CDN_LOOKUP_PROVIDER_BOUNDARY.md`.
-- Follow Coupling CLI command and testing patterns.
+- Follow Coupling CLI command and testing patterns, including Clikt for command parsing.
 - Refactor the existing `main`; do not create a new public CLI beside the compatibility CLI.
 - Every compatibility option must parse into the same canonical command options and execution path.
 - Add only options selected for the first release; each option is its own behavior slice.
@@ -17,7 +17,7 @@ Incrementally turn the existing command entry point into a documented public CLI
 - [ ] Decide first-release package name, binary name, config location, output formats, and supported Node versions
 - [ ] Slice 1: help
   - [ ] Write one black-box help test
-  - [ ] Refactor existing argument handling into the Coupling CLI command pattern
+  - [ ] Refactor existing argument handling into a Clikt command following the Coupling CLI command pattern
   - [ ] Run scoped tests
 - [ ] Slice 2: version
   - [ ] Write one black-box version test

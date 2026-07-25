@@ -7,18 +7,28 @@ import kotlinx.coroutines.coroutineScope
 suspend fun generateCdnRef(
     cdnLibs: List<String>,
     lookupConfig: CdnLookupConfig = CdnLookupConfig(),
-): List<Pair<String, String>> = generateCdnLookup(cdnLibs, lookupConfig).urls.toList()
+    workingDirectory: String = currentWorkingDirectory(),
+): List<Pair<String, String>> = generateCdnLookup(cdnLibs, lookupConfig, workingDirectory).urls.toList()
 
 suspend fun generateCdnLookup(
     cdnLibs: List<String>,
     lookupConfig: CdnLookupConfig = CdnLookupConfig(),
+    workingDirectory: String = currentWorkingDirectory(),
+): CdnLookupResult = generateCdnLookup(cdnLibs, lookupConfig, workingDirectory, selectedCdnProvider())
+
+internal suspend fun generateCdnLookup(
+    cdnLibs: List<String>,
+    lookupConfig: CdnLookupConfig = CdnLookupConfig(),
+    workingDirectory: String = currentWorkingDirectory(),
+    cdnProvider: CdnProvider,
 ): CdnLookupResult = coroutineScope {
     validateLookupConfig(cdnLibs, lookupConfig)
-    val versions = resolveVersions(cdnLibs, lookupConfig)
+    val packageMetadata = PackageMetadata(workingDirectory)
+    val versions = resolveVersions(cdnLibs, lookupConfig, packageMetadata)
     val derivationContext = lookupConfig.toQueryDerivationContext()
 
     val urls = cdnLibs
-        .map { lib -> async { lookupCdnUrl(lib, versions, lookupConfig, derivationContext) } }
+        .map { lib -> async { lookupCdnUrl(lib, versions, lookupConfig, derivationContext, packageMetadata, cdnProvider) } }
         .awaitAll()
         .toMap()
     CdnLookupResult(urls)
@@ -27,9 +37,10 @@ suspend fun generateCdnLookup(
 private suspend fun resolveVersions(
     cdnLibs: List<String>,
     lookupConfig: CdnLookupConfig,
+    packageMetadata: PackageMetadata,
 ): Map<String, String> = coroutineScope {
     lookupConfig.versionLibraries(cdnLibs)
-        .map { lib -> async { lib to getVersionForLibrary(lib) } }
+        .map { lib -> async { lib to packageMetadata.versionForLibrary(lib) } }
         .awaitAll()
         .toMap()
 }
@@ -39,19 +50,21 @@ private suspend fun lookupCdnUrl(
     versions: Map<String, String>,
     lookupConfig: CdnLookupConfig,
     derivationContext: QueryDerivationContext,
+    packageMetadata: PackageMetadata,
+    cdnProvider: CdnProvider,
 ): Pair<String, String> {
     val version = versions.getValue(lib)
-    val (module, submodule) = lib.moduleAndSubmodule()
-    val queryParameters = queryParametersFor(lib, versions, lookupConfig, derivationContext)
+    val profile = queryProfileFor(lib, lookupConfig, derivationContext, packageMetadata)
+    val url = cdnProvider.urlFor(
+        CdnProviderRequest(
+            importName = lib,
+            version = version,
+            dependencies = profile.dependencies.map { dependency ->
+                CdnProviderDependency(dependency, versions.getValue(dependency))
+            },
+            external = profile.external,
+        ),
+    )
 
-    return lib to "https://esm.sh/$module@$version$submodule$queryParameters"
-}
-
-private fun String.moduleAndSubmodule(): Pair<String, String> {
-    val split = indexOf("/")
-    return if (startsWith("@") || split < 0) {
-        this to ""
-    } else {
-        take(split) to substring(split)
-    }
+    return lib to url
 }

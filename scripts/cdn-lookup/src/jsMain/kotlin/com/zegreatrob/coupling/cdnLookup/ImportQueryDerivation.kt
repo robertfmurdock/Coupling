@@ -14,44 +14,33 @@ internal fun CdnLookupConfig.toQueryDerivationContext(): QueryDerivationContext 
     availableImports = imports.keys,
 )
 
-internal suspend fun queryParametersFor(
+internal suspend fun queryProfileFor(
     lib: String,
-    versions: Map<String, String>,
     lookupConfig: CdnLookupConfig,
     derivationContext: QueryDerivationContext,
-): String {
-    val item = lookupConfig.imports[lib] ?: return ""
+    packageMetadata: PackageMetadata,
+): CdnLookupProfile {
+    val item = lookupConfig.imports[lib] ?: return CdnLookupProfile()
     val inheritedProfile = item.profile?.let(lookupConfig.profiles::get)
     val configuredQuery = resolveImportQuery(item.query, inheritedProfile)
-    val effectiveProfile = if (configuredQuery.dependencies.isNotEmpty() || configuredQuery.external.isNotEmpty()) {
+    return if (configuredQuery.dependencies.isNotEmpty() || configuredQuery.external.isNotEmpty()) {
         configuredQuery
     } else {
-        deriveImportQueryFromPackage(lib, derivationContext)
+        deriveImportQueryFromPackage(lib, derivationContext, packageMetadata)
     }
-
-    val params = mutableListOf<String>()
-    if (effectiveProfile.dependencies.isNotEmpty()) {
-        val deps = effectiveProfile.dependencies
-            .joinToString(",") { dependency -> "$dependency@${versions.getValue(dependency)}" }
-        params.add("deps=$deps")
-    }
-    if (effectiveProfile.external.isNotEmpty()) {
-        val external = effectiveProfile.external
-            .joinToString(",") { dependency -> encodeQueryParamValue(dependency) }
-        params.add("external=$external")
-    }
-
-    return if (params.isEmpty()) "" else "?${params.joinToString("&")}"
 }
-
-private fun encodeQueryParamValue(value: String): String = js("encodeURIComponent")(value).unsafeCast<String>()
 
 private suspend fun deriveImportQueryFromPackage(
     lib: String,
     derivationContext: QueryDerivationContext,
+    packageMetadata: PackageMetadata,
 ): CdnLookupProfile {
     val packageName = packageNameForImport(lib)
-    val derivedDependencies = collectPeerDependenciesFromPackageGraph(packageName, derivationContext.availableImports)
+    val derivedDependencies = collectPeerDependenciesFromPackageGraph(
+        packageName,
+        derivationContext.availableImports,
+        packageMetadata,
+    )
         .filter(derivationContext.singletonDependencies::contains)
         .let {
             expandDependencyGroups(
@@ -84,6 +73,7 @@ private suspend fun deriveImportQueryFromPackage(
 private suspend fun collectPeerDependenciesFromPackageGraph(
     packageName: String,
     availableImports: Set<String>,
+    packageMetadata: PackageMetadata,
 ): List<String> {
     val queue = ArrayDeque<Pair<String, Int>>()
     val visitedDepth = mutableMapOf<String, Int>()
@@ -101,7 +91,7 @@ private suspend fun collectPeerDependenciesFromPackageGraph(
             continue
         }
 
-        val pkg = getPackageJsonForPackage(current) ?: continue
+        val pkg = packageMetadata.packageJsonForPackage(current) ?: continue
         collectMatchingPeers(pkg, availableImports)?.let { matchingPeers ->
             when {
                 minimumPeerDepth == null || depth < minimumPeerDepth -> {

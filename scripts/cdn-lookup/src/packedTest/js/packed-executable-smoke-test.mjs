@@ -14,6 +14,6 @@ execFileSync("npm", ["install", "--ignore-scripts", archive], {cwd: fixture, std
 const binary = path.join(fixture, "node_modules", ".bin", "cdn-lookup")
 const output = execFileSync(binary, ["resolve-pkg"], {cwd: fixture, encoding: "utf8"})
 const result = JSON.parse(output)
-if (!result.urls["resolve-pkg"].startsWith("https://esm.sh/resolve-pkg@")) {
+if (result.urls["resolve-pkg"] !== "https://esm.sh/resolve-pkg@3.0.1") {
     throw new Error(`Unexpected lookup result: ${output}`)
 }

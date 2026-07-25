@@ -33,6 +33,19 @@ class GenerateCdnRefsTest {
     }
 
     @Test
+    fun generateLookupUsesSelectedCdnProvider() = asyncSetup(object {
+        val lib = "resolve-pkg"
+        val selectedProvider = object : CdnProvider {
+            override fun urlFor(request: CdnProviderRequest) = "selected://${request.importName}@${request.version}"
+        }
+    }) exercise {
+        generateCdnLookup(listOf(lib), cdnProvider = selectedProvider)
+    } verify { result ->
+        val version = getVersionForLibrary(lib)
+        result.urls.assertIsEqualTo(mapOf(lib to "selected://resolve-pkg@$version"))
+    }
+
+    @Test
     fun generateRefWorks() = asyncSetup(object {
         val lib = "react"
         val cdnLibs = listOf(lib)
