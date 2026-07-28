@@ -38,6 +38,7 @@ dependencies {
     implementation("com.zegreatrob.tools:digger-plugin")
     implementation(kotlin("gradle-plugin", libs.versions.kotlin.get()))
     implementation(libs.com.fasterxml.jackson.core.jackson.databind)
+    implementation(libs.io.github.turansky.kfc.gradle.plugin)
     implementation(libs.nl.littlerobots.vcu.plugin)
     implementation(libs.org.apache.logging.log4j.log4j.core)
     implementation(libs.org.apache.logging.log4j.log4j.iostreams)

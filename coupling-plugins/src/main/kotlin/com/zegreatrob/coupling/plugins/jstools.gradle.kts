@@ -16,6 +16,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.testLogging")
     id("com.zegreatrob.coupling.plugins.linter")
     id("com.zegreatrob.testmints.logs.mint-logs")
+    id("io.github.turansky.kfc.latest-tools")
 }
 
 kotlin {
@@ -47,10 +48,4 @@ dependencies {
 
 tasks.withType(KotlinJsTest::class).configureEach {
     outputs.cacheIf { true }
-}
-
-afterEvaluate {
-    project.extensions.findByType(NodeJsEnvSpec::class.java).let {
-        it?.version = "23.9.0"
-    }
 }

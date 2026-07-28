@@ -18,7 +18,7 @@ plugins {
     id("com.zegreatrob.testmints.action-mint")
     kotlin("plugin.serialization")
     alias(libs.plugins.com.apollographql.apollo)
-    alias(libs.plugins.io.github.turansky.kfc.application)
+    id("io.github.turansky.kfc.application")
     alias(libs.plugins.io.github.turansky.seskar)
 }
 
@@ -145,19 +145,8 @@ tasks {
             cdnLookupFile.absolutePath,
             "--lookup-config-base64=$lookupSettingsBase64",
         ) + settingsImports.fieldNames().asSequence().toList()
-        outputFile = file(cdnBuildOutput)
-        outputs.upToDateWhen { cdnBuildOutput.get().asFile.length() > 0L }
+        outputFile = cdnBuildOutput.get().asFile
         outputs.cacheIf { true }
-    }
-    val sanitizeCdnJson = register("sanitizeCdnJson") {
-        description = "Veriies CDN JSON was created"
-        dependsOn(lookupCdnUrls)
-        doLast {
-            val cdnFile = cdnBuildOutput.get().asFile
-            if (!cdnFile.exists() || cdnFile.length() == 0L) {
-                throw GradleException("cdn.json was not generated. Run :client:lookupCdnUrls and verify cdn-lookup output.")
-            }
-        }
     }
     val projectResultPath = rootProject.layout.buildDirectory
         .file("test-output/${project.path}/results".replace(":", "/"))
@@ -177,7 +166,7 @@ tasks {
     compileProductionExecutableKotlinJs {}
 
     jsBrowserProductionVite {
-        dependsOn(lookupCdnUrls, sanitizeCdnJson, copyCdnSettings, jsProcessResources)
+        dependsOn(lookupCdnUrls, copyCdnSettings, jsProcessResources)
         mustRunAfter("components:jsNodeTest")
         inputs.file(cdnBuildOutput)
         inputs.file(project.layout.projectDirectory.file("vite.config.mjs"))

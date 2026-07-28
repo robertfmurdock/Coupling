@@ -10,7 +10,11 @@ plugins {
 
 kotlin {
     js {
-        nodejs { testTask { useMocha { timeout = "10s" } } }
+        nodejs {
+            testTask {
+                useMocha { timeout = "10s" }
+            }
+        }
         useEsModules()
         compilerOptions { target = "es2015" }
         compilations.named("test") {
@@ -20,6 +24,10 @@ kotlin {
         }
     }
     sourceSets { all { languageSettings.optIn("kotlin.js.ExperimentalWasmJsInterop") } }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest>().configureEach {
+    environment("NODE_OPTIONS", "--localstorage-file=${temporaryDir}/localstorage")
 }
 
 tasks {

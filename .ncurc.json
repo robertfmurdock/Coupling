@@ -1,4 +1,6 @@
 {
   "reject": [
-  ]
+    "jsdom"
+  ],
+  "$comment": "jsdom: Pinned to 29.1.1 due to bug in 30.0.0 where getComputedStyle() throws for calc/min/max/clamp with percentages. Fixed in main but not yet released. See: https://github.com/jsdom/jsdom/issues/4193"
 }
