@@ -16,7 +16,10 @@ kotlin {
         useEsModules()
         nodejs {
             binaries.executable()
-            testTask { useMocha { timeout = "400s" } }
+            testTask {
+                useMocha { timeout = "400s" }
+                environment("COUPLING_VERSION", rootProject.version.let { if (it == "unspecified") "0.0.0" else "$it" })
+            }
         }
         compilations {
             "main" {
