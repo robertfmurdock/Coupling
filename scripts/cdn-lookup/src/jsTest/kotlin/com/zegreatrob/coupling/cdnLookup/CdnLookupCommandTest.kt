@@ -10,6 +10,7 @@ import node.fs.mkdtempSync
 import node.fs.writeFileSync
 import node.os.tmpdir
 import node.path.path
+import node.process.process
 import kotlin.test.Test
 
 class CdnLookupCommandTest {
@@ -47,7 +48,7 @@ class CdnLookupCommandTest {
     } verify { result ->
         result.statusCode.assertIsEqualTo(0, result.output)
         result.output.trim()
-            .assertIsEqualTo("cdn-lookup version 0.0.0")
+            .assertIsEqualTo("cdn-lookup version ${process.env["COUPLING_VERSION"]}")
     }
 
     @Test
