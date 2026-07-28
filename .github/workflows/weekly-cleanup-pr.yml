@@ -40,12 +40,12 @@ jobs:
       MAX_CHANGED_FILES: "20"
       MAX_CHANGED_LINES: "400"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "zulu"
           java-version: "22"
@@ -214,7 +214,7 @@ jobs:
 
       - name: Create Cleanup Pull Request
         if: steps.agent.outputs.command_configured == 'true' && steps.changes.outputs.has_changes == 'true' && steps.gates.outputs.gate_ok == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.COUPLING_PAT }}
           branch: ${{ steps.focus.outputs.branch }}
@@ -252,7 +252,7 @@ jobs:
 
       - name: Upload Agent Stream Log
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: agent-stream-log
           path: build/weekly-cleanup/agent-stream.jsonl
@@ -261,7 +261,7 @@ jobs:
 
       - name: Upload Agent Log
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: agent-log
           path: build/weekly-cleanup/agent-log.md
