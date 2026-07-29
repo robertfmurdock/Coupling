@@ -51,17 +51,17 @@
     jose "^6.0.8"
     openid-client "^6.8.0"
 
-"@auth0/auth0-react@2.22.0":
-  version "2.22.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.22.0.tgz#3a0922f05af976f1bb002b2b9d22cfa76fe40eed"
-  integrity sha512-/TqYPM7R/0sZuIeWHfsaqB+C/Oi/ssx3BMaOAOGZZZw8YBelIK00gCjIxozrmjZGawzz2Jl0VAsYyfS2KwB3Zw==
+"@auth0/auth0-react@2.22.1":
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.22.1.tgz#9c99fb1902d83a4239334bfa5094b121df50f7f9"
+  integrity sha512-3hyexxNOTN3K6wrSu7/HNN15dXhM51vHTLykvhc7+yPGZj31Fxn5KP1W/j7udDBKne1f26+DVI6TgMXSc6H6LQ==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.23.0"
+    "@auth0/auth0-spa-js" "^2.24.1"
 
-"@auth0/auth0-spa-js@^2.23.0":
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.24.0.tgz#92b0ba72e7d693a530e7af30b515f7aae0bbe541"
-  integrity sha512-9Z/1OpHqak0Aquh5HcCMVJOXKM9EXz1PyuDsD1hCt7oWXcrHPFB330joplkKWpNNT5pRpddeQ+teR5+L6n4J6g==
+"@auth0/auth0-spa-js@^2.24.1":
+  version "2.24.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.24.1.tgz#bf3c046b7faa0372ea8e5cc454f5680b9d2b6ac0"
+  integrity sha512-iS18fBlWWxQ/FPtWgWzYYEImsNRumJG2cZ08xV0HsEmWtTBv+54A+fnyFx9eiNBP7cLp0emwDDjgeG+hQEbVBA==
   dependencies:
     "@auth0/auth0-auth-js" "^1.10.0"
     browser-tabs-lock "^1.3.0"

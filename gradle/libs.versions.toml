@@ -17,7 +17,7 @@ io-ktor-ktor-bom = "io.ktor:ktor-bom:3.5.1"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-wrappers-kotlin-react-popper = "org.jetbrains.kotlin-wrappers:kotlin-react-popper:2026.3.1-2.3.0"
-org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.7.6"
+org-jetbrains-kotlin-wrappers-kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.7.7"
 org-jetbrains-kotlinx-kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "org-jetbrains-kotlinx" }
 org-jetbrains-kotlinx-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0-0.6.x-compat"
 org-jetbrains-kotlinx-kotlinx-serialization-bom = { module = "org.jetbrains.kotlinx:kotlinx-serialization-bom", version.ref = "org-jetbrains-kotlinx" }
@@ -33,9 +33,6 @@ com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.21"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:3.1.7"
 com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:3.1.7"
-# @pin
-io-github-turansky-kfc-application = "io.github.turansky.kfc.application:19.13.0"
-io-github-turansky-kfc-latest-tools = "io.github.turansky.kfc.latest-tools:19.13.0"
 io-github-turansky-seskar = "io.github.turansky.seskar:4.62.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.0"
 

@@ -2,4 +2,4 @@
 
 package remix.run.router
 
-typealias AgnosticPatchRoutesOnNavigationFunction<O /*  : AgnosticRouteObject default is AgnosticRouteObject */, M /*  : AgnosticRouteMatch<*> default is AgnosticRouteMatch<*> */> = (opts: AgnosticPatchRoutesOnNavigationFunctionArgs<O, M>) -> js.promise.PromiseResult<js.core.Void>
+typealias AgnosticPatchRoutesOnNavigationFunction<O /*  : AgnosticRouteObject default is AgnosticRouteObject */, M /*  : AgnosticRouteMatch<*> default is AgnosticRouteMatch<*> */> = (opts: AgnosticPatchRoutesOnNavigationFunctionArgs<O, M>) -> js.promise.PromiseResult<Unit>

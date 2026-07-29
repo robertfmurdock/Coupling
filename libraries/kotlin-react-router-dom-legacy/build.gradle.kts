@@ -75,6 +75,7 @@ kotlin {
 dependencies {
     "webMainApi"("org.jetbrains.kotlin-wrappers:kotlin-browser")
     "webMainApi"(npmConstrained("react-router"))
+    "jsMainApi"("org.jetbrains.kotlin-wrappers:kotlin-js")
     "jsMainApi"("org.jetbrains.kotlin-wrappers:kotlin-react")
     "jsMainApi"("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
 }

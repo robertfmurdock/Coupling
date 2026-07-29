@@ -95,14 +95,14 @@ sealed external interface Router {
      * Navigate forward/backward in the history stack
      * @param to Delta to move in the history stack
      */
-    fun navigate(to: Double): Promise<js.core.Void>
+    fun navigate(to: Double): Promise<Unit>
 
     /**
      * Navigate to the given path
      * @param to Path to navigate to
      * @param opts Navigation options (method, submission, etc.)
      */
-    fun navigate(to: To?, opts: RouterNavigateOptions = definedExternally): Promise<js.core.Void>
+    fun navigate(to: To?, opts: RouterNavigateOptions = definedExternally): Promise<Unit>
 
     /**
      * @internal

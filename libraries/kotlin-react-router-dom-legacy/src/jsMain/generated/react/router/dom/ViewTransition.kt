@@ -5,8 +5,8 @@ package react.router.dom
 import js.promise.Promise
 
 sealed external interface ViewTransition {
-    var finished: Promise<js.core.Void>
-    var ready: Promise<js.core.Void>
-    var updateCallbackDone: Promise<js.core.Void>
+    var finished: Promise<Unit>
+    var ready: Promise<Unit>
+    var updateCallbackDone: Promise<Unit>
     fun skipTransition()
 }
