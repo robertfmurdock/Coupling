@@ -1,5 +1,4 @@
 [versions]
-# @pin
 kotlin = "2.4.10"
 # @pin
 ksp = "2.3.9"
@@ -17,8 +16,8 @@ io-github-turansky-kfc-gradle-plugin = "io.github.turansky.kfc:kfc-gradle-plugin
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.1.0"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
-org-jetbrains-kotlin-plugin-js-plain-objects = { module = "org.jetbrains.kotlin.plugin.js-plain-objects:org.jetbrains.kotlin.plugin.js-plain-objects.gradle.plugin", version.ref = "kotlin" }
-org-jetbrains-kotlin-plugin-serialization-gradle-plugin = { module = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
+org-jetbrains-kotlin-js-plain-objects = { module = "org.jetbrains.kotlin:js-plain-objects", version.ref = "kotlin" }
+org-jetbrains-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.6.0"
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.18"
 
