@@ -13,7 +13,7 @@ jobs:
         with:
           fetch-depth: '25'
       - name: Configure AWS credentials (Local)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::174159267544:role/LocalDevelopment
           aws-region: us-east-1
