@@ -8,9 +8,9 @@ org-apache-logging-log4j = "2.26.1"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.1"
 com-google-devtools-ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 com-google-devtools-ksp-symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.12.3"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.12.4"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.39"
-com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.2.0"
+com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.6.13"
 # @pin
 io-github-turansky-kfc-gradle-plugin = "io.github.turansky.kfc:kfc-gradle-plugin:18.8.0"
 nl-littlerobots-vcu-plugin = "nl.littlerobots.vcu:plugin:1.1.1"
