@@ -1,7 +1,6 @@
 [versions]
 kotlin = "2.4.10"
-# @pin
-ksp = "2.3.9"
+ksp = "2.3.11"
 org-apache-logging-log4j = "2.26.1"
 
 [libraries]

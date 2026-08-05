@@ -63,6 +63,9 @@ tasks {
             dependsOn("kspCommonMainKotlinMetadata")
         }
     }
+    matching { it.name.startsWith("ksp") && it.name != "kspCommonMainKotlinMetadata" }.configureEach {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
 }
 
 afterEvaluate {
