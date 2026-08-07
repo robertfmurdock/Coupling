@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1103.0":
-  version "3.1103.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1103.0.tgz#93ee9f9a37396f0e005d3edcb8387512328d92ee"
-  integrity sha512-dkFlzGKsn11rfdnbKPdWGqt99GD6kUF/BCOeyTHtPufVieKKy9QyjXhMVbl4ozo+qNxYPLQ7U391ag39z/OtcA==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1105.0":
+  version "3.1105.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1105.0.tgz#acff42910fc021cea3619dd80ddab8fd8a50c3ca"
+  integrity sha512-zX9nJHNOusKXTKiqEfr7Fk7IPAFzDrez3ilHSolU+iAhoOHh1/iT1ToCd5Z/jM5sxwYaO9OWEDyevjVWmgEEsw==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/credential-provider-node" "^3.972.78"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1103.0":
-  version "3.1103.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1103.0.tgz#666387b40ff8b323b8623d06bfc25d16f50b1d36"
-  integrity sha512-9qN3H5DJYA1TA7vI5RGI6v2yLWpxcWyJQZuAK1LyVH8HaZoVLVof0MHZL/3PfjIW/KFaHHu8EC5kxT7EVjHooQ==
+"@aws-sdk/client-dynamodb@3.1105.0":
+  version "3.1105.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1105.0.tgz#de4a6b633e5cc3e50e5b22c75b568e0cbc4d7c58"
+  integrity sha512-CNtPFuLR3wn1U7cH1svRuouWl2VO+uP/LOUpNlhJe4rkPSBr8Y6eMmsWPwkIGAsASAN7ChyJ7ZJHtJ+aLZl9Hw==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/credential-provider-node" "^3.972.78"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1103.0":
-  version "3.1103.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1103.0.tgz#a7362822e89abe5d0d837c4bb1804be5b368f1e5"
-  integrity sha512-BQfSgfqwurp6hISzJQt163cTg/EDXEWfkBTry6ZXTa8ofFxGUu8L9CL/euUOhcK6pvV3DRDaWofkd9EuYBZ2/Q==
+"@aws-sdk/client-lambda@~3.1105.0":
+  version "3.1105.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1105.0.tgz#a5398de8dc6ee42c5fee1902eb6940f02fa3fea2"
+  integrity sha512-jgfkglaEYQAVE0wZD1JjK2AsJr1xPmZtyc8jKHhb8zZPE2TFVG3mni/AYO77psl1OfTauU7OvAlZWmhN+da6Ww==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/credential-provider-node" "^3.972.78"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1103.0":
-  version "3.1103.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1103.0.tgz#a6ee4d8318398405f46d2659c999103ef041ff9a"
-  integrity sha512-PKjLHIbm5LTeltTPNqSQZOEm9kGq2IMG6hej2TSblYH6S5gbNhceRyJajkPln8kMKjzCfmf4i4fupn1WCjwOlQ==
+"@aws-sdk/lib-dynamodb@3.1105.0":
+  version "3.1105.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1105.0.tgz#046fd23152dcc57d9caede287aa026650191cbab"
+  integrity sha512-jddjWoLr4Ar5E9vXRh8IkkeH6qr5nYNzViIIFexNDbR0hBNlC07G569CBTQ0W6pn9MDM1pcjKlfh0e520xSqVQ==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/util-dynamodb" "^3.996.7"
@@ -4711,10 +4711,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@151.0.3:
-  version "151.0.3"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-151.0.3.tgz#49a430d76e70aeb53bd6949dd0387ad132312b6a"
-  integrity sha512-WoRTSJiYTFTt3bLLwfvFJpa0u8YxNzKYdcm3S+XOoccjVnjn6/0Zb+cW4YpvYCsBtZWWz3L7nYjj5PduAak9tA==
+chromedriver@151.0.4:
+  version "151.0.4"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-151.0.4.tgz#20d43e8113d33cfb77fac7245d4a1a96903a305f"
+  integrity sha512-/oWsyvXzRqmsUOhV7rpLx0cXDTdTDj5Fg82L5HLWm5wYxy/J7A7FTaI0tKTltIokn5+PkIKaZDFca7RmfSEIkA==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     adm-zip "^0.5.18"
@@ -6778,10 +6778,10 @@ graphql-config@^5.1.6:
     string-env-interpolation "^1.0.1"
     tslib "^2.4.0"
 
-graphql-http@^1.22.4:
-  version "1.22.4"
-  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.22.4.tgz#47b52ef0ab1f412943aca33ecfcdf22de525d59b"
-  integrity sha512-OC3ucK988teMf+Ak/O+ZJ0N2ukcgrEurypp8ePyJFWq83VzwRAmHxxr+XxrMpxO/FIwI4a7m/Fzv3tWGJv0wPA==
+graphql-http@^1.23.0:
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.23.0.tgz#b26600311e308aca236e007cff9fa17b5a41ca41"
+  integrity sha512-nQbRzoaqyNBVFG6X6r0mXC6S4X9eZOmmGz6t3l9H3MVKc2em3KeQAx+KhZKKFzj56ePDEncMOXeLu/hjO/4LQg==
 
 graphql-tag@^2.11.0:
   version "2.12.6"
@@ -9922,10 +9922,10 @@ serverless-offline-ssm@^6.2.0:
   resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-6.2.0.tgz#f2db290a72631629579ce5f940ed76f254f96653"
   integrity sha512-Af7JeLbU4OHAx7ZgAs2OLP2DGKyp/g45rX7SWQ8KiBzn47jme+MqN+GOV6qd5oZ8V9khd3p62+RueHR3ezEZZQ==
 
-serverless-offline@^14.7.4:
-  version "14.7.4"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.7.4.tgz#27eb6b86b6235a433c0c073f3e220b1d90f2cd7f"
-  integrity sha512-IqHZY39Gc805f/W4TLElpjW4yUjUejtPaueivQ4nE1j5+RBDctPYnCAlMLZb3zkpMYuwSWOL2gFH5uVHYLgSVg==
+serverless-offline@^14.8.0:
+  version "14.8.0"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.8.0.tgz#5f00790723ff1f6cf954848fcfeffa5adfcdc9b4"
+  integrity sha512-OEjkcYFUPNnTAdTeH4nnxWzV7QfUVzBbgv5c43vWGueCpshxcZ8f4Ybz52+GnE1Pz9iWuPt1SYNNgPZ6YQFU2Q==
   dependencies:
     "@aws-sdk/client-lambda" "^3.1069.0"
     "@hapi/boom" "^10.0.1"
