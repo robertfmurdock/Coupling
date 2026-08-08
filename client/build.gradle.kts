@@ -1,4 +1,3 @@
-
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.js.NodeExec
@@ -117,15 +116,18 @@ tasks {
     val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
     val cdnBuildOutput = npmProjectDir.map { it.file("cdn.json") }
     val settingsFile = File(project.projectDir, "cdn.settings.json")
-    val copyCdnSettings = register<Copy>( "copyCdnSettings") {
+    val copyCdnSettings = register<Copy>("copyCdnSettings") {
+        description = "Moves CDN settings to npm project directory"
         dependsOn(":kotlinNpmInstall")
         from(settingsFile)
         into(npmProjectDir)
     }
-    val lookupCdnUrls = register<NodeExec>( "lookupCdnUrls") {
+    val lookupCdnUrls = register<NodeExec>("lookupCdnUrls") {
+        description = "Captures CDN Urls for external dependencies"
         setup(project)
         this.npmProjectDir = npmProjectDir.get().asFile
-        dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall")
+        dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall", jsProcessResources)
+        mustRunAfter(jsBrowserProductionVitePrepare)
         inputs.files(cdnLookupConfiguration)
         inputs.files(jsRuntimeClasspath)
         inputs.file(settingsFile)
@@ -184,6 +186,7 @@ tasks {
     }
 
     val uploadToS3 = register<Exec>("uploadToS3") {
+        description = "Publishes new version of client to S3"
         dependsOn(jsBrowserProductionVite)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
@@ -200,6 +203,7 @@ tasks {
         }
 
     val additionalResources = register<Copy>("additionalResources") {
+        description = "Moves SDK processed resources into client additional resources"
         outputs.cacheIf { true }
         dependsOn(":sdk:jsProcessResources")
         from("$rootDir/sdk/build/processedResources/js/main")
