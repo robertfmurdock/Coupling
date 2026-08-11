@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.23.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1106.0",
-    "@aws-sdk/client-dynamodb": "3.1106.0",
-    "@aws-sdk/client-lambda": "~3.1106.0",
-    "@aws-sdk/lib-dynamodb": "3.1106.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1107.0",
+    "@aws-sdk/client-dynamodb": "3.1107.0",
+    "@aws-sdk/client-lambda": "~3.1107.0",
+    "@aws-sdk/lib-dynamodb": "3.1107.0",
     "@graphql-codegen/cli": "^7.2.0",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
@@ -25,7 +25,7 @@
     "@slack/oauth": "^4.0.0",
     "@slack/web-api": "^8.0.0",
     "@slack/webhook": "^8.0.0",
-    "@stripe/react-stripe-js": "^6.8.0",
+    "@stripe/react-stripe-js": "^6.8.1",
     "@stripe/stripe-js": "^9.13.0",
     "react-router": "^8.3.0",
     "chromedriver": "151.0.5",
@@ -70,7 +70,7 @@
     "serverless-offline": "^14.8.0",
     "serverless-offline-ssm": "^6.2.0",
     "sonda": "^0.14.0",
-    "stripe": "^22.4.0",
+    "stripe": "^22.5.0",
     "vite-plugin-html": "^3.2.2",
     "webpack": "5.109.2",
     "webpack-cli": "^7.2.2"
