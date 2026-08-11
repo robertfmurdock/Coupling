@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1106.0":
-  version "3.1106.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1106.0.tgz#66391420041bc412d9c59f9cd462ab114aa797f1"
-  integrity sha512-XVHve/x2b7fPv0CPwBs3YIdLhV5zoQxCrCNA40AApM/g1v2rSoD9QqDlQ6rJ6WADM06tZZHONJwNeqegss2zgA==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1107.0":
+  version "3.1107.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1107.0.tgz#82f188d4c449b91502b8084d7b626842fd15be7f"
+  integrity sha512-raNqp5VoxlSs2eYChN6VyH5uDJX5Jfrq+tmXqswbR4mQjxGQvcVPDt44Bw7wDH0TucsAUWCBNmRy0Bb/Ud6lAQ==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/credential-provider-node" "^3.972.78"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1106.0":
-  version "3.1106.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1106.0.tgz#376b82fc8117d9c02f88ed3a59b8966429487759"
-  integrity sha512-VhYpGatp+5ke7HBc/8CqbukInNmsFT67W4d/QceP8/YIxpKfP0SRCSHlgRU85WTC5JcS88FWX3OxGYR63rEUdA==
+"@aws-sdk/client-dynamodb@3.1107.0":
+  version "3.1107.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1107.0.tgz#262d775653565dfc8fe328a1bb329d7ff7a25d06"
+  integrity sha512-MEo8N0ZtvNEQdiovlrUJdvUMfQTkDP98eOkRqSbY98p5/GTpBoENOzAa1G3bjfOs+lcEck80+0U7HuGSeErwZg==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/credential-provider-node" "^3.972.78"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1106.0":
-  version "3.1106.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1106.0.tgz#8cd8948685a2966f235a91268d28c87b157da04c"
-  integrity sha512-vxZtyCy6k9GaZ6j39zg1cNHDtAgwan/a2cQRtnaiQ4iUtX4MGxHdErKyhYAj59tkSqiKAMQpOFhIH7mb0u/9UQ==
+"@aws-sdk/client-lambda@~3.1107.0":
+  version "3.1107.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1107.0.tgz#8901f6f3dc5d4728f5dad534d07e22c0b132c17b"
+  integrity sha512-k3xBmiBJYtpY1RKJms3BnTVg6nvFGEhbzINLkSfxAGkfS+Ehz3bOl6BcPWjKQP9Jsyi3IHMNY3Opjp1sf6J3EA==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/credential-provider-node" "^3.972.78"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1106.0":
-  version "3.1106.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1106.0.tgz#1dfc9df5eb6de0260e87ee4473c5e013739e58fb"
-  integrity sha512-izyYFfzmWy5mpSxhhhy6Cbm4qukMP/9rvgsvyEWd+s5qh9o6MXuNkh9s5Qn7G6lLQiIefVENfESLcRdBIVd4fA==
+"@aws-sdk/lib-dynamodb@3.1107.0":
+  version "3.1107.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1107.0.tgz#dfd56b6c221d12325e59354dc37dfe4dc126be2f"
+  integrity sha512-mVq9UrlSxH8PuvzSfCi2OsUYRk4o+0QGwR76areFXZnHB5KQHxE63WTXtQNBPhUmC/GwGwK6VZYbpwOtOCLLFA==
   dependencies:
     "@aws-sdk/core" "^3.977.6"
     "@aws-sdk/util-dynamodb" "^3.996.7"
@@ -3276,10 +3276,10 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^6.8.0":
-  version "6.8.0"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.8.0.tgz#388bb7b2fca7de99097ef31a1f08f6261a9d18e4"
-  integrity sha512-nRrPkos00CmUeqXHxtJkXmSbl9/6ybGI4jVebzsiA6QaE5A4iw9dn1C4hUx2tBmQQV2e6pm2aLkPYov4hdta2w==
+"@stripe/react-stripe-js@^6.8.1":
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.8.1.tgz#ade715ffbac7670b3becf2709ef4f18bbf41182f"
+  integrity sha512-Wzy7KCF8lM819x8rVFSKUr2ofITdX1c/49ceJprJzGhPzHb3fhrcAoEmNQwV5UYRci7YY1joyG8oz3So3JAMRg==
   dependencies:
     prop-types "^15.7.2"
 
@@ -10369,10 +10369,10 @@ strip-json-comments@^5.0.3:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-5.0.3.tgz#b7304249dd402ee67fd518ada993ab3593458bcf"
   integrity sha512-1tB5mhVo7U+ETBKNf92xT4hrQa3pm0MZ0PQvuDnWgAAGHDsfp4lPSpiS6psrSiet87wyGPh9ft6wmhOMQ0hDiw==
 
-stripe@^22.4.0:
-  version "22.4.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-22.4.0.tgz#f82873c14743927f2b70fcc30f548a9eaacb843f"
-  integrity sha512-LVJ+tcSYeqOSnXr3i+Kz2tZ7y0crLLdP2uwD/4wccrmEVyn0g/Heo0pF7as7rxS/sOjJzrb1lxgZY0Y0Dx1pSA==
+stripe@^22.5.0:
+  version "22.5.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-22.5.0.tgz#78efe2b9ebcb167da966c356138f2f5ceb3f443e"
+  integrity sha512-QVwMwriC0bbySx6R4dpsvJ0W//GojC1kwWVS6rPSoVqDUIZX4Hy3TaUrd2AZeXEAaKbfWIjQjvo3vKAReHZ0vQ==
 
 strnum@^2.2.3, strnum@^2.3.0:
   version "2.3.0"
