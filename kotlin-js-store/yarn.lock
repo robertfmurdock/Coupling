@@ -51,10 +51,10 @@
     jose "^6.0.8"
     openid-client "^6.8.0"
 
-"@auth0/auth0-react@2.24.0":
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.24.0.tgz#de836c10164639eb13b34ce5499926193bb3bd3d"
-  integrity sha512-NnrjH5on3/IhBSCPkWFRGucqa00BA5HOba7Ye8G89f/43T4LtfsfQgZ1ZUhjdMt2vBb9g7nhiUS9KfJsOlnNiQ==
+"@auth0/auth0-react@2.24.1":
+  version "2.24.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.24.1.tgz#edb8fa5535096a969d2de89bb6f8f1621604eb8a"
+  integrity sha512-K6ymu7g0OoulMllSx/VE+m9yNao8IEy1YzeIX8NnzveIbVvYd2j3+PB5zU3NHXCeMhtT9RYu7EDBxKR1E4+W0A==
   dependencies:
     "@auth0/auth0-spa-js" "^2.24.1"
 
@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1111.0":
-  version "3.1111.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1111.0.tgz#dac625583e1707f4e2a5e7970fc439e48f01c2c0"
-  integrity sha512-TtvzKw88St80aVutTcugVqgVYMtf0nSt/aPCtRoA8TlITflMtnHt/jwKmPd61OftwK69+esWEw1f38MOLGF7uQ==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1112.0":
+  version "3.1112.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1112.0.tgz#2d6c913de1eb3ce1dcd95967d4029cacee7c08b8"
+  integrity sha512-oDCLNabc/BEPfZayBI1cc91aJXGtX0LxSTugPOwcL3flNCxRphLsQWS7aBxj1hdDLLYUiy83/PAWL9OQZYjE0g==
   dependencies:
     "@aws-sdk/core" "^3.977.8"
     "@aws-sdk/credential-provider-node" "^3.972.80"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.16.1"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1111.0":
-  version "3.1111.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1111.0.tgz#ec07306bd882b6441b4e0e84d2e95fe16ecffe44"
-  integrity sha512-rji6S5ZJfBp3ahC7pcEilaBKDrnLNZGerIzXCEOhur9gkgMhTiJjpoQSLKgR1Lnehetew1isiciL9xVoNvt9uw==
+"@aws-sdk/client-dynamodb@3.1112.0":
+  version "3.1112.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1112.0.tgz#46f9f179eb2924e02ce7ab0de7137cbf0301fe22"
+  integrity sha512-Dborj6oKxgV9htN0jpdqGA9mTVOAPtYrrNI9ro67JNojtqIp1qHkdTkz1RkVi5Um2meV0qKVvhxLXRsI/S9RYQ==
   dependencies:
     "@aws-sdk/core" "^3.977.8"
     "@aws-sdk/credential-provider-node" "^3.972.80"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1111.0":
-  version "3.1111.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1111.0.tgz#8c6e1ff0424e5be390deac74ca5f34754e2a471d"
-  integrity sha512-jG2rB6LY2rx3XT55axgH3C0aIv1egvI0kqPYC6jfghVp82kWssU7R/1dJxXr0PnPLv4wq+WXRyLEmjyKURUjFQ==
+"@aws-sdk/client-lambda@~3.1112.0":
+  version "3.1112.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1112.0.tgz#689cac38b852a0c750865e40e2960ac193bbec6a"
+  integrity sha512-7DeE4t3ENa53m8AmWa/oTe2+JVAo8ctqB3pUNTxUaSiMqLbsNCdSIVSUtgDET3nMUkAotz9oc9unnQvXKBmIxA==
   dependencies:
     "@aws-sdk/core" "^3.977.8"
     "@aws-sdk/credential-provider-node" "^3.972.80"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1111.0":
-  version "3.1111.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1111.0.tgz#b35818fffcf3e092e4f0d9f9b9876fc9168b9e99"
-  integrity sha512-7akWVgxSimF3parFgE6RYrDdxunRIKB/DPCCxMr0NW3OT34xKJ67YmbBiZgFaURjCK9i53zY4BAqNGizxFl2RQ==
+"@aws-sdk/lib-dynamodb@3.1112.0":
+  version "3.1112.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1112.0.tgz#a89a38e83bb8608977ace623913c7472cb1bfdc6"
+  integrity sha512-pty8K4zIAMqOowBACdfwle81543odDPpt24q7xsvtK4AXivmkLLyz6S4tkGW8JNCf0yPBEuSZECtPIjrT5oteA==
   dependencies:
     "@aws-sdk/core" "^3.977.8"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -8113,10 +8113,10 @@ map-cache@^0.2.0:
   resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
   integrity sha512-8y/eV9QQZCiyn1SprXSrCmqJN0yNRATe+PO8ztwqrvrbdRLA3eYJF0yaR0YayLWkMbsQSKWS9N2gPcGEc4UsZg==
 
-marked@^18.0.9:
-  version "18.0.9"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-18.0.9.tgz#729fb57203a4fd58dd5ddc551917ef40daf5036a"
-  integrity sha512-/Sa4qiiHZxf0/FQdBBowr9q4r10krCwMvpK48FUBdXdUXScDxiQGR9zCPrFgRVR5LU3iySOiIjy09ZQvADir1w==
+marked@^18.0.10:
+  version "18.0.10"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-18.0.10.tgz#a09ac1f54e378b9efc8b31707adc188fdc047d2e"
+  integrity sha512-FJeH4bRpYoXiggcgriCGItKCSv3xkngJc4QCZ/rkQCogU3VYaLxYJoZl8Nw/b4+x7iij/pd+09mZ6A1dXzpL0A==
 
 math-intrinsics@^1.1.0:
   version "1.1.0"
