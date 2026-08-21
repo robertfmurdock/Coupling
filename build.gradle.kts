@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.plugins.ai.SyncAiContextTask
 import com.zegreatrob.coupling.plugins.ai.ValidateAiContextManifestTask
 import com.zegreatrob.coupling.plugins.testlogging.readAttributionCoverage
 import com.zegreatrob.coupling.plugins.testlogging.registerTestLogCliTask
+import com.zegreatrob.coupling.plugins.util.AwsParameters
 import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameters
 import java.time.Duration
 
@@ -27,9 +28,9 @@ dockerCompose {
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
     val awsParams = providers.fetchAwsSsmParameters()
-    environment.put("SERVERLESS_ACCESS_KEY", awsParams.serverlessAccessKey)
-    environment.put("STRIPE_PUBLISHABLE_KEY", awsParams.stripePublishableKey)
-    environment.put("STRIPE_SECRET_KEY", awsParams.stripeSecretKey)
+    environment.put("SERVERLESS_ACCESS_KEY", awsParams.map(AwsParameters::serverlessAccessKey))
+    environment.put("STRIPE_PUBLISHABLE_KEY", awsParams.map(AwsParameters::stripePublishableKey))
+    environment.put("STRIPE_SECRET_KEY", awsParams.map(AwsParameters::stripeSecretKey))
 
     nested("caddy").apply {
         setProjectName("Coupling-root")
