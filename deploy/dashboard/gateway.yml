@@ -36,7 +36,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref DashboardFunctionName
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub '${DashboardHttpApi.ExecutionArn}/*'
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${DashboardHttpApi}/*'
 
 Outputs:
   ApiEndpoint:

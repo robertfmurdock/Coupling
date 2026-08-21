@@ -14,6 +14,7 @@ Allow the restricted dashboard deployment role to configure dashboard Gradle tas
 - [x] Make Compose SSM environment values lazy providers
 - [x] Verify a dashboard task configures without SSM resolution
 - [x] Record and fix the subsequent focused CI failure: artifact upload did not depend on generated application parameters
+- [x] Record and fix the gateway deployment failure: HTTP API does not expose `ExecutionArn`
 - [ ] Run scoped and broad checks
 - [ ] Move to `agents.d/work_completed/`
 
@@ -25,3 +26,4 @@ Allow the restricted dashboard deployment role to configure dashboard Gradle tas
   - Passed. The dashboard task configured and ran after the SSM values became lazy providers.
   - GitHub Actions run `32518181125`, application deployment job `96887300099`: configured under the restricted dashboard role and passed `dashboardDoctor` and `dashboardPackage`; Gradle then correctly rejected an undeclared producer/consumer dependency between `dashboardApplicationParameters` and `dashboardUploadArtifact` before any deployment mutation.
   - Passed. The complete application deployment graph generated parameters, passed the doctor checks, packaged the release, ran the artifact upload dry run, and validated the CloudFormation template.
+  - GitHub Actions run `32520403587`: application deployment succeeded. Gateway role assumption succeeded with the immutable OIDC subject, then CloudFormation rolled back before gateway creation because `AWS::ApiGatewayV2::Api` has no `ExecutionArn` attribute.
