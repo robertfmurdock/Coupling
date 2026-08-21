@@ -3,6 +3,7 @@ import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.coupling.plugins.dashboard.DashboardArtifactUploadTask
 import com.zegreatrob.coupling.plugins.dashboard.DashboardCloudFormationDeployTask
 import com.zegreatrob.coupling.plugins.dashboard.DashboardEndpointHealthTask
+import com.zegreatrob.coupling.plugins.dashboard.DashboardGatewayParametersTask
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -20,10 +21,15 @@ dependencies {
 
 val dashboardRegion = "us-east-1"
 val dashboardStackName = "ze-great-team-dashboard"
+val dashboardGatewayStackName = "ze-great-team-dashboard-gateway"
 val boardConfig = layout.projectDirectory.file("board.yaml")
-val dashboardParametersFile = layout.projectDirectory.file("parameters.json")
+val dashboardBootstrapManifest = layout.projectDirectory.file("bootstrap.json")
+val dashboardParametersFile = layout.buildDirectory.file("dashboard/application-parameters.json")
+val dashboardGatewayParametersFile = layout.buildDirectory.file("dashboard/gateway-parameters.json")
+val dashboardGatewayTemplate = layout.projectDirectory.file("gateway.yml")
 val releaseDirectory = layout.buildDirectory.dir("release")
 val dashboardDryRun = providers.gradleProperty("dashboardDryRun").map(String::toBoolean).orElse(false)
+val dashboardExecutionRoleArn = providers.environmentVariable("DASHBOARD_CLOUDFORMATION_EXECUTION_ROLE_ARN")
 
 tasks {
     register<NodeExec>("dashboardPackage") {
@@ -41,14 +47,29 @@ tasks {
         dependsOn(":kotlinNpmInstall")
     }
 
+    val dashboardApplicationParameters = register<NodeExec>("dashboardApplicationParameters") {
+        group = "deployment"
+        description = "Generates dashboard application parameters from the consumer bootstrap manifest."
+        setup(project)
+        nodeCommand = "ze-great-dashboard-aws"
+        arguments = listOf(
+            "parameters",
+            "--bootstrap-config", dashboardBootstrapManifest.asFile.absolutePath,
+            "--output", dashboardParametersFile.get().asFile.absolutePath,
+        )
+        inputs.file(dashboardBootstrapManifest)
+        outputs.file(dashboardParametersFile)
+        dependsOn(":kotlinNpmInstall")
+    }
+
     val dashboardDoctor = register<NodeExec>("dashboardDoctor") {
         group = "verification"
         description = "Checks dashboard deployment prerequisites without modifying AWS."
         setup(project)
         nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf("doctor", "--parameters", dashboardParametersFile.asFile.absolutePath, "--region", dashboardRegion)
+        arguments = listOf("doctor", "--parameters", dashboardParametersFile.get().asFile.absolutePath, "--region", dashboardRegion)
         inputs.file(dashboardParametersFile)
-        dependsOn(":kotlinNpmInstall")
+        dependsOn(dashboardApplicationParameters)
     }
 
     val dashboardPackage = named("dashboardPackage")
@@ -70,14 +91,32 @@ tasks {
         region.set(dashboardRegion)
         stackName.set(dashboardStackName)
         dryRun.set(dashboardDryRun)
-        dependsOn(dashboardUploadArtifact)
+        executionRoleArn.set(dashboardExecutionRoleArn)
+        dependsOn(dashboardDoctor, dashboardUploadArtifact)
     }
-    register<DashboardEndpointHealthTask>("dashboardHealthCheck") {
-        group = "verification"
-        description = "Requires successful health and dashboard responses from the deployed Function URL."
+    val dashboardGatewayParameters = register<DashboardGatewayParametersTask>("dashboardGatewayParameters") {
+        group = "deployment"
+        description = "Generates public gateway parameters from the consumer bootstrap manifest."
+        bootstrapManifest.set(dashboardBootstrapManifest)
+        parametersFile.set(dashboardGatewayParametersFile)
+    }
+    val dashboardGatewayDeployStack = register<DashboardCloudFormationDeployTask>("dashboardGatewayDeployStack") {
+        group = "deployment"
+        description = "Deploys the Coupling-owned public dashboard gateway."
+        parametersFile.set(dashboardGatewayParametersFile)
+        templateFile.set(dashboardGatewayTemplate)
         region.set(dashboardRegion)
-        stackName.set(dashboardStackName)
-        endpointFile.set(layout.buildDirectory.file("release/function-url.txt"))
-        dependsOn(dashboardDoctor, dashboardDeployStack)
+        stackName.set(dashboardGatewayStackName)
+        dryRun.set(dashboardDryRun)
+        dependsOn(dashboardGatewayParameters)
+    }
+    register<DashboardEndpointHealthTask>("dashboardGatewayHealthCheck") {
+        group = "verification"
+        description = "Requires successful health and dashboard responses through the public gateway."
+        region.set(dashboardRegion)
+        stackName.set(dashboardGatewayStackName)
+        endpointOutputKey.set("ApiEndpoint")
+        endpointFile.set(layout.buildDirectory.file("release/gateway-url.txt"))
+        dependsOn(dashboardGatewayDeployStack)
     }
 }

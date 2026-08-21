@@ -1,0 +1,17 @@
+{
+  "region": "us-east-1",
+  "core": {
+    "stackName": "ze-great-team-dashboard-bootstrap",
+    "artifactBucketName": "coupling-ze-great-dashboard-artifacts",
+    "applicationStackName": "ze-great-team-dashboard",
+    "dashboardFunctionName": "ze-great-team-dashboard"
+  },
+  "githubOidc": {
+    "stackName": "ze-great-team-dashboard-github-bootstrap",
+    "providerArn": "arn:aws:iam::174159267544:oidc-provider/token.actions.githubusercontent.com",
+    "repository": "robertfmurdock/Coupling",
+    "ownerId": "6215634",
+    "repositoryId": "18269766",
+    "environment": "dashboard-production"
+  }
+}

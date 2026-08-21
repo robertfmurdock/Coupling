@@ -7,6 +7,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
@@ -77,6 +78,10 @@ abstract class DashboardCloudFormationDeployTask : DefaultTask() {
     @get:Input
     abstract val dryRun: Property<Boolean>
 
+    @get:Input
+    @get:Optional
+    abstract val executionRoleArn: Property<String>
+
     @TaskAction
     fun deploy() {
         val template = templateFile.get().asFile.absolutePath
@@ -87,11 +92,17 @@ abstract class DashboardCloudFormationDeployTask : DefaultTask() {
             return
         }
         execOperations.exec {
+            val roleArgument = executionRoleArn.orNull
+                ?.takeIf(String::isNotBlank)
+                ?.let { listOf("--role-arn", it) }
+                .orEmpty()
             commandLine(
-                "aws", "cloudformation", "deploy", "--stack-name", stackName.get(),
-                "--template-file", template, "--region", region.get(),
-                "--capabilities", "CAPABILITY_NAMED_IAM", "--parameter-overrides",
-                "file://${parametersFile.get().asFile.absolutePath}", "--no-fail-on-empty-changeset", "--no-cli-pager",
+                listOf(
+                    "aws", "cloudformation", "deploy", "--stack-name", stackName.get(),
+                    "--template-file", template, "--region", region.get(),
+                    "--capabilities", "CAPABILITY_NAMED_IAM", "--parameter-overrides",
+                    "file://${parametersFile.get().asFile.absolutePath}",
+                ) + roleArgument + listOf("--no-fail-on-empty-changeset", "--no-cli-pager"),
             )
         }
     }
@@ -107,12 +118,15 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     @get:Input
     abstract val stackName: Property<String>
 
+    @get:Input
+    abstract val endpointOutputKey: Property<String>
+
     @get:OutputFile
     abstract val endpointFile: RegularFileProperty
 
     @TaskAction
     fun check() {
-        val url = stackOutput("ServerUrl").removeSuffix("/")
+        val url = stackOutput(endpointOutputKey.get()).removeSuffix("/")
         listOf("$url/health", url).forEach(::assertSuccessful)
         endpointFile.get().asFile.apply {
             parentFile.mkdirs()
@@ -141,6 +155,28 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
         )
         if (response.statusCode() !in 200..299) {
             throw GradleException("Dashboard endpoint $url returned HTTP ${response.statusCode()}")
+        }
+    }
+}
+
+abstract class DashboardGatewayParametersTask : DefaultTask() {
+    @get:InputFile
+    abstract val bootstrapManifest: RegularFileProperty
+
+    @get:OutputFile
+    abstract val parametersFile: RegularFileProperty
+
+    @TaskAction
+    fun generate() {
+        val functionName = mapper.readTree(bootstrapManifest.get().asFile)
+            .path("core")
+            .path("dashboardFunctionName")
+            .asText()
+            .takeIf(String::isNotBlank)
+            ?: throw GradleException("${bootstrapManifest.get().asFile} is missing core.dashboardFunctionName")
+        parametersFile.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(mapper.writeValueAsString(listOf(mapOf("ParameterKey" to "DashboardFunctionName", "ParameterValue" to functionName))))
         }
     }
 }
