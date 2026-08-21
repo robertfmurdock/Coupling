@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "Name",
+    "ParameterValue": "ze-great-team-dashboard"
+  },
+  {
+    "ParameterKey": "LambdaArtifactBucket",
+    "ParameterValue": "coupling-ze-great-dashboard-artifacts"
+  }
+]

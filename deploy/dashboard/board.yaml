@@ -1,0 +1,79 @@
+sources:
+  coupling:
+    type: github-actions
+    repo: robertfmurdock/coupling
+    branch: master
+  jsmints:
+    type: github-actions
+    repo: robertfmurdock/jsmints
+    branch: master
+  testmints:
+    type: github-actions
+    repo: robertfmurdock/testmints
+    branch: master
+  ze-great-tools:
+    type: github-actions
+    repo: robertfmurdock/ze-great-tools
+    branch: main
+  ze-great-dashboard:
+    type: github-actions
+    repo: robertfmurdock/ze-great-dashboard
+    branch: main
+
+boards:
+  ze-great-team:
+    refresh: 60s
+    panels:
+      - id: coupling-build
+        type: pipeline-status
+        source: coupling
+        pipeline: main.yml
+        position: { x: 0, y: 0, w: 6, h: 4 }
+      - id: jsmints-build
+        type: pipeline-status
+        source: jsmints
+        pipeline: main.yml
+        position: { x: 6, y: 0, w: 6, h: 4 }
+      - id: testmints-build
+        type: pipeline-status
+        source: testmints
+        pipeline: main.yml
+        position: { x: 0, y: 4, w: 6, h: 4 }
+      - id: ze-great-tools-build
+        type: pipeline-status
+        source: ze-great-tools
+        pipeline: main.yml
+        position: { x: 6, y: 4, w: 6, h: 4 }
+      - id: ze-great-dashboard-build
+        type: pipeline-status
+        source: ze-great-dashboard
+        pipeline: main.yml
+        position: { x: 0, y: 8, w: 12, h: 4 }
+      - id: tagger-latest-version
+        type: http-value
+        url: https://registry.npmjs.org/@continuous-excellence%2Ftagger/latest
+        json_path: $.version
+        link: https://www.npmjs.com/package/@continuous-excellence/tagger
+        refresh: 15m
+        position: { x: 0, y: 12, w: 6, h: 4 }
+      - id: coupling-latest-version
+        type: http-value
+        url: https://registry.npmjs.org/@continuous-excellence%2Fcoupling-cli/latest
+        json_path: $.version
+        link: https://www.npmjs.com/package/@continuous-excellence/coupling-cli
+        refresh: 15m
+        position: { x: 6, y: 12, w: 6, h: 4 }
+      - id: jsmints-latest-version
+        type: http-value
+        url: 'https://search.maven.org/solrsearch/select?q=g%3A%22com.zegreatrob.jsmints%22%20AND%20a%3A%22plugins%22&rows=1&wt=json'
+        json_path: $.response.docs[0].latestVersion
+        link: https://central.sonatype.com/artifact/com.zegreatrob.jsmints/plugins
+        refresh: 15m
+        position: { x: 0, y: 16, w: 6, h: 4 }
+      - id: testmints-latest-version
+        type: http-value
+        url: 'https://search.maven.org/solrsearch/select?q=g%3A%22com.zegreatrob.testmints%22%20AND%20a%3A%22report%22&rows=1&wt=json'
+        json_path: $.response.docs[0].latestVersion
+        link: https://central.sonatype.com/artifact/com.zegreatrob.testmints/report
+        refresh: 15m
+        position: { x: 6, y: 16, w: 6, h: 4 }
