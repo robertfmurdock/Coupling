@@ -1,16 +1,16 @@
 [libraries]
 com-apollographql-adapters-apollo-adapters-core = { module = "com.apollographql.adapters:apollo-adapters-core", version.ref = "com-apollographql-adapters" }
 com-apollographql-adapters-apollo-adapters-kotlinx-datetime = { module = "com.apollographql.adapters:apollo-adapters-kotlinx-datetime", version.ref = "com-apollographql-adapters" }
-com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:5.0.1"
+com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:5.1.0"
 com-apollographql-ktor-apollo-engine-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
 com-auth0-java-jwt = "com.auth0:java-jwt:4.6.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.2"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.1.0"
 com-google-devtools-ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "com-google-devtools-ksp" }
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.12.10"
-com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.45"
-com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.6.16"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.12.12"
+com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.46"
+com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.6.18"
 eu-anifantakis-ksafe = "eu.anifantakis:ksafe:3.0.0"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:8.0.4"
 io-ktor-ktor-bom = "io.ktor:ktor-bom:3.5.2"
@@ -28,11 +28,11 @@ org-kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-
 org-slf4j-slf4j-simple = "org.slf4j:slf4j-simple:2.0.18"
 
 [plugins]
-com-apollographql-apollo = "com.apollographql.apollo:5.0.1"
+com-apollographql-apollo = "com.apollographql.apollo:5.1.0"
 com-avast-gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.21"
 com-github-sghill-distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
-com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:3.6.16"
-com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:3.6.16"
+com-zegreatrob-tools-certifier = "com.zegreatrob.tools.certifier:3.6.18"
+com-zegreatrob-tools-digger = "com.zegreatrob.tools.digger:3.6.18"
 io-github-turansky-seskar = "io.github.turansky.seskar:4.64.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.1"
 
