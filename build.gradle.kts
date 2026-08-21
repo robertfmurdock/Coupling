@@ -27,10 +27,12 @@ dockerCompose {
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
-    val awsParams = providers.fetchAwsSsmParameters()
-    environment.put("SERVERLESS_ACCESS_KEY", awsParams.map(AwsParameters::serverlessAccessKey))
-    environment.put("STRIPE_PUBLISHABLE_KEY", awsParams.map(AwsParameters::stripePublishableKey))
-    environment.put("STRIPE_SECRET_KEY", awsParams.map(AwsParameters::stripeSecretKey))
+    if (gradle.startParameter.taskNames.any { !it.startsWith(":deploy:dashboard:") }) {
+        val awsParams = providers.fetchAwsSsmParameters()
+        environment.put("SERVERLESS_ACCESS_KEY", awsParams.map(AwsParameters::serverlessAccessKey))
+        environment.put("STRIPE_PUBLISHABLE_KEY", awsParams.map(AwsParameters::stripePublishableKey))
+        environment.put("STRIPE_SECRET_KEY", awsParams.map(AwsParameters::stripeSecretKey))
+    }
 
     nested("caddy").apply {
         setProjectName("Coupling-root")
