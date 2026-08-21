@@ -72,6 +72,19 @@ tasks {
         dependsOn(dashboardApplicationParameters)
     }
 
+    val dashboardBootstrapPreflight = register<NodeExec>("dashboardBootstrapPreflight") {
+        group = "verification"
+        description = "Verifies the deployed dashboard core and GitHub OIDC bootstrap contracts without modifying AWS."
+        setup(project)
+        nodeCommand = "ze-great-dashboard-aws"
+        arguments = listOf(
+            "bootstrap", "preflight",
+            "--config", dashboardBootstrapManifest.asFile.absolutePath,
+        )
+        inputs.file(dashboardBootstrapManifest)
+        dependsOn(":kotlinNpmInstall")
+    }
+
     val dashboardPackage = named("dashboardPackage")
     val dashboardUploadArtifact = register<DashboardArtifactUploadTask>("dashboardUploadArtifact") {
         group = "deployment"
@@ -110,13 +123,19 @@ tasks {
         dryRun.set(dashboardDryRun)
         dependsOn(dashboardGatewayParameters)
     }
-    register<DashboardEndpointHealthTask>("dashboardGatewayHealthCheck") {
+    val dashboardGatewayHealthCheck = register<DashboardEndpointHealthTask>("dashboardGatewayHealthCheck") {
         group = "verification"
-        description = "Requires successful health and dashboard responses through the public gateway."
+        description = "Requires successful health and dashboard responses through the existing public gateway."
         region.set(dashboardRegion)
         stackName.set(dashboardGatewayStackName)
         endpointOutputKey.set("ApiEndpoint")
         endpointFile.set(layout.buildDirectory.file("release/gateway-url.txt"))
-        dependsOn(dashboardGatewayDeployStack)
+        dryRun.set(dashboardDryRun)
+        dependsOn(dashboardDeployStack)
+    }
+    register("dashboardDeploy") {
+        group = "deployment"
+        description = "Deploys the dashboard application and verifies it through the existing public gateway."
+        dependsOn(dashboardGatewayHealthCheck)
     }
 }

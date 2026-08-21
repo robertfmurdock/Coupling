@@ -121,11 +121,15 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     @get:Input
     abstract val endpointOutputKey: Property<String>
 
+    @get:Input
+    abstract val dryRun: Property<Boolean>
+
     @get:OutputFile
     abstract val endpointFile: RegularFileProperty
 
     @TaskAction
     fun check() {
+        if (dryRun.get()) return
         val url = stackOutput(endpointOutputKey.get()).removeSuffix("/")
         listOf("$url/health", url).forEach(::assertSuccessful)
         endpointFile.get().asFile.apply {
