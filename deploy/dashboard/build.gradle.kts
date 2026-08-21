@@ -81,7 +81,7 @@ tasks {
         lambdaZip.set(releaseDirectory.map { it.file("lambda.zip") })
         region.set(dashboardRegion)
         dryRun.set(dashboardDryRun)
-        dependsOn(dashboardPackage)
+        dependsOn(dashboardApplicationParameters, dashboardPackage)
     }
     val dashboardDeployStack = register<DashboardCloudFormationDeployTask>("dashboardDeployStack") {
         group = "deployment"
