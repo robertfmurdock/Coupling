@@ -12,6 +12,7 @@
     "repository": "robertfmurdock/Coupling",
     "ownerId": "6215634",
     "repositoryId": "18269766",
-    "environment": "dashboard-production"
+    "environment": "dashboard-production",
+    "consumerGatewayStackName": "ze-great-team-dashboard-gateway"
   }
 }

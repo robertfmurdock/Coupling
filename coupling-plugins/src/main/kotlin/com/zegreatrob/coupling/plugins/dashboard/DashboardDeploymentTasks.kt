@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
@@ -20,90 +20,33 @@ import javax.inject.Inject
 
 private val mapper = ObjectMapper()
 
-abstract class DashboardArtifactUploadTask : DefaultTask() {
+abstract class DashboardHandoffCommandTask : DefaultTask() {
     @get:Inject
     abstract val execOperations: ExecOperations
 
     @get:InputFile
-    abstract val parametersFile: RegularFileProperty
-
-    @get:InputFile
-    abstract val releaseFile: RegularFileProperty
-
-    @get:InputFile
-    abstract val lambdaZip: RegularFileProperty
+    abstract val deploymentFile: RegularFileProperty
 
     @get:Input
-    abstract val region: Property<String>
+    abstract val commandName: Property<String>
+
+    @get:Input
+    abstract val runtimeValues: MapProperty<String, String>
 
     @get:Input
     abstract val dryRun: Property<Boolean>
 
     @TaskAction
-    fun upload() {
-        if (dryRun.get()) return
-        val bucket = parametersFile.parameter("LambdaArtifactBucket")
-        val artifactKey = releaseFile.releaseValue("artifactKey")
+    fun execute() {
+        val command = dashboardHandoffCommand(
+            deploymentFile = deploymentFile.get().asFile,
+            commandName = commandName.get(),
+            runtimeValues = runtimeValues.get(),
+            dryRun = dryRun.get(),
+        )
+        if (command.isEmpty()) return
         execOperations.exec {
-            commandLine(
-                "aws",
-                "s3",
-                "cp",
-                lambdaZip.get().asFile.absolutePath,
-                "s3://$bucket/$artifactKey",
-                "--region",
-                region.get(),
-                "--no-cli-pager",
-            )
-        }
-    }
-}
-
-abstract class DashboardCloudFormationDeployTask : DefaultTask() {
-    @get:Inject
-    abstract val execOperations: ExecOperations
-
-    @get:InputFile
-    abstract val parametersFile: RegularFileProperty
-
-    @get:InputFile
-    abstract val templateFile: RegularFileProperty
-
-    @get:Input
-    abstract val region: Property<String>
-
-    @get:Input
-    abstract val stackName: Property<String>
-
-    @get:Input
-    abstract val dryRun: Property<Boolean>
-
-    @get:Input
-    @get:Optional
-    abstract val executionRoleArn: Property<String>
-
-    @TaskAction
-    fun deploy() {
-        val template = templateFile.get().asFile.absolutePath
-        if (dryRun.get()) {
-            execOperations.exec {
-                commandLine("aws", "cloudformation", "validate-template", "--template-body", "file://$template", "--region", region.get(), "--no-cli-pager")
-            }
-            return
-        }
-        execOperations.exec {
-            val roleArgument = executionRoleArn.orNull
-                ?.takeIf(String::isNotBlank)
-                ?.let { listOf("--role-arn", it) }
-                .orEmpty()
-            commandLine(
-                listOf(
-                    "aws", "cloudformation", "deploy", "--stack-name", stackName.get(),
-                    "--template-file", template, "--region", region.get(),
-                    "--capabilities", "CAPABILITY_NAMED_IAM", "--parameter-overrides",
-                    "file://${parametersFile.get().asFile.absolutePath}",
-                ) + roleArgument + listOf("--no-fail-on-empty-changeset", "--no-cli-pager"),
-            )
+            commandLine(command)
         }
     }
 }
@@ -112,14 +55,11 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     @get:Inject
     abstract val execOperations: ExecOperations
 
+    @get:InputFile
+    abstract val bootstrapManifest: RegularFileProperty
+
     @get:Input
     abstract val region: Property<String>
-
-    @get:Input
-    abstract val stackName: Property<String>
-
-    @get:Input
-    abstract val endpointOutputKey: Property<String>
 
     @get:Input
     abstract val dryRun: Property<Boolean>
@@ -130,7 +70,7 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     @TaskAction
     fun check() {
         if (dryRun.get()) return
-        val url = stackOutput(endpointOutputKey.get()).removeSuffix("/")
+        val url = stackOutput().removeSuffix("/")
         listOf("$url/health", url).forEach(::assertSuccessful)
         endpointFile.get().asFile.apply {
             parentFile.mkdirs()
@@ -138,18 +78,19 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
         }
     }
 
-    private fun stackOutput(key: String): String {
+    private fun stackOutput(): String {
+        val stackName = consumerGatewayStackName(bootstrapManifest.get().asFile)
         val output = ByteArrayOutputStream()
         execOperations.exec {
             commandLine(
-                "aws", "cloudformation", "describe-stacks", "--stack-name", stackName.get(),
-                "--region", region.get(), "--query", "Stacks[0].Outputs[?OutputKey=='$key'].OutputValue",
+                "aws", "cloudformation", "describe-stacks", "--stack-name", stackName,
+                "--region", region.get(), "--query", "Stacks[0].Outputs[?OutputKey=='ApiEndpoint'].OutputValue",
                 "--output", "text", "--no-cli-pager",
             )
             standardOutput = output
         }
         return output.toString().trim().takeIf(String::isNotBlank)
-            ?: throw GradleException("CloudFormation stack ${stackName.get()} has no $key output")
+            ?: throw GradleException("CloudFormation stack $stackName has no ApiEndpoint output")
     }
 
     private fun assertSuccessful(url: String) {
@@ -163,40 +104,58 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     }
 }
 
-abstract class DashboardGatewayParametersTask : DefaultTask() {
-    @get:InputFile
-    abstract val bootstrapManifest: RegularFileProperty
-
-    @get:OutputFile
-    abstract val parametersFile: RegularFileProperty
-
-    @TaskAction
-    fun generate() {
-        val functionName = mapper.readTree(bootstrapManifest.get().asFile)
-            .path("core")
-            .path("dashboardFunctionName")
-            .asText()
-            .takeIf(String::isNotBlank)
-            ?: throw GradleException("${bootstrapManifest.get().asFile} is missing core.dashboardFunctionName")
-        parametersFile.get().asFile.apply {
-            parentFile.mkdirs()
-            writeText(mapper.writeValueAsString(listOf(mapOf("ParameterKey" to "DashboardFunctionName", "ParameterValue" to functionName))))
-        }
-    }
-}
-
-private fun RegularFileProperty.parameter(key: String): String {
-    val parameters = mapper.readTree(get().asFile)
-    return parameters
-        .firstOrNull { it.path("ParameterKey").asText() == key }
-        ?.path("ParameterValue")
-        ?.asText()
-        ?.takeIf(String::isNotBlank)
-        ?: throw GradleException("${get().asFile} is missing a non-empty $key parameter")
-}
-
-private fun RegularFileProperty.releaseValue(key: String): String = mapper.readTree(get().asFile)
-    .path(key)
+internal fun consumerGatewayStackName(bootstrapManifest: java.io.File): String = mapper.readTree(bootstrapManifest)
+    .path("githubOidc")
+    .path("consumerGatewayStackName")
     .asText()
     .takeIf(String::isNotBlank)
-    ?: throw GradleException("${get().asFile} is missing a non-empty $key")
+    ?: throw GradleException("$bootstrapManifest is missing githubOidc.consumerGatewayStackName")
+
+internal fun dashboardHandoffCommand(
+    deploymentFile: java.io.File,
+    commandName: String,
+    runtimeValues: Map<String, String>,
+    dryRun: Boolean,
+): List<String> {
+    val handoff = mapper.readTree(deploymentFile)
+    if (dryRun) return dryRunCommand(handoff, deploymentFile, commandName, runtimeValues)
+    val command = handoff.path("commands").path(commandName)
+        .takeIf { it.isArray }
+        ?.map { it.asText() }
+        ?: throw GradleException("$deploymentFile has no $commandName handoff command")
+    return command.map { argument ->
+        if (argument.startsWith("$")) {
+            runtimeValues[argument.removePrefix("$")] ?: argument
+        } else {
+            argument
+        }
+    }
+        .also { resolved ->
+            resolved.firstOrNull { it.matches(Regex("\\$[A-Z][A-Z0-9_]*")) }
+                ?.let { throw GradleException("$deploymentFile has no runtime value for $it") }
+        }
+}
+
+private fun dryRunCommand(
+    handoff: com.fasterxml.jackson.databind.JsonNode,
+    deploymentFile: java.io.File,
+    commandName: String,
+    runtimeValues: Map<String, String>,
+): List<String> {
+    if (commandName == "upload") return emptyList()
+    if (commandName != "deploy") throw GradleException("$deploymentFile cannot dry-run $commandName")
+    val template = handoff.path("template").asText().takeIf(String::isNotBlank)
+        ?: throw GradleException("$deploymentFile is missing template")
+    val region = runtimeValues["AWS_REGION"]?.takeIf(String::isNotBlank)
+        ?: throw GradleException("$deploymentFile has no runtime value for \$AWS_REGION")
+    return listOf(
+        "aws",
+        "cloudformation",
+        "validate-template",
+        "--template-body",
+        "file://${deploymentFile.parentFile.resolve(template)}",
+        "--region",
+        region,
+        "--no-cli-pager",
+    )
+}

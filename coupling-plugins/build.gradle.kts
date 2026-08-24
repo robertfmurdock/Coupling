@@ -50,6 +50,8 @@ dependencies {
     implementation(platform(libs.com.zegreatrob.testmints.testmints.bom))
     implementation(platform(libs.com.zegreatrob.tools.tools.bom))
 
+    testImplementation(kotlin("test"))
+
     constraints {
         implementation(libs.com.google.devtools.ksp.symbol.processing.api) {
             version {
