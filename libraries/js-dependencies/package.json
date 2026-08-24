@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.24.1",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.6.4",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1116.0",
-    "@aws-sdk/client-dynamodb": "3.1116.0",
-    "@aws-sdk/client-lambda": "~3.1116.0",
-    "@aws-sdk/lib-dynamodb": "3.1116.0",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.8.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1117.0",
+    "@aws-sdk/client-dynamodb": "3.1117.0",
+    "@aws-sdk/client-lambda": "~3.1117.0",
+    "@aws-sdk/lib-dynamodb": "3.1117.0",
     "@graphql-codegen/cli": "^7.3.1",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
