@@ -113,7 +113,7 @@ jobs:
       id-token: write
       contents: read
     env:
-      AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN: ${{ vars.AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN }}
+      AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN: ${{ vars.DASHBOARD_CLOUDFORMATION_EXECUTION_ROLE_ARN }}
     steps:
       - uses: actions/checkout@v7
       - name: Set up JDK
@@ -129,7 +129,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          role-to-assume: ${{ vars.DASHBOARD_DEPLOY_ROLE_ARN }}
           aws-region: us-east-1
       - name: Deploy and verify dashboard
         run: ./gradlew :deploy:dashboard:dashboardDeploy --no-configuration-cache
