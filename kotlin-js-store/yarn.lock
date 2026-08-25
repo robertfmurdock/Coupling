@@ -780,10 +780,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.8.0.tgz#9a18f992a8063d46d3e44329bbde5d879437ceba"
-  integrity sha512-MFlppFqZw7ZrYAsXY5joXRiEa48vdMLUxtj2q38FlUAGDAXFUIv5IOOHYqOnj1ECC03ShoRHldK7rz49IF0lqQ==
+"@continuous-excellence/ze-great-dashboard-aws@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.9.2.tgz#b1b544d06b80ff650113ca39bc25c77ca7894d0e"
+  integrity sha512-tSOclxyO5RL9Ia0daId+mzBjFvMMo1Oonp6FOnRt1p06yXXC+jLdtbG4XcPGTV0oOrydm2RPUGCjfJpa6gU76Q==
   dependencies:
     fflate "^0.8.2"
     yaml "^2.8.1"
