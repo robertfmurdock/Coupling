@@ -35,6 +35,12 @@ kotlin {
 
 version = "0.0.0"
 
+if (System.getenv().containsKey("CI")) {
+    afterEvaluate {
+        extensions.findByType(NodeJsEnvSpec::class)?.download?.set(false)
+    }
+}
+
 project.extensions.create<JsConstraintExtension>("npmConstrained")
 configure<JsConstraintExtension> {
     json = File(project(":libraries:js-dependencies").projectDir, "package.json")
