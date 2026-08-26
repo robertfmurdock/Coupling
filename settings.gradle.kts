@@ -6,6 +6,7 @@ pluginManagement {
 }
 plugins {
     id("com.gradle.develocity") version "4.5.0"
+    id("com.github.burrunan.s3-build-cache") version "1.9.8"
 }
 
 rootProject.name = "Coupling"
@@ -22,6 +23,7 @@ include("deploy:prerelease")
 include("deploy:prod")
 include("deploy:sandbox")
 include("deploy:dashboard")
+include("deploy:build-cache")
 include("e2e")
 include("konsist")
 include("libraries:action")
@@ -66,6 +68,16 @@ develocity {
 buildCache {
     local {
         isEnabled = true
+    }
+    val buildCacheBucket = System.getenv("GRADLE_BUILD_CACHE_BUCKET")
+    if (System.getenv().containsKey("CI") && !buildCacheBucket.isNullOrBlank()) {
+        remote<com.github.burrunan.s3cache.AwsS3BuildCache> {
+            region = System.getenv("GRADLE_BUILD_CACHE_REGION") ?: "us-east-1"
+            bucket = buildCacheBucket
+            prefix = "gradle-build-cache/"
+            lookupDefaultAwsCredentials = true
+            isPush = System.getenv("GITHUB_REF") == "refs/heads/master"
+        }
     }
 }
 

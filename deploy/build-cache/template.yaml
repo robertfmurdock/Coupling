@@ -1,0 +1,89 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Shared Gradle build-cache storage for Coupling CI.
+
+Parameters:
+  CacheBucketName:
+    Type: String
+    Default: coupling-gradle-build-cache-174159267544
+    Description: Globally unique bucket name for Gradle task-output cache objects.
+  DeploymentRoleName:
+    Type: String
+    Description: Existing GitHub Actions role used by master builds.
+  PullRequestRoleName:
+    Type: String
+    Description: Existing GitHub Actions role used by pull-request builds.
+
+Resources:
+  GradleBuildCacheBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref CacheBucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireCacheObjects
+            Status: Enabled
+            ExpirationInDays: 30
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 7
+
+  GradleBuildCacheBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref GradleBuildCacheBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !GetAtt GradleBuildCacheBucket.Arn
+              - !Sub '${GradleBuildCacheBucket.Arn}/*'
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+  PullRequestCacheReadPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: CouplingGradleBuildCacheRead
+      Roles:
+        - !Ref PullRequestRoleName
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: s3:GetObject
+            Resource: !Sub '${GradleBuildCacheBucket.Arn}/gradle-build-cache/*'
+
+  DeploymentCacheWritePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: CouplingGradleBuildCacheWrite
+      Roles:
+        - !Ref DeploymentRoleName
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:PutObject
+            Resource: !Sub '${GradleBuildCacheBucket.Arn}/gradle-build-cache/*'
+
+Outputs:
+  CacheBucketName:
+    Description: Set this value as GRADLE_BUILD_CACHE_BUCKET in GitHub Actions.
+    Value: !Ref GradleBuildCacheBucket

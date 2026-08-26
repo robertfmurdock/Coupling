@@ -21,10 +21,14 @@ jobs:
       COUPLING_IN_MEMORY: "true"
       COUPLING_PRIMARY_TEST_PASSWORD: ${{ secrets.COUPLING_PRIMARY_TEST_PASSWORD }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      S3_BUILD_CACHE_ACCESS_KEY_ID: ${{ secrets.S3_BUILD_CACHE_ACCESS_KEY_ID }}
-      S3_BUILD_CACHE_SECRET_KEY: ${{ secrets.S3_BUILD_CACHE_SECRET_KEY }}
+      GRADLE_BUILD_CACHE_BUCKET: ${{ vars.GRADLE_BUILD_CACHE_BUCKET }}
+      GRADLE_BUILD_CACHE_REGION: us-east-1
       SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
     steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref }}
       - run: echo '127.0.0.1 static.localhost cli.localhost socket.localhost' | sudo tee -a /etc/hosts
       - name: Set up JDK
         uses: actions/setup-java@v5
@@ -35,6 +39,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - uses: actions/setup-node@v7
         with:
           node-version: 24.10.0
@@ -68,10 +73,6 @@ jobs:
         run: |-
           echo "UID=$(id -u)" >> $GITHUB_ENV &&
           echo "GID=$(id -g)" >> $GITHUB_ENV
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref || github.ref }}
       - name: Set Up Git User
         run: |
           git config user.name "github-actions[bot]"
@@ -86,7 +87,7 @@ jobs:
       - name: Generate Version 🧮
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build + Release Coupling
-        run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan --stacktrace
+        run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --scan --stacktrace
       - name: Update Contributions
         uses: robertfmurdock/coupling-contribution-action@v3
         with:
