@@ -42,7 +42,7 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - uses: actions/setup-node@v7
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
       - name: Validate NPM Token
         run: |
           npm install -g npm@latest
@@ -80,7 +80,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: 'yarn'
           cache-dependency-path: |
             kotlin-js-store/yarn.lock
@@ -127,7 +127,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
       - uses: actions/setup-node@v7
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
