@@ -34,17 +34,42 @@ tasks {
         from(serverProject.layout.buildDirectory.dir("executable"))
     }
 
-    val prune = register<NodeExec>("prune") {
+    fun NodeExec.configureServerless() {
         setup(project)
+        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
+        workingDir = deployDir.get().asFile
+        nodeCommand = "serverless"
+    }
+
+    val serverlessPackage = register<NodeExec>("serverlessPackage") {
+        configureServerless()
+        val releaseVersion = rootProject.version
+        val serverlessBuildDir = serverProject.layout.buildDirectory.dir("${project.name}/lambda-dist")
+        environment(
+            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion",
+            "CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion",
+        )
+        arguments = listOf(
+            "package",
+            "--verbose",
+            "--config",
+            deployDir.get().file("serverless.yml").asFile.absolutePath,
+            "--package",
+            serverlessBuildDir.get().asFile.absolutePath,
+            "--stage",
+            project.name,
+        )
+        dependsOn(copyDeployResources, ":calculateVersion")
+    }
+
+    val prune = register<NodeExec>("prune") {
+        configureServerless()
         mustRunAfter(
             ":release",
             ":client:uploadToS3",
             ":server:check",
             ":e2e:check",
         )
-        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
-        workingDir = deployDir.get().asFile
-        nodeCommand = "serverless"
         arguments = listOf(
             "prune",
             "-n=10",
@@ -56,8 +81,7 @@ tasks {
         dependsOn(copyDeployResources)
     }
     val deploy = register<NodeExec>("deploy") {
-        setup(project)
-        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
+        configureServerless()
         mustRunAfter(
             ":release",
             ":client:uploadToS3",
@@ -65,8 +89,6 @@ tasks {
             ":e2e:check",
         )
         dependsOn(prune)
-        workingDir = deployDir.get().asFile
-        nodeCommand = "serverless"
         arguments = listOf(
             "deploy",
             "--config",
@@ -76,10 +98,11 @@ tasks {
             "--stage",
             project.name,
         )
-        dependsOn(":release", copyDeployResources)
+        dependsOn(":release", serverlessPackage)
     }
 
     if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
+        serverlessPackage { enabled = false }
         prune { enabled = false }
         deploy { enabled = false }
     }

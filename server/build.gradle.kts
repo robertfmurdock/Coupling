@@ -214,39 +214,6 @@ tasks {
         )
     }
 
-    fun NodeExec.configureBuild(stage: String) {
-        val serverlessBuildDir = project.layout.buildDirectory.file("$stage/lambda-dist")
-        setup(project)
-        dependsOn(assemble, jsTest, compileKotlinJs, ":calculateVersion")
-        val releaseVersion = rootProject.version
-        environment(
-            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion",
-            "CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion",
-            "SERVERLESS_ACCESS_KEY" to System.getenv("SERVERLESS_ACCESS_KEY"),
-        )
-        enabled = "$releaseVersion".run { !(contains("SNAPSHOT") || isBlank()) }
-        nodeCommand = "serverless"
-        arguments = listOf(
-            "package",
-            "--verbose",
-            "--config",
-            project.relativePath("serverless.yml"),
-            "--package",
-            serverlessBuildDir.get().asFile.absolutePath,
-            "--stage",
-            stage
-        )
-    }
-
-    register<NodeExec>("serverlessBuild") {
-        configureBuild("prod")
-    }
-    register<NodeExec>("serverlessBuildSandbox") {
-        configureBuild("sandbox")
-    }
-    register<NodeExec>("serverlessBuildPrerelease") {
-        configureBuild("prerelease")
-    }
 }
 
 artifacts {

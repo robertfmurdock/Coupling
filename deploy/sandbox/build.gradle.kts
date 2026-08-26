@@ -4,9 +4,9 @@ plugins {
 
 tasks {
     named("prune") {
-        mustRunAfter(":server:serverlessBuildSandbox")
+        mustRunAfter("serverlessPackage")
     }
     named("deploy") {
-        dependsOn(":server:serverlessBuildSandbox")
+        dependsOn("serverlessPackage")
     }
 }

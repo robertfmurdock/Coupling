@@ -24,6 +24,9 @@ Multi-module Gradle: Kotlin/JVM + Kotlin/JS. Web client + backend services.
 - Testing: confidence-anchor at highest level, variations at lower levels
 - Baseline: `./gradlew test|build|check`
 - Scoped: `./gradlew :module:task`
+- Serverless packaging belongs to each `:deploy:<stage>` module; its service
+  root is `build/deploy` and its final artifact remains
+  `server/build/<stage>/lambda-dist`.
 
 ## GraphQL
 **Paths:**
