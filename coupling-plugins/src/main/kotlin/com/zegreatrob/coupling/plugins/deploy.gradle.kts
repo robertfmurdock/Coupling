@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.plugins
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.tools.tagger.ReleaseVersion
+import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -18,11 +19,25 @@ kotlin {
 val serverProject: Project = project.project(":server")
 
 val deployDir: Provider<Directory> = layout.buildDirectory.dir("deploy")
+val serverlessPackageJson = rootProject.layout.projectDirectory.file("libraries/js-dependencies/package.json")
+val serverlessFrameworkVersion = providers.fileContents(serverlessPackageJson).asText.map { packageJson ->
+    Regex("\\\"serverless\\\"\\s*:\\s*\\\"[^0-9]*(\\d+\\.\\d+\\.\\d+)\\\"")
+        .find(packageJson)
+        ?.groupValues
+        ?.get(1)
+        ?: error("Unable to find the Serverless version in ${serverlessPackageJson.asFile}")
+}
 
 tasks {
     val copyServerYml = register<Copy>("copyServerYml") {
         into(deployDir)
         from("${serverProject.projectDir.absolutePath}/serverless.yml")
+        inputs.file(serverlessPackageJson)
+        filter<ReplaceTokens>(
+            "tokens" to mapOf("4" to "frameworkVersion: '${serverlessFrameworkVersion.get()}'"),
+            "beginToken" to "frameworkVersion: '",
+            "endToken" to "'",
+        )
     }
     val copyDeployConfigs = register<Copy>("copyDeployConfigs") {
         into(deployDir.map { it.dir("deploy") })
@@ -59,7 +74,7 @@ tasks {
             "--stage",
             project.name,
         )
-        dependsOn(copyDeployResources, ":calculateVersion")
+        dependsOn(copyDeployResources, ":calculateVersion", ":server:serverlessWarmup")
     }
 
     val prune = register<NodeExec>("prune") {

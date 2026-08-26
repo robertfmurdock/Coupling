@@ -27,6 +27,10 @@ Multi-module Gradle: Kotlin/JVM + Kotlin/JS. Web client + backend services.
 - Serverless packaging belongs to each `:deploy:<stage>` module; its service
   root is `build/deploy` and its final artifact remains
   `server/build/<stage>/lambda-dist`.
+- The Serverless runtime version is derived from
+  `libraries/js-dependencies/package.json` when the stage service config is
+  copied; package tasks share `:server:serverlessWarmup` before running in
+  parallel.
 
 ## GraphQL
 **Paths:**

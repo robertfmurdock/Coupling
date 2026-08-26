@@ -214,6 +214,13 @@ tasks {
         )
     }
 
+    register<NodeExec>("serverlessWarmup") {
+        setup(project)
+        nodeCommand = "serverless"
+        arguments = listOf("--version")
+        workingDir = rootProject.projectDir
+    }
+
 }
 
 artifacts {
