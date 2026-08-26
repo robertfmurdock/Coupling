@@ -2,6 +2,8 @@ import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.coupling.plugins.dashboard.DashboardEndpointHealthTask
 import com.zegreatrob.coupling.plugins.dashboard.DashboardHandoffCommandTask
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -25,6 +27,9 @@ val dashboardParametersFile = layout.buildDirectory.file("dashboard/application-
 val releaseDirectory = layout.buildDirectory.dir("release")
 val dashboardDryRun = providers.gradleProperty("dashboardDryRun").map(String::toBoolean).orElse(false)
 val dashboardExecutionRoleArn = providers.environmentVariable("AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN")
+val dashboardCredentialsParameterArn = providers
+    .environmentVariable("DASHBOARD_GITHUB_CREDENTIALS_PARAMETER_ARN")
+    .orElse("")
 
 tasks {
     val dashboardApplicationParameters = register<NodeExec>("dashboardApplicationParameters") {
@@ -39,6 +44,23 @@ tasks {
         )
         inputs.file(dashboardBootstrapManifest)
         outputs.file(dashboardParametersFile)
+        inputs.property("dashboardCredentialsParameterArn", dashboardCredentialsParameterArn)
+        doLast {
+            val parametersFile = dashboardParametersFile.get().asFile
+            @Suppress("UNCHECKED_CAST")
+            val parameters = JsonSlurper().parse(parametersFile) as MutableList<MutableMap<String, Any?>>
+            parameters.removeIf { it["ParameterKey"] == "SecretReference" }
+            dashboardCredentialsParameterArn.orNull
+                ?.trim()
+                ?.takeIf(String::isNotEmpty)
+                ?.let { arn ->
+                    parameters += mutableMapOf(
+                        "ParameterKey" to "SecretReference",
+                        "ParameterValue" to arn,
+                    )
+                }
+            parametersFile.writeText("${JsonOutput.prettyPrint(JsonOutput.toJson(parameters))}\n")
+        }
         dependsOn(":kotlinNpmInstall")
     }
     val dashboardPackage = register<NodeExec>("dashboardPackage") {

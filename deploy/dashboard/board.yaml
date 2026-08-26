@@ -3,22 +3,27 @@ sources:
     type: github-actions
     repo: robertfmurdock/coupling
     branch: master
+    token_env: GITHUB_TOKEN
   jsmints:
     type: github-actions
     repo: robertfmurdock/jsmints
     branch: master
+    token_env: GITHUB_TOKEN
   testmints:
     type: github-actions
     repo: robertfmurdock/testmints
     branch: master
+    token_env: GITHUB_TOKEN
   ze-great-tools:
     type: github-actions
     repo: robertfmurdock/ze-great-tools
     branch: main
+    token_env: GITHUB_TOKEN
   ze-great-dashboard:
     type: github-actions
     repo: robertfmurdock/ze-great-dashboard
     branch: main
+    token_env: GITHUB_TOKEN
 
 boards:
   ze-great-team:

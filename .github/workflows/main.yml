@@ -116,6 +116,7 @@ jobs:
       contents: read
     env:
       AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN: ${{ vars.DASHBOARD_CLOUDFORMATION_EXECUTION_ROLE_ARN }}
+      DASHBOARD_GITHUB_CREDENTIALS_PARAMETER_ARN: arn:aws:ssm:us-east-1:174159267544:parameter/ze-great-team-dashboard/github-credentials
     steps:
       - uses: actions/checkout@v7
       - name: Set up JDK
