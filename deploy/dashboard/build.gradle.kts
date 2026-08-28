@@ -87,6 +87,9 @@ tasks {
         outputs.dir(releaseDirectory)
         dependsOn(dashboardApplicationParameters)
     }
+    named("check") {
+        dependsOn(dashboardPackage)
+    }
 
     val dashboardDoctor = register<NodeExec>("dashboardDoctor") {
         group = "verification"

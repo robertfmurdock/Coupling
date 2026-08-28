@@ -135,4 +135,4 @@ jobs:
           role-to-assume: ${{ vars.DASHBOARD_DEPLOY_ROLE_ARN }}
           aws-region: us-east-1
       - name: Deploy and verify dashboard
-        run: ./gradlew :deploy:dashboard:dashboardDeploy --no-configuration-cache
+        run: ./gradlew :deploy:dashboard:dashboardDeploy
