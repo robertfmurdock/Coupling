@@ -34,7 +34,7 @@ boards:
         source: coupling
         pipeline: main.yml
         display: primary
-        position: { x: 0, y: 0, w: 4, h: 4 }
+        position: { x: 0, y: 0, w: 3, h: 4 }
       - id: coupling-automatic-updates
         type: pull-request-health
         label: Coupling Updates
