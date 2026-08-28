@@ -780,10 +780,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.14.3":
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.14.3.tgz#25359ca19d09750e7231e881aa9a48e0ce0f0459"
-  integrity sha512-KvJV9d1ChZLPj2ejOLPm8LjyHkqb8hfmzBDpwfUUpce2IKs+VWYd74uuu+OTGkd9KhfOCIRN0WagoEuJcYurKA==
+"@continuous-excellence/ze-great-dashboard-aws@0.14.5":
+  version "0.14.5"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.14.5.tgz#4662683d43af566075a2c05a736a4ccc0b8989f4"
+  integrity sha512-SXQNUMjHEURaIR4HaEAz8sn3b/FapisILCC6dlGWZ1s03Y3P+hfFcVfT6SAZDu3viTgCHlCYL69zvALlHpi29A==
   dependencies:
     fflate "^0.8.2"
     yaml "^2.8.1"
@@ -11079,10 +11079,10 @@ webidl-conversions@^8.0.1:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-8.0.1.tgz#0657e571fe6f06fcb15ca50ed1fdbcb495cd1686"
   integrity sha512-BMhLD/Sw+GbJC21C/UgyaZX41nPt8bUTg+jWyDeg7e7YN4xOM05YPSIXceACnXVtqyEw/LMClUQMtMZ+PGGpqQ==
 
-webpack-cli@^7.2.2:
-  version "7.2.2"
-  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-7.2.2.tgz#94ff4f8a28aa087c8127c821e26a6fd0a50323e5"
-  integrity sha512-lD0pALneslq8FfV+rwvm1BMW0AFAJrHHhNupAGN4asYjMvqrtRsenU4iKpiBo09gS4ntMxKGUxl9jhTEzVt0oA==
+webpack-cli@^7.2.3:
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-7.2.3.tgz#becafbd777df5ff3e1a35ec398ad2ad54ec4d456"
+  integrity sha512-vDFU7jrfCctnN7jJQWPl+V26B51GLp11prVZXg50oeonsgeBzSTJEWmXkjHsOjTgMjlPOQM8GWLh33X9RN/0ow==
   dependencies:
     "@discoveryjs/json-ext" "^1.1.0"
     commander "^14.0.3"

@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.24.1",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.14.3",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.14.5",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.1120.0",
     "@aws-sdk/client-dynamodb": "3.1120.0",
     "@aws-sdk/client-lambda": "~3.1120.0",
@@ -74,6 +74,6 @@
     "stripe": "^22.6.0",
     "vite-plugin-html": "^3.2.2",
     "webpack": "5.110.1",
-    "webpack-cli": "^7.2.2"
+    "webpack-cli": "^7.2.3"
   }
 }
