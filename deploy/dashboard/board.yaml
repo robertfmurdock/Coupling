@@ -91,3 +91,15 @@ boards:
         refresh: 15m
         display: compact
         position: { x: 9, y: 8, w: 3, h: 2 }
+      - id: coupling-automatic-updates
+        type: pull-request-health
+        label: Coupling automatic updates
+        source: coupling
+        base_branch: master
+        build_workflow: main.yml
+        branch_prefixes:
+          - cpr-gradle-update/
+          - create-pull-request/
+          - dependabot/gradle/
+          - dependabot/npm_and_yarn/
+        position: { x: 0, y: 10, w: 12, h: 2 }
