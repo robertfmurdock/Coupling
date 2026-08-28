@@ -42,7 +42,7 @@ val clientConfiguration: Configuration = configurations.create("clientConfigurat
 apollo {
     service("service") {
         packageName.set("com.zegreatrob.coupling.e2e.gql")
-        dependsOn(project(":sdk"))
+        dependsOn(dependencies.project(":sdk"))
         srcDir("src/jsE2eTest/graphql")
         generateSourcesDuringGradleSync.set(true)
         outputDirConnection {

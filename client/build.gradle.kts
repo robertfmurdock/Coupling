@@ -44,7 +44,7 @@ kotlin {
 apollo {
     service("service") {
         packageName.set("com.zegreatrob.coupling.client.gql")
-        dependsOn(project(":sdk"))
+        dependsOn(dependencies.project(":sdk"))
         generateSourcesDuringGradleSync.set(true)
     }
 }

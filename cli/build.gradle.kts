@@ -55,7 +55,7 @@ kotlin {
 apollo {
     service("service") {
         packageName.set("com.zegreatrob.coupling.cli.gql")
-        dependsOn(project(":sdk"))
+        dependsOn(dependencies.project(":sdk"))
     }
 }
 

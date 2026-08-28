@@ -38,11 +38,11 @@ object KotlinConventions {
         project.dependencies.apply {
             val kotlinExt = project.extensions.findByType(KotlinMultiplatformExtension::class.java)
             if (kotlinExt != null) {
-                add("commonMainApi", project.dependencies.enforcedPlatform(project.project(":libraries:dependency-bom")))
+                add("commonMainApi", project.dependencies.enforcedPlatform(project.dependencies.project(":libraries:dependency-bom")))
                 add("commonMainImplementation", "org.jetbrains.kotlinx:kotlinx-serialization-core")
                 add("commonMainImplementation", "org.jetbrains.kotlinx:kotlinx-coroutines-core")
             } else {
-                add("api", project.dependencies.enforcedPlatform(project.project(":libraries:dependency-bom")))
+                add("api", project.dependencies.enforcedPlatform(project.dependencies.project(":libraries:dependency-bom")))
                 add("implementation", "org.jetbrains.kotlinx:kotlinx-serialization-core")
                 add("implementation", "org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }

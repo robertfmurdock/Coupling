@@ -1,17 +1,25 @@
 package com.zegreatrob.coupling.plugins.dashboard
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.zegreatrob.coupling.plugins.js.nodeModulesDir
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.Project
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -19,6 +27,76 @@ import java.net.http.HttpResponse
 import javax.inject.Inject
 
 private val mapper = ObjectMapper()
+
+abstract class DashboardApplicationParametersTask : DefaultTask() {
+    @get:Inject
+    abstract val execOperations: ExecOperations
+
+    @get:InputFile
+    abstract val bootstrapConfig: RegularFileProperty
+
+    @get:OutputFile
+    abstract val parametersFile: RegularFileProperty
+
+    @get:Input
+    abstract val credentialsParameterArn: Property<String>
+
+    @get:Internal
+    abstract val nodeExecPath: Property<String>
+
+    @get:Internal
+    abstract val nodeBinDir: DirectoryProperty
+
+    @get:Internal
+    abstract val projectNodeModulesDir: DirectoryProperty
+
+    @TaskAction
+    fun generate() {
+        val output = parametersFile.get().asFile
+        execOperations.exec {
+            environment(
+                "NODE_PATH",
+                projectNodeModulesDir.get().asFile.absolutePath,
+            )
+            environment(
+                "PATH",
+                "${nodeBinDir.get().asFile.absolutePath}${File.pathSeparator}${System.getenv("PATH")}",
+            )
+            commandLine(
+                nodeExecPath.get(),
+                projectNodeModulesDir.get().asFile.resolve(".bin/ze-great-dashboard-aws").absolutePath,
+                "parameters",
+                "--bootstrap-config",
+                bootstrapConfig.get().asFile.absolutePath,
+                "--output",
+                output.absolutePath,
+            )
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        val parameters = JsonSlurper().parse(output) as MutableList<MutableMap<String, Any?>>
+        parameters.removeIf { it["ParameterKey"] == "SecretReference" }
+        credentialsParameterArn.orNull
+            ?.trim()
+            ?.takeIf(String::isNotEmpty)
+            ?.let { arn ->
+                parameters += mutableMapOf(
+                    "ParameterKey" to "SecretReference",
+                    "ParameterValue" to arn,
+                )
+            }
+        output.writeText("${JsonOutput.prettyPrint(JsonOutput.toJson(parameters))}\n")
+    }
+}
+
+fun DashboardApplicationParametersTask.setup(project: Project) {
+    val nodeJs = NodeJsRootPlugin.apply(project.rootProject)
+    @Suppress("DEPRECATION")
+    nodeBinDir.set(nodeJs.requireConfigured().nodeBinDir)
+    @Suppress("DEPRECATION")
+    nodeExecPath.set(nodeJs.requireConfigured().executable)
+    projectNodeModulesDir.set(project.nodeModulesDir)
+}
 
 abstract class DashboardHandoffCommandTask : DefaultTask() {
     @get:Inject

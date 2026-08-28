@@ -1,8 +1,9 @@
+import com.zegreatrob.coupling.plugins.dashboard.DashboardApplicationParametersTask
+import com.zegreatrob.coupling.plugins.dashboard.setup
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
-import com.zegreatrob.coupling.plugins.dashboard.DashboardEndpointHealthTask
 import com.zegreatrob.coupling.plugins.dashboard.DashboardHandoffCommandTask
-import groovy.json.JsonOutput
+import com.zegreatrob.coupling.plugins.dashboard.DashboardEndpointHealthTask
 import groovy.json.JsonSlurper
 import org.gradle.api.tasks.Exec
 
@@ -41,35 +42,13 @@ val coreChangeSetCommandFile = bootstrapWorkDirectory.file("core-change-set-comm
 val githubOidcChangeSetCommandFile = bootstrapWorkDirectory.file("github-oidc-change-set-command.json")
 
 tasks {
-    val dashboardApplicationParameters = register<NodeExec>("dashboardApplicationParameters") {
+    val dashboardApplicationParameters = register<DashboardApplicationParametersTask>("dashboardApplicationParameters") {
         group = "deployment"
         description = "Generates dashboard application parameters from the consumer bootstrap manifest."
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
-            "parameters",
-            "--bootstrap-config", dashboardBootstrapManifest.asFile.absolutePath,
-            "--output", dashboardParametersFile.get().asFile.absolutePath,
-        )
-        inputs.file(dashboardBootstrapManifest)
-        outputs.file(dashboardParametersFile)
-        inputs.property("dashboardCredentialsParameterArn", dashboardCredentialsParameterArn)
-        doLast {
-            val parametersFile = dashboardParametersFile.get().asFile
-            @Suppress("UNCHECKED_CAST")
-            val parameters = JsonSlurper().parse(parametersFile) as MutableList<MutableMap<String, Any?>>
-            parameters.removeIf { it["ParameterKey"] == "SecretReference" }
-            dashboardCredentialsParameterArn.orNull
-                ?.trim()
-                ?.takeIf(String::isNotEmpty)
-                ?.let { arn ->
-                    parameters += mutableMapOf(
-                        "ParameterKey" to "SecretReference",
-                        "ParameterValue" to arn,
-                    )
-                }
-            parametersFile.writeText("${JsonOutput.prettyPrint(JsonOutput.toJson(parameters))}\n")
-        }
+        bootstrapConfig.set(dashboardBootstrapManifest)
+        parametersFile.set(dashboardParametersFile)
+        credentialsParameterArn.set(dashboardCredentialsParameterArn)
         dependsOn(":kotlinNpmInstall")
     }
     val dashboardPackage = register<NodeExec>("dashboardPackage") {

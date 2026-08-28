@@ -61,10 +61,10 @@ val testLogToolsRunner = configurations.create("testLogToolsRunner") {
 }
 
 dependencies {
-    add(testLogToolsRunner.name, enforcedPlatform(project(":libraries:dependency-bom")))
+    add(testLogToolsRunner.name, enforcedPlatform(dependencies.project(path = ":libraries:dependency-bom")))
     add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-serialization-core")
     add(testLogToolsRunner.name, "org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    add(testLogToolsRunner.name, project(":cli:test-log-tools"))
+    add(testLogToolsRunner.name, dependencies.project(path = ":cli:test-log-tools"))
 }
 
 tasks {
