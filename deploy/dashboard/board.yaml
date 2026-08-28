@@ -97,6 +97,8 @@ boards:
         source: coupling
         base_branch: master
         build_workflow: main.yml
+        update_workflows:
+          - main.yml
         branch_prefixes:
           - cpr-gradle-update/
           - create-pull-request/
