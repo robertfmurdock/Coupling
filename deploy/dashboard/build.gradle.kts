@@ -36,6 +36,8 @@ val coreDeployedStackFile = bootstrapWorkDirectory.file("core-deployed-stack.jso
 val githubOidcDeployedStackFile = bootstrapWorkDirectory.file("github-oidc-deployed-stack.json")
 val coreBootstrapParametersFile = bootstrapWorkDirectory.file("core-bootstrap-parameters.json")
 val githubOidcBootstrapParametersFile = bootstrapWorkDirectory.file("github-oidc-bootstrap-parameters.json")
+val coreChangeSetCommandFile = bootstrapWorkDirectory.file("core-change-set-command.json")
+val githubOidcChangeSetCommandFile = bootstrapWorkDirectory.file("github-oidc-change-set-command.json")
 
 tasks {
     val dashboardApplicationParameters = register<NodeExec>("dashboardApplicationParameters") {
@@ -120,8 +122,9 @@ tasks {
         outputs.file(coreDeployedStackFile)
         outputs.upToDateWhen { false }
         doFirst {
-            coreDeployedStackFile.asFile.parentFile.mkdirs()
-            standardOutput = coreDeployedStackFile.asFile.outputStream()
+            val output = outputs.files.singleFile
+            output.parentFile.mkdirs()
+            standardOutput = output.outputStream()
         }
     }
     val captureGithubOidcBootstrapStack = register<Exec>("captureGithubOidcBootstrapStack") {
@@ -136,8 +139,9 @@ tasks {
         outputs.file(githubOidcDeployedStackFile)
         outputs.upToDateWhen { false }
         doFirst {
-            githubOidcDeployedStackFile.asFile.parentFile.mkdirs()
-            standardOutput = githubOidcDeployedStackFile.asFile.outputStream()
+            val output = outputs.files.singleFile
+            output.parentFile.mkdirs()
+            standardOutput = output.outputStream()
         }
     }
     val preserveCoreBootstrapParameters = register<NodeExec>("preserveCoreBootstrapParameters") {
@@ -176,7 +180,9 @@ tasks {
     }
     val generateCoreBootstrapUpdateChangeSet = register<NodeExec>("generateCoreBootstrapUpdateChangeSet") {
         group = "deployment"
-        description = "Creates the core bootstrap UPDATE change set for administrator review."
+        description = "Prints the core bootstrap UPDATE change-set command for administrator review."
+        val couplingRootDirectory = rootProject.layout.projectDirectory.asFile.absolutePath
+        val couplingFilePrefix = "file://$couplingRootDirectory/"
         setup(project)
         nodeCommand = "ze-great-dashboard-aws"
         arguments = listOf(
@@ -187,12 +193,36 @@ tasks {
             "--parameters", coreBootstrapParametersFile.asFile.absolutePath,
         )
         inputs.files(dashboardBootstrapManifest, coreBootstrapParametersFile)
+        outputFile = coreChangeSetCommandFile.asFile
+        outputs.upToDateWhen { false }
+        doFirst { outputs.files.singleFile.parentFile.mkdirs() }
         dependsOn(preserveCoreBootstrapParameters)
         dependsOn(":kotlinNpmInstall")
+        doLast {
+            @Suppress("UNCHECKED_CAST")
+            val response = JsonSlurper().parse(outputs.files.singleFile) as Map<String, Any?>
+            @Suppress("UNCHECKED_CAST")
+            val command = response["awsCommand"] as List<String>
+            logger.lifecycle("CloudShell command (core change set):")
+            logger.lifecycle(command.joinToString(" ") { value ->
+                val relativeValue = value.removePrefix(couplingFilePrefix)
+                val normalizedValue = if (relativeValue != value) "file://$relativeValue" else value
+                "'${normalizedValue.replace("'", "'\\''")}'"
+            })
+            logger.lifecycle("After review, dispatch and wait (core):")
+            logger.lifecycle(
+                "aws cloudformation execute-change-set --change-set-name repair-core --stack-name " +
+                    "ze-great-team-dashboard-bootstrap --region us-east-1 --no-cli-pager && " +
+                    "aws cloudformation wait stack-update-complete --stack-name " +
+                    "ze-great-team-dashboard-bootstrap --region us-east-1",
+            )
+        }
     }
     val generateGithubOidcBootstrapUpdateChangeSet = register<NodeExec>("generateGithubOidcBootstrapUpdateChangeSet") {
         group = "deployment"
-        description = "Creates the GitHub OIDC bootstrap UPDATE change set for administrator review."
+        description = "Prints the GitHub OIDC bootstrap UPDATE change-set command for administrator review."
+        val couplingRootDirectory = rootProject.layout.projectDirectory.asFile.absolutePath
+        val couplingFilePrefix = "file://$couplingRootDirectory/"
         setup(project)
         nodeCommand = "ze-great-dashboard-aws"
         arguments = listOf(
@@ -203,8 +233,30 @@ tasks {
             "--parameters", githubOidcBootstrapParametersFile.asFile.absolutePath,
         )
         inputs.files(dashboardBootstrapManifest, githubOidcBootstrapParametersFile)
+        outputFile = githubOidcChangeSetCommandFile.asFile
+        outputs.upToDateWhen { false }
+        doFirst { outputs.files.singleFile.parentFile.mkdirs() }
         dependsOn(preserveGithubOidcBootstrapParameters)
         dependsOn(":kotlinNpmInstall")
+        doLast {
+            @Suppress("UNCHECKED_CAST")
+            val response = JsonSlurper().parse(outputs.files.singleFile) as Map<String, Any?>
+            @Suppress("UNCHECKED_CAST")
+            val command = response["awsCommand"] as List<String>
+            logger.lifecycle("CloudShell command (GitHub OIDC change set):")
+            logger.lifecycle(command.joinToString(" ") { value ->
+                val relativeValue = value.removePrefix(couplingFilePrefix)
+                val normalizedValue = if (relativeValue != value) "file://$relativeValue" else value
+                "'${normalizedValue.replace("'", "'\\''")}'"
+            })
+            logger.lifecycle("After review, dispatch and wait (GitHub OIDC):")
+            logger.lifecycle(
+                "aws cloudformation execute-change-set --change-set-name repair-github-oidc --stack-name " +
+                    "ze-great-team-dashboard-github-bootstrap --region us-east-1 --no-cli-pager && " +
+                    "aws cloudformation wait stack-update-complete --stack-name " +
+                    "ze-great-team-dashboard-github-bootstrap --region us-east-1",
+            )
+        }
     }
     val dashboardBootstrapUpgrade = register<NodeExec>("dashboardBootstrapUpgrade") {
         group = "deployment"
@@ -219,9 +271,9 @@ tasks {
         outputs.upToDateWhen { false }
         dependsOn(":kotlinNpmInstall")
     }
-    register("dashboardBootstrapRecoveryArtifacts") {
+    register("dashboardBootstrapGenerateChangeSets") {
         group = "deployment"
-        description = "Captures bootstrap stacks, preserves parameters, and generates both reviewed UPDATE change sets."
+        description = "Captures bootstrap stacks, preserves parameters, and generates both UPDATE change sets for review."
         dependsOn(generateCoreBootstrapUpdateChangeSet, generateGithubOidcBootstrapUpdateChangeSet)
     }
     register("dashboardBootstrapRevalidate") {
@@ -229,7 +281,6 @@ tasks {
         description = "Revalidates dashboard bootstrap contracts after administrator changes."
         dependsOn(dashboardBootstrapCheck)
     }
-
     val dashboardUploadArtifact = register<DashboardHandoffCommandTask>("dashboardUploadArtifact") {
         group = "deployment"
         description = "Executes the generated dashboard artifact upload handoff."
