@@ -780,10 +780,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.14.5":
-  version "0.14.5"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.14.5.tgz#4662683d43af566075a2c05a736a4ccc0b8989f4"
-  integrity sha512-SXQNUMjHEURaIR4HaEAz8sn3b/FapisILCC6dlGWZ1s03Y3P+hfFcVfT6SAZDu3viTgCHlCYL69zvALlHpi29A==
+"@continuous-excellence/ze-great-dashboard-aws@0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.15.0.tgz#6e8f806141316a12461119ebc21664f8bd339e81"
+  integrity sha512-/5Hk7b3r4lyvQUM8jh0KKe+uPe74snj2RiSwzPBq23GxPzfdrQh+dWvtUSy28I+3eQx/WTXLy/qJAAb2JY1C2w==
   dependencies:
     fflate "^0.8.2"
     yaml "^2.8.1"
@@ -9388,10 +9388,10 @@ react-popper@^2.3.0:
     "@types/use-sync-external-store" "^0.0.6"
     use-sync-external-store "^1.4.0"
 
-react-router@^8.3.0:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-8.3.0.tgz#b7bc69c3e3833ba79ebf892aef03d62b649508f8"
-  integrity sha512-qyPMvW83jGIct3yiieisxdk9M745anqhpIMKN5m1t6yBMfgVPpt77aHOqs5fUlEJRMCGffg9BaQLH9oPVOL7xQ==
+react-router@^8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-8.3.1.tgz#d704ca5a564e2bc89ce05a537ab577578e947b7b"
+  integrity sha512-TEOpiO2g0TJHEOJeRVv4amUFun9v1npCKszvcquNvzETUtJ8udV86ah5eFoHT7g26bsBvT6EiIhqulR8eDF++A==
   dependencies:
     cookie-es "^3.1.1"
 

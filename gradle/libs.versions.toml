@@ -37,7 +37,7 @@ io-github-turansky-seskar = "io.github.turansky.seskar:4.64.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.1"
 
 [versions]
-com-apollographql-adapters = "0.7.0"
+com-apollographql-adapters = "0.8.0"
 com-google-devtools-ksp = "2.3.11"
 org-apache-logging-log4j = "2.26.1"
 org-jetbrains-kotlinx = "1.11.0"

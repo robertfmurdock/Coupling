@@ -14,5 +14,18 @@
     "repositoryId": "18269766",
     "environment": "dashboard-production",
     "consumerGatewayStackName": "ze-great-team-dashboard-gateway"
+  },
+  "desiredState": {
+    "packageVersion": "0.15.0",
+    "templates": {
+      "core": {
+        "contractVersion": "1",
+        "templateRevision": "1.3"
+      },
+      "githubOidc": {
+        "contractVersion": "2",
+        "templateRevision": "2.3"
+      }
+    }
   }
 }
