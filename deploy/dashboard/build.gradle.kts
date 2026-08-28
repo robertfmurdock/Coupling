@@ -28,9 +28,10 @@ val dashboardParametersFile = layout.buildDirectory.file("dashboard/application-
 val releaseDirectory = layout.buildDirectory.dir("release")
 val dashboardDryRun = providers.gradleProperty("dashboardDryRun").map(String::toBoolean).orElse(false)
 val dashboardExecutionRoleArn = providers.environmentVariable("AWS_CLOUDFORMATION_EXECUTION_ROLE_ARN")
+val dashboardCredentialsParameterArnDefault = "arn:aws:ssm:us-east-1:174159267544:parameter/ze-great-team-dashboard/github-credentials"
 val dashboardCredentialsParameterArn = providers
     .environmentVariable("DASHBOARD_GITHUB_CREDENTIALS_PARAMETER_ARN")
-    .orElse("")
+    .orElse(dashboardCredentialsParameterArnDefault)
 val bootstrapWorkDirectory = rootProject.layout.projectDirectory.dir(".bootstrap-work")
 val coreDeployedStackFile = bootstrapWorkDirectory.file("core-deployed-stack.json")
 val githubOidcDeployedStackFile = bootstrapWorkDirectory.file("github-oidc-deployed-stack.json")

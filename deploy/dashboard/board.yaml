@@ -98,10 +98,10 @@ boards:
         base_branch: master
         build_workflow: main.yml
         update_workflows:
-          - main.yml
-        branch_prefixes:
-          - cpr-gradle-update/
-          - create-pull-request/
-          - dependabot/gradle/
-          - dependabot/npm_and_yarn/
+          - workflow: main.yml
+            branch_prefixes:
+              - cpr-gradle-update/
+              - create-pull-request/
+              - dependabot/gradle/
+              - dependabot/npm_and_yarn/
         position: { x: 0, y: 10, w: 12, h: 2 }
