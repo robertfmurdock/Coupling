@@ -53,17 +53,55 @@ boards:
         type: pipeline-status
         source: jsmints
         pipeline: main.yml
-        position: { x: 4, y: 0, w: 4, h: 4 }
+        position: { x: 4, y: 0, w: 3, h: 4 }
+      - id: jsmints-automatic-updates
+        type: pull-request-health
+        label: JS Mints Updates
+        source: jsmints
+        base_branch: master
+        build_workflow: main.yml
+        update_workflows:
+          - workflow: main.yml
+            branch_prefixes:
+              - cpr-gradle-update/
+              - cpr/
+        position: { x: 7, y: 0, w: 1, h: 4 }
+        density: compact
       - id: testmints-build
         type: pipeline-status
         source: testmints
         pipeline: main.yml
-        position: { x: 8, y: 0, w: 4, h: 4 }
+        position: { x: 8, y: 0, w: 3, h: 4 }
+      - id: testmints-automatic-updates
+        type: pull-request-health
+        label: Test Mints Updates
+        source: testmints
+        base_branch: master
+        build_workflow: main.yml
+        update_workflows:
+          - workflow: main.yml
+            branch_prefixes:
+              - create-pull-request/
+        position: { x: 11, y: 0, w: 1, h: 4 }
+        density: compact
       - id: ze-great-tools-build
         type: pipeline-status
         source: ze-great-tools
         pipeline: main.yml
-        position: { x: 0, y: 4, w: 6, h: 4 }
+        position: { x: 0, y: 4, w: 5, h: 4 }
+      - id: ze-great-tools-automatic-updates
+        type: pull-request-health
+        label: Ze Great Tools Updates
+        source: ze-great-tools
+        base_branch: main
+        build_workflow: main.yml
+        update_workflows:
+          - workflow: main.yml
+            branch_prefixes:
+              - cpr-gradle-update/
+              - create-pull-request/
+        position: { x: 5, y: 4, w: 1, h: 4 }
+        density: compact
       - id: ze-great-dashboard-build
         type: pipeline-status
         source: ze-great-dashboard
@@ -101,4 +139,3 @@ boards:
         refresh: 15m
         density: compact
         position: { x: 9, y: 8, w: 3, h: 2 }
-
