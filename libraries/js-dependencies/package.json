@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.24.1",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.16.0",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.17.1",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.1121.0",
     "@aws-sdk/client-dynamodb": "3.1121.0",
     "@aws-sdk/client-lambda": "~3.1121.0",
@@ -54,7 +54,7 @@
     "lru-memoizer": "^3.0.0",
     "marked": "^18.0.11",
     "on-finished": "^2.4.1",
-    "open": "^11.0.1",
+    "open": "^11.0.2",
     "parse5": "~8.0.1",
     "parse5-html-rewriting-stream": "~8.0.1",
     "raw-loader": "^4.0.2",
