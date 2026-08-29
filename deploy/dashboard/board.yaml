@@ -33,7 +33,6 @@ boards:
         type: pipeline-status
         source: coupling
         pipeline: main.yml
-        display: primary
         position: { x: 0, y: 0, w: 3, h: 4 }
       - id: coupling-automatic-updates
         type: pull-request-health
@@ -47,29 +46,26 @@ boards:
               - cpr-gradle-update/
               - create-pull-request/
         position: { x: 3, y: 0, w: 1, h: 4 }
+        density: compact
       - id: jsmints-build
         type: pipeline-status
         source: jsmints
         pipeline: main.yml
-        display: primary
         position: { x: 4, y: 0, w: 4, h: 4 }
       - id: testmints-build
         type: pipeline-status
         source: testmints
         pipeline: main.yml
-        display: primary
         position: { x: 8, y: 0, w: 4, h: 4 }
       - id: ze-great-tools-build
         type: pipeline-status
         source: ze-great-tools
         pipeline: main.yml
-        display: primary
         position: { x: 0, y: 4, w: 6, h: 4 }
       - id: ze-great-dashboard-build
         type: pipeline-status
         source: ze-great-dashboard
         pipeline: main.yml
-        display: primary
         position: { x: 6, y: 4, w: 6, h: 4 }
       - id: tagger-latest-version
         type: http-value
@@ -77,7 +73,7 @@ boards:
         json_path: $.version
         link: https://www.npmjs.com/package/@continuous-excellence/tagger
         refresh: 15m
-        display: compact
+        density: compact
         position: { x: 0, y: 8, w: 3, h: 2 }
       - id: coupling-latest-version
         type: http-value
@@ -85,7 +81,7 @@ boards:
         json_path: $.version
         link: https://www.npmjs.com/package/@continuous-excellence/coupling-cli
         refresh: 15m
-        display: compact
+        density: compact
         position: { x: 3, y: 8, w: 3, h: 2 }
       - id: jsmints-latest-version
         type: http-value
@@ -93,7 +89,7 @@ boards:
         json_path: $.tag_name
         link: https://github.com/robertfmurdock/jsmints/releases/latest
         refresh: 15m
-        display: compact
+        density: compact
         position: { x: 6, y: 8, w: 3, h: 2 }
       - id: testmints-latest-version
         type: http-value
@@ -101,6 +97,6 @@ boards:
         json_path: $.tag_name
         link: https://github.com/robertfmurdock/testmints/releases/latest
         refresh: 15m
-        display: compact
+        density: compact
         position: { x: 9, y: 8, w: 3, h: 2 }
 
