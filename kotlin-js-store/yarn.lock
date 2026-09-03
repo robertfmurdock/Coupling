@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1125.0":
-  version "3.1125.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1125.0.tgz#be143fa4fffd3f9de90915a307cdbb849dbb1309"
-  integrity sha512-pQgL0wsymrADwYO3iDU+E60qaweW69cRjeg56gohXUy3CYByfpzz0q38ElnCVITSXogXsgj2ODyquy6MIYNK1g==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1126.0":
+  version "3.1126.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1126.0.tgz#464ede14d753eab1b22145ad10d7dec22f93853e"
+  integrity sha512-MejOLAbstJFOJn2Z26lPn7o490zR7xca9FcG0HDvgpyf/guqTi/a/fWNxCyP2kwrDNPIv0c7LuA4IGQKWmfoKQ==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/credential-provider-node" "^3.972.82"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.17.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1125.0":
-  version "3.1125.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1125.0.tgz#b9d2dc8733fe40139cf6d9c9d020dc44a9f2d1f2"
-  integrity sha512-BEXrd0w1mZ8SHeHcendBOZNk5D7/IlbqJgj1qFmKyC+/SV6tP6MqKoeDpKDecx96yYigLDta7gpAnIH2B+N+2g==
+"@aws-sdk/client-dynamodb@3.1126.0":
+  version "3.1126.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1126.0.tgz#67fbf407cdddc1856888b28c737a0ba1ee75dbd6"
+  integrity sha512-JJquheUb1DCcY4p2cejC5HBDC45UEMIlIBHXkKJnIhDj132fEFOgSOdlEdu+tbXxNi/SybFiVezydVvqfKDjGQ==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/credential-provider-node" "^3.972.82"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1125.0":
-  version "3.1125.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1125.0.tgz#db82b729dbaf37e4e56f5d110643f882239f4390"
-  integrity sha512-HG30aqBlf42xGkOTNxfS3y8QpYsYJz4x/KsbwqVGwMSvZbqN0gmnBwpZvrlz+95UVKSvn67gXYsp8053U66O1Q==
+"@aws-sdk/client-lambda@~3.1126.0":
+  version "3.1126.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1126.0.tgz#b7400be33704d3b170c987ce5d657b7ff8eee77e"
+  integrity sha512-XygPrTShLUmccumtD7Bh7dYzD1qD6YKlF8b+zdt+HPx6SFONYnqZfbhcPMAT1Kp0BIXOez73vVbDkCq0iREz5w==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/credential-provider-node" "^3.972.82"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1125.0":
-  version "3.1125.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1125.0.tgz#9445a507a852b492fe3b21ed5f4ba4a6ad52ba18"
-  integrity sha512-puqAhX7RoXy8adSK2RCYOhjfatqwcsmi4zkfimRizVgJexcCg8B4xaV5VcIReuCQSBFAYVIN6pcshtSbVAIRQA==
+"@aws-sdk/lib-dynamodb@3.1126.0":
+  version "3.1126.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1126.0.tgz#7dea5596dd0596e0e0c37506329343329733ee2e"
+  integrity sha512-FC3NLbBPQn6PhSj3sWNPP7gdqG7wVtFmRRA6q3UwE0FWXn6TezpCIAAWzxMAJGPJmHeuuaI49kAWmqCcufM88A==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -780,10 +780,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.24.1":
-  version "0.24.1"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.24.1.tgz#0ec309b1205a0adf009f60c5cf85aabafb5deb04"
-  integrity sha512-nkjw8efqADxMklg16KXOJcdZ515HZt8HXvYI0xQ6Nm+mydiYh9fHwHr8aDwvhB1TtSpH/VoGYoVb22KHbeac7w==
+"@continuous-excellence/ze-great-dashboard-aws@0.25.0":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.25.0.tgz#4a79c239030f84d91c488029f482d3ddc178538c"
+  integrity sha512-sB7fwgJMCNqeEkjbN8JDGObsqBTa+marQTxeNWHEJSNw5qJk9C9JSvZtksyoPqNeSKxzQjQ2PMngvjvWFCjRGw==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.0"
@@ -1367,12 +1367,12 @@
     sync-fetch "0.6.0"
     tslib "^2.4.0"
 
-"@graphql-tools/batch-delegate@^10.0.30":
-  version "10.0.30"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-10.0.30.tgz#ea3b15c4a9fd29774555576db6f0295b01e7f8ec"
-  integrity sha512-hFnhYnPM6cULrLTyWxwCZYmgbq7FfTuqLthCW7Xe9BpjHl7RqWIb8CbtXG8dxxvOSHcaqdQI+bONg4O+Rm24JA==
+"@graphql-tools/batch-delegate@^10.0.31":
+  version "10.0.31"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-10.0.31.tgz#20e736dda5713e6436beba2087f1cbfd9f6908e9"
+  integrity sha512-AQygUn8nCffPk/bwZgiVok7ERMqW/jdGRp0xvpsqdp1XgC65dBvaBTWOZaHiH3fDZxaeOWmGfxQUzPUfjWO07w==
   dependencies:
-    "@graphql-tools/delegate" "^12.1.2"
+    "@graphql-tools/delegate" "^12.1.3"
     "@graphql-tools/utils" "^11.0.0"
     "@whatwg-node/promise-helpers" "^1.3.2"
     dataloader "^2.2.3"
@@ -1423,10 +1423,10 @@
     dataloader "^2.2.3"
     tslib "^2.8.1"
 
-"@graphql-tools/delegate@^12.1.2":
-  version "12.1.2"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-12.1.2.tgz#81157d3db2e471642f2b8b8c551964625ad216a5"
-  integrity sha512-nMhdZ5pTAHFne+Hs1XX+CO/LbshkO/TwfgkgeQ6DrLJKMZfOc+9iCXWjHW1EuA0pUE8LZajhIrUlcga5tTBi+Q==
+"@graphql-tools/delegate@^12.1.3":
+  version "12.1.3"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-12.1.3.tgz#34bda44a3096c582749be4771fe95d474d6f8b45"
+  integrity sha512-NZFVxbW3zEsHQ874iYWq4a2zoW5jyBbBXot4HQwMqUMjxCgP87dwRWxPL9zotHYmbFa/xwENwEduqPly2j6ytQ==
   dependencies:
     "@graphql-tools/batch-execute" "^10.0.9"
     "@graphql-tools/executor" "^1.4.13"
@@ -1632,18 +1632,18 @@
     "@graphql-tools/utils" "^12.0.0"
     tslib "^2.4.0"
 
-"@graphql-tools/stitch@^10.2.3":
-  version "10.2.3"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.2.3.tgz#5b03b3e733df74f8acd4d238e9739a19c0dcf113"
-  integrity sha512-0KVVfJBM4Di6x/b5W8i8ekUHaDabwRmfKAKw2o5ZGymV1oWNk7BgkewlzPuHdys6H1H3n7/qzoOI+BlHjCG33Q==
+"@graphql-tools/stitch@^10.2.4":
+  version "10.2.4"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.2.4.tgz#9881fdd69c8caad7ca52490d63329b4bed906b31"
+  integrity sha512-rFPBXkbMnNL448ad+mPeqr0SZNggYB+D2aHXhHmeaArwMHlPKJfOiT4MPJmRPx+tmVYOJU5x2RCpxbDmz/hh/A==
   dependencies:
-    "@graphql-tools/batch-delegate" "^10.0.30"
-    "@graphql-tools/delegate" "^12.1.2"
+    "@graphql-tools/batch-delegate" "^10.0.31"
+    "@graphql-tools/delegate" "^12.1.3"
     "@graphql-tools/executor" "^1.4.13"
     "@graphql-tools/merge" "^9.1.5"
     "@graphql-tools/schema" "^10.0.29"
     "@graphql-tools/utils" "^11.0.0"
-    "@graphql-tools/wrap" "^11.1.22"
+    "@graphql-tools/wrap" "^11.1.23"
     "@whatwg-node/promise-helpers" "^1.3.2"
     tslib "^2.8.1"
 
@@ -1706,12 +1706,12 @@
     "@whatwg-node/promise-helpers" "^1.3.2"
     tslib "^2.8.1"
 
-"@graphql-tools/wrap@^11.1.22":
-  version "11.1.22"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-11.1.22.tgz#bf87bad9994b2dc879e0c12fe576bba3088a59e6"
-  integrity sha512-W/k4ncNqYk3YxTCpWLB4+kdgWIVXHr8JAKz3VAQ1DSfDVHYJt8sUiXzr9WSQAYBgosLcQo6n5V4BOhmGMg6TOw==
+"@graphql-tools/wrap@^11.1.23":
+  version "11.1.23"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-11.1.23.tgz#98d64730ba907ce8488191f7c50abf12f6f2e628"
+  integrity sha512-IiL6gJpOTzoO+6uvpINV75Pr0L6C0YE1MN95QkQleR0RzjY1Qyf0cB1eD/UVzJ2mPd20bw4gmKA/4dbnbBbNvQ==
   dependencies:
-    "@graphql-tools/delegate" "^12.1.2"
+    "@graphql-tools/delegate" "^12.1.3"
     "@graphql-tools/schema" "^10.0.29"
     "@graphql-tools/utils" "^11.0.0"
     "@whatwg-node/promise-helpers" "^1.3.2"
@@ -3330,10 +3330,10 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^6.8.2":
-  version "6.8.2"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.8.2.tgz#4e773ea5cb9592c4f8e9ec5e33629ff6e132983f"
-  integrity sha512-6qxosv6c+LqtdML2R7nCDpFNowuh4ohIM894V9eRkbFJANUKbMKoXBd8AKOQAn1wjEfuYVI2NYtFnqFLOKbPjw==
+"@stripe/react-stripe-js@^6.9.0":
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.9.0.tgz#4b6af323a6b38e67a8acd3f84b0575eb2f232962"
+  integrity sha512-wyFt2sT2EdXfyo8YNSTeEm9gb2yFJf03Da8acQOeDxzjWGwD5xDF7ecSPI64upvJ2IjvypqEF9IIVUnxtPY+zA==
   dependencies:
     prop-types "^15.7.2"
 
