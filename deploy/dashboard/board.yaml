@@ -99,11 +99,28 @@ boards:
               - create-pull-request/
         position: { x: 11, y: 0, w: 1, h: 4 }
         density: compact
+      - id: ze-great-dashboard-build
+        type: pipeline-status
+        source: ze-great-dashboard
+        pipeline: main.yml
+        position: { x: 0, y: 4, w: 5, h: 4 }
+      - id: ze-great-dashboard-automatic-updates
+        type: pull-request-health
+        label: Ze Great Dashboard Updates
+        source: ze-great-dashboard
+        base_branch: main
+        build_workflow: main.yml
+        update_workflows:
+          - workflow: main.yml
+            branch_prefixes:
+              - automation/npm-dependencies/
+        position: { x: 5, y: 4, w: 1, h: 4 }
+        density: compact
       - id: ze-great-tools-build
         type: pipeline-status
         source: ze-great-tools
         pipeline: main.yml
-        position: { x: 0, y: 4, w: 5, h: 4 }
+        position: { x: 6, y: 4, w: 5, h: 4 }
       - id: ze-great-tools-automatic-updates
         type: pull-request-health
         label: Ze Great Tools Updates
@@ -115,13 +132,8 @@ boards:
             branch_prefixes:
               - cpr-gradle-update/
               - create-pull-request/
-        position: { x: 5, y: 4, w: 1, h: 4 }
+        position: { x: 11, y: 4, w: 1, h: 4 }
         density: compact
-      - id: ze-great-dashboard-build
-        type: pipeline-status
-        source: ze-great-dashboard
-        pipeline: main.yml
-        position: { x: 6, y: 4, w: 6, h: 4 }
       - id: tagger-latest-version
         type: http-value
         url: https://registry.npmjs.org/@continuous-excellence%2Ftagger/latest

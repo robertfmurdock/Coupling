@@ -34,7 +34,10 @@ One-sentence outcome.
 ```
 
 ## Intake
-- `./gradlew agentBootstrap` (if AWS error: `unset AWS_PROFILE`)
+- `./gradlew agentBootstrap`
+- If Gradle reports missing or expired AWS SSO credentials, stop and ask the
+  repository owner to run `aws sso login`; do not unset, override, or otherwise
+  work around the configured AWS profile.
 - Read `context.json` required_reads and relevant playbooks
 - **Search for test patterns**: `find . -name "*Test.kt" | grep <module>` to identify test file naming and structure
 - Identify impacted modules, test scope, test-level intent
