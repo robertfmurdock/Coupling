@@ -35,6 +35,7 @@ fun Project.registerTestLogCliTask(
     descriptionText: String,
     testJsonlFilePath: Provider<String>,
     testLogToolsClasspath: Provider<String>,
+    testRunIdentifier: Provider<String>? = null,
     strictFlags: List<String> = listOf("--strict"),
 ): TaskProvider<Exec> = tasks.register(name, Exec::class.java) {
     group = "verification"
@@ -43,21 +44,20 @@ fun Project.registerTestLogCliTask(
 
     executable("java")
     argumentProviders.add {
-        testLogToolsClasspath.flatMap { classpath ->
-            reportFilePath.flatMap { report ->
-                testJsonlFilePath.map { jsonl ->
-                    listOf(
-                        "-cp",
-                        classpath,
-                        "com.zegreatrob.coupling.cli.testlog.MainKt",
-                        command,
-                        "--report-file",
-                        report,
-                        "--quiet-success",
-                        "--failure-summary",
-                    ) + strictFlags + jsonl
-                }
-            }
-        }.get()
+        buildList {
+            addAll(listOf(
+                "-cp",
+                testLogToolsClasspath.get(),
+                "com.zegreatrob.coupling.cli.testlog.MainKt",
+                command,
+                "--report-file",
+                reportFilePath.get(),
+                "--quiet-success",
+                "--failure-summary",
+            ))
+            addAll(strictFlags)
+            testRunIdentifier?.orNull?.takeIf { it.isNotBlank() }?.let { add("--run-id=$it") }
+            add(testJsonlFilePath.get())
+        }
     }
 }

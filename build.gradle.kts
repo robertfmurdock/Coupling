@@ -69,6 +69,7 @@ dependencies {
 
 tasks {
     val testJsonlFilePath = rootProject.layout.buildDirectory.file("test-output/test.jsonl").map { it.asFile.absolutePath }
+    val testRunIdentifier = providers.provider { System.getProperty("testRunIdentifier") ?: "unknown-run" }
     val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }
     val analyzeReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/analyze-test-jsonl.json").map { it.asFile.absolutePath }
     val testLogToolsClasspath = providers.provider {
@@ -84,6 +85,7 @@ tasks {
         descriptionText = "Validates build/test-output/test.jsonl for minimum required schema.",
         testJsonlFilePath = testJsonlFilePath,
         testLogToolsClasspath = testLogToolsClasspath,
+        testRunIdentifier = testRunIdentifier,
     )
 
     val analyzeTestJsonl = project.registerTestLogCliTask(
@@ -91,6 +93,26 @@ tasks {
         command = "analyze",
         reportFilePath = analyzeReportFilePath,
         descriptionText = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl.",
+        testJsonlFilePath = testJsonlFilePath,
+        testLogToolsClasspath = testLogToolsClasspath,
+        testRunIdentifier = testRunIdentifier,
+    )
+
+    val reconcileTestJsonl = project.registerTestLogCliTask(
+        name = "reconcileTestJsonl",
+        command = "reconcile",
+        reportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/reconcile-test-jsonl.json").map { it.asFile.absolutePath },
+        descriptionText = "Appends INCOMPLETE run closures for attributable historical test-log violations.",
+        testJsonlFilePath = testJsonlFilePath,
+        testLogToolsClasspath = testLogToolsClasspath,
+        strictFlags = emptyList(),
+    )
+
+    val validateTestJsonlHistory = project.registerTestLogCliTask(
+        name = "validateTestJsonlHistory",
+        command = "validate-history",
+        reportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl-history.json").map { it.asFile.absolutePath },
+        descriptionText = "Strictly validates all unreconciled test-log history.",
         testJsonlFilePath = testJsonlFilePath,
         testLogToolsClasspath = testLogToolsClasspath,
     )

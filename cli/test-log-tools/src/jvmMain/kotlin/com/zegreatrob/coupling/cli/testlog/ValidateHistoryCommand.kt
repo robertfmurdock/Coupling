@@ -9,35 +9,23 @@ import com.zegreatrob.coupling.testlog.analysis.TestLogCommand
 import com.zegreatrob.coupling.testlog.analysis.TestLogRequest
 import com.zegreatrob.coupling.testlog.analysis.TestLogTools
 
-class AnalyzeCommand : SuspendingCliktCommand("analyze") {
+class ValidateHistoryCommand : SuspendingCliktCommand("validate-history") {
     private val strict by option("--strict").flag(default = false)
-    private val maxOffenders by option("--max-offenders")
-    private val runId by option("--run-id")
     private val reportFile by option("--report-file")
     private val quietSuccess by option("--quiet-success").flag(default = false)
     private val failureSummary by option("--failure-summary").flag(default = false)
     private val path by argument(name = "path").default("build/test-output/test.jsonl")
 
     override suspend fun run() {
-        val toolArgs = buildList {
-            if (strict) add("--strict")
-            maxOffenders?.let { add("--max-offenders=$it") }
-            runId?.let { add("--run-id=$it") }
-            add(path)
-        }
         val result = TestLogTools.run(
             TestLogRequest(
-                command = TestLogCommand.ANALYZE,
-                args = toolArgs,
+                TestLogCommand.VALIDATE_HISTORY,
+                buildList {
+                    if (strict) add("--strict")
+                    add(path)
+                },
             ),
         )
-        OutputRenderer(
-            commandName = "analyze",
-            outputOptions = OutputOptions(
-                reportFilePath = reportFile,
-                quietSuccess = quietSuccess,
-                failureSummary = failureSummary,
-            ),
-        ).render(result)
+        OutputRenderer("validate-history", OutputOptions(reportFile, quietSuccess, failureSummary)).render(result)
     }
 }

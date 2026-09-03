@@ -16,6 +16,26 @@ class AnalyzeCommandParityTest {
     private val mapper = ObjectMapper()
 
     @Test
+    fun `analyze scopes coverage to the selected run`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"Log","timestamp":"2026-04-23T01:02:03Z","run_id":"older-run","platform":"jvm","task":":sdk:jvmTest","logger":"command","properties":{"command_action":"OldCommand","command_phase":"start","command_trace_id":"old"}}
+            {"type":"TestStart","timestamp":"2026-04-23T01:02:04Z","run_id":"current-run","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CurrentTest","test":"works"}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:05Z","run_id":"current-run","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CurrentTest","test":"works","status":"SUCCESS","duration_ms":12}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(TestLogRequest(TestLogCommand.ANALYZE, listOf("--strict", "--run-id=current-run", file.toString())))
+    } verify { result ->
+        val report = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(0)
+        report.get("selected_run_id").asText().assertIsEqualTo("current-run")
+        report.get("skipped_events").asInt().assertIsEqualTo(1)
+        report.get("command_missing_test_attribution_fields").asInt().assertIsEqualTo(0)
+    }
+
+    @Test
     fun `report mode emits violations but does not fail build`() = setup(object {
         val file = writeTempJsonl(
             """

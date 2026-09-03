@@ -3,11 +3,14 @@ package com.zegreatrob.coupling.testlog.analysis
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
+import java.security.MessageDigest
 import java.time.Instant
 
 enum class TestLogCommand {
     VALIDATE,
+    VALIDATE_HISTORY,
     ANALYZE,
+    RECONCILE,
 }
 
 data class TestLogRequest(
@@ -85,7 +88,9 @@ object TestLogTools {
 
     fun run(request: TestLogRequest): TestLogRunResult = when (request.command) {
         TestLogCommand.VALIDATE -> runValidate(request.args)
+        TestLogCommand.VALIDATE_HISTORY -> runValidate(request.args, historyMode = true)
         TestLogCommand.ANALYZE -> runAnalyze(request.args)
+        TestLogCommand.RECONCILE -> runReconcile(request.args)
     }
 
     fun compareValidateReports(
@@ -114,7 +119,7 @@ object TestLogTools {
         )
     }
 
-    private fun runValidate(args: List<String>): TestLogRunResult {
+    private fun runValidate(args: List<String>, historyMode: Boolean = false): TestLogRunResult {
         val options = parseValidateOptions(args)
 
         val file = File(options.filePath)
@@ -128,23 +133,35 @@ object TestLogTools {
         val lines = splitJsonlLikeNode(file.readText())
         val counts = ValidateCounts(file = options.filePath, totalLines = lines.size)
         val offenders = mutableListOf<Offender>()
+        val violations = mutableListOf<RunViolation>()
+        val closureKeys = if (historyMode) closureKeys(lines) else emptySet()
 
         lines.forEachIndexed { index, line ->
             if (line.isBlank()) {
                 return@forEachIndexed
             }
 
-            counts.nonEmptyLines += 1
-
             val parsed = try {
-                mapper.readTree(line).also {
-                    counts.parsedJsonLines += 1
-                }
+                mapper.readTree(line)
             } catch (_: Exception) {
+                if (options.runId != null) {
+                    counts.skippedEvents += 1
+                    return@forEachIndexed
+                }
+                counts.nonEmptyLines += 1
                 counts.nonJsonLines += 1
                 addOffender(offenders, options.maxOffenders, index + 1, "non-json", line)
+                violations += RunViolation(null, index + 1, "non-json", line)
                 return@forEachIndexed
             }
+
+            if (options.runId != null && parsed.get("run_id")?.asText() != options.runId) {
+                counts.skippedEvents += 1
+                return@forEachIndexed
+            }
+
+            counts.nonEmptyLines += 1
+            counts.parsedJsonLines += 1
 
             addCount(counts.typeCounts, parsed.get("type"))
             addCount(counts.platformCounts, parsed.get("platform"))
@@ -153,6 +170,7 @@ object TestLogTools {
             if (missingCore.isNotEmpty()) {
                 counts.missingCoreFields += 1
                 addOffender(offenders, options.maxOffenders, index + 1, "missing core: ${missingCore.joinToString(",")}", line)
+                violations += RunViolation(parsed.runId(), index + 1, "missing core: ${missingCore.joinToString(",")}", line)
             }
 
             val type = parsed.get("type")?.takeUnless { it.isNull }?.asText()
@@ -161,10 +179,12 @@ object TestLogTools {
                 if (missingEnd.isNotEmpty()) {
                     counts.missingEndFields += 1
                     addOffender(offenders, options.maxOffenders, index + 1, "missing end: ${missingEnd.joinToString(",")}", line)
+                    violations += RunViolation(parsed.runId(), index + 1, "missing end: ${missingEnd.joinToString(",")}", line)
                 }
                 if (parsed.has("duration_ms") && !parsed.get("duration_ms").isNumber) {
                     counts.badDurationMs += 1
                     addOffender(offenders, options.maxOffenders, index + 1, "duration_ms not numeric", line)
+                    violations += RunViolation(parsed.runId(), index + 1, "duration_ms not numeric", line)
                 }
             }
 
@@ -181,6 +201,7 @@ object TestLogTools {
                 }
                 contractViolations.reasons.forEach { reason ->
                     addOffender(offenders, options.maxOffenders, index + 1, "command contract: $reason", line)
+                    violations += RunViolation(parsed.runId(), index + 1, "command contract: $reason", line)
                 }
 
                 val commandAttributionViolations = commandTestAttributionViolations(parsed)
@@ -188,6 +209,7 @@ object TestLogTools {
                     counts.commandMissingTestAttributionFields += 1
                     commandAttributionViolations.forEach { reason ->
                         addOffender(offenders, options.maxOffenders, index + 1, "command attribution: $reason", line)
+                        violations += RunViolation(parsed.runId(), index + 1, "command attribution: $reason", line)
                     }
                 }
             }
@@ -203,8 +225,20 @@ object TestLogTools {
                 counts.commandBadDurationMs +
                 counts.commandMissingTestAttributionFields
 
+        val reconciledViolations = if (historyMode) {
+            violations
+                .filter { it.runId != null }
+                .groupBy { requireNotNull(it.runId) }
+                .filter { (runId, runViolations) -> reconciliationKey(runId, runViolations) in closureKeys }
+                .values
+                .flatten()
+        } else {
+            emptyList()
+        }
+        val reportedTotalViolations = if (historyMode) violations.size else totalViolations
+        val unreconciledViolations = reportedTotalViolations - reconciledViolations.size
         val failingViolations = if (options.strictMode) {
-            totalViolations
+            if (historyMode) unreconciledViolations else totalViolations
         } else {
             (if (options.failOnNonJson) counts.nonJsonLines else 0) +
                 (if (options.failOnMissingCore) counts.missingCoreFields else 0) +
@@ -228,8 +262,10 @@ object TestLogTools {
             }
         }
 
-        val report = linkedMapOf<String, Any>(
+        val report = linkedMapOf<String, Any?>(
             "file" to counts.file,
+            "selected_run_id" to options.runId,
+            "skipped_events" to counts.skippedEvents,
             "total_lines" to counts.totalLines,
             "non_empty_lines" to counts.nonEmptyLines,
             "parsed_json_lines" to counts.parsedJsonLines,
@@ -244,7 +280,16 @@ object TestLogTools {
             "type_counts" to counts.typeCounts,
             "platform_counts" to counts.platformCounts,
             "mode" to mode,
-            "total_violations" to totalViolations,
+            "total_violations" to reportedTotalViolations,
+            "reconciled_violations" to reconciledViolations.size,
+            "unreconciled_violations" to unreconciledViolations,
+            "reconciled_offenders" to reconciledViolations.take(options.maxOffenders).map { violation ->
+                mapOf(
+                    "line" to violation.line,
+                    "reason" to violation.reason,
+                    "sample" to violation.sample.take(160),
+                )
+            },
             "failing_violations" to failingViolations,
             "offenders" to offenders.map {
                 mapOf(
@@ -261,6 +306,87 @@ object TestLogTools {
         )
     }
 
+    private fun runReconcile(args: List<String>): TestLogRunResult {
+        val options = parseValidateOptions(args)
+        val file = File(options.filePath)
+        if (!file.exists()) {
+            return TestLogRunResult(2, errorOutput = "ERROR: file not found: ${options.filePath}")
+        }
+
+        val lines = splitJsonlLikeNode(file.readText())
+        val validation = runValidate(listOf("--max-offenders=${Int.MAX_VALUE}", options.filePath))
+        val report = mapper.readTree(requireNotNull(validation.outputJson))
+        val violations = report.get("offenders")
+            .mapNotNull { offender ->
+                val line = offender.get("line")?.asInt() ?: return@mapNotNull null
+                val event = lines.getOrNull(line - 1)?.let { raw -> runCatching { mapper.readTree(raw) }.getOrNull() }
+                event?.runId()?.let { runId ->
+                    RunViolation(runId, line, offender.get("reason").asText(), lines[line - 1])
+                }
+            }
+        val existingKeys = closureKeys(lines)
+        val appendable = violations
+            .groupBy { requireNotNull(it.runId) }
+            .map { (runId, runViolations) -> runId to runViolations.sortedBy(RunViolation::line) }
+            .filter { (runId, runViolations) -> reconciliationKey(runId, runViolations) !in existingKeys }
+
+        appendable.forEach { (runId, runViolations) ->
+            val key = reconciliationKey(runId, runViolations)
+            val closure = linkedMapOf<String, Any>(
+                "type" to "RunClosure",
+                "timestamp" to Instant.now().toString(),
+                "run_id" to runId,
+                "platform" to "reconciliation",
+                "status" to "INCOMPLETE",
+                "original_event_lines" to runViolations.map { violation ->
+                    mapOf("line" to violation.line, "event" to violation.sample)
+                },
+                "original_event_line_numbers" to runViolations.map(RunViolation::line).distinct(),
+                "violation_reasons" to runViolations.map(RunViolation::reason).distinct(),
+                "reconciliation_key" to key,
+            )
+            appendJsonl(file, mapper.writeValueAsString(closure))
+        }
+
+        val reportOutput = linkedMapOf<String, Any>(
+            "file" to options.filePath,
+            "closures_appended" to appendable.size,
+            "already_closed_runs" to (violations.groupBy { it.runId }.size - appendable.size),
+            "unattributable_violations" to report.get("non_json_lines").asInt(),
+            "closures" to appendable.map { (runId, runViolations) ->
+                mapOf("run_id" to runId, "reconciliation_key" to reconciliationKey(runId, runViolations))
+            },
+        )
+        return TestLogRunResult(0, outputJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(reportOutput))
+    }
+
+    private fun closureKeys(lines: List<String>): Set<String> = lines.mapNotNull { line ->
+        runCatching { mapper.readTree(line) }.getOrNull()
+            ?.takeIf { it.get("type")?.asText() == "RunClosure" && it.get("status")?.asText() == "INCOMPLETE" }
+            ?.get("reconciliation_key")
+            ?.asText()
+            ?.takeIf { it.isNotBlank() }
+    }.toSet()
+
+    private fun appendJsonl(file: File, event: String) {
+        if (file.length() > 0 && !file.readText().endsWith("\n")) {
+            file.appendText("\n")
+        }
+        file.appendText(event + "\n")
+    }
+
+    private fun reconciliationKey(runId: String, violations: List<RunViolation>): String {
+        val canonical = buildString {
+            append(runId)
+            violations.sortedWith(compareBy(RunViolation::line, RunViolation::reason)).forEach { violation ->
+                append('|').append(violation.line).append('|').append(violation.reason)
+            }
+        }
+        return MessageDigest.getInstance("SHA-256")
+            .digest(canonical.toByteArray())
+            .joinToString("") { byte -> "%02x".format(byte) }
+    }
+
     private fun parseValidateOptions(args: List<String>): ValidateOptions {
         val filePath = args.firstOrNull { !it.startsWith("--") } ?: DEFAULT_LOG_PATH
         val maxOffenders = args.firstOrNull { it.startsWith("--max-offenders=") }
@@ -270,6 +396,7 @@ object TestLogTools {
 
         return ValidateOptions(
             filePath = filePath,
+            runId = args.optionValue("--run-id"),
             maxOffenders = maxOffenders,
             strictMode = args.contains("--strict"),
             failOnNonJson = args.contains("--fail-on-non-json"),
@@ -307,6 +434,7 @@ object TestLogTools {
         val commandContractViolationsByTask = linkedMapOf<String, Int>()
         var commandMissingTestAttributionFields = 0
         val commandMissingTestAttributionFieldsByTask = linkedMapOf<String, Int>()
+        var skippedEvents = 0
 
         lines.forEach { line ->
             if (line.isBlank()) {
@@ -319,6 +447,11 @@ object TestLogTools {
                 }
             } catch (_: Exception) {
                 nonJsonLines += 1
+                return@forEach
+            }
+
+            if (options.runId != null && event.get("run_id")?.asText() != options.runId) {
+                skippedEvents += 1
                 return@forEach
             }
 
@@ -515,8 +648,10 @@ object TestLogTools {
                     "test_duration_ms" to detail.testDurationMs,
                 )
             }
-        val report = linkedMapOf(
+        val report = linkedMapOf<String, Any?>(
             "file" to options.filePath,
+            "selected_run_id" to options.runId,
+            "skipped_events" to skippedEvents,
             "mode" to if (options.strictMode) "strict" else "report",
             "parsed_json_lines" to parsedJsonLines,
             "non_json_lines" to nonJsonLines,
@@ -594,6 +729,7 @@ object TestLogTools {
 
     private fun parseAnalyzeOptions(args: List<String>): AnalyzeOptions = AnalyzeOptions(
         filePath = args.firstOrNull { !it.startsWith("--") } ?: DEFAULT_LOG_PATH,
+        runId = args.optionValue("--run-id"),
         maxOffenders = args.firstOrNull { it.startsWith("--max-offenders=") }
             ?.substringAfter('=')
             ?.toIntOrNull()
@@ -1005,8 +1141,23 @@ object TestLogTools {
         }
     }
 
+    private fun List<String>.optionValue(name: String): String? {
+        val equalsValue = firstOrNull { it.startsWith("$name=") }?.substringAfter('=')
+        if (equalsValue != null) {
+            return equalsValue.takeIf { it.isNotBlank() }
+        }
+        val index = indexOf(name)
+        if (index < 0) {
+            return null
+        }
+        return getOrNull(index + 1)?.takeUnless { it.startsWith("--") }?.takeIf { it.isNotBlank() }
+    }
+
+    private fun JsonNode.runId(): String? = get("run_id")?.asText()?.takeIf { it.isNotBlank() }
+
     private data class ValidateOptions(
         val filePath: String,
+        val runId: String?,
         val maxOffenders: Int,
         val strictMode: Boolean,
         val failOnNonJson: Boolean,
@@ -1017,6 +1168,7 @@ object TestLogTools {
 
     private data class AnalyzeOptions(
         val filePath: String,
+        val runId: String?,
         val maxOffenders: Int,
         val strictMode: Boolean,
     )
@@ -1025,6 +1177,7 @@ object TestLogTools {
         val file: String,
         val totalLines: Int,
         var nonEmptyLines: Int = 0,
+        var skippedEvents: Int = 0,
         var parsedJsonLines: Int = 0,
         var nonJsonLines: Int = 0,
         var missingCoreFields: Int = 0,
@@ -1039,6 +1192,13 @@ object TestLogTools {
     )
 
     private data class Offender(
+        val line: Int,
+        val reason: String,
+        val sample: String,
+    )
+
+    private data class RunViolation(
+        val runId: String?,
         val line: Int,
         val reason: String,
         val sample: String,

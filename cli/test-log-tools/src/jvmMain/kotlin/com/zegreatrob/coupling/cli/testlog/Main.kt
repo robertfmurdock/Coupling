@@ -5,6 +5,6 @@ import com.github.ajalt.clikt.core.subcommands
 
 suspend fun main(args: Array<String>) {
     TestLogToolsCli()
-        .subcommands(ValidateCommand(), AnalyzeCommand())
+        .subcommands(ValidateCommand(), ValidateHistoryCommand(), AnalyzeCommand(), ReconcileCommand())
         .main(args)
 }

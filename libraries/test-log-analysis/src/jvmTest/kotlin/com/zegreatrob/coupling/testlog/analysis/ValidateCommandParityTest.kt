@@ -149,6 +149,47 @@ class ValidateCommandParityTest {
     }
 
     @Test
+    fun `run scoped validation ignores malformed events from an older run`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:03Z","run_id":"older-run","platform":"jvm","duration_ms":"12"}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"current-run","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CurrentTest","test":"works","status":"SUCCESS","duration_ms":12}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(
+            TestLogRequest(
+                TestLogCommand.VALIDATE,
+                listOf("--strict", "--run-id=current-run", file.toString()),
+            ),
+        )
+    } verify { result ->
+        val json = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(0)
+        json.get("selected_run_id").asText().assertIsEqualTo("current-run")
+        json.get("skipped_events").asInt().assertIsEqualTo(1)
+        json.get("total_violations").asInt().assertIsEqualTo(0)
+    }
+
+    @Test
+    fun `unfiltered validation retains historical violations`() = setup(object {
+        val file = writeTempJsonl(
+            """
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:03Z","run_id":"older-run","platform":"jvm","duration_ms":"12"}
+            {"type":"TestEnd","timestamp":"2026-04-23T01:02:04Z","run_id":"current-run","platform":"jvm","task":":sdk:jvmTest","suite":"com.example.CurrentTest","test":"works","status":"SUCCESS","duration_ms":12}
+            """.trimIndent(),
+        )
+    }) exercise {
+        TestLogTools.run(TestLogRequest(TestLogCommand.VALIDATE, listOf("--strict", file.toString())))
+    } verify { result ->
+        val json = parseOutput(result)
+
+        result.exitCode.assertIsEqualTo(1)
+        json.get("total_violations").asInt().assertIsEqualTo(2)
+    }
+
+    @Test
     fun `missing file returns exit 2 and expected error message`() = setup(object {
         val missingPath = "/tmp/does-not-exist-${System.nanoTime()}.jsonl"
     }) exercise {

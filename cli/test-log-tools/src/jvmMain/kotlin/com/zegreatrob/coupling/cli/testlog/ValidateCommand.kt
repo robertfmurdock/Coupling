@@ -16,6 +16,7 @@ class ValidateCommand : SuspendingCliktCommand("validate") {
     private val failOnMissingEnd by option("--fail-on-missing-end").flag(default = false)
     private val failOnBadDuration by option("--fail-on-bad-duration").flag(default = false)
     private val maxOffenders by option("--max-offenders")
+    private val runId by option("--run-id")
     private val reportFile by option("--report-file")
     private val quietSuccess by option("--quiet-success").flag(default = false)
     private val failureSummary by option("--failure-summary").flag(default = false)
@@ -29,6 +30,7 @@ class ValidateCommand : SuspendingCliktCommand("validate") {
             if (failOnMissingEnd) add("--fail-on-missing-end")
             if (failOnBadDuration) add("--fail-on-bad-duration")
             maxOffenders?.let { add("--max-offenders=$it") }
+            runId?.let { add("--run-id=$it") }
             add(path)
         }
         val result = TestLogTools.run(

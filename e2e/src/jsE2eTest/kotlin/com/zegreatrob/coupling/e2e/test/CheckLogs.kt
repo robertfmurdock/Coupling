@@ -174,8 +174,13 @@ internal fun appendCanonicalToTestLog(message: String, logger: String, propertie
 internal fun appendTestLifecycleToTestLog(type: String, status: String? = null, durationMs: Double? = null) {
     withNodeTestLogAppender { fs, logPath ->
         val testIdentity = currentTestIdentity()
+        val eventType = if (type == "TestEnd" && (testIdentity.suite == null || testIdentity.test == null)) {
+            "LifecycleEnd"
+        } else {
+            type
+        }
         val event = json(
-            "type" to type,
+            "type" to eventType,
             "platform" to "e2e",
             "run_id" to testRunId(),
             "task" to testTaskPath(),
