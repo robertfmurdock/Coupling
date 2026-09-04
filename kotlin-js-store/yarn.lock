@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1126.0":
-  version "3.1126.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1126.0.tgz#464ede14d753eab1b22145ad10d7dec22f93853e"
-  integrity sha512-MejOLAbstJFOJn2Z26lPn7o490zR7xca9FcG0HDvgpyf/guqTi/a/fWNxCyP2kwrDNPIv0c7LuA4IGQKWmfoKQ==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1127.0":
+  version "3.1127.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1127.0.tgz#06679b42ce9e1f2a697cc23cd668c272d5023435"
+  integrity sha512-Wa+B/bazfoTA0v3P3yHqGHgTONMaSk6T5CtsMU5q18E2cw50kAygtFjTqx80cP0Ttg9I4HvlR7UpBr9slXVlGA==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/credential-provider-node" "^3.972.82"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.17.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1126.0":
-  version "3.1126.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1126.0.tgz#67fbf407cdddc1856888b28c737a0ba1ee75dbd6"
-  integrity sha512-JJquheUb1DCcY4p2cejC5HBDC45UEMIlIBHXkKJnIhDj132fEFOgSOdlEdu+tbXxNi/SybFiVezydVvqfKDjGQ==
+"@aws-sdk/client-dynamodb@3.1127.0":
+  version "3.1127.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1127.0.tgz#80a2c10f0f3e2caa4249e60cab82536608868392"
+  integrity sha512-rV9TC7gqtwekWR9jXBdzuvCG65fnv7jphnYdJmFBfLX1b0Q+ma3xijzZaGGeN+US2pKw/XaQiZapJX/nZqtBJw==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/credential-provider-node" "^3.972.82"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1126.0":
-  version "3.1126.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1126.0.tgz#b7400be33704d3b170c987ce5d657b7ff8eee77e"
-  integrity sha512-XygPrTShLUmccumtD7Bh7dYzD1qD6YKlF8b+zdt+HPx6SFONYnqZfbhcPMAT1Kp0BIXOez73vVbDkCq0iREz5w==
+"@aws-sdk/client-lambda@~3.1127.0":
+  version "3.1127.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1127.0.tgz#d23991fd27331723114a582690867c0404850148"
+  integrity sha512-fyfvc2mtIz9Wrb7ThJWhSb2fa5GFafMM1H9kzUR69wZ7U8woW+9RNjpTT2gVYpyiMT5JkcNyjAZDvlOzswYbig==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/credential-provider-node" "^3.972.82"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1126.0":
-  version "3.1126.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1126.0.tgz#7dea5596dd0596e0e0c37506329343329733ee2e"
-  integrity sha512-FC3NLbBPQn6PhSj3sWNPP7gdqG7wVtFmRRA6q3UwE0FWXn6TezpCIAAWzxMAJGPJmHeuuaI49kAWmqCcufM88A==
+"@aws-sdk/lib-dynamodb@3.1127.0":
+  version "3.1127.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1127.0.tgz#29bbe7ae304bf81fafdac47cde8494d2e70425e9"
+  integrity sha512-IEpeWj3UtcN2Vb/zxI1Zc8G7Vg5/3ypyjZCWxplVcns/NibmbjyKED/La14dYCMsgM2TRBBoyPdtIkCmVVheuQ==
   dependencies:
     "@aws-sdk/core" "^3.977.9"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -780,10 +780,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.25.0":
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.25.0.tgz#4a79c239030f84d91c488029f482d3ddc178538c"
-  integrity sha512-sB7fwgJMCNqeEkjbN8JDGObsqBTa+marQTxeNWHEJSNw5qJk9C9JSvZtksyoPqNeSKxzQjQ2PMngvjvWFCjRGw==
+"@continuous-excellence/ze-great-dashboard-aws@0.27.1":
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.27.1.tgz#129eeddb8de7e3af69ec81d22464f4a28d181449"
+  integrity sha512-2KXEuOPRP0ZtGc4AHbauIz8CGVhtrOW0OvFB8Ek8UiMmB0GFAevbIMHnWzVDENVwSRS1M5Q6u2T1HmYiDIbVKw==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.0"
@@ -6728,10 +6728,10 @@ glob@^8.1.0:
     minimatch "^5.0.1"
     once "^1.3.0"
 
-global-jsdom@29.0.0:
-  version "29.0.0"
-  resolved "https://registry.yarnpkg.com/global-jsdom/-/global-jsdom-29.0.0.tgz#c7c7f51d58f8069d94563afb5d7b8cd34546d64e"
-  integrity sha512-S9Wl+EHDfkO8DYleqMYzf14hKfwIysEN/FvoVRdPif3uUGUlmiHs/gj1PVKXhmJ20DwUVACtdxxhNYYvvn9K7A==
+global-jsdom@30.0.0:
+  version "30.0.0"
+  resolved "https://registry.yarnpkg.com/global-jsdom/-/global-jsdom-30.0.0.tgz#c5dcac45ecf0639ac406d10cb00b95835aa6b575"
+  integrity sha512-X7oTdIs442ApUNvzHlDtoFfTyVVCFsO3wwKYNTziacCgxH+l+z9ZVeakLpK8SGOJKdCKR7xMPoZ848ZdEHc+RA==
 
 globby@^11.0.3:
   version "11.1.0"
@@ -7494,10 +7494,10 @@ jose@^6.0.8, jose@^6.1.3, jose@^6.2.2:
   resolved "https://registry.yarnpkg.com/jose/-/jose-6.2.3.tgz#0975197ad973251221c658a3cddc4b951a250c2d"
   integrity sha512-YYVDInQKFJfR/xa3ojUTl8c2KoTwiL1R5Wg9YCydwH0x0B9grbzlg5HC7mMjCtUJjbQ/YnGEZIhI5tCgfTb4Hw==
 
-jose@^6.2.10:
-  version "6.2.10"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.2.10.tgz#b70436c920c4b3f97314c28a8b8612c15b1d9e7f"
-  integrity sha512-iiW7J9qRFlGxvCOIBDBDxFePQSn7ZMAnrYGhrrOo6siO/MIqwfyilLR27pkfDgUk+raLuzADS8A3S/KLBisc0g==
+jose@^6.2.11:
+  version "6.2.11"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.2.11.tgz#32e1d51a41e038176baead00b8008b73a65566b8"
+  integrity sha512-A5NPn7g8EAzGU3IzRs+Yiq8K5n3ypYS75M5+KKiVHdUexfpWK1kP4ZMq7QnTGDoMj6TJ1dtcEJjW60yZDXS4hg==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
@@ -9925,10 +9925,10 @@ serverless-offline-ssm@^6.2.0:
   resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-6.2.0.tgz#f2db290a72631629579ce5f940ed76f254f96653"
   integrity sha512-Af7JeLbU4OHAx7ZgAs2OLP2DGKyp/g45rX7SWQ8KiBzn47jme+MqN+GOV6qd5oZ8V9khd3p62+RueHR3ezEZZQ==
 
-serverless-offline@^14.8.0:
-  version "14.8.0"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.8.0.tgz#5f00790723ff1f6cf954848fcfeffa5adfcdc9b4"
-  integrity sha512-OEjkcYFUPNnTAdTeH4nnxWzV7QfUVzBbgv5c43vWGueCpshxcZ8f4Ybz52+GnE1Pz9iWuPt1SYNNgPZ6YQFU2Q==
+serverless-offline@^14.8.1:
+  version "14.8.1"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-14.8.1.tgz#3bf2ee8c10f4591dc183dc9d844accebf67abf10"
+  integrity sha512-pIYYenXXcnr4AOnLCDq8I+Nhal+dW316bLDcWMm7uY/OH40bdd+Ivbn/DQR+EY8jjh7rG2i36jBiqHefa3wb0Q==
   dependencies:
     "@aws-sdk/client-lambda" "^3.1069.0"
     "@hapi/boom" "^10.0.1"
