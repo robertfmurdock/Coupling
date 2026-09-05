@@ -111,7 +111,7 @@ boards:
         base_branch: main
         build_workflow: main.yml
         update_workflows:
-          - workflow: dependency-update.yml
+          - workflow: main.yml
             branch_prefixes:
               - automation/npm-dependencies-
         position: { x: 5, y: 4, w: 1, h: 4 }
