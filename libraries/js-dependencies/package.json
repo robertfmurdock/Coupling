@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.24.1",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.27.1",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.27.2",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.1127.0",
     "@aws-sdk/client-dynamodb": "3.1127.0",
     "@aws-sdk/client-lambda": "~3.1127.0",
@@ -47,7 +47,7 @@
     "graphql": "^17.0.2",
     "graphql-http": "^1.23.0",
     "html2canvas": "^1.4.1",
-    "jose": "^6.2.11",
+    "jose": "^6.2.12",
     "jsdom": "29.1.1",
     "jwks-rsa": "4.1.0",
     "jwt-decode": "4.0.0",
