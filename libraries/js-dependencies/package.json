@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.24.1",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.27.2",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.27.3",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.1127.0",
     "@aws-sdk/client-dynamodb": "3.1127.0",
     "@aws-sdk/client-lambda": "~3.1127.0",
@@ -68,7 +68,7 @@
     "resolve-pkg": "^3.0.1",
     "serverless": "^4.41.1",
     "serverless-http": "^4.0.0",
-    "serverless-offline": "^14.8.1",
+    "serverless-offline": "^14.8.2",
     "serverless-offline-ssm": "^6.2.0",
     "sonda": "^0.14.0",
     "stripe": "^22.6.1",
