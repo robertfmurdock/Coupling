@@ -161,3 +161,8 @@ boards:
             url: https://api.github.com/repos/robertfmurdock/testmints/releases/latest
             json_path: $.tag_name
             link: https://github.com/robertfmurdock/testmints/releases/latest
+          - id: ze-great-dashboard-latest-version
+            label: Ze Great Dashboard
+            url: https://api.github.com/repos/robertfmurdock/ze-great-dashboard/releases/latest
+            json_path: $.tag_name
+            link: https://github.com/robertfmurdock/ze-great-dashboard/releases/latest
