@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://public-assets.zegreatrob.com/dashboard/0.27.11/board-config.schema.json
+# yaml-language-server: $schema=https://public-assets.zegreatrob.com/dashboard/0.27.12/board-config.schema.json
 
 sources:
   coupling:
@@ -166,7 +166,7 @@ boards:
         label: Latest releases
         refresh: 15m
         density: compact
-        position: { x: 0, y: 8, w: 6, h: 2 }
+        position: { x: 6, y: 8, w: 6, h: 2 }
         facts:
           - id: ze-great-dashboard-latest-version
             label: Ze Great Dashboard
