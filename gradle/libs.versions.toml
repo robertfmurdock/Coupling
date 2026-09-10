@@ -11,7 +11,7 @@ com-lemonappdev-konsist = "com.lemonappdev:konsist:0.17.3"
 com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.12.23"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.48"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:3.6.18"
-eu-anifantakis-ksafe = "eu.anifantakis:ksafe:3.1.0"
+eu-anifantakis-ksafe = "eu.anifantakis:ksafe:3.2.0"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:8.0.4"
 io-ktor-ktor-bom = "io.ktor:ktor-bom:3.5.2"
 org-apache-logging-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
