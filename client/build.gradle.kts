@@ -1,3 +1,4 @@
+
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.js.NodeExec
@@ -110,6 +111,7 @@ dependencies {
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
 }
 
+//rootProject.yarn.ignoreScriptsProperty = false
 rootProject.yarn.ignoreScripts = false
 
 tasks {

@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://public-assets.zegreatrob.com/dashboard/0.27.1/board-config.schema.json
+# yaml-language-server: $schema=https://public-assets.zegreatrob.com/dashboard/0.27.11/board-config.schema.json
 
 sources:
   coupling:
@@ -134,7 +134,7 @@ boards:
               - create-pull-request/
         position: { x: 11, y: 4, w: 1, h: 4 }
         density: compact
-      - id: latest-releases
+      - id: latest-releases-1
         type: http-value
         label: Latest releases
         refresh: 15m
@@ -161,6 +161,13 @@ boards:
             url: https://api.github.com/repos/robertfmurdock/testmints/releases/latest
             json_path: $.tag_name
             link: https://github.com/robertfmurdock/testmints/releases/latest
+      - id: latest-releases-2
+        type: http-value
+        label: Latest releases
+        refresh: 15m
+        density: compact
+        position: { x: 0, y: 8, w: 6, h: 2 }
+        facts:
           - id: ze-great-dashboard-latest-version
             label: Ze Great Dashboard
             url: https://api.github.com/repos/robertfmurdock/ze-great-dashboard/releases/latest
