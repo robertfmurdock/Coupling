@@ -170,6 +170,6 @@ boards:
         facts:
           - id: ze-great-dashboard-latest-version
             label: Ze Great Dashboard
-            url: https://api.github.com/repos/robertfmurdock/ze-great-dashboard/releases/latest
-            json_path: $.tag_name
-            link: https://github.com/robertfmurdock/ze-great-dashboard/releases/latest
+            url: https://registry.npmjs.org/@continuous-excellence%2Fze-great-dashboard-client/latest
+            json_path: $.version
+            link: https://www.npmjs.com/package/@continuous-excellence/ze-great-dashboard-client
