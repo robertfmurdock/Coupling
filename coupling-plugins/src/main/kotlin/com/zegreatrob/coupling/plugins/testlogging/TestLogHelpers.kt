@@ -5,6 +5,8 @@ import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JavaToolchainService
 import java.io.File
 
 data class AttributionCoverage(
@@ -37,27 +39,36 @@ fun Project.registerTestLogCliTask(
     testLogToolsClasspath: Provider<String>,
     testRunIdentifier: Provider<String>? = null,
     strictFlags: List<String> = listOf("--strict"),
-): TaskProvider<Exec> = tasks.register(name, Exec::class.java) {
-    group = "verification"
-    description = descriptionText
-    dependsOn(":cli:test-log-tools:jvmJar")
+): TaskProvider<Exec> {
+    val javaExecutable = extensions.getByType(JavaToolchainService::class.java)
+        .launcherFor { languageVersion.set(JavaLanguageVersion.of(22)) }
+        .get()
+        .executablePath
 
-    executable("java")
-    argumentProviders.add {
-        buildList {
-            addAll(listOf(
-                "-cp",
-                testLogToolsClasspath.get(),
-                "com.zegreatrob.coupling.cli.testlog.MainKt",
-                command,
-                "--report-file",
-                reportFilePath.get(),
-                "--quiet-success",
-                "--failure-summary",
-            ))
-            addAll(strictFlags)
-            testRunIdentifier?.orNull?.takeIf { it.isNotBlank() }?.let { add("--run-id=$it") }
-            add(testJsonlFilePath.get())
+    return tasks.register(name, Exec::class.java) {
+        group = "verification"
+        description = descriptionText
+        dependsOn(":cli:test-log-tools:jvmJar")
+
+        executable(javaExecutable)
+        argumentProviders.add {
+            buildList {
+                addAll(
+                    listOf(
+                        "-cp",
+                        testLogToolsClasspath.get(),
+                        "com.zegreatrob.coupling.cli.testlog.MainKt",
+                        command,
+                        "--report-file",
+                        reportFilePath.get(),
+                        "--quiet-success",
+                        "--failure-summary",
+                    ),
+                )
+                addAll(strictFlags)
+                testRunIdentifier?.orNull?.takeIf { it.isNotBlank() }?.let { add("--run-id=$it") }
+                add(testJsonlFilePath.get())
+            }
         }
     }
 }
