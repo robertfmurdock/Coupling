@@ -111,8 +111,7 @@ dependencies {
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
 }
 
-//rootProject.yarn.ignoreScriptsProperty = false
-rootProject.yarn.ignoreScripts = false
+rootProject.yarn.ignoreScriptsProperty = false
 
 tasks {
     val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
