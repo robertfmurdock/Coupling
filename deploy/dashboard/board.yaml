@@ -62,6 +62,12 @@ boards:
             branch_prefixes:
               - cpr-gradle-update/
               - create-pull-request/
+          - workflow: dependency-update.yml
+            branch_prefixes:
+              - master
+          - workflow: update-gradle-wrapper.yml
+            branch_prefixes:
+              - master
         position: { x: 3, y: 0, w: 1, h: 4 }
         density: compact
       - id: jsmints-build
@@ -80,6 +86,12 @@ boards:
             branch_prefixes:
               - cpr-gradle-update/
               - cpr/
+          - workflow: gradle-update.yml
+            branch_prefixes:
+              - master
+          - workflow: update-gradle-wrapper.yml
+            branch_prefixes:
+              - master
         position: { x: 7, y: 0, w: 1, h: 4 }
         density: compact
       - id: testmints-build
@@ -97,6 +109,12 @@ boards:
           - workflow: main.yml
             branch_prefixes:
               - create-pull-request/
+          - workflow: gradle-update.yml
+            branch_prefixes:
+              - master
+          - workflow: update-gradle-wrapper.yml
+            branch_prefixes:
+              - master
         position: { x: 11, y: 0, w: 1, h: 4 }
         density: compact
       - id: ze-great-dashboard-build
@@ -114,6 +132,9 @@ boards:
           - workflow: main.yml
             branch_prefixes:
               - automation/npm-dependencies-
+          - workflow: dependency-update.yml
+            branch_prefixes:
+              - main
         position: { x: 5, y: 4, w: 1, h: 4 }
         density: compact
       - id: ze-great-tools-build
@@ -132,6 +153,12 @@ boards:
             branch_prefixes:
               - cpr-gradle-update/
               - create-pull-request/
+          - workflow: gradle-update.yml
+            branch_prefixes:
+              - main
+          - workflow: update-gradle-wrapper.yml
+            branch_prefixes:
+              - main
         position: { x: 11, y: 4, w: 1, h: 4 }
         density: compact
       - id: latest-releases-1
