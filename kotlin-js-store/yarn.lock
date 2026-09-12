@@ -905,14 +905,14 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.30.0.tgz#b503be1e046028104885404085a7c6fe30a9b74d"
-  integrity sha512-5BjB3MWU1wYPUO6Rkp2oSEJfePk1uTBEdypDEFz90Bn+J63IBQLu0PfAMmRKN8Ln0R010ZMpkxzZUDluy7zxlQ==
+"@continuous-excellence/ze-great-dashboard-aws@0.30.3":
+  version "0.30.3"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.30.3.tgz#4ca5f13943b082e835caa3d60a1df5c3dd29dba6"
+  integrity sha512-/my+zfYEe/SURNFxeXG91P1PezBBi4V8Mq7NIIZXNkLcQnp88Td50/PUQseUwxtWBhtw5wPkLwGj8GKVvro/og==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.0"
-    zod "^4.6.1"
+    zod "^4.6.2"
 
 "@csstools/color-helpers@^6.1.0":
   version "6.1.0"
@@ -11596,7 +11596,7 @@ zip-stream@^6.0.1:
     compress-commons "^6.0.2"
     readable-stream "^4.0.0"
 
-zod@^4.6.1:
+zod@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/zod/-/zod-4.6.2.tgz#91b2ce79ec994eaa42675499166587d3d223c961"
   integrity sha512-lh5RCAGFa1Cm2hjtNwLQhSs/AsqdWnTQaBER9fEwN/88pSh7KOtJavtBx/0VlkN/uFd61SwYmljLMDAsHlvzBQ==
