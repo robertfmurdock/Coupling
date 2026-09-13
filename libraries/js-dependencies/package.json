@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.24.1",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.30.3",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.30.4",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.1131.0",
     "@aws-sdk/client-dynamodb": "3.1131.0",
     "@aws-sdk/client-lambda": "~3.1131.0",
@@ -14,7 +14,7 @@
     "@graphql-tools/schema": "^10.1.1",
     "@graphql-tools/stitch": "^10.3.0",
     "@log4js-node/log4js-api": "1.0.2",
-    "@napi-rs/keyring": "^2.0.0",
+    "@napi-rs/keyring": "^2.1.0",
     "@nivo/bar": "^0.99.0",
     "@nivo/boxplot": "^0.99.0",
     "@nivo/colors": "^0.99.0",
@@ -52,7 +52,7 @@
     "jwks-rsa": "4.1.0",
     "jwt-decode": "4.0.0",
     "lru-memoizer": "^3.0.0",
-    "marked": "^18.0.12",
+    "marked": "^18.0.13",
     "on-finished": "^2.4.1",
     "open": "^11.0.3",
     "parse5": "~8.0.1",
