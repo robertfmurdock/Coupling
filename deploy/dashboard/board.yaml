@@ -1,4 +1,12 @@
-# yaml-language-server: $schema=https://public-assets.zegreatrob.com/dashboard/0.30.4/board-config.schema.json
+# yaml-language-server: $schema=https://public-assets.zegreatrob.com/dashboard/0.31.0/board-config.schema.json
+
+auth:
+  issuer: https://zegreatrob.us.auth0.com/
+  client_id: syFqMSv0SmShh0tepv0WKJ50EoxgSr1t
+  audience: https://dashboard.zegreatrob.com/api
+  authorization:
+    mode: authenticated
+security: required
 
 sources:
   coupling:
@@ -42,15 +50,6 @@ sources:
       private_key_env: GITHUB_APP_PRIVATE_KEY
       installation_id_env: GITHUB_APP_INSTALLATION_ID
 
-auth:
-  issuer: https://zegreatrob.us.auth0.com/
-  client_id: syFqMSv0SmShh0tepv0WKJ50EoxgSr1t
-  audience: https://dashboard.zegreatrob.com/api
-  allow:
-    subjects:
-      - google-oauth2|102357387004099741086
-
-security: required
 
 boards:
   ze-great-team:
