@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@auth0/auth0-react": "2.24.1",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.30.4",
+    "@auth0/auth0-react": "2.25.0",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.31.0",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.1131.0",
     "@aws-sdk/client-dynamodb": "3.1131.0",
     "@aws-sdk/client-lambda": "~3.1131.0",
@@ -73,7 +73,7 @@
     "sonda": "^0.14.0",
     "stripe": "^22.6.2",
     "vite-plugin-html": "^3.2.2",
-    "webpack": "5.110.3",
+    "webpack": "5.111.0",
     "webpack-cli": "^7.2.3"
   }
 }
