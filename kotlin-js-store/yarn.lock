@@ -43,27 +43,27 @@
   resolved "https://registry.yarnpkg.com/@asamuzakjp/nwsapi/-/nwsapi-2.3.9.tgz#ad5549322dfe9d153d4b4dd6f7ff2ae234b06e24"
   integrity sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==
 
-"@auth0/auth0-auth-js@^1.10.0":
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.12.0.tgz#ca46ae6fcd23f6dcd62b8678693f41b957d9b63f"
-  integrity sha512-94r29UxcFEdroO74TUqu5KYy5hSKa6mCXY8lu4hADiyES8qthlSCwaCPEW1adpM5hdheltQ7s1o9TsK8Btyjvg==
+"@auth0/auth0-auth-js@^1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.15.0.tgz#e495f145c29bd25c9a6a6864426c9ab4ea6269d1"
+  integrity sha512-obn/Qhxx3eNs2wV6/lLsIDIcEiSJvBEEy15hppB5Me1j2No2toa7KqQcXHBCyGX4mBBdVnxZJBjEX6E4WanYwg==
   dependencies:
     jose "^6.0.8"
     openid-client "^6.8.0"
 
-"@auth0/auth0-react@2.25.0":
-  version "2.25.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.25.0.tgz#6bf3ef020ab3ed3cb0eef5768d63dcd94007f491"
-  integrity sha512-f20PJ8oU9IN5IN9ArR4aeVrgDyYSPe1Cbe3dWHZReDWzvXqbP3x3XRscdj+LXjWjpOK0If4QplBSQvB4mbFFbg==
+"@auth0/auth0-react@2.26.0":
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.26.0.tgz#ea7ca9b468274b0238db73fa6f55686ace49e74e"
+  integrity sha512-4kXXdqeVOaESQuWD4/b+FTP30wSHWeFASov39UhWaYaPiSnKCVM0BGveuokJeaCUSiJekW3Zs7G29S1nbwswLg==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.25.0"
+    "@auth0/auth0-spa-js" "^2.26.0"
 
-"@auth0/auth0-spa-js@^2.25.0":
-  version "2.25.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.25.0.tgz#2651b7b3ea9d5f60289ca760f017ac230b492ae7"
-  integrity sha512-ISqLDRQcxFfF678AgtYDCdXESHX9W8II339xj/F6ujIptjK/ZkcTwq4HJs3RG7F24xRq1Xx1Vsc2uSCpyCMcUA==
+"@auth0/auth0-spa-js@^2.26.0":
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.26.0.tgz#08376bca61da2199340bf3190c23ec6f18bb3b3a"
+  integrity sha512-pv2Si9bJioQqTgk/doh0nIKgnpF1TEW/CvPmC1eYUgwPk/cUIwIzNSPShFBM4G2MnR+pbeD2HhFH6ChJAzIeqg==
   dependencies:
-    "@auth0/auth0-auth-js" "^1.10.0"
+    "@auth0/auth0-auth-js" "^1.15.0"
     browser-tabs-lock "^1.3.0"
     dpop "^2.1.1"
     es-cookie "~1.3.2"
@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1134.0":
-  version "3.1134.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1134.0.tgz#757f008747896e1fb2837919476244473af0b60b"
-  integrity sha512-aUDlIyWTChR4xCryU+CK2XRWBVGQ3SLtJ0+J1j8yv0tXX9YnFMEsFx23fnRJWs6OHJEuGCJhYJbiULAeF+xQlw==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1135.0":
+  version "3.1135.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1135.0.tgz#be727ed4bc6c0d1f34f7747ce29a7ab56bb69889"
+  integrity sha512-V3iD1enYMh++JM8e2Pig00sycKTIk7R1+7ibHAMsgh/wP8A2pYnL7yrIfOxvaqUA1+C6AVPqGCf0s/l5X683PA==
   dependencies:
     "@aws-sdk/core" "^3.978.0"
     "@aws-sdk/credential-provider-node" "^3.972.83"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.17.2"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1134.0":
-  version "3.1134.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1134.0.tgz#ed7d5d0bc95deb4b1b1e4c916cdc8b294dceb931"
-  integrity sha512-i2FzVUVQWT0fEPE7/CxIP0620svDeNZKw4yU7VAa1s3otwXJ7CP2hgblvbPD6H3p+mTNSPfHoEyxK0iZDmBODQ==
+"@aws-sdk/client-dynamodb@3.1135.0":
+  version "3.1135.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1135.0.tgz#a3a2345020f96bedc2cbd378afae25b9c78c67fe"
+  integrity sha512-v7OUJssmhg5vVnJowkgZfQQBufC8ObJ+wjSJv8J8QFHvDb0F6iOvbEu4JTgJTAvQ5SXDEAZXE82SDfJ0rzd9NQ==
   dependencies:
     "@aws-sdk/core" "^3.978.0"
     "@aws-sdk/credential-provider-node" "^3.972.83"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1134.0":
-  version "3.1134.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1134.0.tgz#45783642ea5a35765f54d5bdcaa28fce15545a6c"
-  integrity sha512-eVZllUXQJ0KMgpUHExXPrA+/D10BtDZ22BkDNBVQiH9VKt8aasPkpa1L/SjH/PKAVyKfDVfoIKLNIihuZxZDHw==
+"@aws-sdk/client-lambda@~3.1135.0":
+  version "3.1135.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1135.0.tgz#0cefb19c37ae12bb489983398ceb2c933e1be435"
+  integrity sha512-MGq1h0HoP+Xrtrl8LT5yf/lcbPJcfiXNPYMqeUdltZCMUUMFQMeraLog2UzFV6HBv58v9yjWhFrXT4UjFLEyUQ==
   dependencies:
     "@aws-sdk/core" "^3.978.0"
     "@aws-sdk/credential-provider-node" "^3.972.83"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1134.0":
-  version "3.1134.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1134.0.tgz#e476a007f3197fa7260ef23f607435320dc81564"
-  integrity sha512-L1xqmT6yzO9fMBGN0gz9weIEGVoAJpEd7j6FUeU58smUkEK898s21JJUQ8Vp/5L4QN6kTp7NTUbX+laYNBdi2g==
+"@aws-sdk/lib-dynamodb@3.1135.0":
+  version "3.1135.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1135.0.tgz#4582b379df1b4676312aec300452fb62dd54f506"
+  integrity sha512-v6F+AJXYrAazow2cs8tDqjrFnr7bb97jjOZuaJiRGJhz62BDG9nn9cKD0Ka2HO5lvuZ4eVEhMNRmIKFUo83ZFQ==
   dependencies:
     "@aws-sdk/core" "^3.978.0"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -905,10 +905,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.4":
-  version "0.31.4"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.4.tgz#b8cedf5c048d483d5f36b032d24e2bb80266e496"
-  integrity sha512-Wh2WQv+TYGueUIyMLjiYRK7//k4+adHODmwvmFQ12ZVNqLKZv1STl9wLdlBJD7Uw3f/6LZ5XDy1EfuANhRweEQ==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.5":
+  version "0.31.5"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.5.tgz#41baa0a1763f52aa2d6a54490acbe4f94e5de931"
+  integrity sha512-/kXMRtWnzz5VGb9dYiq9804kDL+6TdG8EBOc0esGnCdWJDXeAH5LJmXdqV9Mpu70+U1jhevIbYh6whx02tBq7g==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -4905,10 +4905,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@153.0.0:
-  version "153.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-153.0.0.tgz#592cf762306b11c8eb17deef94fb2154c0eb46eb"
-  integrity sha512-FZUJuwmmttB3g4u8u3sYjFcWINNf8kh8xRiH6BNd9MRoGuJrBPt1N/qcHQqN2pdew1Omi1U6Y2L+S4pRSIbqTg==
+chromedriver@153.0.1:
+  version "153.0.1"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-153.0.1.tgz#36066aa7d56aa549234cf60d67cb5e59fb6e1f5c"
+  integrity sha512-wppvD9pCjv0p6pnpnqpRXgShcMnRn2uPEmw0TNN4R8zYpLvc6Ro3HHromi6Nseyjhm3YlUyW50kMFueDJvbLSA==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     adm-zip "^0.6.0"
