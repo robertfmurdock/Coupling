@@ -905,10 +905,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.9":
-  version "0.31.9"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.9.tgz#446999cf7cc42f1d35498c648bdb9553ef0d9cee"
-  integrity sha512-NRPEFN5E8Y1E/oS5RzGa00CTzC1JTyxBTwkOi84snqtxS82AxziT0u3V23e0TavQG28bhqltV0h5N5ptDhTyww==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.10":
+  version "0.31.10"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.10.tgz#b9c99af77cf133f3c72860ce147b8d197866b865"
+  integrity sha512-YYGi9Z19Q8EuiUXZ5+V3aAB01eoAGRqR4InVsXNBvGGkZE57NRE0FJrWfcesXupd60yYpTWDYS8wBhANi5Pnmg==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -3489,10 +3489,10 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^6.11.0":
-  version "6.11.0"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.11.0.tgz#5dac8d898c726ac491eb03bd75f16f53706a5148"
-  integrity sha512-u5Nydu7UZ3llHbmumzhFe0u/E7+rz0syjZ6T1fXJEafjuVBIHt6o0438/InHsn73pRfjchGGKx1zXNlWlzS93A==
+"@stripe/react-stripe-js@^6.12.0":
+  version "6.12.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.12.0.tgz#c62b59f10a42040fcbdf8426c6bd80aae2f9ec55"
+  integrity sha512-5RVfx92MTb66+ELuQTreUqX2oFvma5wybZ7MaifoNo0QgrjbJiLZcysGw5kIHU7p1TCd1Lx5JnasoqteSwlUsg==
   dependencies:
     prop-types "^15.7.2"
 
@@ -4894,10 +4894,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@153.0.3:
-  version "153.0.3"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-153.0.3.tgz#92f9e7cdf339db9ced339a98a2a53dcb1ab66a08"
-  integrity sha512-/1+Fr3HcPnclLYYSQoK8l4otRzzda2lN/XOME7Nwhz98U8DI+tYom1+UjHBPeiLCFyZe5FsBiHjHPOuAkj2hvA==
+chromedriver@154.0.0:
+  version "154.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-154.0.0.tgz#010f703f6f0329231aef3d53634e99d624a47a8c"
+  integrity sha512-kn+ENZ2lEPAmeDTNNBbVw6Xt4KAr6M4EFcgeV4lUREgJWHVZBu4fFc+OFivtuf5Q9jM/qSmAcQ3MdWtdOE6mVA==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     adm-zip "^0.6.0"
