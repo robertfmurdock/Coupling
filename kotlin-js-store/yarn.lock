@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1138.0":
-  version "3.1138.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1138.0.tgz#9bb6000914dce85ae420876dd53effaebb6cc2b8"
-  integrity sha512-HF0YaOX61Es+v4T8X4ZwPAqRjINpaNV9IpYlWOHI88VQnTa4qfsvlRCrpeDb1l9RbGvVxDIgnxFYl0952C3amA==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1140.0":
+  version "3.1140.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1140.0.tgz#0a4fc7519b3a0defb594669903a7607cb11f960a"
+  integrity sha512-cXBdIN0KB2rIZVuvpAWxJbAFBpNGkTrJuuRimByv7Fw0QwK/dCUh/DDviFeIw2PxhPOUTHnefMo86HOV/X/dXQ==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.19.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1138.0":
-  version "3.1138.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1138.0.tgz#ac3a21fe0b6a926efc938a48ef00a27237377467"
-  integrity sha512-qzrDRzbf4Zdney1oaolFmrpc8xIZFOrqjUOdmrz8ZpJkd/5qC4p3n4jsZenn19biMToRm0XIjKdkD0fXhwS0Bw==
+"@aws-sdk/client-dynamodb@3.1140.0":
+  version "3.1140.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1140.0.tgz#3567b63614da158f0d34202a5c32cba42c42f917"
+  integrity sha512-MNGF0wUMcxtyhkqxfmS1HiSjmRCDX51S2bnAKmO7dBPKTvAO3ybRSQT/eOTndGpY/mLSLTZH/4j2Y4+eEH/DhQ==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1138.0":
-  version "3.1138.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1138.0.tgz#db62cc6366515ef6c40fba67cf839214cd61ed9f"
-  integrity sha512-NSUryc07wf5rb+jbVLJy47/VlxU792ZS9P5CGJmrWnL3DEMhrAOm+WMTIMeWz/lIcTOrAmDt1O/l8rLPvUD8uw==
+"@aws-sdk/client-lambda@~3.1140.0":
+  version "3.1140.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1140.0.tgz#14b210418f2267ed312eb963c21c44e401b6bb7e"
+  integrity sha512-OB+2sTEygz3JJhrrxmOPr2sVQoJBhcl03JcBp7942ruaDZ18FqPsfjvbZCA3gaL3WLAkkYi+8fklIO1ESddE9A==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1138.0":
-  version "3.1138.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1138.0.tgz#37c85c2c6f2c13671767e38f7ee4ba15cbe9c7b7"
-  integrity sha512-n7zyF2zwDOevjLA5DI0xvXp7cDvYlaUYSoldo/Q/ahxz7ajiebhXVdrQ1jQKr0i4CAdQMfW4ZRLNZFNizIb9Bw==
+"@aws-sdk/lib-dynamodb@3.1140.0":
+  version "3.1140.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1140.0.tgz#bff70c7747b38ed47fc9a2746959272a02d8fe58"
+  integrity sha512-7/LROa2A57c0hztmR5enme6x2p168vP/FLl3Y9sKyrFgZnwbjgwdFCnpqKovWZoCwRCgj/AtiT4oxWy1crkccA==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -905,10 +905,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.9":
-  version "0.31.9"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.9.tgz#446999cf7cc42f1d35498c648bdb9553ef0d9cee"
-  integrity sha512-NRPEFN5E8Y1E/oS5RzGa00CTzC1JTyxBTwkOi84snqtxS82AxziT0u3V23e0TavQG28bhqltV0h5N5ptDhTyww==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.10":
+  version "0.31.10"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.10.tgz#b9c99af77cf133f3c72860ce147b8d197866b865"
+  integrity sha512-YYGi9Z19Q8EuiUXZ5+V3aAB01eoAGRqR4InVsXNBvGGkZE57NRE0FJrWfcesXupd60yYpTWDYS8wBhANi5Pnmg==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -1251,10 +1251,10 @@
     "@graphql-codegen/plugin-helpers" "^7.1.0"
     tslib "^2.8.0"
 
-"@graphql-codegen/cli@^7.4.2":
-  version "7.4.2"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-7.4.2.tgz#96f8ff9abb4b6b6eb4e66a8394bed279e0230c6b"
-  integrity sha512-DLzX9sBKEmzh6wWGXYNjmDRB2+h7tkl78HGKKF00wwO5bWGAbhLsedBqyjZpZxmo0+PuOBb3T3bBW9G1Hovt9g==
+"@graphql-codegen/cli@^7.4.3":
+  version "7.4.3"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-7.4.3.tgz#b0d7388af73f4ca5606504b0961a7b3ea919c907"
+  integrity sha512-NxjXhuy/xE7HAGRYcKrrVCgoPBHLSZJCEuFqy7BTYln+qWNhfJdtD2du0pVwIRoftGfeX87MQzOwU/TG09hlVQ==
   dependencies:
     "@babel/generator" "^7.18.13"
     "@babel/template" "^7.18.10"
@@ -3489,10 +3489,10 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^6.11.0":
-  version "6.11.0"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.11.0.tgz#5dac8d898c726ac491eb03bd75f16f53706a5148"
-  integrity sha512-u5Nydu7UZ3llHbmumzhFe0u/E7+rz0syjZ6T1fXJEafjuVBIHt6o0438/InHsn73pRfjchGGKx1zXNlWlzS93A==
+"@stripe/react-stripe-js@^6.12.0":
+  version "6.12.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.12.0.tgz#c62b59f10a42040fcbdf8426c6bd80aae2f9ec55"
+  integrity sha512-5RVfx92MTb66+ELuQTreUqX2oFvma5wybZ7MaifoNo0QgrjbJiLZcysGw5kIHU7p1TCd1Lx5JnasoqteSwlUsg==
   dependencies:
     prop-types "^15.7.2"
 
@@ -4894,10 +4894,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@153.0.3:
-  version "153.0.3"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-153.0.3.tgz#92f9e7cdf339db9ced339a98a2a53dcb1ab66a08"
-  integrity sha512-/1+Fr3HcPnclLYYSQoK8l4otRzzda2lN/XOME7Nwhz98U8DI+tYom1+UjHBPeiLCFyZe5FsBiHjHPOuAkj2hvA==
+chromedriver@154.0.0:
+  version "154.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-154.0.0.tgz#010f703f6f0329231aef3d53634e99d624a47a8c"
+  integrity sha512-kn+ENZ2lEPAmeDTNNBbVw6Xt4KAr6M4EFcgeV4lUREgJWHVZBu4fFc+OFivtuf5Q9jM/qSmAcQ3MdWtdOE6mVA==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     adm-zip "^0.6.0"
