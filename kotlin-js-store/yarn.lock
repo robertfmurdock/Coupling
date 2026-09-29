@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1141.0.tgz#c84dd816f90ad259ad29b89e4caa67fd0bcda498"
-  integrity sha512-jrY3JF0x7Hdqi9OrRaXUvSJ8OZ15tgsUWUzHxpYdO6IPbAiqxYnlIhrTxAqsyz1YeG55MoKsMsG43Awauy05tQ==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1143.0":
+  version "3.1143.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1143.0.tgz#f1ec211aba0a7402acabf937b5f359e1321b47c9"
+  integrity sha512-7UD++Lkf5xuKjHX11AReqWqJ+CUEH5OuJbmcxwegUXhY/dB1LcJAMaUJ0QcEDAAVmud75zNHW9Ya8zN3y1bq6A==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.19.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1141.0.tgz#59ff4635aa8f3cfb7a68ec7b654f5a45a22ed372"
-  integrity sha512-R36EN5Ti01NtoJrgR5ryM+3msAmxob4s+xHKsJRbTwQUO5xQf1Hs8lKQ/QEuiQOG445UCwZbTjBUhekSmk1cyg==
+"@aws-sdk/client-dynamodb@3.1143.0":
+  version "3.1143.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1143.0.tgz#3094181fa7a881d48152909724b67c792ac7f749"
+  integrity sha512-RdYbxmUxsBOIhr5H4ySqLqEpYwJEtpw4M4xdBv8liYIn1dO2OozSYU0oDyIev/zFdpAkJgE8GC9KLi7vl9K9wA==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1141.0.tgz#f4f8d62a82276efa7920cae898842d57398c32cd"
-  integrity sha512-xp/96eYrHkWVQbgEuDii170j7Kv397NYYv55sX99VV1M676rpl6MlbatRkdPZX7iV3M7ICm2fuSgR2n1bFNKaw==
+"@aws-sdk/client-lambda@~3.1143.0":
+  version "3.1143.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1143.0.tgz#f28b054993b9940b6e1a17797960fde6d2659f51"
+  integrity sha512-Kr5EIlD5Zqfrt30RZzRcxJ0uC2CX8RYQoGRPHuiAOLOKY4XOLmHaXBG6QidXkW+zafFjEtcOpOjLt3+CcjmdfQ==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1141.0.tgz#5ec0f7083d722145f2e68a18a4ac20b9c98d870b"
-  integrity sha512-209LbGdIbASBQGX7/EsPItCFwv1FyT+fXv5aifacYRCOGh+VzGvqZCJ/C2FEZfkE+Zww4KqahrGJc1i6fnum4A==
+"@aws-sdk/lib-dynamodb@3.1143.0":
+  version "3.1143.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1143.0.tgz#cf7c472010c785e383aa67d29de952e67a1cdefb"
+  integrity sha512-/gYe6Cpf/+MwaCla5DfCxDWw0AMqPK5BBBMtcFopW/F6YOJDlim+CA0de48Tw8wTjhdNhHF18KNGvAeC8h0hlA==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -905,10 +905,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.13":
-  version "0.31.13"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.13.tgz#e0ce5acc61fe04bbd740535bc5810d565bd0d521"
-  integrity sha512-VUFxilFSpJFq+UHfTLkbMEh6cUbEiSvxkWtPAkCCCjSCtdlcykdnXSlAWN1nQbzWmqlfvsGnQKTOJ6rtDFb/Ng==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.14":
+  version "0.31.14"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.14.tgz#04d7624c773b36e92938ca6f2a093892971d98fa"
+  integrity sha512-+ZXUf5M6XI+NRjddR3EPALi0JqsWvfTfafjgfDJhmnkw9Y9ADhxLldH2ViEde+lCeHpc+vrocEpKQnOD0ZoDHw==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -1387,6 +1387,17 @@
     import-from "4.0.0"
     tslib "^2.8.0"
 
+"@graphql-codegen/plugin-helpers@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-7.4.0.tgz#af165d9395b12d1f61c07033948061c840ba40b7"
+  integrity sha512-yRvRKsaa3EZMVmrBoOfTbiorGD6D1K459hE7h78/ROsw2jaBPQI3uN/3lG90skZAT+9KuD2roaIbOh+HGpPu7Q==
+  dependencies:
+    "@graphql-tools/utils" "^11.2.0"
+    change-case-all "^2.1.0"
+    common-tags "1.8.2"
+    import-from "4.0.0"
+    tslib "^2.8.0"
+
 "@graphql-codegen/schema-ast@^6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/schema-ast/-/schema-ast-6.1.0.tgz#7bd452b0635d8e41be67d64a27ac5993d65b7c14"
@@ -1429,12 +1440,12 @@
     auto-bind "^5.0.0"
     tslib "~2.8.0"
 
-"@graphql-codegen/visitor-plugin-common@7.2.5", "@graphql-codegen/visitor-plugin-common@^7.2.5":
-  version "7.2.5"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.5.tgz#e33efe3f29a455b9d69cd695aadb97f41161e26f"
-  integrity sha512-hqOemBp0Ue+WSmk8EDcKP+lghuLC2zsI+jHzSUuoffTZnEN2qZH4VP2C9c1fVd2yy6v+YQiiObOarTMaqF4q9w==
+"@graphql-codegen/visitor-plugin-common@7.2.7":
+  version "7.2.7"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.7.tgz#2a42b789d81c5fdf140250adec936aadcde7c334"
+  integrity sha512-sksmdldREXXA65dxO1/VZi5AjnawH/KFR0q1YqKNa5C3hSFgsWUkQ4i+ztXn3CMmixOUS8oPN04kz/qlBqbaZw==
   dependencies:
-    "@graphql-codegen/plugin-helpers" "^7.1.0"
+    "@graphql-codegen/plugin-helpers" "^7.4.0"
     "@graphql-tools/optimize" "^2.0.0"
     "@graphql-tools/relay-operation-optimizer" "^7.1.1"
     "@graphql-tools/utils" "^11.2.0"
@@ -1465,6 +1476,22 @@
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.0.tgz#f22355a37c8761385a5029352bdf86fe87ad9a6c"
   integrity sha512-qqtTY8taONuxlR0HvD8z+zgWC3CfJ47M2rATx+geWNIN8v8Itc5TflHYxjkWAtNL6E3q7WZRY5P7se+2S3EjBg==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^7.1.0"
+    "@graphql-tools/optimize" "^2.0.0"
+    "@graphql-tools/relay-operation-optimizer" "^7.1.1"
+    "@graphql-tools/utils" "^11.2.0"
+    auto-bind "^5.0.0"
+    change-case-all "^2.1.0"
+    dependency-graph "^1.0.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    tslib "^2.8.0"
+
+"@graphql-codegen/visitor-plugin-common@^7.2.5":
+  version "7.2.5"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.5.tgz#e33efe3f29a455b9d69cd695aadb97f41161e26f"
+  integrity sha512-hqOemBp0Ue+WSmk8EDcKP+lghuLC2zsI+jHzSUuoffTZnEN2qZH4VP2C9c1fVd2yy6v+YQiiObOarTMaqF4q9w==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^7.1.0"
     "@graphql-tools/optimize" "^2.0.0"
@@ -1781,10 +1808,10 @@
     "@graphql-tools/utils" "^12.0.1"
     tslib "^2.4.0"
 
-"@graphql-tools/stitch@^10.3.0":
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.3.0.tgz#7a7592914b9c0025b22aa910013df095f46060d0"
-  integrity sha512-8QfRDVSp5a2PVpcaDcxK6n9aQIhKyZGEADwxJmM7W88gQXetkg+mtmwP+82LVTHn99a36EOdI6PWh2Mjh8d0yw==
+"@graphql-tools/stitch@^10.3.1":
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.3.1.tgz#72236499d70f6c398557ccbe75522ff30886e57f"
+  integrity sha512-XADY/go6WY9K9xTG0swT1OUeNnqfifohW6Y/31wz2DIpU3Jbxtem5pxEWEtgDrtifWFeEM2wT5LoQSGqDy/GBA==
   dependencies:
     "@graphql-tools/batch-delegate" "^10.1.0"
     "@graphql-tools/delegate" "^12.2.0"
@@ -6940,10 +6967,10 @@ graphql-config@^5.1.6:
     string-env-interpolation "^1.0.1"
     tslib "^2.4.0"
 
-graphql-http@^1.23.0:
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.23.0.tgz#b26600311e308aca236e007cff9fa17b5a41ca41"
-  integrity sha512-nQbRzoaqyNBVFG6X6r0mXC6S4X9eZOmmGz6t3l9H3MVKc2em3KeQAx+KhZKKFzj56ePDEncMOXeLu/hjO/4LQg==
+graphql-http@^1.23.1:
+  version "1.23.1"
+  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.23.1.tgz#18a5fd6b33f4d5b8765cc0a610cd03b96038721f"
+  integrity sha512-h6AcykL7+xp22QvOnK0fu1eHk9AZG1ngF71rk0ZGuGupnjm1yqXRFrZ/eMv4Q1FTCWILJ5o6hVAxzt3S8/wPHQ==
 
 graphql-tag@^2.11.0:
   version "2.12.6"
