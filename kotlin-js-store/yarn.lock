@@ -43,27 +43,27 @@
   resolved "https://registry.yarnpkg.com/@asamuzakjp/nwsapi/-/nwsapi-2.3.9.tgz#ad5549322dfe9d153d4b4dd6f7ff2ae234b06e24"
   integrity sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==
 
-"@auth0/auth0-auth-js@^1.15.0":
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.15.0.tgz#e495f145c29bd25c9a6a6864426c9ab4ea6269d1"
-  integrity sha512-obn/Qhxx3eNs2wV6/lLsIDIcEiSJvBEEy15hppB5Me1j2No2toa7KqQcXHBCyGX4mBBdVnxZJBjEX6E4WanYwg==
+"@auth0/auth0-auth-js@^1.16.0":
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-auth-js/-/auth0-auth-js-1.16.0.tgz#c031ea1ccda08d19237d93c690af067b182cc34d"
+  integrity sha512-Yiz4ZJWrE0cBpqmr2fXOCQZuENVU0tHzi++O1I8D07vbcjRIUmKZC5oYBpPOGDtvfm1DTNTaQcBFvIN/Mwh4lg==
   dependencies:
     jose "^6.0.8"
     openid-client "^6.8.0"
 
-"@auth0/auth0-react@2.27.0":
-  version "2.27.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.27.0.tgz#9dafc3a36c7af4d085bc6527988f35304135520b"
-  integrity sha512-SVDiQM1Eatv+zLzy7qyxMdcETdbGVOqXR+zaBXbMyX32xUzTNIppgcHFoD0AFLqVQrBZgTHX4ujj9D9+sfCXsQ==
+"@auth0/auth0-react@2.28.0":
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.28.0.tgz#256b88a58c0876d757ed5cd3af75ee267f8cbda0"
+  integrity sha512-y6ZyUl0dGFNHA/4jUi3j3Xh72I5sAC+lt/GQAZj9ggzhI13K5bD2sPCXZmX5HhPW54l1+BSC1k2NV30O+cZFkA==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.27.0"
+    "@auth0/auth0-spa-js" "^2.28.0"
 
-"@auth0/auth0-spa-js@^2.27.0":
-  version "2.27.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.27.0.tgz#37dc59e06ab2b0f6727c9763f7207b5348b2d4e1"
-  integrity sha512-E9U4v9IiowT+z26PQYT55ZAU5J1feyEV9umVX+lvnaHl43E3GvGVsTrfukhPLLWnoCRItWa2TxVQ3Svj1S4qyA==
+"@auth0/auth0-spa-js@^2.28.0":
+  version "2.28.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.28.1.tgz#bd33be5243d0db62e8a66a67a24600a7c7827659"
+  integrity sha512-adBXMlcgq7YNJ3WkCX3Z/8anbVuUZrCpK8vTpaSDbhNeVtLkBaOdnFqtXCjfmggWQhW5ZuTZL8NmEAx9LkHeFg==
   dependencies:
-    "@auth0/auth0-auth-js" "^1.15.0"
+    "@auth0/auth0-auth-js" "^1.16.0"
     browser-tabs-lock "^1.3.0"
     dpop "^2.1.1"
     es-cookie "~1.3.2"
@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1141.0.tgz#c84dd816f90ad259ad29b89e4caa67fd0bcda498"
-  integrity sha512-jrY3JF0x7Hdqi9OrRaXUvSJ8OZ15tgsUWUzHxpYdO6IPbAiqxYnlIhrTxAqsyz1YeG55MoKsMsG43Awauy05tQ==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1145.0":
+  version "3.1145.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1145.0.tgz#9999403b01f1f61a88df09f1474e2179271f689f"
+  integrity sha512-bhXOf5VpLKrtwDY5u0qQm4CXgBhIZC/jdXMGEEgIUDd06xZPHHq+0qebsq6I3vQRlhc4XUS2S3UoY4oZ99I2/g==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.19.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1141.0.tgz#59ff4635aa8f3cfb7a68ec7b654f5a45a22ed372"
-  integrity sha512-R36EN5Ti01NtoJrgR5ryM+3msAmxob4s+xHKsJRbTwQUO5xQf1Hs8lKQ/QEuiQOG445UCwZbTjBUhekSmk1cyg==
+"@aws-sdk/client-dynamodb@3.1145.0":
+  version "3.1145.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1145.0.tgz#2fa4ea05d3e536a0bc8ee9a0d430433b5c780dd9"
+  integrity sha512-T5yELCRj9w2wPKPX0gGLY4tC4dhZq79LDyiqTfYUpAc9IjtR7vVTHQ6Epe8w5TnIHJVOOxUZvz77cXOWm3/IpA==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1141.0.tgz#f4f8d62a82276efa7920cae898842d57398c32cd"
-  integrity sha512-xp/96eYrHkWVQbgEuDii170j7Kv397NYYv55sX99VV1M676rpl6MlbatRkdPZX7iV3M7ICm2fuSgR2n1bFNKaw==
+"@aws-sdk/client-lambda@~3.1145.0":
+  version "3.1145.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1145.0.tgz#3f36517dc10b2def3155670bc3db1a0c3e7e6439"
+  integrity sha512-uaLSzgUtvnwccpE0vf0TPD5SClEQlF10QP5D4zGTKYKwa+uUWhto4wHNhvFKJ1fNsuC4hPT1MIVW840zhWCMfA==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/credential-provider-node" "^3.972.84"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1141.0":
-  version "3.1141.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1141.0.tgz#5ec0f7083d722145f2e68a18a4ac20b9c98d870b"
-  integrity sha512-209LbGdIbASBQGX7/EsPItCFwv1FyT+fXv5aifacYRCOGh+VzGvqZCJ/C2FEZfkE+Zww4KqahrGJc1i6fnum4A==
+"@aws-sdk/lib-dynamodb@3.1145.0":
+  version "3.1145.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1145.0.tgz#969ce8418f8682a2410661b1b73bf8d93399d4c4"
+  integrity sha512-bDcyA6ez0p2/7rNLUUHSdisc9BJABLWe+qX+SsOhflFCfBZFY+bWWHs3X+GGziIsPcbyF3IXxNZp4s/fQs4aDQ==
   dependencies:
     "@aws-sdk/core" "^3.978.1"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -905,10 +905,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.13":
-  version "0.31.13"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.13.tgz#e0ce5acc61fe04bbd740535bc5810d565bd0d521"
-  integrity sha512-VUFxilFSpJFq+UHfTLkbMEh6cUbEiSvxkWtPAkCCCjSCtdlcykdnXSlAWN1nQbzWmqlfvsGnQKTOJ6rtDFb/Ng==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.16":
+  version "0.31.16"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.16.tgz#5218094cf1c85a79e7f4754bc5f4e2eb6b47bbc3"
+  integrity sha512-jtOKmvAFNCz8259BZ9JW9uPbn5ULqc5NSM14ZxJvtMPV8GAzrre4TDKj9Lf4MzE8VAGlhENAg2SU2DdV+rRNpA==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -1387,6 +1387,17 @@
     import-from "4.0.0"
     tslib "^2.8.0"
 
+"@graphql-codegen/plugin-helpers@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-7.4.0.tgz#af165d9395b12d1f61c07033948061c840ba40b7"
+  integrity sha512-yRvRKsaa3EZMVmrBoOfTbiorGD6D1K459hE7h78/ROsw2jaBPQI3uN/3lG90skZAT+9KuD2roaIbOh+HGpPu7Q==
+  dependencies:
+    "@graphql-tools/utils" "^11.2.0"
+    change-case-all "^2.1.0"
+    common-tags "1.8.2"
+    import-from "4.0.0"
+    tslib "^2.8.0"
+
 "@graphql-codegen/schema-ast@^6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/schema-ast/-/schema-ast-6.1.0.tgz#7bd452b0635d8e41be67d64a27ac5993d65b7c14"
@@ -1429,12 +1440,12 @@
     auto-bind "^5.0.0"
     tslib "~2.8.0"
 
-"@graphql-codegen/visitor-plugin-common@7.2.5", "@graphql-codegen/visitor-plugin-common@^7.2.5":
-  version "7.2.5"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.5.tgz#e33efe3f29a455b9d69cd695aadb97f41161e26f"
-  integrity sha512-hqOemBp0Ue+WSmk8EDcKP+lghuLC2zsI+jHzSUuoffTZnEN2qZH4VP2C9c1fVd2yy6v+YQiiObOarTMaqF4q9w==
+"@graphql-codegen/visitor-plugin-common@7.2.7":
+  version "7.2.7"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.7.tgz#2a42b789d81c5fdf140250adec936aadcde7c334"
+  integrity sha512-sksmdldREXXA65dxO1/VZi5AjnawH/KFR0q1YqKNa5C3hSFgsWUkQ4i+ztXn3CMmixOUS8oPN04kz/qlBqbaZw==
   dependencies:
-    "@graphql-codegen/plugin-helpers" "^7.1.0"
+    "@graphql-codegen/plugin-helpers" "^7.4.0"
     "@graphql-tools/optimize" "^2.0.0"
     "@graphql-tools/relay-operation-optimizer" "^7.1.1"
     "@graphql-tools/utils" "^11.2.0"
@@ -1465,6 +1476,22 @@
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.0.tgz#f22355a37c8761385a5029352bdf86fe87ad9a6c"
   integrity sha512-qqtTY8taONuxlR0HvD8z+zgWC3CfJ47M2rATx+geWNIN8v8Itc5TflHYxjkWAtNL6E3q7WZRY5P7se+2S3EjBg==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^7.1.0"
+    "@graphql-tools/optimize" "^2.0.0"
+    "@graphql-tools/relay-operation-optimizer" "^7.1.1"
+    "@graphql-tools/utils" "^11.2.0"
+    auto-bind "^5.0.0"
+    change-case-all "^2.1.0"
+    dependency-graph "^1.0.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    tslib "^2.8.0"
+
+"@graphql-codegen/visitor-plugin-common@^7.2.5":
+  version "7.2.5"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.2.5.tgz#e33efe3f29a455b9d69cd695aadb97f41161e26f"
+  integrity sha512-hqOemBp0Ue+WSmk8EDcKP+lghuLC2zsI+jHzSUuoffTZnEN2qZH4VP2C9c1fVd2yy6v+YQiiObOarTMaqF4q9w==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^7.1.0"
     "@graphql-tools/optimize" "^2.0.0"
@@ -1747,6 +1774,14 @@
     "@graphql-tools/utils" "^12.0.1"
     tslib "^2.4.0"
 
+"@graphql-tools/merge@^9.2.6":
+  version "9.2.6"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-9.2.6.tgz#2cf3cd419a7ace9be3381873160882d84512c48b"
+  integrity sha512-M7iI/qoCnks6iITkimtdZgI2SrWOInr+QRWuhEsInaumzQGPd0pnWbRAVTRVcFN2Gu9hM2aS5kYzASC93d9epw==
+  dependencies:
+    "@graphql-tools/utils" "^12.0.3"
+    tslib "^2.4.0"
+
 "@graphql-tools/optimize@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/optimize/-/optimize-2.0.0.tgz#7a9779d180824511248a50c5a241eff6e7a2d906"
@@ -1781,10 +1816,19 @@
     "@graphql-tools/utils" "^12.0.1"
     tslib "^2.4.0"
 
-"@graphql-tools/stitch@^10.3.0":
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.3.0.tgz#7a7592914b9c0025b22aa910013df095f46060d0"
-  integrity sha512-8QfRDVSp5a2PVpcaDcxK6n9aQIhKyZGEADwxJmM7W88gQXetkg+mtmwP+82LVTHn99a36EOdI6PWh2Mjh8d0yw==
+"@graphql-tools/schema@^10.1.3":
+  version "10.1.3"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.1.3.tgz#1dbbb63e7c82054f62371f9d818bc0d1bb226f3b"
+  integrity sha512-N1ZpzguxzqTy5fpurqWQ5BXyjirlrtvVLeSafsu+SCDNjDeRnVxf9n5PVbdgzwFPAmP/7NK9sq9UB/kyR8oFiw==
+  dependencies:
+    "@graphql-tools/merge" "^9.2.6"
+    "@graphql-tools/utils" "^12.0.3"
+    tslib "^2.4.0"
+
+"@graphql-tools/stitch@^10.3.1":
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-10.3.1.tgz#72236499d70f6c398557ccbe75522ff30886e57f"
+  integrity sha512-XADY/go6WY9K9xTG0swT1OUeNnqfifohW6Y/31wz2DIpU3Jbxtem5pxEWEtgDrtifWFeEM2wT5LoQSGqDy/GBA==
   dependencies:
     "@graphql-tools/batch-delegate" "^10.1.0"
     "@graphql-tools/delegate" "^12.2.0"
@@ -1841,6 +1885,16 @@
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@whatwg-node/promise-helpers" "^1.0.0"
+    cross-inspect "1.0.1"
+    tslib "^2.4.0"
+
+"@graphql-tools/utils@^12.0.3":
+  version "12.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-12.0.3.tgz#8cae349fe99ff6dd142e497485e4a031b6d32248"
+  integrity sha512-M+04bHvI1SKoug7W2EkwfKjig2mdtgIIlFY8p2jLHmxPNVs5bC/3R+58JrD+7ZXWgPILWTwuqJ9AqTjPlahroA==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
+    "@whatwg-node/promise-helpers" "^2.0.0"
     cross-inspect "1.0.1"
     tslib "^2.4.0"
 
@@ -3287,6 +3341,11 @@
   resolved "https://registry.yarnpkg.com/@slack/types/-/types-3.1.0.tgz#7509e4a3530ab42f290e8a58a6ed1a0459eea3e7"
   integrity sha512-bTzqrO3lxJ5iWedo1eJKNAs1koyEhaTwKLJUkD3KETnPeQvD978AAE4jvWstUws8Gbbc4JR6iYE6F7XjE8UGmw==
 
+"@slack/types@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@slack/types/-/types-3.2.0.tgz#fc0769fce41fb538abc40b3a787b6e7effef7918"
+  integrity sha512-IN4gdtlzQt8UJoj+1v+qAHeR4TxHO0KMlIs841SFfDQAcFFnsrWaGsEAE4goxVt8O/JOAFaGGdrFTzhNBop/Fg==
+
 "@slack/web-api@^8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-8.0.0.tgz#20c6bf7d839a753768a0b6b15db0d13e0c201aa4"
@@ -3308,6 +3367,20 @@
   dependencies:
     "@slack/logger" "^5.0.0"
     "@slack/types" "^3.1.0"
+    "@types/node" ">=20"
+    "@types/retry" "0.12.5"
+    eventemitter3 "^5.0.1"
+    p-queue "^6.6.2"
+    p-retry "^4.6.2"
+    retry "^0.13.1"
+
+"@slack/web-api@^8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-8.2.0.tgz#a84f9a34aae73a57c51f6fa7ac543112c60f5c01"
+  integrity sha512-bIW8/8BLD/HLuHLIA2LfA7AhSokzui4swCbMJuwoRJxn/kzHVla6YEKLvN1nCFHK/DfX7g+4Wj3ess/ZSh/tWQ==
+  dependencies:
+    "@slack/logger" "^5.0.0"
+    "@slack/types" "^3.2.0"
     "@types/node" ">=20"
     "@types/retry" "0.12.5"
     eventemitter3 "^5.0.1"
@@ -3489,17 +3562,17 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^6.12.0":
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-6.12.0.tgz#c62b59f10a42040fcbdf8426c6bd80aae2f9ec55"
-  integrity sha512-5RVfx92MTb66+ELuQTreUqX2oFvma5wybZ7MaifoNo0QgrjbJiLZcysGw5kIHU7p1TCd1Lx5JnasoqteSwlUsg==
+"@stripe/react-stripe-js@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-7.0.0.tgz#21d7475215558b6555b1ec4c2360cad4089d58a6"
+  integrity sha512-wKw6YM0p/IpGj7hcwdJL7UAb7s0hlO8kLJIXn0CezewYILQ8j/A7j55EHuHHjF6dV+cr4yZhbhg4QLRjovfM4A==
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^9.17.0":
-  version "9.17.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-9.17.0.tgz#291e9656581332ae5b9e2f5454f8a2cf4be6d271"
-  integrity sha512-uidL4OJum5kivsOAQnVfQmYLJ2zdgirtmT0zWgskASZ4TPXxpXQ0MNrzW4NsXB90uEqmPHpSEtciLFbF1QQvNA==
+"@stripe/stripe-js@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-10.0.0.tgz#8a87cc8cb7e30749fe44a5d580184dfa5514764f"
+  integrity sha512-y5LKFTtnz1ciM+IQfrDfHcpjGlsm5Ao4onaUn4scurI/B6rNhrmV+ScTPDo+3Ges5oF8ol4tBkBAIZyVXVBIXw==
 
 "@sventschui/webdriverio-testing-library@4.0.1":
   version "4.0.1"
@@ -4166,6 +4239,13 @@
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@whatwg-node/promise-helpers/-/promise-helpers-1.3.2.tgz#3b54987ad6517ef6db5920c66a6f0dada606587d"
   integrity sha512-Nst5JdK47VIl9UcGwtv2Rcgyn5lWtZ0/mhRQ4G8NN2isxpq2TO30iqHzmwoJycjWuyUfg3GFXqP/gFHXeV57IA==
+  dependencies:
+    tslib "^2.6.3"
+
+"@whatwg-node/promise-helpers@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@whatwg-node/promise-helpers/-/promise-helpers-2.0.0.tgz#93a89655355bbd5d7e2b0d64fc93a88224d7030e"
+  integrity sha512-/i9CS0Z96o+cPwaYoAyVxAThDiUX1wV3tDmNWPJbn+vtdR+JftuCDg1NGCXBrzIYVDGkJ8uT6ctwmrBOUzOpKQ==
   dependencies:
     tslib "^2.6.3"
 
@@ -4894,10 +4974,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-chromedriver@154.0.0:
-  version "154.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-154.0.0.tgz#010f703f6f0329231aef3d53634e99d624a47a8c"
-  integrity sha512-kn+ENZ2lEPAmeDTNNBbVw6Xt4KAr6M4EFcgeV4lUREgJWHVZBu4fFc+OFivtuf5Q9jM/qSmAcQ3MdWtdOE6mVA==
+chromedriver@154.0.1:
+  version "154.0.1"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-154.0.1.tgz#01bbcb50186be9b8328ff21044d90fa6d6e516b1"
+  integrity sha512-QtK+E8xDBt6+dBOALfbILJX2VoRngV6elAh47uZCGWKVKf7n3DyO/IpBo/x5PafLgpZ0LZKTWQQtB+DYq0ixHA==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     adm-zip "^0.6.0"
@@ -6940,10 +7020,10 @@ graphql-config@^5.1.6:
     string-env-interpolation "^1.0.1"
     tslib "^2.4.0"
 
-graphql-http@^1.23.0:
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.23.0.tgz#b26600311e308aca236e007cff9fa17b5a41ca41"
-  integrity sha512-nQbRzoaqyNBVFG6X6r0mXC6S4X9eZOmmGz6t3l9H3MVKc2em3KeQAx+KhZKKFzj56ePDEncMOXeLu/hjO/4LQg==
+graphql-http@^1.23.1:
+  version "1.23.1"
+  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.23.1.tgz#18a5fd6b33f4d5b8765cc0a610cd03b96038721f"
+  integrity sha512-h6AcykL7+xp22QvOnK0fu1eHk9AZG1ngF71rk0ZGuGupnjm1yqXRFrZ/eMv4Q1FTCWILJ5o6hVAxzt3S8/wPHQ==
 
 graphql-tag@^2.11.0:
   version "2.12.6"
@@ -10577,10 +10657,10 @@ strip-json-comments@^5.0.3:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-5.0.3.tgz#b7304249dd402ee67fd518ada993ab3593458bcf"
   integrity sha512-1tB5mhVo7U+ETBKNf92xT4hrQa3pm0MZ0PQvuDnWgAAGHDsfp4lPSpiS6psrSiet87wyGPh9ft6wmhOMQ0hDiw==
 
-stripe@^22.6.2:
-  version "22.6.2"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-22.6.2.tgz#e2acadf999b88a277e2c555d9008ac029b4f91e9"
-  integrity sha512-PwRE2scocvXqDKPiskMa5vRJEAEkq46W69XyUYmAwrNSLr675lQnfqLwnsndAWizwgihOWw/irLmoFRo3ez7ew==
+stripe@^23.0.0:
+  version "23.0.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-23.0.0.tgz#4730d07671871986e6e5b31e018668e9743676da"
+  integrity sha512-MDE2A5ZVVluYURORaZEVghSmnLJc3w6aHAlZSxDQMsOjOb3V0O6ro/CiaeFlJS4N7uIVmsg98ocRsPmUK6YfyA==
 
 strnum@^2.2.3:
   version "2.3.0"
