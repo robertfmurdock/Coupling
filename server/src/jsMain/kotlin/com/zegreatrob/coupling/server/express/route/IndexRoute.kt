@@ -20,6 +20,7 @@ import web.http.fetch
 val indexHtmlPromise
     get() = MainScope().promise {
         fetch("${Config.clientUrl}/index.html")
+            .value
             .also {
                 if (!it.ok) {
                     throw Exception("Unable to fetch index.html from ${Config.clientUrl}\n${it.statusText}")

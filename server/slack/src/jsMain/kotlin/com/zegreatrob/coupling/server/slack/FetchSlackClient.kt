@@ -40,6 +40,7 @@ class FetchSlackClient(
             },
         ),
     )
+        .value
         .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
@@ -71,6 +72,7 @@ class FetchSlackClient(
         )
         console.log("FETCH SLACK", JSON.stringify(request))
         return fetch(request)
+            .value
             .textAsync()
             .await()
             .let(jsonParser::decodeFromString)
@@ -106,6 +108,7 @@ class FetchSlackClient(
             ),
         ),
     )
+        .value
         .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
@@ -131,6 +134,7 @@ class FetchSlackClient(
             ),
         ),
     )
+        .value
         .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
@@ -150,6 +154,7 @@ class FetchSlackClient(
             ),
         ),
     )
+        .value
         .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
