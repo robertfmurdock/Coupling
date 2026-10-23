@@ -114,8 +114,6 @@ tasks {
             "COUPLING_TEST_LOG_PATH" to testLogFile.get().asFile.absolutePath,
             "COUPLING_TEST_RUN_ID" to (System.getProperty("testRunIdentifier") ?: "unknown-run"),
             "COUPLING_TEST_TASK" to path,
-            "COUPLING_E2E_TEST_PASSWORD" to providers.environmentVariable("COUPLING_E2E_TEST_PASSWORD").orElse(""),
-            "AUTH0_CLIENT_SECRET" to providers.environmentVariable("AUTH0_CLIENT_SECRET").orElse(""),
         )
     }
 

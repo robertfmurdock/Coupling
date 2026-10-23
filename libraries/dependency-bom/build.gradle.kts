@@ -36,6 +36,7 @@ dependencies {
             }
         }
         api(libs.com.lemonappdev.konsist)
+        api(libs.org.jetbrains.kotlin.kotlin.test)
         api(libs.eu.anifantakis.ksafe)
         api(libs.io.github.oshai.kotlin.logging)
         api(libs.org.jetbrains.kotlin.wrappers.kotlin.react.popper)
