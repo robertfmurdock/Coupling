@@ -4,6 +4,8 @@ import java.io.File
 import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import org.gradle.api.GradleException
 
 class DashboardHandoffCommandTest {
     @Test
@@ -82,6 +84,32 @@ class DashboardHandoffCommandTest {
         )
     }
 
+    @Test
+    fun `reads the packaged Lambda artifact key`() {
+        assertEquals(
+            "lambda/release.zip",
+            lambdaArtifactKey(
+                releaseParameters(
+                    """
+                    [
+                      {"ParameterKey":"Name","ParameterValue":"dashboard"},
+                      {"ParameterKey":"LambdaArtifactKey","ParameterValue":"lambda/release.zip"}
+                    ]
+                    """.trimIndent(),
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `rejects release parameters without a Lambda artifact key`() {
+        val failure = assertFailsWith<GradleException> {
+            lambdaArtifactKey(releaseParameters("[]"))
+        }
+
+        assertEquals("Release parameters are missing LambdaArtifactKey", failure.message)
+    }
+
     private fun deploymentFile(): File {
         val releaseDirectory = createTempDirectory("dashboard-handoff").toFile()
         return releaseDirectory.resolve("deployment.json").apply {
@@ -101,5 +129,9 @@ class DashboardHandoffCommandTest {
 
     private fun bootstrapManifest(contents: String): File = createTempDirectory("dashboard-bootstrap").toFile()
         .resolve("bootstrap.json")
+        .apply { writeText(contents) }
+
+    private fun releaseParameters(contents: String): File = createTempDirectory("dashboard-release").toFile()
+        .resolve("parameters.json")
         .apply { writeText(contents) }
 }

@@ -24,8 +24,6 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import java.security.MessageDigest
-import java.util.Base64
 import javax.inject.Inject
 
 private val mapper = ObjectMapper()
@@ -142,7 +140,10 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     abstract val region: Property<String>
 
     @get:InputFile
-    abstract val lambdaArtifact: RegularFileProperty
+    abstract val releaseParameters: RegularFileProperty
+
+    @get:Input
+    abstract val applicationStackName: Property<String>
 
     @get:Input
     abstract val dryRun: Property<Boolean>
@@ -154,14 +155,22 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     fun check() {
         if (dryRun.get()) return
         val url = stackOutput().removeSuffix("/")
-        val expectedCodeSha = lambdaArtifact.get().asFile.inputStream().use { input ->
-            Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(input.readBytes()))
-        }
-        val functionName = dashboardFunctionName(bootstrapManifest.get().asFile)
-        awaitDeployedRelease(functionName, expectedCodeSha, listOf("$url/health", url))
+        assertDeployedArtifactKey()
+        awaitHealthyEndpoints(listOf("$url/health", url))
         endpointFile.get().asFile.apply {
             parentFile.mkdirs()
             writeText("$url\n")
+        }
+    }
+
+    private fun assertDeployedArtifactKey() {
+        val expected = lambdaArtifactKey(releaseParameters.get().asFile)
+        val observed = stackParameter("LambdaArtifactKey")
+        if (observed != expected) {
+            throw GradleException(
+                "Dashboard CloudFormation stack ${applicationStackName.get()} does not reference the packaged " +
+                    "Lambda artifact (expected LambdaArtifactKey $expected, observed $observed)",
+            )
         }
     }
 
@@ -180,6 +189,23 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
             ?: throw GradleException("CloudFormation stack $stackName has no ApiEndpoint output")
     }
 
+    private fun stackParameter(parameterName: String): String {
+        val output = ByteArrayOutputStream()
+        execOperations.exec {
+            commandLine(
+                "aws", "cloudformation", "describe-stacks", "--stack-name", applicationStackName.get(),
+                "--region", region.get(),
+                "--query", "Stacks[0].Parameters[?ParameterKey=='$parameterName'].ParameterValue | [0]",
+                "--output", "text", "--no-cli-pager",
+            )
+            standardOutput = output
+        }
+        return output.toString().trim().takeIf { it.isNotBlank() && it != "None" }
+            ?: throw GradleException(
+                "CloudFormation stack ${applicationStackName.get()} has no $parameterName parameter",
+            )
+    }
+
     private fun assertSuccessful(url: String) {
         val response = HttpClient.newBuilder()
             .connectTimeout(java.time.Duration.ofSeconds(10))
@@ -193,35 +219,21 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
         }
     }
 
-    private fun awaitDeployedRelease(functionName: String, expectedCodeSha: String, urls: List<String>) {
+    private fun awaitHealthyEndpoints(urls: List<String>) {
         val deadline = System.nanoTime() + RELEASE_WAIT_NANOS
-        var lastObservedCodeSha: String? = null
         var lastHealthFailure: Exception? = null
         while (System.nanoTime() < deadline) {
-            val output = ByteArrayOutputStream()
-            execOperations.exec {
-                commandLine(
-                    "aws", "lambda", "get-function-configuration", "--function-name", functionName,
-                    "--region", region.get(), "--query", "CodeSha256", "--output", "text", "--no-cli-pager",
-                )
-                standardOutput = output
-            }
-            lastObservedCodeSha = output.toString().trim()
-            if (lastObservedCodeSha == expectedCodeSha) {
-                try {
-                    urls.forEach(::assertSuccessful)
-                    return
-                } catch (failure: Exception) {
-                    lastHealthFailure = failure
-                }
+            try {
+                urls.forEach(::assertSuccessful)
+                return
+            } catch (failure: Exception) {
+                lastHealthFailure = failure
             }
             Thread.sleep(RELEASE_POLL_INTERVAL_MILLIS)
         }
-        val deployedCode = lastObservedCodeSha ?: "unavailable"
         val healthDetails = lastHealthFailure?.let { "; latest health failure: ${it.message}" }.orEmpty()
         throw GradleException(
-            "Dashboard Lambda $functionName did not serve the packaged release before timeout " +
-                "(expected CodeSha256 $expectedCodeSha, observed $deployedCode)$healthDetails",
+            "Dashboard endpoints did not become healthy before timeout$healthDetails",
         )
     }
 
@@ -231,12 +243,12 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     }
 }
 
-private fun dashboardFunctionName(bootstrapManifest: java.io.File): String = mapper.readTree(bootstrapManifest)
-    .path("core")
-    .path("dashboardFunctionName")
-    .asText()
-    .takeIf(String::isNotBlank)
-    ?: throw GradleException("$bootstrapManifest is missing core.dashboardFunctionName")
+internal fun lambdaArtifactKey(releaseParameters: File): String = mapper.readTree(releaseParameters)
+    .firstOrNull { it.path("ParameterKey").asText() == "LambdaArtifactKey" }
+    ?.path("ParameterValue")
+    ?.asText()
+    ?.takeIf(String::isNotBlank)
+    ?: throw GradleException("Release parameters are missing LambdaArtifactKey")
 
 internal fun consumerGatewayStackName(bootstrapManifest: java.io.File): String = mapper.readTree(bootstrapManifest)
     .path("githubOidc")
