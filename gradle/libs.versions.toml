@@ -3,7 +3,7 @@ com-apollographql-adapters-apollo-adapters-core = { module = "com.apollographql.
 com-apollographql-adapters-apollo-adapters-kotlinx-datetime = { module = "com.apollographql.adapters:apollo-adapters-kotlinx-datetime", version.ref = "com-apollographql-adapters" }
 com-apollographql-apollo-apollo-runtime = "com.apollographql.apollo:apollo-runtime:5.2.0"
 com-apollographql-ktor-apollo-engine-ktor = "com.apollographql.ktor:apollo-engine-ktor:0.1.1"
-com-auth0-java-jwt = "com.auth0:java-jwt:4.6.1"
+com-auth0-java-jwt = "com.auth0:java-jwt:4.6.2"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.3"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:5.1.0"
 com-google-devtools-ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "com-google-devtools-ksp" }
