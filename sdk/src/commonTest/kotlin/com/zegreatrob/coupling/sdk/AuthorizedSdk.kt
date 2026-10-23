@@ -83,7 +83,7 @@ val generalPurposeClient = HttpClient {
                 ktorLogger.info { message }
             }
         }
-        level = LogLevel.ALL
+        level = LogLevel.INFO
     }
     defaultRequest { header("X-Request-Id", "${Uuid.random()}") }
 }

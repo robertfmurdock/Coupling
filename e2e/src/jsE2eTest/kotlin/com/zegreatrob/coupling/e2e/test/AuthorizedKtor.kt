@@ -33,7 +33,7 @@ suspend fun authorizedKtorCouplingSdk() = primaryAuthorizedSdkDeferred.await()
 private val generalPurposeClient = HttpClient {
     install(ContentNegotiation) { json() }
     install(Logging) {
-        level = LogLevel.INFO
+        level = LogLevel.HEADERS
         logger = object : Logger {
             override fun log(message: String) = ktorLogger.info { message }
         }
@@ -41,6 +41,7 @@ private val generalPurposeClient = HttpClient {
 }
 
 private val ktorLogger = KotlinLogging.logger("ktor")
+private val auth0ClientSecret = Process.getEnv("AUTH0_CLIENT_SECRET") ?: ""
 
 private fun buildClientWithToken(): HttpClient {
     val client = defaultClient("${process.env.BASEURL}").config {
@@ -57,12 +58,15 @@ private fun buildClientWithToken(): HttpClient {
 }
 
 private suspend fun generateAccessToken(username: String, password: String): String {
+    ktorLogger.info {
+        "Auth0 token request input: passwordPresent=${password.isNotEmpty()}, clientSecretPresent=${auth0ClientSecret.isNotEmpty()}"
+    }
     val result = generalPurposeClient.submitForm(
         url = "https://zegreatrob.us.auth0.com/oauth/token",
         formParameters = Parameters.build {
             append("grant_type", "password")
             append("client_id", "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg")
-            append("client_secret", Process.getEnv("AUTH0_CLIENT_SECRET") ?: "")
+            append("client_secret", auth0ClientSecret)
             append("username", username)
             append("password", password)
             append("audience", "https://localhost/api")
@@ -70,7 +74,13 @@ private suspend fun generateAccessToken(username: String, password: String): Str
         },
     ).body<JsonObject>()
 
-    return result["access_token"]?.jsonPrimitive?.content ?: ""
+    val token = result["access_token"]?.jsonPrimitive?.content
+    if (token == null) {
+        val error = result["error"]?.jsonPrimitive?.content
+        val description = result["error_description"]?.jsonPrimitive?.content
+        ktorLogger.warn { "Auth0 token request rejected: error=$error, description=$description" }
+    }
+    return token ?: ""
 }
 
 fun authorizedSdk(token: String) = couplingSdk({ token }, buildClientWithToken())
