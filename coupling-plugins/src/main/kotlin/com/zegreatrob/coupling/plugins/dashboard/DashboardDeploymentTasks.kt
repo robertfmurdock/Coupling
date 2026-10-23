@@ -24,6 +24,8 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import java.security.MessageDigest
+import java.util.Base64
 import javax.inject.Inject
 
 private val mapper = ObjectMapper()
@@ -139,6 +141,9 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     @get:Input
     abstract val region: Property<String>
 
+    @get:InputFile
+    abstract val lambdaArtifact: RegularFileProperty
+
     @get:Input
     abstract val dryRun: Property<Boolean>
 
@@ -149,7 +154,11 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     fun check() {
         if (dryRun.get()) return
         val url = stackOutput().removeSuffix("/")
-        listOf("$url/health", url).forEach(::assertSuccessful)
+        val expectedCodeSha = lambdaArtifact.get().asFile.inputStream().use { input ->
+            Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(input.readBytes()))
+        }
+        val functionName = dashboardFunctionName(bootstrapManifest.get().asFile)
+        awaitDeployedRelease(functionName, expectedCodeSha, listOf("$url/health", url))
         endpointFile.get().asFile.apply {
             parentFile.mkdirs()
             writeText("$url\n")
@@ -172,15 +181,62 @@ abstract class DashboardEndpointHealthTask : DefaultTask() {
     }
 
     private fun assertSuccessful(url: String) {
-        val response = HttpClient.newHttpClient().send(
-            HttpRequest.newBuilder(URI(url)).GET().build(),
-            HttpResponse.BodyHandlers.discarding(),
-        )
+        val response = HttpClient.newBuilder()
+            .connectTimeout(java.time.Duration.ofSeconds(10))
+            .build()
+            .send(
+                HttpRequest.newBuilder(URI(url)).timeout(java.time.Duration.ofSeconds(10)).GET().build(),
+                HttpResponse.BodyHandlers.discarding(),
+            )
         if (response.statusCode() !in 200..299) {
             throw GradleException("Dashboard endpoint $url returned HTTP ${response.statusCode()}")
         }
     }
+
+    private fun awaitDeployedRelease(functionName: String, expectedCodeSha: String, urls: List<String>) {
+        val deadline = System.nanoTime() + RELEASE_WAIT_NANOS
+        var lastObservedCodeSha: String? = null
+        var lastHealthFailure: Exception? = null
+        while (System.nanoTime() < deadline) {
+            val output = ByteArrayOutputStream()
+            execOperations.exec {
+                commandLine(
+                    "aws", "lambda", "get-function-configuration", "--function-name", functionName,
+                    "--region", region.get(), "--query", "CodeSha256", "--output", "text", "--no-cli-pager",
+                )
+                standardOutput = output
+            }
+            lastObservedCodeSha = output.toString().trim()
+            if (lastObservedCodeSha == expectedCodeSha) {
+                try {
+                    urls.forEach(::assertSuccessful)
+                    return
+                } catch (failure: Exception) {
+                    lastHealthFailure = failure
+                }
+            }
+            Thread.sleep(RELEASE_POLL_INTERVAL_MILLIS)
+        }
+        val deployedCode = lastObservedCodeSha ?: "unavailable"
+        val healthDetails = lastHealthFailure?.let { "; latest health failure: ${it.message}" }.orEmpty()
+        throw GradleException(
+            "Dashboard Lambda $functionName did not serve the packaged release before timeout " +
+                "(expected CodeSha256 $expectedCodeSha, observed $deployedCode)$healthDetails",
+        )
+    }
+
+    private companion object {
+        const val RELEASE_WAIT_NANOS = 5L * 60 * 1_000_000_000
+        const val RELEASE_POLL_INTERVAL_MILLIS = 5_000L
+    }
 }
+
+private fun dashboardFunctionName(bootstrapManifest: java.io.File): String = mapper.readTree(bootstrapManifest)
+    .path("core")
+    .path("dashboardFunctionName")
+    .asText()
+    .takeIf(String::isNotBlank)
+    ?: throw GradleException("$bootstrapManifest is missing core.dashboardFunctionName")
 
 internal fun consumerGatewayStackName(bootstrapManifest: java.io.File): String = mapper.readTree(bootstrapManifest)
     .path("githubOidc")

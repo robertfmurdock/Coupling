@@ -286,9 +286,10 @@ tasks {
     }
     val dashboardGatewayHealthCheck = register<DashboardEndpointHealthTask>("dashboardGatewayHealthCheck") {
         group = "verification"
-        description = "Requires successful health and dashboard responses through the existing public gateway."
+        description = "Waits for the packaged Lambda release to become active and verifies health through the public gateway."
         bootstrapManifest.set(dashboardBootstrapManifest)
         region.set(dashboardRegion)
+        lambdaArtifact.set(releaseDirectory.map { it.file("lambda.zip") })
         endpointFile.set(layout.buildDirectory.file("release/gateway-url.txt"))
         dryRun.set(dashboardDryRun)
         dependsOn(dashboardDeployStack)
