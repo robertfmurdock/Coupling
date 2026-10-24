@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.sdk.defaultClient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.engine.js.Js
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -30,7 +31,25 @@ private suspend fun authorizedKtorCouplingSdk(username: String, password: String
 
 suspend fun authorizedKtorCouplingSdk() = primaryAuthorizedSdkDeferred.await()
 
-private val generalPurposeClient = HttpClient {
+private val ktorLogger = KotlinLogging.logger("ktor")
+
+@Suppress("UNUSED_PARAMETER")
+private fun removeContentLength(requestInit_capturingHack: dynamic) {
+    js(
+        """
+        delete requestInit_capturingHack.headers['Content-Length'];
+        delete requestInit_capturingHack.headers['content-length'];
+        """,
+    )
+}
+
+fun createE2eKtorEngine() = Js.create {
+    configureRequest {
+        removeContentLength(this)
+    }
+}
+
+private val generalPurposeClient = HttpClient(createE2eKtorEngine()) {
     install(ContentNegotiation) { json() }
     install(Logging) {
         level = LogLevel.HEADERS
@@ -40,11 +59,10 @@ private val generalPurposeClient = HttpClient {
     }
 }
 
-private val ktorLogger = KotlinLogging.logger("ktor")
 private val auth0ClientSecret = Process.getEnv("AUTH0_CLIENT_SECRET") ?: ""
 
 private fun buildClientWithToken(): HttpClient {
-    val client = defaultClient("${process.env.BASEURL}").config {
+    val client = defaultClient("${process.env.BASEURL}", engine = createE2eKtorEngine()).config {
         followRedirects = false
         expectSuccess = false
         install(Logging) {
@@ -59,7 +77,7 @@ private fun buildClientWithToken(): HttpClient {
 
 private suspend fun generateAccessToken(username: String, password: String): String {
     ktorLogger.info {
-        "Auth0 token request input: passwordPresent=${password.isNotEmpty()}, clientSecretPresent=${auth0ClientSecret.isNotEmpty()}"
+        "Auth0 token request input: passwordPresent=${password.isNotEmpty()}"
     }
     val result = generalPurposeClient.submitForm(
         url = "https://zegreatrob.us.auth0.com/oauth/token",

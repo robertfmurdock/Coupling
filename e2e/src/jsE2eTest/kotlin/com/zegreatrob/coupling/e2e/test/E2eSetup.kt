@@ -18,6 +18,7 @@ import kotlin.js.json
 val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
     asyncTestTemplate(beforeAll = {
         withTestIdentity(suite = "e2e.beforeAll", test = "bootstrap", testId = "e2e-beforeAll") {
+            installExecuteAsyncCompatibilityShim()
             CouplingLogin.sdk.await().apply {
                 fire(GqlQuery(PartyListQuery()))
                     ?.partyList
@@ -27,7 +28,7 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
                     ?.forEach { fire(it) }
 
                 WebdriverBrowser.setUrl("")
-                js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); window.sessionStorage.setItem('thirdPartyAvatarsDisabled', true); done()}, undefined)")
+                js("browser.execute(function(ignore) {window.sessionStorage.setItem('animationDisabled', true); window.sessionStorage.setItem('thirdPartyAvatarsDisabled', true)}, undefined)")
                     .unsafeCast<Promise<Unit>>()
                     .await()
 
@@ -70,6 +71,32 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
             }
         }
     }
+}
+
+private fun installExecuteAsyncCompatibilityShim() {
+    js(
+        """
+        if (typeof browser.executeAsync !== 'function') {
+            browser.executeAsync = function(script) {
+                var scriptArguments = Array.prototype.slice.call(arguments, 1);
+                return browser.execute(
+                    function(scriptSource, argumentsForScript) {
+                        var callbackScript = Function('return (' + scriptSource + ')')();
+                        return new Promise(function(resolve, reject) {
+                            try {
+                                callbackScript.apply(null, argumentsForScript.concat(resolve));
+                            } catch (error) {
+                                reject(error);
+                            }
+                        });
+                    },
+                    script.toString(),
+                    scriptArguments,
+                );
+            };
+        }
+        """,
+    )
 }
 
 private fun nowMillis(): Double = (js("Date.now()") as Number).toDouble()

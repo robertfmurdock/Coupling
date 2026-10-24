@@ -27,7 +27,7 @@ object TestLogin : BrowserSyntax {
     }
 
     suspend fun login() {
-        val client = HttpClient {
+        val client = HttpClient(createE2eKtorEngine()) {
             install(ContentNegotiation) {
                 json()
             }
@@ -98,11 +98,10 @@ object TestLogin : BrowserSyntax {
 
         js(
             """
-                browser.executeAsync(function(nothing, done) {
+                browser.execute(function(nothing) {
                     var result = JSON.parse(nothing)
                     window.localStorage.setItem(result.cacheKey, JSON.stringify(result.auth0Cache));
                     window.localStorage.setItem(result.idCacheKey, JSON.stringify(result.auth0IdCache));
-                    done()
                     }, storageStuff);
     """,
         ).unsafeCast<Promise<Unit>>()
