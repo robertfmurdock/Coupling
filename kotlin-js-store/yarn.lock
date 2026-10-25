@@ -853,10 +853,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.42":
-  version "0.31.42"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.42.tgz#cc2f40bbb500542a498e19c507d961ae5869606c"
-  integrity sha512-++nlPMlo0Vd8+bHP8LbQt2ug36YcUOVmqJDxgvLlKVPYi7fjzLCToPK7Oes3JSSfQ7YurusyrzDYx1vloWP8BQ==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.43":
+  version "0.31.43"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.43.tgz#dd572154473fe90a4c2425ae1f9f51899f31b67c"
+  integrity sha512-DimyFjm+uYGqa2N8Zekq7L9LoWsgpFTMHDQ5DoYHnjzZyUG4jpTWEbseN9HcYFI7fYezTXD0mvxtX7WQRdyZmw==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -1408,10 +1408,10 @@
     auto-bind "^5.0.0"
     tslib "~2.8.0"
 
-"@graphql-codegen/visitor-plugin-common@7.4.0", "@graphql-codegen/visitor-plugin-common@^7.2.10":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.4.0.tgz#81cafda5c3bca34b57345c7a9bf36fc0b209a82b"
-  integrity sha512-dI5U37AVNsnctN8qIHhXM8G8zygx8JCwId6QiH6KOfyCeIYLDBkqPElfuD/2lIDzWAGoMkS2FNoTcfqNcsSvRA==
+"@graphql-codegen/visitor-plugin-common@7.5.0":
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.5.0.tgz#292450be678d719a1ed46387f7d8fc144e7570fc"
+  integrity sha512-/7h13H2PnjWMKVD0wYvxh9MWmG9HX6vHCoUL3Hyf2dOUI9soU/uTvBK6gJUs58RILKu4V36QxY/tIaeGOuRRRw==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^7.4.2"
     "@graphql-tools/optimize" "^2.0.0"
@@ -1435,6 +1435,22 @@
     "@graphql-tools/utils" "^11.0.0"
     auto-bind "~4.0.0"
     change-case-all "1.0.15"
+    dependency-graph "^1.0.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    tslib "^2.8.0"
+
+"@graphql-codegen/visitor-plugin-common@^7.2.10":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.4.0.tgz#81cafda5c3bca34b57345c7a9bf36fc0b209a82b"
+  integrity sha512-dI5U37AVNsnctN8qIHhXM8G8zygx8JCwId6QiH6KOfyCeIYLDBkqPElfuD/2lIDzWAGoMkS2FNoTcfqNcsSvRA==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^7.4.2"
+    "@graphql-tools/optimize" "^2.0.0"
+    "@graphql-tools/relay-operation-optimizer" "^7.1.12"
+    "@graphql-tools/utils" "^12.0.3"
+    auto-bind "^5.0.0"
+    change-case-all "^2.1.0"
     dependency-graph "^1.0.0"
     graphql-tag "^2.11.0"
     parse-filepath "^1.0.2"
