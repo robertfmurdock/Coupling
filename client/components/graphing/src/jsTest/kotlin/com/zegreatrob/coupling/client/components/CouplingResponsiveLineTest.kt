@@ -6,6 +6,8 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import kotlin.test.Test
+import react.ReactNode
+import react.Suspense
 
 @ExperimentalWasmJsInterop
 class CouplingResponsiveLineTest {
@@ -14,8 +16,11 @@ class CouplingResponsiveLineTest {
     fun willNotExplodeWithNoData() = asyncSetup(object {
     }) exercise {
         render {
-            CouplingResponsiveLine {
-                data = emptyArray()
+            Suspense {
+                fallback = ReactNode("Loading CouplingResponsiveLine")
+                CouplingResponsiveLine {
+                    data = emptyArray()
+                }
             }
         }
     } verify { result ->
