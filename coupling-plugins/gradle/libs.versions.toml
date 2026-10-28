@@ -5,21 +5,21 @@ log4j = "2.26.1"
 
 [libraries]
 jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.4"
-ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-ksp-symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.14.6"
-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.63"
-tools-bom = "com.zegreatrob.tools:tools-bom:3.6.26"
 # @pin
 kfc-gradle-plugin = "io.github.turansky.kfc:kfc-gradle-plugin:18.8.0"
-version-catalog-update-plugin = "nl.littlerobots.vcu:plugin:1.1.2"
-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "log4j" }
 kotlin-js-plain-objects = { module = "org.jetbrains.kotlin:js-plain-objects", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:5.7.0"
+ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+ksp-symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "log4j" }
 slf4j-api = "org.slf4j:slf4j-api:2.0.20"
+testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.63"
+tools-bom = "com.zegreatrob.tools:tools-bom:3.6.26"
+version-catalog-update-plugin = "nl.littlerobots.vcu:plugin:1.1.2"
 
 [plugins]
-version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.2"
 kotlinter = "org.jmailen.kotlinter:5.7.0"
+version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.2"
