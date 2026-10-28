@@ -116,7 +116,7 @@ rootProject.yarn.ignoreScriptsProperty = false
 tasks {
     val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
     val cdnBuildOutput = npmProjectDir.map { it.file("cdn.json") }
-    val settingsFile = File(project.projectDir, "cdn.settings.json")
+    val settingsFile = layout.projectDirectory.file("cdn.settings.json")
     val copyCdnSettings = register<Copy>("copyCdnSettings") {
         description = "Moves CDN settings to npm project directory"
         dependsOn(":kotlinNpmInstall")
@@ -132,23 +132,27 @@ tasks {
         inputs.files(cdnLookupConfiguration)
         inputs.files(jsRuntimeClasspath)
         inputs.file(settingsFile)
-        val settings = ObjectMapper().readTree(settingsFile)
-        val settingsImports = settings["imports"] ?: settings
-        val emptyObject = ObjectMapper().createObjectNode()
-        val lookupSettingsWrapped = ObjectMapper().createObjectNode().apply {
-            set<JsonNode>("profiles", settings["profiles"] ?: emptyObject)
-            set<JsonNode>("imports", settings["imports"] ?: emptyObject)
+        val cdnSettingsArguments = providers.fileContents(settingsFile).asText.map { settingsText ->
+            val objectMapper = ObjectMapper()
+            val settings = objectMapper.readTree(settingsText)
+            val settingsImports = settings["imports"] ?: settings
+            val emptyObject = objectMapper.createObjectNode()
+            val lookupSettingsWrapped = objectMapper.createObjectNode().apply {
+                set<JsonNode>("profiles", settings["profiles"] ?: emptyObject)
+                set<JsonNode>("imports", settings["imports"] ?: emptyObject)
+            }
+            val lookupSettingsBase64 = Base64.getEncoder().encodeToString(
+                lookupSettingsWrapped.toString().toByteArray(StandardCharsets.UTF_8),
+            )
+            listOf("--lookup-config-base64=$lookupSettingsBase64") + settingsImports.fieldNames().asSequence().toList()
         }
-        val lookupSettingsBase64 = Base64.getEncoder().encodeToString(
-            lookupSettingsWrapped.toString().toByteArray(StandardCharsets.UTF_8),
-        )
-        val libraryNames = settingsImports.fieldNames().asSequence().toList()
-        arguments.set(cdnLookupConfiguration.elements.map { lookupFiles ->
-            listOf(
-                "--no-warnings",
-                lookupFiles.single().asFile.absolutePath,
-                "--lookup-config-base64=$lookupSettingsBase64",
-            ) + libraryNames
+        arguments.set(cdnLookupConfiguration.elements.flatMap { lookupFiles ->
+            cdnSettingsArguments.map { settingsArguments ->
+                listOf(
+                    "--no-warnings",
+                    lookupFiles.single().asFile.absolutePath,
+                ) + settingsArguments
+            }
         })
         outputFile.set(cdnBuildOutput)
         outputs.cacheIf { true }
@@ -194,13 +198,12 @@ tasks {
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
-        doFirst {
-            commandLine(
-                "aws", "s3", "sync",
-                jsBrowserProductionVite.get().outputDirectory.get().asFile.absolutePath,
-                "s3://assets.zegreatrob.com/coupling/${rootProject.version}",
-            )
-        }
+        val absolutePath = jsBrowserProductionVite.get().outputDirectory.get().asFile.absolutePath
+        commandLine(
+            "aws", "s3", "sync",
+            absolutePath,
+            "s3://assets.zegreatrob.com/coupling/${rootProject.version}",
+        )
     }
     rootProject
         .tasks

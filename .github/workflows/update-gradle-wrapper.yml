@@ -35,7 +35,7 @@ jobs:
           cache-read-only: true
           gradle-version: current
       - name: Update Deps
-        run: gradle wrapper --distribution-type all
+        run: gradle wrapper --distribution-type bin
       - name: Clean
         run: gradle clean
       - name: Update Yarn Lock

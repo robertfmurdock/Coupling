@@ -33,13 +33,11 @@ tasks {
         into(deployDir)
         from("${serverProject.projectDir.absolutePath}/serverless.yml")
         inputs.file(serverlessPackageJson)
-        doFirst {
-            filter<ReplaceTokens>(
-                "tokens" to mapOf("4" to "frameworkVersion: '${serverlessFrameworkVersion.get()}'"),
-                "beginToken" to "frameworkVersion: '",
-                "endToken" to "'",
-            )
-        }
+        filter<ReplaceTokens>(
+            "tokens" to mapOf("4" to "frameworkVersion: '${serverlessFrameworkVersion.get()}'"),
+            "beginToken" to "frameworkVersion: '",
+            "endToken" to "'",
+        )
     }
     val copyDeployConfigs = register<Copy>("copyDeployConfigs") {
         into(deployDir.map { it.dir("deploy") })

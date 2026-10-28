@@ -2,8 +2,9 @@ package com.zegreatrob.coupling.plugins.testlogging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
@@ -36,28 +37,25 @@ fun Project.registerTestLogCliTask(
     reportFilePath: Provider<String>,
     descriptionText: String,
     testJsonlFilePath: Provider<String>,
-    testLogToolsClasspath: Provider<String>,
+    testLogToolsRunner: Configuration,
     testRunIdentifier: Provider<String>? = null,
     strictFlags: List<String> = listOf("--strict"),
-): TaskProvider<Exec> {
-    val javaExecutable = extensions.getByType(JavaToolchainService::class.java)
+): TaskProvider<JavaExec> {
+    val testLogToolsJavaLauncher = extensions.getByType(JavaToolchainService::class.java)
         .launcherFor { languageVersion.set(JavaLanguageVersion.of(22)) }
-        .get()
-        .executablePath
 
-    return tasks.register(name, Exec::class.java) {
+    return tasks.register(name, JavaExec::class.java) {
         group = "verification"
         description = descriptionText
         dependsOn(":cli:test-log-tools:jvmJar")
 
-        executable(javaExecutable)
+        classpath(testLogToolsRunner)
+        javaLauncher.set(testLogToolsJavaLauncher)
+        mainClass.set("com.zegreatrob.coupling.cli.testlog.MainKt")
         argumentProviders.add {
             buildList {
                 addAll(
                     listOf(
-                        "-cp",
-                        testLogToolsClasspath.get(),
-                        "com.zegreatrob.coupling.cli.testlog.MainKt",
                         command,
                         "--report-file",
                         reportFilePath.get(),

@@ -72,19 +72,13 @@ tasks {
     val testRunIdentifier = providers.provider { System.getProperty("testRunIdentifier") ?: "unknown-run" }
     val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }
     val analyzeReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/analyze-test-jsonl.json").map { it.asFile.absolutePath }
-    val testLogToolsClasspath = providers.provider {
-        testLogToolsRunner
-            .resolve()
-            .joinToString(File.pathSeparator) { it.absolutePath }
-    }
-
     val validateTestJsonl = project.registerTestLogCliTask(
         name = "validateTestJsonl",
         command = "validate",
         reportFilePath = validateReportFilePath,
         descriptionText = "Validates build/test-output/test.jsonl for minimum required schema.",
         testJsonlFilePath = testJsonlFilePath,
-        testLogToolsClasspath = testLogToolsClasspath,
+        testLogToolsRunner = testLogToolsRunner,
         testRunIdentifier = testRunIdentifier,
     )
 
@@ -94,7 +88,7 @@ tasks {
         reportFilePath = analyzeReportFilePath,
         descriptionText = "Analyzes test coverage and TestMints phase logging in build/test-output/test.jsonl.",
         testJsonlFilePath = testJsonlFilePath,
-        testLogToolsClasspath = testLogToolsClasspath,
+        testLogToolsRunner = testLogToolsRunner,
         testRunIdentifier = testRunIdentifier,
     )
 
@@ -104,7 +98,7 @@ tasks {
         reportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/reconcile-test-jsonl.json").map { it.asFile.absolutePath },
         descriptionText = "Appends INCOMPLETE run closures for attributable historical test-log violations.",
         testJsonlFilePath = testJsonlFilePath,
-        testLogToolsClasspath = testLogToolsClasspath,
+        testLogToolsRunner = testLogToolsRunner,
         strictFlags = emptyList(),
     )
 
@@ -114,7 +108,7 @@ tasks {
         reportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl-history.json").map { it.asFile.absolutePath },
         descriptionText = "Strictly validates all unreconciled test-log history.",
         testJsonlFilePath = testJsonlFilePath,
-        testLogToolsClasspath = testLogToolsClasspath,
+        testLogToolsRunner = testLogToolsRunner,
     )
 
     val assertCommandAttributionCoverage = register("assertCommandAttributionCoverage") {
