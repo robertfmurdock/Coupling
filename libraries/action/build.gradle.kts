@@ -68,9 +68,9 @@ tasks {
     }
 }
 
-afterEvaluate {
+pluginManager.withPlugin("com.google.devtools.ksp") {
     dependencies {
-        configurations.kspCommonMainMetadata(enforcedPlatform(project(":libraries:dependency-bom")))
-        configurations.kspCommonMainMetadata("com.zegreatrob.testmints:action-processor")
+        add("kspCommonMainMetadata", enforcedPlatform(project(":libraries:dependency-bom")))
+        add("kspCommonMainMetadata", "com.zegreatrob.testmints:action-processor")
     }
 }

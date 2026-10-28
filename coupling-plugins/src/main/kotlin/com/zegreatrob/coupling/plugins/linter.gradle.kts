@@ -11,13 +11,10 @@ plugins {
     id("org.jmailen.kotlinter")
 }
 
-afterEvaluate {
-    tasks {
-        withType<FormatTask> {
-            exclude { spec -> spec.file.absolutePath.contains("generated") }
-        }
-        withType<LintTask> {
-            exclude { spec -> spec.file.absolutePath.contains("generated") }
-        }
-    }
+tasks.withType<FormatTask>().configureEach {
+    exclude { spec -> spec.file.absolutePath.contains("generated") }
+}
+
+tasks.withType<LintTask>().configureEach {
+    exclude { spec -> spec.file.absolutePath.contains("generated") }
 }

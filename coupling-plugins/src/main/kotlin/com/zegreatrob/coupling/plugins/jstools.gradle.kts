@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.plugins.conventions.KotlinConventions
 import com.zegreatrob.coupling.plugins.js.JsConstraintExtension
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -36,9 +36,7 @@ kotlin {
 version = "0.0.0"
 
 if (System.getenv().containsKey("CI")) {
-    afterEvaluate {
-        extensions.findByType(NodeJsEnvSpec::class)?.download?.set(false)
-    }
+    NodeJsPlugin.apply(rootProject).download.set(false)
 }
 
 project.extensions.create<JsConstraintExtension>("npmConstrained")
