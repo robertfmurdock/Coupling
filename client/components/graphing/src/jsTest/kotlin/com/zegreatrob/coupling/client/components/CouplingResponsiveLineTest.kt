@@ -8,8 +8,6 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import react.ReactNode
 import react.Suspense
 import kotlin.test.Test
-import react.ReactNode
-import react.Suspense
 
 @ExperimentalWasmJsInterop
 class CouplingResponsiveLineTest {
