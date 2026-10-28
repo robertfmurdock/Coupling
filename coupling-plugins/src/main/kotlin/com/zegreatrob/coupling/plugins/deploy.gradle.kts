@@ -33,11 +33,13 @@ tasks {
         into(deployDir)
         from("${serverProject.projectDir.absolutePath}/serverless.yml")
         inputs.file(serverlessPackageJson)
-        filter<ReplaceTokens>(
-            "tokens" to mapOf("4" to "frameworkVersion: '${serverlessFrameworkVersion.get()}'"),
-            "beginToken" to "frameworkVersion: '",
-            "endToken" to "'",
-        )
+        doFirst {
+            filter<ReplaceTokens>(
+                "tokens" to mapOf("4" to "frameworkVersion: '${serverlessFrameworkVersion.get()}'"),
+                "beginToken" to "frameworkVersion: '",
+                "endToken" to "'",
+            )
+        }
     }
     val copyDeployConfigs = register<Copy>("copyDeployConfigs") {
         into(deployDir.map { it.dir("deploy") })
@@ -52,8 +54,8 @@ tasks {
     fun NodeExec.configureServerless() {
         setup(project)
         environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
-        workingDir = deployDir.get().asFile
-        nodeCommand = "serverless"
+        taskWorkingDirectory.set(deployDir)
+        nodeCommand.set("serverless")
     }
 
     val serverlessPackage = register<NodeExec>("serverlessPackage") {
@@ -64,16 +66,16 @@ tasks {
             "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion",
             "CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion",
         )
-        arguments = listOf(
+        arguments.set(deployDir.zip(serverlessBuildDir) { directory, packageDirectory -> listOf(
             "package",
             "--verbose",
             "--config",
-            deployDir.get().file("serverless.yml").asFile.absolutePath,
+            directory.file("serverless.yml").asFile.absolutePath,
             "--package",
-            serverlessBuildDir.get().asFile.absolutePath,
+            packageDirectory.asFile.absolutePath,
             "--stage",
             project.name,
-        )
+        ) })
         dependsOn(copyDeployResources, ":calculateVersion", ":server:serverlessWarmup")
     }
 
@@ -85,14 +87,14 @@ tasks {
             ":server:check",
             ":e2e:check",
         )
-        arguments = listOf(
+        arguments.set(deployDir.map { directory -> listOf(
             "prune",
             "-n=10",
             "--config",
-            deployDir.get().file("serverless.yml").asFile.absolutePath,
+            directory.file("serverless.yml").asFile.absolutePath,
             "--stage",
             project.name,
-        )
+        ) })
         dependsOn(copyDeployResources)
     }
     val deploy = register<NodeExec>("deploy") {
@@ -104,15 +106,16 @@ tasks {
             ":e2e:check",
         )
         dependsOn(prune)
-        arguments = listOf(
+        val serverlessBuildDir = serverProject.layout.buildDirectory.dir("${project.name}/lambda-dist")
+        arguments.set(deployDir.zip(serverlessBuildDir) { directory, packageDirectory -> listOf(
             "deploy",
             "--config",
-            deployDir.get().file("serverless.yml").asFile.absolutePath,
+            directory.file("serverless.yml").asFile.absolutePath,
             "--package",
-            serverProject.layout.buildDirectory.dir("${project.name}/lambda-dist").get().asFile.absolutePath,
+            packageDirectory.asFile.absolutePath,
             "--stage",
             project.name,
-        )
+        ) })
         dependsOn(":release", serverlessPackage)
     }
 

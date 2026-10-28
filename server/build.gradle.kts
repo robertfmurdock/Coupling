@@ -111,18 +111,18 @@ tasks {
         outputs.dir(file("build/webpack-output"))
         outputs.cacheIf { true }
         val compilationName = "main"
-        val compilation = kotlin.js().compilations.named(compilationName).get()
+        val compilation = kotlin.js().compilations.named(compilationName)
 
-        inputs.file(compilation.npmProject.packageJsonFile)
+        inputs.file(compilation.map { it.npmProject.packageJsonFile })
 
         setup(project)
-        nodeModulesDir = compilation.npmProject.nodeModulesDir.get().asFile
-        npmProjectDir = compilation.npmProject.dir.get().asFile
+        nodeModulesDir.set(compilation.map { it.npmProject.nodeModulesDir.get() })
+        npmProjectDir.set(compilation.map { it.npmProject.dir.get() })
 
-        nodeCommand = "webpack"
-        arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
+        nodeCommand.set("webpack")
+        arguments.set(listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath))
         environment("NODE_ENV" to "production")
-        workingDir = rootProject.layout.buildDirectory.file("js/packages/Coupling-server").get().asFile
+        taskWorkingDirectory.set(rootProject.layout.buildDirectory.dir("js/packages/Coupling-server"))
     }
 
     register<NodeExec>("serverStats") {
@@ -130,15 +130,15 @@ tasks {
         dependsOn(compileKotlinJs, jsProcessResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
 
-        nodeCommand = "webpack"
-        arguments = listOf(
+        nodeCommand.set("webpack")
+        arguments.set(listOf(
             "--config",
             project.projectDir.resolve("webpack.config.js").absolutePath,
             "--profile",
             "--json=${rootDir.absolutePath}/compilation-stats.json"
-        )
+        ))
         environment("NODE_ENV" to "production")
-        workingDir = rootProject.layout.buildDirectory.file("js/packages/Coupling-server").get().asFile
+        taskWorkingDirectory.set(rootProject.layout.buildDirectory.dir("js/packages/Coupling-server"))
     }
 
     val copyServerIcons = register<Copy>("copyServerIcons") {
@@ -171,7 +171,7 @@ tasks {
 
     register<NodeExec>("start") {
         dependsOn(assemble, clientConfiguration, compileKotlinJs)
-        arguments = listOf(project.relativePath("startup"))
+        arguments.set(listOf(project.relativePath("startup")))
         environment("NODE_ENV", "production")
     }
 
@@ -204,8 +204,8 @@ tasks {
         dependsOn(assemble, clientConfiguration, jsTest, compileKotlinJs)
         setup(project)
         val serverlessConfigFile = project.relativePath("serverless.yml")
-        nodeCommand = "serverless"
-        arguments = listOf("offline", "--config", serverlessConfigFile, "start")
+        nodeCommand.set("serverless")
+        arguments.set(listOf("offline", "--config", serverlessConfigFile, "start"))
         environment("NODE_ENV", "production")
         environment(
             "LAMBDA_ENDPOINT" to "http://localhost:3002",
@@ -216,9 +216,9 @@ tasks {
 
     register<NodeExec>("serverlessWarmup") {
         setup(project)
-        nodeCommand = "serverless"
-        arguments = listOf("--version")
-        workingDir = rootProject.projectDir
+        nodeCommand.set("serverless")
+        arguments.set(listOf("--version"))
+        taskWorkingDirectory.set(rootProject.layout.projectDirectory)
     }
 
 }

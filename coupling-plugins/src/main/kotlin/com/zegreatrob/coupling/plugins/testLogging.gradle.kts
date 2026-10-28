@@ -38,12 +38,12 @@ val resetTestJsonl = rootProject.tasks.let { tasks ->
             val shouldReset =
                 (providers.gradleProperty("coupling.testLog.reset").orNull == "true") ||
                     (System.getenv("COUPLING_TEST_LOG_RESET") == "true")
-            val resetPath = logFilePathProvider.get()
+            inputs.property("testLogPath", logFilePathProvider)
             doFirst {
                 if (!shouldReset) {
                     return@doFirst
                 }
-                val logFile = java.io.File(resetPath)
+                val logFile = java.io.File(inputs.properties.getValue("testLogPath").toString())
                 logFile.parentFile.mkdirs()
                 logFile.writeText("")
             }
@@ -57,12 +57,18 @@ tasks.withType(AbstractTestTask::class).configureEach {
     val logFilePath = logFilePathProvider
     val runIdentifier = testRunIdentifier
     val configFile = logConfigFile
+    inputs.property("couplingTestLogPath", logFilePath)
+    inputs.property("couplingLogConfigPath", configFile.map { it.asFile.absolutePath })
     doFirst {
-        val jsonLoggingListener = JsonLoggingTestListener(taskPath, runIdentifier, logFilePath.get())
+        val jsonLoggingListener = JsonLoggingTestListener(
+            taskPath,
+            runIdentifier,
+            inputs.properties.getValue("couplingTestLogPath").toString(),
+        )
         addTestListener(jsonLoggingListener)
         addTestOutputListener(jsonLoggingListener)
 
-        val logConfigPath = configFile.get().asFile
+        val logConfigPath = java.io.File(inputs.properties.getValue("couplingLogConfigPath").toString())
         if (logConfigPath.exists()) {
             System.setProperty("log4j2.configurationFile", logConfigPath.absolutePath)
             Configurator.initialize(null, logConfigPath.absolutePath)
@@ -71,7 +77,7 @@ tasks.withType(AbstractTestTask::class).configureEach {
 }
 
 tasks.withType(Test::class).configureEach {
-    systemProperty("log4j2.configurationFile", logConfigFile.get().asFile.absolutePath)
+    systemProperty("log4j2.configurationFile", logConfigFile.map { it.asFile.absolutePath })
     systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
     useJUnitPlatform()
 }
@@ -86,13 +92,24 @@ configurations.configureEach {
 tasks.withType(KotlinJsTest::class).configureEach {
     val taskPath = path
     val logFilePath = logFilePathProvider
+    inputs.property("couplingTestLogPath", logFilePath)
     doFirst {
         val runId = System.getProperty("testRunIdentifier") ?: "unknown-run"
-        TestLoggingFileAppender.appendTestmintsLog(logFilePath.get(), taskPath, runId, "js-test-start")
+        TestLoggingFileAppender.appendTestmintsLog(
+            inputs.properties.getValue("couplingTestLogPath").toString(),
+            taskPath,
+            runId,
+            "js-test-start",
+        )
     }
     doLast {
         val runId = System.getProperty("testRunIdentifier") ?: "unknown-run"
-        TestLoggingFileAppender.appendTestmintsLog(logFilePath.get(), taskPath, runId, "js-test-finish")
+        TestLoggingFileAppender.appendTestmintsLog(
+            inputs.properties.getValue("couplingTestLogPath").toString(),
+            taskPath,
+            runId,
+            "js-test-finish",
+        )
     }
 }
 

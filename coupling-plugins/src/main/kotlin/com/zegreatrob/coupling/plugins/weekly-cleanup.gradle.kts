@@ -55,6 +55,7 @@ tasks {
         planFilePath.set(weeklyCleanupPlanFilePath)
         outputFilePath.set(weeklyCleanupCandidatesFilePath)
         historyFilePath.set(rootProject.file(".github/weekly-cleanup/cleanup-history.md").absolutePath)
+        repositoryRoot.set(rootProject.layout.projectDirectory)
     }
 
     register<WeeklyCleanupEvaluateTask>("weeklyCleanupEvaluate") {

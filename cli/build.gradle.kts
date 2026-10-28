@@ -162,9 +162,13 @@ tasks {
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
-        val absolutePath = jsCliTar.get().destinationDirectory.get().asFile.absolutePath
-        commandLine =
-            "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling-cli/${rootProject.version}".split(" ")
+        doFirst {
+            commandLine(
+                "aws", "s3", "sync",
+                jsCliTar.get().destinationDirectory.get().asFile.absolutePath,
+                "s3://assets.zegreatrob.com/coupling-cli/${rootProject.version}",
+            )
+        }
     }
     rootProject
         .tasks

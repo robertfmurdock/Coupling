@@ -104,10 +104,10 @@ tasks {
         )
         doFirst {
             testLogFile.get().asFile.parentFile.mkdirs()
+            environment("COUPLING_TEST_LOG_PATH", testLogFile.get().asFile.absolutePath)
         }
         environment(
             "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
-            "COUPLING_TEST_LOG_PATH" to testLogFile.get().asFile.absolutePath,
             "COUPLING_TEST_RUN_ID" to (System.getProperty("testRunIdentifier") ?: "unknown-run"),
             "COUPLING_TEST_TASK" to path,
         )

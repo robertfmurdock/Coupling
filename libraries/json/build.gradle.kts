@@ -59,7 +59,7 @@ tasks {
             ":kotlinNpmInstall",
         )
         setup(project)
-        nodeCommand = "graphql-codegen"
+        nodeCommand.set("graphql-codegen")
         inputs.file("codegen.yml")
         inputs.dir("../../server/src/jsMain/resources")
         outputs.dir(file("build/generated/codegen"))

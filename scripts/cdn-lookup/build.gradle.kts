@@ -79,8 +79,10 @@ tasks {
         inputs.dir(npmProjectDir)
         outputs.file(packDirectory.map { it.file("continuous-excellence-cdn-lookup-0.0.0.tgz") })
         workingDir(npmProjectDir)
-        doFirst { packDirectory.get().asFile.mkdirs() }
-        commandLine("npm", "pack", "--pack-destination", packDirectory.get().asFile.absolutePath)
+        doFirst {
+            packDirectory.get().asFile.mkdirs()
+            commandLine("npm", "pack", "--pack-destination", packDirectory.get().asFile.absolutePath)
+        }
     }
 
     named("jsNodeProductionRun", NodeJsExec::class) {
@@ -98,11 +100,11 @@ tasks {
         inputs.file(archive)
         inputs.file("src/packedTest/js/packed-executable-smoke-test.mjs")
         outputs.dir(fixture)
-        arguments = listOf(
+        arguments.set(archive.zip(fixture) { archiveFile, fixtureDirectory -> listOf(
             layout.projectDirectory.file("src/packedTest/js/packed-executable-smoke-test.mjs").asFile.absolutePath,
-            archive.get().asFile.absolutePath,
-            fixture.get().asFile.absolutePath,
-        )
+            archiveFile.asFile.absolutePath,
+            fixtureDirectory.asFile.absolutePath,
+        ) })
     }
 
     val generatedDirectory = project.layout.buildDirectory.dir("generated-sources/templates/kotlin/main")

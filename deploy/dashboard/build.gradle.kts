@@ -55,13 +55,13 @@ tasks {
         group = "deployment"
         description = "Packages the Ze Great Team dashboard Lambda release."
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(dashboardParametersFile.zip(releaseDirectory) { parameters, release -> listOf(
             "package",
             "--board-config", boardConfig.asFile.absolutePath,
-            "--parameters", dashboardParametersFile.get().asFile.absolutePath,
-            "--output", releaseDirectory.get().asFile.absolutePath,
-        )
+            "--parameters", parameters.asFile.absolutePath,
+            "--output", release.asFile.absolutePath,
+        ) })
         inputs.files(boardConfig, dashboardParametersFile)
         outputs.dir(releaseDirectory)
         dependsOn(dashboardApplicationParameters)
@@ -74,8 +74,10 @@ tasks {
         group = "verification"
         description = "Checks dashboard deployment prerequisites without modifying AWS."
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf("doctor", "--parameters", dashboardParametersFile.get().asFile.absolutePath, "--region", dashboardRegion)
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(dashboardParametersFile.map { parameters ->
+            listOf("doctor", "--parameters", parameters.asFile.absolutePath, "--region", dashboardRegion)
+        })
         inputs.file(dashboardParametersFile)
         dependsOn(dashboardApplicationParameters)
     }
@@ -84,11 +86,11 @@ tasks {
         group = "verification"
         description = "Checks the deployed dashboard bootstrap contracts without modifying AWS."
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(listOf(
             "bootstrap", "check",
             "--config", dashboardBootstrapManifest.asFile.absolutePath,
-        )
+        ))
         inputs.file(dashboardBootstrapManifest)
         dependsOn(":kotlinNpmInstall")
     }
@@ -131,13 +133,13 @@ tasks {
         group = "deployment"
         description = "Preserves deployed core bootstrap parameters for administrator review."
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(listOf(
             "bootstrap", "parameters", "--kind", "core",
             "--config", dashboardBootstrapManifest.asFile.absolutePath,
             "--deployed-stack-json", coreDeployedStackFile.asFile.absolutePath,
             "--output", coreBootstrapParametersFile.asFile.absolutePath,
-        )
+        ))
         inputs.file(dashboardBootstrapManifest)
         inputs.file(coreDeployedStackFile)
         outputs.file(coreBootstrapParametersFile)
@@ -148,14 +150,14 @@ tasks {
         group = "deployment"
         description = "Preserves deployed GitHub OIDC bootstrap parameters for administrator review."
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(listOf(
             "bootstrap", "parameters", "--kind", "github-oidc",
             "--config", dashboardBootstrapManifest.asFile.absolutePath,
             "--deployed-stack-json", githubOidcDeployedStackFile.asFile.absolutePath,
             "--core-stack-json", coreDeployedStackFile.asFile.absolutePath,
             "--output", githubOidcBootstrapParametersFile.asFile.absolutePath,
-        )
+        ))
         inputs.files(dashboardBootstrapManifest, githubOidcDeployedStackFile, coreDeployedStackFile)
         outputs.file(githubOidcBootstrapParametersFile)
         dependsOn(captureGithubOidcBootstrapStack, captureCoreBootstrapStack)
@@ -167,16 +169,16 @@ tasks {
         val couplingRootDirectory = rootProject.layout.projectDirectory.asFile.absolutePath
         val couplingFilePrefix = "file://$couplingRootDirectory/"
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(listOf(
             "bootstrap", "change-set", "--kind", "core",
             "--config", dashboardBootstrapManifest.asFile.absolutePath,
             "--stack-name", "ze-great-team-dashboard-bootstrap",
             "--change-set-name", "repair-core", "--change-set-type", "UPDATE",
             "--parameters", coreBootstrapParametersFile.asFile.absolutePath,
-        )
+        ))
         inputs.files(dashboardBootstrapManifest, coreBootstrapParametersFile)
-        outputFile = coreChangeSetCommandFile.asFile
+        outputFile.set(coreChangeSetCommandFile)
         outputs.upToDateWhen { false }
         doFirst { outputs.files.singleFile.parentFile.mkdirs() }
         dependsOn(preserveCoreBootstrapParameters)
@@ -207,16 +209,16 @@ tasks {
         val couplingRootDirectory = rootProject.layout.projectDirectory.asFile.absolutePath
         val couplingFilePrefix = "file://$couplingRootDirectory/"
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(listOf(
             "bootstrap", "change-set", "--kind", "github-oidc",
             "--config", dashboardBootstrapManifest.asFile.absolutePath,
             "--stack-name", "ze-great-team-dashboard-github-bootstrap",
             "--change-set-name", "repair-github-oidc", "--change-set-type", "UPDATE",
             "--parameters", githubOidcBootstrapParametersFile.asFile.absolutePath,
-        )
+        ))
         inputs.files(dashboardBootstrapManifest, githubOidcBootstrapParametersFile)
-        outputFile = githubOidcChangeSetCommandFile.asFile
+        outputFile.set(githubOidcChangeSetCommandFile)
         outputs.upToDateWhen { false }
         doFirst { outputs.files.singleFile.parentFile.mkdirs() }
         dependsOn(preserveGithubOidcBootstrapParameters)
@@ -245,10 +247,10 @@ tasks {
         group = "deployment"
         description = "Updates the desired-state bootstrap metadata; review and commit the manifest mutation."
         setup(project)
-        nodeCommand = "ze-great-dashboard-aws"
-        arguments = listOf(
+        nodeCommand.set("ze-great-dashboard-aws")
+        arguments.set(listOf(
             "bootstrap", "upgrade", "--config", dashboardBootstrapManifest.asFile.absolutePath,
-        )
+        ))
         inputs.file(dashboardBootstrapManifest)
         outputs.file(dashboardBootstrapManifest)
         outputs.upToDateWhen { false }

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.plugins.cleanup
 import com.zegreatrob.coupling.plugins.util.parsePlanEnv
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
@@ -25,12 +26,15 @@ abstract class WeeklyCleanupCandidatesTask : DefaultTask() {
     @get:Internal
     abstract val historyFilePath: Property<String>
 
+    @get:Internal
+    abstract val repositoryRoot: DirectoryProperty
+
     @TaskAction
     fun generateCandidates() {
         val plan = File(planFilePath.get()).parsePlanEnv()
         val focus = plan["FOCUS"] ?: throw GradleException("Missing FOCUS in plan file")
         val strategy = plan["STRATEGY"] ?: "dead-code"
-        val rootDir = project.rootDir
+        val rootDir = repositoryRoot.get().asFile
         val focusDir = rootDir.resolve(focus)
         if (!focusDir.exists()) throw GradleException("Focus directory does not exist: ${focusDir.absolutePath}")
         val finalVerdicts = setOf(

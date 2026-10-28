@@ -126,7 +126,7 @@ tasks {
     val lookupCdnUrls = register<NodeExec>("lookupCdnUrls") {
         description = "Captures CDN Urls for external dependencies"
         setup(project)
-        this.npmProjectDir = npmProjectDir.get().asFile
+        this.npmProjectDir.set(npmProjectDir)
         dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall", jsProcessResources)
         mustRunAfter(jsBrowserProductionVitePrepare)
         inputs.files(cdnLookupConfiguration)
@@ -142,13 +142,15 @@ tasks {
         val lookupSettingsBase64 = Base64.getEncoder().encodeToString(
             lookupSettingsWrapped.toString().toByteArray(StandardCharsets.UTF_8),
         )
-        val cdnLookupFile = cdnLookupConfiguration.resolve().first()
-        arguments = listOf(
-            "--no-warnings",
-            cdnLookupFile.absolutePath,
-            "--lookup-config-base64=$lookupSettingsBase64",
-        ) + settingsImports.fieldNames().asSequence().toList()
-        outputFile = cdnBuildOutput.get().asFile
+        val libraryNames = settingsImports.fieldNames().asSequence().toList()
+        arguments.set(cdnLookupConfiguration.elements.map { lookupFiles ->
+            listOf(
+                "--no-warnings",
+                lookupFiles.single().asFile.absolutePath,
+                "--lookup-config-base64=$lookupSettingsBase64",
+            ) + libraryNames
+        })
+        outputFile.set(cdnBuildOutput)
         outputs.cacheIf { true }
     }
     val projectResultPath = rootProject.layout.buildDirectory
@@ -192,8 +194,13 @@ tasks {
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
-        val absolutePath = jsBrowserProductionVite.get().outputDirectory.get().asFile.absolutePath
-        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${rootProject.version}".split(" ")
+        doFirst {
+            commandLine(
+                "aws", "s3", "sync",
+                jsBrowserProductionVite.get().outputDirectory.get().asFile.absolutePath,
+                "s3://assets.zegreatrob.com/coupling/${rootProject.version}",
+            )
+        }
     }
     rootProject
         .tasks
