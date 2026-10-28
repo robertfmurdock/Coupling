@@ -5,6 +5,8 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import react.ReactNode
+import react.Suspense
 import kotlin.test.Test
 import react.ReactNode
 import react.Suspense
