@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
-
 kotlin {
     jvm()
     js {
@@ -41,8 +40,8 @@ dependencies {
     "jvmMainImplementation"(kotlin("reflect"))
     "jvmMainImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmMainImplementation"("org.junit.jupiter:junit-jupiter-engine")
-    "jvmMainImplementation"(libs.org.apache.logging.log4j.core)
-    "jvmMainImplementation"(libs.org.apache.logging.log4j.slf4j2.impl)
+    "jvmMainImplementation"(libs.log4j.core)
+    "jvmMainImplementation"(libs.log4j.slf4j2.impl)
 }
 
 artifacts {

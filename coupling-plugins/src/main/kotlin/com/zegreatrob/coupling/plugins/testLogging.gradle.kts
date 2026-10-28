@@ -19,6 +19,8 @@ val logFilePathProvider = rootProject.layout.buildDirectory
 val writeLogConfig = rootProject.tasks.let { tasks ->
     tasks.findByName("writeTestLog4j2Config")?.let { tasks.named(it.name) }
         ?: tasks.register("writeTestLog4j2Config", WriteTestLog4j2Config::class.java) {
+            group = "verification"
+            description = "Writes the Log4j test configuration used for structured test logs."
             logFilePath.set(logFilePathProvider)
             outputFile.set(logConfigFile)
             doFirst {
@@ -31,6 +33,8 @@ val writeLogConfig = rootProject.tasks.let { tasks ->
 val resetTestJsonl = rootProject.tasks.let { tasks ->
     tasks.findByName("resetTestJsonl")?.let { tasks.named(it.name) }
         ?: tasks.register("resetTestJsonl") {
+            group = "verification"
+            description = "Optionally resets the structured test log before test execution."
             val shouldReset =
                 (providers.gradleProperty("coupling.testLog.reset").orNull == "true") ||
                     (System.getenv("COUPLING_TEST_LOG_RESET") == "true")

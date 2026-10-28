@@ -11,8 +11,8 @@ repositories {
 plugins {
     `kotlin-dsl`
     id("java-gradle-plugin")
-    alias(libs.plugins.org.jmailen.kotlinter)
-    alias(libs.plugins.nl.littlerobots.version.catalog.update)
+    alias(libs.plugins.kotlinter)
+    alias(libs.plugins.version.catalog.update)
 }
 
 kotlin {
@@ -37,28 +37,28 @@ dependencies {
     implementation("com.zegreatrob.tools:tagger-plugin")
     implementation("com.zegreatrob.tools:digger-plugin")
     implementation(kotlin("gradle-plugin", libs.versions.kotlin.get()))
-    implementation(libs.com.fasterxml.jackson.core.jackson.databind)
-    implementation(libs.io.github.turansky.kfc.gradle.plugin)
-    implementation(libs.nl.littlerobots.vcu.plugin)
-    implementation(libs.org.apache.logging.log4j.log4j.core)
-    implementation(libs.org.apache.logging.log4j.log4j.iostreams)
-    implementation(libs.org.jetbrains.kotlin.js.plain.objects)
-    implementation(libs.org.jetbrains.kotlin.serialization)
-    implementation(libs.org.jmailen.gradle.kotlinter.gradle)
-    implementation(libs.org.slf4j.slf4j.api)
-    implementation(platform(libs.com.zegreatrob.jsmints.jsmints.bom))
-    implementation(platform(libs.com.zegreatrob.testmints.testmints.bom))
-    implementation(platform(libs.com.zegreatrob.tools.tools.bom))
+    implementation(libs.jackson.databind)
+    implementation(libs.kfc.gradle.plugin)
+    implementation(libs.version.catalog.update.plugin)
+    implementation(libs.log4j.core)
+    implementation(libs.log4j.iostreams)
+    implementation(libs.kotlin.js.plain.objects)
+    implementation(libs.kotlin.serialization)
+    implementation(libs.kotlinter.gradle)
+    implementation(libs.slf4j.api)
+    implementation(platform(libs.jsmints.bom))
+    implementation(platform(libs.testmints.bom))
+    implementation(platform(libs.tools.bom))
 
     testImplementation(kotlin("test"))
 
     constraints {
-        implementation(libs.com.google.devtools.ksp.symbol.processing.api) {
+        implementation(libs.ksp.symbol.processing.api) {
             version {
                 strictly(libs.versions.ksp.get())
             }
         }
-        implementation(libs.com.google.devtools.ksp.symbol.processing.gradle.plugin) {
+        implementation(libs.ksp.symbol.processing.gradle.plugin) {
             version {
                 strictly(libs.versions.ksp.get())
             }

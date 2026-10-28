@@ -17,9 +17,9 @@ plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.testmints.action-mint")
     kotlin("plugin.serialization")
-    alias(libs.plugins.com.apollographql.apollo)
+    alias(libs.plugins.apollo)
     id("io.github.turansky.kfc.application")
-    alias(libs.plugins.io.github.turansky.seskar)
+    alias(libs.plugins.seskar)
 }
 
 kotlin {

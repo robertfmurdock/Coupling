@@ -12,11 +12,11 @@ import java.time.Duration
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
-    alias(libs.plugins.com.avast.gradle.docker.compose)
-    alias(libs.plugins.com.github.sghill.distribution.sha)
-    alias(libs.plugins.com.zegreatrob.tools.digger)
-    alias(libs.plugins.nl.littlerobots.version.catalog.update)
-    alias(libs.plugins.com.apollographql.apollo) apply false
+    alias(libs.plugins.gradle.docker.compose)
+    alias(libs.plugins.distribution.sha)
+    alias(libs.plugins.tools.digger)
+    alias(libs.plugins.version.catalog.update)
+    alias(libs.plugins.apollo) apply false
     java
 }
 

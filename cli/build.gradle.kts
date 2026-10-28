@@ -1,15 +1,17 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 
+// Kotlin/JS executable binary configuration still requires this opt-in.
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.RootPackageJsonTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
-    alias(libs.plugins.com.apollographql.apollo)
+    alias(libs.plugins.apollo)
     distribution
 }
 
@@ -108,7 +110,7 @@ tasks {
         from(project.projectDir.resolve("webpack.config.js"))
         into(mainNpmProjectDir)
     }
-    rootProject.tasks.named("rootPackageJson").configure {
+    rootProject.tasks.withType<RootPackageJsonTask>().configureEach {
         mustRunAfter(copyWebpackConfig)
     }
 

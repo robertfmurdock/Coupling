@@ -3,8 +3,8 @@
 import com.apollographql.apollo.annotations.ApolloExperimental
 
 plugins {
-    alias(libs.plugins.com.zegreatrob.tools.certifier)
-    alias(libs.plugins.com.apollographql.apollo)
+    alias(libs.plugins.tools.certifier)
+    alias(libs.plugins.apollo)
     id("com.zegreatrob.coupling.plugins.jstools")
 }
 

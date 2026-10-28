@@ -124,6 +124,13 @@ See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/
   within the same change.
 - Do not place durable Gradle conventions only in `AGENTS.md` or generated files.
 
+## Experimental Kotlin Gradle APIs
+
+`ExperimentalKotlinGradlePluginApi` is intentionally used only for Kotlin
+compiler-option configuration and the CLI npm-project directory wiring. Keep
+the opt-in as narrow as the Kotlin DSL allows, document the consuming code's
+reason, and re-evaluate each usage when upgrading Kotlin or Gradle.
+
 ## Agent Completion Reporting for Gradle Changes
 - List Gradle-related files changed and why.
 - List Gradle commands executed and summarized outcomes.

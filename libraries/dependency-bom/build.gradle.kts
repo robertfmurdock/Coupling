@@ -13,36 +13,36 @@ javaPlatform {
 }
 
 dependencies {
-    api(platform(libs.com.zegreatrob.jsmints.jsmints.bom))
-    api(platform(libs.com.zegreatrob.testmints.testmints.bom))
-    api(platform(libs.com.zegreatrob.tools.tools.bom))
-    api(platform(libs.io.ktor.ktor.bom))
-    api(platform(libs.org.jetbrains.kotlin.wrappers.kotlin.wrappers.bom))
-    api(platform(libs.org.jetbrains.kotlinx.kotlinx.coroutines.bom))
-    api(platform(libs.org.jetbrains.kotlinx.kotlinx.serialization.bom))
-    api(platform(libs.org.junit.junit.bom))
-    api(platform(libs.org.kotlincrypto.hash.bom))
+    api(platform(libs.jsmints.bom))
+    api(platform(libs.testmints.bom))
+    api(platform(libs.tools.bom))
+    api(platform(libs.ktor.bom))
+    api(platform(libs.kotlin.wrappers.bom))
+    api(platform(libs.kotlinx.coroutines.bom))
+    api(platform(libs.kotlinx.serialization.bom))
+    api(platform(libs.junit.bom))
+    api(platform(libs.kotlincrypto.hash.bom))
     constraints {
-        api(libs.com.apollographql.adapters.apollo.adapters.core)
-        api(libs.com.apollographql.adapters.apollo.adapters.kotlinx.datetime)
-        api(libs.com.apollographql.apollo.apollo.runtime)
-        api(libs.com.apollographql.ktor.apollo.engine.ktor)
-        api(libs.com.auth0.java.jwt)
-        api(libs.com.fasterxml.jackson.core.jackson.databind)
-        api(libs.com.github.ajalt.clikt.clikt)
-        api(libs.com.google.devtools.ksp.symbol.processing.api) {
+        api(libs.apollo.adapters.core)
+        api(libs.apollo.adapters.kotlinx.datetime)
+        api(libs.apollo.runtime)
+        api(libs.apollo.ktor.engine)
+        api(libs.auth0.java.jwt)
+        api(libs.jackson.databind)
+        api(libs.clikt)
+        api(libs.ksp.symbol.processing.api) {
             version {
-                strictly(libs.versions.com.google.devtools.ksp.get())
+                strictly(libs.versions.ksp.get())
             }
         }
-        api(libs.com.lemonappdev.konsist)
-        api(libs.org.jetbrains.kotlin.kotlin.test)
-        api(libs.eu.anifantakis.ksafe)
-        api(libs.io.github.oshai.kotlin.logging)
-        api(libs.org.jetbrains.kotlin.wrappers.kotlin.react.popper)
-        api(libs.org.jetbrains.kotlinx.kotlinx.datetime)
-        api(libs.org.kotools.types)
-        api(libs.org.kotools.types.kotlinx.serialization)
-        api(libs.org.slf4j.slf4j.simple)
+        api(libs.konsist)
+        api(libs.kotlin.test)
+        api(libs.ksafe)
+        api(libs.kotlin.logging)
+        api(libs.kotlin.react.popper)
+        api(libs.kotlinx.datetime)
+        api(libs.kotools.types)
+        api(libs.kotools.types.kotlinx.serialization)
+        api(libs.slf4j.simple)
     }
 }

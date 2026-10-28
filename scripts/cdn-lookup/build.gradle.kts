@@ -1,8 +1,8 @@
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
 import org.apache.tools.ant.filters.ReplaceTokens
-import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -10,7 +10,6 @@ plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
 }
-
 kotlin {
     js {
         useEsModules()

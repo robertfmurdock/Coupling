@@ -1,11 +1,7 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
-
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.jsmints.plugins.wdiotest")
-    alias(libs.plugins.com.apollographql.apollo)
+    alias(libs.plugins.apollo)
 }
 
 kotlin {

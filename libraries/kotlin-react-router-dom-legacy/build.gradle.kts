@@ -1,10 +1,6 @@
-@file:OptIn(ExperimentalWasmDsl::class)
-
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
-    alias(libs.plugins.io.github.turansky.seskar)
+    alias(libs.plugins.seskar)
 }
 
 kotlin {
