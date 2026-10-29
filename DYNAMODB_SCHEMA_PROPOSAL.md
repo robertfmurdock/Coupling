@@ -50,6 +50,126 @@ high-cardinality partition keys and carefully sized index projections:
 [partition-key guidance](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html),
 and [GSI projection guidance](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html).
 
+## Access-path sequence diagrams
+
+These diagrams are speculative summaries of the observed backend and the
+target design. They count the logical DynamoDB data requests required by the
+fields shown, after root authorization. A `1+` request path means the first
+`Query` plus every additional page needed to read its growing partition. A
+field omitted from the GraphQL operation makes no request. Sibling GraphQL
+fields can run concurrently in the current backend as well as the target;
+the important change is that the target requests are direct or bounded rather
+than historical-partition reads. The client GraphQL operation remains the
+same in both sides of each comparison.
+
+### Current party and current-pair view — four parallel, growing query paths
+
+```mermaid
+sequenceDiagram
+    participant Client as Coupling client
+    participant GraphQL as GraphQL resolver
+    participant Actions as Party and pairing actions
+    participant Party as TRIBE / party revisions
+    participant Players as PLAYER / player revisions
+    participant Pins as PIN / pin revisions
+    participant Pairs as PAIR_ASSIGNMENTS / history
+
+    Client->>GraphQL: party(id) with players, pins, current pairing
+    GraphQL->>Actions: Resolve selected fields
+    Note over Actions,Pairs: Four independent query paths run concurrently and each can paginate
+    par Party current state
+        Actions->>Party: Query party partition
+        Party-->>Actions: All party revisions
+        Actions->>Actions: Sort and select latest party
+    and Active players
+        Actions->>Players: Query party partition
+        Players-->>Actions: Player revisions
+        Actions->>Actions: Reduce current active players
+    and Pins
+        Actions->>Pins: Query party partition
+        Pins-->>Actions: Pin revisions
+        Actions->>Actions: Reduce current pins
+    and Current pairing
+        Actions->>Pairs: Query party partition
+        Pairs-->>Actions: Pairing history
+        Actions->>Actions: Find newest pairing
+    end
+    Actions-->>GraphQL: Current party view
+    GraphQL-->>Client: Existing GraphQL response
+```
+
+### Target party and current-pair view — four bounded/direct API calls
+
+```mermaid
+sequenceDiagram
+    participant Client as Coupling client
+    participant GraphQL as GraphQL resolver
+    participant Core as coupling-core
+    participant Activity as coupling-activity
+
+    Client->>GraphQL: Same party operation
+    GraphQL->>Core: BatchGetItem META and CURRENT_PAIRING
+    Core-->>GraphQL: Current party metadata and pairing location
+    Note over GraphQL,Activity: Four DynamoDB API calls for the fields shown
+    par Current players
+        GraphQL->>Core: Query active PLAYER# rows
+        Core-->>GraphQL: Current players only
+    and Pins
+        GraphQL->>Core: Query PIN# rows
+        Core-->>GraphQL: Current pins only
+    and Current pairing
+        GraphQL->>Activity: Get pairing timeline item
+        Activity-->>GraphQL: Current pairing snapshot
+    end
+    GraphQL-->>Client: Same GraphQL response
+```
+
+### Current contribution-window report — one growing query path
+
+```mermaid
+sequenceDiagram
+    participant Client as Coupling client
+    participant GraphQL as GraphQL resolver
+    participant Report as Contribution action
+    participant Contributions as CONTRIBUTION table
+
+    Client->>GraphQL: contributionReport(window)
+    GraphQL->>Report: PartyContributionQuery
+    Report->>Contributions: Query party partition plus date filter
+    Note over Contributions: Reads and paginates the whole partition before the filter
+    Contributions-->>Report: Matching contribution records
+    Report->>Report: Sort and filter again for pairs/report fields
+    Report-->>GraphQL: Contribution report
+    GraphQL-->>Client: Existing GraphQL response
+```
+
+### Target contribution-window report — one Get plus one bounded query per month
+
+```mermaid
+sequenceDiagram
+    participant Client as Coupling client
+    participant GraphQL as GraphQL resolver
+    participant Activity as coupling-activity
+
+    Client->>GraphQL: Same contributionReport(window)
+    Note over GraphQL,Activity: One GetItem plus one logical month Query per month in the window
+    GraphQL->>Activity: Get ACTIVE_CONTRIBUTION_GENERATION
+    Activity-->>GraphQL: Current generation
+    par Month 1
+        GraphQL->>Activity: Query generation/month timeline bucket
+        Activity-->>GraphQL: Contributions for month 1
+    and Remaining months
+        GraphQL->>Activity: Query remaining generation/month buckets
+        Activity-->>GraphQL: Contributions for remaining months
+    end
+    GraphQL->>GraphQL: Merge in date order and calculate selected fields
+    opt Count-only report fields
+        GraphQL->>Activity: Read monthly summaries instead of payloads
+        Activity-->>GraphQL: Counts without contribution payloads
+    end
+    GraphQL-->>Client: Same GraphQL response
+```
+
 ## Target tables
 
 All keys below use UTF-8 strings. `#` separates stable key components; values
@@ -176,7 +296,8 @@ Monthly buckets deliberately bound each query partition while retaining a
 simple date range. A Week, Month, Quarter, HalfYear, or Year contribution
 window fans out only to the intersecting months, queries each with
 `BETWEEN`/prefix key conditions, merges descending streams, and stops once a
-client limit is satisfied. `All` is read through internal cursor pagination;
+client limit is satisfied. Each logical month query may use internal cursor
+pagination for a dense bucket. `All` is read through internal cursor pagination;
 the existing GraphQL field remains compatible even though its unbounded response
 cannot become predictably small merely by changing storage.
 
@@ -293,7 +414,7 @@ does not repeat the same direct read for multiple selected fields.
 | `spin`, `savePairAssignments`, `deletePairAssignments` | Activity pairing rows, current pointer, pair and yearly additive summaries, the party's deterministic global-year shard aggregate, and History event. Use a transaction or an idempotent projection worker when fan-out exceeds its limit. |
 | `saveContribution` (one or bulk) | After party authorization, save each contribution under the snapshotted active generation using an item-derived idempotency key, active-generation condition, locator/timeline rows, defined additive summaries, and History revision. Bulk chunks are bounded and retryable, not all-or-nothing; do not scan to find existing contribution IDs. |
 | `clearContributions` | Atomically advance the active contribution generation and write a History event. Clean up obsolete-generation locators, timelines, and summaries asynchronously and idempotently. |
-| `connectUser`, `disconnectUser`, `saveBoost`, `deleteBoost` | Core profile, validated-email and email-alias rows, affected email-to-player-party projections, boost views, and History revisions. |
+| `connectUser`, `disconnectUser`, `saveBoost`, `deleteBoost` | Core profile, validated-email and email-alias rows, boost views, and History revisions. |
 | Slack/Discord grant mutations | Restricted integration/secret references, party integration metadata, and History revisions. |
 
 ## GraphQL compatibility and optional future evolution
@@ -607,15 +728,17 @@ illustrative on-demand estimate, not a forecast. Assume `us-east-1`, Standard
 table class, item/index writes no larger than 1 KB, eventually consistent reads
 no larger than 4 KB, and current on-demand rates of $1.25 per million write
 request units (WRUs), $0.25 per million read request units (RRUs), and $0.25
-per GB-month of storage. A transactional 1-KB write consumes two WRUs. See
+per GB-month of storage. The query examples calculate RRUs from the aggregate
+bytes read, rounded to 4-KB units; an eventually consistent unit costs 0.5
+RRUs. A transactional 1-KB write consumes two WRUs. See
 [AWS on-demand capacity units](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html)
 and [AWS pricing](https://aws.amazon.com/dynamodb/pricing/on-demand/); another
 Region, larger item, GSI, backup, stream, or transfer setting changes the math.
 
 | Illustrative operation | Current request cost | Target request cost | Why it changes |
 | --- | --- | --- | --- |
-| Load current party after 500 one-KB revisions | 250 RRUs, about $0.0000625 | 1 strong `GetItem` RRU, about $0.00000025 | The target reads `META`, not 500 revisions. |
-| Read 40 recent contributions from a party holding 1,000 records | 500 RRUs, about $0.000125, if the filter examines all records | 20 RRUs, about $0.000005 | The target reads one month bucket instead of filtering the party partition. |
+| Load current party after 500 one-KB revisions | 62.5 RRUs, about $0.000015625 | 1 strong `GetItem` RRU, about $0.00000025 | The target reads `META`, not 500 revisions. |
+| Read 40 recent contributions from a party holding 1,000 records | 125 RRUs, about $0.00003125, if the filter examines all records | 5 RRUs, about $0.00000125 | The target reads one month bucket instead of filtering the party partition. |
 | Save a player with a primary and one additional email | About 2 WRUs / $0.0000025 for a one-KB base write plus its current email GSI | 10 WRUs / $0.0000125 for five one-KB transactional writes: player, two lookup rows, History, receipt | The extra writes buy direct authorization and auditability. |
 | Save a pairing affecting four pair aggregates | About 1 WRU / $0.00000125 for a one-KB append | About 22 WRUs / $0.0000275 for 11 one-KB transactional writes: timeline, locator, pointer, four aggregates, party-year, one global shard, History, receipt | The write precomputes current-pair and counter paths while preserving one audit decision. |
 
@@ -632,7 +755,7 @@ count-only request uses small additive summaries. `globalStats` is the important
 exception: its 16-shard summary is cheap, but the unchanged API asks for every
 party. If it requests exact per-party fields for 500 parties with 100 one-KB
 pairing records each, both designs still read roughly 50,000 source records
-(about 25,000 eventually consistent RRUs, or $0.00625) to calculate them. The
+(about 6,250 eventually consistent RRUs, or $0.0015625) to calculate them. The
 target removes scans and the hot single summary key, but does not turn that
 unbounded exact full-list response into a cheap operation without a future,
 additive bounded API.
@@ -643,6 +766,68 @@ bytes, retained-history distribution, GSI/stream/PITR storage, transaction
 conflicts, and p50/p95 latency. Compare total cost per successful user-visible
 operation at the same retained-history size, not the cost of one isolated
 write.
+
+### How does this redesign affect the number of DynamoDB queries, and how is that an improvement?
+
+It does not promise that every operation makes fewer DynamoDB requests. It
+makes their number and size predictable as Coupling history grows. For the
+party view illustrated above, the current backend has four logical `Query`
+paths that can run in parallel. Each starts as one request, then adds a request
+for every page of party, player, pin, or pairing history. The target view has
+four normal DynamoDB API calls for those same selected fields: one
+`BatchGetItem` for party metadata and the current-pairing pointer, one player
+query, one pin query, and one direct read for the current pairing. `BatchGetItem`
+reduces round trips but still charges each retrieved item separately. These are
+logical call counts: the player and pin queries may page if a current party has
+enough such items. The important improvement is avoiding rereading and reducing
+years of superseded revisions just to show the current party.
+
+Contribution windows make the trade-off more visible. The current path uses
+one logical query that can page through the party's whole contribution history
+before its date filter helps. The target first reads the active generation, then
+queries only the requested month buckets: one direct read plus one logical
+query per month in the requested window. A dense month bucket can paginate, but
+never expands into unrelated months or all retained party history. A broad
+window can therefore issue more independent requests, and the month queries may
+run concurrently. Count-only views can read the smaller monthly summaries
+instead of contribution payloads.
+
+Some deliberately distributed reads also increase request count: an exact
+global total reads and sums 16 shard summaries, and the preserved unbounded
+`partyList` may page relationship queries and chunk metadata reads internally.
+Those costs buy safe concurrent pairing writes and API compatibility,
+respectively. Authorization relationship reads are calculated once per party
+per GraphQL request and reused by its child resolvers.
+
+Measure both API-call count and work per call: record DynamoDB calls, returned
+items, continuation pages, consumed capacity, and resolver p95 latency by
+party age and selected field set. Success is that routine current-party reads
+have a stable upper bound for a given current team size, and contribution reads
+scale with the requested date window—not with all retained Coupling history.
+
+### Would this schema bundle overlapping player and user requests into fewer DynamoDB calls?
+
+Yes. A request-scoped loader can treat the party ID as the shared unit of work.
+If a GraphQL operation asks for a Player and a User field that both need the
+same current player or party relationship, the first resolver starts the
+direct read and the other awaits the same in-flight result. It does not issue a
+second read merely because it arrived through a different GraphQL field. The
+`AuthorizedPartyContext` similarly performs party authorization once, then is
+reused by all authorized child resolvers for that party in that request.
+
+The current-state keys make that practical: a party configuration loader can
+collect directly addressed items for several fields and obtain them with one
+`BatchGetItem`; a party-player loader can share one bounded `PLAYER#` query;
+and a contribution-window loader can share the generation read and any month
+bucket already requested. The loader returns the specific rows each resolver
+asked for, so the GraphQL response and authorization checks do not change.
+
+This coalesces only reads that have the same authorization context and a
+compatible consistency requirement. It must not reuse a result across parties,
+users, or requests, nor turn a small direct lookup into a broad party fetch
+just because another resolver might use it. Cache direct items and bounded
+queries by their full key and selection needs for the lifetime of one GraphQL
+request; keep the durable database state as the cross-request source of truth.
 
 ### Which actions are expected to be slower, and why is that acceptable?
 
