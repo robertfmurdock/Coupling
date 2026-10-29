@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.coupling.plugins.deploy.ServerlessConfigTask
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.tools.tagger.ReleaseVersion
-import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -20,24 +20,14 @@ val serverProject: Project = project.project(":server")
 
 val deployDir: Provider<Directory> = layout.buildDirectory.dir("deploy")
 val serverlessPackageJson = rootProject.layout.projectDirectory.file("libraries/js-dependencies/package.json")
-val serverlessFrameworkVersion = providers.fileContents(serverlessPackageJson).asText.map { packageJson ->
-    Regex("\\\"serverless\\\"\\s*:\\s*\\\"[^0-9]*(\\d+\\.\\d+\\.\\d+)\\\"")
-        .find(packageJson)
-        ?.groupValues
-        ?.get(1)
-        ?: error("Unable to find the Serverless version in ${serverlessPackageJson.asFile}")
-}
 
 tasks {
-    val copyServerYml = register<Copy>("copyServerYml") {
-        into(deployDir)
-        from("${serverProject.projectDir.absolutePath}/serverless.yml")
-        inputs.file(serverlessPackageJson)
-        filter<ReplaceTokens>(
-            "tokens" to mapOf("4" to "frameworkVersion: '${serverlessFrameworkVersion.get()}'"),
-            "beginToken" to "frameworkVersion: '",
-            "endToken" to "'",
-        )
+    val copyServerYml = register<ServerlessConfigTask>("copyServerYml") {
+        group = "deployment"
+        description = "Copies the Serverless configuration with the pinned framework version."
+        templateFile.set(serverProject.layout.projectDirectory.file("serverless.yml"))
+        packageJsonFile.set(serverlessPackageJson)
+        outputFile.set(deployDir.map { it.file("serverless.yml") })
     }
     val copyDeployConfigs = register<Copy>("copyDeployConfigs") {
         into(deployDir.map { it.dir("deploy") })

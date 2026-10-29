@@ -2,6 +2,7 @@
 
 // Kotlin/JS executable binary configuration still requires this opt-in.
 import com.zegreatrob.tools.tagger.ReleaseVersion
+import com.zegreatrob.coupling.plugins.deploy.S3SyncTask
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
@@ -157,17 +158,15 @@ tasks {
         dependsOn(jsPublish)
     }
 
-    val uploadToS3 = register<Exec>("uploadToS3") {
+    val uploadToS3 = register<S3SyncTask>("uploadToS3") {
+        group = "deployment"
+        description = "Synchronizes the CLI distribution to S3."
         dependsOn(jsCliTar, distTar)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
-        val absolutePath = jsCliTar.get().destinationDirectory.get().asFile.absolutePath
-        commandLine(
-            "aws", "s3", "sync",
-            absolutePath,
-            "s3://assets.zegreatrob.com/coupling-cli/${rootProject.version}",
-        )
+        sourceDirectory.set(jsCliTar.flatMap { it.destinationDirectory })
+        destination.set("s3://assets.zegreatrob.com/coupling-cli/${rootProject.version}")
     }
     rootProject
         .tasks

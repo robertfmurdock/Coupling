@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
+import com.zegreatrob.coupling.plugins.deploy.S3SyncTask
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
@@ -192,18 +193,15 @@ tasks {
         dependsOn(lookupCdnUrls, jsProcessResources)
     }
 
-    val uploadToS3 = register<Exec>("uploadToS3") {
+    val uploadToS3 = register<S3SyncTask>("uploadToS3") {
         description = "Publishes new version of client to S3"
+        group = "deployment"
         dependsOn(jsBrowserProductionVite)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
-        val absolutePath = jsBrowserProductionVite.get().outputDirectory.get().asFile.absolutePath
-        commandLine(
-            "aws", "s3", "sync",
-            absolutePath,
-            "s3://assets.zegreatrob.com/coupling/${rootProject.version}",
-        )
+        sourceDirectory.set(jsBrowserProductionVite.flatMap { it.outputDirectory })
+        destination.set("s3://assets.zegreatrob.com/coupling/${rootProject.version}")
     }
     rootProject
         .tasks
