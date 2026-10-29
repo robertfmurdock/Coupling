@@ -21,7 +21,7 @@ kotools-types = { module = "org.kotools:types", version.ref = "kotools" }
 kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-serialization", version.ref = "kotools" }
 ksafe = "eu.anifantakis:ksafe:3.3.0"
 ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-ktor-bom = "io.ktor:ktor-bom:3.6.0"
+ktor-bom = "io.ktor:ktor-bom:3.6.1"
 log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.20"
