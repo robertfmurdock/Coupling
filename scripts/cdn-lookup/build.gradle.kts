@@ -72,7 +72,7 @@ val cdnLookupPackageVersion = rootProject.version.toString()
     ?: "0.0.0"
 
 tasks {
-    val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get().asFile }
+    val npmProjectDir = kotlin.js().compilations.named("main").flatMap { it.npmProject.dir }.map { it.asFile }
     val packDirectory = layout.buildDirectory.dir("distributions")
     val cdnLookupNpmPack = register("cdnLookupNpmPack", Exec::class) {
         dependsOn("jsPackageJson", ":kotlinNpmInstall", "jsProductionExecutableCompileSync")
@@ -125,7 +125,7 @@ tasks {
 }
 
 artifacts {
-    val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
+    val npmProjectDir = kotlin.js().compilations.named("main").flatMap { it.npmProject.dir }
     val moduleName = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class)
         .flatMap { it.compilerOptions.moduleName }
     val executable = npmProjectDir.zip(moduleName) { directory, name ->

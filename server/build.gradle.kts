@@ -116,8 +116,8 @@ tasks {
         inputs.file(compilation.map { it.npmProject.packageJsonFile })
 
         setup(project)
-        nodeModulesDir.set(compilation.map { it.npmProject.nodeModulesDir.get() })
-        npmProjectDir.set(compilation.map { it.npmProject.dir.get() })
+        nodeModulesDir.set(compilation.flatMap { it.npmProject.nodeModulesDir })
+        npmProjectDir.set(compilation.flatMap { it.npmProject.dir })
 
         nodeCommand.set("webpack")
         arguments.set(listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath))

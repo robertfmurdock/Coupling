@@ -115,7 +115,7 @@ dependencies {
 rootProject.yarn.ignoreScriptsProperty = false
 
 tasks {
-    val npmProjectDir = kotlin.js().compilations.named("main").map { it.npmProject.dir.get() }
+    val npmProjectDir = kotlin.js().compilations.named("main").flatMap { it.npmProject.dir }
     val cdnBuildOutput = npmProjectDir.map { it.file("cdn.json") }
     val settingsFile = layout.projectDirectory.file("cdn.settings.json")
     val copyCdnSettings = register<Copy>("copyCdnSettings") {
