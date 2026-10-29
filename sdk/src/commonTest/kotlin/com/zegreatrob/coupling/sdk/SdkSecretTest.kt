@@ -63,9 +63,11 @@ class SdkSecretTest {
         val party = stubPartyDetails()
         val secretDescription = uuidString()
         lateinit var tokenSdk: DispatcherPipeCannon<CouplingSdkDispatcher>
+        lateinit var secret: Secret
     }) {
         sdk().fire(SavePartyCommand(party))
-        val (_, token) = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
+        val (createdSecret, token) = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
+        secret = createdSecret
         tokenSdk = couplingSdk({ token }, buildClient(traceId = Uuid.random()))
     } exercise {
         tokenSdk.fire(GqlQuery(PartyDetailsQuery(party.id)))
@@ -74,14 +76,15 @@ class SdkSecretTest {
             ?.secretList
             ?.map { it.partySecret.toDomain() }
     } verify { result ->
-        result?.first()?.lastUsedTimestamp
-            ?.let { Clock.System.now() - it }
-            .let { delta ->
-                delta?.let { delta < 0.3.seconds }.assertIsEqualTo(
-                    true,
-                    "lastUsedTimestamp should have been now-ish, but was $delta earlier, at ${result?.first()?.lastUsedTimestamp}",
-                )
-            }
+        val lastUsedTimestamp = result?.first()?.lastUsedTimestamp
+        lastUsedTimestamp.assertIsNotEqualTo(secret.lastUsedTimestamp)
+        val lastUsedAge = lastUsedTimestamp?.let { Clock.System.now() - it }
+        lastUsedAge
+            ?.let { it < 1.seconds }
+            .assertIsEqualTo(
+                true,
+                "lastUsedTimestamp should be less than one second old, but was $lastUsedAge earlier, at $lastUsedTimestamp",
+            )
     }
 
     @Test
