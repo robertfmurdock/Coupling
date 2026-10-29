@@ -36,6 +36,22 @@ repository automation behavior.
   and compiler/tooling surfaces) so issues are surfaced early in local and CI
   feedback loops.
 
+### Build Cache Policy
+
+- Keep build-cache reuse enabled for deterministic, input-complete tasks,
+  including expensive test tasks. Re-running an unchanged deterministic test is
+  wasted work; make every behavior-affecting value an input instead.
+- Do not remove an explicit `outputs.cacheIf { true }` merely to satisfy a
+  generic audit. First inspect the task's history, task type, declared
+  inputs/outputs, and cache behavior. External task types may require an
+  explicit opt-in even when their work is safe to reuse.
+- Cacheability does not define execution order. Preserve ordering and output
+  availability with task dependencies and input/output wiring; a cache hit must
+  restore declared outputs before their consumers execute.
+- For owned task types, prefer `@CacheableTask` when every instance of that
+  type is deterministic. Use a separate cacheable subtype when only selected
+  task instances meet that contract.
+
 ### Task Reference Patterns for Configuration Cache Compatibility
 
 When referencing tasks from build configuration, use Provider APIs to avoid
@@ -117,6 +133,17 @@ See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/
 - Then run affected module checks.
 - Run broader checks (`./gradlew check`, or `build`/`test` as needed) when change
   risk crosses module boundaries.
+
+### AWS SSO and Gradle Daemons
+
+- Before treating an AWS failure as an expired login, verify the active shell
+  with `aws sts get-caller-identity`.
+- If that succeeds but Gradle reports it cannot start `aws`, stop the daemon
+  with `./gradlew --stop` and retry once. Gradle daemons retain the environment
+  from when they started, including `PATH` and AWS profile variables.
+- If the identity check reports missing or expired SSO credentials, ask the
+  repository owner to run `aws sso login`; do not modify AWS profiles or try to
+  bypass the configured credentials.
 
 ## Change Coupling Rules
 - Keep build logic updates and required consumer updates in one change set.

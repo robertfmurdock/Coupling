@@ -6,6 +6,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.AbstractExecTask
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
@@ -71,6 +72,9 @@ abstract class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
         super.exec()
     }
 }
+
+@CacheableTask
+abstract class CacheableNodeExec : NodeExec()
 
 fun NodeExec.setup(project: Project) {
     val nodeJs = NodeJsRootPlugin.apply(project.rootProject)

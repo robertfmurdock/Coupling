@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.plugins.js.NodeExec
+import com.zegreatrob.coupling.plugins.js.CacheableNodeExec
 import com.zegreatrob.coupling.plugins.js.setup
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
@@ -89,7 +90,7 @@ tasks {
         dependsOn(cleanBuild)
     }
 
-    val serverCompile = register<NodeExec>("serverCompile") {
+    val serverCompile = register<CacheableNodeExec>("serverCompile") {
         dependsOn(
             "jsPackageJson",
             ":kotlinNpmInstall",
@@ -109,7 +110,6 @@ tasks {
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
-        outputs.cacheIf { true }
         val compilationName = "main"
         val compilation = kotlin.js().compilations.named(compilationName)
 

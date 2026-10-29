@@ -2,6 +2,7 @@
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.js.NodeExec
+import com.zegreatrob.coupling.plugins.js.CacheableNodeExec
 import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.coupling.plugins.deploy.S3SyncTask
 import com.zegreatrob.tools.tagger.ReleaseVersion
@@ -124,7 +125,7 @@ tasks {
         from(settingsFile)
         into(npmProjectDir)
     }
-    val lookupCdnUrls = register<NodeExec>("lookupCdnUrls") {
+    val lookupCdnUrls = register<CacheableNodeExec>("lookupCdnUrls") {
         description = "Captures CDN Urls for external dependencies"
         setup(project)
         this.npmProjectDir.set(npmProjectDir)
@@ -156,7 +157,6 @@ tasks {
             }
         })
         outputFile.set(cdnBuildOutput)
-        outputs.cacheIf { true }
     }
     val projectResultPath = rootProject.layout.buildDirectory
         .file("test-output/${project.path}/results".replace(":", "/"))
@@ -213,7 +213,6 @@ tasks {
 
     val additionalResources = register<Copy>("additionalResources") {
         description = "Moves SDK processed resources into client additional resources"
-        outputs.cacheIf { true }
         dependsOn(":sdk:jsProcessResources")
         from("$rootDir/sdk/build/processedResources/js/main")
         into(project.layout.buildDirectory.file("additionalResources"))
