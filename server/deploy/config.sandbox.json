@@ -2,6 +2,7 @@
   "APP_TITLE": "Coupling Sandbox",
   "CLIENT_BASENAME": "",
   "DYNAMO_PREFIX": "sandbox-",
+  "DYNAMODB_SCHEMA_MIGRATION_MODE": "disabled",
   "PUBLIC_URL": "https://sandbox.coupling.zegreatrob.com",
   "WEBSOCKET_HOST": "socket.sandbox.coupling.zegreatrob.com"
 }

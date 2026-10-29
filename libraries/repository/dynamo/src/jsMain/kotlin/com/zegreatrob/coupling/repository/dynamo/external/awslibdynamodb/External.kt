@@ -12,6 +12,7 @@ external object DynamoDBDocumentClient {
 }
 
 external class PutCommand(options: Json)
+external class GetCommand(options: Json)
 external class ScanCommand(options: Json)
 external class QueryCommand(options: Json)
 external class BatchGetCommand(options: Json)

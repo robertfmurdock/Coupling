@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
+import com.zegreatrob.coupling.repository.dynamo.MigrationMode
+import com.zegreatrob.coupling.repository.dynamo.TargetSchemaBootstrap
 import com.zegreatrob.coupling.repository.dynamo.secret.DynamoSecretRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
@@ -36,7 +38,11 @@ suspend fun commandDispatcher(user: UserDetails, scope: CoroutineScope, traceId:
 private suspend fun repositoryCatalog(user: UserDetails): RepositoryCatalog = if (useInMemory()) {
     memoryRepositoryCatalog(user.id)
 } else {
-    CachedRepositoryCatalog(DynamoRepositoryCatalog(user.id, Clock.System))
+    dynamoRepositoryCatalog(user.id)
+}
+
+private suspend fun dynamoRepositoryCatalog(userId: UserId): RepositoryCatalog = when (ensureLegacyMigrationCatalogSelection()) {
+    MigrationCatalogSelection.LEGACY -> CachedRepositoryCatalog(DynamoRepositoryCatalog(userId, Clock.System))
 }
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
@@ -46,13 +52,29 @@ private fun memoryRepositoryCatalog(userId: UserId) = MemoryRepositoryCatalog(us
 suspend fun userRepository(userId: UserId): UserRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).userRepository
 } else {
+    ensureLegacyMigrationCatalogSelection()
     DynamoUserRepository(userId, Clock.System)
 }
 
 suspend fun secretRepository(userId: UserId): SecretRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).secretRepository
 } else {
+    ensureLegacyMigrationCatalogSelection()
     DynamoSecretRepository(userId, Clock.System)
 }
 
 fun useInMemory() = Process.getEnv("COUPLING_IN_MEMORY") == "true"
+
+private fun migrationMode() = MigrationMode.parse(Process.getEnv("DYNAMODB_SCHEMA_MIGRATION_MODE"))
+
+private suspend fun ensureLegacyMigrationCatalogSelection() = migrationMode().let { requestedMode ->
+    val stage = Process.getEnv("STAGE") ?: throw IllegalStateException("STAGE is required for DynamoDB schema migration")
+    val ledgerPhase = when (requestedMode) {
+        MigrationMode.DISABLED -> TargetSchemaBootstrap.existingState(stage)?.phase
+
+        MigrationMode.DUAL_WRITE,
+        MigrationMode.CUTOVER,
+        -> TargetSchemaBootstrap.ensure(stage, requestedMode).phase
+    }
+    migrationCatalogSelection(requestedMode, ledgerPhase)
+}

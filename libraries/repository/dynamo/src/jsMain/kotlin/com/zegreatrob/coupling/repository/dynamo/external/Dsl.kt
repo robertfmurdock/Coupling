@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.BatchGe
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DeleteCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDBDocumentClient
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.ExecuteStatementCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.PutCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.QueryCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.ScanCommand
@@ -12,6 +13,8 @@ import kotlin.js.Json
 import kotlin.js.Promise
 
 fun DynamoDBDocumentClient.put(params: Json): Promise<Unit> = send(PutCommand(params))
+
+fun DynamoDBDocumentClient.get(params: Json): Promise<Json> = send(GetCommand(params))
 
 fun DynamoDBDocumentClient.scan(params: Json): Promise<Json> = send(ScanCommand(params))
 

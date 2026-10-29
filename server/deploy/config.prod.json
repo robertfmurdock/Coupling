@@ -2,6 +2,7 @@
   "APP_TITLE": "Coupling",
   "CLIENT_BASENAME": "",
   "DYNAMO_PREFIX": "",
+  "DYNAMODB_SCHEMA_MIGRATION_MODE": "disabled",
   "PUBLIC_URL": "https://coupling.zegreatrob.com",
   "WEBSOCKET_HOST": "socket.coupling.zegreatrob.com"
 }

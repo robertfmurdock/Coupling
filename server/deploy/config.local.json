@@ -5,6 +5,7 @@
   "AZURE_AD_CLIENT_SECRET": "",
   "CLIENT_BASENAME": "",
   "DYNAMO_PREFIX": "local-",
+  "DYNAMODB_SCHEMA_MIGRATION_MODE": "disabled",
   "ENABLE_PRERELEASE_FEATURES": "true",
   "SECRET_SIGNING_SECRET": "temporary-temporary-temporary-temporary-temporary-temporary",
   "SLACK_CLIENT_ID": "fake",

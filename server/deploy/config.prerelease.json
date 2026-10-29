@@ -2,6 +2,7 @@
   "APP_TITLE": "Coupling Prerelease",
   "CLIENT_BASENAME": "",
   "DYNAMO_PREFIX": "prerelease-",
+  "DYNAMODB_SCHEMA_MIGRATION_MODE": "disabled",
   "ENABLE_PRERELEASE_FEATURES": "true",
   "PUBLIC_URL": "https://prerelease.coupling.zegreatrob.com",
   "WEBSOCKET_HOST": "socket.prerelease.coupling.zegreatrob.com"

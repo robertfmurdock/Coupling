@@ -72,6 +72,7 @@ dependencies {
     jsMainImplementation(npmConstrained("stripe"))
 
     jsTestImplementation(project(":libraries:stub-model"))
+    jsTestImplementation(kotlin("test"))
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")
     jsTestImplementation("com.zegreatrob.testmints:standard")

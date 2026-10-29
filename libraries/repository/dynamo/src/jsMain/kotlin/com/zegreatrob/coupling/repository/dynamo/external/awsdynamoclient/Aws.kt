@@ -10,6 +10,8 @@ import kotlin.js.Promise
 external class DynamoDB(options: Json) {
 
     fun describeTable(params: Json): Promise<Json>
+    fun describeTimeToLive(params: Json): Promise<Json>
+    fun updateTimeToLive(params: Json): Promise<Json>
 
     fun listTables(): Promise<dynamic>
 
