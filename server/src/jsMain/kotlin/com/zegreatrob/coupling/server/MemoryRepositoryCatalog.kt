@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
+import com.zegreatrob.coupling.repository.discord.DiscordOAuthRepository
 import com.zegreatrob.coupling.repository.memory.MemoryContributionRepository
 import com.zegreatrob.coupling.repository.memory.MemoryLiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
@@ -43,6 +44,7 @@ class MemoryRepositoryCatalog private constructor(
     override val secretRepository: SecretRepository,
     override val slackAccessRepository: SlackAccessRepository,
     override val discordAccessRepository: DiscordAccessRepository,
+    override val discordOAuthRepository: DiscordOAuthRepository,
     override val contributionRepository: ContributionRepository,
 ) : RepositoryCatalog,
     UserIdProvider,
@@ -61,12 +63,14 @@ class MemoryRepositoryCatalog private constructor(
             MemorySecretRepository(),
             MemorySlackRepository(),
             MemoryDiscordRepository(),
+            backend.discordOAuth,
             MemoryContributionRepository(),
         )
     }
 }
 
 class MemoryRepositoryBackend {
+    val discordOAuth = MemoryDiscordOAuthRepository(Clock.System)
     val party = SimpleRecordBackend<PartyDetails>()
     val player = SimpleRecordBackend<PartyElement<Player>>()
     val pairAssignments = SimpleRecordBackend<PartyElement<PairingSet>>()

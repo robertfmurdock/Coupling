@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.server.entity.contribution.pairContributionReport
 import com.zegreatrob.coupling.server.entity.contribution.partyContributionReportResolver
 import com.zegreatrob.coupling.server.entity.contribution.partyContributorResolver
 import com.zegreatrob.coupling.server.entity.contribution.saveContributionResolver
+import com.zegreatrob.coupling.server.entity.discord.beginDiscordOAuthResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
@@ -105,6 +106,7 @@ fun couplingResolvers() = json(
         "deletePin" to deletePinResolver,
         "deletePlayer" to deletePlayerResolver,
         "deleteSecret" to deleteSecretResolver,
+        "beginDiscordOAuth" to beginDiscordOAuthResolver,
         "grantDiscordAccess" to grantDiscordAccessResolver,
         "grantSlackAccess" to grantSlackAccessResolver,
         "saveContribution" to saveContributionResolver,

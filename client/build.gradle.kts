@@ -104,6 +104,7 @@ dependencies {
     jsMainImplementation(npmConstrained("vite-plugin-html"))
 
     jsTestImplementation(project(":libraries:stub-model"))
+    jsTestImplementation(project(":libraries:test-action"))
     jsTestImplementation(project(":libraries:test-logging"))
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")

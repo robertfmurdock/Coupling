@@ -65,11 +65,19 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   - Independently releasable: prevents nonmembers redirecting another party's
     announcements while retaining authorized integration setup.
 
-- [ ] **2c. Harden Discord OAuth state (follow-up).**
+- [x] **2c. Harden Discord OAuth state (follow-up).**
   - Current callback trusts an unsigned partyId in URL state. Bind initiation and
     callback to the initiating user and party with validated, expiring state.
-  - Plan the initiation/callback contract and synchronized client/server/SDK
-    changes separately; authorization slice 2b does not close this work.
+  - Agreed: authenticated initiation returns opaque ten-minute state bound to the
+    user, party, and a SHA-256 challenge of a browser-generated verifier. Completion
+    rechecks party access and atomically consumes state before external exchange.
+  - Reuse the stage-prefixed DISCORD table with reserved OAuth partitions and a
+    fixed sort key; no new table, key-schema migration, or table-wide TTL change.
+    Expired records are removed when encountered; abandoned records otherwise remain.
+  - Synchronize required state/verifier fields across commands, GraphQL, SDK, and
+    client. Older SDK calls and already-open installation flows must restart.
+  - Browser verifier stays in tab-local sessionStorage; multiple pending flows
+    remain independent. Failed code exchange consumes state and requires restart.
 
 - [ ] **3. Consume account-link tokens once (high).**
   - Endpoint red: generate a link token as target user, redeem through the HTTP
@@ -163,9 +171,11 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 - Slice 1 complete: endpoint red confirmed; party-keyed dispatcher cache
   implemented; focused green/lint and full-suite validation passed. Tests, fix,
   and this card are delivered together in the slice commit (see Git history).
-- Slice 2a complete in `c8c9fe8ea`: local Discord simulation. Slice 2b complete:
-  HTTP-only endpoint red confirmed and authorization fix validated. OAuth state
-  remains open (2c), followed by account-link token remediation (3).
+- Slice 2a complete in `c8c9fe8ea`: local Discord simulation. Slice 2b complete
+  in `fed9c056a`: HTTP-only endpoint red confirmed and authorization fix validated.
+  Slice 2c complete: browser/user/party-bound single-use OAuth state uses existing
+  DISCORD storage, with endpoint, repository, browser, lint, and full-check validation.
+  Next: account-link token remediation (3). Slices 4/5 retain their prerequisites.
 - Slice 1 tests belong to existing `SdkSecretTest.kt` and `SdkPinTest.kt`. Typed operations
   come from `sdk/src/commonMain/graphql/test-mutations.graphql` and execute through
   the SDK's existing authenticated Apollo HTTP performer. A test-only helper in
@@ -291,6 +301,70 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 - Delivered with tests, implementation, and guidance in the slice commit (obtain
   its ID from Git history for this card). Not pushed, released, or tested against
   production Discord. Later security slices remain open.
+
+### Slice 2c: Discord OAuth state
+
+- Starting commit: `fed9c056a` (completed slice 2b). One contributor owns the
+  dependent test/implementation steps; no deployment or provisioning is required.
+- Endpoint red:
+  `fish -lc './gradlew :sdk:jvmTest --tests "*SdkDiscordTest.grantWithoutInitiation*" --no-daemon'`
+  ran one HTTP test and failed with `expected Rejected but was Accepted`. The
+  authorized caller supplied a valid simulated code without any OAuth initiation.
+  Authentication and party/announcement setup passed before the trigger.
+- Implementation: opaque random state is stored by hash in the existing DISCORD
+  table; conditional deletion matches initiating user, target party, verifier hash,
+  and unexpired deadline. Authorization precedes consumption and code exchange.
+  A mismatched attempt cannot consume valid state; exchange/storage failure after
+  consumption requires restarting. In-memory mode has a shared pending-flow backend;
+  the atomicity proof uses real local DynamoDB through HTTP requests.
+- Repository expiry/isolation checks passed against local DynamoDB. Initial endpoint
+  green exposed test setup cleanup: first initialization of the alternate SDK deletes
+  its visible parties. Initialize it before granting membership, then explicitly
+  prove its party access so user-binding denials cannot be authorization failures.
+- Client uses Web Crypto randomness/SHA-256 and stores verifier plus party in
+  sessionStorage keyed by state. Callback completion clears its entry and shows
+  success/restart feedback without rendering code, state, or verifier.
+- Build changes: actionz uses the established Kotlin Node wrappers for cryptography;
+  client tests use the existing test-action fixture library. No SDK database dependency.
+- Test-clarity review: SDK tests use only HTTP commands and queries. They prove
+  authorized setup and original announcement routing, then reject missing/tampered
+  state, wrong verifier/user/party, nonmember initiation/grant, and unauthenticated
+  initiation/grant. A shared-party fixture proves the second user is authorized
+  before testing user binding. Concurrent requests have one winner; replay cannot
+  change routing. Separate pending flows complete independently. Browser tests
+  cover storing before navigation, missing-tab rejection, success/rejection cleanup,
+  preserving other pending flows, and a known SHA-256 vector.
+- Production-design review: server commands own state issuance/consumption; repository
+  conditional writes enforce single-use across requests/processes. Current membership
+  authorization remains in both resolvers. State/verifier fields are required across
+  all layers; GraphQL descriptions specify challenge encoding and expiry. Existing
+  integration queries remain partitioned by party, excluding pending OAuth records.
+- Browser harness discovery: the first browser run started Chrome but failed before
+  tests because the installed TestMints hook requires a legacy `.js` reporter module;
+  this client emits `.mjs` and exports the singleton via `getInstance()`. A client-only
+  Karma alias and test-resource adapter preserve the existing reporter/hooks. No
+  browser checks or logging were disabled. The corrected four-test browser run passed.
+- Final focused green/lint:
+  `fish -lc './gradlew :sdk:jvmTest --tests "*SdkDiscordTest*" :client:jsBrowserTest :client:lintKotlin :server:lintKotlin :server:actionz:lintKotlin :sdk:lintKotlin :libraries:action:lintKotlin :libraries:repository:core:lintKotlin :libraries:repository:dynamo:lintKotlin --no-daemon'`
+  passed outside the sandbox with a fresh daemon in 1m 7s: all 12 HTTP scenarios,
+  five browser tests, and affected lint. The two local DynamoDB repository tests
+  passed under `:libraries:repository:dynamo:jsNodeTest --tests "*DynamoDiscordOAuthRepositoryTest*"`;
+  coverage includes exact expiry plus cleanup and failed-consumption/query isolation.
+- Full gate: `fish -lc './gradlew check --no-daemon'` passed outside the sandbox
+  with a fresh daemon in 7m; 596 actionable tasks (157 executed, two from cache,
+  437 up-to-date). Complete SDK Node/JVM suites, repository suites, browser tests,
+  56 browser E2E tests, and structured-log validation passed.
+- Complete-slice review: no new table, table-key migration, TTL configuration,
+  AWS profile, or membership-policy changes. Pending records use a separate
+  namespace; integration installation/replacement and announcement reads remain
+  covered through HTTP. Expired abandoned records are retained until encountered.
+  Compatibility intentionally requires fresh initiation and upgraded SDK callers.
+  `git diff --check` passed; no production deployment or live Discord validation
+  was performed.
+- Delivered with tests, implementation, browser-test compatibility resources,
+  and this card in the slice commit. Obtain its ID with
+  `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`.
+  Not pushed or released. Account-link and remaining security slices stay open.
 
 ### Delivery gates
 

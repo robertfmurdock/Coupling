@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.ApplyBoostCommand
+import com.zegreatrob.coupling.action.BeginDiscordOAuthCommand
 import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.SpinCommand
@@ -37,6 +38,7 @@ interface CouplingSdkDispatcher :
     DisconnectUserCommand.Dispatcher,
     DeleteSecretCommand.Dispatcher,
     GrantDiscordAccessCommand.Dispatcher,
+    BeginDiscordOAuthCommand.Dispatcher,
     GrantSlackAccessCommand.Dispatcher,
     GqlQuery.Dispatcher,
     SaveContributionCommand.Dispatcher,

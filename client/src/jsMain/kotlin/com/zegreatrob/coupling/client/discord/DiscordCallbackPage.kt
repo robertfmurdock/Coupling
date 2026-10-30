@@ -1,50 +1,46 @@
 package com.zegreatrob.coupling.client.discord
 
-import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.slack.InstallPageFrame
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.nfc
-import com.zegreatrob.react.dataloader.DataLoader
-import io.ktor.http.parseUrlEncodedParameters
 import js.array.component1
 import js.lazy.Lazy
-import react.Fragment
-import react.create
-import react.dom.html.ReactHTML.div
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import react.router.dom.useSearchParams
+import react.useEffectOnce
+import react.useState
+import kotlin.uuid.Uuid
 
 @Lazy
 val DiscordCallbackPage by nfc<PageProps> { props ->
-    val (urlSearchParams) = useSearchParams()
-    val code = urlSearchParams.get("code")
-    val state = urlSearchParams.get("state")
-
-    val stateData = state?.parseUrlEncodedParameters()
-    val partyId = stateData?.get("partyId")
-    val guildId = urlSearchParams.get("guild_id")
+    val (params) = useSearchParams()
+    var message by useState("Completing Discord installation…")
+    useEffectOnce {
+        val code = params.get("code")
+        val state = params.get("state")
+        val guildId = params.get("guild_id")
+        val flow = DiscordOAuthFlow(props.commander.tracingCannon(Uuid.random()))
+        if (code == null || state == null || guildId == null || params.get("error") != null) {
+            state?.let(flow::cancel)
+            message = "Discord installation was cancelled or is incomplete. Please start again."
+        } else {
+            MainScope().launch {
+                message = try {
+                    if (flow.complete(code, guildId, state) == VoidResult.Accepted) {
+                        "Discord integration installed."
+                    } else {
+                        "Discord installation could not be verified. Please start again from the original tab."
+                    }
+                } catch (_: Exception) {
+                    "Unable to complete Discord installation. Please start again."
+                }
+            }
+        }
+    }
     InstallPageFrame {
         title = "Discord Install"
-        if (code == null || state == null || guildId == null || partyId == null) {
-            +"code, state, guild, or party id missing"
-        } else {
-
-            DataLoader(
-                getDataAsync = {
-                    props.commander.tracingCannon()
-                        .fire(GrantDiscordAccessCommand(code, guildId, PartyId(partyId)))
-                },
-                errorData = { VoidResult.Rejected },
-                child = {
-                    Fragment.create {
-                        div { +"code is $code" }
-                        div { +"state is $state" }
-                        div { +"guild_id is $guildId" }
-                    }
-                },
-            )
-        }
+        +message
     }
 }

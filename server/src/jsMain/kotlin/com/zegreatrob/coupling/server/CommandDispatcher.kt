@@ -33,6 +33,7 @@ import com.zegreatrob.coupling.server.action.contribution.PartyContributionQuery
 import com.zegreatrob.coupling.server.action.contribution.PartyContributorQuery
 import com.zegreatrob.coupling.server.action.contribution.ServerSaveContributionCommandDispatcher
 import com.zegreatrob.coupling.server.action.discord.DiscordRepository
+import com.zegreatrob.coupling.server.action.discord.ServerBeginDiscordOAuthCommandDispatcher
 import com.zegreatrob.coupling.server.action.discord.ServerGrantDiscordAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.MedianSpinDurationQuery
@@ -111,6 +112,7 @@ interface ICommandDispatcher :
     ScopeSyntax,
     SecretListQuery.Dispatcher,
     ServerGrantDiscordAccessCommandDispatcher,
+    ServerBeginDiscordOAuthCommandDispatcher,
     ServerGrantSlackAccessCommandDispatcher,
     ServerPairCountQueryDispatcher,
     PairListQuery.Dispatcher,

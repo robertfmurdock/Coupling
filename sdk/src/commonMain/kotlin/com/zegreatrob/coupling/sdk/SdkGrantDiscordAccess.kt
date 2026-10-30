@@ -16,6 +16,8 @@ interface SdkGrantDiscordAccess :
 
 internal fun GrantDiscordAccessCommand.grantDiscordAccessInput() = GrantDiscordAccessInput(
     code = code,
+    state = state,
+    verifier = verifier,
     partyId = partyId,
     guildId = guildId,
 )

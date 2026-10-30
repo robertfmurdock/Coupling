@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
+import com.zegreatrob.coupling.repository.discord.DiscordOAuthRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.repository.dynamo.MigrationMode
 import com.zegreatrob.coupling.repository.dynamo.TargetSchemaBootstrap
@@ -29,6 +30,7 @@ interface RepositoryCatalog {
     val liveInfoRepository: LiveInfoRepository
     val secretRepository: SecretRepository
     val slackAccessRepository: SlackAccessRepository
+    val discordOAuthRepository: DiscordOAuthRepository
     val discordAccessRepository: DiscordAccessRepository
     val contributionRepository: ContributionRepository
 }

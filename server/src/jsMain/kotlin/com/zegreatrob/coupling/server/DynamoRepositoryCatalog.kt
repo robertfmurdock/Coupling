@@ -6,7 +6,9 @@ import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
+import com.zegreatrob.coupling.repository.discord.DiscordOAuthRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoContributionRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoDiscordOAuthRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoDiscordRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoLiveInfoRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
@@ -37,6 +39,7 @@ class DynamoRepositoryCatalog private constructor(
     override val secretRepository: SecretRepository,
     override val slackAccessRepository: SlackAccessRepository,
     override val discordAccessRepository: DiscordAccessRepository,
+    override val discordOAuthRepository: DiscordOAuthRepository,
     override val contributionRepository: ContributionRepository,
 ) : RepositoryCatalog,
     UserIdProvider,
@@ -54,6 +57,7 @@ class DynamoRepositoryCatalog private constructor(
             DynamoSecretRepository(userId, clock),
             DynamoSlackRepository(userId, clock),
             DynamoDiscordRepository(userId, clock),
+            DynamoDiscordOAuthRepository(clock),
             DynamoContributionRepository(userId, clock),
         )
     }

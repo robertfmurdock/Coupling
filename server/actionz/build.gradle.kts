@@ -20,6 +20,7 @@ dependencies {
     "jsMainApi"("com.zegreatrob.testmints:action-async")
     "jsMainApi"("io.github.oshai:kotlin-logging")
     "jsMainApi"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-node")
 
     "jsTestImplementation"(project(":libraries:stub-model"))
     "jsTestImplementation"(project(":libraries:test-action"))

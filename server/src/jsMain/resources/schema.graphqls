@@ -406,6 +406,8 @@ type Mutation {
     saveContribution(input: SaveContributionInput!): Boolean
     clearContributions(input: ClearContributionsInput!): Boolean
     grantSlackAccess(input: GrantSlackAccessInput!): Boolean
+    "Start a ten-minute Discord installation flow for the authenticated user and party."
+    beginDiscordOAuth(input: BeginDiscordOAuthInput!): DiscordOAuthState
     grantDiscordAccess(input: GrantDiscordAccessInput!): Boolean
 }
 
@@ -441,7 +443,22 @@ input GrantSlackAccessInput {
     state: String!
 }
 
+input BeginDiscordOAuthInput {
+    partyId: PartyId!
+    "Lowercase hex SHA-256 of a cryptographically random 32-byte verifier encoded as lowercase hex."
+    challenge: String!
+}
+
+type DiscordOAuthState {
+    "Opaque, single-use value to pass unchanged as Discord OAuth state."
+    state: String!
+    "Expiry as an ISO-8601 timestamp. Completion requires the original browser verifier."
+    expiresAt: String!
+}
+
 input GrantDiscordAccessInput {
+    state: String!
+    verifier: String!
     code: String!
     partyId: PartyId!
     guildId: String!

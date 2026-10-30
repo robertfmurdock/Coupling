@@ -1,0 +1,3 @@
+mutation beginDiscordOAuth($input: BeginDiscordOAuthInput!) {
+    beginDiscordOAuth(input: $input) { state expiresAt }
+}

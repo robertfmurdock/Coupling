@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
-data class GrantDiscordAccessCommand(val code: String, val guildId: String, val partyId: PartyId) {
+data class GrantDiscordAccessCommand(val code: String, val guildId: String, val partyId: PartyId, val state: String, val verifier: String) {
     fun interface Dispatcher {
         suspend fun perform(command: GrantDiscordAccessCommand): VoidResult
     }

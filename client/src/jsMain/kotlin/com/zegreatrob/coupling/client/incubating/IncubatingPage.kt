@@ -19,6 +19,7 @@ val IncubatingPage by nfc<PageProps> { props ->
         if (addToSlackUrl != null && discordClientId != null) {
             IncubatingContent(
                 discordClientId = discordClientId,
+                commander = props.commander,
                 addToSlackUrl = addToSlackUrl,
                 partyList = result.partyList.map { it.partyDetails.toDomain() },
             )

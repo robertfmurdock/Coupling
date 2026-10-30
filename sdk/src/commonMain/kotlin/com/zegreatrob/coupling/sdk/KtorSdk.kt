@@ -42,6 +42,7 @@ class KtorCouplingSdkDispatcher(
     SdkDeletePlayerCommandDispatcher,
     SdkDeleteSecretCommandDispatcher,
     SdkGrantDiscordAccess,
+    SdkBeginDiscordOAuth,
     SdkGrantSlackAccess,
     SdkGraphQueryDispatcher,
     SdkSaveContributionCommandDispatcher,
