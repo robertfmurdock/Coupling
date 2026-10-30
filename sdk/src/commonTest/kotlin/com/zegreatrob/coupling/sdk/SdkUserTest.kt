@@ -19,6 +19,8 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
@@ -151,5 +153,108 @@ class SdkUserTest {
             .assertIsEqualTo(party)
     } teardown {
         sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
+    }
+
+    @Test
+    fun connectionTokenCannotBeRedeemedByAnotherAccount() = asyncSetup(object {
+        lateinit var token: String
+    }) {
+        prepareConnectionAccounts()
+        token = sdk().fire(CreateConnectUserSecretCommand)!!.second
+        altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token)).assertIsEqualTo(true)
+    } exercise {
+        connectionAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
+    } verifyAnd { result ->
+        result.assertIsEqualTo(false)
+        assertConnections(ALT_AUTHORIZED_USER_EMAIL)
+    } teardown { clearConnectionAccounts() }
+
+    @Test
+    fun connectionTokenCannotBeReplayedAfterDisconnect() = asyncSetup(object {
+        lateinit var token: String
+    }) {
+        prepareConnectionAccounts()
+        token = sdk().fire(CreateConnectUserSecretCommand)!!.second
+        altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token)).assertIsEqualTo(true)
+        sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
+    } exercise {
+        altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
+    } verifyAnd { result ->
+        result.assertIsEqualTo(false)
+        assertConnections(null)
+    } teardown { clearConnectionAccounts() }
+
+    @Test
+    fun concurrentConnectionRedemptionHasOneSymmetricWinner() = asyncSetup(object {
+        lateinit var token: String
+    }) {
+        prepareConnectionAccounts()
+        token = sdk().fire(CreateConnectUserSecretCommand)!!.second
+    } exercise {
+        coroutineScope {
+            val first = async { altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token)) }
+            val second = async { connectionAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token)) }
+            first.await() to second.await()
+        }
+    } verifyAnd { (first, second) ->
+        listOf(first, second).count { it == true }.assertIsEqualTo(1)
+        listOf(first, second).count { it == false }.assertIsEqualTo(1)
+        assertConnections(if (first == true) ALT_AUTHORIZED_USER_EMAIL else CONNECTION_TEST_USER_EMAIL)
+    } teardown { clearConnectionAccounts() }
+
+    @Test
+    fun selfLinkIsRejectedWithoutConsumingConnectionToken() = asyncSetup(object {
+        lateinit var token: String
+        lateinit var secret: Secret
+    }) {
+        prepareConnectionAccounts()
+        val created = sdk().fire(CreateConnectUserSecretCommand)!!
+        secret = created.first
+        token = created.second
+    } exercise {
+        val selfResult = sdk().fire(ConnectUserCommand(token))
+        val pending = sdk().fire(GqlQuery(UserDetailsQuery()))?.user?.userDetails?.connectSecretId
+        val authorizedResult = altAuthorizedSdkDeferred.await().fire(ConnectUserCommand(token))
+        Triple(selfResult, pending, authorizedResult)
+    } verifyAnd { (selfResult, pending, authorizedResult) ->
+        selfResult.assertIsEqualTo(false)
+        pending.assertIsEqualTo(secret.id)
+        authorizedResult.assertIsEqualTo(true)
+        assertConnections(ALT_AUTHORIZED_USER_EMAIL)
+    } teardown { clearConnectionAccounts() }
+
+    @Test
+    fun malformedConnectionTokenIsRejectedWithoutChangingConnections() = asyncSetup() exercise {
+        sdk().fire(ConnectUserCommand("invalid-connection-token"))
+    } verify { result ->
+        result.assertIsEqualTo(false)
+    }
+
+    private suspend fun prepareConnectionAccounts() {
+        sdk()
+        altAuthorizedSdkDeferred.await()
+        connectionAuthorizedSdkDeferred.await().fire(GqlQuery(UserDetailsQuery()))
+            ?.user?.userDetails?.email.toString().assertIsEqualTo(CONNECTION_TEST_USER_EMAIL)
+        clearConnectionAccounts()
+        assertConnections(null)
+    }
+
+    private suspend fun clearConnectionAccounts() {
+        sdk().fire(DisconnectUserCommand(ALT_AUTHORIZED_USER_EMAIL.toNotBlankString().getOrThrow()))
+        sdk().fire(DisconnectUserCommand(CONNECTION_TEST_USER_EMAIL.toNotBlankString().getOrThrow()))
+        altAuthorizedSdkDeferred.await().fire(DisconnectUserCommand(CONNECTION_TEST_USER_EMAIL.toNotBlankString().getOrThrow()))
+    }
+
+    private suspend fun assertConnections(winner: String?) {
+        val primary = sdk().fire(GqlQuery(UserDetailsQuery()))?.user?.userDetails
+        if (winner != null) primary?.connectSecretId.assertIsEqualTo(null)
+        val alternate = altAuthorizedSdkDeferred.await().fire(GqlQuery(UserDetailsQuery()))?.user?.userDetails
+        val third = connectionAuthorizedSdkDeferred.await().fire(GqlQuery(UserDetailsQuery()))?.user?.userDetails
+        primary?.connectedEmails?.map { it.toString() }?.toSet()
+            .assertIsEqualTo(setOfNotNull(winner))
+        alternate?.connectedEmails?.map { it.toString() }?.toSet()
+            .assertIsEqualTo(if (winner == ALT_AUTHORIZED_USER_EMAIL) setOf(PRIMARY_AUTHORIZED_USER_EMAIL) else emptySet())
+        third?.connectedEmails?.map { it.toString() }?.toSet()
+            .assertIsEqualTo(if (winner == CONNECTION_TEST_USER_EMAIL) setOf(PRIMARY_AUTHORIZED_USER_EMAIL) else emptySet())
     }
 }

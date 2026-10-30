@@ -2,8 +2,10 @@ package com.zegreatrob.coupling.server.action
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
+import com.zegreatrob.coupling.repository.user.UserConnect
 import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatcher
@@ -21,7 +23,7 @@ import kotlin.time.Clock
 class FindOrCreateUserActionTest {
 
     @Test
-    fun whenUserDoesNotAlreadyExistWillCreate() = asyncSetup(object : FindOrCreateUserActionDispatcher, UserRepository {
+    fun whenUserDoesNotAlreadyExistWillCreate() = asyncSetup(object : FindOrCreateUserActionDispatcher, UserRepository, UserConnect by UnusedUserConnect {
         override val userRepository = this
         override val userId = UserId.new()
 
@@ -40,7 +42,7 @@ class FindOrCreateUserActionTest {
 
     @Test
     fun whenUserWithEmailAsIdExistsWillUseExistingUser() = asyncSetup(
-        object : FindOrCreateUserActionDispatcher, UserRepository {
+        object : FindOrCreateUserActionDispatcher, UserRepository, UserConnect by UnusedUserConnect {
             override val userRepository = this
             override val userId = UserId.new()
 
@@ -57,7 +59,7 @@ class FindOrCreateUserActionTest {
 
     @Test
     fun whenUserWithEmailAndDifferentIdExistsWillUseExistingUser() = asyncSetup(object :
-        FindOrCreateUserActionDispatcher, UserRepository {
+        FindOrCreateUserActionDispatcher, UserRepository, UserConnect by UnusedUserConnect {
         override val userRepository = this
         override val userId = UserId.new()
 
@@ -71,4 +73,8 @@ class FindOrCreateUserActionTest {
     } verifySuccess { result ->
         result.assertIsEqualTo(expectedUser)
     }
+}
+
+private object UnusedUserConnect : UserConnect {
+    override suspend fun connectUser(user: UserDetails, target: UserDetails, secretId: SecretId): Boolean = fail("Unexpected connection")
 }

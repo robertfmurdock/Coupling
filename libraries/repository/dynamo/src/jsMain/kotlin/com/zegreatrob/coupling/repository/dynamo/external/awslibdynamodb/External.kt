@@ -71,7 +71,7 @@ sealed external interface DynamoPutItemInput {
     val item: Json
 
     @JsName("ConditionExpression")
-    val conditionExpression: String
+    val conditionExpression: String?
 
     @JsName("ExpressionAttributeValues")
     val expressionAttributeValues: Json?

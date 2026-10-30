@@ -79,25 +79,36 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   - Browser verifier stays in tab-local sessionStorage; multiple pending flows
     remain independent. Failed code exchange consumes state and requires restart.
 
-- [ ] **3. Consume account-link tokens once (high).**
+- [x] **3. Consume account-link tokens once (high).**
   - Endpoint red: generate a link token as target user, redeem through the HTTP
     API as account A, then redeem the same token as account B. Expect only A to
     link; B receives rejection and neither side gains B's connection. Expected
     current failure: the second redemption succeeds within the token lifetime.
-  - Also demonstrate replay after disconnect, and concurrent redemption with
-    separate authenticated requests: exactly one winner and symmetric links.
-    Use production-equivalent persistent storage for the atomicity proof;
-    process-local locking/in-memory tests alone are insufficient.
-  - Contract/design: atomically consume the pending secret and establish the
-    relationship, including both users' records. Ensure retries/conflicts cannot
-    restore a consumed secret or leave one-sided links. Review replacement and
-    expiration behavior and preserve successful first redemption.
+  - Also demonstrate replay after disconnect. Use production-equivalent
+    persistent storage to prove single-use consumption and atomic relationship
+    writes; process-local locking/in-memory tests alone are insufficient.
+  - **Scope correction, 2026-10-30:** the concurrency-hardening suggestion is
+    struck. The highlighted security risk is reuse of an already redeemed token,
+    including after disconnect; it is not unrelated overlapping edits by an
+    already authenticated identity. General user-write versioning, automatic
+    retries, and guarantees that competing user edits all succeed are not targets.
+    Simultaneous use of the same token may check the atomic single-use guarantee;
+    it does not establish a broader concurrency-protection requirement.
+  - Contract/design: record token consumption and both users' relationship writes
+    in one transaction. A consumed-token marker in the existing USER table rejects
+    replay, including if an old user snapshot is later saved again. Preserve
+    existing first redemption, replacement, expiry, normal saves, and disconnect
+    behavior; no new table or general user-state coordination is required.
   - Boundary: authenticated GraphQL account-link commands, signed token
     validation, user repository conditional/transactional writes.
   - Independently releasable: makes the existing single-use promise true without
     changing already established relationships.
 
-- [ ] **4. Enforce the agreed owner/player permission contract (high, conditional).**
+- [ ] **4. Resolve and, if agreed, enforce owner/player permissions (conditional).**
+  - **Scope warning:** changing an intentional permission policy is a product
+    decision, not automatically a security fix. This finding is not a demonstrated
+    policy violation until the intended contract is agreed. If the existing
+    permissions are intentional, do not manufacture denial tests or change them.
   - First resolve product policy with the user: current code deliberately accepts
     player membership for the common party gate. Do not silently redefine all
     player mutation permissions. Record the agreed capability matrix here before
@@ -133,7 +144,9 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   - Contract/design: scope DynamoDB resources/actions to the stage's required
     tables/indexes and runtime operations; invocation only to notifyConnect.
     Inventory migration/table-creation needs before removing permissions, and
-    separate deploy/migration privileges from runtime where necessary.
+    separate deploy/migration privileges from runtime only where necessary.
+    A broader migration redesign is not part of this permission-hardening slice;
+    surface it as a separate decision if the minimum safe change would require it.
   - Verify permitted application persistence and notification flows using the
     narrowed role. Preserve runtime migration behavior or include its safe
     replacement in this slice. Do not modify AWS profiles.
@@ -145,6 +158,15 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 ## Design Decisions
 
 - User requires endpoint demonstration before fixing every critical/high finding.
+- Slice 3 scope correction (2026-10-30): concurrency hardening was struck from
+  the original suggestion because it was not the highlighted token-replay risk.
+  Keep the remediation to single-use redemption and its atomic relationship writes;
+  do not reintroduce general versioning or retry machinery as security requirements.
+- Scope audit (2026-10-30): integration-summary API work is an optional product
+  follow-up, owner/player restrictions require an explicit policy decision, and
+  AWS permission hardening does not authorize a general migration redesign.
+  Slice 3 self-link rejection is an accepted input-validation choice needed to
+  avoid writing the same user twice, not an additional highlighted security risk.
 - SDK endpoint tests must use HTTP commands/queries exclusively; no direct
   database access or repository dependencies. For Discord, observe announcement
   routing via simulated destination-bearing message IDs on pairing-set queries.
@@ -175,7 +197,10 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   in `fed9c056a`: HTTP-only endpoint red confirmed and authorization fix validated.
   Slice 2c complete: browser/user/party-bound single-use OAuth state uses existing
   DISCORD storage, with endpoint, repository, browser, lint, and full-check validation.
-  Next: account-link token remediation (3). Slices 4/5 retain their prerequisites.
+  Slice 3 complete: consumed-token markers and both relationship writes share
+  one transaction in the existing USER table. General concurrency hardening was
+  struck from scope. Next: resolve the product-policy prerequisite for slice 4;
+  slice 5 still requires isolated AWS test authorization.
 - Slice 1 tests belong to existing `SdkSecretTest.kt` and `SdkPinTest.kt`. Typed operations
   come from `sdk/src/commonMain/graphql/test-mutations.graphql` and execute through
   the SDK's existing authenticated Apollo HTTP performer. A test-only helper in
@@ -286,7 +311,9 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   510 up-to-date). Complete SDK Node/JVM suites and browser E2E executed; all five
   new Discord scenarios passed on both Node and JVM.
 - API-only SDK test convention recorded in `agents.d/context/TESTING.md`.
-- API usability gap: the existing API exposes announcement message IDs but no
+- **Optional product follow-up, outside this remediation:** an integration-summary
+  API is not a requirement of the Discord authorization fix. The existing API
+  exposes announcement message IDs but no
   direct read of the configured Discord destination. These tests demonstrate the
   install/announce/query workflow using simulated IDs to identify delivery; they
   do not establish live configuration-inspection capability. Consider an
@@ -365,6 +392,71 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   and this card in the slice commit. Obtain its ID with
   `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`.
   Not pushed or released. Account-link and remaining security slices stay open.
+
+### Slice 3: single-use account-link tokens
+
+- Endpoint red confirmed with unchanged production code:
+  `fish -lc './gradlew :sdk:jvmTest --tests "*SdkUserTest.connectionToken*" --tests "*SdkUserTest.concurrentConnection*" --no-daemon'`.
+  All three scenarios failed for the intended reason: another account's replay
+  returned true, replay after disconnect returned true, and the same token had
+  two successful redemptions. Authentication, first redemption, and HTTP-only
+  fixture cleanup passed. An initial Gradle configuration-cache setup failure
+  was corrected before obtaining this evidence.
+- User narrowed the design to the original replay defect: no general user-write
+  versioning, automatic retries, or guarantees that unrelated overlapping edits
+  all succeed. An earlier broader implementation and its validation are superseded.
+- Final design: DynamoUserRepository conditionally writes one consumed-token marker
+  in the existing USER table in the same transaction as both users' user/email
+  records. A used marker rejects the entire transaction. Normal saves, issuance,
+  and disconnect retain their existing implementations. No new table, table-key
+  schema, AWS resource, or repository class is introduced. Markers are retained
+  alongside existing history; no TTL or cleanup infrastructure is added.
+- Existing pending tokens remain valid for one redemption. Existing relationships
+  and signed-token expiry validation are unchanged. A later stale user save cannot
+  revive a consumed token because its marker remains. Resolving unrelated stale
+  edits and choosing the intended winner among token holders are outside this fix.
+- Memory mode shares a consumed-secret set and mutex across repository instances.
+  Compound connection writes delegate to the same primary repository as reads.
+  SDK tests use only HTTP and reuse the authorized synthetic E2E identity, whose
+  password is supplied using the established Gradle SSM provider. Browser E2E is
+  ordered after SDK tests to avoid sharing that identity concurrently.
+- Final focused green/lint:
+  `fish -lc './gradlew :sdk:jvmTest --tests "*SdkUserTest*" :libraries:repository:dynamo:jsNodeTest --tests "*DynamoUser*Test*" :libraries:repository:memory:jsNodeTest --tests "*MemoryUserRepositoryTest*" :libraries:repository:compound:jsNodeTest --tests "*CompoundUserRepositoryTest*" :sdk:lintKotlin :libraries:repository:core:lintKotlin :libraries:repository:dynamo:lintKotlin :libraries:repository:memory:lintKotlin :libraries:repository:compound:lintKotlin :server:actionz:lintKotlin :server:lintKotlin --no-daemon'`
+  passed in 1m 3s: all 13 HTTP user scenarios, four DynamoDB token scenarios,
+  existing user repository tests (one existing performance test remains ignored),
+  memory/compound tests, and affected lint.
+- Test-clarity review: SDK setup proves three authenticated synthetic identities,
+  successful first redemption, and isolated connection state. HTTP verification
+  checks rejection plus all users' visible links. Direct DynamoDB cases verify
+  both user/email writes, whole-transaction rejection for a used marker, rejection
+  even after an old user snapshot is restored, and existing pending-token compatibility.
+  Memory/compound cases exercise shared single-use authority rather than duplicate
+  independent consumption. Existing signature/expiry tests remain in server:secret.
+- Production-design review: existing signed-token validation and target lookup feed
+  one repository operation. Its five writes are the conditional marker plus the
+  two existing records for each user. Public GraphQL/SDK contracts, normal saves,
+  issuance, disconnect, and membership policy are unchanged. AWS transaction input
+  now correctly permits an omitted condition on unconditional record writes.
+- Full gate: `fish -lc './gradlew check --no-daemon'` passed outside the sandbox
+  with a fresh daemon in 7m 9s; 587 actionable tasks (125 executed, 462 up-to-date).
+  Complete SDK Node/JVM suites passed, including all 13 user scenarios on each
+  runtime, as did repository/server suites, client browser tests, 56 browser E2E
+  tests, lint, and structured-log validation.
+- Complete-slice review: the final production change is limited to atomic
+  single-use redemption and equivalent repository adapters. No table, key schema,
+  AWS profile, general write versioning, retry mechanism, client feature, or
+  permission-policy change is included. Self-link rejection is explicit input
+  validation from the accepted plan, not a separate security finding.
+  `git diff --check` passed. Optional API work and the policy/migration boundaries
+  in later slices were explicitly labeled during the scope audit.
+- Validation setup notes: earlier local timeouts were traced to a busy DynamoDB
+  SQLite worker; disposable containers were reset through Gradle. A full-check
+  attempt was stopped for the requested simplification, and prototype records
+  were discarded before validating the final design. No production deployment or
+  external resource provisioning was performed.
+- Delivered with tests, implementation, and this card in the slice commit; obtain
+  its ID with `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`.
+  Not pushed or released. Slices 4/5 remain queued with their prerequisites.
 
 ### Delivery gates
 

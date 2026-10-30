@@ -6,9 +6,15 @@ import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoPutItemInput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TransactWriteCommandInput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TransactWriteItem
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TransactionCanceledError
+import com.zegreatrob.coupling.repository.dynamo.external.transactWrite
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotools.types.text.NotBlankString
@@ -97,6 +103,35 @@ class DynamoUserRepository private constructor(override val userId: UserId, over
 
     override suspend fun save(user: UserDetails) = logAsync("saveUser") { saveRawRecord(user.toRecord()) }
 
+    override suspend fun connectUser(user: UserDetails, target: UserDetails, secretId: SecretId): Boolean {
+        if (user.id != userId || user.id == target.id || user.email == target.email || target.connectSecretId != secretId) return false
+        val callerRecord = user.copy(connectedEmails = user.connectedEmails + target.email).toRecord()
+        val targetRecord = target.copy(connectedEmails = target.connectedEmails + user.email, connectSecretId = null).toRecord()
+        return try {
+            dynamoDBClient.transactWrite(
+                TransactWriteCommandInput(
+                    transactItems = arrayOf(consumedTokenPut(secretId)) + connectionPuts(callerRecord) + connectionPuts(targetRecord),
+                ),
+            ).await()
+            true
+        } catch (error: Throwable) {
+            if (error.isConnectionRejected()) false else throw error
+        }
+    }
+
+    private fun consumedTokenPut(secretId: SecretId) = TransactWriteItem(
+        put = DynamoPutItemInput(
+            tableName = prefixedTableName,
+            item = json("id" to "CONSUMED-CONNECTION#${secretId.value}", "timestamp" to "CONSUMED"),
+            conditionExpression = "attribute_not_exists(id)",
+        ),
+    )
+
+    private fun connectionPuts(record: Record<UserDetails>) = arrayOf(
+        TransactWriteItem(put = DynamoPutItemInput(tableName = prefixedTableName, item = record.asDynamoJson())),
+        TransactWriteItem(put = DynamoPutItemInput(tableName = prefixedTableName, item = record.recordJson().add(record.asEmailIdDynamoJson()))),
+    )
+
     override suspend fun getUser() = logAsync("getUser") { queryAllRecords(queryParams(userId.value.toString())) }
         .sortByRecordTimestamp()
         .lastOrNull()
@@ -179,6 +214,20 @@ class DynamoUserRepository private constructor(override val userId: UserId, over
     private fun emailId(email: NotBlankString) = "EMAIL-$email"
 
     suspend fun getUserRecords() = scanAllRecords()
+        .filterNot { it.getDynamoStringValue("id")?.startsWith("CONSUMED-CONNECTION#") == true }
+        .toTypedArray()
         .sortByRecordTimestamp()
         .map { it.toUserRecord() }
+}
+
+private fun Throwable.isConnectionRejected(): Boolean = unsafeCast<TransactionCanceledError>().let { error ->
+    when (error.name) {
+        "TransactionConflictException" -> true
+
+        "TransactionCanceledException" -> error.cancellationReasons?.any {
+            it.code == "ConditionalCheckFailed" || it.code == "TransactionConflict"
+        } == true
+
+        else -> false
+    }
 }

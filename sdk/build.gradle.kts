@@ -1,6 +1,9 @@
 @file:OptIn(ApolloExperimental::class)
 
 import com.apollographql.apollo.annotations.ApolloExperimental
+import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameter
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+import org.gradle.api.tasks.testing.Test
 
 plugins {
     alias(libs.plugins.tools.certifier)
@@ -127,4 +130,13 @@ tasks {
         jdkSelector = "22"
         certificatePath = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
     }
+}
+
+tasks.withType<Test>().configureEach {
+    val connectionTestPassword = providers.fetchAwsSsmParameter("/local/COUPLING_E2E_TEST_PASSWORD")
+    doFirst { environment("COUPLING_E2E_TEST_PASSWORD", connectionTestPassword.get()) }
+}
+tasks.withType<KotlinJsTest>().configureEach {
+    val connectionTestPassword = providers.fetchAwsSsmParameter("/local/COUPLING_E2E_TEST_PASSWORD")
+    doFirst { environment("COUPLING_E2E_TEST_PASSWORD", connectionTestPassword.get()) }
 }

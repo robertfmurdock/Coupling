@@ -132,3 +132,8 @@ internal suspend fun <D : Mutation.Data> ActionCannon<CouplingSdkDispatcher>.exe
     mutation: Mutation<D>,
 ) = ((this as DispatcherPipeCannon).dispatcher as KtorCouplingSdkDispatcher)
     .performer.apolloMutation(mutation)
+
+const val CONNECTION_TEST_USER_EMAIL = "couplingtestuser.e2e@gmail.com"
+val connectionAuthorizedSdkDeferred by lazy {
+    GlobalScope.async { sdk(CONNECTION_TEST_USER_EMAIL, getEnv("COUPLING_E2E_TEST_PASSWORD") ?: "") }
+}

@@ -1,13 +1,15 @@
 package com.zegreatrob.coupling.repository.user
 
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.SecretId
 import com.zegreatrob.coupling.model.user.UserDetails
 import kotools.types.text.NotBlankString
 
 interface UserRepository :
     UserGet,
     UserGetByEmail,
-    UserSave
+    UserSave,
+    UserConnect
 
 interface UserSave {
     suspend fun save(user: UserDetails)
@@ -19,4 +21,8 @@ interface UserGet {
 
 fun interface UserGetByEmail {
     suspend fun getUsersWithEmail(email: NotBlankString): List<Record<UserDetails>>
+}
+
+interface UserConnect {
+    suspend fun connectUser(user: UserDetails, target: UserDetails, secretId: SecretId): Boolean
 }

@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.zegreatrob.coupling.model.user.UserDetails
+import com.zegreatrob.coupling.repository.user.UserConnect
 import com.zegreatrob.coupling.repository.user.UserGet
 import com.zegreatrob.coupling.repository.user.UserGetByEmail
 import com.zegreatrob.coupling.repository.user.UserRepository
 
 class CompoundUserRepository(private val repository1: UserRepository, private val repository2: UserRepository) :
     UserRepository,
+    UserConnect by repository1,
     UserGet by repository1,
     UserGetByEmail by repository1 {
 

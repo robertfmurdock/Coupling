@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.repository.compound
 
+import com.zegreatrob.coupling.model.party.SecretId
+import com.zegreatrob.coupling.repository.memory.MemoryUserBackend
 import com.zegreatrob.coupling.repository.memory.MemoryUserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
@@ -38,5 +40,27 @@ class CompoundUserRepositoryTest : UserRepositoryValidator<CompoundUserRepositor
     } verify {
         repository2.getUser()?.data
             .assertIsEqualTo(user)
+    }
+
+    @Test
+    fun connectionUsesThePrimaryRepositoryAsItsSingleAuthority() = asyncSetup(object {
+        val backend = MemoryUserBackend()
+        val issuer = stubUserDetails().copy(connectedEmails = emptySet(), connectSecretId = null)
+        val caller = stubUserDetails().copy(connectedEmails = emptySet(), connectSecretId = null)
+        val issuerRepository = MemoryUserRepository(issuer.id, Clock.System, backend)
+        val primary = MemoryUserRepository(caller.id, Clock.System, backend)
+        val secondary = MemoryUserRepository(caller.id, Clock.System)
+        val repository = CompoundUserRepository(primary, secondary)
+        val secret = SecretId.new()
+    }) {
+        issuerRepository.save(issuer)
+        repository.save(caller)
+        issuerRepository.save(issuer.copy(connectSecretId = secret))
+    } exercise {
+        repository.connectUser(caller, issuer.copy(connectSecretId = secret), secret) to repository.connectUser(caller, issuer.copy(connectSecretId = secret), secret)
+    } verify { result ->
+        result.assertIsEqualTo(true to false)
+        repository.getUser()?.data.assertIsEqualTo(caller.copy(connectedEmails = setOf(issuer.email)))
+        issuerRepository.getUser()?.data.assertIsEqualTo(issuer.copy(connectedEmails = setOf(caller.email)))
     }
 }

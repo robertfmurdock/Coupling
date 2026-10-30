@@ -21,16 +21,7 @@ interface ServerConnectUserCommandDispatcher :
         val targetUserEmail = subject.toNotBlankString().getOrNull()
         val targetUserDetails = targetUserEmail?.let { userRepository.getUsersWithEmail(it) }?.firstOrNull()?.data
             ?: return false
-        val canConnect = targetUserDetails.connectSecretId == secretId
-
-        if (canConnect) {
-            currentUser.copy(connectedEmails = currentUser.connectedEmails.plus(targetUserEmail))
-                .save()
-            targetUserDetails.copy(connectedEmails = targetUserDetails.connectedEmails.plus(currentUser.email))
-                .save()
-        }
-
-        return canConnect
+        return userRepository.connectUser(currentUser, targetUserDetails, secretId)
     }
 }
 

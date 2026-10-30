@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserId
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
@@ -21,6 +20,7 @@ import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.memory.MemorySecretRepository
 import com.zegreatrob.coupling.repository.memory.MemorySlackRepository
+import com.zegreatrob.coupling.repository.memory.MemoryUserBackend
 import com.zegreatrob.coupling.repository.memory.MemoryUserRepository
 import com.zegreatrob.coupling.repository.memory.SimpleRecordBackend
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -75,5 +75,5 @@ class MemoryRepositoryBackend {
     val player = SimpleRecordBackend<PartyElement<Player>>()
     val pairAssignments = SimpleRecordBackend<PartyElement<PairingSet>>()
     val pin = SimpleRecordBackend<PartyElement<Pin>>()
-    val user = SimpleRecordBackend<UserDetails>()
+    val user = MemoryUserBackend()
 }
