@@ -42,7 +42,13 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   - Independently releasable: closes cross-party privilege escalation while
     preserving legitimate single- and multi-party requests.
 
-- [ ] **2. Authorize Discord integration replacement (high).**
+- [x] **2a. Enable local Discord simulation (prerequisite).**
+  - Agreed 2026-10-30: local development defaults to simulated Discord; deployed
+    environments default to live. Replace only outbound HTTP using the existing
+    injected DiscordClient seam; retain real commands and DynamoDB persistence.
+  - Deliver a passing simulation/configuration commit before the security slice.
+
+- [ ] **2b. Authorize Discord integration replacement (high).**
   - Endpoint red: authenticated nonmember supplies a valid synthetic OAuth code
     for their own Discord destination and victim B's ID. Expect rejection and
     B's existing integration unchanged. Expected current failure: replacement
@@ -51,15 +57,19 @@ review remain outside this card: URL token logging and GraphQL work budgets.
     stub only the outbound Discord service using an established test seam.
     A local in-memory repository that bypasses code exchange cannot prove this.
     Cover authorized setup/replacement and denied unauthenticated requests.
-  - Contract/design: resolve authorized target before external exchange or save;
-    bind OAuth initiation/callback to initiating user and party with validated,
-    expiring state. Inspect existing client state handling and SDK contracts;
-    include necessary client/server/schema changes together. Separate additional
-    OAuth hardening into a revised slice if it is independently releasable.
+  - Contract/design: resolve authorized target before external exchange or save.
+    Preserve the existing membership policy and GraphQL/SDK contract.
+  - Agreed 2026-10-30: OAuth state hardening is a separate follow-up slice 2c.
   - Boundary: GraphQL endpoint, Discord exchange, party integration persistence,
     and OAuth callback flow where its contract changes.
   - Independently releasable: prevents nonmembers redirecting another party's
     announcements while retaining authorized integration setup.
+
+- [ ] **2c. Harden Discord OAuth state (follow-up).**
+  - Current callback trusts an unsigned partyId in URL state. Bind initiation and
+    callback to the initiating user and party with validated, expiring state.
+  - Plan the initiation/callback contract and synchronized client/server/SDK
+    changes separately; authorization slice 2b does not close this work.
 
 - [ ] **3. Consume account-link tokens once (high).**
   - Endpoint red: generate a link token as target user, redeem through the HTTP
@@ -150,8 +160,8 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 - Slice 1 complete: endpoint red confirmed; party-keyed dispatcher cache
   implemented; focused green/lint and full-suite validation passed. Tests, fix,
   and this card are delivered together in the slice commit (see Git history).
-- Next slice: unauthorized Discord integration replacement. No work on slice 2
-  has started.
+- Slice 2a complete: local Discord simulation. Next is the traditional SDK
+  endpoint reproduction and authorization fix (2b). OAuth state remains open (2c).
 - Tests belong to existing `SdkSecretTest.kt` and `SdkPinTest.kt`. Typed operations
   come from `sdk/src/commonMain/graphql/test-mutations.graphql` and execute through
   the SDK's existing authenticated Apollo HTTP performer. A test-only helper in
@@ -199,6 +209,31 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   obtain its ID with `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`.
   Not pushed or released.
 - No production deployment was tested or performed. Later findings remain open.
+
+### Slice 2a: local Discord simulation
+
+- Mode-selection red:
+  `fish -lc './gradlew :server:discord:jsNodeTest --tests "*DiscordModeTest*" --no-daemon'`
+  ran four tests against the initial live-only selection scaffold. The two live
+  cases passed; simulated selection and unknown-mode rejection failed.
+- Green/lint:
+  `fish -lc './gradlew :server:discord:jsNodeTest :server:discord:lintKotlin :server:lintKotlin --no-daemon'`
+  passed after correcting wrapping lint. Coverage includes deterministic code
+  exchange, malformed codes, and message send/update/delete through DiscordClient.
+- Test-clarity review: explicit mode cases and exchange/message scenarios exercise
+  the public Discord client boundary; existing wire-format tests remain intact.
+- Production-design review: Config selects live/simulated HTTP transport; both use
+  ClientDiscordRepository and real storage. Simulated operations are stateless,
+  documented, and never fall through to a network engine. No authorization fix
+  is included in this prerequisite slice.
+- Full gate: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox with a fresh daemon in 6m 32s; 587 actionable tasks (75 executed,
+  512 up-to-date). All 12 Discord tests passed; SDK tests reused cached results,
+  and browser E2E executed successfully against the rebuilt local server.
+- Complete-slice review: no schema/SDK/persistence-policy changes; live remains
+  the default outside explicit local configuration. `git diff --check` passed.
+  Tests, implementation, documentation, and this card are committed together;
+  obtain the commit with Git history. Not pushed or released.
 
 ### Delivery gates
 

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.express
 
 import com.zegreatrob.coupling.server.Process
+import com.zegreatrob.coupling.server.discord.DiscordMode
 import org.w3c.dom.url.URL
 
 object Config {
@@ -22,6 +23,7 @@ object Config {
     val slackSigningSecret = Process.getEnv("SLACK_SIGNING_SECRET") ?: ""
     val discordClientId = Process.getEnv("DISCORD_CLIENT_ID") ?: ""
     val discordClientSecret = Process.getEnv("DISCORD_CLIENT_SECRET") ?: ""
+    val discordMode = DiscordMode.parse(Process.getEnv("DISCORD_MODE"))
 
     val stripeSecretKey = Process.getEnv("STRIPE_SECRET_KEY") ?: ""
 

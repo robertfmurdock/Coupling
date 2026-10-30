@@ -20,6 +20,7 @@ fun clientDiscordRepository() = ClientDiscordRepository(
         clientId = Config.discordClientId,
         clientSecret = Config.discordClientSecret,
         host = "${Config.publicUrl}${Config.clientBasename}",
+        httpClient = Config.discordMode.httpClient(),
     ),
     Config.clientUrl,
 )

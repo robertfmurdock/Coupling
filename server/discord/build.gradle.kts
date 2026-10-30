@@ -14,6 +14,7 @@ kotlin {
 dependencies {
     jsMainImplementation("io.ktor:ktor-client-content-negotiation")
     jsMainImplementation("io.ktor:ktor-client-core")
+    jsMainImplementation("io.ktor:ktor-client-mock")
     jsMainImplementation("io.ktor:ktor-client-logging")
     jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
@@ -21,6 +22,5 @@ dependencies {
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")
     jsTestImplementation("com.zegreatrob.testmints:standard")
-    jsTestImplementation("io.ktor:ktor-client-mock")
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test")
 }

@@ -13,5 +13,6 @@
   "SLACK_SIGNING_SECRET": "fake",
   "DISCORD_CLIENT_ID": "fake",
   "DISCORD_CLIENT_SECRET": "fake",
+  "DISCORD_MODE": "simulated",
   "WEBSOCKET_HOST": "socket.local"
 }
