@@ -55,7 +55,9 @@ environment has independent progress.
 | Reconciliation result | `PK = MIGRATION#<stage>`, `SK = RECONCILIATION#<runId>#<source>` | Compared source/target counts and checksums, mismatch samples, completion status, and target schema version. |
 | Write-plan receipt | `PK = MIGRATION#<stage>`, `SK = WRITE#<mutationId>` | Stable mutation identity, target/legacy completion status, and replayable outcome while dual-write is active. |
 
-The `STATE` item is the source of truth for catalog selection. Commands use an
+The `STATE` item is the source of truth for catalog selection. Ledger reads reject
+missing or unsupported target schema versions before interpreting the phase;
+bootstrap preserves that ledger and reports the incompatibility. Commands use an
 expected ledger version condition when advancing it, so concurrent workers
 cannot independently promote or cut over an environment. Checkpoint and
 receipt writes are idempotent; their source/segment and mutation keys make a

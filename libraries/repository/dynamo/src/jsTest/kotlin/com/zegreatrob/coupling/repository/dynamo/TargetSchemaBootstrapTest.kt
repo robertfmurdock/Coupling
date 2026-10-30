@@ -2,14 +2,75 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.repository.dynamo.external.get
 import com.zegreatrob.coupling.repository.dynamo.external.put
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class TargetSchemaBootstrapTest {
+
+    @Test
+    fun rejectsFutureLedgerSchemaDuringCatalogLookup() = asyncSetup(object {
+        val stage = "target-schema-future-ledger-${stubPartyId().value}"
+    }) {
+        TargetSchemaBootstrap.ensureUncached(stage, MigrationMode.DISABLED)
+        writeLedger(stage, 2)
+    } exercise {
+        assertFailsWith<IllegalStateException> { TargetSchemaBootstrap.existingState(stage) }
+    } verify { failure ->
+        failure.message.assertIsEqualTo("Unsupported target schema version for $stage: 2")
+    }
+
+    @Test
+    fun rejectsMissingLedgerSchemaDuringCatalogLookup() = asyncSetup(object {
+        val stage = "target-schema-missing-version-${stubPartyId().value}"
+    }) {
+        TargetSchemaBootstrap.ensureUncached(stage, MigrationMode.DISABLED)
+        writeLedger(stage, null)
+    } exercise {
+        assertFailsWith<IllegalStateException> { TargetSchemaBootstrap.existingState(stage) }
+    } verify { failure ->
+        failure.message.assertIsEqualTo("Unsupported target schema version for $stage: missing")
+    }
+
+    @Test
+    fun bootstrapRejectsFutureSchemaWithoutReplacingLedger() = asyncSetup(object {
+        val stage = "target-schema-future-bootstrap-${stubPartyId().value}"
+    }) {
+        TargetSchemaBootstrap.ensureUncached(stage, MigrationMode.DISABLED)
+        writeLedger(stage, 2)
+    } exercise {
+        assertFailsWith<IllegalStateException> {
+            TargetSchemaBootstrap.ensureUncached(stage, MigrationMode.DUAL_WRITE)
+        }
+        DynamoDbProvider.dynamoDBClient.get(
+            json(
+                "TableName" to "test-coupling-core",
+                "Key" to json("PK" to "MIGRATION#$stage", "SK" to "STATE"),
+                "ConsistentRead" to true,
+            ),
+        ).await()["Item"].unsafeCast<Json>()
+    } verify { ledger ->
+        ledger["targetSchemaVersion"].assertIsEqualTo(2)
+        ledger["phase"].assertIsEqualTo("CUTOVER")
+        ledger["ledgerVersion"].assertIsEqualTo(17)
+    }
+
+    private suspend fun writeLedger(stage: String, schemaVersion: Int?) = DynamoDbProvider.dynamoDBClient.put(
+        json(
+            "TableName" to "test-coupling-core",
+            "Item" to json(
+                "PK" to "MIGRATION#$stage",
+                "SK" to "STATE",
+                "phase" to "CUTOVER",
+                "ledgerVersion" to 17,
+            ).also { if (schemaVersion != null) it["targetSchemaVersion"] = schemaVersion },
+        ),
+    ).await()
 
     @Test
     fun createsTargetTablesAndPreservesTheInitialLedger() = asyncSetup(object {

@@ -36,6 +36,7 @@ data class MigrationLedgerState(
 )
 
 object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
+    private const val TARGET_SCHEMA_VERSION = 1
     private val bootstrapScope = MainScope()
     private val initializedStages = mutableMapOf<String, Deferred<Unit>>()
     private val tables = listOf(
@@ -209,6 +210,10 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
                     "Key" to json("PK" to statePartitionKey(), "SK" to "STATE"),
                 ),
             ).await()["Item"].unsafeCast<Json?>() ?: return null
+            val schemaVersion = item["targetSchemaVersion"]
+            check(schemaVersion == TARGET_SCHEMA_VERSION) {
+                "Unsupported target schema version for $stage: ${schemaVersion ?: "missing"}"
+            }
             return MigrationLedgerState(
                 MigrationLedgerPhase.valueOf(item["phase"].toString()),
                 item["ledgerVersion"].toString().toInt(),
@@ -222,7 +227,7 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
                 "Item" to json(
                     "PK" to statePartitionKey(),
                     "SK" to "STATE",
-                    "targetSchemaVersion" to 1,
+                    "targetSchemaVersion" to TARGET_SCHEMA_VERSION,
                     "phase" to MigrationLedgerPhase.DISABLED.name,
                     "ledgerVersion" to 1,
                     "requestedMode" to requestedMode.environmentValue,
