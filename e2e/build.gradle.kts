@@ -1,3 +1,5 @@
+import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameter
+
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.jsmints.plugins.wdiotest")
@@ -89,6 +91,7 @@ tasks {
         from("$rootDir/sdk/build/processedResources/js/main")
     }
     e2eRun {
+        val testPassword = providers.fetchAwsSsmParameter("/local/COUPLING_E2E_TEST_PASSWORD")
         val testLogFile = rootProject.layout.buildDirectory.file("test-output/test.jsonl")
         dependsOn(
             dependencyResources,
@@ -103,6 +106,7 @@ tasks {
             testLoggingLib
         )
         doFirst {
+            environment("COUPLING_E2E_TEST_PASSWORD", testPassword.get())
             testLogFile.get().asFile.parentFile.mkdirs()
             environment("COUPLING_TEST_LOG_PATH", testLogFile.get().asFile.absolutePath)
         }

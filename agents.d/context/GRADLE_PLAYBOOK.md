@@ -147,11 +147,32 @@ See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/
 
 ### Browser Tests and Sandboxed Daemons
 
-Chrome launched by Gradle inherits the daemon's execution restrictions. If a
-sandbox prevents browser startup, rerunning only the client outside it can reuse
-the same restricted daemon. With the required execution approval, stop Gradle and
-start a fresh daemon in the permitted environment before retrying. Diagnose launch
-failures separately from test failures; do not weaken tests to mask them.
+Chrome launched by Gradle inherits the daemon's execution restrictions. On this
+macOS agent host, browser startup has failed inside the sandbox and succeeded
+outside it. Do not spend an initial run rediscovering this restriction.
+
+- From the first attempt, run browser-bearing Gradle commands outside the agent
+  sandbox through the tool's approved execution mechanism (for `exec_command`,
+  request `sandbox_permissions = "require_escalated"`). Follow the active approval
+  policy and use an existing matching command rule when available.
+- This includes `./gradlew check`, `:e2e:e2eRun`, browser test tasks, and aggregate
+  `test` or `build` commands whose task graphs include browser tests. Focused
+  Node/JVM-only tasks can stay sandboxed.
+- Add `--no-daemon` to browser-bearing invocations so they do not reuse a daemon
+  started inside the sandbox: for example, `./gradlew check --no-daemon` or
+  `./gradlew :e2e:e2eRun --no-daemon`. A single-use daemon still inherits the
+  command's permissions, so this option does not replace outside-sandbox execution.
+- If choosing to reuse daemons instead, run `./gradlew --stop` through the approved
+  outside-sandbox mechanism before the first browser run when daemon provenance
+  is unknown or sandboxed. Avoid stopping another contributor's active build.
+- If outside-sandbox execution is denied, report that blocker. Do not retry the
+  same sandboxed browser launch, weaken tests, disable Chrome's own sandbox, or
+  change global agent permissions to work around it.
+
+Distinguish startup failures (`session not created`, Chrome exits before any
+tests) from assertion failures after a browser session starts. A completed browser
+suite with a navigation/assertion failure is not evidence to repeat sandbox
+diagnosis. Record the actual failure and investigate its boundary.
 
 ## Change Coupling Rules
 - Keep build logic updates and required consumer updates in one change set.

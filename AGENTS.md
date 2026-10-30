@@ -39,6 +39,9 @@ design separately, and review the overall outcome at completion.
   remain appropriate for investigation and editing.
 - Focused validation: `./gradlew :module:task`. Full suite and completion gate:
   `./gradlew check`. Use `./gradlew test` or `./gradlew build` when the task needs them.
+- Run Gradle tasks that launch browsers outside the agent sandbox from the first
+  attempt, using the approved execution mechanism and a fresh daemon. This includes
+  `./gradlew check`; follow [browser execution guidance](agents.d/context/GRADLE_PLAYBOOK.md#browser-tests-and-sandboxed-daemons).
 - Reuse established capabilities; keep changes scoped and consistent with local
   patterns. Investigate intentional-looking overrides before changing them.
 - For GraphQL changes, keep schema, server, SDK, and tests synchronized. Deprecated

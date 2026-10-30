@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.plugins.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.ValueSource
@@ -29,7 +30,12 @@ abstract class AwsSsmParametersValueSource : ValueSource<AwsParameters, ValueSou
         val output = ByteArrayOutputStream()
         val result = execOperations.exec {
             commandLine(
-                "aws", "ssm", "get-parameters", "--names", *awsSsmParameterNames.toTypedArray(), "--with-decryption",
+                "aws",
+                "ssm",
+                "get-parameters",
+                "--names",
+                *awsSsmParameterNames.toTypedArray(),
+                "--with-decryption",
             )
             standardOutput = output
             isIgnoreExitValue = true
@@ -41,18 +47,49 @@ abstract class AwsSsmParametersValueSource : ValueSource<AwsParameters, ValueSou
     }
 }
 
-fun ProviderFactory.fetchAwsSsmParameters(): Provider<AwsParameters> =
-    of<AwsParameters, ValueSourceParameters.None>(AwsSsmParametersValueSource::class.java) {}
+fun ProviderFactory.fetchAwsSsmParameters(): Provider<AwsParameters> = of<AwsParameters, ValueSourceParameters.None>(AwsSsmParametersValueSource::class.java) {}
 
-internal fun awsParametersFrom(response: String): AwsParameters {
-    val parameterValues = runCatching {
-        ObjectMapper().readTree(response)
-            .path("Parameters")
-            .associate { parameter -> parameter.path("Name").asText() to parameter.path("Value").asText() }
-    }.getOrElse { error ->
-        throw IllegalStateException("AWS SSM returned an invalid response.", error)
+abstract class AwsSsmParameterValueSource : ValueSource<String, AwsSsmParameterValueSource.Parameters> {
+    interface Parameters : ValueSourceParameters {
+        val parameterName: Property<String>
     }
 
+    @get:Inject
+    abstract val execOperations: ExecOperations
+
+    override fun obtain(): String {
+        val name = parameters.parameterName.get()
+        val output = ByteArrayOutputStream()
+        val result = execOperations.exec {
+            commandLine("aws", "ssm", "get-parameters", "--names", name, "--with-decryption")
+            standardOutput = output
+            isIgnoreExitValue = true
+        }
+        check(result.exitValue == 0) {
+            "Unable to read AWS SSM parameter $name. Check AWS credentials and parameter access."
+        }
+        return awsSsmParameterFrom(output.toString(Charsets.UTF_8), name)
+    }
+}
+
+fun ProviderFactory.fetchAwsSsmParameter(name: String): Provider<String> = of(AwsSsmParameterValueSource::class.java) { parameters.parameterName.set(name) }
+
+internal fun awsSsmParameterFrom(response: String, name: String): String {
+    val value = awsParameterValuesFrom(response)[name]
+    check(!value.isNullOrBlank()) { "AWS SSM parameter is unavailable: $name." }
+    return value
+}
+
+private fun awsParameterValuesFrom(response: String): Map<String, String> = runCatching {
+    ObjectMapper().readTree(response)
+        .path("Parameters")
+        .associate { parameter -> parameter.path("Name").asText() to parameter.path("Value").asText() }
+}.getOrElse { error ->
+    throw IllegalStateException("AWS SSM returned an invalid response.", error)
+}
+
+internal fun awsParametersFrom(response: String): AwsParameters {
+    val parameterValues = awsParameterValuesFrom(response)
     val missingNames = awsSsmParameterNames.filter { name -> parameterValues[name].isNullOrBlank() }
     check(missingNames.isEmpty()) { "AWS SSM parameters are unavailable: ${missingNames.joinToString()}." }
 
