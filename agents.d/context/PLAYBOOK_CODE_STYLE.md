@@ -28,6 +28,19 @@ Load when writing or modifying source code. For examples: `FEW_SHOT_CODE_STYLE.m
 - Multiple tests only for different scenarios/variations
 - Only add passing tests if their absence confuses readers
 
+### Testmints Phase Discipline
+- `setup` arranges scenario-specific data, collaborators, and the world that enables the feature.
+- `exercise` contains the one externally meaningful trigger, or the deliberate sequence that is itself the contract.
+- `verify` contains assertions; carry the exercise result and required observations forward explicitly.
+- Name the bounded behavior under test. Split scenarios with different subjects instead of hiding them in a generic factory.
+- Prefer explicit scenarios and narrowly scoped helpers; introduce shared test machinery only when it improves the case at the call site.
+
+### Kotlin/JS Interop
+- The `jstools` convention enables Kotlin's plain-object plugin.
+- For known JavaScript request or configuration shapes, prefer `@JsPlainObject external interface` types and generated factories over `json`, `dynamic`, or chained `unsafeCast`s.
+- Keep `Json` for genuinely open-ended maps; localize unavoidable JavaScript casts to external bindings or test-double boundaries.
+- Follow `libraries/repository/dynamo/.../external/awsdynamoclient/Aws.kt` for the local pattern.
+
 ### Formatting
 "Chop down" chains: break before `?.` and `.assertIsEqualTo`
 

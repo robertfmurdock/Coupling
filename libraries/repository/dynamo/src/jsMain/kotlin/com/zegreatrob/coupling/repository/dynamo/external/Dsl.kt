@@ -6,15 +6,22 @@ import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DeleteC
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDBDocumentClient
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.ExecuteStatementCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetCommandOutput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetItemCommandInput
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.PutCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.QueryCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.ScanCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TransactWriteCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TransactWriteCommandInput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedGetCommand
 import kotlin.js.Json
 import kotlin.js.Promise
 
 fun DynamoDBDocumentClient.put(params: Json): Promise<Unit> = send(PutCommand(params))
 
 fun DynamoDBDocumentClient.get(params: Json): Promise<Json> = send(GetCommand(params))
+
+fun DynamoDBDocumentClient.getItem(params: GetItemCommandInput): Promise<GetCommandOutput> = send(TypedGetCommand(params))
 
 fun DynamoDBDocumentClient.scan(params: Json): Promise<Json> = send(ScanCommand(params))
 
@@ -27,3 +34,5 @@ fun DynamoDBDocumentClient.executeStatement(params: Json): Promise<Json> = send(
 fun DynamoDBDocumentClient.batchExecuteStatement(params: Json): Promise<Json> = send(BatchExecuteStatementCommand(params))
 
 fun DynamoDBDocumentClient.deleteIt(params: Json): Promise<Json> = send(DeleteCommand(params))
+
+fun DynamoDBDocumentClient.transactWrite(params: TransactWriteCommandInput): Promise<Json> = send(TransactWriteCommand(params))

@@ -36,6 +36,7 @@ dependencies {
     jsMainImplementation("io.github.oshai:kotlin-logging")
     jsMainImplementation(npmConstrained("@aws-sdk/client-dynamodb"))
     jsMainImplementation(npmConstrained("@aws-sdk/lib-dynamodb"))
+    jsMainImplementation(npmConstrained("ulid"))
 
     jsTestImplementation(project(":libraries:repository:validation"))
     jsTestImplementation(project(":libraries:stub-model"))
