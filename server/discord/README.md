@@ -18,7 +18,9 @@ credentials. Other codes return `invalid_grant`. Invoke the existing
 `grantDiscordAccess` mutation through the SDK with that code and your local party
 ID; the simulator does not provide a browser OAuth consent page.
 
-Message sends return deterministic IDs derived from the webhook and request body.
+Message sends return IDs `simulated-message-<destination>-<hash>`, where the hash
+is derived deterministically from the webhook and request body. Endpoint tests can
+observe the announcement destination through the existing pairing-set query.
 Updates retain the supplied message ID; deletes return success. These operations
 are stateless responses, not a simulated Discord message store. Do not use this
 mode to verify Discord's OAuth, credential expiry, code reuse, or delivery behavior.

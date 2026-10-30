@@ -75,7 +75,7 @@ private suspend fun MockRequestHandleScope.messageResponse(request: HttpRequestD
         respond(
             Json.encodeToString(
                 MessageResponseData(
-                    id = messageId ?: "simulated-message-${"$webhookId:$body".hashCode().toUInt().toString(16)}",
+                    id = messageId ?: "simulated-message-$destination-${"$webhookId:$body".hashCode().toUInt().toString(16)}",
                     type = 0,
                     content = payload.getValue("content").jsonPrimitive.content,
                     channelId = destination,

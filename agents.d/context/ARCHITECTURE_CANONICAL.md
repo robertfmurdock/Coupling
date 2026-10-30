@@ -31,6 +31,13 @@ before running in parallel.
 
 ## GraphQL Locations
 
+Design APIs to be broadly easy to use, discoverable, and informative. Authorized
+clients should be able to inspect relevant state and understand operation results
+and failures through the API. Expose useful non-secret configuration and status
+under appropriate permissions; protect credentials and sensitive information.
+Missing inspection capabilities are API design findings, not reasons for SDK
+tests to bypass the API.
+
 - Schema: `server/src/jsMain/resources/schema.graphqls`
 - Resolvers: `server/src/jsMain/kotlin/`
 - SDK documents: `sdk/src/commonMain/graphql/`

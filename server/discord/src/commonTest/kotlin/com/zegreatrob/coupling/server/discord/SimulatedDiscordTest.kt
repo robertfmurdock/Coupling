@@ -57,6 +57,7 @@ class SimulatedDiscordTest {
         val sent = result as MessageResponseData
         sent.content.assertIsEqualTo("hello")
         sent.webhookId.assertIsEqualTo("simulated-webhook-channel")
+        sent.id.startsWith("simulated-message-channel-").assertIsEqualTo(true)
         client.sendWebhookMessage("hello", sent.webhookId, "simulated-token-channel", emptyList())
             .assertIsEqualTo(sent)
         val differentMessage = client.sendWebhookMessage("different", sent.webhookId, "simulated-token-channel", emptyList()) as MessageResponseData

@@ -7,12 +7,12 @@ import com.zegreatrob.coupling.json.GqlGrantDiscordAccessInput
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.entity.toJson
 import com.zegreatrob.coupling.server.external.graphql.Resolver
-import com.zegreatrob.coupling.server.graphql.DispatcherProviders
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val grantDiscordAccessResolver: Resolver = dispatch(
-    DispatcherProviders.command(),
+    dispatcherFunc = requiredInput { request, _, args -> authorizedPartyDispatcher(request, args.partyId) },
     commandFunc = requiredInput { _: JsonNull, input: GqlGrantDiscordAccessInput -> input.command() },
     fireFunc = ::perform,
     toSerializable = VoidResult::toJson,

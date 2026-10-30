@@ -48,7 +48,7 @@ review remain outside this card: URL token logging and GraphQL work budgets.
     injected DiscordClient seam; retain real commands and DynamoDB persistence.
   - Deliver a passing simulation/configuration commit before the security slice.
 
-- [ ] **2b. Authorize Discord integration replacement (high).**
+- [x] **2b. Authorize Discord integration replacement (high).**
   - Endpoint red: authenticated nonmember supplies a valid synthetic OAuth code
     for their own Discord destination and victim B's ID. Expect rejection and
     B's existing integration unchanged. Expected current failure: replacement
@@ -137,6 +137,9 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 ## Design Decisions
 
 - User requires endpoint demonstration before fixing every critical/high finding.
+- SDK endpoint tests must use HTTP commands/queries exclusively; no direct
+  database access or repository dependencies. For Discord, observe announcement
+  routing via simulated destination-bearing message IDs on pairing-set queries.
 - Execute dependent TDD steps with one contributor. Before test edits, visibly
   state behavior, boundary, contract, scenarios, and expected failure. After
   meaningful red and before production edits, state smallest implementation,
@@ -160,9 +163,10 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 - Slice 1 complete: endpoint red confirmed; party-keyed dispatcher cache
   implemented; focused green/lint and full-suite validation passed. Tests, fix,
   and this card are delivered together in the slice commit (see Git history).
-- Slice 2a complete: local Discord simulation. Next is the traditional SDK
-  endpoint reproduction and authorization fix (2b). OAuth state remains open (2c).
-- Tests belong to existing `SdkSecretTest.kt` and `SdkPinTest.kt`. Typed operations
+- Slice 2a complete in `c8c9fe8ea`: local Discord simulation. Slice 2b complete:
+  HTTP-only endpoint red confirmed and authorization fix validated. OAuth state
+  remains open (2c), followed by account-link token remediation (3).
+- Slice 1 tests belong to existing `SdkSecretTest.kt` and `SdkPinTest.kt`. Typed operations
   come from `sdk/src/commonMain/graphql/test-mutations.graphql` and execute through
   the SDK's existing authenticated Apollo HTTP performer. A test-only helper in
   `AuthorizedSdk.kt` exposes that path; no hand-built request strings remain.
@@ -174,8 +178,8 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   use dispatcher currentPartyId. The shared cache fix binds both patterns to the
   requested party without changing schemas or membership policy.
 - Prerequisites for later slices: owner/player capability agreement for slice 4;
-  isolated AWS test environment authorization for slice 5. Discover the Discord
-  outbound test seam before slice 2 and record the approach.
+  isolated AWS test environment authorization for slice 5. Discord now uses the
+  existing injected HttpClient seam with a simulated HTTP engine for local tests.
 
 ## Validation
 
@@ -234,6 +238,59 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   the default outside explicit local configuration. `git diff --check` passed.
   Tests, implementation, documentation, and this card are committed together;
   obtain the commit with Git history. Not pushed or released.
+
+### Slice 2b: authorize Discord integration replacement
+
+- User corrected the initial test design: SDK endpoint tests must not query the
+  database directly. Removed the DynamoDB dependency/settings and repository
+  assertions. The initial storage-based red/green is superseded by endpoint-only
+  tests; a full check started for that design was stopped before completion.
+- Revised contract: after a denied replacement, the victim owner spins again and
+  queries current pair assignments. Its simulated Discord message ID must identify
+  the original destination; authorized replacement must deliver to the new one.
+- Simulator observation seam red:
+  `fish -lc './gradlew :server:discord:jsNodeTest --tests "*SimulatedDiscordTest*" --no-daemon'`
+  ran three tests, with the destination-bearing message-ID assertion failing.
+  Message IDs now include the destination plus the existing request-derived hash.
+- Endpoint-only red:
+  `fish -lc './gradlew :sdk:jsNodeTest --tests "*SdkDiscordTest*" :server:discord:jsNodeTest :sdk:lintKotlin :server:discord:lintKotlin --no-daemon'`
+  passed the simulator tests/lint and four SDK scenarios; the nonmember scenario
+  failed because the victim owner's next announcement identified the attacker's
+  destination. Authorization code was restored to the original unrestricted
+  resolver for this run. No GraphQL schema additions are needed: existing SDK
+  commands and the current pairing-set query expose announcement delivery.
+- Test-clarity review: setup proves independent parties and delivery to the victim
+  destination. Exercise attempts replacement, then the owner requests a fresh
+  announcement and reads it through GraphQL. Verification checks rejection and
+  original routing. Positive install/replacement and denied unauthenticated/invalid
+  exchange scenarios use the same observable boundary. Only Discord HTTP is doubled.
+- Production design: obtain authorizedPartyDispatcher for input partyId before
+  firing the existing grant command. Reuse existing membership semantics; no SDK
+  command, schema, or client callback changes. OAuth state remains slice 2c.
+- Green/lint:
+  `fish -lc './gradlew :sdk:jsNodeTest --tests "*SdkDiscordTest*" :server:discord:jsNodeTest :sdk:lintKotlin :server:lintKotlin :server:discord:lintKotlin --no-daemon'`
+  passed all five endpoint scenarios and affected lint; simulator tests also passed
+  (up-to-date on this run after passing in the revised red run).
+- Full gate: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox with a fresh daemon in 6m 9s; 578 actionable tasks (68 executed,
+  510 up-to-date). Complete SDK Node/JVM suites and browser E2E executed; all five
+  new Discord scenarios passed on both Node and JVM.
+- API-only SDK test convention recorded in `agents.d/context/TESTING.md`.
+- API usability gap: the existing API exposes announcement message IDs but no
+  direct read of the configured Discord destination. These tests demonstrate the
+  install/announce/query workflow using simulated IDs to identify delivery; they
+  do not establish live configuration-inspection capability. Consider an
+  authorized, non-secret integration summary as a follow-up with its own permission
+  contract/tests. User's broader API direction is recorded in the architecture
+  guidance: easy to use, discoverable, and informative without exposing credentials
+  or compromising meaningful security.
+- Complete-slice review: no SDK dependency/build changes remain. Tests use existing
+  commands/queries, with destination-bearing simulated IDs as the sole observation
+  addition. Resolver authorization precedes exchange/save; public contracts and
+  membership policy are unchanged. `git diff --check` passed.
+- Delivered with tests, implementation, and guidance in the slice commit (obtain
+  its ID from Git history for this card). Not pushed, released, or tested against
+  production Discord. Later security slices remain open.
 
 ### Delivery gates
 

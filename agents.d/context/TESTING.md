@@ -55,6 +55,13 @@ intent explicitly before changing it.
 
 ## Local Integration Environment
 
+SDK endpoint tests arrange, exercise, and observe behavior through the public API.
+This tests API utility and usability: clients must be able to accomplish and
+inspect their workflows through the supported surface. Treat missing API
+capabilities as design findings rather than bypassing them in tests.
+Do not access the database directly or add repository dependencies to inspect
+server state. Use observable application behavior to verify persistence effects.
+
 SDK integration tests authenticate test users using
 `COUPLING_PRIMARY_TEST_PASSWORD` and `COUPLING_ALT_TEST_PASSWORD`; browser/e2e
 login uses `COUPLING_E2E_TEST_PASSWORD`. Gradle's `:e2e:e2eRun` reads the Standard
