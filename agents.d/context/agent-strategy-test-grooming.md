@@ -1,7 +1,7 @@
 ### Test Grooming Protocol
 
 Evaluate whether tests are placed at the **right architectural level** per the
-confidence-anchor philosophy in `ARCHITECTURE_CANONICAL.md`. This strategy
+confidence-anchor philosophy in `TESTING.md`. This strategy
 targets redundancy, not dead code: tests execute and pass — the question is
 whether they provide the *right kind* of confidence at the *right boundary*.
 

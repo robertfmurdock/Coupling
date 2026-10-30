@@ -1,88 +1,62 @@
-# Work Checklist
+# Work Cards and Safe Slices
 
-**Work Card**: Task definition in `agents.d/work/` (NOT Claude Code's built-in tasks).
+Follow the contribution protocol in [AGENTS.md](../../AGENTS.md). Use a card in
+`agents.d/work/` for a multi-commit feature or a handoff. A small single-slice change
+can keep its design statements in the conversation instead.
+
+## Call the Delivery Shot
+
+Before implementation, state the intended outcome and an ordered sequence of
+independently releasable slices. For each slice, declare:
+
+- The meaningful behavior or capability it establishes.
+- The tests that express the intent and their expected failure.
+- The proposed contract, production design, and affected boundaries.
+- Why releasing this slice before later slices is safe.
+
+Prefer small complete capabilities. A slice must remain safe and useful indefinitely
+if work stops. Include required cross-layer changes together; splitting by technical
+layer is inappropriate when those layers cannot ship independently. Use compatibility
+or feature gating only when needed for a safe release; avoid speculative scaffolding.
+
+Update the sequence before material design or slice-boundary changes. Before test
+edits and again before production edits, visibly call the next shot as described in
+AGENTS.md; a card does not replace those timely updates.
+
+## Commit and Handoff
+
+Each slice ends with a review and a passing `./gradlew check`, followed by a commit
+containing its tests and implementation. Record validation and the commit before
+starting the next slice. Never commit a failing red phase. Pushing or releasing
+follows the user's authorization; neither is required to record a completed slice.
+If validation is blocked, record the blocker and leave the slice incomplete.
+
+Before handing off or pausing, record the current commit, uncommitted work, remaining
+slices, blockers, and relevant paths. On resume, verify git state and whether the
+recorded validation still applies. Avoid rerunning unchanged successful checks unless
+new evidence or the current working state requires it.
+
+Review the full result against the goal at completion, then move the card to
+`agents.d/work_completed/`. Keep notes to decisions and evidence, not a transcript.
 
 ## Template
 
 ```markdown
-# [Feature Name]
+# Outcome
 
-## Goal
-One-sentence outcome.
+## Goal and Constraints
+Intended result, scope, and compatibility requirements.
 
-## Constraints
-- Hard boundaries from PERSONA, playbooks, or architecture
-- **TDD required: test → fail → implement → pass → refactor per slice (see PLAYBOOK_CODE_STYLE.md)**
+## Safe Slice Sequence
+- [ ] Slice: meaningful capability; test intent and expected failure;
+      proposed contract/design/boundary; why independently releasable.
 
-## Checklist
-- [ ] Review card for template compliance
-- [ ] Identify test files and patterns to follow
-- [ ] [Broad feature slice 1]
-  - [ ] Write test (verify fail reason)
-  - [ ] Implement
-  - [ ] Verify pass
-- [ ] Final refactor pass
-- [ ] Review against applicable playbooks
-- [ ] Move to agents.d/work_completed/
+## Design Decisions
+Material discoveries and revisions to the sequence or contracts.
 
-## Implementation Notes
-[Log discoveries, deviations, constraints]
+## Current State
+Date, current commit, uncommitted changes, next slice, blockers, handoff paths.
 
 ## Validation
-- Commands: [fill as you go]
-- Results: [fill before completion]
+Commands, outcomes, and gaps per slice; completed commit IDs.
 ```
-
-## Intake
-- `./gradlew agentBootstrap`
-- If Gradle reports missing or expired AWS SSO credentials, stop and ask the
-  repository owner to run `aws sso login`; do not unset, override, or otherwise
-  work around the configured AWS profile.
-- Read `context.json` required_reads and relevant playbooks
-- **Search for test patterns**: `find . -name "*Test.kt" | grep <module>` to identify test file naming and structure
-- Identify impacted modules, test scope, test-level intent
-- Confirm constraints before coding
-
-## Implementation
-
-### TDD Cycle Per Slice
-1. **Test**: Write one test. Confirm fail/pass reason.
-2. **Implement**: Simplest thing that works.
-3. **Refactor-light**: Clean up what you just wrote.
-4. **Verify pushable**: Run scoped validation. Verify backward compatibility if adding alternatives.
-5. **Commit**: When tests pass.
-6. **Update card**: Mark item complete.
-
-**Orchestrator pattern**: Spawn testing → implementation → refactor subagents per slice.
-
-### Refactoring
-- **Light** (during slices): names, duplication, structure
-- **Final** (end): re-read all modified files, apply code style, run check
-
-### Deprecation
-1. Build and test new feature first (full parity)
-2. Mark old API deprecated (why, replacement, when removed)
-3. Test both APIs
-
-### Adaptation
-- Project guidelines override card plans
-- Update plan when constraints discovered
-- Log in Implementation Notes
-
-### General
-- Keep changes scoped to impacted modules
-- Follow existing patterns
-- Confirm before "fixing" suspicious-looking code (Chesterton's Fence)
-- Each item = pushable state
-- Update card as you go, not at end
-
-## Validation
-- Run smallest task set first (`./gradlew :module:task`)
-- `./gradlew check` before completion
-- For GraphQL: run `agents.d/utilities/graphql-ref-scan.sh`
-- Review against playbooks
-
-## Completion
-- List files changed, validation results
-- Move card to `agents.d/work_completed/`
-- State residual risks

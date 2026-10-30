@@ -3,7 +3,9 @@
 This directory contains policy and operator notes for the scheduled cleanup PR workflow.
 
 ## Files
-- `agent-prompt.md`: prompt template used by the workflow for the cleanup agent.
+- `agent-prompt-harness.md`: active template rendered with the selected strategy.
+- `agent-prompt.md`: standalone prompt reference.
+- Shared contribution guidance: [AGENTS.md](../../AGENTS.md); no bootstrap step is needed.
 
 ## Workflow
 - Workflow file: `.github/workflows/weekly-cleanup-pr.yml`

@@ -1,81 +1,56 @@
-# Architecture Canonical
+# Architecture
 
-Canonical reference for AI agents. Link to this, don't duplicate.
+## Project and Ownership
 
-## Project
-Multi-module Gradle: Kotlin/JVM + Kotlin/JS. Web client + backend services.
+Multi-module Gradle: Kotlin/JVM and Kotlin/JS, web client and backend services.
+See `settings.gradle.kts` for the module include map.
 
-## Modules
-- `client/`: frontend (Kotlin/JS), Vite config at `client/vite.config.mjs`
-- `server/`: backend + GraphQL schema/resolvers
-- `libraries/`: shared code, reusable infrastructure
-- `sdk/`: GraphQL documents + dispatchers
-- `cli/`, `e2e/`, `scripts/`, `deploy/`: tooling/ops
+- `client/`: frontend; Vite config at `client/vite.config.mjs`. No server policy in
+  the client; treat the server as external and consume its contracts.
+- `server/`: backend and GraphQL schema/resolvers.
+- `libraries/`: shared code and infrastructure. No app policy in shared code; add
+  abstractions only when multi-module demand and stable semantics exist.
+- `sdk/`: GraphQL documents and dispatchers. Explicit contract mappings, with no
+  silent fallbacks that mask contract drift.
+- `cli/`, `e2e/`, `scripts/`, `deploy/`: tooling and operations.
 
-## Ownership
-- **Client**: No server policy in client. Treat server as external.
-- **Libraries**: No app policy in shared code. Add abstractions only when multi-module demand + stable semantics already exist.
-- **SDK**: Explicit contract mappings. No silent fallbacks.
-- **Tests**: Verify behavior at affected boundary. Tests = executable constraints (deletion removes constraints with no build signal).
+Tests constrain behavior at the affected boundary; deleting a test removes a
+constraint without necessarily producing a build failure. See [TESTING.md](TESTING.md).
 
-## Build
-- Use `./gradlew` always
-- Generated artifacts not version-controlled
-- Testing: confidence-anchor at highest level, variations at lower levels
-- Baseline: `./gradlew test|build|check`
-- Scoped: `./gradlew :module:task`
-- Serverless packaging belongs to each `:deploy:<stage>` module; its service
-  root is `build/deploy` and its final artifact remains
-  `server/build/<stage>/lambda-dist`.
-- The Serverless runtime version is derived from
-  `libraries/js-dependencies/package.json` when the stage service config is
-  copied; package tasks share `:server:serverlessWarmup` before running in
-  parallel.
+## Build and Deployment
 
-## GraphQL
-**Paths:**
+Use the commands and safe delivery protocol in [AGENTS.md](../../AGENTS.md).
+Generated build artifacts are not version-controlled; agent entry files are
+hand-maintained committed documentation.
+
+Serverless packaging belongs to each `:deploy:<stage>` module. Its service root is
+`build/deploy`; the final artifact remains `server/build/<stage>/lambda-dist`.
+The runtime version derives from `libraries/js-dependencies/package.json` when
+stage service config is copied. Package tasks share `:server:serverlessWarmup`
+before running in parallel.
+
+## GraphQL Locations
+
 - Schema: `server/src/jsMain/resources/schema.graphqls`
-- Resolvers: `server/src/jsMain/kotlin/...`
-- SDK docs: `sdk/src/commonMain/graphql/`
-- SDK dispatchers: `sdk/src/commonMain/kotlin/...`
-- Action tests: `server/actionz/src/jsTest/kotlin/...`
+- Resolvers: `server/src/jsMain/kotlin/`
+- SDK documents: `sdk/src/commonMain/graphql/`
+- SDK dispatchers: `sdk/src/commonMain/kotlin/`
+- Action tests: `server/actionz/src/jsTest/kotlin/`
 
-**Change Rules:**
-- Deprecations delegate through canonical path (no logic duplication)
-- Field add/rename/deprecation/removal = synchronized update: schema, resolver, SDK docs, dispatcher, tests
-- Run `agents.d/utilities/graphql-ref-scan.sh <pattern>` for reference discovery (not exhaustive)
+Use [PLAYBOOK_GRAPHQL.md](PLAYBOOK_GRAPHQL.md) for synchronized changes,
+deprecation routing, reference discovery, and validation.
 
-## Editing
-- Minimal diffs, pattern-consistent
-- No unrelated refactors in features/bugfixes
-- Preserve behavior unless explicitly changed
-- Work cards: `agents.d/work/` → `agents.d/work_completed/`
-- Direct solutions first; abstractions only when duplication/pressure demonstrated
-- Convention updates go in canonical files (`ARCHITECTURE_CANONICAL.md`, `BOUNDARIES.md`, `WORK_CHECKLIST.md`, playbooks), not `AGENTS.md`
+## Integration
 
-## Delivery
-- Optimize system flow, not local neatness
-- State impact: integration path, build/test/deploy ergonomics, rollback strategy
-- Report outcomes/risks, not activity counts
+Design seams around product concepts and ownership, not local neatness. Identify
+contract/invariant/auth assumptions at affected boundaries and revise them when
+evidence conflicts. Keep parallel ownership disjoint and integration touchpoints
+explicit. Surface conceptual conflicts promptly. For deployment-affecting changes,
+consider the integration path, build/deploy ergonomics, and rollback.
 
-## Multi-Agent Coordination
-- State seam assumptions up front (ownership, contracts, invariants, auth)
-- Update assumptions when evidence conflicts
-- Parallel work: disjoint ownership, integration touchpoints identified
-- Surface conceptual conflicts immediately
+## Existing Utilities
 
-## Automation
-- Express as Gradle tasks (`./gradlew ...`), not shell scripts
-- Agent utilities: `agents.d/utilities/`
-  - `graphql-ref-scan.sh <pattern>` — GraphQL reference discovery
-  - `tcr-delete.sh <file> [reason]` — safe dead code deletion with auto-revert
-  - `chrome-e2e-diagnostics.sh [--check|--clean]` — Chrome e2e troubleshooting
-  - `kill-chrome-processes.sh` — kill stuck ChromeDriver
-- After convention updates: `./gradlew syncAiContext`
-
-## Completion Criteria
-- Impacted modules identified
-- Seam assumptions/invariants listed
-- Scoped validation before broad
-- Cross-layer artifacts updated
-- Risks/follow-ups/unresolved questions listed
+`agents.d/utilities/` contains reference discovery, safe dead-code deletion, and
+Chrome troubleshooting helpers. Read their instructions before use. New repository
+automation belongs in Gradle tasks; retaining an existing helper is not a reason
+to introduce additional shell automation.

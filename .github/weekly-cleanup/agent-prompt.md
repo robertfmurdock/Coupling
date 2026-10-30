@@ -5,26 +5,27 @@ You are performing one small, architecture-aligned cleanup directly in this repo
 You have full tool access: read files, explore the codebase, and edit files directly.
 
 ### CI Context Overrides
-- `./gradlew agentBootstrap` and `./gradlew check` were already run by the workflow before this prompt — do not run them again at the start.
+- `./gradlew check` was already run by the workflow before this prompt — do not run it again at the start.
 - The full Gradle build cache is warm — targeted and full validation runs are fast.
 - **Validation strategy:**
   - For dead code deletions, use `agents.d/utilities/tcr-delete.sh` (see Investigation Protocol) — it runs the full build and records the verdict automatically.
   - For non-deletion changes (renames, style), run a full build before finishing:
     `./gradlew check -q --console=plain 2>&1 | tail -100`
   - The `-q` flag suppresses download noise. Only read detailed output if a command fails.
-- These override the general CLAUDE.md execution norms for this automated context.
+- These specialize the shared AGENTS.md protocol for this automated context.
+- Call the cleanup shot before edits: state the intended invariant, proposed change,
+  and why it is independently release-safe. For behavior-preserving cleanup, existing
+  tests constrain the result; do not manufacture a failing test. The workflow owns
+  the final commit/PR after its validation and safety gates pass.
 
 ### Required Context Reads
-Read these before making changes:
-- `agents.d/context/ARCHITECTURE_CANONICAL.md`
-- `agents.d/context/BOUNDARIES.md`
-- `agents.d/context/PERSONA.md`
-- `agents.d/context/WORK_CHECKLIST.md`
-- `agents.d/context/generated/repo-index.md`
-- `agents.d/context/generated/workflows.md`
-- `agents.d/context/GRADLE_PLAYBOOK.md`
-- `agents.d/context/context.json`
-- `.github/weekly-cleanup/cleanup-history.md` — skip candidates listed as `verified-in-use`; investigate `queued` candidates first before generating new ones.
+Read the repository-root `AGENTS.md` and the architecture guidance in
+`agents.d/context/ARCHITECTURE_CANONICAL.md`. Load testing, production style, or
+Gradle guidance only when the selected cleanup needs it. Read
+`.github/weekly-cleanup/cleanup-history.md` — skip candidates listed as
+`verified-in-use`; investigate `queued` candidates first. Repository layout and
+modules are available directly from `settings.gradle.kts`; no generated context
+files or bootstrap task are required.
 
 ### Turn Budget and History Priority
 **The cleanup-history.md entry is the primary deliverable of every run.** A run that records "no safe target found" is a success. A run that exhausts all turns without writing history is a failure.

@@ -92,15 +92,13 @@ fight clubs... All I ask is that you send me a nice note telling me about your i
 
 Good luck!
 
-AI Agent Bootstrap
+AI Agent Guidance
 ------------------
 
-If you are using an AI coding agent in this repository, start each session with:
+Start with [AGENTS.md](AGENTS.md) for the contribution protocol and task-specific
+references. Guidance is committed Markdown, available on a fresh checkout without
+running the build. Edit its authoritative documents directly; no regeneration is required.
 
-`./gradlew agentBootstrap`
-
-This ensures the agent reads the canonical context and adapter instructions in the expected order.
-
-When updating any files under `agents.d/context/`, regenerate derived outputs with:
-
-`./gradlew syncAiContext`
+Deliver features as small test-plus-implementation commits that pass `./gradlew check`
+and are safe to release independently. See the [context index](agents.d/context/README.md)
+for testing, production design, work cards, and specialist guidance.

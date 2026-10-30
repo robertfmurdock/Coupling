@@ -1,3 +1,7 @@
+> Superseded 2026-10-30: committed AGENTS.md, CLAUDE.md, and Copilot guidance
+> replace generated context. No bootstrap, regeneration, or agent restart is needed.
+> The original proposal below is retained as history, not current instructions.
+
 # Task: Add automatic agent restart mechanism to agentBootstrap when context files are regenerated
 
 ## Goal

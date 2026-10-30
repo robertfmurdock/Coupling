@@ -1,81 +1,49 @@
-# Code Style Playbook
+# Production Code Style
 
-Load when writing or modifying source code. For examples: `FEW_SHOT_CODE_STYLE.md`.
+Load for production source edits. For tests, use [TESTING.md](TESTING.md); for
+illustrative production patterns, consult [FEW_SHOT_CODE_STYLE.md](FEW_SHOT_CODE_STYLE.md).
+The contribution sequence is defined in [AGENTS.md](../../AGENTS.md).
 
-## TDD: Red-Green-Refactor
-**Required for every implementation slice.** Non-negotiable gate: cannot mark implementation complete without test.
+## Design
 
-### The Cycle
-1. **Red**: Write one test for the next behavior. Run it. Confirm it fails for the **right reason** (e.g., "function not found", not "wrong assertion").
-2. **Green**: Write simplest code to make that test pass. No more.
-3. **Refactor**: Clean up what you just wrote (names, duplication, structure). Tests stay green.
-4. **Verify**: Run scoped tests (`./gradlew :module:test`) before moving to next slice.
+- Prefer small functions with one clear responsibility; target fewer than ten lines
+  when that improves clarity, rather than extracting merely to satisfy a count.
+- Name intent, not implementation. Extract well-named private functions when they
+  make the flow easier to follow.
+- Prefer immutable data and functional/composable transforms (`map`, `filter`,
+  `fold`) over inheritance-heavy designs and mutable accumulators.
+- Reuse established capabilities. Introduce abstractions when demonstrated demand
+  and stable semantics justify them, not for hypothetical future needs.
+- Make ownership and contracts explicit; follow the architecture guidance for
+  cross-module changes. Keep edits scoped to the requested outcome.
+- Prefer code that expresses its intent. Retain comments explaining reasons and
+  constraints that the code cannot express.
 
-### Test the Behavior, Not the Plumbing
-- Test = executable specification of user-visible behavior or component contract
-- Plumbing changes (adding GraphQL query fields, updating imports, config changes) aren't TDD slices
-- Wrong: "Test that query includes field X" → this tests syntax, not behavior
-- Right: "Test that component renders value from field X" → this tests the feature
+## Kotlin/JS Interop
 
-### Before You Start
-- Search for existing test patterns in the module: `find . -name "*Test.kt" | grep <module>`
-- Identify test utilities (builders, fakes, assertions) to reuse
-- Confirm test infrastructure exists (if not, add "setup tests" to checklist)
-
-### Test Granularity
-- One test = one focused objective
-- Verify multiple related outputs in one test
-- Multiple tests only for different scenarios/variations
-- Only add passing tests if their absence confuses readers
-
-### Testmints Phase Discipline
-- `setup` arranges scenario-specific data, collaborators, and the world that enables the feature.
-- `exercise` contains the one externally meaningful trigger, or the deliberate sequence that is itself the contract.
-- `verify` contains assertions; carry the exercise result and required observations forward explicitly.
-- Name the bounded behavior under test. Split scenarios with different subjects instead of hiding them in a generic factory.
-- Prefer explicit scenarios and narrowly scoped helpers; introduce shared test machinery only when it improves the case at the call site.
-
-### Kotlin/JS Interop
 - The `jstools` convention enables Kotlin's plain-object plugin.
-- For known JavaScript request or configuration shapes, prefer `@JsPlainObject external interface` types and generated factories over `json`, `dynamic`, or chained `unsafeCast`s.
-- Keep `Json` for genuinely open-ended maps; localize unavoidable JavaScript casts to external bindings or test-double boundaries.
-- Follow `libraries/repository/dynamo/.../external/awsdynamoclient/Aws.kt` for the local pattern.
+- For known JavaScript request/configuration shapes, prefer
+  `@JsPlainObject external interface` types and generated factories over `json`,
+  `dynamic`, or chained `unsafeCast`s.
+- Keep `Json` for genuinely open-ended maps; localize unavoidable JavaScript casts
+  to external bindings or test-double boundaries.
+- Follow `libraries/repository/dynamo/.../external/awsdynamoclient/Aws.kt` for the
+  local pattern.
 
-### Formatting
-"Chop down" chains: break before `?.` and `.assertIsEqualTo`
+## Formatting
+
+Follow local Kotlin formatting. Break long chains before `?.` and assertion calls:
 
 ```kotlin
-// Good
-data["version"]?.jsonPrimitive?.content.assertIsEqualTo("1.2.4")
-
-// Better
 data["version"]
     ?.jsonPrimitive
     ?.content
     .assertIsEqualTo("1.2.4")
 ```
 
-## Assertions
-- Prefer `assertIsEqualTo` (clearer diffs)
-- Test behavior, not structure (no symbolic assertNotNull/type checks)
-- When adding alternatives, test both old and new APIs
-
-## Functions & Comments
-- Target <10 lines per function (clarity wins over brevity)
-- Name intent, not implementation
-- Refactor comments into code; keep only WHY that code can't express
-
-## Data Flow
-- Prefer immutable + functional transforms (`map`, `filter`, `fold`)
-- Avoid loops with `break`, `continue`, mutable accumulators
-
 ## Deprecation
-1. Build and test new feature first (full parity)
-2. Annotate: why, replacement, when removed
-3. Test both APIs
 
-## Scope
-- Keep edits minimal
-- Feature/bugfix: scope = any function touching changed lines
-- Refactor: scope = any file touching changed lines
-- Preserve behavior unless task changes it
+Establish and test the replacement's behavior before deprecating the old API.
+Document why, the replacement, and removal timing. Keep deprecated paths delegated
+to canonical behavior and cover both supported APIs. For GraphQL, follow the
+[GraphQL playbook](PLAYBOOK_GRAPHQL.md).

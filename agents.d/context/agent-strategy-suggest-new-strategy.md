@@ -8,7 +8,7 @@ and to propose one new strategy that a future agent run could act on systematica
 
 1. Read the following context files:
    - `agents.d/context/ARCHITECTURE_CANONICAL.md`
-   - `agents.d/context/BOUNDARIES.md`
+   - `agents.d/context/TESTING.md`
    - `agents.d/context/agent-strategy-dead-code.md`
    - `agents.d/context/agent-strategy-boundary-check.md`
    - `.github/weekly-cleanup/cleanup-history.md` — look for patterns in `queued` and `verified-in-use`
@@ -16,7 +16,7 @@ and to propose one new strategy that a future agent run could act on systematica
 2. Scan the focus module for recurring structural patterns that are not covered by `dead-code` or
    `boundary-check`:
    - Naming inconsistencies (identifiers, file names, or module paths that diverge from neighborhood patterns)
-   - Test misplacement (tests anchored at the wrong architectural level per the testing strategy in `ARCHITECTURE_CANONICAL.md`)
+   - Test misplacement (tests anchored at the wrong architectural level per the testing strategy in `TESTING.md`)
    - Redundant abstractions (multiple nearly-identical implementations with no convergence path)
    - Stale comments or outdated documentation embedded in source files
    - Any other recurring shape of technical debt visible in the focus module

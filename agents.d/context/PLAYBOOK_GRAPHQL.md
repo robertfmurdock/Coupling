@@ -2,12 +2,9 @@
 
 Use this playbook for field add/rename/deprecation/removal and mutation routing.
 
-## TDD Note: Query Changes Are Plumbing, Not Features
-When adding fields to a client query:
-- The query change itself is setup, not a TDD slice
-- The feature = component/page rendering the data
-- Write component/integration tests first, then add query fields to make them compile
-- Don't create a "test the query has fields" slice - test the behavior that uses those fields
+For test-first behavior and query-plumbing distinctions, follow [TESTING.md](TESTING.md).
+Each slice must synchronize its affected layers and remain independently releasable;
+follow the design-shot and commit protocol in [AGENTS.md](../../AGENTS.md).
 
 ## 1) Scope and Text-Reference Scan
 1. Identify target operation/field names.
@@ -44,9 +41,8 @@ When adding fields to a client query:
 2. Run targeted tests first (`:module:task`) for each touched layer:
    - server mutation/resolver path: `:server:actionz:jsTest`
    - SDK dispatcher/document updates: `:sdk:commonTest`
-3. Run broader validation as needed:
-   - `./gradlew test`
-   - `./gradlew check`
+3. Run `./gradlew check` before committing the safe slice. Run `./gradlew test`
+   additionally when needed.
 
 ## 6) Done Criteria
 - Deprecated paths delegate (no duplicated legacy logic).

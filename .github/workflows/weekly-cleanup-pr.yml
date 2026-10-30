@@ -68,9 +68,6 @@ jobs:
           role-to-assume: arn:aws:iam::174159267544:role/LocalDevelopment
           aws-region: us-east-1
 
-      - name: Bootstrap Agent Context
-        run: ./gradlew agentBootstrap
-
       - name: Derive Weekly Plan
         id: focus
         run: |
@@ -242,7 +239,7 @@ jobs:
 
             ## Architecture Alignment
             - Constrained to one focus area in weekly rotation.
-            - Follows context contract from `agents.d/context/context.json` and canonical guidance files.
+            - Follows `AGENTS.md` and its task-specific guidance.
 
             ## Validation Commands and Results
             - `./gradlew check` (pre-agent green verification + post-agent full validation)

@@ -1,47 +1,36 @@
-# Agent Context Pack
+# Context Index
 
-This directory is the canonical source for AI-agent execution context in this
-repository.
+Start with [AGENTS.md](../../AGENTS.md), the canonical shared entry. Root `CLAUDE.md`
+and `.github/copilot-instructions.md` are committed adapters to it. Guidance is
+available before any build runs; edit Markdown directly without regeneration.
 
-## Layout
-- `ARCHITECTURE_CANONICAL.md`: canonical architecture, module ownership, and norms.
-- `PERSONA.md`: owner profile and collaboration preferences (brief version).
-- `PERSONA_EXTENDED.md`: extended persona for higher-ambiguity sessions.
-- `WORK_CHECKLIST.md`: required pre-flight and completion checks.
-- `CONTEXT_CONTRACT.md`: required context categories every agent must consume.
-- `PLAYBOOK_CODE_STYLE.md`: code style rules for source code modifications.
-- `GRADLE_PLAYBOOK.md`: Gradle build-logic and automation conventions.
-- `GITHUB_ACTIONS_PLAYBOOK.md`: workflow authoring conventions.
-- `PLAYBOOK_GRAPHQL.md`: high-risk GraphQL change recipe.
-- `context.json`: machine-readable manifest (see below).
-- `generated/`: generated indexes (repo modules and workflows) — optional lookups.
-- `adapters/`: short templates for agent-specific injection files.
+## Read When Relevant
 
-## context.json — Dual Purpose
+| Document | When to read | Owns |
+| --- | --- | --- |
+| [Architecture](ARCHITECTURE_CANONICAL.md) | Ownership or cross-module design | Module boundaries and system-specific paths |
+| [Testing](TESTING.md) | Behavior changes or test edits | Test-first development, TestMints, scenario design |
+| [Production style](PLAYBOOK_CODE_STYLE.md) | Production source edits | Kotlin design, formatting, and interop conventions |
+| [Examples](FEW_SHOT_CODE_STYLE.md) | A production style decision needs illustration | Illustrative patterns; verify against current code |
+| [GraphQL](PLAYBOOK_GRAPHQL.md) | Schema, operation, or mutation changes | Cross-layer synchronization and validation recipe |
+| [Gradle](GRADLE_PLAYBOOK.md) | Build/dependency/automation edits or build failures | Build conventions, cache policy, AWS diagnosis |
+| [GitHub Actions](GITHUB_ACTIONS_PLAYBOOK.md) | Workflow edits | CI orchestration and safety gates |
+| [Work cards](WORK_CHECKLIST.md) | Multi-commit work or handoffs | Safe slice planning and durable progress |
+| [Owner values](PERSONA.md) | Ambiguity or competing design choices | Product, collaboration, and decision preferences |
+| [Contribution visualizations](CONTRIBUTION_VISUALIZATIONS.md) | Contribution visualization work | Feature-specific design context |
 
-`context.json` serves two roles:
+Cleanup strategies (`agent-strategy-*.md`) are loaded by the weekly-cleanup prompt
+for the selected strategy; they are not general startup instructions. Utilities and
+their troubleshooting notes live in `agents.d/utilities/`.
 
-1. **Gradle tooling**: drives `agentBootstrap` (prints read order), `syncAiContext`
-   (generates files), and `validateAiContextManifest` (checks file existence).
-2. **Machine-readable read manifest**: consumed by programmatic agents (e.g. Codex
-   via `AGENTS.md`) to determine required vs. conditional context reads.
+## Maintaining Guidance
 
-The generated files in `generated/` are listed under `optional_reads` — they are
-useful lookups (module list, workflow summary) but not required pre-flight reading.
+Keep each rule in one authoritative home; link to specialist guidance rather than
+copying it. Add durable repository knowledge and decisions, not generic engineering
+recipes or transcripts. Update active consumers when a reference changes. Historical
+work cards and cleanup logs record past decisions and are not current instructions.
 
-## Agent Entry Points
-
-| Agent       | Entry file                        | Template source                        |
-|-------------|-----------------------------------|----------------------------------------|
-| Claude Code | `CLAUDE.md` (repo root, generated)| `adapters/CLAUDE.md`                   |
-| Codex       | `AGENTS.md` (repo root)           | `context.json` (not generated)         |
-| Copilot     | `.github/copilot-instructions.md` (generated) | `adapters/copilot-instructions.md` |
-
-All generated entry files are produced by `syncAiContext`. Playbook lists are
-injected from `context.json` via the `{{PLAYBOOKS}}` placeholder in each adapter
-template — add a playbook to `context.json` and it propagates automatically.
-
-## Update Flow
-1. Edit canonical docs in this folder (not the generated files).
-2. Run `./gradlew syncAiContext` to regenerate derived outputs and sync `CLAUDE.md`.
-3. Run `./gradlew agentBootstrap` to refresh and validate the full context.
+The design follows [OpenAI's guidance on task-relevant context](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)
+and [Anthropic's guidance on concise repository instructions](https://code.claude.com/docs/en/best-practices).
+Separate agent contexts are a selective tool, not a proven performance improvement
+for this repository; no benchmark is implied by this structure.

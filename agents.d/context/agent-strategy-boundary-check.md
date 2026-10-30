@@ -1,11 +1,11 @@
 ### Boundary Check Protocol
 
 This strategy identifies code that violates the module ownership rules defined in
-`agents.d/context/ARCHITECTURE_CANONICAL.md` (Module Ownership Rules section).
+`agents.d/context/ARCHITECTURE_CANONICAL.md` (Project and Ownership section).
 
 #### Discovery
 
-1. Read `agents.d/context/ARCHITECTURE_CANONICAL.md` — focus on the Module Ownership Rules section.
+1. Read `agents.d/context/ARCHITECTURE_CANONICAL.md` — focus on the Project and Ownership section.
 2. Scan the focus module for patterns that violate these rules:
    - **Client violations:** server-side policy embedded in `client/` code; direct use of server
      implementation details (not contracts); server/schema/sdk changes driven by a client-only concern.

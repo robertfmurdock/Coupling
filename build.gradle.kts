@@ -1,8 +1,5 @@
 
 import com.avast.gradle.dockercompose.tasks.ComposeUp
-import com.zegreatrob.coupling.plugins.ai.AgentBootstrapTask
-import com.zegreatrob.coupling.plugins.ai.SyncAiContextTask
-import com.zegreatrob.coupling.plugins.ai.ValidateAiContextManifestTask
 import com.zegreatrob.coupling.plugins.testlogging.readAttributionCoverage
 import com.zegreatrob.coupling.plugins.testlogging.registerTestLogCliTask
 import com.zegreatrob.coupling.plugins.util.AwsParameters
@@ -128,51 +125,7 @@ tasks {
         }
     }
 
-    val aiContextDir = rootProject.file("agents.d/context")
-    val aiAdaptersDir = aiContextDir.resolve("adapters")
-    val aiGeneratedDir = aiContextDir.resolve("generated")
-    val aiRepoIndexFile = aiGeneratedDir.resolve("repo-index.md")
-    val aiWorkflowsFile = aiGeneratedDir.resolve("workflows.md")
-    val aiContextManifestFile = aiContextDir.resolve("context.json")
-    val aiClaudeFile = rootProject.file("CLAUDE.md")
-
-    val syncAiContext = register<SyncAiContextTask>("syncAiContext") {
-        group = "documentation"
-        description = "Regenerates AI context generated files and syncs agent adapter outputs."
-        repoRootDirPath.set(rootProject.rootDir.absolutePath)
-        settingsFilePath.set(rootProject.file("settings.gradle.kts").absolutePath)
-        adaptersDirPath.set(aiAdaptersDir.absolutePath)
-        generatedDirPath.set(aiGeneratedDir.absolutePath)
-        repoIndexFilePath.set(aiRepoIndexFile.absolutePath)
-        workflowsFilePath.set(aiWorkflowsFile.absolutePath)
-        claudeFilePath.set(aiClaudeFile.absolutePath)
-        copilotFilePath.set(rootProject.file(".github/copilot-instructions.md").absolutePath)
-        contextManifestFilePath.set(aiContextManifestFile.absolutePath)
-    }
-
-    register<AgentBootstrapTask>("agentBootstrap") {
-        group = "help"
-        description = "Prints the required AI agent context read order."
-        dependsOn(syncAiContext)
-        repoRootDirPath.set(rootProject.rootDir.absolutePath)
-        contextManifestFilePath.set(aiContextManifestFile.absolutePath)
-    }
-
-    val validateAiContextManifest = register<ValidateAiContextManifestTask>("validateAiContextManifest") {
-        group = "verification"
-        description = "Validates agents.d/context/context.json entries point to existing files."
-        repoRootDirPath.set(rootProject.rootDir.absolutePath)
-        contextManifestFilePath.set(aiContextManifestFile.absolutePath)
-    }
-
-
-    assemble {
-        dependsOn(syncAiContext)
-    }
-
     check {
-        dependsOn(syncAiContext)
-        dependsOn(validateAiContextManifest)
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
         finalizedBy(validateTestJsonl)
     }

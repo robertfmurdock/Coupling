@@ -1,5 +1,9 @@
 # Task: Organize gradle plugin structure with sub-packages
 
+> Guidance migration note (2026-10-30): AI context generation tasks were removed.
+> Their structure and checked steps below record earlier work, not current tasks
+> to recreate. Use weekly-cleanup prompt rendering for current task validation.
+
 ## Goal
 Organize the coupling-plugins source files into logical sub-packages to improve discoverability, maintainability, and clarity of responsibility boundaries. Currently all 22 Kotlin files are in a flat structure under `com.zegreatrob.coupling.plugins`.
 
@@ -93,7 +97,7 @@ If full reorganization is too risky, start with just one or two sub-packages:
 ## Validation strategy
 - Build coupling-plugins after each file group move
 - Verify task registration still works (check task list in a module)
-- Run specific task to verify functionality (e.g., `./gradlew agentBootstrap`)
+- Run a current task to verify functionality (e.g., `./gradlew :scripts:weekly-cleanup:weeklyCleanupRenderPrompt`)
 - Run full `./gradlew check` before completion
 - Spot-check that weekly cleanup and test logging still work
 

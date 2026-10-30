@@ -131,8 +131,8 @@ See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/
 ## Validation Ladder
 - Run the smallest sufficient check first (for example `./gradlew :module:task`).
 - Then run affected module checks.
-- Run broader checks (`./gradlew check`, or `build`/`test` as needed) when change
-  risk crosses module boundaries.
+- Run `./gradlew check` before each safe slice commit, as required by
+  [AGENTS.md](../../AGENTS.md). Use `build`/`test` additionally when the task needs them.
 
 ### AWS SSO and Gradle Daemons
 
@@ -145,11 +145,19 @@ See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/
   repository owner to run `aws sso login`; do not modify AWS profiles or try to
   bypass the configured credentials.
 
+### Browser Tests and Sandboxed Daemons
+
+Chrome launched by Gradle inherits the daemon's execution restrictions. If a
+sandbox prevents browser startup, rerunning only the client outside it can reuse
+the same restricted daemon. With the required execution approval, stop Gradle and
+start a fresh daemon in the permitted environment before retrying. Diagnose launch
+failures separately from test failures; do not weaken tests to mask them.
+
 ## Change Coupling Rules
 - Keep build logic updates and required consumer updates in one change set.
 - If conventions change, update canonical context docs in `agents.d/context/`
   within the same change.
-- Do not place durable Gradle conventions only in `AGENTS.md` or generated files.
+- Keep detailed Gradle conventions here; link from `AGENTS.md` rather than duplicating them.
 
 ## Experimental Kotlin Gradle APIs
 

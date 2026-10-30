@@ -1,4 +1,0 @@
-- Start each session with `{{AGENT_BOOTSTRAP}}`.
-- Use `./gradlew` for all tasks.
-- Express repository automation as Gradle tasks, not ad hoc shell scripts.
-- Start with module-scoped validation, then broaden as needed.
