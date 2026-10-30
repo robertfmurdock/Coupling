@@ -1,0 +1,9 @@
+mutation createSecretsForTwoParties($first: CreateSecretInput!, $second: CreateSecretInput!) {
+    first: createSecret(input: $first) { secretId secretToken }
+    second: createSecret(input: $second) { secretId secretToken }
+}
+
+mutation savePinsForTwoParties($first: SavePinInput!, $second: SavePinInput!) {
+    first: savePin(input: $first)
+    second: savePin(input: $second)
+}

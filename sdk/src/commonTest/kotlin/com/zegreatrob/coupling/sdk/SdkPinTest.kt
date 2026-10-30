@@ -12,6 +12,8 @@ import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
 import com.zegreatrob.coupling.sdk.schema.PinListQuery
 import com.zegreatrob.coupling.sdk.schema.PinRecordListQuery
+import com.zegreatrob.coupling.sdk.schema.SavePinsForTwoPartiesMutation
+import com.zegreatrob.coupling.sdk.schema.type.SavePinInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
@@ -34,6 +36,35 @@ class SdkPinTest {
         },
         sharedTeardown = { it.sdk.fire(DeletePartyCommand(it.party.id)) },
     )
+
+    @Test
+    fun authorizedMutationsInOneRequestSavePinsUnderTheirRequestedParties() = asyncSetup(object {
+        val firstParty = stubPartyDetails()
+        val secondParty = stubPartyDetails()
+        val firstPin = stubPin()
+        val secondPin = stubPin()
+    }) {
+        sdk().fire(SavePartyCommand(firstParty))
+        sdk().fire(SavePartyCommand(secondParty))
+    } exercise {
+        val response = sdk().executeMutation(
+            SavePinsForTwoPartiesMutation(
+                SavePinInput(firstParty.id, firstPin.id, firstPin.icon, firstPin.name),
+                SavePinInput(secondParty.id, secondPin.id, secondPin.icon, secondPin.name),
+            ),
+        )
+        Triple(
+            response,
+            sdk().fire(GqlQuery(PinListQuery(firstParty.id)))?.party?.pinList,
+            sdk().fire(GqlQuery(PinListQuery(secondParty.id)))?.party?.pinList,
+        )
+    } verify { (response, firstPins, secondPins) ->
+        response.errors.assertIsEqualTo(null)
+        response.data?.first.assertIsEqualTo(true)
+        response.data?.second.assertIsEqualTo(true)
+        firstPins?.map { it.pinDetails.toDomain() }.assertIsEqualTo(listOf(firstPin))
+        secondPins?.map { it.pinDetails.toDomain() }.assertIsEqualTo(listOf(secondPin))
+    }
 
     @Test
     fun canSaveAndGetPins() = partySetup.with(

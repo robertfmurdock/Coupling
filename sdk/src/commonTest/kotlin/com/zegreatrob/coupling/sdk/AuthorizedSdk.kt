@@ -2,12 +2,14 @@
 
 package com.zegreatrob.coupling.sdk
 
+import com.apollographql.apollo.api.Mutation
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.schema.PartyIdListQuery
 import com.zegreatrob.testmints.action.ActionCannon
+import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -125,3 +127,8 @@ private suspend fun generateAccessToken(username: String, password: String): Str
 
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
+
+internal suspend fun <D : Mutation.Data> ActionCannon<CouplingSdkDispatcher>.executeMutation(
+    mutation: Mutation<D>,
+) = ((this as DispatcherPipeCannon).dispatcher as KtorCouplingSdkDispatcher)
+    .performer.apolloMutation(mutation)

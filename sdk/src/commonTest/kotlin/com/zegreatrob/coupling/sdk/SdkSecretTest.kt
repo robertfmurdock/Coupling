@@ -11,9 +11,11 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
+import com.zegreatrob.coupling.sdk.schema.CreateSecretsForTwoPartiesMutation
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsAndListQuery
 import com.zegreatrob.coupling.sdk.schema.PartyDetailsQuery
 import com.zegreatrob.coupling.sdk.schema.PartySecretListQuery
+import com.zegreatrob.coupling.sdk.schema.type.CreateSecretInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.uuidString
@@ -146,6 +148,65 @@ class SdkSecretTest {
         sdk().fire(CreateSecretCommand(partyId, secretDescription))
     } verify { result ->
         result.assertIsEqualTo(null)
+    }
+
+    @Test
+    fun earlierAuthorizedMutationDoesNotAuthorizeAnotherOwnersParty() = asyncSetup(object {
+        val callerParty = stubPartyDetails()
+        val otherParty = stubPartyDetails()
+        suspend fun otherSdk() = altAuthorizedSdkDeferred.await()
+    }) {
+        sdk().fire(SavePartyCommand(callerParty))
+        otherSdk().fire(SavePartyCommand(otherParty))
+        sdk().fire(GqlQuery(PartyDetailsQuery(otherParty.id)))
+            ?.party
+            .assertIsEqualTo(null, "Caller must not already have access to the other party")
+    } exercise {
+        val response = sdk().executeMutation(
+            CreateSecretsForTwoPartiesMutation(
+                CreateSecretInput(callerParty.id, "first party secret"),
+                CreateSecretInput(otherParty.id, "second party secret"),
+            ),
+        )
+        Triple(
+            response,
+            sdk().fire(GqlQuery(PartySecretListQuery(callerParty.id)))?.party?.secretList,
+            otherSdk().fire(GqlQuery(PartySecretListQuery(otherParty.id)))?.party?.secretList,
+        )
+    } verify { (response, callerSecrets, otherSecrets) ->
+        response.errors.assertIsEqualTo(null)
+        callerSecrets?.map { it.partySecret.id }
+            .assertIsEqualTo(listOf(response.data?.first?.secretId))
+        callerSecrets?.size.assertIsEqualTo(1)
+        otherSecrets.assertIsEqualTo(emptyList())
+        (response.data?.second == null).assertIsEqualTo(true, "Unauthorized secret must not be returned")
+    }
+
+    @Test
+    fun authorizedMutationsInOneRequestStoreSecretsUnderTheirOwnParties() = asyncSetup(object {
+        val firstParty = stubPartyDetails()
+        val secondParty = stubPartyDetails()
+    }) {
+        sdk().fire(SavePartyCommand(firstParty))
+        sdk().fire(SavePartyCommand(secondParty))
+    } exercise {
+        val response = sdk().executeMutation(
+            CreateSecretsForTwoPartiesMutation(
+                CreateSecretInput(firstParty.id, "first party secret"),
+                CreateSecretInput(secondParty.id, "second party secret"),
+            ),
+        )
+        Triple(
+            response,
+            sdk().fire(GqlQuery(PartySecretListQuery(firstParty.id)))?.party?.secretList,
+            sdk().fire(GqlQuery(PartySecretListQuery(secondParty.id)))?.party?.secretList,
+        )
+    } verify { (response, firstSecrets, secondSecrets) ->
+        response.errors.assertIsEqualTo(null)
+        firstSecrets?.map { it.partySecret.id }.assertIsEqualTo(listOf(response.data?.first?.secretId))
+        secondSecrets?.map { it.partySecret.id }.assertIsEqualTo(listOf(response.data?.second?.secretId))
+        firstSecrets?.map { it.partySecret.partyId }.assertIsEqualTo(listOf(firstParty.id))
+        secondSecrets?.map { it.partySecret.partyId }.assertIsEqualTo(listOf(secondParty.id))
     }
 
     private fun String.assertIsValidToken(partyId: PartyId) {

@@ -146,17 +146,11 @@ class CommandDispatcher(
     override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
     override val discordRepository: DiscordRepository by lazy { clientDiscordRepository() }
 
-    private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
+    private val authorizedPartyDispatchers = mutableMapOf<PartyId, Deferred<CurrentPartyDispatcher>>()
 
-    suspend fun authorizedPartyIdDispatcher(partyId: PartyId): CurrentPartyDispatcher {
-        val preexistingJob = authorizedPartyIdDispatcherJob
-        return preexistingJob?.await()
-            ?: scope.async {
-                CurrentPartyDispatcher(partyId, this@CommandDispatcher)
-            }.also {
-                authorizedPartyIdDispatcherJob = it
-            }.await()
-    }
+    suspend fun authorizedPartyIdDispatcher(partyId: PartyId): CurrentPartyDispatcher = authorizedPartyDispatchers
+        .getOrPut(partyId) { scope.async { CurrentPartyDispatcher(partyId, this@CommandDispatcher) } }
+        .await()
 
     private fun nonCachingPlayerQueryDispatcher() = object :
         PlayersQuery.Dispatcher,
