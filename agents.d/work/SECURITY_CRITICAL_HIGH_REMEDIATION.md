@@ -121,6 +121,9 @@ review remain outside this card: URL token logging and GraphQL work budgets.
     Transfer is not remediation; keep this finding open until evidence is linked.
 
 - [ ] **5b. Review and restrict Lambda invocation permissions.**
+  - Local packaging on 2026-10-31 confirmed the wildcard in generated IAM;
+    see authenticated local packaging evidence below. AWS endpoint validation
+    and remediation remain outstanding and unauthorized.
   - Inspect generated CloudFormation through the existing Gradle packaging path
     before claiming the legacy wildcard declaration is effective.
   - If broad access is effective, prove it using an isolated role and harmless
@@ -540,6 +543,62 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   Delivered in the documentation commit discoverable with
   `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`.
   Not pushed or released.
+
+### 2026-10-31: authenticated local packaging and generated IAM evidence
+
+- Supersedes the packaging blocker above. User supplied temporary Serverless
+  authentication through fish; its value was not printed or copied into this
+  card. User owns revoking/removing that temporary credential afterward.
+- `fish -lc './gradlew :deploy:sandbox:serverlessPackage --no-daemon'` passed
+  authentication but initially failed with `EPERM` creating the local cache
+  directory under `~/.serverless/artifacts`. Retried the same packaging-only
+  command through approved outside-sandbox execution; it passed in 10s
+  (204 actionable tasks: 16 executed, 188 up-to-date). Stage: `sandbox`;
+  region: `us-east-1`. No deployment or AWS fixture creation was performed.
+- Inspected `server/build/sandbox/lambda-dist/cloudformation-template-update-stack.json`.
+  `IamRoleLambdaExecution.Properties.Policies` includes exactly this invocation
+  statement: `{"Effect":"Allow","Action":["lambda:InvokeFunction"],"Resource":"*"}`.
+  The role also retains `AmazonDynamoDBFullAccess` in `ManagedPolicyArns`;
+  DynamoDB hardening remains with the migration card. The legacy declaration
+  is therefore effective in this generated template despite the coexisting
+  newer `provider.iam.role` configuration.
+  Template SHA-256:
+  `6f7ef382fe4426ab51344df1c5aca79cedf6780128da437f78e8755125220a3e`.
+- All five generated Lambda functions reference `IamRoleLambdaExecution.Arn`.
+  `NotifyConnectLambdaFunction.Properties.FunctionName` is
+  `coupling-server-sandbox-notifyConnect`, matching the application invocation
+  target traced above. Other invocation statements in the template belong to
+  API Gateway resource permissions, not runtime role permissions.
+- Proposed future correction: remove the wildcard invocation statement from
+  the shared role and add a separate `AWS::IAM::Policy` resource with only
+  `lambda:InvokeFunction`, resource `Fn::GetAtt: [NotifyConnectLambdaFunction, Arn]`,
+  and roles containing `Ref: IamRoleLambdaExecution`. Dependency flow is policy
+  to function to role, plus policy to role; the role must not depend on that
+  policy. This uses the generated function identity and avoids an inline-role
+  reference cycle or a duplicated function-name convention. Validate the final
+  generated dependency graph before accepting any later correction. No runtime
+  or production policy edits were made here.
+- Evidence limit: generated configuration confirms a broad grant would be
+  packaged, not which policy is currently deployed or whether an invocation
+  succeeds under AWS permission boundaries/SCPs. Slice 5b remains open. Next gate
+  is a concrete isolated AWS endpoint-validation proposal (account/region,
+  harmless fixtures, exact permissions, cost, cleanup) and explicit authorization
+  before provisioning. Prove the original broad invocation, then authorized
+  notification invocation and unrelated-function denial before claiming a fix.
+- Validation: `fish -lc './gradlew check --no-daemon'` passed outside the sandbox
+  with a fresh daemon in 19s (587 actionable tasks: 54 executed, 533 up-to-date).
+  Existing test outputs were reused. `git diff --check` passed. Check log:
+  `/tmp/coupling-lambda-generated-check.log`; packaging log:
+  `/tmp/coupling-lambda-package.log`.
+- Complete-slice review checked the generated role statements, all function role
+  references, notification name, and proposed dependency direction. Only this
+  work card changed; no behavior tests were invented for this documentation
+  slice. No production IAM, runtime, credential configuration, or AWS resources
+  changed. Delivered in the documentation commit discoverable with
+  `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`;
+  not pushed or released.
+  Generated output remains local build material; do not commit resolved service
+  configuration or credentials from `serverless-state.json`.
 
 ### Delivery gates
 
