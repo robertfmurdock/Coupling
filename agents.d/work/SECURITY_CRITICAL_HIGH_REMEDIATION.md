@@ -9,8 +9,10 @@ and excessive runtime AWS permissions. Review findings are hypotheses until thei
 endpoint reproductions establish the behavior; do not describe them as verified
 production exploits.
 
-Every finding requires a meaningful failing endpoint test before its production
-fix. Exercise the real authentication, routing, resolver, authorization, and
+Application findings require a meaningful failing endpoint test before their
+production fix. Lambda IAM follows the revised normal-deployment validation
+decision recorded below, without isolated AWS fixtures. Exercise the real
+authentication, routing, resolver, authorization, and
 persistence boundaries; dispatcher-only tests or source/configuration assertions
 do not satisfy this requirement. Assert both rejection and absence of unauthorized
 state changes or disclosures. Preserve positive authorized scenarios so unrelated
@@ -122,30 +124,40 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 
 - [ ] **5b. Review and restrict Lambda invocation permissions.**
   - Local packaging on 2026-10-31 confirmed the wildcard in generated IAM;
-    see authenticated local packaging evidence below. AWS endpoint validation
-    and remediation remain outstanding and unauthorized.
+    see authenticated local packaging evidence below. User subsequently approved
+    config correction followed by normal deployment and notification verification,
+    replacing isolated AWS fixtures. Deployed verification remains outstanding.
   - Inspect generated CloudFormation through the existing Gradle packaging path
     before claiming the legacy wildcard declaration is effective.
-  - If broad access is effective, prove it using an isolated role and harmless
-    unrelated canary invocation before production policy edits. Never invoke
-    arbitrary existing functions. Policy inspection/simulation supplements but
-    does not replace AWS endpoint evidence.
+  - Revised by user: use generated-policy evidence for the original broad grant,
+    make the config correction, deploy through the normal Coupling workflow,
+    and confirm or deny the intended notification flow works. No isolated role
+    or unrelated canary invocation is required. Never invoke arbitrary functions.
   - Define any required invocation grant with a generated reference to this
     stack's `notifyConnect` function. If the wildcard is absent, record the
     exposure as unconfirmed and treat a missing grant as a functional correction.
-  - Verify authorized notification invocation and unrelated-function denial with
-    harmless fixtures. External provisioning requires explicit authorization;
-    without it, record the validation blocker before production policy edits.
+  - Verify the deployed role has the scoped grant and the authorized notification
+    flow works. Record that unrelated-function denial was not endpoint-tested;
+    normal-flow success alone does not prove that denial. No fixture provisioning.
   - Boundary: generated Serverless IAM policy, AWS Lambda endpoints, notification
-    flow. No application deployment, push, release, or AWS profile edits.
+    flow. Normal deployment is the agreed experiment; do not edit AWS profiles.
+    Earlier local-only restrictions are superseded for this rollout, not for
+    unrelated infrastructure work.
 
 ## Design Decisions
+
+- 2026-10-31: user rejected isolated AWS role/canary fixtures as unwieldy.
+  Agreed experiment: correct Serverless config, redeploy in Coupling's normal
+  way, and check whether the notification flow works. Generated IAM inspection
+  establishes the original configuration defect; deployed behavior is the next
+  validation boundary. Do not claim an unrelated-function denial endpoint test.
 
 - 2026-10-31: retain intentional player administration permissions (slice 4).
   Transfer DynamoDB IAM hardening to the schema migration with endpoint gates
   intact; keep Lambda invocation review here. No AWS provisioning is authorized.
 
-- User requires endpoint demonstration before fixing every critical/high finding.
+- Application findings retain endpoint demonstration before fixes; Lambda IAM
+  uses the user's revised config-first, normal-deployment experiment below.
 - Slice 3 scope correction (2026-10-30): concurrency hardening was struck from
   the original suggestion because it was not the highlighted token-replay risk.
   Keep the remediation to single-use redemption and its atomic relationship writes;
@@ -599,6 +611,60 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   not pushed or released.
   Generated output remains local build material; do not commit resolved service
   configuration or credentials from `serverless-state.json`.
+
+### 2026-10-31: scoped Lambda config and normal-rollout experiment
+
+- User replaced the isolated endpoint-red prerequisite with changing config,
+  normal redeployment, and checking whether the intended behavior works. This
+  decision supersedes earlier local-only and isolated-fixture sequencing for
+  slice 5b. No unrelated-function invocation or fixture provisioning is planned.
+- Baseline configuration evidence is the previously generated wildcard role
+  statement. Smallest implementation: remove that legacy inline statement and
+  add `NotifyConnectInvocationPolicy`, an `AWS::IAM::Policy` attached to the
+  existing shared role, allowing only `lambda:InvokeFunction` against
+  `Fn::GetAtt: [NotifyConnectLambdaFunction, Arn]`. All five functions still
+  share the role; separating roles and changing DynamoDB policy are outside
+  this slice. No application contracts or notification data flow changed.
+- Initial packaging was considered up-to-date despite the changed copied
+  configuration, so it was not accepted as validation. Forced only the packaging
+  task with `fish -lc './gradlew :deploy:sandbox:serverlessPackage --rerun --no-daemon'`
+  outside the sandbox. It passed in 25s (213 actionable tasks: 16 executed,
+  197 up-to-date). Generated output confirms exactly the scoped statement and
+  role attachment, no inline invocation wildcard, unchanged DynamoDB managed
+  policy, and no cycle among resource Ref/GetAtt/DependsOn edges.
+- Local structural inspection is config verification, not an AWS endpoint test.
+  No source-string test was invented as a substitute. Full gate:
+  `fish -lc './gradlew check --no-daemon'` passed outside the sandbox with a fresh
+  daemon in 25s (587 actionable tasks: 55 executed, 532 up-to-date); existing
+  successful test outputs were reused. `git diff --check` passed.
+  Logs: `/tmp/coupling-lambda-scoped-package.log` and
+  `/tmp/coupling-lambda-scoped-check.log`.
+- Normal rollout path: `.github/workflows/main.yml` runs `release check` on
+  master pushes; release finalizers invoke configured deploy tasks. At preparation
+  time local master was nine commits ahead of origin/master, including earlier
+  security fixes and their SDK compatibility changes. Publishing this branch
+  would include those changes too; present that concrete release scope before
+  pushing rather than treating this as an isolated IAM-only rollout.
+- Post-deploy acceptance: inspect the deployed role's inline/attached policies
+  for removal of wildcard invocation and presence of the generated target ARN.
+  With a designated test party and authorized identity, connect a WebSocket and
+  verify the new connection receives its initial online-player message from
+  `notifyConnect`; open a second connection and verify presence updates. HTTP
+  success or an open socket alone is insufficient: invocation failures are
+  caught/logged by the connection handler. If behavior fails, inspect connection
+  and notification logs for invocation authorization versus notification errors
+  and correct or revert through the normal release path. Observe the latest
+  deployment's role policy propagation before concluding a persistent failure.
+- Deployment and AWS behavior remain unverified. Unrelated-function denial
+  remains inferred from the scoped grant rather than endpoint-tested; other
+  policies/resource policies may affect effective authorization. Keep slice 5b
+  open until deployed policy and notification evidence are recorded. Do not
+  mark this card complete or claim full AWS security verification from local checks.
+- Complete-slice review: only Serverless IAM configuration and this card changed.
+  Verified exact resource identity, role attachment, dependency direction, and
+  retention of existing DynamoDB permissions. Local validation passes; deployed
+  behavior is pending. Commit is discoverable with
+  `git log -1 --format=%H -- server/serverless.yml`. Not pushed or deployed.
 
 ### Delivery gates
 
