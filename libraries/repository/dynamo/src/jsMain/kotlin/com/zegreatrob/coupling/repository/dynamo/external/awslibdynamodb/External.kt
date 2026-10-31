@@ -13,6 +13,9 @@ external object DynamoDBDocumentClient {
 }
 
 external class PutCommand(options: Json)
+
+@JsName("PutCommand")
+external class TypedPutCommand(input: DynamoPutItemInput)
 external class GetCommand(options: Json)
 
 @JsName("GetCommand")
@@ -23,6 +26,9 @@ external class ScanCommand(options: Json)
 external class QueryCommand(options: Json)
 external class BatchGetCommand(options: Json)
 external class DeleteCommand(options: Json)
+
+@JsName("DeleteCommand")
+external class TypedDeleteCommand(input: DynamoDeleteItemInput)
 external class ExecuteStatementCommand(options: Json)
 external class BatchExecuteStatementCommand(options: Json)
 external class TransactWriteCommand(input: TransactWriteCommandInput) {
@@ -75,6 +81,25 @@ sealed external interface DynamoPutItemInput {
 
     @JsName("ExpressionAttributeValues")
     val expressionAttributeValues: Json?
+}
+
+@JsPlainObject
+sealed external interface DynamoDeleteItemInput {
+    @JsName("TableName")
+    val tableName: String
+
+    @JsName("Key")
+    val key: Json
+
+    @JsName("ConditionExpression")
+    val conditionExpression: String?
+
+    @JsName("ExpressionAttributeValues")
+    val expressionAttributeValues: Json?
+}
+
+sealed external interface DynamoDBServiceError {
+    val name: String?
 }
 
 sealed external interface GetCommandOutput {

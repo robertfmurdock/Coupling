@@ -4,6 +4,9 @@ import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.BatchEx
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.BatchGetCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DeleteCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDBDocumentClient
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDBServiceError
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDeleteItemInput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoPutItemInput
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.ExecuteStatementCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetCommandOutput
@@ -13,11 +16,15 @@ import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.QueryCo
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.ScanCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TransactWriteCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TransactWriteCommandInput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedDeleteCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedGetCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedPutCommand
 import kotlin.js.Json
 import kotlin.js.Promise
 
 fun DynamoDBDocumentClient.put(params: Json): Promise<Unit> = send(PutCommand(params))
+
+fun DynamoDBDocumentClient.put(params: DynamoPutItemInput): Promise<Unit> = send(TypedPutCommand(params))
 
 fun DynamoDBDocumentClient.get(params: Json): Promise<Json> = send(GetCommand(params))
 
@@ -36,3 +43,7 @@ fun DynamoDBDocumentClient.batchExecuteStatement(params: Json): Promise<Json> = 
 fun DynamoDBDocumentClient.deleteIt(params: Json): Promise<Json> = send(DeleteCommand(params))
 
 fun DynamoDBDocumentClient.transactWrite(params: TransactWriteCommandInput): Promise<Json> = send(TransactWriteCommand(params))
+
+fun DynamoDBDocumentClient.deleteIt(params: DynamoDeleteItemInput): Promise<Json> = send(TypedDeleteCommand(params))
+
+fun Throwable.isConditionalCheckFailed(): Boolean = unsafeCast<DynamoDBServiceError>().name == "ConditionalCheckFailedException"

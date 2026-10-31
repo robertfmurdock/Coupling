@@ -62,14 +62,16 @@ capabilities as design findings rather than bypassing them in tests.
 Do not access the database directly or add repository dependencies to inspect
 server state. Use observable application behavior to verify persistence effects.
 
-SDK integration tests authenticate test users using
-`COUPLING_PRIMARY_TEST_PASSWORD` and `COUPLING_ALT_TEST_PASSWORD`; browser/e2e
-login uses `COUPLING_E2E_TEST_PASSWORD`. Gradle's `:e2e:e2eRun` reads the Standard
-SecureString parameter
-`/local/COUPLING_E2E_TEST_PASSWORD` from AWS SSM using the configured AWS identity.
-The parameter is fetched only when the E2E task executes and supplied to the test
-process; exported E2E password values are overridden. SDK passwords still
-come from the configured shell/credential loader. These are separate from AWS
+SDK integration tests authenticate their primary and alternate users using
+`COUPLING_PRIMARY_TEST_PASSWORD` and `COUPLING_ALT_TEST_PASSWORD` from the
+configured shell/credential loader. Account-link endpoint tests also use the
+synthetic browser/E2E identity via `COUPLING_E2E_TEST_PASSWORD`.
+
+Gradle's SDK JVM/Node test tasks and `:e2e:e2eRun` read the Standard SecureString
+parameter `/local/COUPLING_E2E_TEST_PASSWORD` from AWS SSM using the configured
+AWS identity. The parameter is fetched at task execution and supplied to the
+child process; inherited E2E password values are overridden. The primary and
+alternate SDK passwords still come from the shell. These are separate from AWS
 credentials. Check presence without printing values; do not copy secrets into the
 repository. If AWS works but SDK tests receive HTTP 401, inspect this environment
 before changing auth behavior.
