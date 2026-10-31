@@ -477,6 +477,70 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   `git log -1 --format=%H -- agents.d/work/DYNAMODB_MIGRATION_IAM.md`.
   Not pushed or released.
 
+### 2026-10-31: local Lambda IAM investigation
+
+- Scope confirmed by user: local investigation only. No AWS fixtures, Lambda
+  invocation, deployment, runtime IAM edits, push, or release are authorized.
+- Retried `fish -lc './gradlew :deploy:sandbox:serverlessPackage --no-daemon'`
+  from clean base `d1f118883`. It failed in 9s at Serverless `Authenticating`
+  with `Forbidden` (204 actionable tasks: 17 executed, 187 up-to-date).
+  No generated template was available at the configured package destination,
+  `server/build/sandbox/lambda-dist`. There are no generated policy excerpts
+  to report; the effective wildcard grant remains unconfirmed.
+- `fish -lc 'aws sts get-caller-identity --query Arn --output text'` succeeded
+  for account `174159267544` using the configured `AWSReservedSSO_ReadOnlyAccess`
+  role. This distinguishes working shell AWS authentication from the Serverless
+  authentication failure; it does not prove packaging has every AWS permission.
+  No profiles, credentials, or authentication configuration were changed.
+- Packaging ownership: the deploy convention copies the pinned Serverless
+  configuration and invokes `serverless package --stage sandbox`, passing the
+  shell's `SERVERLESS_ACCESS_KEY`. `.github/workflows/main.yml:26` injects
+  `${{ secrets.SERVERLESS_ACCESS_KEY }}` into the Build job; the deploy convention
+  forwards it to Serverless. A value-free presence check confirmed that this
+  variable is unset in the local fish shell used for packaging. CI injection
+  does not supply it to this local process. The GitHub secret's validity was not
+  checked. Local packaging needs an authorized Serverless authentication method;
+  do not assume the CI key is broken, AWS SSO is expired, or rotate credentials
+  based on this failure. Other possible Serverless authentication state was not
+  inspected, so the precise reason for `Forbidden` remains unestablished.
+- Source evidence only: `server/serverless.yml` declares a legacy
+  `provider.iamRoleStatements` Allow for `lambda:InvokeFunction` on `"*"`,
+  alongside `provider.iam.role.managedPolicies` containing
+  `AmazonDynamoDBFullAccess`. Generated output is still needed to determine
+  how these declarations are interpreted together. DynamoDB remains owned by
+  the migration IAM card.
+- Notification trace: successful authenticated WebSocket connection handling in
+  `server/src/jsMain/kotlin/Handler.kt` asynchronously invokes
+  `coupling-server-${STAGE}-notifyConnect` with invocation type `Event` and the
+  connection event payload. Invocation failures are caught and logged.
+- Future correction candidate, pending generated-template inspection: put the
+  required invocation statement in the supported role policy location and scope
+  it to the generated notification function identity. Avoid a role-policy
+  `GetAtt` of a function that itself references that role. Prefer an ARN built
+  with CloudFormation partition/region/account pseudo parameters and the same
+  resolved function name used by Serverless, after verifying that name in the
+  generated template. Do not duplicate an assumed name or introduce a function
+  environment reference cycle. No policy correction was made in this slice.
+- Next gate: restore authorized Serverless packaging access, rerun the existing
+  Gradle task, then inspect all generated role policies, managed-policy references,
+  function names, and dependencies. Determine whether the wildcard is present
+  before selecting remediation versus a missing-grant functional correction.
+  AWS endpoint validation remains a separate authorization gate requiring exact
+  account/region, fixtures, permissions, cost, and cleanup details. Slice 5b stays
+  open; source inspection is neither exploit evidence nor remediation evidence.
+- Validation: `fish -lc './gradlew check --no-daemon'` passed outside the sandbox
+  with a fresh daemon in 27s (587 actionable tasks: 54 executed, 533 up-to-date).
+  Existing test outputs were reused. Log: `/tmp/coupling-local-lambda-check.log`.
+  `git diff --check` passed. Documentation review checked source declarations,
+  notification data flow, CI/local credential injection, and explicit evidence
+  limits. No behavior tests are appropriate for this documentation slice.
+- Complete-slice review: only this card changed; no runtime, public API, schema,
+  SDK, build logic, credentials, or AWS resources changed. Local investigation
+  is complete to the authentication blocker; IAM remediation is not verified.
+  Delivered in the documentation commit discoverable with
+  `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`.
+  Not pushed or released.
+
 ### Delivery gates
 
 - Record exact red/green commands, test-clarity and production-design reviews,
