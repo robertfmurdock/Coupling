@@ -11,6 +11,35 @@ The server remains legacy-backed unless an environment explicitly requests a
 migration mode. A migration request is fail-closed: a missing or unrecognized
 mode prevents the server from selecting a storage implementation.
 
+## Table namespace and IAM rollout
+
+Target tables use production `coupling-*` and other deployed stages
+`<stage>-coupling-*`, including their indexes. Adding a table within an
+already authorized namespace/resource family requires no per-table IAM edit.
+Limit resource ARNs to the configured account and region and grant only required
+operations. Preserve role-specific resource families where duties differ; do
+not give every handler access to every target table merely because names match.
+
+Keep production's existing empty legacy `DYNAMO_PREFIX` unchanged. Legacy
+resolution continues to address existing tables; target resolution uses the
+application-and-stage namespace independently. Current production target names
+already begin with `coupling-`; this is not a legacy-table rename migration.
+
+During foundation/incubation, replace `AmazonDynamoDBFullAccess` with required
+target namespace permissions plus explicit required legacy table/index access.
+Inventory and preserve bootstrap, ledger, backfill, dual-write, reconciliation,
+and TTL operations before removing permissions. Separate migration privileges
+from runtime only where required and with a validated replacement execution path.
+At each environment's cutover remove its normal runtime legacy access; retain
+legacy recovery evidence under separately authorized recovery access. Do not
+wait for global legacy-code removal to retire that environment's permissions.
+
+The [migration IAM work card](agents.d/work/DYNAMODB_MIGRATION_IAM.md) owns this
+rollout and the mandatory isolated AWS endpoint red/green evidence. The
+[security remediation card](agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md)
+tracks the transfer as outstanding, not remediated. No provisioning, deployment,
+or AWS profile changes are authorized by these documents.
+
 ## Mode and ledger
 
 During implementation, `DYNAMODB_SCHEMA_MIGRATION_MODE` is required in every

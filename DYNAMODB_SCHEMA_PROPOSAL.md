@@ -172,6 +172,17 @@ sequenceDiagram
 
 ## Target tables
 
+Target physical names use the application-and-stage namespace: production
+`coupling-*`, other deployed stages `<stage>-coupling-*` (for example,
+`sandbox-coupling-core`). The names below are production names. New target
+tables and their indexes inherit namespace-scoped IAM permissions without a
+per-table role edit. Scope ARNs to the configured account and region.
+
+Production's empty legacy `DYNAMO_PREFIX` remains unchanged during migration;
+changing it globally would redirect legacy reads. Keep legacy and target name
+resolution distinct. See the [migration IAM work card](agents.d/work/DYNAMODB_MIGRATION_IAM.md)
+for transitional permissions, endpoint evidence, and cutover gates.
+
 All keys below use UTF-8 strings. `#` separates stable key components; values
 must either be IDs that cannot contain `#` or be encoded before being placed in
 a key. `revisionId` is a monotonically sortable ULID generated at the write
@@ -532,10 +543,18 @@ avoid crossing 1 KB write and 4 KB read billing boundaries unintentionally.
   workload telemetry is stable enough to forecast. Turn on PITR for all four
   tables and test restore/export procedures independently of application
   deploys.
-- Scope IAM by table and operation. The GraphQL role receives only the Core and
-  Activity actions it needs; live-connection handlers receive only the live
-  table; secret decrypt/read authority is isolated. Replace the current broad
-  `AmazonDynamoDBFullAccess` deployment policy.
+- Scope IAM by operation and application/stage namespace, including indexes,
+  within the configured account and region. Replace `AmazonDynamoDBFullAccess`.
+  Roles receive only operations and resource families required by their actual
+  reads and writes (including History writes); live handlers retain only their
+  required families and secret decrypt/read authority remains isolated. Use
+  stable family prefixes where role separation requires them, so additions
+  within an authorized family need no per-table IAM edit. Any broader target
+  namespace grant must be justified by that role's cross-family duties.
+  During migration, add explicit legacy-table/index permissions as required;
+  remove normal runtime legacy access at cutover. Recovery access is separately
+  authorized. Preserve bootstrap and migration operations until their safe
+  replacement exists; see the migration strategy and IAM work card.
 - Enable DynamoDB Streams on Core and Activity only if derived aggregates are
   made asynchronous. Consumers must be idempotent because transaction records
   can arrive interleaved and GSI/stream propagation is not a read-your-write

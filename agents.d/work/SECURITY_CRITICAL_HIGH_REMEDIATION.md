@@ -104,58 +104,43 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   - Independently releasable: makes the existing single-use promise true without
     changing already established relationships.
 
-- [ ] **4. Resolve and, if agreed, enforce owner/player permissions (conditional).**
-  - **Scope warning:** changing an intentional permission policy is a product
-    decision, not automatically a security fix. This finding is not a demonstrated
-    policy violation until the intended contract is agreed. If the existing
-    permissions are intentional, do not manufacture denial tests or change them.
-  - First resolve product policy with the user: current code deliberately accepts
-    player membership for the common party gate. Do not silently redefine all
-    player mutation permissions. Record the agreed capability matrix here before
-    writing denial assertions; include owners, connected accounts, players,
-    nonmembers, and party API secrets.
-  - Endpoint red under that contract: player attempts party deletion and API
-    secret issuance. Expect denial, party retained, and no credential issued.
-    Expected current failure: both operations are allowed by the membership gate.
-    Add integration administration cases if reserved to owners by agreed policy.
-  - Cover allowed player operations and owner success, including connected-owner
-    identities and the agreed scope of existing API secrets.
-  - Contract/design: server-owned capability checks for administrative operations;
-    synchronize any affected client affordances and SDK/schema contracts. Decide
-    how previously issued player credentials are handled; do not imply that new
-    issuance checks revoke existing credentials.
-  - Boundary: HTTP authorization and all affected administration commands.
-  - Independently releasable once policy is agreed: removes excess privileges
-    while preserving explicitly supported player workflows.
+- [x] **4. Resolve owner/player permissions: retain current policy.**
+  - Agreed 2026-10-31: current owner/player permissions are intentional, including
+    player administration. Connected-account access, nonmember rejection, and
+    existing party API-secret scope remain unchanged. No revocation or permission
+    changes are requested. This is a resolved product-policy question, not a
+    demonstrated security violation; do not manufacture denial tests.
 
-- [ ] **5. Restrict runtime AWS permissions (high blast-radius risk).**
-  - Endpoint red: use an isolated test role carrying the effective generated
-    runtime policy to call AWS endpoints against disposable canary resources
-    outside the allowed stage. Assert AccessDenied for out-of-scope DynamoDB
-    access and unrelated Lambda invocation; expected current failure for DynamoDB
-    is success under AmazonDynamoDBFullAccess. Verify whether the legacy wildcard
-    invocation declaration actually enters the generated policy before claiming
-    its exposure. Never invoke arbitrary existing functions or access real data.
-  - This is an AWS service endpoint test, not a GraphQL exploit: no application
-    endpoint currently identified grants callers arbitrary AWS SDK operations.
-    If the required isolated role/resources cannot be authorized or provisioned,
-    leave this slice blocked before production edits. Policy snapshots and IAM
-    simulation can supplement but cannot replace the endpoint demonstration.
-  - Contract/design: scope DynamoDB resources/actions to the stage's required
-    tables/indexes and runtime operations; invocation only to notifyConnect.
-    Inventory migration/table-creation needs before removing permissions, and
-    separate deploy/migration privileges from runtime only where necessary.
-    A broader migration redesign is not part of this permission-hardening slice;
-    surface it as a separate decision if the minimum safe change would require it.
-  - Verify permitted application persistence and notification flows using the
-    narrowed role. Preserve runtime migration behavior or include its safe
-    replacement in this slice. Do not modify AWS profiles.
-  - Boundary: generated Serverless IAM policy, AWS DynamoDB/Lambda endpoints,
-    runtime persistence and notification paths.
-  - Independently releasable after endpoint validation: reduces compromise scope
-    without breaking required runtime operations.
+- [ ] **5a. Restrict DynamoDB permissions: transferred, still outstanding.**
+  - Owned by [DynamoDB migration IAM](DYNAMODB_MIGRATION_IAM.md), coordinated with
+    the target-table rollout. Production `coupling-*`, other stages
+    `<stage>-coupling-*`; new tables within authorized namespaces/families need
+    no per-table IAM edit. Preserve legacy naming during migration.
+  - The linked card carries endpoint red/green, transitional legacy permissions,
+    bootstrap/migration compatibility, and per-environment cutover retirement.
+    Transfer is not remediation; keep this finding open until evidence is linked.
+
+- [ ] **5b. Review and restrict Lambda invocation permissions.**
+  - Inspect generated CloudFormation through the existing Gradle packaging path
+    before claiming the legacy wildcard declaration is effective.
+  - If broad access is effective, prove it using an isolated role and harmless
+    unrelated canary invocation before production policy edits. Never invoke
+    arbitrary existing functions. Policy inspection/simulation supplements but
+    does not replace AWS endpoint evidence.
+  - Define any required invocation grant with a generated reference to this
+    stack's `notifyConnect` function. If the wildcard is absent, record the
+    exposure as unconfirmed and treat a missing grant as a functional correction.
+  - Verify authorized notification invocation and unrelated-function denial with
+    harmless fixtures. External provisioning requires explicit authorization;
+    without it, record the validation blocker before production policy edits.
+  - Boundary: generated Serverless IAM policy, AWS Lambda endpoints, notification
+    flow. No application deployment, push, release, or AWS profile edits.
 
 ## Design Decisions
+
+- 2026-10-31: retain intentional player administration permissions (slice 4).
+  Transfer DynamoDB IAM hardening to the schema migration with endpoint gates
+  intact; keep Lambda invocation review here. No AWS provisioning is authorized.
 
 - User requires endpoint demonstration before fixing every critical/high finding.
 - Slice 3 scope correction (2026-10-30): concurrency hardening was struck from
@@ -458,6 +443,40 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   its ID with `git log -1 --format=%H -- agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md`.
   Not pushed or released. Slices 4/5 remain queued with their prerequisites.
 
+### 2026-10-31: policy resolution and migration IAM handoff
+
+- Base commit: `f92e98ab0`. Slice 4 is resolved with existing permissions
+  intentional; no policy implementation or denial tests. DynamoDB hardening is
+  transferred to `DYNAMODB_MIGRATION_IAM.md` with its AWS endpoint prerequisite
+  intact. Proposal/strategy now describe namespaces, explicit transitional legacy
+  access, operation/family boundaries, and per-environment cutover retirement.
+- Lambda review attempted through
+  `./gradlew :deploy:sandbox:serverlessPackage --no-daemon`. It failed during
+  Serverless Framework 4.46.0 authentication with `Forbidden`, before generated
+  CloudFormation was available. `aws sts get-caller-identity` succeeded using
+  the configured read-only SSO role; this is not evidence of expired AWS login.
+  No profiles or credentials were changed and no deployment was attempted.
+- The effective wildcard invocation policy remains unverified. No production
+  IAM edits or endpoint claims. Next: restore authorized Serverless packaging
+  access, inspect the generated template, then define the smallest required
+  invocation grant. Use the stack's generated function identity without creating
+  a CloudFormation role/function dependency cycle.
+- Real AWS fixtures remain unauthorized. Before requesting authorization, present
+  exact resource inventory, account/region, permissions, cleanup, and costs.
+- Documentation local links and `git diff --check` passed. No behavior tests were
+  invented for this documentation slice. `./gradlew check --no-daemon` passed
+  outside the sandbox with a fresh daemon in 29s: 596 actionable tasks, 54
+  executed and 542 up-to-date. Existing successful test outputs were reused.
+  Log: `/tmp/coupling-iam-handoff-check.log`.
+- Complete-slice review: documentation only; no runtime, schema, SDK, client,
+  credentials, or deployed resources changed. Transferred DynamoDB work remains
+  open, and the Lambda exposure is unconfirmed. Documentation/design review
+  verified namespace maintenance, legacy compatibility, role boundaries, cutover
+  gates, and linked ownership. Test-clarity review is not applicable to this
+  documentation slice. Commit: obtain with
+  `git log -1 --format=%H -- agents.d/work/DYNAMODB_MIGRATION_IAM.md`.
+  Not pushed or released.
+
 ### Delivery gates
 
 - Record exact red/green commands, test-clarity and production-design reviews,
@@ -466,6 +485,8 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   mechanism from its first attempt, per GRADLE_PLAYBOOK.md. Commit passing tests
   and implementation together before starting the next slice. Record blockers
   instead of calling an unverified slice release-safe.
-- At completion review all five findings against endpoint evidence, record any
+- At completion review all five findings against endpoint evidence and recorded
+  intentional-policy decisions; transferred findings stay open until linked
+  evidence demonstrates remediation. Record any
   deployment-only gaps and credential-remediation follow-up, and move this card
   to `agents.d/work_completed/`. Pushing/releasing requires user authorization.
