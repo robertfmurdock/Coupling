@@ -1,17 +1,17 @@
 {
   "dependencies": {
-    "@auth0/auth0-react": "2.29.0",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.31.50",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1160.0",
-    "@aws-sdk/client-dynamodb": "3.1160.0",
-    "@aws-sdk/client-lambda": "~3.1160.0",
-    "@aws-sdk/lib-dynamodb": "3.1160.0",
+    "@auth0/auth0-react": "2.30.0",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.31.53",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1161.0",
+    "@aws-sdk/client-dynamodb": "3.1161.0",
+    "@aws-sdk/client-lambda": "~3.1161.0",
+    "@aws-sdk/lib-dynamodb": "3.1161.0",
     "@graphql-codegen/cli": "^7.4.6",
     "@graphql-codegen/java-common": "^4.0.1",
     "@graphql-codegen/kotlin": "^4.0.1",
     "@graphql-codegen/plugin-helpers": "^7.4.2",
     "@graphql-codegen/visitor-plugin-common": "7.5.0",
-    "@graphql-tools/schema": "^11.0.7",
+    "@graphql-tools/schema": "^11.0.8",
     "@graphql-tools/stitch": "^10.4.1",
     "@log4js-node/log4js-api": "1.0.2",
     "@napi-rs/keyring": "^2.1.2",
@@ -24,12 +24,12 @@
     "@nivo/tooltip": "^0.99.0",
     "@slack/bolt": "^5.1.0",
     "@slack/oauth": "^4.0.0",
-    "@slack/web-api": "^8.2.0",
+    "@slack/web-api": "^8.3.0",
     "@slack/webhook": "^8.0.2",
     "@stripe/react-stripe-js": "^7.0.1",
     "@stripe/stripe-js": "^10.2.0",
     "react-router": "^8.5.1",
-    "chromedriver": "156.0.1",
+    "chromedriver": "156.0.2",
     "compression": "^1.8.2",
     "d3": "^7.9.0",
     "d3-array": "^3.2.4",
@@ -75,6 +75,6 @@
     "ulid": "3.0.2",
     "vite-plugin-html": "^3.2.2",
     "webpack": "5.112.2",
-    "webpack-cli": "^7.2.3"
+    "webpack-cli": "^7.3.1"
   }
 }

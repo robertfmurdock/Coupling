@@ -666,6 +666,24 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   behavior is pending. Commit is discoverable with
   `git log -1 --format=%H -- server/serverless.yml`. Not pushed or deployed.
 
+### 2026-10-31: release authorization and dependency integration
+
+- User explicitly authorized pushing the accumulated security work to master
+  to trigger the normal release. Initial push's pre-push `./gradlew check`
+  passed in 30s, but the push was rejected because remote master had advanced.
+- Fetched and integrated `337c45085` (`[update-deps] Dependency Update`) with
+  a normal merge, preserving the remote changes. No conflicts. Integration
+  changes only dependency catalogs, npm manifest, and lockfile from that commit,
+  plus this evidence entry; the scoped IAM design is unchanged.
+- `fish -lc './gradlew check --no-daemon'` passed outside the sandbox with a
+  fresh daemon in 9m 18s: 596 actionable tasks, 530 executed, two from cache,
+  64 up-to-date. SDK Node/JVM, browser, all 56 browser E2E scenarios, affected
+  repository/server suites, lint, and structured-log validation passed against
+  the updated dependencies. Log: `/tmp/coupling-release-merge-check.log`.
+  Complete merge review and staged/unstaged `git diff --check` passed.
+- Push retry and deployed verification pending; this entry records local
+  release readiness, not a successful deployment or AWS endpoint result.
+
 ### Delivery gates
 
 - Record exact red/green commands, test-clarity and production-design reviews,

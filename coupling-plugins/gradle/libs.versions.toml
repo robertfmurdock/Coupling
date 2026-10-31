@@ -1,11 +1,11 @@
 [versions]
 kotlin = "2.4.21"
-ksp = "2.3.12"
+ksp = "2.3.13"
 log4j = "2.26.1"
 
 [libraries]
 jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.4"
-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.14.6"
+jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.14.8"
 # @pin
 kfc-gradle-plugin = "io.github.turansky.kfc:kfc-gradle-plugin:18.8.0"
 kotlin-js-plain-objects = { module = "org.jetbrains.kotlin:js-plain-objects", version.ref = "kotlin" }
@@ -16,7 +16,7 @@ ksp-symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol
 log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "log4j" }
 slf4j-api = "org.slf4j:slf4j-api:2.0.20"
-testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.63"
+testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.64"
 tools-bom = "com.zegreatrob.tools:tools-bom:3.6.26"
 version-catalog-update-plugin = "nl.littlerobots.vcu:plugin:1.1.2"
 
