@@ -684,6 +684,45 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 - Push retry and deployed verification pending; this entry records local
   release readiness, not a successful deployment or AWS endpoint result.
 
+### 2026-10-31: pushed; normal rollout blocked by deployment-role IAM
+
+- Authorized push succeeded at merge commit `ea8c5ae1f`; normal Build run:
+  https://github.com/robertfmurdock/Coupling/actions/runs/41251284093.
+  The pre-push check passed. Remote dependency update was preserved.
+- Workflow failed during prod/prerelease/sandbox deployments: CloudFormation
+  could not update `IamRoleLambdaExecution` because the `CouplingDeploy` role
+  lacks `iam:PutRolePolicy` on each stage's execution role. Rollback also failed
+  for the same permission. Read-only AWS inspection confirmed all three stacks
+  are `UPDATE_ROLLBACK_FAILED`; do not blindly rerun deployment in this state.
+- Production baseline read before rollout confirmed `lambda:InvokeFunction`
+  with resource `"*"` in `coupling-server-prod-lambda`. After the failed run,
+  the production role still lists only that original inline policy; successful
+  installation of the scoped grant is not established. Notification acceptance
+  was not attempted against a supposedly completed deployment.
+- Release was partial: workflow logs show release tasks ran and the CLI package
+  `@continuous-excellence/coupling-cli@1.1.868` published before final failure.
+  Do not assume a failed Build means nothing was published, or blindly rerun
+  version publication. Failed release log: `/tmp/coupling-security-release-failed.log`.
+- Recovery prerequisite: an authorized IAM administrator must arrange narrowly
+  scoped inline-policy management for `CouplingDeploy` on these role ARNs:
+  `arn:aws:iam::174159267544:role/coupling-server-prod-us-east-1-lambdaRole`,
+  `arn:aws:iam::174159267544:role/coupling-server-prerelease-us-east-1-lambdaRole`,
+  `arn:aws:iam::174159267544:role/coupling-server-sandbox-us-east-1-lambdaRole`.
+  Observed missing action is `iam:PutRolePolicy`; policy create/delete lifecycle
+  also needs the appropriate `iam:DeleteRolePolicy` and read permissions. Then
+  continue rollback without skipping resources, verify completion, and select
+  a retry path accounting for already-published version artifacts. No privilege
+  changes, alternate profile, manual stack recovery, or release rerun performed.
+- Local configured identity is read-only. Deployment-role permissions are not
+  owned by a discovered repository template. IAM permission expansion/recovery
+  remains a separate concrete administrator action; slice 5b stays open.
+- Documentation validation: `fish -lc './gradlew check --no-daemon'` passed
+  outside the sandbox with a fresh daemon in 22s (596 actionable tasks:
+  54 executed, 542 up-to-date; existing test results reused). Log:
+  `/tmp/coupling-rollout-evidence-check.log`. `git diff --check` passed.
+  Complete-slice review confirmed this entry is evidence only. Committed locally
+  without pushing another master change or triggering another blocked release.
+
 ### Delivery gates
 
 - Record exact red/green commands, test-clarity and production-design reviews,
