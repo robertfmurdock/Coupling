@@ -19,7 +19,7 @@ import kotlin.js.json
 val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
     asyncTestTemplate(beforeAll = {
         withTestIdentity(suite = "e2e.beforeAll", test = "bootstrap", testId = "e2e-beforeAll") {
-            withTestDiagnostics({ WebdriverBrowser.getLogs().forwardLogs() }) {
+            withBootstrapDiagnostics {
                 installExecuteAsyncCompatibilityShim()
                 CouplingLogin.sdk.await().apply {
                     fire(GqlQuery(PartyListQuery()))

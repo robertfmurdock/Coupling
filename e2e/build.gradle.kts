@@ -1,4 +1,6 @@
 import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameter
+import com.zegreatrob.coupling.plugins.js.NodeExec
+import com.zegreatrob.coupling.plugins.js.setup
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -75,6 +77,7 @@ dependencies {
 wdioTest {
     baseUrl.set("https://localhost/")
     htmlReporter.set(true)
+    screenshotsOnFailure.set(false)
     useHeadless.set(true)
     chromeBinary.set(System.getenv("WDIO_CHROME_BINARY"))
 }
@@ -82,6 +85,7 @@ wdioTest {
 tasks {
 
     jsE2eTestProcessResources {
+        from(layout.projectDirectory.dir("diagnostics"))
         dependsOn("dependencyResources")
     }
 
@@ -119,3 +123,31 @@ tasks {
     }
 
 }
+
+val browserDiagnosticsTest = tasks.register<NodeExec>("browserDiagnosticsTest") {
+    setup(project)
+    dependsOn(":kotlinNodeJsSetup")
+    taskWorkingDirectory.set(layout.projectDirectory)
+    dependsOn(":kotlinStoreYarnLock")
+    inputs.property("nodeExecutable", nodeExecPath)
+    inputs.file(rootProject.layout.projectDirectory.file("kotlin-js-store/yarn.lock"))
+    arguments.set(listOf("--test", "src/test/js/browser-diagnostics.test.mjs"))
+    inputs.dir(layout.projectDirectory.dir("diagnostics"))
+    inputs.dir(layout.projectDirectory.dir("src/test/js"))
+}
+tasks.named("check") { dependsOn(browserDiagnosticsTest) }
+
+val browserDiagnosticsBrowserTest = tasks.register<NodeExec>("browserDiagnosticsBrowserTest") {
+    setup(project)
+    dependsOn(":kotlinNpmInstall")
+    taskWorkingDirectory.set(layout.projectDirectory)
+    dependsOn(":kotlinStoreYarnLock")
+    inputs.property("nodeExecutable", nodeExecPath)
+    inputs.file(rootProject.layout.projectDirectory.file("kotlin-js-store/yarn.lock"))
+    arguments.set(listOf("--test", "src/test/js/browser-diagnostics.browser.test.mjs"))
+    inputs.dir(layout.projectDirectory.dir("diagnostics"))
+    inputs.dir(layout.projectDirectory.dir("src/test/js"))
+}
+tasks.named("check") { dependsOn(browserDiagnosticsBrowserTest) }
+tasks.named("e2eRun") { mustRunAfter(browserDiagnosticsBrowserTest) }
+tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter(browserDiagnosticsBrowserTest, browserDiagnosticsTest) }

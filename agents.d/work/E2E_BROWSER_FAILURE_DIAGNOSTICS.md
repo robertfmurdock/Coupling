@@ -53,7 +53,7 @@ existing test semantics. Do not substantially slow successful E2E runs.
   before losing the test identity/session. Retain secondary diagnostic errors as
   supplemental evidence. Independently useful without network instrumentation.
 
-- [ ] **Verify browser capture and add bounded startup/network evidence.**
+- [x] **Verify browser capture and add bounded startup/network evidence.**
   Tests: a controlled page emits a console error, uncaught exception, failed resource
   request, and HTTP error before the first application navigation finishes; each
   reaches the artifact with normalized metadata. Cover buffer bounds, cleanup,
@@ -74,6 +74,20 @@ existing test semantics. Do not substantially slow successful E2E runs.
   Record timings, artifact sizes, buffer limits, and remaining gaps; document the
   resulting diagnostic contract and locations. Each earlier slice must already
   include its own relevant verification and performance comparison.
+
+## Recorded Performance Baseline
+
+Three passing pre-collector runs, same application/dependencies/browser:
+
+| Run | Summed testcase seconds | Notes |
+| --- | ---: | --- |
+| Original harness | 327.299 | 56 passed |
+| Slice-one full check | 322.982 | 56 passed; exception boundary only |
+| Pre-collector repeat | 328.003 | 56 passed |
+
+Median: 327.299 seconds. Build/container startup excluded. Final comparison still
+requires three passing runs with the completed collector and strict policy. Record
+new test coverage separately as well as total suite time; do not hide added cost.
 
 ## Performance Acceptance
 
@@ -121,11 +135,36 @@ existing test semantics. Do not substantially slow successful E2E runs.
 - Slice one complete: common diagnostic boundary tested on JVM/Node and wired into
   bootstrap/per-test handling. Removed redundant login drain. Independent read-only
   review found no blockers. Commit contains this card, tests, and implementation.
-- Next: confirm actual browser protocol/log behavior, establish the performance
-  baseline, then call the first slice's shot and reproduce its meaningful failure.
+- Slice one commit: `6e705f0ad` (full check passed).
+- Slice two complete: bounded session collector, runner failure snapshots,
+  classic/BiDi adapters, internal Kotlin bridge, Gradle-driven Node/browser fixtures.
+  Full check passed after explicit lockfile-producer wiring and disconnect coverage.
+- Next: complete slice-two full check/review and commit before warning-source fixes.
 - AWS identity works, and SDK passwords are present under fish (verified without values).
 
 ## Validation
+
+- Pre-collector baseline two: 56 passed; 328.003 seconds summed testcase execution.
+- Slice-two Node unit tests: 12 passed, including escaped JSON credentials, stalled
+  storage/final writes, late screenshots, and runner lifecycle/deduplication.
+- Real Chrome/BiDi fixture: passed; verified early console/uncaught/network failures,
+  HTTP 503, screenshot, bootstrap deduplication, and sanitized artifacts. Fixture
+  teardown was corrected to unsubscribe before deleting the browser session.
+- `:e2e:browserDiagnosticsBrowserTest :e2e:collectResults --no-daemon`: passed;
+  JSON/PNG artifacts verified under `build/test-output/e2e/results/`.
+- First slice-two full check failed after the browser/driver BiDi connection closed
+  (1006) during test 48; remaining tests saw invalid session IDs. The collector
+  retained nine diagnostic bundles. No cause has been established; this run is not
+  performance evidence. Original bundles preserved at
+  `/tmp/coupling-disconnected-session-evidence` during investigation.
+- Added a red/green disconnect test: protocol selection is fixed at session start;
+  lost BiDi connections do not trigger classic polling or dead-session unsubscribe.
+  Node unit tests: 13 passed. Follow-up full check passed in 5m19s (56 E2E passed,
+  296.591 testcase seconds). Final state full check passed in 5m22s (56 E2E passed,
+  290.971 testcase seconds). Resource copy uses the existing process-resources task;
+  test inputs declare Node executable/lockfile plus explicit lockfile producer.
+- Strict assertion normalization remains deferred until warning sources are fixed;
+  slice two preserves the prior assertion policy.
 
 - `:libraries:test-logging:jvmTest`: red, one of four tests failed because diagnostic
   failure replaced the original error; green after preserving/suppressing errors.

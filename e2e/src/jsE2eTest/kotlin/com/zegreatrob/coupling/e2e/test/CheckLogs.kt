@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.js.Json
 import kotlin.js.json
 
 suspend fun checkLogs() {
-    WebdriverBrowser.getLogs()
+    browserLogs()
         .let { browserLog ->
             browserLog.forwardLogs()
             errorsWarnings(browserLog)
@@ -43,12 +42,16 @@ fun List<Json>.forwardLogs() = forEach {
 private fun parseForForwarding(it: Json): Json {
     val message = it["message"].toString()
     val embeddedJson = parseEmbeddedJsonLog(message)
-        ?: return json("source" to "browser", "message" to message)
-    return json("source" to "browser").add(embeddedJson)
+        ?: return it
+    return json("source" to "browser").add(it).add(embeddedJson).also { forwarded ->
+        forwarded["level"] = it["level"]
+        forwarded["timestamp"] = it["timestamp"]
+    }
 }
 
 private fun errorsWarnings(browserLog: List<Json>) = browserLog.filter {
-    when (it["level"]) {
+    // Preserve the previous assertion policy until warning sources are fixed.
+    when (it["legacyLevel"] ?: it["level"]) {
         "ERROR" -> true
         "WARN" -> true
         else -> false
