@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.action
 import com.zegreatrob.testmints.action.ActionPipe
 import com.zegreatrob.testmints.action.async.SuspendAction
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.CancellationException
 import kotlin.uuid.Uuid
 
 private val theLogger by lazy { KotlinLogging.logger("ActionLogger") }
@@ -15,6 +16,8 @@ class LoggingActionPipe(override val traceId: Uuid) :
 
     override suspend fun <D, R> execute(dispatcher: D, action: SuspendAction<D, R>): R = try {
         logAsync(action) { super.execute(dispatcher, action) }
+    } catch (cancelled: CancellationException) {
+        throw cancelled
     } catch (bad: Throwable) {
         logger.error(bad) { "Error executing ${action::class.simpleName}" }
         throw bad

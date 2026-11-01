@@ -6043,11 +6043,6 @@ dpop@^2.1.1:
   resolved "https://registry.yarnpkg.com/dpop/-/dpop-2.1.1.tgz#f132df2bdf97b8fd5f13afe14ef659d072d8d051"
   integrity sha512-J0Of2JTiM4h5si0tlbPQ/lkqfZ5wAEVkKYBhkwyyANnPJfWH4VsR5uIkZ+T+OSPIwDYUg1fbd5Mmodd25HjY1w==
 
-drag-drop-webkit-mobile@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/drag-drop-webkit-mobile/-/drag-drop-webkit-mobile-1.4.1.tgz#c8a524011f1ae4c618770171f528c0fcbef3d23c"
-  integrity sha512-LNnLf0okrv2My5q+Ig2EDa2QslXOcFh8//iUD0AhbiL/3ixysQVK/6HMr3nA7wsDZUM9YWy8+5wLpzwXwrgR9g==
-
 dunder-proto@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/dunder-proto/-/dunder-proto-1.0.1.tgz#d7ae667e1dc83482f8b70fd0f6eefc50da30f58a"
@@ -8477,6 +8472,11 @@ mnemonist@0.38.3:
   integrity sha512-2K9QYubXx/NAjv4VLq1d1Ly8pWNC5L3BrixtdkyTegXWJIqY+zLNDhhX/A+ZwWt70tB1S8H4BE8FLYEFyNoOBw==
   dependencies:
     obliterator "^1.6.1"
+
+mobile-drag-drop@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/mobile-drag-drop/-/mobile-drag-drop-2.2.0.tgz#d9e004416436e325f3d10e51570f2071396dcc3a"
+  integrity sha512-SbYUySukoQryFrIkpR4S70QOyr3WD90raxiEHHaH9Bwg6O7fbMlpB4ANlNUkQ/j05YtWPm/PWnjPAXotXB8bIA==
 
 mocha@12.0.0-beta-10:
   version "12.0.0-beta-10"

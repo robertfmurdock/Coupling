@@ -58,7 +58,7 @@ export function normalizeLog(entry) {
     const level = embeddedLevel === 'ERROR' || transportLevel === 'ERROR' ? 'ERROR'
         : embeddedLevel === 'WARN' || transportLevel === 'WARN' ? 'WARN' : transportLevel
     return {
-        source: 'browser', kind: entry.type ?? 'console', level, legacyLevel: entry.level,
+        source: 'browser', kind: entry.type ?? 'console', level,
         timestamp: entry.timestamp ?? Date.now(), message: embedded ? JSON.stringify(sanitizePayload(embedded)) : sanitizeText(message),
         stack: entry.stackTrace?.callFrames?.slice(0, 12).map(frame => ({
             url: sanitizeUrl(frame.url), functionName: sanitizeText(frame.functionName).slice(0, 200),

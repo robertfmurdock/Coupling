@@ -82,6 +82,40 @@ class PrepareToSpinPageE2ETest {
             .assertIsEqualTo(3)
     }
 
+    @Test
+    fun touchDropSwapsPlayersBetweenPairs() = run {
+        lateinit var swap: TouchSwap
+        pinPartySetup {
+            PrepareToSpinPage.goTo(party.id)
+            getSelectAllButton().click()
+            getSpinButton().click()
+            PairAssignmentsPage.waitForPage()
+            swap = prepareTouchSwap()
+        } exercise {
+            performTouchSwap()
+        } verify {
+            val expected = swap.pairs.map { it.toMutableSet() }
+            val source = swap.pairs[0][0]
+            val target = swap.pairs[1][0]
+            expected[0].apply {
+                remove(source)
+                add(target)
+            }
+            expected[1].apply {
+                remove(target)
+                add(source)
+            }
+            WebdriverBrowser.waitUntil({
+                assignedPairElements.map { pair ->
+                    pair.all(PlayerCard.PLAYER_LOCATOR).map { it.attribute("data-player-id") }.toSet()
+                }.toList() == expected
+            }, 2000, "touch player swap")
+            assignedPairElements.map { pair ->
+                pair.all(PlayerCard.PLAYER_LOCATOR).map { it.attribute("data-player-id") }.toSet()
+            }.toList().assertIsEqualTo(expected)
+        }
+    }
+
     // Tests related to Drag and Drop. WDIO support doesn't seem compatible with the react-dnd library, and these were original written as unit tests in Enzyme. Enzyme's gotta go, so they're here in limbo for now.
     // @Test
     // fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = pinPartySetup {

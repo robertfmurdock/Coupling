@@ -67,6 +67,41 @@ credentials. Check presence without printing values; do not copy secrets into th
 repository. If AWS works but SDK tests receive HTTP 401, inspect this environment
 before changing auth behavior.
 
+## Browser Diagnostics
+
+On this development host, SDK password variables are loaded by fish. Run local
+validation through `fish -lc './gradlew check --no-daemon'`; CI supplies its own
+secret environment. Do not request password values or bypass configured profiles.
+
+The E2E runner installs browser capture before navigation. BiDi sessions collect
+console/script events and failed-network/HTTP-error metadata; classic sessions
+use browser-console polling. Browser WARN/ERROR entries fail bootstrap or the
+associated application test, including errors reported by structured loggers.
+There are no warning exemptions or blanket log purges. Genuine cancellation is
+re-thrown and logged as cancellation, not an application error.
+
+Failed tests write bounded, sanitized JSON evidence and best-effort page state
+and screenshots under `e2e/build/reports/e2e/browser-diagnostics/`. Existing result
+collection places these under
+`build/test-output/e2e/results/e2e/browser-diagnostics/` for CI upload. An incomplete
+bundle means the diagnostic deadline interrupted collection; counters disclose
+truncated/dropped entries. Diagnostic failures must not replace the primary test
+failure. Passing application tests do not take diagnostic snapshots/screenshots.
+
+Harness verification tasks are `:e2e:browserDiagnosticsTest` (Node) and
+`:e2e:browserDiagnosticsBrowserTest` (real Chrome). The browser fixture deliberately
+injects failures and writes its expected evidence under
+`e2e/build/reports/browser-diagnostics-fixture/`, even when its assertions pass.
+Run browser-bearing tasks outside the sandbox with `--no-daemon`, following the
+Gradle playbook. Capture ownership, limits, and redaction live in
+`e2e/diagnostics/browser-diagnostics.mjs`.
+
+Use `FGREP` for focused E2E scenarios, for example
+`fish -lc 'env FGREP=BrowserLogPolicyTest ./gradlew :e2e:e2eRun --no-daemon --rerun'`.
+The filter is a declared task input and explicitly passed environment value, so
+configuration/build-cache reuse cannot confuse focused and unfiltered results.
+Clear the filter for the required full-suite gate; verify the report's test count.
+
 ## Focused Contexts
 
 Use the relevant tests and fixtures, not a wholesale dump of test suites or logs.

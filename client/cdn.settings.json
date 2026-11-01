@@ -105,8 +105,8 @@
     "fitty": {
       "global": "Fitty"
     },
-    "drag-drop-webkit-mobile": {
-      "global": "DDWM"
+    "mobile-drag-drop": {
+      "global": "MobileDragDrop"
     },
     "react/jsx-runtime": {
       "global": "ReactJsxRuntime"

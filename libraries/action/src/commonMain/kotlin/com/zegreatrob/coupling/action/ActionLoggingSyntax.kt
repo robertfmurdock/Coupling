@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.testmints.action.Action
 import com.zegreatrob.testmints.action.ActionWrapper
+import kotlinx.coroutines.CancellationException
 import kotlin.time.Duration
 import kotlin.time.measureTimedValue
 
@@ -62,7 +63,8 @@ interface ActionLoggingSyntax :
             "command_action" to className,
             "command_phase" to "end",
             "command_trace_id" to traceId,
-            "command_error" to true,
+            "command_error" to (exception !is CancellationException),
+            "command_cancelled" to (exception is CancellationException),
             "action" to className,
             "type" to "End",
             "traceId" to traceId,

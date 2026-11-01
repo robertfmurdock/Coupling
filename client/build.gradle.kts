@@ -93,7 +93,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     jsMainImplementation(npmConstrained("@auth0/auth0-react"))
     jsMainImplementation(npmConstrained("date-fns"))
-    jsMainImplementation(npmConstrained("drag-drop-webkit-mobile"))
+    jsMainImplementation(npmConstrained("mobile-drag-drop"))
     jsMainImplementation(npmConstrained("favicons"))
     jsMainImplementation(npmConstrained("fitty"))
     jsMainImplementation(npmConstrained("react-dnd"))

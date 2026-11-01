@@ -65,7 +65,11 @@ existing test semantics. Do not substantially slow successful E2E runs.
   Confirm the real browser transport works; fake-event unit tests alone are insufficient.
   Independently useful for failures beyond bootstrap.
 
-- [ ] **Prove artifact delivery and acceptable performance.**
+- [x] **Enforce strict policy, fix warning sources, and prove artifact delivery/performance.**
+  No warning exemptions. Fix cancellation severity/lifecycle metadata and replace
+  the deprecated drag/drop package with the maintained named polyfill API, CDN
+  mapping and default styles. Exercise actual touch player swapping and warning,
+  error, informational, and bootstrap-check failure policies.
   Validate the complete slice with a deliberately failing startup scenario and
   an ordinary passing suite. Verify diagnostics survive reporting/collection errors
   and appear in the downloaded CI-style artifact. Keep fault injection in a
@@ -75,19 +79,32 @@ existing test semantics. Do not substantially slow successful E2E runs.
   resulting diagnostic contract and locations. Each earlier slice must already
   include its own relevant verification and performance comparison.
 
-## Recorded Performance Baseline
+## Recorded Performance Results
 
-Three passing pre-collector runs, same application/dependencies/browser:
+Local Chrome 156.0.8078.80 (mac), WebdriverIO 10.1.0, Gradle-managed Node 24.15.0.
+Times sum individual JUnit testcase durations, using **class + method** identities
+because a method name is reused across classes. Compilation/container startup is excluded.
 
-| Run | Summed testcase seconds | Notes |
-| --- | ---: | --- |
-| Original harness | 327.299 | 56 passed |
-| Slice-one full check | 322.982 | 56 passed; exception boundary only |
-| Pre-collector repeat | 328.003 | 56 passed |
+| Run | Before collector (56 tests) | Completed strict harness (61 tests) |
+| --- | ---: | ---: |
+| 1 | 327.299 s | 298.695 s |
+| 2 | 322.982 s | 293.767 s |
+| 3 | 328.003 s | 287.663 s |
+| Median | 327.299 s | 293.767 s |
 
-Median: 327.299 seconds. Build/container startup excluded. Final comparison still
-requires three passing runs with the completed collector and strict policy. Record
-new test coverage separately as well as total suite time; do not hide added cost.
+Observed median change: **-10.245%**, inside the +5% overhead budget, including
+five added cases. None of the 56 existing cases had all three final durations
+above its observed baseline range. The new real touch case took 8.761 / 8.662 /
+8.309 seconds. Passing run logs were 678,244 / 686,900 / 686,517 bytes (30,817 /
+30,923 / 30,871 bytes gzipped). Buffers remain bounded; normal passing application
+tests take no diagnostic screenshots or page snapshots.
+
+Measurements were collected before/after implementation rather than strictly
+alternating. Local run variability and the different test counts limit causal
+speedup claims; this establishes no observed local regression, not a CI timing
+guarantee. The intermediate disconnected-browser failure was excluded from timing
+samples and recorded below. XML evidence was retained during implementation as
+`/tmp/coupling-e2e-{baseline-1,slice-one,baseline-2,final-1,final-2,final-3}.xml`.
 
 ## Performance Acceptance
 
@@ -129,60 +146,57 @@ new test coverage separately as well as total suite time; do not hide added cost
   counters so eviction cannot hide failures. Failure diagnostics have a five-second
   total deadline. No extra work on the normal path beyond bounded event collection.
 
-## Current State
+## Completed State
 
-- November 1, 2026; planning baseline commit `b198b1296`.
-- Slice one complete: common diagnostic boundary tested on JVM/Node and wired into
-  bootstrap/per-test handling. Removed redundant login drain. Independent read-only
-  review found no blockers. Commit contains this card, tests, and implementation.
-- Slice one commit: `6e705f0ad` (full check passed).
-- Slice two complete: bounded session collector, runner failure snapshots,
-  classic/BiDi adapters, internal Kotlin bridge, Gradle-driven Node/browser fixtures.
-  Full check passed after explicit lockfile-producer wiring and disconnect coverage.
-- Next: complete slice-two full check/review and commit before warning-source fixes.
-- AWS identity works, and SDK passwords are present under fish (verified without values).
+- Completed November 1, 2026, on `codex/e2e-browser-diagnostics`.
+- Baseline: `b198b1296`. Slice one: `6e705f0ad`. Slice two: `509355389`.
+  The completion commit containing this card delivers slice three and its tests.
+- Implemented startup capture, original-error preservation, bounded session-level
+  evidence, strict browser severity checks without exemptions, cancellation-aware
+  lifecycle/error logging, maintained mobile polyfill/binding/CDN/styles, actual
+  touch swap coverage, and the explicit FGREP task/configuration-cache input.
+- Independent test/design reviews found and verified fixes for escaped structured
+  secrets, total deadlines including storage, late screenshot effects, bootstrap
+  log-failure deduplication, and touch cleanup error preservation. No open findings.
+- User guidance is recorded in `agents.d/context/TESTING.md`, including fish-based
+  local credential loading, diagnostic locations, harness tasks and focused filters.
+- No implementation work remains. No push or release performed or authorized.
+- CI execution/performance remains unmeasured; the original PR's rare blank-page
+  cause is still unknown. This work improves evidence rather than asserting its cause.
 
 ## Validation
 
-- Pre-collector baseline two: 56 passed; 328.003 seconds summed testcase execution.
-- Slice-two Node unit tests: 12 passed, including escaped JSON credentials, stalled
-  storage/final writes, late screenshots, and runner lifecycle/deduplication.
-- Real Chrome/BiDi fixture: passed; verified early console/uncaught/network failures,
-  HTTP 503, screenshot, bootstrap deduplication, and sanitized artifacts. Fixture
-  teardown was corrected to unsubscribe before deleting the browser session.
-- `:e2e:browserDiagnosticsBrowserTest :e2e:collectResults --no-daemon`: passed;
-  JSON/PNG artifacts verified under `build/test-output/e2e/results/`.
-- First slice-two full check failed after the browser/driver BiDi connection closed
-  (1006) during test 48; remaining tests saw invalid session IDs. The collector
-  retained nine diagnostic bundles. No cause has been established; this run is not
-  performance evidence. Original bundles preserved at
-  `/tmp/coupling-disconnected-session-evidence` during investigation.
-- Added a red/green disconnect test: protocol selection is fixed at session start;
-  lost BiDi connections do not trigger classic polling or dead-session unsubscribe.
-  Node unit tests: 13 passed. Follow-up full check passed in 5m19s (56 E2E passed,
-  296.591 testcase seconds). Final state full check passed in 5m22s (56 E2E passed,
-  290.971 testcase seconds). Resource copy uses the existing process-resources task;
-  test inputs declare Node executable/lockfile plus explicit lockfile producer.
-- Strict assertion normalization remains deferred until warning sources are fixed;
-  slice two preserves the prior assertion policy.
-
-- `:libraries:test-logging:jvmTest`: red, one of four tests failed because diagnostic
-  failure replaced the original error; green after preserving/suppressing errors.
-- `:libraries:test-logging:jvmTest :libraries:test-logging:jsNodeTest`: passed.
-- Unchanged E2E baseline one passed: 56 tests, 327.299 seconds summed testcase
-  execution (`/tmp/coupling-e2e-baseline-1.xml`). Build/setup is excluded.
-- Slice-one full `check --no-daemon` under fish: passed in 7m28s, including SDK,
-  browser, E2E and structured-log validation. E2E: 56 passed; 322.982 seconds
-  summed testcase execution. A single comparison does not establish overhead.
-- Slice-one code/test review passed; `git diff --check` passed.
-
-- Planning only: inspect card content and run `git diff --check`. No runtime tests
-  are required for this documentation-only change.
-- Implementation: focused Gradle checks during red–green–refactor, then
-  `./gradlew check --no-daemon` before each test-plus-implementation commit.
-- Browser-bearing commands, including focused E2E runs and full checks, must run
-  outside the sandbox through the approved mechanism with a fresh daemon.
-- Express any new fixture/validation automation as Gradle tasks. Record commands,
-  results, performance evidence, and validation gaps per slice. Do not call a slice
-  release-safe or commit it while the required full check is failing.
-- No push or release is authorized by this work card.
+- Four common diagnostic-boundary scenarios passed on JVM and Node: successful
+  action, failed bootstrap with one collection, primary + diagnostic failures, and
+  successful action rejected by failed log checks. Primary-replacement regression
+  was confirmed red before implementation.
+- Thirteen Gradle-driven Node collector tests passed: classic/BiDi adapters,
+  metadata/identity, entry/byte bounds and eviction counters, network field exclusion,
+  escaped Chrome/BiDi payload redaction, bootstrap deduplication, listener cleanup,
+  absolute deadlines including storage/final writes, late screenshots and lost BiDi.
+  Timeout tests advance a mock clock after the intended stage, avoiding disk-speed races.
+- Real Chrome fault fixture passed and generated JSON + PNG evidence for console
+  warnings/errors, uncaught script exception, failed fetch and HTTP 503 before
+  bootstrap. `:e2e:collectResults` delivery was verified under the existing artifact root.
+- Controlled real touch fixture passed without browser warnings. Closing its server
+  connections removed a 60-second keepalive delay; final fixture time was about 2.8 s.
+- Real Appender tests confirmed cancellation propagates without ERROR and uses
+  `command_error=false` / `command_cancelled=true`; ordinary exceptions still log
+  ERROR with their original cause and propagate. Both regressions were red/green.
+- Four browser log-policy scenarios passed, including successful startup followed
+  by a strict-log failure being marked for a single bundle. The real-app touch test
+  checks exact player memberships after a W3C touch gesture; viewport and pointer
+  cleanup preserve failures. Movement exceeds Chrome touch slop and waits for dragend.
+- FGREP cache bug was reproduced (stale filter selected the prior scenario), then
+  fixed with one tracked provider feeding both task input and environment. Changed
+  filters invalidated configuration reuse; focused counts and unfiltered 61-test
+  reports were checked. Cache reuse remains enabled.
+- Slice-one `check --no-daemon` passed (7m28s); slice-two final gate passed (5m22s).
+  The first slice-two attempt lost its browser/driver connection (1006) during test
+  48; nine bundles retained the evidence. Cause remains unknown. Protocol selection
+  now remains fixed after connection loss; subsequent full checks passed.
+- Final strict `check --no-daemon` passed (6m28s), including all 61 E2E cases, all
+  other suites, and structured-log validation. Two further unchanged 61-test runs
+  passed (5m18s / 5m04s task wall time). Final full gate passed again (13s with valid
+  unchanged results reused). Commands ran through fish, browser commands outside
+  the sandbox with fresh daemons. `git diff --check` passed.

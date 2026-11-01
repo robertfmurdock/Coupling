@@ -95,6 +95,9 @@ tasks {
         from("$rootDir/sdk/build/processedResources/js/main")
     }
     e2eRun {
+        val testFilter = providers.environmentVariable("FGREP").orElse("")
+        inputs.property("testFilter", testFilter)
+        environment("FGREP", testFilter.get())
         mustRunAfter(":sdk:jvmTest", ":sdk:jsNodeTest")
         val testPassword = providers.fetchAwsSsmParameter("/local/COUPLING_E2E_TEST_PASSWORD")
         val testLogFile = rootProject.layout.buildDirectory.file("test-output/test.jsonl")

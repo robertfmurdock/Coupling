@@ -17,13 +17,15 @@ private external interface BrowserDiagnosticCollector {
 
 suspend fun browserLogs(): List<Json> = DiagnosticBrowser.couplingDiagnostics.drainLogs().await().toList()
 
-suspend fun <T> withBootstrapDiagnostics(action: suspend () -> T): T = withTestDiagnostics({ browserLogs().forwardLogs() }) {
-    try {
-        action()
-    } catch (failure: Throwable) {
-        runCatching { DiagnosticBrowser.couplingDiagnostics.markBootstrapFailure(failure) }
-            .exceptionOrNull()
-            ?.let(failure::addSuppressed)
-        throw failure
-    }
+suspend fun <T> withBootstrapDiagnostics(
+    diagnostics: suspend () -> Unit = { checkLogs() },
+    markFailure: (Throwable) -> Unit = { DiagnosticBrowser.couplingDiagnostics.markBootstrapFailure(it) },
+    action: suspend () -> T,
+): T = try {
+    withTestDiagnostics({ diagnostics() }) { action() }
+} catch (failure: Throwable) {
+    runCatching { markFailure(failure) }
+        .exceptionOrNull()
+        ?.let(failure::addSuppressed)
+    throw failure
 }

@@ -4,8 +4,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.js.Json
 import kotlin.js.json
 
-suspend fun checkLogs() {
-    browserLogs()
+suspend fun checkLogs(readLogs: suspend () -> List<Json> = ::browserLogs) {
+    readLogs()
         .let { browserLog ->
             browserLog.forwardLogs()
             errorsWarnings(browserLog)
@@ -50,8 +50,7 @@ private fun parseForForwarding(it: Json): Json {
 }
 
 private fun errorsWarnings(browserLog: List<Json>) = browserLog.filter {
-    // Preserve the previous assertion policy until warning sources are fixed.
-    when (it["legacyLevel"] ?: it["level"]) {
+    when (it["level"]) {
         "ERROR" -> true
         "WARN" -> true
         else -> false

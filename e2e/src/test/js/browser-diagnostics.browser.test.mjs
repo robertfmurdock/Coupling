@@ -24,7 +24,7 @@ test('real Chrome preserves pre-bootstrap script, console, and network failures 
         </script>`)
     })
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
-    t.after(() => new Promise(resolve => server.close(resolve)))
+    t.after(() => { server.closeAllConnections(); return new Promise(resolve => server.close(resolve)) })
     const browser = await remote({logLevel: 'error', capabilities: {
         browserName: 'chrome', browserVersion: 'stable', acceptInsecureCerts: true,
         'goog:chromeOptions': {args: ['--headless'], ...(process.env.WDIO_CHROME_BINARY ? {binary: process.env.WDIO_CHROME_BINARY} : {})},
@@ -54,4 +54,39 @@ test('real Chrome preserves pre-bootstrap script, console, and network failures 
     assert.equal(reportText.includes('fixture-secret'), false)
     assert.deepEqual(report.captureErrors, [])
     console.log(`Browser diagnostic fixture artifact: ${filename}`)
+})
+
+test('maintained mobile polyfill delivers touch dragenter and drop without browser warnings', {timeout: 60000}, async t => {
+    const polyfill = await readFile(path.resolve('../build/js/node_modules/mobile-drag-drop/index.min.js'))
+    const server = createServer((request, response) => {
+        if (request.url === '/polyfill.js') { response.setHeader('Content-Type', 'application/javascript'); response.end(polyfill); return }
+        if (request.url === '/favicon.ico') { response.writeHead(204); response.end(); return }
+        response.setHeader('Content-Type', 'text/html')
+        response.end(`<style>body{touch-action:none}#source,#target{position:absolute;top:50px;width:80px;height:80px;background:#ddd}#source{left:50px}#target{left:250px}</style>
+            <div id="source" draggable="true">source</div><div id="target">target</div><script src="/polyfill.js"></script><script>
+            MobileDragDrop.polyfill({forceApply:true});
+            document.querySelector('#source').addEventListener('dragstart', e => e.dataTransfer.setData('text/plain','payload'));
+            document.querySelector('#target').addEventListener('dragenter', e => { e.preventDefault(); window.entered = true });
+            document.querySelector('#target').addEventListener('dragover', e => e.preventDefault());
+            document.querySelector('#target').addEventListener('drop', e => { e.preventDefault(); window.dropped = e.dataTransfer.getData('text/plain') });
+            </script>`)
+    })
+    await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
+    t.after(() => { server.closeAllConnections(); return new Promise(resolve => server.close(resolve)) })
+    const browser = await remote({logLevel: 'error', capabilities: {
+        browserName: 'chrome', browserVersion: 'stable', 'goog:chromeOptions': {args: ['--headless']},
+    }})
+    const collector = createCollector(browser)
+    t.after(async () => { try { await collector.stop() } finally { await browser.deleteSession() } })
+    await collector.start()
+    await browser.url(`http://127.0.0.1:${server.address().port}/`)
+    await browser.performActions([{type: 'pointer', id: 'touch', parameters: {pointerType: 'touch'}, actions: [
+        {type: 'pointerMove', duration: 0, x: 90, y: 90}, {type: 'pointerDown', button: 0},
+        {type: 'pointerMove', duration: 200, x: 110, y: 90}, {type: 'pause', duration: 200},
+        {type: 'pointerMove', duration: 300, x: 290, y: 90}, {type: 'pause', duration: 200}, {type: 'pointerUp', button: 0},
+    ]}])
+    await browser.releaseActions()
+    await browser.waitUntil(() => browser.execute(() => window.dropped === 'payload'), {timeout: 2000})
+    assert.equal(await browser.execute(() => window.entered), true)
+    assert.deepEqual((await collector.drainLogs()).filter(entry => ['WARN', 'ERROR'].includes(entry.level)), [])
 })
