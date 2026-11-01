@@ -8947,12 +8947,12 @@ parse-ms@^4.0.0:
   resolved "https://registry.yarnpkg.com/parse-ms/-/parse-ms-4.0.0.tgz#c0c058edd47c2a590151a718990533fd62803df4"
   integrity sha512-TXfryirbmq34y8QBwgqCVLi+8oA3oWx2eAnSn62ITyEhEYaWRlVZ2DvMM9eZbMs/RfxPu/PK/aBLyGj4IrqMHw==
 
-parse5-html-rewriting-stream@~8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/parse5-html-rewriting-stream/-/parse5-html-rewriting-stream-8.0.1.tgz#4472a20f2ce1d70022763b49a40b8da7d3d52cb9"
-  integrity sha512-NaRku2aMpUN1Sh1Gyk1KWUh2A7EJx2c6qYzvwsPtqhoHoaURshdrceYK3LunVCm3WHhm6FS7Vcczbvdh3/UIVw==
+parse5-html-rewriting-stream@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/parse5-html-rewriting-stream/-/parse5-html-rewriting-stream-8.1.0.tgz#51f9da5c1f4e000a2557c1fe8840b29c325fd9ce"
+  integrity sha512-wLySSQ/rd/pw374xw+4GhT7OFMG3BMRA7hYEDzKBJG2vn44Deccbc5nZNXjbm59CjGi19v1pjZAy+R40ZPOibA==
   dependencies:
-    entities "^8.0.0"
+    entities "^9.0.0"
     parse5 "^8.0.0"
     parse5-sax-parser "^8.0.0"
 
@@ -8985,12 +8985,19 @@ parse5@^7.0.0, parse5@^7.3.0:
   dependencies:
     entities "^6.0.0"
 
-parse5@^8.0.0, parse5@^8.0.1, parse5@~8.0.1:
+parse5@^8.0.0, parse5@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-8.0.1.tgz#f43bcd2cd683efe084075333e9ce0da7d06da31e"
   integrity sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw==
   dependencies:
     entities "^8.0.0"
+
+parse5@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-8.1.0.tgz#de2cf56a4f7f47737eae13d46a8acb33a56e4844"
+  integrity sha512-sq3qBFpee5jeocbFbO48VHlGr8sT7mbXS0vxlKN6sottBtJzrOG3998sr0llSZcQAGgfpdmEYAIZE0P9z0dE8w==
+  dependencies:
+    entities "^9.0.0"
 
 parseurl@^1.3.3, parseurl@~1.3.3:
   version "1.3.3"

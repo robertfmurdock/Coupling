@@ -5,7 +5,7 @@ log4j = "2.26.1"
 
 [libraries]
 jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.4"
-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.14.8"
+jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.14.9"
 # @pin
 kfc-gradle-plugin = "io.github.turansky.kfc:kfc-gradle-plugin:18.8.0"
 kotlin-js-plain-objects = { module = "org.jetbrains.kotlin:js-plain-objects", version.ref = "kotlin" }
