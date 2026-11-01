@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GqlQuery
 import com.zegreatrob.coupling.sdk.mapper.toDomain
+import com.zegreatrob.coupling.testlogging.withTestDiagnostics
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -18,23 +19,23 @@ import kotlin.js.json
 val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
     asyncTestTemplate(beforeAll = {
         withTestIdentity(suite = "e2e.beforeAll", test = "bootstrap", testId = "e2e-beforeAll") {
-            installExecuteAsyncCompatibilityShim()
-            CouplingLogin.sdk.await().apply {
-                fire(GqlQuery(PartyListQuery()))
-                    ?.partyList
-                    ?.map { it.partyDetails.toDomain() }
-                    ?.map(PartyDetails::id)
-                    ?.map { DeletePartyCommand(it) }
-                    ?.forEach { fire(it) }
+            withTestDiagnostics({ WebdriverBrowser.getLogs().forwardLogs() }) {
+                installExecuteAsyncCompatibilityShim()
+                CouplingLogin.sdk.await().apply {
+                    fire(GqlQuery(PartyListQuery()))
+                        ?.partyList
+                        ?.map { it.partyDetails.toDomain() }
+                        ?.map(PartyDetails::id)
+                        ?.map { DeletePartyCommand(it) }
+                        ?.forEach { fire(it) }
 
-                WebdriverBrowser.setUrl("")
-                js("browser.execute(function(ignore) {window.sessionStorage.setItem('animationDisabled', true); window.sessionStorage.setItem('thirdPartyAvatarsDisabled', true)}, undefined)")
-                    .unsafeCast<Promise<Unit>>()
-                    .await()
+                    WebdriverBrowser.setUrl("")
+                    js("browser.execute(function(ignore) {window.sessionStorage.setItem('animationDisabled', true); window.sessionStorage.setItem('thirdPartyAvatarsDisabled', true)}, undefined)")
+                        .unsafeCast<Promise<Unit>>()
+                        .await()
 
-                TestLogin.login()
-                WebdriverBrowser.getLogs()
-                    .forwardLogs()
+                    TestLogin.login()
+                }
             }
         }
     }).extend { context, test ->
@@ -50,24 +51,17 @@ val e2eSetup: TestTemplate<ActionCannon<CouplingSdkDispatcher>> by lazy {
             E2eJsonlTestMintsReporter.emitTestStart()
             var failed = false
             try {
-                test(context)
+                withTestDiagnostics({ checkLogs() }) { test(context) }
             } catch (t: Throwable) {
                 failed = true
                 throw t
             } finally {
-                try {
-                    checkLogs()
-                } catch (t: Throwable) {
-                    failed = true
-                    throw t
-                } finally {
-                    E2eJsonlTestMintsReporter.emitTestFinish()
-                    appendTestLifecycleToTestLog(
-                        type = "TestEnd",
-                        status = if (failed) "FAILED" else "PASSED",
-                        durationMs = nowMillis() - startMillis,
-                    )
-                }
+                E2eJsonlTestMintsReporter.emitTestFinish()
+                appendTestLifecycleToTestLog(
+                    type = "TestEnd",
+                    status = if (failed) "FAILED" else "PASSED",
+                    durationMs = nowMillis() - startMillis,
+                )
             }
         }
     }

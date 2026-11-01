@@ -21,11 +21,6 @@ import kotlin.math.floor
 
 object TestLogin : BrowserSyntax {
 
-    private suspend fun clearLogs() {
-        WebdriverBrowser.getLogs()
-            .forwardLogs()
-    }
-
     suspend fun login() {
         val client = HttpClient(createE2eKtorEngine()) {
             install(ContentNegotiation) {
@@ -76,8 +71,6 @@ object TestLogin : BrowserSyntax {
         setAuth0CacheInLocalStorage(key, auth0Cache, idCacheKey, auth0IdCache)
         WebdriverBrowser.setUrl("")
         PartyListPage.waitForPage()
-
-        clearLogs()
     }
 
     private suspend fun setAuth0CacheInLocalStorage(

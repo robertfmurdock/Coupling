@@ -35,6 +35,7 @@ dependencies {
     commonMainImplementation("org.jetbrains.kotlin:kotlin-test")
 
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
+    commonTestImplementation("com.zegreatrob.testmints:minassert")
 
     "jvmMainApi"("io.github.oshai:kotlin-logging")
     "jvmMainImplementation"(kotlin("reflect"))
