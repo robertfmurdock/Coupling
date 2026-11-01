@@ -122,11 +122,12 @@ review remain outside this card: URL token logging and GraphQL work budgets.
     bootstrap/migration compatibility, and per-environment cutover retirement.
     Transfer is not remediation; keep this finding open until evidence is linked.
 
-- [ ] **5b. Review and restrict Lambda invocation permissions.**
+- [x] **5b. Review and restrict Lambda invocation permissions.**
   - Local packaging on 2026-10-31 confirmed the wildcard in generated IAM;
     see authenticated local packaging evidence below. User subsequently approved
     config correction followed by normal deployment and notification verification,
-    replacing isolated AWS fixtures. Deployed verification remains outstanding.
+    replacing isolated AWS fixtures. Deployed policies and the production
+    notification flow were verified on 2026-11-01; evidence is recorded below.
   - Inspect generated CloudFormation through the existing Gradle packaging path
     before claiming the legacy wildcard declaration is effective.
   - Revised by user: use generated-policy evidence for the original broad grant,
@@ -189,7 +190,7 @@ review remain outside this card: URL token logging and GraphQL work budgets.
 
 ## Current State
 
-- Date: 2026-10-30. Starting commit: `be4856be0d8608e99c9498d34214cd7dfd90f1ab`.
+- Updated: 2026-11-01. Starting commit: `be4856be0d8608e99c9498d34214cd7dfd90f1ab`.
 - Slice 1 complete: endpoint red confirmed; party-keyed dispatcher cache
   implemented; focused green/lint and full-suite validation passed. Tests, fix,
   and this card are delivered together in the slice commit (see Git history).
@@ -199,8 +200,9 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   DISCORD storage, with endpoint, repository, browser, lint, and full-check validation.
   Slice 3 complete: consumed-token markers and both relationship writes share
   one transaction in the existing USER table. General concurrency hardening was
-  struck from scope. Next: resolve the product-policy prerequisite for slice 4;
-  slice 5 still requires isolated AWS test authorization.
+  struck from scope. Slice 4 retained intentional permissions. Slice 5b's scoped
+  Lambda grant is deployed in `1.1.869` and production notification acceptance
+  passed. Remaining work: slice 5a in the linked DynamoDB migration IAM card.
 - Slice 1 tests belong to existing `SdkSecretTest.kt` and `SdkPinTest.kt`. Typed operations
   come from `sdk/src/commonMain/graphql/test-mutations.graphql` and execute through
   the SDK's existing authenticated Apollo HTTP performer. A test-only helper in
@@ -212,8 +214,8 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   pair assignments use command partyId; save/delete player/pin and party deletion
   use dispatcher currentPartyId. The shared cache fix binds both patterns to the
   requested party without changing schemas or membership policy.
-- Prerequisites for later slices: owner/player capability agreement for slice 4;
-  isolated AWS test environment authorization for slice 5. Discord now uses the
+- Slice 4's policy decision and slice 5b's revised normal-rollout acceptance are
+  resolved; slice 5a retains its linked card's gates. Discord uses the
   existing injected HttpClient seam with a simulated HTTP engine for local tests.
 
 ## Validation
@@ -722,6 +724,58 @@ review remain outside this card: URL token logging and GraphQL work budgets.
   `/tmp/coupling-rollout-evidence-check.log`. `git diff --check` passed.
   Complete-slice review confirmed this entry is evidence only. Committed locally
   without pushing another master change or triggering another blocked release.
+
+### 2026-11-01: Lambda rollout and production notification acceptance
+
+- User installed scoped inline-policy management on `CouplingDeploy` and
+  completed rollback for all three stacks. Read-only AWS inspection confirmed
+  `UPDATE_ROLLBACK_COMPLETE` for prod, prerelease, and sandbox before deployment.
+  No agent credential/profile change, IAM administration, resource skipping,
+  or isolated AWS fixture provisioning was needed.
+- User pushed `3172b95dc`; normal Build run:
+  https://github.com/robertfmurdock/Coupling/actions/runs/41321446031.
+  Build job succeeded, including Build + Release Coupling, publishing version
+  `1.1.869` and deploying prod/prerelease/sandbox. Separate dashboard job was
+  still completing at the first verification; its deploy-and-verify step also
+  subsequently succeeded, followed by workflow cleanup. Final run conclusion:
+  `success`, with both Build and Deploy Dashboard jobs successful.
+- AWS endpoint inspection after deployment confirmed all three application
+  stacks are `UPDATE_COMPLETE`. For each stage, `list-role-policies` lists the
+  original role policy and the new `coupling-server-<stage>-notify-connect-invocation`
+  policy. `get-role-policy` shows only `lambda:InvokeFunction` against
+  `arn:aws:lambda:us-east-1:174159267544:function:coupling-server-<stage>-notifyConnect`
+  in the new policy. The original inline policy no longer grants Lambda invocation.
+  `list-attached-role-policies` shows only the retained `AmazonDynamoDBFullAccess`;
+  that separate finding remains with the migration card.
+- Production browser acceptance used only the user-authorized Coupling party
+  (`9df8b8ef-f10f-4b75-bde1-d691c148378c`), with the user signing in through the
+  ordinary browser flow. After deployment, reloading its current-pairs page
+  established a fresh WebSocket and displayed `Users viewing this page: 1`.
+  Opening a second tab displayed count 2 in that new tab and updated the first
+  tab to 2. Closing the second tab returned the first to 1. This exercises the
+  real authenticated connection handler, asynchronous `notifyConnect` invocation,
+  initial delivery to the new connection, presence broadcast, and disconnect.
+  No player, pairing, integration, settings, or other party data was changed.
+- Acceptance meets the user's revised experiment: inspect deployed IAM and
+  confirm intended behavior through the normal production flow. No unrelated
+  Lambda was invoked; unrelated-function denial is not endpoint-tested. No
+  broader claim about organization-wide effective AWS permissions is made.
+- Complete-outcome review: application slices 1/2/3 were delivered with their
+  endpoint evidence; slice 4 was an intentional policy decision; slice 5b is
+  now deployed and verified under the revised acceptance gate. Slice 5a remains
+  open in `DYNAMODB_MIGRATION_IAM.md`; do not move this card to completed or
+  describe all critical/high findings as remediated. Medium findings remain
+  outside scope. Temporary Serverless credential revocation remains user-owned.
+- This final slice changes documentation only; no additional runtime fix was
+  indicated by the rollout. `fish -lc './gradlew check --no-daemon'` passed
+  outside the sandbox with a fresh daemon in 15s (587 actionable tasks:
+  54 executed, 533 up-to-date; existing successful test outputs reused).
+  Log: `/tmp/coupling-iam-acceptance-check.log`. `git diff --check` passed.
+  Test-clarity review applies to the observable two-tab smoke sequence above;
+  no new source-string tests were invented. Design review confirmed exact
+  deployed ARN grants, the shared-role boundary, unchanged DynamoDB policy,
+  and absence of party-data mutations. Final evidence commit is local only;
+  do not push it merely to trigger another application deployment.
 
 ### Delivery gates
 
