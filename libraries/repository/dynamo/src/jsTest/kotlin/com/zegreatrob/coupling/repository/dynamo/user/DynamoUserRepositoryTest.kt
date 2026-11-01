@@ -120,6 +120,26 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     }
 
     @Test
+    fun getUserRecordsExcludesConsumedConnectionMarkers() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context {
+                val saveTime = now()
+            }
+        },
+    ) {
+        clock.currentTime = saveTime
+        repository.save(user)
+        DynamoUserRepository.performPutItem(
+            json("id" to "CONSUMED-CONNECTION#${uuidString()}", "timestamp" to "CONSUMED"),
+        )
+    } exercise {
+        repository.getUserRecords()
+    } verify { result ->
+        result.filter { it.data.id == user.id }.toSet()
+            .assertIsEqualTo(setOf(Record(user, user.id.value, false, saveTime)))
+    }
+
+    @Test
     fun canSaveRawRecord() = asyncSetup.with(
         buildRepository { context ->
             object : Context by context {
