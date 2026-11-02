@@ -96,6 +96,12 @@ Run browser-bearing tasks outside the sandbox with `--no-daemon`, following the
 Gradle playbook. Capture ownership, limits, and redaction live in
 `e2e/diagnostics/browser-diagnostics.mjs`.
 
+Both browser fixtures honor `WDIO_CHROME_BINARY`. If downloaded Chrome for Testing
+crashes during session creation, use the installed Chrome for diagnosis, for example
+`fish -lc 'env WDIO_CHROME_BINARY="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ./gradlew :e2e:browserDiagnosticsBrowserTest --no-daemon'`.
+The fixture owns ChromeDriver before requesting a session and stops it even when
+session creation fails; the original startup error remains the test failure.
+
 Use `FGREP` for focused E2E scenarios, for example
 `fish -lc 'env FGREP=BrowserLogPolicyTest ./gradlew :e2e:e2eRun --no-daemon --rerun'`.
 The filter is a declared task input and explicitly passed environment value, so

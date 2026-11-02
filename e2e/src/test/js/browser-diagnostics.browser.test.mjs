@@ -6,8 +6,19 @@ import path from 'node:path'
 import {randomUUID} from 'node:crypto'
 import {remote} from '../../../../build/js/node_modules/webdriverio/build/node.js'
 import {createCollector} from '../../../diagnostics/browser-diagnostics.mjs'
+import {startWebDriver} from '../../../../build/js/node_modules/@wdio/utils/build/node.js'
+import {openFixtureSession} from './browser-fixture-session.mjs'
+
+function openBrowser(t) {
+    return openFixtureSession({logLevel: 'error', connectionRetryCount: 0, connectionRetryTimeout: 10000, capabilities: {
+        browserName: 'chrome', browserVersion: 'stable', acceptInsecureCerts: true,
+        'goog:chromeOptions': {args: ['--headless'], ...(process.env.WDIO_CHROME_BINARY ? {binary: process.env.WDIO_CHROME_BINARY} : {})},
+    }}, {startDriver: startWebDriver, connect: remote, after: cleanup => t.after(cleanup)})
+}
 
 test('real Chrome preserves pre-bootstrap script, console, and network failures in an artifact', {timeout: 60000}, async t => {
+    let collector
+    t.after(() => collector?.stop())
     const server = createServer((request, response) => {
         const pathname = new URL(request.url, 'http://localhost').pathname
         if (pathname === '/reset') { request.socket.destroy(); return }
@@ -25,16 +36,9 @@ test('real Chrome preserves pre-bootstrap script, console, and network failures 
     })
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
     t.after(() => { server.closeAllConnections(); return new Promise(resolve => server.close(resolve)) })
-    const browser = await remote({logLevel: 'error', capabilities: {
-        browserName: 'chrome', browserVersion: 'stable', acceptInsecureCerts: true,
-        'goog:chromeOptions': {args: ['--headless'], ...(process.env.WDIO_CHROME_BINARY ? {binary: process.env.WDIO_CHROME_BINARY} : {})},
-    }})
+    const browser = await openBrowser(t)
     const directory = path.resolve('build/reports/browser-diagnostics-fixture', randomUUID())
-    const collector = createCollector(browser, {directory, identity: () => ({suite: 'diagnostic-fixture', testId: 'bootstrap'})})
-    t.after(async () => {
-        try { await collector.stop() }
-        finally { await browser.deleteSession() }
-    })
+    collector = createCollector(browser, {directory, identity: () => ({suite: 'diagnostic-fixture', testId: 'bootstrap'})})
     await collector.start()
     await browser.url(`http://127.0.0.1:${server.address().port}/`)
     await browser.waitUntil(() => browser.execute(() => window.fixtureFinished === true), {timeout: 5000})
@@ -57,6 +61,8 @@ test('real Chrome preserves pre-bootstrap script, console, and network failures 
 })
 
 test('maintained mobile polyfill delivers touch dragenter and drop without browser warnings', {timeout: 60000}, async t => {
+    let collector
+    t.after(() => collector?.stop())
     const polyfill = await readFile(path.resolve('../build/js/node_modules/mobile-drag-drop/index.min.js'))
     const server = createServer((request, response) => {
         if (request.url === '/polyfill.js') { response.setHeader('Content-Type', 'application/javascript'); response.end(polyfill); return }
@@ -73,11 +79,8 @@ test('maintained mobile polyfill delivers touch dragenter and drop without brows
     })
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
     t.after(() => { server.closeAllConnections(); return new Promise(resolve => server.close(resolve)) })
-    const browser = await remote({logLevel: 'error', capabilities: {
-        browserName: 'chrome', browserVersion: 'stable', 'goog:chromeOptions': {args: ['--headless']},
-    }})
-    const collector = createCollector(browser)
-    t.after(async () => { try { await collector.stop() } finally { await browser.deleteSession() } })
+    const browser = await openBrowser(t)
+    collector = createCollector(browser)
     await collector.start()
     await browser.url(`http://127.0.0.1:${server.address().port}/`)
     await browser.performActions([{type: 'pointer', id: 'touch', parameters: {pointerType: 'touch'}, actions: [

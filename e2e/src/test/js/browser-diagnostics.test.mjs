@@ -230,3 +230,37 @@ test('a lost BiDi connection does not switch to classic polling or unsubscribe a
     await collector.stop()
     assert.equal(browser.calls.filter(([name]) => name === 'unsubscribe').length, 0)
 })
+
+test('failed fixture session creation stops its owned driver and preserves the startup error', async () => {
+    const {openFixtureSession} = await import('./browser-fixture-session.mjs')
+    const primary = new Error('tab crashed')
+    let stopped = false
+    const driver = new EventEmitter()
+    driver.exitCode = null
+    driver.signalCode = null
+    driver.kill = () => { stopped = true; driver.signalCode = 'SIGKILL'; queueMicrotask(() => driver.emit('exit')); return true }
+    await assert.rejects(openFixtureSession({}, {
+        startDriver: async () => driver,
+        connect: async () => { throw primary },
+    }), error => error === primary)
+    assert.equal(stopped, true)
+})
+
+test('fixture teardown deletes its session and stops its driver exactly once', async () => {
+    const {openFixtureSession} = await import('./browser-fixture-session.mjs')
+    const calls = []
+    let teardown
+    const driver = new EventEmitter()
+    driver.exitCode = null
+    driver.signalCode = null
+    driver.kill = signal => { calls.push(signal); driver.signalCode = signal; queueMicrotask(() => driver.emit('exit')); return true }
+    const browser = {deleteSession: async () => { calls.push('deleteSession') }}
+    assert.equal(await openFixtureSession({}, {
+        startDriver: async () => driver,
+        connect: async () => browser,
+        after: cleanup => { teardown = cleanup },
+    }), browser)
+    assert.deepEqual(calls, [])
+    await teardown()
+    assert.deepEqual(calls, ['deleteSession', 'SIGKILL'])
+})
