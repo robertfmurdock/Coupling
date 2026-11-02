@@ -1,6 +1,8 @@
 import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameter
-import com.zegreatrob.coupling.plugins.js.NodeExec
-import com.zegreatrob.coupling.plugins.js.setup
+import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode
+import org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -11,7 +13,43 @@ plugins {
 kotlin {
     js {
         useCommonJs()
-        nodejs { testTask { enabled = false } }
+        compilations.matching { it.name in setOf("test", "diagnosticsBrowserTest") }.configureEach {
+            // The standard TestMints Node runner loads ES modules; application
+            // E2E tests retain WebdriverIO's existing CommonJS configuration.
+            @Suppress("DEPRECATION")
+            compilerOptions.options.moduleKind.set(JsModuleKind.MODULE_ES)
+            compileTaskProvider.configure {
+                compilerOptions.moduleKind.set(JsModuleKind.MODULE_ES)
+            }
+            binaries.withType<JsIrBinary>().configureEach {
+                linkTask.configure { compilerOptions.moduleKind.set(JsModuleKind.MODULE_ES) }
+            }
+        }
+        val testSupport = layout.projectDirectory.dir("src/diagnosticsTestSupport/kotlin")
+        this@kotlin.sourceSets.getByName("jsTest").kotlin.srcDir(testSupport)
+        val diagnosticsBrowserTest = compilations.create("diagnosticsBrowserTest") {
+            associateWith(this@js.compilations.getByName("main"))
+            defaultSourceSet.kotlin.srcDir(testSupport)
+        }
+        val browserTestBinary = binaries.executable(diagnosticsBrowserTest)
+            .single { it.mode == KotlinJsBinaryMode.DEVELOPMENT }
+        nodejs {
+            testTask {
+                enabled = true
+                useMocha { timeout = "15s" }
+            }
+            testRuns.create("diagnosticsBrowser") {
+                setExecutionSourceFrom(diagnosticsBrowserTest)
+                executionTask.configure {
+                    val chromeBinary = providers.environmentVariable("WDIO_CHROME_BINARY").orElse("")
+                    inputs.property("chromeBinary", chromeBinary)
+                    environment("WDIO_CHROME_BINARY", chromeBinary.get())
+                    inputFileProperty.set(browserTestBinary.mainFileSyncPath)
+                    dependsOn(browserTestBinary.linkSyncTask)
+                    useMocha { timeout = "60s" }
+                }
+            }
+        }
     }
 }
 
@@ -52,6 +90,13 @@ apollo {
 }
 
 dependencies {
+    listOf("jsTestImplementation", "jsDiagnosticsBrowserTestImplementation").forEach { testImplementation ->
+        add(testImplementation, kotlin("test-js"))
+        add(testImplementation, "com.zegreatrob.testmints:async")
+        add(testImplementation, "com.zegreatrob.testmints:minassert")
+        add(testImplementation, "com.zegreatrob.testmints:standard")
+        add(testImplementation, "org.jetbrains.kotlinx:kotlinx-serialization-json")
+    }
     clientConfiguration(project(":client"))
     appConfiguration(project(":server"))
     jsE2eTestImplementation(platform(project(":libraries:dependency-bom")))
@@ -127,30 +172,15 @@ tasks {
 
 }
 
-val browserDiagnosticsTest = tasks.register<NodeExec>("browserDiagnosticsTest") {
-    setup(project)
-    dependsOn(":kotlinNodeJsSetup")
-    taskWorkingDirectory.set(layout.projectDirectory)
-    dependsOn(":kotlinStoreYarnLock")
-    inputs.property("nodeExecutable", nodeExecPath)
-    inputs.file(rootProject.layout.projectDirectory.file("kotlin-js-store/yarn.lock"))
-    arguments.set(listOf("--test", "src/test/js/browser-diagnostics.test.mjs"))
-    inputs.dir(layout.projectDirectory.dir("diagnostics"))
-    inputs.dir(layout.projectDirectory.dir("src/test/js"))
+tasks.withType<KotlinJsTest>().configureEach {
+    val collector = layout.projectDirectory.file("diagnostics/browser-diagnostics.mjs")
+    inputs.file(collector)
+    environment("COUPLING_DIAGNOSTICS_MODULE", collector.asFile.toURI().toString())
+    environment("COUPLING_REPOSITORY_ROOT", rootProject.layout.projectDirectory.asFile.absolutePath)
 }
-tasks.named("check") { dependsOn(browserDiagnosticsTest) }
 
-val browserDiagnosticsBrowserTest = tasks.register<NodeExec>("browserDiagnosticsBrowserTest") {
-    setup(project)
-    dependsOn(":kotlinNpmInstall")
-    taskWorkingDirectory.set(layout.projectDirectory)
-    dependsOn(":kotlinStoreYarnLock")
-    inputs.property("nodeExecutable", nodeExecPath)
-    inputs.file(rootProject.layout.projectDirectory.file("kotlin-js-store/yarn.lock"))
-    arguments.set(listOf("--test", "src/test/js/browser-diagnostics.browser.test.mjs"))
-    inputs.dir(layout.projectDirectory.dir("diagnostics"))
-    inputs.dir(layout.projectDirectory.dir("src/test/js"))
-}
-tasks.named("check") { dependsOn(browserDiagnosticsBrowserTest) }
-tasks.named("e2eRun") { mustRunAfter(browserDiagnosticsBrowserTest) }
-tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter(browserDiagnosticsBrowserTest, browserDiagnosticsTest) }
+val browserDiagnosticsTest = tasks.register("browserDiagnosticsTest") { dependsOn("jsNodeTest") }
+val browserDiagnosticsBrowserTest = tasks.register("browserDiagnosticsBrowserTest") { dependsOn("jsNodeDiagnosticsBrowserTest") }
+tasks.named("check") { dependsOn(browserDiagnosticsTest, browserDiagnosticsBrowserTest) }
+tasks.named("e2eRun") { mustRunAfter("jsNodeDiagnosticsBrowserTest") }
+tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter("jsNodeDiagnosticsBrowserTest", "jsNodeTest") }

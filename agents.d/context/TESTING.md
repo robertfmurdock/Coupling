@@ -88,8 +88,13 @@ bundle means the diagnostic deadline interrupted collection; counters disclose
 truncated/dropped entries. Diagnostic failures must not replace the primary test
 failure. Passing application tests do not take diagnostic snapshots/screenshots.
 
-Harness verification tasks are `:e2e:browserDiagnosticsTest` (Node) and
-`:e2e:browserDiagnosticsBrowserTest` (real Chrome). The browser fixture deliberately
+Harness verification tasks are `:e2e:browserDiagnosticsTest` (15 Kotlin/JS Node tests)
+and `:e2e:browserDiagnosticsBrowserTest` (two real-Chrome Kotlin/JS tests). Both use
+TestMints setup/exercise/verify/teardown and standard Gradle XML/HTML test reports.
+`src/jsTest` and `src/jsDiagnosticsBrowserTest` are separate source sets and
+compilations; no class/file-name filters select the browser tests. Shared test
+bindings and fixtures live in `src/diagnosticsTestSupport`. The fast task never
+launches a browser. The browser fixture deliberately
 injects failures and writes its expected evidence under
 `e2e/build/reports/browser-diagnostics-fixture/`, even when its assertions pass.
 Run browser-bearing tasks outside the sandbox with `--no-daemon`, following the
