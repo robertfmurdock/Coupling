@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.30.0",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.31.55",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.31.56",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.1161.0",
     "@aws-sdk/client-dynamodb": "3.1161.0",
     "@aws-sdk/client-lambda": "~3.1161.0",
