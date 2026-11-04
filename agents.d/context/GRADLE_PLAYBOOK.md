@@ -128,6 +128,25 @@ paths bypass Gradle's dependency tracking.
 
 See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/userguide/cross_project_publications.html)
 
+## Dashboard Test Evidence
+
+The main workflow runs `dashboardTestSummary` after validation, including failed
+builds, then uploads `build/dashboard/test-summary.json` as `ci-evidence`. The
+Coupling pipeline panel reads that exact artifact entry. The summary binds JUnit
+case outcomes to `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT`, and `GITHUB_SHA`.
+For pull requests, the summary step uses the PR head SHA to match the workflow
+run's `head_sha`, rather than GitHub's synthetic merge SHA.
+
+The task reads original module and `coupling-plugins` `build/test-results/**/*.xml`
+reports, including JVM, Kotlin/JS, and E2E; it excludes collected report copies and
+lint XML. Root `check` also runs the build-plugin tests. Cached test reports count
+because Gradle restores those outputs for the validated inputs. Missing reports
+and invalid XML fail summary generation rather than publish fabricated totals.
+
+This is a report-only task: run validation first. CI uses a fresh checkout so an
+early failure reports only available test evidence from that run. Local reports
+can include earlier or filtered test executions; local summaries are not CI proof.
+
 ## Validation Ladder
 - Run the smallest sufficient check first (for example `./gradlew :module:task`).
 - Then run affected module checks.

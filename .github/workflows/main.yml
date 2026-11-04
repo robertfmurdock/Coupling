@@ -99,6 +99,19 @@ jobs:
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew :composeLogs collectResults
+      - name: Summarize tests for dashboard
+        if: ${{ always() }}
+        env:
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: ./gradlew dashboardTestSummary
+      - name: Upload dashboard test results
+        uses: actions/upload-artifact@v7
+        if: ${{ always() }}
+        with:
+          name: ci-evidence
+          path: build/dashboard/test-summary.json
+          if-no-files-found: error
+          retention-days: 90
       - uses: actions/upload-artifact@v7
         if: ${{ always() }}
         with:
