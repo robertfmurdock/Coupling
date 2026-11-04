@@ -87,6 +87,8 @@ jobs:
       - name: Generate Version 🧮
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build + Release Coupling
+        env:
+          DASHBOARD_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --scan --stacktrace
       - name: Update Contributions
         uses: robertfmurdock/coupling-contribution-action@v3
@@ -99,11 +101,6 @@ jobs:
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew :composeLogs collectResults
-      - name: Summarize tests for dashboard
-        if: ${{ always() }}
-        env:
-          GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: ./gradlew dashboardTestSummary
       - name: Upload dashboard test results
         uses: actions/upload-artifact@v7
         if: ${{ always() }}

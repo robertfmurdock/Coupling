@@ -1,6 +1,5 @@
 
 import com.avast.gradle.dockercompose.tasks.ComposeUp
-import com.zegreatrob.coupling.plugins.reports.DashboardTestSummaryTask
 import com.zegreatrob.coupling.plugins.testlogging.readAttributionCoverage
 import com.zegreatrob.coupling.plugins.testlogging.registerTestLogCliTask
 import com.zegreatrob.coupling.plugins.util.AwsParameters
@@ -10,6 +9,7 @@ import java.time.Duration
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
+    id("com.zegreatrob.coupling.plugins.dashboardTestReporting")
     alias(libs.plugins.gradle.docker.compose)
     alias(libs.plugins.distribution.sha)
     alias(libs.plugins.tools.digger)
@@ -66,21 +66,6 @@ dependencies {
 }
 
 tasks {
-    register<DashboardTestSummaryTask>("dashboardTestSummary") {
-        group = "reporting"
-        description = "Summarizes existing module JUnit reports for the current GitHub Actions run."
-        reports.from(subprojects.map { module ->
-            module.layout.buildDirectory.dir("test-results").map { directory ->
-                fileTree(directory) { include("**/*.xml") }
-            }
-        })
-        reports.from(fileTree("coupling-plugins/build/test-results") { include("**/*.xml") })
-        runId.set(providers.environmentVariable("GITHUB_RUN_ID").map(String::toLong))
-        runAttempt.set(providers.environmentVariable("GITHUB_RUN_ATTEMPT").map(String::toInt))
-        headSha.set(providers.environmentVariable("GITHUB_SHA"))
-        summaryFile.set(layout.buildDirectory.file("dashboard/test-summary.json"))
-    }
-
     val testJsonlFilePath = rootProject.layout.buildDirectory.file("test-output/test.jsonl").map { it.asFile.absolutePath }
     val testRunIdentifier = providers.provider { System.getProperty("testRunIdentifier") ?: "unknown-run" }
     val validateReportFilePath = rootProject.layout.buildDirectory.file("reports/test-logs/validate-test-jsonl.json").map { it.asFile.absolutePath }

@@ -51,6 +51,7 @@ dependencies {
     implementation(platform(libs.tools.bom))
 
     testImplementation(kotlin("test"))
+    testImplementation(gradleTestKit())
 
     constraints {
         implementation(libs.ksp.symbol.processing.api) {

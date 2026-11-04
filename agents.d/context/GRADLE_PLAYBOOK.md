@@ -130,12 +130,14 @@ See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/
 
 ## Dashboard Test Evidence
 
-The main workflow runs `dashboardTestSummary` after validation, including failed
-builds, then uploads `build/dashboard/test-summary.json` as `ci-evidence`. The
+Root `check` finalizes with `dashboardTestSummary` in the same Gradle invocation,
+including when a test dependency fails. CI then uploads
+`build/dashboard/test-summary.json` as `ci-evidence`. The
 Coupling pipeline panel reads that exact artifact entry. The summary binds JUnit
 case outcomes to `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT`, and `GITHUB_SHA`.
-For pull requests, the summary step uses the PR head SHA to match the workflow
-run's `head_sha`, rather than GitHub's synthetic merge SHA.
+The build step supplies `DASHBOARD_HEAD_SHA` so PR summaries match the workflow
+run's `head_sha`, rather than GitHub's synthetic merge SHA. Direct invocations
+fall back to `GITHUB_SHA`.
 
 The task reads original module and `coupling-plugins` `build/test-results/**/*.xml`
 reports, including JVM, Kotlin/JS, and E2E; it excludes collected report copies and
@@ -143,7 +145,8 @@ lint XML. Root `check` also runs the build-plugin tests. Cached test reports cou
 because Gradle restores those outputs for the validated inputs. Missing reports
 and invalid XML fail summary generation rather than publish fabricated totals.
 
-This is a report-only task: run validation first. CI uses a fresh checkout so an
+The finalizer skips local builds without GitHub run metadata. Direct invocation
+is report-only: run validation first. CI uses a fresh checkout so an
 early failure reports only available test evidence from that run. Local reports
 can include earlier or filtered test executions; local summaries are not CI proof.
 
