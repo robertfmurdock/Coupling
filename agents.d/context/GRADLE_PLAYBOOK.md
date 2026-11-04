@@ -26,6 +26,9 @@ repository automation behavior.
 
 ## Task and Automation Conventions
 - Express repository automation as Gradle tasks executed via `./gradlew`.
+- Use the same task graph and artifact generation locally and in CI. CI metadata
+  may enrich outputs; its absence must not skip core build or reporting behavior.
+  Keep GitHub-specific integration in the workflow; see [GitHub Actions](GITHUB_ACTIONS_PLAYBOOK.md).
 - Prefer typed Gradle tasks and Kotlin DSL configuration over ad hoc shell calls.
 - Prefer lazy configuration APIs (`register`, providers) over eager task creation.
 - For custom tasks, declare inputs/outputs when applicable to preserve
@@ -127,28 +130,6 @@ Cross-project task references can fail with configuration cache, and hardcoded
 paths bypass Gradle's dependency tracking.
 
 See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/userguide/cross_project_publications.html)
-
-## Dashboard Test Evidence
-
-Root `check` finalizes with `dashboardTestSummary` in the same Gradle invocation,
-including when a test dependency fails. CI then uploads
-`build/dashboard/test-summary.json` as `ci-evidence`. The
-Coupling pipeline panel reads that exact artifact entry. The summary binds JUnit
-case outcomes to `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT`, and `GITHUB_SHA`.
-The build step supplies `DASHBOARD_HEAD_SHA` so PR summaries match the workflow
-run's `head_sha`, rather than GitHub's synthetic merge SHA. Direct invocations
-fall back to `GITHUB_SHA`.
-
-The task reads original module and `coupling-plugins` `build/test-results/**/*.xml`
-reports, including JVM, Kotlin/JS, and E2E; it excludes collected report copies and
-lint XML. Root `check` also runs the build-plugin tests. Cached test reports count
-because Gradle restores those outputs for the validated inputs. Missing reports
-and invalid XML fail summary generation rather than publish fabricated totals.
-
-The finalizer skips local builds without GitHub run metadata. Direct invocation
-is report-only: run validation first. CI uses a fresh checkout so an
-early failure reports only available test evidence from that run. Local reports
-can include earlier or filtered test executions; local summaries are not CI proof.
 
 ## Validation Ladder
 - Run the smallest sufficient check first (for example `./gradlew :module:task`).
