@@ -24,6 +24,9 @@ external class TypedGetCommand(input: GetItemCommandInput) {
 }
 external class ScanCommand(options: Json)
 external class QueryCommand(options: Json)
+
+@JsName("QueryCommand")
+external class TypedQueryCommand(val input: DynamoQueryInput)
 external class BatchGetCommand(options: Json)
 external class DeleteCommand(options: Json)
 
@@ -65,7 +68,13 @@ sealed external interface TransactWriteCommandInput {
 @JsPlainObject
 sealed external interface TransactWriteItem {
     @JsName("Put")
-    val put: DynamoPutItemInput
+    val put: DynamoPutItemInput?
+
+    @JsName("Delete")
+    val delete: DynamoDeleteItemInput?
+
+    @JsName("ConditionCheck")
+    val conditionCheck: DynamoConditionCheck?
 }
 
 @JsPlainObject
@@ -118,4 +127,54 @@ sealed external interface TransactionCanceledError {
 
     @JsName("CancellationReasons")
     val cancellationReasons: Array<TransactionCancellationReason>?
+}
+
+@JsPlainObject
+sealed external interface DynamoQueryInput {
+    @JsName("TableName")
+    val tableName: String
+
+    @JsName("KeyConditionExpression")
+    val keyConditionExpression: String
+
+    @JsName("ExpressionAttributeNames")
+    val expressionAttributeNames: Json
+
+    @JsName("ExpressionAttributeValues")
+    val expressionAttributeValues: Json
+
+    @JsName("ConsistentRead")
+    val consistentRead: Boolean
+
+    @JsName("ScanIndexForward")
+    val scanIndexForward: Boolean
+
+    @JsName("Limit")
+    val limit: Int
+
+    @JsName("ExclusiveStartKey")
+    val exclusiveStartKey: Json?
+}
+
+sealed external interface DynamoQueryOutput {
+    @JsName("Items")
+    val items: Array<Json>
+
+    @JsName("LastEvaluatedKey")
+    val lastEvaluatedKey: Json?
+}
+
+@JsPlainObject
+sealed external interface DynamoConditionCheck {
+    @JsName("TableName")
+    val tableName: String
+
+    @JsName("Key")
+    val key: DynamoKey
+
+    @JsName("ConditionExpression")
+    val conditionExpression: String
+
+    @JsName("ExpressionAttributeValues")
+    val expressionAttributeValues: Json
 }

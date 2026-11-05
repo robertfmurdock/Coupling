@@ -161,8 +161,8 @@ class TargetPartyConfigurationRepository(
 
     private val CurrentMetadata?.nextVersion get() = this?.nextVersion ?: 1
     private val CurrentMetadata?.conditionExpression get() = this?.conditionExpression ?: "attribute_not_exists(PK)"
-    private val coreTableName get() = "${dynamoPrefix()}coupling-core"
-    private val historyTableName get() = "${dynamoPrefix()}coupling-history"
+    private val coreTableName get() = targetTableName("coupling-core")
+    private val historyTableName get() = targetTableName("coupling-history")
 
     private fun partyPartitionKey(partyId: PartyId) = "PARTY#${partyId.value}"
 
@@ -183,6 +183,3 @@ private fun Throwable.isConcurrentVersionConflict() = transactionCanceledError()
             ?.firstOrNull()
             ?.code == "ConditionalCheckFailed"
 }
-
-private fun dynamoPrefix() = js("process.env.DYNAMO_PREFIX").unsafeCast<String?>()
-    ?: throw IllegalStateException("No Dynamo Prefix Configured.")

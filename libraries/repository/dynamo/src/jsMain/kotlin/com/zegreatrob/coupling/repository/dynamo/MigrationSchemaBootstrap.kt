@@ -11,6 +11,8 @@ import kotlin.js.Json
 import kotlin.js.json
 import kotlin.time.Clock
 
+internal const val TARGET_SCHEMA_VERSION = 1
+
 enum class MigrationMode(val environmentValue: String) {
     DISABLED("disabled"),
     DUAL_WRITE("dual_write"),
@@ -36,7 +38,6 @@ data class MigrationLedgerState(
 )
 
 object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
-    private const val TARGET_SCHEMA_VERSION = 1
     private val bootstrapScope = MainScope()
     private val initializedStages = mutableMapOf<String, Deferred<Unit>>()
     private val tables = listOf(
@@ -48,7 +49,7 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
 
     suspend fun ensure(stage: String, requestedMode: MigrationMode): MigrationLedgerState {
         require(stage.isNotBlank()) { "STAGE is required for DynamoDB schema migration" }
-        initializedStages.getOrPut("${dynamoPrefix()}:$stage") {
+        initializedStages.getOrPut("${targetTableName("coupling-core")}:$stage") {
             bootstrapScope.async {
                 ensureUncached(stage, requestedMode)
                 Unit
@@ -143,7 +144,7 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
         }
     }
 
-    private fun prefixed(tableName: String) = "${dynamoPrefix()}$tableName"
+    private fun prefixed(tableName: String) = targetTableName(tableName)
 
     private data class TargetTableDefinition(
         val name: String,
@@ -151,7 +152,7 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
         val ttlAttribute: String? = null,
     ) {
         fun createParams(): Json = json(
-            "TableName" to "${dynamoPrefix()}$name",
+            "TableName" to targetTableName(name),
             "KeySchema" to keySchema(),
             "AttributeDefinitions" to attributeDefinitions(),
             "BillingMode" to "PAY_PER_REQUEST",
@@ -206,7 +207,7 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
         suspend fun loadStateOrNull(): MigrationLedgerState? {
             val item = dynamoDBClient.get(
                 json(
-                    "TableName" to "${dynamoPrefix()}coupling-core",
+                    "TableName" to targetTableName("coupling-core"),
                     "Key" to json("PK" to statePartitionKey(), "SK" to "STATE"),
                 ),
             ).await()["Item"].unsafeCast<Json?>() ?: return null
@@ -223,7 +224,7 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
         private fun initialStateParams(): Json {
             val timestamp = Clock.System.now().toString()
             return json(
-                "TableName" to "${dynamoPrefix()}coupling-core",
+                "TableName" to targetTableName("coupling-core"),
                 "Item" to json(
                     "PK" to statePartitionKey(),
                     "SK" to "STATE",
@@ -246,6 +247,3 @@ object TargetSchemaBootstrap : DynamoDBSyntax by DynamoDbProvider {
 }
 
 private fun Throwable.name() = asDynamic().name.unsafeCast<String?>()
-
-private fun dynamoPrefix() = js("process.env.DYNAMO_PREFIX").unsafeCast<String?>()
-    ?: throw IllegalStateException("No Dynamo Prefix Configured.")

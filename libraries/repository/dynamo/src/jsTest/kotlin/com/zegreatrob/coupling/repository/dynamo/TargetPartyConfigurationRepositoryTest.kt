@@ -318,7 +318,7 @@ private fun Any.recorded() = when (this) {
 private fun TransactWriteCommandInput.currentMetadataWrite() = CurrentMetadataWrite(
     transactItems
         .first()
-        .put
+        .put!!
         .item["version"]
         .unsafeCast<Number>()
         .toInt(),

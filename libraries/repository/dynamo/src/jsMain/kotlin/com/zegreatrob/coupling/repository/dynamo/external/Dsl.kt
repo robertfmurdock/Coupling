@@ -7,6 +7,8 @@ import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoD
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDBServiceError
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDeleteItemInput
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoPutItemInput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoQueryInput
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoQueryOutput
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.ExecuteStatementCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.GetCommandOutput
@@ -19,6 +21,7 @@ import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.Transac
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedDeleteCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedGetCommand
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedPutCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.TypedQueryCommand
 import kotlin.js.Json
 import kotlin.js.Promise
 
@@ -47,3 +50,10 @@ fun DynamoDBDocumentClient.transactWrite(params: TransactWriteCommandInput): Pro
 fun DynamoDBDocumentClient.deleteIt(params: DynamoDeleteItemInput): Promise<Json> = send(TypedDeleteCommand(params))
 
 fun Throwable.isConditionalCheckFailed(): Boolean = unsafeCast<DynamoDBServiceError>().name == "ConditionalCheckFailedException"
+
+fun DynamoDBDocumentClient.queryItems(
+    params: DynamoQueryInput,
+): Promise<DynamoQueryOutput> = send(TypedQueryCommand(params))
+
+// The AWS document marshaller accepts undefined for optional maps, but fails on null.
+internal fun <T> T?.dynamoOptional(): T? = this ?: js("undefined")
