@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.party
 
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.party.PartyConfigurationBackfill
 import com.zegreatrob.coupling.repository.party.PartyConfigurationBackfillResult
 import com.zegreatrob.coupling.stubmodel.stubPartyId
@@ -12,10 +13,10 @@ class BackfillPartyConfigurationCommandTest {
     fun dispatchesTheSelectedPartyAndReturnsDurableProgress() = asyncSetup(object {
         val command = BackfillPartyConfigurationCommand("sandbox", stubPartyId(), "stable-run")
         val expected = PartyConfigurationBackfillResult(3, "20240103000000.000", true)
-        val calls = mutableListOf<BackfillPartyConfigurationCommand>()
+        val calls = mutableListOf<BackfillCall>()
         val dispatcher = object : BackfillPartyConfigurationCommand.Dispatcher {
             override val partyConfigurationBackfill = PartyConfigurationBackfill { stage, partyId, runId ->
-                calls.add(BackfillPartyConfigurationCommand(stage, partyId, runId))
+                calls.add(BackfillCall(stage, partyId, runId))
                 expected
             }
         }
@@ -23,6 +24,8 @@ class BackfillPartyConfigurationCommandTest {
         dispatcher.perform(command)
     } verify { result ->
         result.assertIsEqualTo(expected)
-        calls.assertIsEqualTo(listOf(command))
+        calls.assertIsEqualTo(listOf(BackfillCall("sandbox", command.partyId, "stable-run")))
     }
 }
+
+private data class BackfillCall(val stage: String, val partyId: PartyId, val runId: String)
