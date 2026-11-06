@@ -6,7 +6,7 @@ pluginManagement {
 }
 plugins {
     id("com.gradle.develocity") version "4.6.1"
-    id("com.github.burrunan.s3-build-cache") version "1.9.10"
+    id("com.github.burrunan.s3-build-cache") version "1.9.11"
 }
 
 rootProject.name = "Coupling"
