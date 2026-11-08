@@ -92,6 +92,12 @@ fight clubs... All I ask is that you send me a nice note telling me about your i
 
 Good luck!
 
+Local Build Troubleshooting
+---------------------------
+
+If a local build fails with `tab crashed` or `session not created` before the
+browser tests start, see [Chrome for Testing recovery](agents.d/context/TESTING.md#chrome-for-testing-startup-failures).
+
 AI Agent Guidance
 ------------------
 

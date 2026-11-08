@@ -176,6 +176,8 @@ Distinguish startup failures (`session not created`, Chrome exits before any
 tests) from assertion failures after a browser session starts. A completed browser
 suite with a navigation/assertion failure is not evidence to repeat sandbox
 diagnosis. Record the actual failure and investigate its boundary.
+For crashes in downloaded Chrome after an outside-sandbox run, see
+[Chrome for Testing startup failures](TESTING.md#chrome-for-testing-startup-failures).
 
 ## Change Coupling Rules
 - Keep build logic updates and required consumer updates in one change set.

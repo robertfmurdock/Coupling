@@ -1,5 +1,8 @@
 # Chrome for Testing E2E Troubleshooting Guide
 
+Start with [Chrome for Testing startup failures](../context/TESTING.md#chrome-for-testing-startup-failures)
+to confirm the failing version and refresh only that browser download.
+
 ## Problem Summary
 
 E2E tests occasionally fail due to Chrome for Testing issues. The failures typically manifest as:

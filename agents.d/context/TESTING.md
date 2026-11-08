@@ -101,9 +101,6 @@ Run browser-bearing tasks outside the sandbox with `--no-daemon`, following the
 Gradle playbook. Capture ownership, limits, and redaction live in
 `e2e/diagnostics/browser-diagnostics.mjs`.
 
-Both browser fixtures honor `WDIO_CHROME_BINARY`. If downloaded Chrome for Testing
-crashes during session creation, use the installed Chrome for diagnosis, for example
-`fish -lc 'env WDIO_CHROME_BINARY="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ./gradlew :e2e:browserDiagnosticsBrowserTest --no-daemon'`.
 The fixture owns ChromeDriver before requesting a session and stops it even when
 session creation fails; the original startup error remains the test failure.
 
@@ -112,6 +109,48 @@ Use `FGREP` for focused E2E scenarios, for example
 The filter is a declared task input and explicitly passed environment value, so
 configuration/build-cache reuse cannot confuse focused and unfiltered results.
 Clear the filter for the required full-suite gate; verify the report's test count.
+
+### Chrome for Testing startup failures
+
+If `:e2e:jsNodeDiagnosticsBrowserTest` or `:e2e:e2eRun` reports `tab crashed` or
+`session not created` on `POST /session`, first confirm Gradle ran outside the
+agent sandbox with `--no-daemon`. On macOS, look for matching
+`Google Chrome for Testing*.ips` reports in `~/Library/Logs/DiagnosticReports/`.
+The WebDriver error or test output gives the browser version. For the diagnostic
+fixture, the XML report is under `e2e/build/test-results/jsNodeDiagnosticsBrowserTest/`.
+A crash during session creation can happen even when the cached executable
+prints its version.
+
+After the tests stop, list the WebdriverIO browser cache and move aside just
+the Chrome for Testing directory for the platform and version that crashed.
+Run this from a POSIX shell and replace the example directory name with the
+one from your cache.
+
+```sh
+cache_root="${WEBDRIVER_CACHE_DIR:-${TMPDIR:-/tmp}}"
+ls "$cache_root/chrome"
+entry="$cache_root/chrome/mac_arm-157.0.8103.38"
+backup=$(mktemp -d "$cache_root/chrome-recovery.XXXXXX") &&
+  mv "$entry" "$backup/" &&
+  printf 'Saved the old download in %s\n' "$backup"
+```
+
+With `WDIO_CHROME_BINARY` unset, force the browser test task to run so
+WebdriverIO downloads Chrome again. This task starts its own local fixture
+and can check browser startup without bringing up the application stack.
+
+```sh
+fish -lc 'env -u WDIO_CHROME_BINARY ./gradlew :e2e:jsNodeDiagnosticsBrowserTest --rerun --no-daemon'
+```
+
+Once the focused check passes, retry the original build command.
+
+If the fresh download still crashes, compare with installed Chrome. Both
+browser runners honor `WDIO_CHROME_BINARY`.
+
+```sh
+fish -lc 'env WDIO_CHROME_BINARY="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ./gradlew :e2e:jsNodeDiagnosticsBrowserTest --rerun --no-daemon'
+```
 
 ## Focused Contexts
 
