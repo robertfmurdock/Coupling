@@ -26,6 +26,7 @@ kotlin {
 }
 
 KotlinConventions.applyCommonDependencies(project)
+KotlinConventions.configureNodeRuntime(project)
 
 tasks.withType(KotlinJsTest::class).configureEach {
     outputs.cacheIf { true }

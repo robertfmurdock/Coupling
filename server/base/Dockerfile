@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:26.13.0
 
 WORKDIR /serverless
 

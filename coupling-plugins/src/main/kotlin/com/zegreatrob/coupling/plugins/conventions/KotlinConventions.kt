@@ -6,6 +6,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin
 
 object KotlinConventions {
     fun applyCommonOptIns(kotlinExtension: KotlinProjectExtension) {
@@ -31,6 +33,23 @@ object KotlinConventions {
         kotlinExtension.jvmToolchain(22)
         kotlinExtension.compilerOptions.apply {
             allWarningsAsErrors.set(true)
+        }
+    }
+
+    fun configureNodeRuntime(project: Project) {
+        val root = project.rootProject
+        val versionFile = root.layout.projectDirectory.file(".node-version")
+        val nodeVersion = project.providers.fileContents(versionFile).asText.map(String::trim)
+        val useSystemNode = project.providers.environmentVariable("CI").isPresent
+
+        listOf(root, project).forEach { nodeProject ->
+            nodeProject.plugins.withType(NodeJsPlugin::class.java) {
+                val node = nodeProject.extensions.getByType(NodeJsEnvSpec::class.java)
+                node.version.set(nodeVersion)
+                if (useSystemNode) {
+                    node.download.set(false)
+                }
+            }
         }
     }
 
