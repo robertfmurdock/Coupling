@@ -56,6 +56,9 @@ Load the documents relevant to the work, not the entire context directory:
 
 - [Architecture](agents.d/context/ARCHITECTURE_CANONICAL.md): ownership and cross-module design.
 - [Testing](agents.d/context/TESTING.md): behavior changes and test edits.
+  When writing or reviewing Testmints tests, use `$testmints` if installed. The
+  [upstream Testmints skill](https://github.com/robertfmurdock/testmints/tree/master/skills/testmints)
+  can be installed with `$skill-installer`.
 - [Production code style](agents.d/context/PLAYBOOK_CODE_STYLE.md): production source edits.
 - [GraphQL](agents.d/context/PLAYBOOK_GRAPHQL.md): schema, operations, and mutation routing.
 - [Gradle](agents.d/context/GRADLE_PLAYBOOK.md): build logic, dependencies, automation, or build failures.
