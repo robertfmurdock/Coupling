@@ -113,6 +113,9 @@ class PlayerConfigPageE2ETest {
             acceptDialogAndGetMessage { PartyCard.element.click() }
         } verify { alertText ->
             alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
+            PairAssignmentsPage.waitForPage()
+            WebdriverBrowser.currentUrl().pathname
+                .assertIsEqualTo("/${party.id.value}/pairAssignments/current/")
         }
 
         @Test

@@ -5,14 +5,21 @@ import kotlinx.coroutines.await
 import kotlin.js.Promise
 
 suspend fun acceptDialogAndGetMessage(triggerFunc: suspend () -> Unit): String {
-    val textPromise = Promise<String> { resolve, _ ->
-        browser.on("dialog") { dialog: dynamic ->
-            resolve(dialog.message())
-            dialog.accept()
+    lateinit var listener: (dynamic) -> Promise<Any?>
+    val textPromise = Promise<String> { resolve, reject ->
+        listener = { dialog ->
+            val message = dialog.message().unsafeCast<String>()
+            dialog.accept().unsafeCast<Promise<Unit>>().then(
+                onFulfilled = { resolve(message) },
+                onRejected = { reject(it) },
+            )
         }
     }
-    triggerFunc()
-    val await = textPromise.await()
-    browser.removeAllListeners("dialog")
-    return await
+    browser.on("dialog", listener)
+    try {
+        triggerFunc()
+        return textPromise.await()
+    } finally {
+        browser.removeListener("dialog", listener)
+    }
 }
