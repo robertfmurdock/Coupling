@@ -16,7 +16,7 @@ kotlin-wrappers-bom = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:2026.11
 kotlincrypto-hash-bom = "org.kotlincrypto.hash:bom:0.8.0"
 kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinx" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.8.0-0.6.x-compat"
-kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.12.0"
+kotlinx-serialization-bom = "org.jetbrains.kotlinx:kotlinx-serialization-bom:1.13.0"
 kotools-types = { module = "org.kotools:types", version.ref = "kotools" }
 kotools-types-kotlinx-serialization = { module = "org.kotools:types-kotlinx-serialization", version.ref = "kotools" }
 ksafe = "eu.anifantakis:ksafe:3.3.0"
@@ -26,15 +26,15 @@ log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "lo
 log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.20"
 testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.70"
-tools-bom = "com.zegreatrob.tools:tools-bom:3.7.0"
+tools-bom = "com.zegreatrob.tools:tools-bom:3.8.3"
 
 [plugins]
 apollo = "com.apollographql.apollo:5.2.0"
 distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.21"
 seskar = "io.github.turansky.seskar:4.66.0"
-tools-certifier = "com.zegreatrob.tools.certifier:3.7.0"
-tools-digger = "com.zegreatrob.tools.digger:3.7.0"
+tools-certifier = "com.zegreatrob.tools.certifier:3.8.3"
+tools-digger = "com.zegreatrob.tools.digger:3.8.3"
 version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.2"
 
 [versions]
