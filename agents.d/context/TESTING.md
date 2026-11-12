@@ -15,6 +15,31 @@ its language to that boundary. Anchor confidence at the highest affected level,
 with variations at lower levels. Preserve existing behavioral constraints during
 refactoring; do not add token tests for mechanical edits or documentation.
 
+## Choosing a Test Boundary
+
+Use the narrowest boundary that fully observes the behavior, then add a broader
+test when the contract crosses that boundary. These familiar labels can help route
+a test, though teams use some of them differently:
+
+- **Unit tests** exercise logic or data rules in process. Tests for adapters and
+  actions also stay at their own local boundary; they may use test doubles for
+  collaborators. Platform-specific behavior belongs in the matching test source
+  set.
+- **UI/component tests** render client components and exercise user interactions,
+  commonly with dispatchers stubbed. Use these for rendering and for checking which
+  action the UI sends.
+- **Endpoint/API tests** use the SDK against the running network service, without
+  driving a browser or full client application. These are often called integration
+  tests; the endpoint boundary is the more precise description here. Use this layer
+  for client-to-service contracts and behavior that depends on the running service.
+- **End-to-end/system tests** drive browser flows through the assembled client and
+  server. Use these when behavior depends on navigation, authentication, or
+  interactions across the running application. Separate browser diagnostics tests
+  exercise the diagnostic harness itself, not product flows.
+
+Choose based on what must actually run and what the test needs to observe, rather
+than the label alone.
+
 Search for existing module patterns and utilities with `rg --files` and reuse them
 when they improve clarity. Verify the feature, not source text, types, or plumbing:
 for example, test that a component renders a value rather than that a query contains
