@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameter
-import com.zegreatrob.tools.dashboard.DashboardTestSummaryExtension
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode
 import org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary
@@ -185,11 +184,3 @@ val browserDiagnosticsBrowserTest = tasks.register("browserDiagnosticsBrowserTes
 tasks.named("check") { dependsOn(browserDiagnosticsTest, browserDiagnosticsBrowserTest) }
 tasks.named("e2eRun") { mustRunAfter("jsNodeDiagnosticsBrowserTest") }
 tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter("jsNodeDiagnosticsBrowserTest", "jsNodeTest") }
-
-configure<DashboardTestSummaryExtension> {
-    reports.from(
-        files(layout.buildDirectory.dir("test-results/e2e").map { directory ->
-            directory.asFileTree.matching { include("**/*.xml") }
-        }).builtBy(tasks.named("e2eRun")),
-    )
-}

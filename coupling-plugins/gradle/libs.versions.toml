@@ -21,6 +21,5 @@ tools-bom = "com.zegreatrob.tools:tools-bom:3.9.2"
 version-catalog-update-plugin = "nl.littlerobots.vcu:plugin:1.1.2"
 
 [plugins]
-tools-dashboard-test-summary = "com.zegreatrob.tools.dashboard-test-summary:3.9.3"
 kotlinter = "org.jmailen.kotlinter:5.7.0"
 version-catalog-update = "nl.littlerobots.version-catalog-update:1.1.2"

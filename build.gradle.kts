@@ -4,7 +4,9 @@ import com.zegreatrob.coupling.plugins.testlogging.readAttributionCoverage
 import com.zegreatrob.coupling.plugins.testlogging.registerTestLogCliTask
 import com.zegreatrob.coupling.plugins.util.AwsParameters
 import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameters
+import com.zegreatrob.tools.dashboard.CollectJUnitCounts
 import com.zegreatrob.tools.dashboard.WriteDashboardTestSummary
+import org.gradle.api.tasks.testing.AbstractTestTask
 import java.time.Duration
 
 plugins {
@@ -19,13 +21,25 @@ plugins {
     java
 }
 
-dashboardTestSummary {
-    includedCounts.from(layout.projectDirectory.file("coupling-plugins/build/dashboard/build-test-counts.json"))
+val collectDashboardResults = tasks.register<CollectJUnitCounts>("collectDashboardResults") {
+    testOutputDirectories.from(
+        (subprojects + project).map { it.layout.buildDirectory.dir("test-results") },
+        layout.projectDirectory.dir("coupling-plugins/build/test-results"),
+    )
+    countsFile.set(layout.buildDirectory.file("dashboard/finalized-test-counts.json"))
 }
 
-tasks.named<WriteDashboardTestSummary>("dashboardTestSummary") {
-    dependsOn(gradle.includedBuild("coupling-plugins").task(":dashboardTestSummaryCounts"))
+val dashboardSummary = tasks.named<WriteDashboardTestSummary>("dashboardTestSummary") {
+    countsFiles.setFrom(collectDashboardResults.flatMap { it.countsFile })
     headSha.set(providers.environmentVariable("DASHBOARD_HEAD_SHA").orElse(providers.environmentVariable("GITHUB_SHA")))
+}
+
+allprojects {
+    val verificationTasks = tasks.matching { it.name == "check" || it is AbstractTestTask || it.name == "e2eRun" }
+    verificationTasks.configureEach {
+        finalizedBy(dashboardSummary)
+    }
+    collectDashboardResults.configure { mustRunAfter(verificationTasks) }
 }
 
 dockerCompose {
@@ -137,7 +151,6 @@ tasks {
     }
 
     check {
-        dependsOn("dashboardTestSummary")
         dependsOn(gradle.includedBuild("coupling-plugins").task(":test"))
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
         finalizedBy(validateTestJsonl)
