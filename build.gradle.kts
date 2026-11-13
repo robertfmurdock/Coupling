@@ -137,6 +137,7 @@ tasks {
     }
 
     check {
+        dependsOn("dashboardTestSummary")
         dependsOn(gradle.includedBuild("coupling-plugins").task(":test"))
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
         finalizedBy(validateTestJsonl)

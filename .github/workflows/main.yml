@@ -89,7 +89,7 @@ jobs:
       - name: Build + Release Coupling
         env:
           DASHBOARD_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: ./gradlew dashboardTestSummary check release --continue -Pversion=${{ env.TAGGER_VERSION }} --scan --stacktrace
+        run: ./gradlew check release --continue -Pversion=${{ env.TAGGER_VERSION }} --scan --stacktrace
       - name: Update Contributions
         uses: robertfmurdock/coupling-contribution-action@v3
         with:
