@@ -29,6 +29,7 @@ testmints-bom = "com.zegreatrob.testmints:testmints-bom:12.6.72"
 tools-bom = "com.zegreatrob.tools:tools-bom:3.9.2"
 
 [plugins]
+tools-dashboard-test-summary = "com.zegreatrob.tools.dashboard-test-summary:3.9.3"
 apollo = "com.apollographql.apollo:5.2.0"
 distribution-sha = "com.github.sghill.distribution-sha:0.4.0"
 gradle-docker-compose = "com.avast.gradle.docker-compose:0.17.21"

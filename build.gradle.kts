@@ -4,18 +4,28 @@ import com.zegreatrob.coupling.plugins.testlogging.readAttributionCoverage
 import com.zegreatrob.coupling.plugins.testlogging.registerTestLogCliTask
 import com.zegreatrob.coupling.plugins.util.AwsParameters
 import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameters
+import com.zegreatrob.tools.dashboard.WriteDashboardTestSummary
 import java.time.Duration
 
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
-    id("com.zegreatrob.coupling.plugins.dashboardTestReporting")
+    alias(libs.plugins.tools.dashboard.test.summary)
     alias(libs.plugins.gradle.docker.compose)
     alias(libs.plugins.distribution.sha)
     alias(libs.plugins.tools.digger)
     alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.apollo) apply false
     java
+}
+
+dashboardTestSummary {
+    includedCounts.from(layout.projectDirectory.file("coupling-plugins/build/dashboard/build-test-counts.json"))
+}
+
+tasks.named<WriteDashboardTestSummary>("dashboardTestSummary") {
+    dependsOn(gradle.includedBuild("coupling-plugins").task(":dashboardTestSummaryCounts"))
+    headSha.set(providers.environmentVariable("DASHBOARD_HEAD_SHA").orElse(providers.environmentVariable("GITHUB_SHA")))
 }
 
 dockerCompose {

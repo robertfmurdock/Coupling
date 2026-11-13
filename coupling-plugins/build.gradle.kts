@@ -10,6 +10,7 @@ repositories {
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.tools.dashboard.test.summary)
     id("java-gradle-plugin")
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.version.catalog.update)
