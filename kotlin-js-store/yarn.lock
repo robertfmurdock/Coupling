@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1168.0":
-  version "3.1168.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1168.0.tgz#0a618d72092095d2591cb77fbe117e194cdd10a4"
-  integrity sha512-qtpkHcFjPtZ2SvAmwZbft6tmkEQqUtY5o1/OKqb2/6ePkicOhg55WXI3sG6LSAB+3xA1MmQrX0H1F7BV5pokhQ==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1169.0":
+  version "3.1169.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1169.0.tgz#a59252a7622799848c13716bf84b3eda799135b7"
+  integrity sha512-IT8vyoD8u58P0zAo5I30nk9b25W3DoWrQlrnyGyXeBtj9QbUPlo5Igdc+sfW7WmfaQvKt0I0m8mKGbnfPsexFQ==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/credential-provider-node" "^3.972.97"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.20.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1168.0":
-  version "3.1168.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1168.0.tgz#efdb5c9a6cf56cc1874c1b51912f4509f2165064"
-  integrity sha512-pIuS8zdk0RimAlCQn8xVyO78Ohyl2aeH/2ADAsqO25qFyGqq1Vfa+DuLnzpLQCUXgJr0Zaza1aCaRNXWdyfZ7g==
+"@aws-sdk/client-dynamodb@3.1169.0":
+  version "3.1169.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1169.0.tgz#03d2847a6dc3f19650139de770e0d9d90066a0ef"
+  integrity sha512-FqvqV/l5gJCluCLxE37sNxd9UFunnZFwc/yQCizLYN368rlbFbcJ3SiHqYvJEmZZFFV3sWs9kyn3D3HiGxjumA==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/credential-provider-node" "^3.972.97"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1168.0":
-  version "3.1168.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1168.0.tgz#8db83652a7f556ba327833ebf4c81ba92eea3666"
-  integrity sha512-1kubDkP1S6l4n7F0r94LLEt0SDVFL/ULLqzce+JEsbw1I9zlGxm4Dei8kLNLhLmTBHMJfSgAunt8UdIl0vphOA==
+"@aws-sdk/client-lambda@~3.1169.0":
+  version "3.1169.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1169.0.tgz#ba058e0c6b11f6223593f44ec904d01261325c32"
+  integrity sha512-DpKyuJBK6UD4Zo0IxlfZDcWHQoZydPD0ckn8dnJR2fjfnQhpCoGAqhU8o+e9MnvF0hDiU91llXQqIHYFhD0xVw==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/credential-provider-node" "^3.972.97"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1168.0":
-  version "3.1168.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1168.0.tgz#d6d4f15ff04e47aa1a7fde857bf6bd2676bbac81"
-  integrity sha512-GjtIGJvRdEkkhnmDS0d4LwjsbGjBlYjbybngPPY9yDJ0M8sN7inR4i6EQfvJZh8/b148Ot1I97l35iGIjbCPOA==
+"@aws-sdk/lib-dynamodb@3.1169.0":
+  version "3.1169.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1169.0.tgz#e92a3acab054eb4324aaa61917f8be670278899b"
+  integrity sha512-U9Y/kdqXjIM5QfCX6O1Wc+qLxDx2+dWquk0lMBp4M+v+XzwEToMtYnssHunMCUyrRGQMVIA7UkaN7CyeaqxZJw==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -842,10 +842,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.68":
-  version "0.31.68"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.68.tgz#93fad59dd0e1ff23a929d5d0768c2b77609e1a93"
-  integrity sha512-L3zuq/VsNFlD9yTranMppJGV1gx7OkT8yYE3pKpIwru6LGaBbQUxuZQQSemCzdGXNaqcZpuVjDFeZFn8Fq4+dQ==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.71":
+  version "0.31.71"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.71.tgz#1775c825db5d410103e74e287a1339a14082f8b8"
+  integrity sha512-Ffk2Rg6jKVjOoo3WEYMeAPtbVuwqYJsAJ8IHr1GvyZc1NIc7oa0G3pUnmQ02ogdYHWNUXdKrLAPSgKw69y2k9A==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -3269,10 +3269,10 @@
     p-retry "^4.6.2"
     retry "^0.13.1"
 
-"@slack/web-api@^8.3.0":
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-8.3.0.tgz#addcdafa6d4fe95aeffd923b65976fbaea419e9c"
-  integrity sha512-rGHDZggzG658Uc4yebenp3rVfVVToL0w8aOis40EfrstZCxg8FWS+ECGDIkw498Q9jxF/LVKgGbPfUeYntTrUQ==
+"@slack/web-api@^8.4.0":
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-8.4.0.tgz#b42fc32b7a742add6aa67a952894ccbee700c0dc"
+  integrity sha512-SZSa8Xqz0jkvGfw9lLKQt17u44Xi5+O2QRMFo6f2vTEP0fPS+ThxOR0++AwJAPOkf3PKxA7lLmrL9Y4Y2J693w==
   dependencies:
     "@slack/logger" "^5.0.0"
     "@slack/types" "^3.3.0"
@@ -3480,10 +3480,10 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
-"@stripe/react-stripe-js@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-7.0.1.tgz#2d0f08ce6aa6f4ed8ac245a90f1d619b15fc0796"
-  integrity sha512-yDVPIS/RcmYqtX0xuNjAlHd/d9B9twmWwzn4GrZcfrlg737yPC/rfnOs2vCwAs40zrZ2qz4VL1r5b1t0gFRjQQ==
+"@stripe/react-stripe-js@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-7.1.0.tgz#4c64efa4967de05658c1dc4bb218c7c4e075e198"
+  integrity sha512-ehXa04HVJ8j/tPy1hQW9gdgLGY4o1msb7C5Rasd0LpLMiqY9VJIyuLAI6eUUXkeFvgbv6+5kulyNgHoR4FrRfg==
   dependencies:
     prop-types "^15.7.2"
 
