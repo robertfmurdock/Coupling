@@ -17,6 +17,8 @@ Check out this editorial I wrote on the subject - [Pairing for Outsiders](https:
 ## Tech Notes
 
 As present time, this application is written in Kotlin (both server and client), compiled to Javascript, and hosted in AWS. Historically, it was originally written in pure Javascript, then rebuilt with Webpack, then ported to Typescript, then ported to Kotlin. It is a living example of being able to completely rewrite an application *incrementally*, *repeatedly* with zero downtime *even with* every valid commit being pushed to production immediately. If you don't believe me, look at the commit history. Its all there, including warts. So many warts.
+ 
+Recently since I'm doing so many different kinds of projects now, I've been using the [Coupling development dashboard](https://dashboard.zegreatrob.com/), to cheaply create a big/visible board for tracking builds/deploys/health of all my open-source projects. It is also open source and is itself an experiment with AI development, so if that sounds interesting to you, check out how to use it at [the github](https://github.com/robertfmurdock/ze-great-dashboard).
 
 Only information explicitly keyed by the user is consumed by the application. Email addresses are used to provide access to parties, and nothing more... auth is provided by third party vendors so I don't have to manage any of that nonsense.
 
