@@ -130,7 +130,7 @@ record that evidence instead of manufacturing a change or failing test.
   on those entry routes. Correct demonstrated missing layout reservation and
   inappropriate loading priority. Keep likely above-the-fold images eager;
   defer route-by-route image tuning to the performance follow-up.
-- [ ] **Reduced motion**: cover the Welcome entrance, notification/demo pulse,
+- [x] **Reduced motion**: cover the Welcome entrance, notification/demo pulse,
   and pair-assignment animation owners. Honor reduced motion while preserving
   final content and usable controls; verify preference-dependent behavior.
 - [ ] **Closeout**: review existing evidence for shell landmarks/skip link,
@@ -225,13 +225,9 @@ that prevent the bounded contracts from working still belong in this card.
 
 Date: 2026-11-17
 
-Latest implementation commit: `c19d65e57` (contributor email action naming and
-form safety). Its focused tests and full check passed; the validation history
-below records the preceding slices. Current change: documentation-only scope
-revision and follow-up drafts.
-
-Next investigation: loading/error announcement contracts at the client shell,
-then the shared image and reduced-motion slices above. The card remains open.
+Latest committed slices: `6ea31a1dd` (shell feedback) and `29744a642` (shared
+image inspection). Current slice: reduced motion; full check passed. Next:
+closeout review and the user-requested browser walkthrough. The card remains open.
 CSP enforcement, measured performance work, and extended accessibility auditing
 have follow-up cards. Agent-context testing guidance remains deferred until this
 card is finished, per the user's explicit sequencing.
@@ -632,6 +628,26 @@ Contributor email action naming and form safety (2026-11-17):
   guidance review stays deferred until the card is completed.
 
 ## Deferred Agent-Context Review
+
+Reduced motion (2026-11-17): shared useAnimationsDisabled combines the explicit
+context flag with the live system preference, with subscription cleanup. Welcome
+entrance/hover/pulse styles are added only when enabled. Notification and Demo
+return pulses stop after three seconds; Welcome's automatic pulse stops after
+four seconds. Pair assignments immediately render final children under reduced
+motion, including a change during the spin; route content never waits for an
+animation event. Loading renders its static initial frame under the same policy.
+Six browser regressions cover final pair content, live preference, explicit flag,
+Welcome styles, notification/Demo styles, and preserved resolved-route content.
+Initial reduced preference and CSS checks reproduced the missing behavior; the
+live-spin fixture needed its real DnD provider before supplying valid evidence.
+Review caught and fixed an intermediate route-rendering regression with a failing
+content-preservation test. jsdom received a non-matching event-capable matchMedia
+fixture; its older empty function fixture was corrected rather than adding a
+production fallback for a test-only API omission. Focused client browser tests
+passed (33); existing component tests passed (118). Full
+`fish -lc './gradlew check --no-daemon'` passed (680 tasks; 65 executed).
+Test and production reviews plus `git diff --check` passed. This is simulated
+preference evidence in a real browser, not an OS-settings or screen-reader audit.
 
 Shared image review (2026-11-17; shell slice `6ea31a1dd`): PlayerCard's
 portrait has explicit square CSS dimensions in em and its card reserves width

@@ -1,21 +1,18 @@
 package com.zegreatrob.coupling.client.components.pairassignments.spin
 
 import com.zegreatrob.coupling.client.components.FrameRunner
-import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
+import com.zegreatrob.coupling.client.components.useAnimationsDisabled
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.ChildrenBuilder
-import react.Consumer
 import react.PropsWithChildren
 import react.create
 import react.dom.html.ReactHTML.div
-
-private val animationContextConsumer: Consumer<Boolean> = animationsDisabledContext.Consumer
 
 external interface PairAssignmentsAnimatorProps : PropsWithChildren {
     var party: PartyDetails
@@ -27,15 +24,12 @@ external interface PairAssignmentsAnimatorProps : PropsWithChildren {
 @ReactFunc
 val PairAssignmentsAnimator by nfc<PairAssignmentsAnimatorProps> { props ->
     val (party, players, pairAssignments, enabled) = props
-    animationContextConsumer {
-        children = { animationsDisabled ->
-            div.create {
-                if (!animationsDisabled && enabled) {
-                    spinFrameRunner(pairAssignments, party, players, props)
-                } else {
-                    +props.children
-                }
-            }
+    val animationsDisabled = useAnimationsDisabled()
+    div {
+        if (!animationsDisabled && enabled) {
+            spinFrameRunner(pairAssignments, party, players, props)
+        } else {
+            +props.children
         }
     }
 }

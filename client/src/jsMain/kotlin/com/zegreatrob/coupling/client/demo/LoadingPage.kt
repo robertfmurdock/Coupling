@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.client.components.FrameRunner
+import com.zegreatrob.coupling.client.components.useAnimationsDisabled
 import js.array.component1
 import js.array.component2
 import js.objects.unsafeJso
@@ -19,11 +20,14 @@ import web.cssom.px
 private val loadingSequence by lazy { LoadingAnimationState.generateSequence() }
 
 val LoadingPage = FC {
+    val animationsDisabled = useAnimationsDisabled()
     progress { ariaLabel = "Loading page" }
     val (searchParams, setSearchParams) = useSearchParams()
     val frameIndex = searchParams.get("frame")?.toIntOrNull()
     val currentFrame = frameIndex?.let { loadingSequence.toList()[it] }
-    if (currentFrame != null) {
+    if (animationsDisabled) {
+        LoadingPageFrame(LoadingAnimationState.Initial)
+    } else if (currentFrame != null) {
         button {
             onClick = { setFrame(setSearchParams, frameIndex - 1) }
             +"<"

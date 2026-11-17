@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.CouplingImages
 import com.zegreatrob.coupling.client.components.CouplingLink
 import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.supersize
+import com.zegreatrob.coupling.client.components.useAnimationsDisabled
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
@@ -11,7 +12,6 @@ import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
 import web.cssom.AlignItems
-import web.cssom.AnimationIterationCount
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.Gradient
@@ -20,19 +20,23 @@ import web.cssom.NamedColor
 import web.cssom.Position
 import web.cssom.ident
 import web.cssom.integer
+import web.cssom.number
 import web.cssom.px
 import web.cssom.s
 
 val returnToCouplingButton by nfc<Props> {
+    val animationsDisabled = useAnimationsDisabled()
     CouplingLink {
         to = "/parties"
         ariaLabel = "Back to Coupling!"
         sizeRuleSet = supersize
         colorRuleSet = pink
         className = ClassName {
-            animationName = ident("pulsate")
-            animationDuration = 0.75.s
-            animationIterationCount = AnimationIterationCount.infinite
+            if (!animationsDisabled) {
+                animationName = ident("pulsate")
+                animationDuration = 0.75.s
+                animationIterationCount = number(4.0)
+            }
         }
         couplingLogo()
     }

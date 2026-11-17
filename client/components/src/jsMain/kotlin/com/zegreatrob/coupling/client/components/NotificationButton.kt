@@ -20,7 +20,6 @@ import react.useId
 import react.useRef
 import react.useState
 import web.cssom.AlignItems
-import web.cssom.AnimationIterationCount
 import web.cssom.Auto
 import web.cssom.Border
 import web.cssom.ClassName
@@ -36,6 +35,7 @@ import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.ident
+import web.cssom.number
 import web.cssom.pct
 import web.cssom.px
 import web.cssom.rgb
@@ -56,6 +56,7 @@ private fun saveNotificationLog(updatedThing: Array<String>) {
 private fun loadNotificationLog() = localStorage.getItem("notification-log")?.let { JSON.parse<Array<String>>(it) } ?: emptyArray()
 
 val NotificationButton by nfc<Props> {
+    val animationsDisabled = useAnimationsDisabled()
     val dialogRef = useRef<HTMLDialogElement>(null)
     val titleId = useId()
     val recentInfoMd = MarkdownContent.content.recentInfoMd
@@ -78,7 +79,7 @@ val NotificationButton by nfc<Props> {
                 top = (-5).px
                 right = (-80).px
             }
-            +notificationButton(seenNotification) { dialogRef.current?.showModal() }
+            +notificationButton(seenNotification, animationsDisabled) { dialogRef.current?.showModal() }
         }
     }
     +createPortal(
@@ -151,16 +152,16 @@ private fun ChildrenBuilder.recentInformationContent(titleId: ElementId, recentI
     }
 }
 
-private fun notificationButton(seenNotification: Boolean, onOpen: () -> Unit) = button.create {
+private fun notificationButton(seenNotification: Boolean, animationsDisabled: Boolean, onOpen: () -> Unit) = button.create {
     type = ButtonType.button
     ariaLabel = "Recent information"
     onClick = { onOpen() }
     css {
         val buttonSize = if (seenNotification) 50.px else 75.px
         backgroundColor = if (seenNotification) NamedColor.darkcyan else NamedColor.crimson
-        if (!seenNotification) {
+        if (!seenNotification && !animationsDisabled) {
             animationName = ident("pulsate")
-            animationIterationCount = AnimationIterationCount.infinite
+            animationIterationCount = number(4.0)
             animationDuration = 0.75.s
         }
         color = NamedColor.white

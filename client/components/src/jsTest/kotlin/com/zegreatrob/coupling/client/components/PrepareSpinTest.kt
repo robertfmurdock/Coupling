@@ -35,7 +35,7 @@ class PrepareSpinTest {
     private val prepareSetup = asyncTestTemplate(
         sharedSetup = suspend {
             val matchFunc = globalThis["window"].asDynamic().matchMedia
-            globalThis["window"].asDynamic()["matchMedia"] = fun() {}
+            globalThis["window"].asDynamic()["matchMedia"] = { query: String -> nonMatchingMediaQuery(query) }
             object {
                 val matchFunc = matchFunc
             }

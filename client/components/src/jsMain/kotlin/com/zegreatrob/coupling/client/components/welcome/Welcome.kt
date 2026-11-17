@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.external.fitty.fitty
 import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.supersize
+import com.zegreatrob.coupling.client.components.useAnimationsDisabled
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.PlayerId
@@ -65,23 +66,26 @@ val Welcome by nfc<WelcomeProps> { props ->
     val (pairAndProverb) = useState { randomProvider.choosePairAndProverb() }
     val (pair, proverb) = pairAndProverb
 
+    val animationsDisabled = useAnimationsDisabled()
     div {
-        css { welcomeStyles() }
-        div { welcomeSplash(welcomeTitleRef, pair, proverb) }
-        div { comeOnIn(showLoginChooser) { showLoginChooser = true } }
+        css { welcomeStyles(animationsDisabled) }
+        div { welcomeSplash(welcomeTitleRef, pair, proverb, animationsDisabled) }
+        div { comeOnIn(showLoginChooser, animationsDisabled) { showLoginChooser = true } }
     }
 }
 
-private fun PropertiesBuilder.welcomeStyles() {
+private fun PropertiesBuilder.welcomeStyles(animationsDisabled: Boolean) {
     display = Display.inlineBlock
     overflow = Overflow.hidden
     paddingTop = 75.px
-    transitionProperty = TransitionProperty.all
-    transitionDuration = 4.s
-    transitionTimingFunction = TransitionTimingFunction.easeOut
-    animationName = ident("curious-tilt")
-    animationDuration = 4.s
-    animationIterationCount = number(1.0)
+    if (!animationsDisabled) {
+        transitionProperty = TransitionProperty.all
+        transitionDuration = 4.s
+        transitionTimingFunction = TransitionTimingFunction.easeOut
+        animationName = ident("curious-tilt")
+        animationDuration = 4.s
+        animationIterationCount = number(1.0)
+    }
 }
 
 private val candidates by lazy {
@@ -112,6 +116,7 @@ private fun ChildrenBuilder.welcomeSplash(
     welcomeTitleRef: RefObject<HTMLElement>,
     pair: CouplingPair.Double,
     proverb: String,
+    animationsDisabled: Boolean,
 ) = span {
     css {
         display = Display.inlineBlock
@@ -122,7 +127,7 @@ private fun ChildrenBuilder.welcomeSplash(
         backgroundColor = Color("#faf0d2")
     }
     welcomeTitle(welcomeTitleRef)
-    welcomePair(pair)
+    welcomePair(pair, animationsDisabled)
     welcomeProverb(proverb)
 }
 
@@ -165,29 +170,33 @@ private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: RefObject<HTMLElement>
     +"Coupling!"
 }
 
-private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
+private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double, animationsDisabled: Boolean) = div {
     div {
         css {
             display = Display.inlineFlex
         }
         val leftCardStyles = ClassName {
-            transitionProperty = TransitionProperty.all
-            transitionDuration = 0.25.s
-            transitionTimingFunction = TransitionTimingFunction.easeOut
-            animationDuration = 4.s
-            animationName = ident("slide-up-left")
-            animationIterationCount = number(1.0)
-            hover { cardZoom() }
+            if (!animationsDisabled) {
+                transitionProperty = TransitionProperty.all
+                transitionDuration = 0.25.s
+                transitionTimingFunction = TransitionTimingFunction.easeOut
+                animationDuration = 4.s
+                animationName = ident("slide-up-left")
+                animationIterationCount = number(1.0)
+                hover { cardZoom() }
+            }
         }
         PlayerCard(pair.player1, leftCardStyles, size = 100, tilt = (-8).deg, key = Key("player-1"))
         val rightCardStyles = ClassName {
-            transitionProperty = TransitionProperty.all
-            transitionDuration = 0.25.s
-            transitionTimingFunction = TransitionTimingFunction.easeOut
-            animationDuration = 5.s
-            animationName = ident("slide-up-right")
-            animationIterationCount = number(1.0)
-            hover { cardZoom() }
+            if (!animationsDisabled) {
+                transitionProperty = TransitionProperty.all
+                transitionDuration = 0.25.s
+                transitionTimingFunction = TransitionTimingFunction.easeOut
+                animationDuration = 5.s
+                animationName = ident("slide-up-right")
+                animationIterationCount = number(1.0)
+                hover { cardZoom() }
+            }
         }
         PlayerCard(pair.player2, rightCardStyles, size = 100, tilt = 8.deg, key = Key("player-2"))
     }
@@ -201,17 +210,19 @@ private fun PropertiesBuilder.cardZoom() {
     transform = "rotate(0deg) scale(1.5)".unsafeCast<TransformFunction>()
 }
 
-private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {
+private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, animationsDisabled: Boolean, onEnterClick: () -> Unit) = div {
     css {
         paddingTop = 15.px
         paddingBottom = 50.px
         display = Display.inlineBlock
-        animationDuration = 2.s
-        animationName = ident("pulsate")
-        animationIterationCount = AnimationIterationCount.infinite
+        if (!animationsDisabled) {
+            animationDuration = 2.s
+            animationName = ident("pulsate")
+            animationIterationCount = number(2.0)
 
-        hover {
-            animationPlayState = AnimationPlayState.paused
+            hover {
+                animationPlayState = AnimationPlayState.paused
+            }
         }
     }
     if (showLoginChooser) {
@@ -222,12 +233,14 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
             colorRuleSet = pink
             css {
                 marginTop = 20.px
-                animationName = ident("pulsate")
-                animationDuration = 0.5.s
-                animationIterationCount = AnimationIterationCount.infinite
-                animationPlayState = AnimationPlayState.paused
-                hover {
-                    animationPlayState = AnimationPlayState.running
+                if (!animationsDisabled) {
+                    animationName = ident("pulsate")
+                    animationDuration = 0.5.s
+                    animationIterationCount = AnimationIterationCount.infinite
+                    animationPlayState = AnimationPlayState.paused
+                    hover {
+                        animationPlayState = AnimationPlayState.running
+                    }
                 }
             }
             onClick = onEnterClick
