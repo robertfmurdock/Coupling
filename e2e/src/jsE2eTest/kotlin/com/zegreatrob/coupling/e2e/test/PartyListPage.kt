@@ -8,7 +8,7 @@ import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PartyListPage {
 
-    suspend fun getNewPartyButton() = TestingLibraryBrowser.queryByRole("button", RoleOptions("Form a new party!"))
+    suspend fun getNewPartyButton() = TestingLibraryBrowser.queryByRole("link", RoleOptions("Form a new party!"))
 
     val partyCardElements get() = PartyCard.element.all()
 

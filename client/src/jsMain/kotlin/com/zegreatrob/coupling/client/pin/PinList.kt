@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
-import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.CouplingLink
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.client.components.pin.PinCard
@@ -15,7 +15,6 @@ import react.Key
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
-import react.router.dom.Link
 import web.cssom.Border
 import web.cssom.Color
 import web.cssom.Display
@@ -48,14 +47,11 @@ val PinList by nfc<PinListProps> { (party, pins) ->
             pins.forEach { PinCard(partyId = party.id, pin = it, shouldLink = true, key = Key(it.id.toString())) }
         }
         div {
-            Link {
+            CouplingLink {
                 to = "/${party.id.value}/pin/new"
-                draggable = false
-                CouplingButton {
-                    sizeRuleSet = large
-                    colorRuleSet = orange
-                    +"Add a new pin."
-                }
+                sizeRuleSet = large
+                colorRuleSet = orange
+                +"Add a new pin."
             }
         }
     }

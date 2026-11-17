@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.CouplingLink
 import com.zegreatrob.coupling.client.components.DemoButton
 import com.zegreatrob.coupling.client.components.GqlButton
 import com.zegreatrob.coupling.client.components.LogoutButton
@@ -18,7 +18,6 @@ import react.Key
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
-import react.router.dom.Link
 
 external interface PartyListProps : Props {
     var parties: List<PartyDetails>
@@ -46,14 +45,10 @@ val PartyList by nfc<PartyListProps> { (parties) ->
 }
 
 val NewPartyButton by nfc<Props> {
-    Link {
+    CouplingLink {
         to = "/new-party/"
-        draggable = false
-        tabIndex = -1
-        CouplingButton {
-            sizeRuleSet = supersize
-            colorRuleSet = green
-            +"Form a new party!"
-        }
+        sizeRuleSet = supersize
+        colorRuleSet = green
+        +"Form a new party!"
     }
 }

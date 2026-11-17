@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.CouplingImages
+import com.zegreatrob.coupling.client.components.CouplingLink
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.blue
 import com.zegreatrob.coupling.client.components.large
@@ -16,7 +16,6 @@ import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
-import react.router.dom.Link
 import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Float
@@ -57,16 +56,12 @@ private val backButtonSection by nfc<Props> {
 }
 
 private val backButton by nfc<Props> {
-    Link {
+    CouplingLink {
         to = "/parties"
-        draggable = false
-        CouplingButton {
-            sizeRuleSet = large
-            colorRuleSet = blue
-            onClick = {}
-            ReactHTML.i { className = ClassName("fa fa-step-backward") }
-            ReactHTML.span { +"Back to Coupling!" }
-        }
+        sizeRuleSet = large
+        colorRuleSet = blue
+        ReactHTML.i { className = ClassName("fa fa-step-backward") }
+        ReactHTML.span { +"Back to Coupling!" }
     }
 }
 

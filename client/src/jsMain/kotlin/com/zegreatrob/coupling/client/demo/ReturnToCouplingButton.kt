@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.CouplingImages
+import com.zegreatrob.coupling.client.components.CouplingLink
 import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.minreact.nfc
@@ -9,7 +10,6 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
-import react.router.dom.Link
 import web.cssom.AlignItems
 import web.cssom.AnimationIterationCount
 import web.cssom.Color
@@ -24,19 +24,17 @@ import web.cssom.px
 import web.cssom.s
 
 val returnToCouplingButton by nfc<Props> {
-    Link {
+    CouplingLink {
         to = "/parties"
-        draggable = false
-        CouplingButton {
-            sizeRuleSet = supersize
-            colorRuleSet = pink
-            className = ClassName {
-                animationName = ident("pulsate")
-                animationDuration = 0.75.s
-                animationIterationCount = AnimationIterationCount.infinite
-            }
-            couplingLogo()
+        ariaLabel = "Back to Coupling!"
+        sizeRuleSet = supersize
+        colorRuleSet = pink
+        className = ClassName {
+            animationName = ident("pulsate")
+            animationDuration = 0.75.s
+            animationIterationCount = AnimationIterationCount.infinite
         }
+        couplingLogo()
     }
 }
 
@@ -57,7 +55,10 @@ private val couplingLogo by nfc<Props> {
                     position = Position.absolute
                     zIndex = integer(10)
                 }
-                img { src = logoSvg }
+                img {
+                    src = CouplingImages.images.logoSvg
+                    alt = ""
+                }
             }
             div {
                 css {
@@ -75,8 +76,5 @@ private val couplingLogo by nfc<Props> {
         }
     }
 }
-
-@JsModule("/images/logo.svg")
-private external val logoSvg: String
 
 fun radialGradient(vararg stops: LinearColorStop): Gradient = "radial-gradient($stops)".unsafeCast<Gradient>()

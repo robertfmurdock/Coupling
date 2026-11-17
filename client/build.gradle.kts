@@ -105,6 +105,7 @@ dependencies {
 
     jsTestImplementation(project(":libraries:stub-model"))
     jsTestImplementation(project(":libraries:test-action"))
+    jsTestImplementation(project(":libraries:test-react"))
     jsTestImplementation(project(":libraries:test-logging"))
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")

@@ -195,15 +195,16 @@ Constraints:
 
 Date: 2026-11-17
 
-Current commit before this work card: `3c64896a26631a036732116e35f58fd42203bd7a`
+Latest committed slice: `c99ae1bec` (party navigation semantics).
 
-Uncommitted changes: this new work card only; no implementation or test
-changes are present.
+Current slice: client-page navigation semantics and component/router regression
+coverage; validation is recorded below. This slice is committed with its tests.
 
-Next slice: external resource hardening.
+Next slice: notification popup semantics and focus behavior, after inspecting
+the existing popup library's ownership. Remaining shell/status, motion, and
+performance work stays open. CSP enforcement is deferred to its follow-up card.
 
-Blockers: none for planning. Before implementation, confirm the production
-browser-support policy and identify the authoritative deployment header path.
+Blockers: none identified for the next accessibility investigation.
 
 Relevant paths:
 
@@ -459,6 +460,30 @@ Review correction — party navigation semantics (2026-11-17):
   before migration; focused `:client:components:jsTest` then passed (118 tests).
 - Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 78 executed),
   including E2E navigation flows. `git diff --check` passed.
+
+Review correction — client-page navigation and test level (2026-11-17):
+
+- Previous correction commit: `c99ae1bec`.
+- Migrated About, About back, New Party, Add Pin, and demo return to the
+  shared styled native link. The demo return has an explicit accessible name
+  and decorative logo; it reuses the established image registry.
+- Added component tests using React Router's memory router and Testing Library.
+  They cover accessible names, hrefs, absence of nested controls, and Tab/Enter
+  activation reaching `/parties`, without application server or authentication.
+  Existing E2E flows remain; their New Party role selector now expects a link.
+- Focused `:client:jsBrowserTest --no-daemon` passed (9 tests, including four
+  new scenarios). A temporary nested About button then made the semantic test
+  fail as intended; the fault was removed before final validation.
+- Test harness uses named Testing Library imports because the existing wrapper's
+  default import is incompatible with this browser bundler. Minimal local bindings
+  expose cleanup, rendering, role queries, and keyboard interaction.
+- Full `fish -lc './gradlew check --no-daemon'` passed (690 tasks; 72 executed,
+  5 from cache), including the four green navigation regressions and unfiltered
+  E2E flows. `git diff --check` passed. Test review confirmed the semantic fault
+  is detected; production review confirmed shared styles and destinations remain
+  intact. Simulated keyboard coverage does not replace assembled-route/auth E2E
+  coverage or a complete assistive-technology audit. Image registry placeholders
+  produce image 404s in isolated tests; these tests make no image-loading claims.
 
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
