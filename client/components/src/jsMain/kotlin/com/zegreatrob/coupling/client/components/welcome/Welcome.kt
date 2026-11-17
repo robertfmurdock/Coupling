@@ -21,6 +21,7 @@ import react.Key
 import react.Props
 import react.RefObject
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.span
 import react.useLayoutEffect
 import react.useRef
@@ -47,7 +48,7 @@ import web.cssom.number
 import web.cssom.px
 import web.cssom.rotate
 import web.cssom.s
-import web.html.HTMLDivElement
+import web.html.HTMLElement
 
 external interface WelcomeProps : Props {
     var randomProvider: RandomProvider?
@@ -57,7 +58,7 @@ external interface WelcomeProps : Props {
 val Welcome by nfc<WelcomeProps> { props ->
     val randomProvider = props.randomProvider ?: RandomProvider
     var showLoginChooser by useState(false)
-    val welcomeTitleRef = useRef<HTMLDivElement>(null)
+    val welcomeTitleRef = useRef<HTMLElement>(null)
     useLayoutEffect {
         welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
     }
@@ -108,7 +109,7 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 private data class Card(val name: String, val imagePath: String)
 
 private fun ChildrenBuilder.welcomeSplash(
-    welcomeTitleRef: RefObject<HTMLDivElement>,
+    welcomeTitleRef: RefObject<HTMLElement>,
     pair: CouplingPair.Double,
     proverb: String,
 ) = span {
@@ -153,7 +154,7 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = defaultPlayer.copy(id = PlayerId(name.toNotBlankString().getOrThrow()), name = name, imageURL = imagePath)
 
-private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: RefObject<HTMLDivElement>) = div {
+private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: RefObject<HTMLElement>) = h1 {
     css {
         marginTop = 0.5.em
         marginBottom = 0.4.em
