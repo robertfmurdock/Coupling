@@ -8,6 +8,7 @@ import kotlinx.browser.localStorage
 import react.Props
 import react.create
 import react.dom.DangerouslySetInnerHTML
+import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -95,7 +96,8 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
     onClose = onClose,
 )
 
-private fun notificationButton(open: Boolean, seenNotification: Boolean) = div.create {
+private fun notificationButton(open: Boolean, seenNotification: Boolean) = button.create {
+    ariaLabel = "Recent information"
     css {
         val buttonSize = if (seenNotification) 50.px else 75.px
         backgroundColor = if (seenNotification) NamedColor.darkcyan else NamedColor.crimson
