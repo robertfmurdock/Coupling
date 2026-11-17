@@ -9,7 +9,7 @@ import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PairAssignmentsPage : BrowserSyntax {
-    suspend fun getNewPairsButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Prepare to spin!"))
+    suspend fun getNewPairsButton() = TestingLibraryBrowser.getByRole("link", RoleOptions("Prepare to spin!"))
     suspend fun goTo(id: PartyId) {
         WebdriverBrowser.setLocation("/${id.value}/pairAssignments/current/")
         waitForPage()
@@ -21,9 +21,9 @@ object PairAssignmentsPage : BrowserSyntax {
 }
 
 object ConfigHeader : BrowserSyntax {
-    suspend fun getViewHistoryButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("History!"))
-    suspend fun getStatisticsButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Statistics!"))
-    suspend fun getRetiredPlayersButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Retirees!"))
+    suspend fun getViewHistoryButton() = TestingLibraryBrowser.getByRole("link", RoleOptions("History!"))
+    suspend fun getStatisticsButton() = TestingLibraryBrowser.getByRole("link", RoleOptions("Statistics!"))
+    suspend fun getRetiredPlayersButton() = TestingLibraryBrowser.getByRole("link", RoleOptions("Retirees!"))
 }
 
 object CurrentPairAssignmentsPanel {

@@ -61,5 +61,5 @@ object PlayerRoster {
         .parentElement()
         .all(PlayerCard.playerElements.selector)
 
-    suspend fun getAddPlayerButton() = TestingLibraryBrowser.queryByRole("button", RoleOptions("Add Player!"))
+    suspend fun getAddPlayerButton() = TestingLibraryBrowser.queryByRole("link", RoleOptions("Add Player!"))
 }

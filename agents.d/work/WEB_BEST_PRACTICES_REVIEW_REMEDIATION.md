@@ -448,6 +448,18 @@ Review correction — single-target GraphiQL and Demo navigation (2026-11-17):
 - Scope of evidence: rendered semantics and existing navigation flows; no
   claim of a complete assistive-technology audit.
 
+Review correction — party navigation semantics (2026-11-17):
+
+- Previous correction commit: `5638c2a6b`.
+- Migrated Add Player, Retirees, Party Select, Statistics, Pin Bag, History,
+  Sign Out, and Prepare to Spin to a single styled native link each. Updated
+  E2E role selectors for the intentional button-to-link semantic change.
+- Added a Testmints scenario covering names, destinations, native tab order,
+  and absence of nested controls. Confirmed failure on `HTMLButtonElement`
+  before migration; focused `:client:components:jsTest` then passed (118 tests).
+- Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 78 executed),
+  including E2E navigation flows. `git diff --check` passed.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
