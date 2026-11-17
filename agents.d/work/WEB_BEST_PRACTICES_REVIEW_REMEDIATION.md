@@ -485,6 +485,30 @@ Review correction — client-page navigation and test level (2026-11-17):
   coverage or a complete assistive-technology audit. Image registry placeholders
   produce image 404s in isolated tests; these tests make no image-loading claims.
 
+## Deferred Agent-Context Review
+
+User request: only after this card is finished, review the testing pitfalls
+encountered here and add durable guidance where it belongs. Do not update agent
+context documents for this follow-up while the card remains open.
+
+At completion, consider `agents.d/context/TESTING.md` first for test-boundary
+selection and evidence requirements; use other authoritative documents only
+where their ownership fits. Avoid duplicating existing instructions or turning
+temporary harness workarounds into permanent rules. Candidates to assess:
+
+- Component tests with a memory router can prove local link activation and
+  destination changes; navigation alone does not require E2E. Retain broader
+  coverage for contracts involving assembled routes, authentication, or services.
+- Passing general checks do not prove an accessibility improvement. Inspect the
+  rendered interactive structure and verify the claimed regression, including
+  nested controls and duplicate tab stops when changing navigation semantics.
+- Distinguish simulated keyboard interaction from actual browser keyboard and
+  assistive-technology evidence; report the boundary and limitations precisely.
+- Diagnose module exports, bundler-specific assets, and fixture property
+  shadowing before treating a setup failure as meaningful behavioral red.
+- Reuse image registries in isolated rendering tests, and avoid image-loading
+  claims when fixtures supply placeholder URLs.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
