@@ -208,8 +208,8 @@ Latest committed slice: `c99ae1bec` (party navigation semantics).
 Current slice: client-page navigation semantics and component/router regression
 coverage; validation is recorded below. This slice is committed with its tests.
 
-Next slice: pair-image clipboard control naming and keyboard reachability,
-following shared focus indication. Remaining shell/status, motion, and
+Next slice: settings dropdown keyboard access and dismissal,
+following pair-image clipboard control accessibility. Remaining shell/status, motion, and
 performance work stays open. CSP enforcement is deferred to its follow-up card.
 
 Blockers: none identified for the next accessibility investigation.
@@ -541,6 +541,20 @@ Visible focus for light shared controls (2026-11-17):
   `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 72 executed).
   `git diff --check` passed. Reviewed test evidence independently from the
   shared color implementation; reused the client memory-router rendering helper.
+
+Named and keyboard-reachable pair image control (2026-11-17):
+
+- Previous slice commit: `a4d08d937`.
+- Named the clipboard icon button "Copy pair image to clipboard" and removed
+  its negative tab index. Existing ClipboardItem feature detection and screenshot/
+  clipboard action are preserved. No new clipboard permission or write behavior.
+- A browser component test renders PairSection and Tabs to the named control.
+  Before implementation it failed on the unnamed button with tabindex=-1; after
+  implementation focused `:client:jsBrowserTest --no-daemon` passed (19 tests).
+- Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 72 executed).
+  `git diff --check` passed. Test review confirmed focus is observed after actual
+  component rendering, while production review confirmed the click action remains
+  untouched. Clipboard-image correctness is outside this regression's evidence.
 
 ## Deferred Agent-Context Review
 

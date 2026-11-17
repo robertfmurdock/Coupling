@@ -75,7 +75,7 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: RefObject<HTMLElement>) {
             colorRuleSet = white
             onClick = { ref.current?.copyToClipboardOnClick()?.invoke() }
             buttonProps = unsafeJso {
-                tabIndex = -1
+                ariaLabel = "Copy pair image to clipboard"
             }
             i { className = ClassName("fa fa-clipboard") }
         }
