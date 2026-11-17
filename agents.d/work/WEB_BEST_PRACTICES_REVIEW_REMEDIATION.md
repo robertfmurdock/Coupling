@@ -254,6 +254,18 @@ Slice 2 — staged deployment security policy (2026-11-17):
   after observing authenticated, OAuth, integration, and GraphiQL traffic.
 - Commit: `29d5c337745038586863b4a25dfd10f6becbd4c6`.
 
+Accessibility progress (2026-11-17):
+
+- Confirmed defect: the GraphiQL iframe had a browsing name but no accessible
+  title. Added `title="GraphiQL query editor"` at the component boundary.
+- Focused validation: `fish -lc './gradlew :client:jsBrowserTest
+  --no-daemon'` passed.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `1bafb2ba3e30d16c74117d7796007d973fde5a13`.
+- The broader accessibility slice remains open for landmarks, skip navigation,
+  headings, focus-visible states, announcements, and keyboard transitions.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
