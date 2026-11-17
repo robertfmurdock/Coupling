@@ -136,6 +136,14 @@ Constraints:
   client-page return and pin-creation controls; (4) audit notification popup
   behavior and remaining form/focus/motion contracts. Each implementation slice
   receives its own focused evidence and full check before commit.
+- Notification modal decision (2026-11-17): replace this use of reactjs-popup
+  with a native modal dialog, portaled outside the header. The old library owns
+  Escape/focus return but cannot supply a named notification dialog through the
+  current binding, and text-only notes leave focus outside. Native showModal
+  owns modality, focus containment, Escape, and focus return; the close event
+  owns seen-note bookkeeping. Preserve backdrop dismissal with coordinate-based
+  press/release checks (including padding and drag guards) across browsers;
+  do not rely on the newer, incompletely supported closedby attribute.
 
 - Coupling boundary routing is explicit: `client/` owns the frontend and treats
   the server as external; `sdk/` owns GraphQL documents and dispatchers;
@@ -200,8 +208,8 @@ Latest committed slice: `c99ae1bec` (party navigation semantics).
 Current slice: client-page navigation semantics and component/router regression
 coverage; validation is recorded below. This slice is committed with its tests.
 
-Next slice: notification popup semantics and focus behavior, after inspecting
-the existing popup library's ownership. Remaining shell/status, motion, and
+Next slice: shared focus indication, following notification modal semantics
+and focus behavior. Remaining shell/status, motion, and
 performance work stays open. CSP enforcement is deferred to its follow-up card.
 
 Blockers: none identified for the next accessibility investigation.
@@ -497,6 +505,27 @@ Notification trigger form safety (2026-11-17):
   were corrected before the successful gate. `git diff --check` passed.
 - Separate reviews confirmed an actual submission regression, fixture cleanup
   for Markdown/storage state, and a production change owned solely by the trigger.
+
+Named native recent-information modal (2026-11-17):
+
+- Previous slice commit: `739fe5842`.
+- Replaced this notification's custom popup with a native modal dialog, named
+  by its visible heading and portaled outside the header. Added an initially
+  focused Close button. Native close events preserve seen-note bookkeeping.
+  The browser owns modality and focus return; no manual focus trap or Escape
+  handler was added. Backdrop dismissal requires both press and release outside
+  the dialog bounds, preserving padding clicks and text-selection drags.
+- Two new scenarios first failed on the unnamed dialog/missing Close button.
+  Focused `:client:jsBrowserTest --no-daemon` then passed (16 tests, including
+  seven notification scenarios). Coverage includes native modal state, initial
+  focus, close-button and platform close-request paths, seen-note storage, focus
+  return, and backdrop/padding/drag behavior. The platform test invokes
+  `requestClose()`; it does not simulate trusted Escape or mobile back gestures.
+- Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 78 executed).
+  `git diff --check` passed. Test review checked user-observable assertions and
+  fixture cleanup; production review checked portal ownership, native focus
+  lifecycle, bounded scrolling, and cross-browser backdrop handling. Scroll
+  containment is progressive enhancement where the browser supports it.
 
 ## Deferred Agent-Context Review
 

@@ -8,6 +8,7 @@ import react.ReactNode
 
 external fun cleanup()
 external fun render(element: ReactNode)
+external fun waitFor(callback: () -> Unit): kotlin.js.Promise<Unit>
 external val screen: NavigationScreen
 
 external interface NavigationScreen {
