@@ -28,7 +28,9 @@ import web.cssom.ident
 import web.cssom.pct
 import web.cssom.px
 import web.cssom.s
+import web.html.ButtonType
 import web.html.HtmlSource
+import web.html.button
 import kotlin.js.json
 
 private fun saveNotificationLog(updatedThing: Array<String>) {
@@ -97,6 +99,7 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
 )
 
 private fun notificationButton(open: Boolean, seenNotification: Boolean) = button.create {
+    type = ButtonType.button
     ariaLabel = "Recent information"
     css {
         val buttonSize = if (seenNotification) 50.px else 75.px

@@ -485,6 +485,19 @@ Review correction — client-page navigation and test level (2026-11-17):
   coverage or a complete assistive-technology audit. Image registry placeholders
   produce image 404s in isolated tests; these tests make no image-loading claims.
 
+Notification trigger form safety (2026-11-17):
+
+- Previous client-navigation correction commit: `6f028131e`.
+- Opening recent information inside a form must not submit it. The browser
+  component regression failed with one submission, then passed after explicitly
+  setting the trigger's native button type. Popup behavior is unchanged.
+- Focused `:client:jsBrowserTest --no-daemon` passed (10 tests). Full
+  `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 75 executed),
+  including E2E flows. A missing Kotlin extension import and test wrapping lint
+  were corrected before the successful gate. `git diff --check` passed.
+- Separate reviews confirmed an actual submission regression, fixture cleanup
+  for Markdown/storage state, and a production change owned solely by the trigger.
+
 ## Deferred Agent-Context Review
 
 User request: only after this card is finished, review the testing pitfalls
