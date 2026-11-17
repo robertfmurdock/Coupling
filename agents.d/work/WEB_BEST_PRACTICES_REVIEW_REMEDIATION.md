@@ -278,6 +278,16 @@ Accessibility progress — shell navigation (2026-11-17):
 - The broader accessibility slice remains open for route-specific headings,
   status announcements, popup focus return, and keyboard transitions.
 
+Accessibility progress — visible focus (2026-11-17):
+
+- Added a global `:focus-visible` outline with offset, preserving native
+  keyboard focus indication across client controls.
+- Focused validation: `fish -lc './gradlew :client:jsBrowserProductionVite
+  :client:jsBrowserTest --no-daemon'` passed.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `4748f286e13b0fa4d5967fa30dd915bb2fafeea2`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
