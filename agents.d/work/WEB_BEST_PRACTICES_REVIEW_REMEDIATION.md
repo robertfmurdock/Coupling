@@ -124,6 +124,19 @@ Constraints:
 
 ## Design Decisions
 
+- Review correction (2026-11-17): earlier tab-order notes overstated the
+  evidence. Most affected links contain native buttons; those buttons were
+  already focusable, and removing the outer link's negative tab index can
+  introduce duplicate tab stops. Passing general tests did not establish the
+  claimed keyboard improvement. Correct the markup to one styled native link
+  per navigation action and add rendered semantics regressions before extending
+  the changes. Preserve destinations, names, and shared visual styles.
+- Revised next slices: (1) introduce a styled router link and correct GraphiQL
+  and Demo; (2) migrate the reviewed party navigation controls; (3) migrate
+  client-page return and pin-creation controls; (4) audit notification popup
+  behavior and remaining form/focus/motion contracts. Each implementation slice
+  receives its own focused evidence and full check before commit.
+
 - Coupling boundary routing is explicit: `client/` owns the frontend and treats
   the server as external; `sdk/` owns GraphQL documents and dispatchers;
   `server/` owns schema and resolvers; `e2e/` owns assembled browser flows. A
@@ -420,6 +433,20 @@ Accessibility progress — pin creation keyboard access (2026-11-17):
 - Focused client tests passed; full validation passed with `680` tasks,
   including browser/E2E tasks.
 - Commit: `13d4316e2`.
+
+Review correction — single-target GraphiQL and Demo navigation (2026-11-17):
+
+- Two Testmints component regressions failed on the nested `HTMLButtonElement`
+  before implementation. They now verify one named native link, the expected
+  destination, and no interactive descendants or tab-index exclusion.
+- Added `CouplingLink` using existing shared visual rules; migrated GraphiQL
+  and Demo. This supersedes the earlier tab-index-only fixes for these controls.
+- Focused `:client:components:jsTest` passed (117 tests). Full
+  `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 81 executed),
+  including browser/E2E validation. An interface-formatting lint failure was
+  fixed before the successful full check. `git diff --check` passed.
+- Scope of evidence: rendered semantics and existing navigation flows; no
+  claim of a complete assistive-technology audit.
 
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
