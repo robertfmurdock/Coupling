@@ -62,7 +62,10 @@
 <body>
 
 <% if (htmlWebpackPlugin.options.appMountClass) { %>
-<div class="<%= htmlWebpackPlugin.options.appMountClass%>"></div>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<main id="main-content" tabindex="-1">
+    <div class="<%= htmlWebpackPlugin.options.appMountClass%>"></div>
+</main>
 <% } %>
     <%= htmlWebpackPlugin.tags.bodyTags %>
 </body>

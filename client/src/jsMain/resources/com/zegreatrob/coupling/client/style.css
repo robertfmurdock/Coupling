@@ -14,6 +14,20 @@ a {
   text-align: center;
 }
 
+.skip-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 8px;
+  color: #000;
+  background: #fff;
+  transform: translateY(-100%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 input.button {
   border: 0;
 }
