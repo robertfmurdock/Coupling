@@ -126,7 +126,7 @@ record that evidence instead of manufacturing a change or failing test.
   Fix demonstrated missing error/status or route-context behavior at its owner;
   avoid announcing every transient loading state. Use component/router evidence
   unless the behavior actually requires the assembled application.
-- [ ] **Shared image behavior**: inspect the shared player/logo rendering used
+- [x] **Shared image behavior**: inspect the shared player/logo rendering used
   on those entry routes. Correct demonstrated missing layout reservation and
   inappropriate loading priority. Keep likely above-the-fold images eager;
   defer route-by-route image tuning to the performance follow-up.
@@ -632,6 +632,17 @@ Contributor email action naming and form safety (2026-11-17):
   guidance review stays deferred until the card is completed.
 
 ## Deferred Agent-Context Review
+
+Shared image review (2026-11-17; shell slice `6ea31a1dd`): PlayerCard's
+portrait has explicit square CSS dimensions in em and its card reserves width
+and height. CouplingLogo's SVG has explicit width/height and viewBox; the Demo
+return logo has a fixed 38-by-36 CSS-pixel container. These shared entry-route
+images can be above the fold and already use eager/default loading. No missing
+reservation or inappropriate shared lazy loading was demonstrated. Preserve
+these contracts; measured LCP selection/priority and route-specific offscreen
+deferral remain in the performance card. This is inspection evidence, not a
+measured CLS/LCP result. No production/test changes or invented failing test;
+the preceding successful full check still applies unchanged.
 
 Shell feedback (2026-11-17): named native indeterminate progress now exposes
 loading without a noisy live announcement. The shared failed/null-result fallback
