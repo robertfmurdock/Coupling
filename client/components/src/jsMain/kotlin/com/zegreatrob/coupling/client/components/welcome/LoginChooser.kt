@@ -64,7 +64,7 @@ val LoginChooser by nfc<Props> {
             margin = Margin(0.px, 2.px, 0.px, 2.px)
             top = 0.px
         }
-        h2 { +"Choose how to continue" }
+        h2 { +"Get started" }
         div {
             CouplingButton {
                 sizeRuleSet = supersize
