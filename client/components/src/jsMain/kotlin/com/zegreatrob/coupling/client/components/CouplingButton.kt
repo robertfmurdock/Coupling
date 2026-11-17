@@ -126,7 +126,7 @@ val blue: Properties = unsafeJso<PropertiesBuilder>().apply {
     }
 }
 val white: Properties = unsafeJso<PropertiesBuilder>().apply {
-    buttonColorsWithFocus(
+    buttonColors(
         backgroundColor = Color("#f3ffff"),
         color = Color("#3e474c"),
     )
@@ -136,7 +136,7 @@ val white: Properties = unsafeJso<PropertiesBuilder>().apply {
     }
 }
 val yellow: Properties = unsafeJso<PropertiesBuilder>().apply {
-    buttonColorsWithFocus(
+    buttonColors(
         backgroundColor = Color("#eac435"),
         color = Color("#3e474c"),
     )
@@ -146,14 +146,9 @@ val yellow: Properties = unsafeJso<PropertiesBuilder>().apply {
     }
 }
 
-private fun PropertiesBuilder.buttonColorsWithFocus(backgroundColor: Color, color: Color) {
+private fun PropertiesBuilder.buttonColors(backgroundColor: Color, color: Color) {
     this.backgroundColor = backgroundColor
     this.color = color
-    focus {
-        outlineColor = Color.transparent
-        outlineWidth = 2.px
-        outlineOffset = 2.px
-    }
 }
 
 val black: Properties = unsafeJso<PropertiesBuilder>().apply {

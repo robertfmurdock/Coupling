@@ -84,7 +84,7 @@ class ClientNavigationTest {
     }
 }
 
-private fun renderNavigation(content: ChildrenBuilder.() -> Unit) = render(
+internal fun renderNavigation(content: ChildrenBuilder.() -> Unit) = render(
     RouterProvider.create { router = navigationRouter(content) },
 )
 

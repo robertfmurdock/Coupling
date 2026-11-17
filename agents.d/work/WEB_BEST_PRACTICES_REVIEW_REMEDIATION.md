@@ -208,8 +208,8 @@ Latest committed slice: `c99ae1bec` (party navigation semantics).
 Current slice: client-page navigation semantics and component/router regression
 coverage; validation is recorded below. This slice is committed with its tests.
 
-Next slice: shared focus indication, following notification modal semantics
-and focus behavior. Remaining shell/status, motion, and
+Next slice: pair-image clipboard control naming and keyboard reachability,
+following shared focus indication. Remaining shell/status, motion, and
 performance work stays open. CSP enforcement is deferred to its follow-up card.
 
 Blockers: none identified for the next accessibility investigation.
@@ -526,6 +526,21 @@ Named native recent-information modal (2026-11-17):
   fixture cleanup; production review checked portal ownership, native focus
   lifecycle, bounded scrolling, and cross-browser backdrop handling. Scroll
   containment is progressive enhancement where the browser supports it.
+
+Visible focus for light shared controls (2026-11-17):
+
+- Previous slice commit: `586ac4f6d`.
+- White/yellow color rules no longer override focused outlines with transparency.
+  Existing shell focus-visible styling and browser defaults can now apply to
+  both shared buttons and links. Background/text/hover colors are preserved.
+- Two browser component regressions Tab to a white button and yellow link and
+  inspect focus plus computed outline color/style/width. Both failed before
+  removing the suppression, then passed. This checks visible outline presence,
+  not a complete contrast audit or the shell's exact custom outline color.
+- Focused `:client:jsBrowserTest --no-daemon` passed (18 tests). Full
+  `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 72 executed).
+  `git diff --check` passed. Reviewed test evidence independently from the
+  shared color implementation; reused the client memory-router rendering helper.
 
 ## Deferred Agent-Context Review
 
