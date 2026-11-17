@@ -10,6 +10,11 @@ a {
   color: #00B7FF;
 }
 
+:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
 .view-container {
   text-align: center;
 }
