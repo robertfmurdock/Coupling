@@ -121,7 +121,7 @@ Target three remaining implementation slices, followed by one closeout review.
 Investigation may establish that an existing behavior already meets a contract;
 record that evidence instead of manufacturing a change or failing test.
 
-- [ ] **Shell announcements**: inspect the shared loading/error boundary and
+- [x] **Shell announcements**: inspect the shared loading/error boundary and
   representative Welcome, party-list, and pair-assignment route transitions.
   Fix demonstrated missing error/status or route-context behavior at its owner;
   avoid announcing every transient loading state. Use component/router evidence
@@ -632,6 +632,16 @@ Contributor email action naming and form safety (2026-11-17):
   guidance review stays deferred until the card is completed.
 
 ## Deferred Agent-Context Review
+
+Shell feedback (2026-11-17): named native indeterminate progress now exposes
+loading without a noisy live announcement. The shared failed/null-result fallback
+exposes an alert and one native Go back home link, removing nested interaction.
+Existing CouplingRoute already updates document titles. Both new browser component
+scenarios failed on missing semantics, then passed (27 client scenarios).
+Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 70 executed).
+Test review checked indeterminate state and the recovery destination/structure;
+production review confirmed no data-loader or authentication contract changes.
+Manual browser review remains incomplete; native UI control has been unreliable.
 
 User request: only after this card is finished, review the testing pitfalls
 encountered here and add durable guidance where it belongs. Do not update agent

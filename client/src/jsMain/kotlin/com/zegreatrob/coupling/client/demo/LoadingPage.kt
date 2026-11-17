@@ -7,6 +7,7 @@ import js.array.component2
 import js.objects.unsafeJso
 import react.FC
 import react.dom.html.ReactHTML.button
+import react.dom.html.ReactHTML.progress
 import react.router.dom.SetURLSearchParams
 import react.router.dom.useSearchParams
 import web.cssom.Angle
@@ -18,6 +19,7 @@ import web.cssom.px
 private val loadingSequence by lazy { LoadingAnimationState.generateSequence() }
 
 val LoadingPage = FC {
+    progress { ariaLabel = "Loading page" }
     val (searchParams, setSearchParams) = useSearchParams()
     val frameIndex = searchParams.get("frame")?.toIntOrNull()
     val currentFrame = frameIndex?.let { loadingSequence.toList()[it] }

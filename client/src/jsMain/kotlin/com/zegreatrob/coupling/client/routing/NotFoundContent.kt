@@ -1,15 +1,18 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.CouplingLink
 import com.zegreatrob.minreact.nfc
 import react.Props
-import react.router.dom.Link
+import react.dom.html.ReactHTML.p
+import web.aria.AriaRole
 
 val notFoundContent by nfc<Props> {
-    Link {
-        this.to = "/welcome"
-        CouplingButton {
-            +"Looks like an error happened. Click this to go back home."
-        }
+    p {
+        role = "alert".unsafeCast<AriaRole>()
+        +"Looks like an error happened."
+    }
+    CouplingLink {
+        to = "/welcome"
+        +"Go back home"
     }
 }
