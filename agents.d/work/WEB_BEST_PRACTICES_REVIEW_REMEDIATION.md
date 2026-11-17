@@ -400,6 +400,27 @@ Accessibility progress — standard navigation tab order (2026-11-17):
   sandbox (`680` tasks, including browser/E2E tasks).
 - Commit: `0d63e0fec`.
 
+Accessibility progress — demo return keyboard access (2026-11-17):
+
+- Removed the explicit `tabIndex = -1` from the demo’s native return link.
+- Focused client tests passed; full validation passed with `680` tasks,
+  including browser/E2E tasks.
+- Commit: `ab970d30c`.
+
+Accessibility progress — About navigation keyboard access (2026-11-17):
+
+- Removed the explicit `tabIndex = -1` from the About page’s native back link.
+- Focused client tests passed; full validation passed with `680` tasks,
+  including browser/E2E tasks.
+- Commit: `750c3ff26`.
+
+Accessibility progress — pin creation keyboard access (2026-11-17):
+
+- Removed the explicit `tabIndex = -1` from the Pin List “Add a new pin” link.
+- Focused client tests passed; full validation passed with `680` tasks,
+  including browser/E2E tasks.
+- Commit: `13d4316e2`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
