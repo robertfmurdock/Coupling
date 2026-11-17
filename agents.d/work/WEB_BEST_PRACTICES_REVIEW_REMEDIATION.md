@@ -233,7 +233,7 @@ Planning review completed:
 - The work card and implementation pass `git diff --check`; this slice is
   complete and release-safe after its commit. Rollback is limited to the slice
   commit and preserves the existing HTML loading architecture.
-- Commit: `064ad835214af925acc766c045a505cff86a829e`.
+- Commit: `3a429e00419f48c21b0fde7665f9273122a78324`.
 
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
