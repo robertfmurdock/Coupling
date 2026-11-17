@@ -115,10 +115,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1170.0":
-  version "3.1170.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1170.0.tgz#3e5dabdd7fc1b715560f6e8ceeffa9a5428097a2"
-  integrity sha512-FyOAgbLlyaoTScdjTRIbZrLTDvH1DU+cVqkUZ43v7OspTHEcDaOm/B0+c6eLtGxVh4B9u2AG8E6TBcz+XBc/Lw==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1171.0":
+  version "3.1171.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1171.0.tgz#5b2390a6d11627cde03e8728b0362246e30fad78"
+  integrity sha512-djb+JvTW8VAXkYAmEmehgoh78CXcv/fBLxHsffTOo6sweoo7F6lyV1M8g35ov41lcO0exGggFy48ntcfEgGWzA==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/credential-provider-node" "^3.972.97"
@@ -129,10 +129,10 @@
     "@smithy/types" "^4.20.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1170.0":
-  version "3.1170.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1170.0.tgz#ceb80eab67e38aed8010c386acf85d13083bc7c3"
-  integrity sha512-wg/UTlI2OYKdn9LUIOWAliTewoCdQa8HCVsJcZwf9XxO1ChsT8ZvRc4DEJVhwIkGS/JTlWW0Sv77qxn9Fy5YJQ==
+"@aws-sdk/client-dynamodb@3.1171.0":
+  version "3.1171.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1171.0.tgz#bbacab83808e48add55d60709f5c90b8b098051b"
+  integrity sha512-zCRMytp/eL7K9nxw+5L1pNMjlWsF5GuMSBb1mmAqUYv1yqemOHD4SDeViYD4Rl8L3yiBfbvSg+rzuMLA++ioDw==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/credential-provider-node" "^3.972.97"
@@ -161,10 +161,10 @@
     "@smithy/types" "^4.14.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1170.0":
-  version "3.1170.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1170.0.tgz#d0de5335a618348156b8a980ba6d3a44f5f01fd7"
-  integrity sha512-nV7URAvrHsDHxbqzSt/whZHwt7uEIuw/DbbBow8hwcBCh3mU91qkhGq5QuSmMaom8Ix49ziKyWMRnhnPKUtvhQ==
+"@aws-sdk/client-lambda@~3.1171.0":
+  version "3.1171.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1171.0.tgz#a39da79d78e596d22e10f43fb372c70204aa2763"
+  integrity sha512-gCXp0yJm23eLAuWr6YvhHvgx1aBVxbb3sE2e726O4rKGmtKkXOU9mUm2O1ig76jNwNddOdqB3ZATr6iQsa6wCA==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/credential-provider-node" "^3.972.97"
@@ -437,10 +437,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1170.0":
-  version "3.1170.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1170.0.tgz#12006c497b93405d48feba1f373be2a0eb449645"
-  integrity sha512-Wp6LdmrHFcBvZLb/fsYApShFmcy826yQbkerT1lS/mBSyxdzU9mplKYUdFx3Hg9EDwChEh1yPhgJxN3QvJGnnQ==
+"@aws-sdk/lib-dynamodb@3.1171.0":
+  version "3.1171.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1171.0.tgz#0003a722faad2cb784e69b059f92e3bbf3861f49"
+  integrity sha512-phDgNDyR3yQ/DrovBiPMn96IAUWDJQLKe3jMaU4hcxMtyRjmZGQkQOx0nmCChZ4yuPMWpi7ZAh3boBaklgrSDA==
   dependencies:
     "@aws-sdk/core" "^3.981.0"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -842,10 +842,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.76":
-  version "0.31.76"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.76.tgz#6caa17205e2f5a8d8124887c596805fb2ab19727"
-  integrity sha512-TrWpc9NSfbYh682u46s2GIUofnC2Tf4fzFCGUbw7bFFC6lE+LgvoenHobvnK8nW9+76CkXnftqEhdShqqTkwlw==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.77":
+  version "0.31.77"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.77.tgz#4791da50c2e7a4e56b5d73b3d39e5f5f821206a2"
+  integrity sha512-zudZd0MNtLRO6t3k0p5IxYophIJtsRYV62gkUECfLx2L0cEs2SDtAktF0mhkmlBayNdyoyw4y6teLdTdPB0pZQ==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -9567,10 +9567,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recharts@^3.10.1:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.10.1.tgz#e6f52c2604a38f728b6d47f95881595fa6604c6c"
-  integrity sha512-QXFrvt6IVcw7eeZCoyXTwkIJAX3Dv1nyVhMicXJ47GsGDDpcN8z6o644DibE9XjpBTThtsomLKnTV6lc+cVFUA==
+recharts@^3.11.0:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.11.0.tgz#1a5513dab84cb934638724fef2e0142b5004185a"
+  integrity sha512-Hs7vXskAYl82TKKkeikPxMFOaOqVJBoqxay6a4Oj+sBURVorpSKk8J732vyNsmedxK08lpPhyj2GL4E6ZMHR6Q==
   dependencies:
     "@reduxjs/toolkit" "^1.9.0 || 2.x.x"
     clsx "^2.1.1"
