@@ -344,6 +344,18 @@ Accessibility progress — GraphiQL navigation name (2026-11-17):
   sandbox (`680` tasks, including browser/E2E tasks).
 - Commit: `627265b47`.
 
+Accessibility progress — settings control name (2026-11-17):
+
+- Added the accessible name `Settings` to the gear-only settings button via
+  its existing button attribute boundary.
+- Focused validation: `fish -lc './gradlew :client:components:jsTest
+  --no-daemon'` passed (`208` tasks, `26` executed). An initial direct ARIA
+  assignment failed the Kotlin DSL boundary and was corrected through
+  `buttonProps`.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `854443795`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
