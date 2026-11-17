@@ -388,6 +388,18 @@ Accessibility progress — Demo keyboard navigation (2026-11-17):
   sandbox (`680` tasks, including browser/E2E tasks).
 - Commit: `e86bb1553`.
 
+Accessibility progress — standard navigation tab order (2026-11-17):
+
+- Removed explicit `tabIndex = -1` exclusions from nine standalone, visibly
+  named links: Add Player, Retirees, Party Select, Statistics, Pin Bag,
+  History, Logout, About, and Gravatar. Dropdown links and composite controls
+  remain deferred for separate focus-management review.
+- Focused validation: `fish -lc './gradlew :client:components:jsTest
+  :client:jsTest --no-daemon'` passed (`255` tasks, `40` executed).
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `0d63e0fec`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
