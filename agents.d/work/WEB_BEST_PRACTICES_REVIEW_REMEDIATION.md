@@ -368,6 +368,16 @@ Accessibility progress — notification trigger semantics (2026-11-17):
   sandbox (`680` tasks, including browser/E2E tasks).
 - Commit: `4ae0f09c9`.
 
+Accessibility progress — GraphiQL keyboard navigation (2026-11-17):
+
+- Removed the explicit `tabIndex = -1` from the named GraphiQL navigation link,
+  restoring the native link’s keyboard reachability.
+- Focused validation: `fish -lc './gradlew :client:components:jsTest
+  --no-daemon'` passed (`208` tasks, `26` executed).
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `6f5dacfd4`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
