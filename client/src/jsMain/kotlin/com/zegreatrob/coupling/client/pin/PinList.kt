@@ -50,7 +50,6 @@ val PinList by nfc<PinListProps> { (party, pins) ->
         div {
             Link {
                 to = "/${party.id.value}/pin/new"
-                tabIndex = -1
                 draggable = false
                 CouplingButton {
                     sizeRuleSet = large
