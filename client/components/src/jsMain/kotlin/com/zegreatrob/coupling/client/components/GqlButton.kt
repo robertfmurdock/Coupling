@@ -9,7 +9,6 @@ val GqlButton by nfc<Props> {
     Link {
         to = "/graphiql"
         ariaLabel = "GraphiQL"
-        tabIndex = -1
         draggable = false
         CouplingButton {
             sizeRuleSet = large
