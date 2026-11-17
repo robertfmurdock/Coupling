@@ -16,6 +16,8 @@ import org.w3c.dom.get
 import react.PropsWithValue
 import react.create
 import react.dom.html.ReactHTML.div
+import web.aria.AriaLive
+import web.aria.AriaRole
 import web.cssom.TextAlign
 import web.cssom.vh
 
@@ -41,7 +43,11 @@ val GraphIQLPageLoader by nfc<PropsWithValue<DataLoadState<String>>> { props ->
     when (val state = props.value) {
         is EmptyState -> div()
 
-        is PendingState -> +"Loading authorization..."
+        is PendingState -> div {
+            role = "status".unsafeCast<AriaRole>()
+            ariaLive = "polite".unsafeCast<AriaLive>()
+            +"Loading authorization..."
+        }
 
         is ResolvedState -> GraphiQL {
             this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
