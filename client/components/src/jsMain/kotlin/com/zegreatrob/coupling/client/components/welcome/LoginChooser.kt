@@ -13,6 +13,7 @@ import emotion.react.css
 import js.array.component1
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h2
 import react.router.dom.useSearchParams
 import web.cssom.BackgroundRepeat
 import web.cssom.Border
@@ -63,6 +64,7 @@ val LoginChooser by nfc<Props> {
             margin = Margin(0.px, 2.px, 0.px, 2.px)
             top = 0.px
         }
+        h2 { +"Choose how to continue" }
         div {
             CouplingButton {
                 sizeRuleSet = supersize
