@@ -41,7 +41,7 @@ Constraints:
 
 ## Safe Slice Sequence
 
-- [ ] **External resource hardening**: secure and pin third-party scripts and
+- [x] **External resource hardening**: secure and pin third-party scripts and
       stylesheets in the main document and embedded GraphiQL document. Test
       intent: at the client build/template boundary, build/render the client and
       verify generated HTML contains exact versions plus SRI, anonymous CORS,
@@ -209,16 +209,31 @@ Relevant paths:
 Planning review completed:
 
 - Google `modern-web-guidance` `legacy-scan client --json`: one finding,
-  missing SRI on the CodeMirror CDN stylesheet.
+  missing SRI on the CodeMirror CDN stylesheet (baseline red evidence).
 - Retrieved and reviewed the `secure-external-subresources`, `accessibility`,
   `performance`, and `security` guidance.
-- No implementation validation has been run; no slice is complete or
-  release-safe.
+- Slice 1 implementation: pinned React to 18.3.1 and GraphiQL to 3.8.3,
+  added SHA-384 SRI from known-good vendor bytes, anonymous CORS, no-referrer,
+  and a strict-origin-when-cross-origin document policy to the main document
+  and GraphiQL `srcDoc`. Mutable Font Awesome and Google Fonts remain deferred
+  to the security-policy slice.
+- Focused validation: `legacy-scan client --json` passed with
+  `totalFindings: 0`; `./gradlew :client:jsBrowserProductionVite
+  --no-daemon` passed and emitted the hardened production HTML; `git diff
+  --check` passed.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox, including client browser tests and E2E (`690` tasks).
+- Review outcome: the resource-template boundary and production packaging
+  observe the changed contract; no behavioral Testmints scenario was added
+  because this slice is covered by the deterministic security scan and build
+  output rather than a user interaction.
 - Testmints review is a completion requirement for each behavioral test: review
   setup/exercise/verify ownership, expected red evidence, observable contract,
   cleanup, and scenario naming before recording the slice as complete.
-- The work card itself passes `git diff --check`; implementation validation and
-  full-suite validation remain pending until the first slice begins.
+- The work card and implementation pass `git diff --check`; this slice is
+  complete and release-safe after its commit. Rollback is limited to the slice
+  commit and preserves the existing HTML loading architecture.
+- Commit: `064ad835214af925acc766c045a505cff86a829e`.
 
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,

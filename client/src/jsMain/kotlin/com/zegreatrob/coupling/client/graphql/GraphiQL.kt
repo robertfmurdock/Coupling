@@ -32,11 +32,22 @@ val GraphiQL: ElementType<GraphiQLProps> = FC { props ->
 <!DOCTYPE html>
 <html width="100%" height="100%">
 <head>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/graphiql/graphiql.min.css" rel="stylesheet"/>
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"
+            integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"
+            integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/graphiql@3.8.3/graphiql.min.css" rel="stylesheet"
+          integrity="sha384-Mq3vbRBY71jfjQAt/DcjxUIYY33ksal4cgdRt9U/hNPvHBCaT2JfJ/PTRiPKf0aM"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
     <script src="https://cdn.jsdelivr.net/npm/graphiql@3.8.3/graphiql.min.js"
-            integrity="sha256-IvqrlAZ7aV5feVlhn75obrzIlVACoMl9mGvLukrUvCw="
+            integrity="sha384-HbRVEFG0JGJZeAHCJ9Xm2+tpknBQ7QZmNlO/DgZtkZ0aJSypT96YYGRNod99l9Ie"
+            referrerpolicy="no-referrer"
             crossorigin="anonymous"></script>
 </head>
 <body style='margin:0;'>
