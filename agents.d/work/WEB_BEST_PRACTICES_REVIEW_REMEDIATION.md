@@ -356,6 +356,18 @@ Accessibility progress — settings control name (2026-11-17):
   sandbox (`680` tasks, including browser/E2E tasks).
 - Commit: `854443795`.
 
+Accessibility progress — notification trigger semantics (2026-11-17):
+
+- Replaced the custom clickable notification `div` with a native `<button>`
+  trigger and added the accessible name `Recent information`, preserving the
+  existing third-party popup behavior.
+- Focused validation: `fish -lc './gradlew :client:components:jsTest
+  --no-daemon'` passed (`208` tasks, `26` executed); focused lint also passed
+  after correcting import ordering.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `4ae0f09c9`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
