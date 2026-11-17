@@ -26,6 +26,7 @@ val GraphiQL: ElementType<GraphiQLProps> = FC { props ->
             height = 100.vh
         }
         name = "graphiql-frame"
+        title = "GraphiQL query editor"
         allowFullScreen = true
         sandbox = "allow-scripts allow-same-origin"
         this.srcDoc = """
