@@ -8,6 +8,8 @@ import web.cssom.ClassName
 import web.cssom.Globals
 import web.cssom.None
 import web.cssom.em
+import web.html.ButtonType
+import web.html.button
 
 external interface CloseButtonProps : Props {
     var onClose: () -> Unit
@@ -15,6 +17,7 @@ external interface CloseButtonProps : Props {
 
 val CloseButton = FC<CloseButtonProps> { props ->
     ReactHTML.button {
+        type = ButtonType.button
         css {
             color = Globals.inherit
             border = None.none

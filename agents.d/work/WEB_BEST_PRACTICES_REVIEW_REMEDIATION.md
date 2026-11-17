@@ -208,8 +208,8 @@ Latest committed slice: `c99ae1bec` (party navigation semantics).
 Current slice: client-page navigation semantics and component/router regression
 coverage; validation is recorded below. This slice is committed with its tests.
 
-Next slice: shared Close control form safety,
-following settings dropdown keyboard access. Remaining shell/status, motion, and
+Next slice: contributor email action naming and form safety,
+following shared Close control form safety. Remaining shell/status, motion, and
 performance work stays open. CSP enforcement is deferred to its follow-up card.
 
 Blockers: none identified for the next accessibility investigation.
@@ -572,6 +572,18 @@ Settings dropdown keyboard access (2026-11-17):
   `git diff --check` passed. Test review checked focus order, destinations,
   controlled-region association, and dismissal. Production review confirmed
   dropdown links are used only by Settings and state remains component-owned.
+
+Shared Close control form safety (2026-11-17):
+
+- Previous slice commit: `29b7959f2`.
+- The shared Close button now has explicit type=button. Its accessible name,
+  appearance, and dismissal callback are unchanged.
+- A browser component regression first reproduced one unintended enclosing-form
+  submission while the dismissal callback ran once. After implementation,
+  focused `:client:jsBrowserTest --no-daemon` passed (25 tests).
+- Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 72 executed).
+  `git diff --check` passed. Test and production reviews confirmed the control
+  retains its dismissal contract and no longer performs an implicit form action.
 
 ## Deferred Agent-Context Review
 
