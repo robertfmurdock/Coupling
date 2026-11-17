@@ -22,6 +22,7 @@ val SettingsButton by nfc<PartyButtonProps> { props ->
             colorRuleSet = black
             onClick = { setShowDropDown(true) }
             buttonProps = unsafeJso {
+                ariaLabel = "Settings"
                 onMouseEnter = { setShowDropDown(true) }
             }
             css {
