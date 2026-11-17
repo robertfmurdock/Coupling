@@ -302,6 +302,19 @@ Accessibility progress — GraphiQL loading status (2026-11-17):
   sandbox (`680` tasks, including browser/E2E tasks).
 - Commit: `7024b321110ac36e9a0d0c146be25b797c8338d2`.
 
+Accessibility progress — welcome page heading (2026-11-17):
+
+- Promoted the visual “Coupling!” welcome title from a generic `div` to a
+  native `<h1>`, preserving the existing fitty sizing and animation refs.
+- Focused validation: `fish -lc './gradlew :client:components:jsTest
+  --no-daemon'` passed. The attempted `:client:components:jsBrowserTest`
+  task does not exist in this module.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Review outcome: the welcome screen now contributes a page-level heading to
+  the document outline without changing its visual behavior.
+- Commit: `aacbc8013`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
