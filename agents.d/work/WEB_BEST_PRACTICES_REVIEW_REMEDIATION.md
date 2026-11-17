@@ -57,7 +57,7 @@ Constraints:
       digests. This is independently safe because it changes resource
       verification and version pinning without changing product behavior.
 
-- [ ] **Document and deploy security policy**: add a deliberate Referrer Policy
+- [x] **Document and deploy security policy**: add a deliberate Referrer Policy
       and Content Security Policy compatible with the actual client origins,
       GraphQL/WebSocket endpoints, Auth0, Slack/Discord flows, analytics, and
       GraphiQL iframe. Test intent: exercise the built application and verify
@@ -234,6 +234,25 @@ Planning review completed:
   complete and release-safe after its commit. Rollback is limited to the slice
   commit and preserves the existing HTML loading architecture.
 - Commit: `3a429e00419f48c21b0fde7665f9273122a78324`.
+
+Slice 2 — staged deployment security policy (2026-11-17):
+
+- Call-the-shot red evidence: Caddy responses had no security headers.
+- Design review: applied companion headers and a report-only CSP at the Caddy
+  frontend/server boundary for `localhost` and `static.localhost`; retained
+  OAuth, CDN, same-origin API/WebSocket, and GraphiQL-compatible sources while
+  deferring enforcement until real violation evidence is collected.
+- Focused validation: `docker compose config --quiet` and Caddy validation
+  passed; live HTTPS `curl -I` responses on both origins included
+  `Content-Security-Policy-Report-Only`, `Referrer-Policy`,
+  `X-Content-Type-Options`, `X-Frame-Options`, and `Permissions-Policy`;
+  `git diff --check` passed.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Review outcome: report-only rollout is deliberate because the repository has
+  no configured violation reporting endpoint; enforcement remains a follow-up
+  after observing authenticated, OAuth, integration, and GraphiQL traffic.
+- Commit: `29d5c337745038586863b4a25dfd10f6becbd4c6`.
 
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
