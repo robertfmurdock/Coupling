@@ -12,7 +12,6 @@ import web.cssom.ClassName
 val PartySelectButton by nfc<Props> {
     Link {
         to = "/parties/"
-        tabIndex = -1
         draggable = false
         CouplingButton {
             sizeRuleSet = large

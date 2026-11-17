@@ -11,7 +11,6 @@ import web.cssom.ClassName
 
 fun ChildrenBuilder.viewHistoryButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/history/"
-    tabIndex = -1
     draggable = false
     CouplingButton {
         sizeRuleSet = large

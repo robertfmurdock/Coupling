@@ -14,7 +14,6 @@ import web.cssom.px
 val AboutButton by nfc<Props> {
     Link {
         to = "/about"
-        tabIndex = -1
         draggable = false
         CouplingButton {
             sizeRuleSet = large

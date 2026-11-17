@@ -11,7 +11,6 @@ import web.cssom.ClassName
 
 fun ChildrenBuilder.pinListButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/pins/"
-    tabIndex = -1
     draggable = false
     CouplingButton {
         sizeRuleSet = large

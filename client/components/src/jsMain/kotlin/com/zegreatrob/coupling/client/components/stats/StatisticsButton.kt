@@ -11,7 +11,6 @@ import web.cssom.ClassName
 
 fun ChildrenBuilder.statisticsButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/statistics"
-    tabIndex = -1
     draggable = false
     CouplingButton {
         sizeRuleSet = large

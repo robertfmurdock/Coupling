@@ -11,7 +11,6 @@ import react.router.dom.Link
 val AddPlayerButton by nfc<PartyButtonProps> { props ->
     Link {
         to = props.partyId.newPlayerConfigPath()
-        tabIndex = -1
         draggable = false
         CouplingButton {
             sizeRuleSet = large

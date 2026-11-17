@@ -11,7 +11,6 @@ import web.cssom.ClassName
 
 fun ChildrenBuilder.viewRetireesButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/players/retired"
-    tabIndex = -1
     draggable = false
     CouplingButton {
         sizeRuleSet = large

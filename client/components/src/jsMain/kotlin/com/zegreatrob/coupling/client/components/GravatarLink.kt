@@ -16,7 +16,6 @@ val gravatarLink by nfc<Props> {
         }
         href = "https://en.gravatar.com/"
         target = WindowTarget._blank
-        tabIndex = -1
         +"Gravatar"
     }
 }

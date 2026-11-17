@@ -9,7 +9,6 @@ import web.cssom.ClassName
 val LogoutButton by nfc<Props> {
     Link {
         to = "/logout"
-        tabIndex = -1
         draggable = false
         CouplingButton {
             sizeRuleSet = large
