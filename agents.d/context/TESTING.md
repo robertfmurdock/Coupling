@@ -27,13 +27,14 @@ a test, though teams use some of them differently:
   set.
 - **UI/component tests** render client components and exercise user interactions,
   commonly with dispatchers stubbed. Use these for rendering and for checking which
-  action the UI sends.
+  action the UI sends. A memory router can also prove local link activation,
+  destination changes, and disclosure/focus behavior without running services.
 - **Endpoint/API tests** use the SDK against the running network service, without
   driving a browser or full client application. These are often called integration
   tests; the endpoint boundary is the more precise description here. Use this layer
   for client-to-service contracts and behavior that depends on the running service.
 - **End-to-end/system tests** drive browser flows through the assembled client and
-  server. Use these when behavior depends on navigation, authentication, or
+  server. Use these when behavior depends on assembled route wiring, authentication, or
   interactions across the running application. Separate browser diagnostics tests
   exercise the diagnostic harness itself, not product flows.
 
@@ -46,6 +47,28 @@ for example, test that a component renders a value rather than that a query cont
 its field name. Related observations can share a test; distinct scenarios should
 remain explicit. Avoid exhaustive imagined edge cases or passing tests with no
 additional intent.
+
+## Browser Interaction Evidence
+
+For navigation/accessibility changes, inspect the rendered interactive structure
+as well as the accessible name and destination. Native links and buttons already
+participate in Tab order; changing `tabindex` alone does not remove a nested control
+or prove there is one focus stop per action. Exercise the claimed focus or keyboard
+regression at the owning component/router boundary.
+
+Distinguish simulated user-event keyboard tests, native browser key input, and
+calibrated screen-reader checks when reporting evidence. Running a component test
+in a browser does not turn simulated Tab into native keyboard evidence. Likewise,
+mocked media preferences prove application response to the preference contract,
+not OS setting integration. Confirm visible rendering as well as final content
+when bypassing animation; omitted animation events must not strand controls.
+
+Treat missing browser APIs/providers, module-export mismatches, asset placeholders,
+and fixture property shadowing as harness problems until the intended assertion
+fails on the product behavior. Reuse real providers and image registries where
+needed; placeholder image URLs do not establish successful loading or layout
+stability. Keep test-only API fixtures in the harness, with the used event/state
+contract, rather than weakening production behavior to accommodate their omissions.
 
 ## TestMints Phase Discipline
 
