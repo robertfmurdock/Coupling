@@ -266,6 +266,18 @@ Accessibility progress (2026-11-17):
 - The broader accessibility slice remains open for landmarks, skip navigation,
   headings, focus-visible states, announcements, and keyboard transitions.
 
+Accessibility progress — shell navigation (2026-11-17):
+
+- Added a native skip link targeting a focusable `<main id="main-content">`
+  around the existing React mount, with a visible `:focus-visible` state.
+- Focused validation: `fish -lc './gradlew :client:jsBrowserProductionVite
+  :client:jsBrowserTest --no-daemon'` passed and emitted the updated HTML.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `d4b7029371f5e351f3a5fc768aa50dbf49a5ac81`.
+- The broader accessibility slice remains open for route-specific headings,
+  status announcements, popup focus return, and keyboard transitions.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
