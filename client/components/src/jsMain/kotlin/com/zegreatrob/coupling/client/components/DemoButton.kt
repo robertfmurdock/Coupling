@@ -10,7 +10,6 @@ import web.cssom.ClassName
 val DemoButton by nfc<Props> {
     Link {
         to = "/demo"
-        tabIndex = -1
         draggable = false
         CouplingButton {
             sizeRuleSet = large
