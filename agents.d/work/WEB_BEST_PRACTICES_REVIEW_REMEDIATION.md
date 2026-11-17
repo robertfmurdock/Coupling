@@ -327,6 +327,11 @@ Accessibility progress — welcome chooser heading (2026-11-17):
   behavior remains deferred because the current interaction replaces the
   trigger and exposes no close action or return target.
 - Commit: `f74ca0d86`.
+- Follow-up wording correction: changed the chooser heading to the concise
+  text “Get started” after review.
+- Focused and full validation passed again; full check completed with `680`
+  tasks, including browser/E2E tasks.
+- Commit: `b1bccf5a8`.
 
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
