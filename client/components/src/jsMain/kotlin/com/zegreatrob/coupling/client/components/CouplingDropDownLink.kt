@@ -13,7 +13,6 @@ external interface CouplingDropDownLinkProps : PropsWithChildren {
 val CouplingDropDownLink by nfc<CouplingDropDownLinkProps> { props ->
     Link {
         to = props.to
-        tabIndex = -1
         draggable = false
         CouplingDropDownElement { +props.children }
     }

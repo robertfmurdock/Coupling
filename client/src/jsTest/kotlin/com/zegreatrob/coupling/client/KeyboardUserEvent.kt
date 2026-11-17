@@ -13,6 +13,8 @@ external interface KeyboardUserEventFactory {
 
 external interface KeyboardUserEvent {
     fun click(element: HTMLElement): Promise<Unit>
+    fun hover(element: HTMLElement): Promise<Unit>
+    fun unhover(element: HTMLElement): Promise<Unit>
     fun tab(): Promise<Unit>
     fun keyboard(text: String): Promise<Unit>
 }

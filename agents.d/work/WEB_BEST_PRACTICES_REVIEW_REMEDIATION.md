@@ -208,8 +208,8 @@ Latest committed slice: `c99ae1bec` (party navigation semantics).
 Current slice: client-page navigation semantics and component/router regression
 coverage; validation is recorded below. This slice is committed with its tests.
 
-Next slice: settings dropdown keyboard access and dismissal,
-following pair-image clipboard control accessibility. Remaining shell/status, motion, and
+Next slice: shared Close control form safety,
+following settings dropdown keyboard access. Remaining shell/status, motion, and
 performance work stays open. CSP enforcement is deferred to its follow-up card.
 
 Blockers: none identified for the next accessibility investigation.
@@ -555,6 +555,23 @@ Named and keyboard-reachable pair image control (2026-11-17):
   `git diff --check` passed. Test review confirmed focus is observed after actual
   component rendering, while production review confirmed the click action remains
   untouched. Clipboard-image correctness is outside this regression's evidence.
+
+Settings dropdown keyboard access (2026-11-17):
+
+- Previous slice commit: `a966a58a6`.
+- Settings now exposes expanded state and its controlled region. Its three
+  native links participate in Tab order. Escape dismisses and restores trigger
+  focus; focus leaving the disclosure dismisses without stealing focus. Hover
+  and click-open behavior remain, with mouse-leave dismissal guarded so that
+  it cannot remove a keyboard-focused link. No menu roles or arrow-key model.
+- Four component/router scenarios failed on missing state, skipped links, and
+  missing dismissal before implementation. A fifth regression reproduced
+  mouse-leave removal of a focused link, then passed with the focus guard.
+- Focused `:client:jsBrowserTest --no-daemon` passed (24 tests). Full
+  `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 77 executed).
+  `git diff --check` passed. Test review checked focus order, destinations,
+  controlled-region association, and dismissal. Production review confirmed
+  dropdown links are used only by Settings and state remains component-owned.
 
 ## Deferred Agent-Context Review
 
