@@ -59,7 +59,6 @@ private val backButtonSection by nfc<Props> {
 private val backButton by nfc<Props> {
     Link {
         to = "/parties"
-        tabIndex = -1
         draggable = false
         CouplingButton {
             sizeRuleSet = large
