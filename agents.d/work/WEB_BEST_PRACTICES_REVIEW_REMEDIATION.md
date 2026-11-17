@@ -288,6 +288,20 @@ Accessibility progress — visible focus (2026-11-17):
   sandbox (`680` tasks, including browser/E2E tasks).
 - Commit: `4748f286e13b0fa4d5967fa30dd915bb2fafeea2`.
 
+Accessibility progress — GraphiQL loading status (2026-11-17):
+
+- Wrapped the authorization loading message in a typed `role="status"` and
+  `aria-live="polite"` live region. The loader currently collapses errors to an
+  empty state, so error announcement remains deferred until that contract is
+  clarified.
+- Focused red evidence: plain string ARIA assignments failed Kotlin/JS type
+  checking; typed wrapper values with localized `unsafeCast` compile correctly.
+- Focused validation: `fish -lc './gradlew :client:jsBrowserProductionVite
+  :client:jsBrowserTest --no-daemon'` passed after the correction.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `7024b321110ac36e9a0d0c146be25b797c8338d2`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
