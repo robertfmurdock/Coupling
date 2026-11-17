@@ -8,6 +8,10 @@ browser security posture, accessibility, and measured loading performance while
 preserving the existing Kotlin/JS client behavior and supported browser
 compatibility.
 
+Scope revision (2026-11-17, user authorized): finish the bounded remediation
+below. Measurement-driven performance work and the broader accessibility audit
+have separate follow-up cards; their transfer is not a claim of completion.
+
 Confirmed baseline finding: the deterministic modernization scan found one
 missing SRI policy on the CodeMirror stylesheet in
 `client/src/jsMain/resources/index.html`. The scan covers only a subset of the
@@ -106,21 +110,39 @@ Constraints:
       rules. This is independently safe because image content and animations
       retain their visual purpose while gaining predictable fallback behavior.
 
-- [ ] **Measure and optimize the critical path**: establish a repeatable
-      Lighthouse/Chrome performance baseline for representative routes, then
-      defer or lazy-load non-critical CSS, GraphiQL, popup/drag-drop resources,
-      and analytics where measurements justify it. Test intent: record LCP,
-      INP, CLS, transfer size, and long tasks for authenticated and unauthenticated
-      entry routes; expected failure is a documented baseline or budget breach,
-      not an invented source-level assertion. Testmints is required for any
-      behavioral browser scenario around loading or route readiness: setup
-      arranges route/network conditions, exercise navigates or loads once, and
-      verify checks user-visible readiness and collected metrics. Keep budgets
-      and trace analysis separate from token/source assertions. Design: optimize
-      only measured bottlenecks, preserve route behavior, and add a
-      repository-native Gradle
-      task if recurring automation is needed. This slice remains safe because
-      every deferral is validated against the affected route flows.
+- **Transferred, not completed — measured critical-path optimization**:
+  [Web performance follow-up](WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md) owns
+  representative baselines, performance budgets, and measurement-driven resource
+  deferral. No performance improvement is claimed without comparable evidence.
+
+## Bounded Finish Line
+
+Target three remaining implementation slices, followed by one closeout review.
+Investigation may establish that an existing behavior already meets a contract;
+record that evidence instead of manufacturing a change or failing test.
+
+- [ ] **Shell announcements**: inspect the shared loading/error boundary and
+  representative Welcome, party-list, and pair-assignment route transitions.
+  Fix demonstrated missing error/status or route-context behavior at its owner;
+  avoid announcing every transient loading state. Use component/router evidence
+  unless the behavior actually requires the assembled application.
+- [ ] **Shared image behavior**: inspect the shared player/logo rendering used
+  on those entry routes. Correct demonstrated missing layout reservation and
+  inappropriate loading priority. Keep likely above-the-fold images eager;
+  defer route-by-route image tuning to the performance follow-up.
+- [ ] **Reduced motion**: cover the Welcome entrance, notification/demo pulse,
+  and pair-assignment animation owners. Honor reduced motion while preserving
+  final content and usable controls; verify preference-dependent behavior.
+- [ ] **Closeout**: review existing evidence for shell landmarks/skip link,
+  headings, GraphiQL naming, navigation, modal/focus behavior, and representative
+  party/player/pin form labels. Fix regressions introduced by this card. Record
+  other findings in the [extended accessibility follow-up](WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md),
+  reconcile the broad checkboxes above, and move this card to work_completed.
+
+After completion, perform the deferred agent-context review below. Do not extend
+this card with unrelated polish, a complete screen-reader/browser matrix, all-route
+heading/form cleanup, or speculative resource-loading changes. Newly found issues
+that prevent the bounded contracts from working still belong in this card.
 
 ## Design Decisions
 
@@ -203,16 +225,16 @@ Constraints:
 
 Date: 2026-11-17
 
-Latest committed slice before the current slice: `3f8cf72e3` (shared Close
-control form safety). The validation history below records the intervening slices.
-
-Current slice: contributor email action naming and form safety; validation is
-recorded below. Tests and implementation are committed together after the gate.
+Latest implementation commit: `c19d65e57` (contributor email action naming and
+form safety). Its focused tests and full check passed; the validation history
+below records the preceding slices. Current change: documentation-only scope
+revision and follow-up drafts.
 
 Next investigation: loading/error announcement contracts at the client shell,
-then image/motion behavior and measured performance work. The card remains open.
-CSP enforcement is deferred to its follow-up card. Agent-context testing guidance
-is deferred until this card is finished, per the user's explicit sequencing.
+then the shared image and reduced-motion slices above. The card remains open.
+CSP enforcement, measured performance work, and extended accessibility auditing
+have follow-up cards. Agent-context testing guidance remains deferred until this
+card is finished, per the user's explicit sequencing.
 
 Blockers: none identified for the next accessibility investigation.
 
