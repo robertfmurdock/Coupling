@@ -333,6 +333,17 @@ Accessibility progress — welcome chooser heading (2026-11-17):
   tasks, including browser/E2E tasks.
 - Commit: `b1bccf5a8`.
 
+Accessibility progress — GraphiQL navigation name (2026-11-17):
+
+- Added the accessible name `GraphiQL` to the icon-only GraphiQL link and
+  marked its image decorative with empty alt text.
+- Focused validation: `fish -lc './gradlew :client:components:jsTest
+  --no-daemon'` passed (`208` tasks, `26` executed); existing React `act` and
+  chart-size warnings remain non-failing.
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Commit: `627265b47`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
