@@ -203,14 +203,16 @@ Constraints:
 
 Date: 2026-11-17
 
-Latest committed slice: `c99ae1bec` (party navigation semantics).
+Latest committed slice before the current slice: `3f8cf72e3` (shared Close
+control form safety). The validation history below records the intervening slices.
 
-Current slice: client-page navigation semantics and component/router regression
-coverage; validation is recorded below. This slice is committed with its tests.
+Current slice: contributor email action naming and form safety; validation is
+recorded below. Tests and implementation are committed together after the gate.
 
-Next slice: contributor email action naming and form safety,
-following shared Close control form safety. Remaining shell/status, motion, and
-performance work stays open. CSP enforcement is deferred to its follow-up card.
+Next investigation: loading/error announcement contracts at the client shell,
+then image/motion behavior and measured performance work. The card remains open.
+CSP enforcement is deferred to its follow-up card. Agent-context testing guidance
+is deferred until this card is finished, per the user's explicit sequencing.
 
 Blockers: none identified for the next accessibility investigation.
 
@@ -584,6 +586,28 @@ Shared Close control form safety (2026-11-17):
 - Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 72 executed).
   `git diff --check` passed. Test and production reviews confirmed the control
   retains its dismissal contract and no longer performs an implicit form action.
+
+Contributor email action naming and form safety (2026-11-17):
+
+- Previous slice commit: `3f8cf72e3`.
+- Contributor email action buttons now identify their action and visible player
+  name instead of exposing UUIDs as labels. Explicit type=button prevents an
+  incidental enclosing-form submission. The canonical save command is unchanged.
+- Strengthened the existing ContributorMenu component/router test rather than
+  adding E2E coverage. It first failed to find the meaningful action name; after
+  that fix it reproduced one unwanted submission. The final focused
+  `:client:components:jsTest --no-daemon` passed (118 tests), including the exact
+  expected SavePlayerCommand and zero submissions from the same activation.
+- Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 81 executed).
+  `git diff --check` passed. Test review preserved the original command assertion;
+  production review confirmed identity still uses player IDs and only accessible
+  naming/button behavior changed.
+- Seven-slice batch review: notification form safety and native modality, shared
+  focus, clipboard-control access, settings keyboard navigation, Close form safety,
+  and contributor actions each have focused failure/green evidence and a passing
+  full gate before commit. No new E2E scenarios were needed. Shell announcements,
+  image/motion behavior, and performance measurement remain open; the agent-context
+  guidance review stays deferred until the card is completed.
 
 ## Deferred Agent-Context Review
 

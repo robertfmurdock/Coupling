@@ -15,13 +15,13 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
 import kotools.types.text.toNotBlankString
 import react.ReactNode
 import react.create
+import react.dom.html.ReactHTML.form
 import react.router.RouterProvider
 import react.router.createMemoryRouter
 import kotlin.test.Test
@@ -101,24 +101,33 @@ class ContributorMenuTest {
     }
 
     @Test
-    fun whenContributorIsNotPlayerAddEmailToExistingPlayerWillWork() = asyncSetup(object {
+    fun namedAddEmailActionUpdatesPlayerWithoutSubmittingEnclosingForm() = asyncSetup(object {
         val contributor = stubPlayer()
         val targetPlayer = stubPlayer()
         val partyId = stubPartyId()
         val players = (stubPlayers(2) + targetPlayer).shuffled()
         val stubDispatcher = StubDispatcher()
         val user = UserEvent.setup()
+        var submissions = 0
     }) {
-        render(TestRouter.create { ContributorMenu(contributor, players, partyId, stubDispatcher.func()) })
+        render(
+            form.create {
+                onSubmit = {
+                    it.preventDefault()
+                    submissions += 1
+                }
+                TestRouter { ContributorMenu(contributor, players, partyId, stubDispatcher.func()) }
+            },
+        )
     } exercise {
-        val addEmailToExistingPlayerSection = screen.findByText("Add Email to Existing Player").parentElement
         user.click(
-            within(addEmailToExistingPlayerSection).findByRole(
+            screen.findByRole(
                 "button",
-                RoleOptions(name = targetPlayer.id.value.toString()),
+                RoleOptions(name = "Add email to ${targetPlayer.name}"),
             ),
         )
     } verify {
+        submissions.assertIsEqualTo(0)
         stubDispatcher.receivedActions
             .assertIsEqualTo(
                 listOf(

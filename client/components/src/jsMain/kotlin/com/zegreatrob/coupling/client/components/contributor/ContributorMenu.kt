@@ -19,7 +19,9 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.hr
 import react.router.useNavigate
+import web.html.ButtonType
 import web.html.HTMLButtonElement
+import web.html.button
 
 external interface ContributorMenuProps : Props {
     var contributor: Player
@@ -69,8 +71,9 @@ val ContributorMenu by nfc<ContributorMenuProps> { props ->
                 div {
                     players.forEach { player ->
                         button {
+                            type = ButtonType.button
                             key = Key(player.id.value.toString())
-                            ariaLabel = player.id.value.toString()
+                            ariaLabel = "Add email to ${player.name}"
                             onClick = addEmailToExistingPlayer(player)
                             PlayerCard(player, size = 20)
                         }
