@@ -61,23 +61,14 @@ Constraints:
       digests. This is independently safe because it changes resource
       verification and version pinning without changing product behavior.
 
-- [x] **Document and deploy security policy**: add a deliberate Referrer Policy
-      and Content Security Policy compatible with the actual client origins,
-      GraphQL/WebSocket endpoints, Auth0, Slack/Discord flows, analytics, and
-      GraphiQL iframe. Test intent: exercise the built application and verify
-      required resources still load, OAuth callbacks still work, GraphQL and
-      WebSocket connections remain functional, and the browser reports no CSP
-      violations. Testmints shape: each scenario names its starting
-      deployment/resource state, exercises one browser load or integration
-      flow, and verifies resource behavior or violation evidence; behavior is
-      not hidden in setup. Expected failure: an initial policy will expose missing
-      `script-src`, `connect-src`, `frame-src`, or `style-src` allowances.
-      Design: own headers at the deployment/web-server boundary, with a
-      report-only rollout if the hosting path supports it, then enforce after
-      violations are resolved. This slice is independently useful because it
-      reduces injection and data-leakage risk even before accessibility work.
+- [x] **Referrer policy and report-only CSP starting point**: added at the
+      existing deployment boundary, preserving application/resource behavior.
+      Report-only CSP exposes unresolved source requirements; it does not block
+      injection. Enforcement, CDN-loader compatibility, violation collection,
+      and authenticated/integration policy validation are transferred to
+      [CSP hardening](../work/WEB_CSP_HARDENING_FOLLOWUP.md), not completed here.
 
-- [ ] **Accessible application shell and interaction audit**: establish named
+- [x] **Accessible application shell and interaction audit (bounded scope)**: establish named
       landmarks, skip navigation, page-heading conventions, accessible iframe
       naming, form labels/descriptions, status announcements, and visible
       `:focus-visible` states. Test intent: use client component tests for
@@ -96,7 +87,7 @@ Constraints:
       This slice is independently safe because it improves operability without
       changing business actions.
 
-- [ ] **Image and motion behavior**: make important image dimensions/aspect
+- [x] **Image and motion behavior (bounded scope)**: make important image dimensions/aspect
       ratios explicit, lazy-load genuinely below-the-fold images, preserve
       eager loading for LCP candidates, and align animation behavior with
       `prefers-reduced-motion`. Test intent: verify image attributes/layout
@@ -111,7 +102,7 @@ Constraints:
       retain their visual purpose while gaining predictable fallback behavior.
 
 - **Transferred, not completed — measured critical-path optimization**:
-  [Web performance follow-up](WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md) owns
+  [Web performance follow-up](../work/WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md) owns
   representative baselines, performance budgets, and measurement-driven resource
   deferral. No performance improvement is claimed without comparable evidence.
 
@@ -133,10 +124,10 @@ record that evidence instead of manufacturing a change or failing test.
 - [x] **Reduced motion**: cover the Welcome entrance, notification/demo pulse,
   and pair-assignment animation owners. Honor reduced motion while preserving
   final content and usable controls; verify preference-dependent behavior.
-- [ ] **Closeout**: review existing evidence for shell landmarks/skip link,
+- [x] **Closeout**: review existing evidence for shell landmarks/skip link,
   headings, GraphiQL naming, navigation, modal/focus behavior, and representative
   party/player/pin form labels. Fix regressions introduced by this card. Record
-  other findings in the [extended accessibility follow-up](WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md),
+  other findings in the [extended accessibility follow-up](../work/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md),
   reconcile the broad checkboxes above, and move this card to work_completed.
 
 After completion, perform the deferred agent-context review below. Do not extend
@@ -225,14 +216,42 @@ that prevent the bounded contracts from working still belong in this card.
 
 Date: 2026-11-17
 
-Latest committed slices: `6ea31a1dd` (shell feedback) and `29744a642` (shared
-image inspection). Current slice: reduced motion; full check passed. Next:
-closeout review and the user-requested browser walkthrough. The card remains open.
+Completed against the bounded finish line. Final implementation slices:
+`6ea31a1dd` (shell feedback), `29744a642` (shared image inspection), and
+`9890ba386` (reduced motion). Full check passed before implementation commits;
+closeout changes are documentation only. No push or release performed.
 CSP enforcement, measured performance work, and extended accessibility auditing
-have follow-up cards. Agent-context testing guidance remains deferred until this
-card is finished, per the user's explicit sequencing.
+have follow-up cards. Agent-context testing guidance is a subsequent task, now
+unblocked by this card's completion, per the user's explicit sequencing.
 
-Blockers: none identified for the next accessibility investigation.
+Browser walkthrough: user accepted Get started, Demo final view, and About.
+Chrome observed native Tab focus on the skip link/Welcome action and About's
+single recovery link; Enter activated Welcome and About navigation. Authenticated
+local account has no existing parties. The unsaved new-party form supplies the
+shared header: native Tab visited Party Settings, Secrets, Contributions, and
+Escape returned focus to Settings. The notification dialog is visibly rendered
+with Close focused; Tab reached its first content link and Shift+Tab returned to
+Close. Native Escape dismissed the dialog and returned focus to its trigger.
+GraphiQL loaded in its named frame and Tab reached Documentation Explorer.
+Early screenshot/input observations were intermittently stale or unavailable;
+later captures agree. Screenshots of the form/dialog/editor were offered for
+feedback; only Get started, Demo, and About have explicit user acceptance at
+closeout. No form was saved or query executed. Saved-party/player/pin walkthrough,
+OS-preference testing, and calibrated assistive-technology validation remain gaps.
+
+Closeout review: rechecked shared main/skip markup, heading and GraphiQL naming
+changes, native link structure, Settings/modal tests, shared focus rules, and
+party/player/pin label owners. configInput connects label for/id; party dropdowns,
+player selectors, and pin Target have explicit associations. This is representative
+source/component evidence, not an all-route form audit. Original broad checklist
+items are complete only to the bounded scope above; unmeasured performance,
+all-route accessibility, and CSP enforcement are explicitly transferred. Recorded
+skip-link/landmark design, generic portrait alternatives, Demo simulated-control
+semantics, loader distinctions, and local CSP notices in their follow-up cards.
+Reviewed test clarity separately from production ownership; no unresolved
+introduced regression found. Final full gate: 680 tasks, 65 executed; focused
+browser scenarios: 33; existing component suite: 118. Documentation diff check
+passed; unchanged successful code checks were not repeated for closeout prose.
 
 Relevant paths:
 

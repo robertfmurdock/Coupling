@@ -63,3 +63,8 @@ before playing the card.
 - The client uses generated CDN import metadata, inline HTML/template scripts,
   Auth0, analytics, GraphQL, WebSockets, and a GraphiQL `srcDoc`.
 - No violation reporting endpoint is currently configured.
+- Manual local Chrome review (2026-11-17) observed report-only notices for
+  scripts, styles, fonts, connections, and the manifest hosted at static.localhost.
+  The manifest also reports a cross-origin start_url warning. These are local
+  observations, not a production-origin allowlist or evidence of enforcement;
+  capture exact sanitized origins and required behavior before changing policy.

@@ -4,7 +4,7 @@
 
 Establish comparable browser performance evidence for Coupling's main entry
 flows, then implement only optimizations supported by that evidence. Transferred
-from [web remediation](WEB_BEST_PRACTICES_REVIEW_REMEDIATION.md); that card has not
+from [web remediation](../work_completed/WEB_BEST_PRACTICES_REVIEW_REMEDIATION.md); that card has not
 established a performance baseline or claimed measured improvements.
 
 Lightweight draft: refine route selection, measurement conditions, and acceptance
