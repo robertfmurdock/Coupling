@@ -315,6 +315,19 @@ Accessibility progress — welcome page heading (2026-11-17):
   the document outline without changing its visual behavior.
 - Commit: `aacbc8013`.
 
+Accessibility progress — welcome chooser heading (2026-11-17):
+
+- Added a native `<h2>` naming the login chooser’s two continuation actions,
+  without changing the existing login or demo controls.
+- Focused validation: `fish -lc './gradlew :client:components:jsTest
+  --no-daemon'` passed (`208` tasks, `26` executed).
+- Full validation: `fish -lc './gradlew check --no-daemon'` passed outside the
+  sandbox (`680` tasks, including browser/E2E tasks).
+- Review outcome: the chooser now has a semantic section name; focus-return
+  behavior remains deferred because the current interaction replaces the
+  trigger and exposes no close action or return target.
+- Commit: `f74ca0d86`.
+
 For each completed slice, record the focused command/result, full
 `./gradlew check` result, review outcome, and commit ID here. At completion,
 review the entire sequence against the goal and move this card to
