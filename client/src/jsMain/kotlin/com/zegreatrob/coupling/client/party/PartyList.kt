@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.components.CouplingLink
 import com.zegreatrob.coupling.client.components.DemoButton
 import com.zegreatrob.coupling.client.components.GqlButton
 import com.zegreatrob.coupling.client.components.LogoutButton
-import com.zegreatrob.coupling.client.components.NotificationButton
 import com.zegreatrob.coupling.client.components.green
 import com.zegreatrob.coupling.client.components.party.CouplingLogo
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
@@ -28,8 +27,8 @@ val PartyList by nfc<PartyListProps> { (parties) ->
     PartyListFrame {
         GeneralControlBar {
             title = "Party List"
+            showNotifications = true
             splashComponent = Fragment.create { CouplingLogo(width = 72.0, height = 48.0) }
-            NotificationButton()
             AboutButton()
             DemoButton()
             LogoutButton()

@@ -10,7 +10,7 @@ positive tabindex values in leaf controls. No saved party data changes.
 - [x] Restore notification trigger scale/border and news-first modal with shared
       CloseButton; component presentation regression checks plus existing modal
       interaction tests. Independently restores familiar presentation.
-- [ ] Put party navigation before utilities in ConfigHeader and Spin before Copy
+- [x] Put party navigation before utilities in ConfigHeader and Spin before Copy
       through the owning pairing composition. Assembled component keyboard tests
       should fail on current order. Preserve all controls and screenshot boundary.
 - [ ] Remove ineffective shell skip link, which targets a main wrapping the entire
@@ -35,4 +35,15 @@ inherited 32px; redundant heading before supplied heading). Component suite gree
 (35 tests), full `fish -lc './gradlew check --no-daemon'` green. Reviewed tests for
 observable rendering and production for preserved native modal behavior; diff
 whitespace check clean. Also compared original/current party-page seen and unseen
-icons before production edits. Revised visual walkthrough pending.
+icons before production edits. Revised party-page icon and news-first dialog visually checked in Chrome.
+
+Slice 2: component keyboard contracts failed on original party-header and Spin/Copy
+order, then passed with DOM ordering owned by ConfigHeader, GeneralControlBar,
+and PairSection. No positive tabindex. Full check caught a narrow-window click
+interception by the info button; intrinsic header minimum width fixed it. Final
+full check green (680 tasks; 61 E2E tests, zero failures). Reviewed tests separately
+for observable focus order and production for composition ownership, unchanged
+copy-image boundary, and optional notification use on shared headers. Diff check
+clean. Chrome visually confirmed full-size party info icon and Spin beside Copy.
+Native keyboard review was incomplete: automation returned delayed focus states;
+component simulated-Tab evidence must not be described as native-key evidence.

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.party
 
+import com.zegreatrob.coupling.client.components.NotificationButton
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -12,6 +13,7 @@ import web.cssom.AlignItems
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.Margin
+import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.number
@@ -20,6 +22,7 @@ import web.cssom.px
 external interface GeneralControlBarProps : PropsWithChildren {
     var title: String
     var splashComponent: ReactNode
+    var showNotifications: Boolean?
 }
 
 @ReactFunc
@@ -37,6 +40,7 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
             }
             h1 {
                 css {
+                    position = Position.relative
                     flexGrow = number(2.0)
                     display = Display.inlineBlock
                 }
@@ -79,6 +83,16 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                     span {
                         css { margin = Margin(0.px, 20.px) }
                         +props.children
+                    }
+                }
+                if (props.showNotifications == true) {
+                    span {
+                        css {
+                            position = Position.absolute
+                            right = (-60).px
+                            bottom = 0.px
+                        }
+                        NotificationButton()
                     }
                 }
             }

@@ -55,9 +55,10 @@ val PairAssignments by nfc<PairAssignmentsProps> { props ->
             className = pairAssignmentsClassName
             div {
                 PartyBrowser(party, boost)
-                PairSection(party, players, pairAssignments, allowSave, setPairs, controls)
+                PairSection(party, players, pairAssignments, allowSave, setPairs, controls) {
+                    ControlPanel(party)
+                }
             }
-            ControlPanel(party)
             PlayerRoster(label = "Unpaired players", partyId = party.id, players = notPairedPlayers)
             ServerMessage(message, key = Key("${message.text} ${message.players.size}"))
         }

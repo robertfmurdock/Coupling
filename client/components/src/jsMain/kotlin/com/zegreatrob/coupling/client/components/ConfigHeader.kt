@@ -13,19 +13,19 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.span
 import web.cssom.AlignItems
-import web.cssom.AlignSelf
-import web.cssom.Auto
 import web.cssom.Display
 import web.cssom.FlexDirection
-import web.cssom.FlexWrap
-import web.cssom.Margin
+import web.cssom.FontWeight
+import web.cssom.Globals
+import web.cssom.Length
+import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.TextDecoration
 import web.cssom.VerticalAlign
 import web.cssom.WhiteSpace
+import web.cssom.em
 import web.cssom.fr
 import web.cssom.integer
-import web.cssom.number
 import web.cssom.px
 import web.cssom.repeat
 
@@ -71,53 +71,57 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
 }
 
 private fun ChildrenBuilder.partyHeader(props: ConfigHeaderProps, party: PartyDetails) {
-    h1 {
+    div {
         css {
-            display = Display.block
-            flexDirection = FlexDirection.column
-            alignItems = AlignItems.center
+            position = Position.relative
+            minWidth = Length.maxContent
+            display = Display.grid
+            gridTemplateColumns = repeat(2, 1.fr)
+            alignItems = AlignItems.start
+            marginTop = 21.px
+            marginBottom = 21.px
             marginLeft = 15.px
             marginRight = 20.px
-            textDecoration = TextDecoration.underline
-            flexGrow = number(2.0)
+            fontSize = 2.em
+            fontWeight = FontWeight.bold
             "*" { verticalAlign = VerticalAlign.middle }
         }
-        NotificationButton()
-        div {
+        h1 {
             css {
-                display = Display.flex
-                flexWrap = FlexWrap.wrap
+                gridColumn = integer(1)
+                gridRow = integer(1)
+                fontSize = Globals.inherit
+                margin = 0.px
+                textDecoration = TextDecoration.underline
             }
-            span {
-                css { flexGrow = number(2.0) }
-                +props.children
-            }
-            span {
-                css {
-                    flexGrow = number(1.0)
-                    flexDirection = FlexDirection.rowReverse
-                    display = Display.flex
-                }
-                span {
-                    css {
-                        display = Display.inlineBlock
-                        margin = Margin(Auto.auto, 20.px)
-                        alignItems = AlignItems.baseline
-                        alignSelf = AlignSelf.stretch
-                    }
-                    PartySelectButton()
-                    LogoutButton()
-                    GqlButton()
-                }
-            }
+            +props.children
         }
         div {
             css {
-                display = Display.inlineFlex
-                flexGrow = number(1.0)
-                alignItems = AlignItems.baseline
+                gridColumnStart = integer(1)
+                gridColumnEnd = integer(3)
+                gridRow = integer(2)
             }
             PartyNavigation(party)
+        }
+        div {
+            css {
+                gridColumn = integer(2)
+                gridRow = integer(1)
+                textAlign = TextAlign.right
+                marginRight = 20.px
+            }
+            PartySelectButton()
+            LogoutButton()
+            GqlButton()
+        }
+        span {
+            css {
+                position = Position.absolute
+                right = (-60).px
+                top = 0.px
+            }
+            NotificationButton()
         }
     }
 }

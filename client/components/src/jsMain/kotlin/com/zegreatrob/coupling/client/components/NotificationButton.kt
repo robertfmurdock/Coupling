@@ -14,7 +14,6 @@ import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.dialog
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
-import react.dom.html.ReactHTML.span
 import react.useRef
 import react.useState
 import web.cssom.AlignItems
@@ -31,12 +30,10 @@ import web.cssom.NamedColor
 import web.cssom.None
 import web.cssom.Overflow
 import web.cssom.OverscrollBehavior
-import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.ident
 import web.cssom.number
-import web.cssom.pct
 import web.cssom.px
 import web.cssom.rgb
 import web.cssom.s
@@ -65,21 +62,7 @@ val NotificationButton by nfc<Props> {
         saveNotificationLog(loadNotificationLog() + recentInfoMd.dateLineFromRecentInfo())
         setSeenNotification(true)
     }
-    span {
-        css {
-            position = Position.relative
-            left = 100.pct
-        }
-        span {
-            css {
-                float = Float.left
-                position = Position.absolute
-                top = (-5).px
-                right = (-80).px
-            }
-            +notificationButton(seenNotification, animationsDisabled) { dialogRef.current?.showModal() }
-        }
-    }
+    +notificationButton(seenNotification, animationsDisabled) { dialogRef.current?.showModal() }
     +createPortal(
         dialog.create {
             ref = dialogRef

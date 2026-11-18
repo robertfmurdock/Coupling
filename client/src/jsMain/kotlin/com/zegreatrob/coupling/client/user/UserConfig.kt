@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.GqlButton
 import com.zegreatrob.coupling.client.components.LogoutButton
-import com.zegreatrob.coupling.client.components.NotificationButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.components.party.PartyCard
@@ -60,7 +59,7 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
     ) {
         GeneralControlBar {
             title = "User Config"
-            NotificationButton()
+            showNotifications = true
             AboutButton()
             DemoButton()
             LogoutButton()

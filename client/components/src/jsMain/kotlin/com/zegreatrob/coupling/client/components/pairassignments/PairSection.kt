@@ -22,14 +22,16 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import org.w3c.dom.DataTransfer
 import react.ChildrenBuilder
-import react.Props
+import react.PropsWithChildren
 import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.useRef
+import web.cssom.AlignItems
 import web.cssom.ClassName
 import web.cssom.Display
-import web.cssom.Float
+import web.cssom.JustifyContent
+import web.cssom.Position
 import web.cssom.VerticalAlign
 import web.cssom.px
 import web.html.HTMLElement
@@ -37,7 +39,7 @@ import web.html.toBlob
 import kotlin.js.Json
 import kotlin.js.json
 
-external interface PairSectionProps : Props {
+external interface PairSectionProps : PropsWithChildren {
     var party: PartyDetails
     var players: List<Player>
     var pairAssignments: PairingSet?
@@ -47,11 +49,15 @@ external interface PairSectionProps : Props {
 }
 
 @ReactFunc
-val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, setPairs, controls) ->
+val PairSection by nfc<PairSectionProps> { props ->
+    val (party, players, pairs, allowSave, setPairs, controls) = props
     val pairSectionNode = useRef<HTMLElement>(null)
 
     div {
-        css { verticalAlign = VerticalAlign.top }
+        css {
+            verticalAlign = VerticalAlign.top
+            position = Position.relative
+        }
         div {
             ref = pairSectionNode
             css { display = Display.inlineBlock }
@@ -59,10 +65,21 @@ val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, se
         }
         div {
             css {
-                float = Float.right
+                display = Display.flex
+                justifyContent = JustifyContent.center
+                alignItems = AlignItems.center
+                gap = 10.px
+            }
+            +props.children
+            copyToClipboardButton(pairSectionNode)
+        }
+        div {
+            css {
+                position = Position.absolute
+                right = 0.px
+                top = 0.px
                 width = 0.px
             }
-            div { copyToClipboardButton(pairSectionNode) }
             TinyPlayerList(party, players)
         }
     }
