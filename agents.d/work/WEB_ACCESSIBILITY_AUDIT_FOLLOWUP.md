@@ -144,3 +144,24 @@ Manual matrix still to execute: Chrome keyboard at normal and 200% zoom, narrow
 viewport reflow, forced colors where supported, and Safari with VoiceOver using
 standard bindings. Screen-reader calibration and fixture coverage must be recorded
 before completing the broad audit. No screen-reader certification is claimed.
+
+## Continued Play: Player Badge Names
+
+2026-11-18, following layout correction f38844854. Player Configuration's badge
+options displayed party-configured names but exposed fixed accessible names
+"Default Badge Option" and "Alt Badge Option". A component regression with
+"Navigator" and "Driver" reproduced the mismatch. The native options now contain
+the configured names as text, retaining their Default/Alternate values, ordering,
+and appearance. Existing E2E selection/save coverage uses those visible names.
+
+Removing only the ARIA overrides left the names solely in option `label`
+attributes, which this Testing Library version reports as empty accessible names.
+Using native option text avoids both the mismatched override and that test-library
+limitation. This does not establish a calibrated screen-reader result.
+
+Focused `:client:jsBrowserTest` passed (46 tests); formatting passed. Full
+`fish -lc './gradlew check --no-daemon'` passed (680 tasks; 61 E2E tests, zero
+failures). Test review confirmed custom names map to the original values and
+existing selection/save scenarios remain covered. Production review confirmed
+unchanged styles, placement, values, and handlers. Diff check clean. Recorded in
+this badge-name slice commit; remaining inventory and manual matrix stay open.

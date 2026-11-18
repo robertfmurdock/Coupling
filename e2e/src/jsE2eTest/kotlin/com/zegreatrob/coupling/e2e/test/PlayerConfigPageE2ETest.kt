@@ -189,9 +189,9 @@ class PlayerConfigPageE2ETest {
         } exercise {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
-            PlayerConfigPage.defaultBadgeOption().isPresent()
+            PlayerConfigPage.badgeOption(party.defaultBadgeName).isPresent()
                 .assertIsEqualTo(false)
-            PlayerConfigPage.altBadgeOption().isPresent()
+            PlayerConfigPage.badgeOption(party.alternateBadgeName).isPresent()
                 .assertIsEqualTo(false)
         }
     }
@@ -252,10 +252,10 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
             WebdriverElement("option[value=\"Default\"]")
-                .attribute("label")
+                .text()
                 .assertIsEqualTo("Badge 1")
             WebdriverElement("option[value=\"Alternate\"]")
-                .attribute("label")
+                .text()
                 .assertIsEqualTo("Badge 2")
         }
 
@@ -267,7 +267,7 @@ class PlayerConfigPageE2ETest {
         ) exercise {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
-            PlayerConfigPage.defaultBadgeOption().isSelected()
+            PlayerConfigPage.badgeOption(party.defaultBadgeName).isSelected()
                 .assertIsEqualTo(true)
         }
 
@@ -279,12 +279,12 @@ class PlayerConfigPageE2ETest {
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            PlayerConfigPage.altBadgeOption().click()
+            PlayerConfigPage.badgeOption(party.alternateBadgeName).click()
             saveButton().click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
             PlayerConfigPage.goTo(party.id, player.id)
-            PlayerConfigPage.altBadgeOption().isSelected()
+            PlayerConfigPage.badgeOption(party.alternateBadgeName).isSelected()
                 .assertIsEqualTo(true)
         }
     }

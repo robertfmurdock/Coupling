@@ -287,16 +287,14 @@ private fun ChildrenBuilder.altBadgeOption(party: PartyDetails) = option {
     id = ElementId("alt-badge-option")
     key = Key(Badge.Alternate.name)
     value = Badge.Alternate.name
-    label = party.alternateBadgeName
-    ariaLabel = "Alt Badge Option"
+    +party.alternateBadgeName
 }
 
 private fun ChildrenBuilder.defaultBadgeOption(party: PartyDetails) = option {
     id = ElementId("default-badge-option")
     key = Key(Badge.Default.name)
     value = Badge.Default.name
-    label = party.defaultBadgeName
-    ariaLabel = "Default Badge Option"
+    +party.defaultBadgeName
 }
 
 private fun ChildrenBuilder.avatarTypeConfig(
