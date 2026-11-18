@@ -13,11 +13,13 @@ import web.html.button
 
 external interface CloseButtonProps : Props {
     var onClose: () -> Unit
+    var autoFocus: Boolean?
 }
 
 val CloseButton = FC<CloseButtonProps> { props ->
     ReactHTML.button {
         type = ButtonType.button
+        autoFocus = props.autoFocus
         css {
             color = Globals.inherit
             border = None.none

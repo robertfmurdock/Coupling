@@ -13,10 +13,8 @@ import react.dom.createPortal
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.dialog
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
-import react.useId
 import react.useRef
 import react.useState
 import web.cssom.AlignItems
@@ -26,9 +24,11 @@ import web.cssom.ClassName
 import web.cssom.Display
 import web.cssom.Float
 import web.cssom.FontWeight
+import web.cssom.Globals
 import web.cssom.JustifyContent
 import web.cssom.LineStyle
 import web.cssom.NamedColor
+import web.cssom.None
 import web.cssom.Overflow
 import web.cssom.OverscrollBehavior
 import web.cssom.Position
@@ -42,7 +42,6 @@ import web.cssom.rgb
 import web.cssom.s
 import web.cssom.vh
 import web.cssom.vw
-import web.dom.ElementId
 import web.dom.document
 import web.html.ButtonType
 import web.html.HTMLDialogElement
@@ -58,7 +57,6 @@ private fun loadNotificationLog() = localStorage.getItem("notification-log")?.le
 val NotificationButton by nfc<Props> {
     val animationsDisabled = useAnimationsDisabled()
     val dialogRef = useRef<HTMLDialogElement>(null)
-    val titleId = useId()
     val recentInfoMd = MarkdownContent.content.recentInfoMd
     val (seenNotification, setSeenNotification) = useState {
         loadNotificationLog().contains(recentInfoMd.dateLineFromRecentInfo())
@@ -85,7 +83,7 @@ val NotificationButton by nfc<Props> {
     +createPortal(
         dialog.create {
             ref = dialogRef
-            ariaLabelledBy = titleId
+            ariaLabel = "Recent information"
             onClose = { onPopupClose() }
             var pressedOutside = false
             onPointerDown = { event ->
@@ -103,6 +101,7 @@ val NotificationButton by nfc<Props> {
             css {
                 borderRadius = 30.px
                 border = Border(1.px, LineStyle.solid, NamedColor.black)
+                padding = 5.px
                 width = 50.vw
                 maxWidth = 90.vw
                 maxHeight = 80.vh
@@ -114,7 +113,7 @@ val NotificationButton by nfc<Props> {
                     overscrollBehavior = OverscrollBehavior.contain
                 }
             }
-            recentInformationContent(titleId, recentInfoMd, dialogRef)
+            recentInformationContent(recentInfoMd, dialogRef)
         },
         document.body!!,
     )
@@ -124,7 +123,7 @@ private fun String.dateLineFromRecentInfo() = substring(indexOf("##"))
     .let { it.substring(0, it.indexOf("\n")) }
     .trim()
 
-private fun ChildrenBuilder.recentInformationContent(titleId: ElementId, recentInfoMd: String, dialogRef: RefObject<HTMLDialogElement>) {
+private fun ChildrenBuilder.recentInformationContent(recentInfoMd: String, dialogRef: RefObject<HTMLDialogElement>) {
     div {
         css {
             fontSize = 14.px
@@ -138,15 +137,20 @@ private fun ChildrenBuilder.recentInformationContent(titleId: ElementId, recentI
             marginRight = 15.px
             marginBottom = 15.px
         }
-        h2 {
-            id = titleId
-            +"Recent information"
-        }
-        button {
-            type = ButtonType.button
-            autoFocus = true
-            onClick = { dialogRef.current?.close() }
-            +"Close"
+        div {
+            css {
+                float = Float.right
+                marginTop = 15.px
+                "button" {
+                    fontSize = 24.px
+                    minWidth = 28.px
+                    minHeight = 28.px
+                }
+            }
+            CloseButton {
+                autoFocus = true
+                onClose = { dialogRef.current?.close() }
+            }
         }
         div { dangerouslySetInnerHTML = DangerouslySetInnerHTML.invoke(HtmlSource(parse(recentInfoMd))) }
     }
@@ -157,6 +161,9 @@ private fun notificationButton(seenNotification: Boolean, animationsDisabled: Bo
     ariaLabel = "Recent information"
     onClick = { onOpen() }
     css {
+        font = Globals.inherit
+        padding = 0.px
+        border = None.none
         val buttonSize = if (seenNotification) 50.px else 75.px
         backgroundColor = if (seenNotification) NamedColor.darkcyan else NamedColor.crimson
         if (!seenNotification && !animationsDisabled) {

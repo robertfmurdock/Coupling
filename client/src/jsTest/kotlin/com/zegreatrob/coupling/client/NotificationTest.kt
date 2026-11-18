@@ -7,12 +7,14 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import kotlinx.browser.document
 import kotlinx.browser.localStorage
+import kotlinx.browser.window
 import kotlinx.coroutines.await
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.events.MouseEventInit
 import react.create
 import react.dom.html.ReactHTML.form
+import react.dom.html.ReactHTML.h1
 import web.html.HTMLDialogElement
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -35,6 +37,28 @@ class NotificationTest {
         MarkdownContent.content = originalContent
         originalLog?.let { localStorage.setItem("notification-log", it) }
             ?: localStorage.removeItem("notification-log")
+    }
+
+    @Test
+    fun notificationTriggerKeepsHeadingScaleWithoutNativeButtonBorder() = asyncSetup {
+        render(h1.create { NotificationButton() })
+    } exercise {
+        window.getComputedStyle(screen.getByRole("button", RoleOptions(name = "Recent information")))
+    } verify { style ->
+        style.fontSize.assertIsEqualTo(window.getComputedStyle(screen.getByRole("heading", RoleOptions())).fontSize)
+        style.borderTopWidth.assertIsEqualTo("0px")
+    }
+
+    @Test
+    fun recentInformationStartsWithSuppliedNewsHeading() = asyncSetup(object {
+        val actor = userEvent.setup()
+    }) {
+        render(NotificationButton.create())
+    } exercise {
+        actor.click(screen.getByRole("button", RoleOptions(name = "Recent information"))).await()
+    } verify {
+        screen.getByRole("dialog", RoleOptions(name = "Recent information"))
+            .querySelector("h1, h2, h3")?.textContent.assertIsEqualTo("Recent changes")
     }
 
     @Test
