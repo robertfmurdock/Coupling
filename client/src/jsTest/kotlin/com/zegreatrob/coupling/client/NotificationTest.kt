@@ -99,6 +99,44 @@ class NotificationTest {
     }
 
     @Test
+    fun narrowRecentInformationWrapsLongTextWithoutHorizontalScrolling() = asyncSetup(object {
+        val actor = userEvent.setup()
+    }) {
+        MarkdownContent.content = originalContent.copy(
+            recentInfoMd = "## Recent changes\n\nhttps://example.com/" + "long-link-segment".repeat(15),
+        )
+        render(NotificationButton.create())
+        actor.click(screen.getByRole("button", RoleOptions(name = "Recent information"))).await()
+    } exercise {
+        screen.getByRole("dialog", RoleOptions(name = "Recent information")).apply {
+            style.width = "180px"
+        }
+    } verify { dialog ->
+        (dialog.scrollWidth <= dialog.clientWidth).assertIsEqualTo(true)
+    }
+
+    @Test
+    fun shortRecentInformationCanScrollToTheEndOfALongPost() = asyncSetup(object {
+        val actor = userEvent.setup()
+    }) {
+        MarkdownContent.content = originalContent.copy(
+            recentInfoMd = "## Recent changes\n\n" + "A paragraph of release information.\n\n".repeat(30) + "End of post.",
+        )
+        render(NotificationButton.create())
+        actor.click(screen.getByRole("button", RoleOptions(name = "Recent information"))).await()
+        screen.getByRole("dialog", RoleOptions(name = "Recent information")).style.maxHeight = "180px"
+    } exercise {
+        screen.getByRole("dialog", RoleOptions(name = "Recent information")).apply {
+            scrollTop = scrollHeight.toDouble()
+        }
+    } verify { dialog ->
+        (dialog.scrollHeight > dialog.clientHeight).assertIsEqualTo(true)
+        (dialog.scrollTop > 0).assertIsEqualTo(true)
+        val lastParagraph = dialog.querySelector("p:last-child")!!.getBoundingClientRect()
+        (lastParagraph.bottom <= dialog.getBoundingClientRect().bottom).assertIsEqualTo(true)
+    }
+
+    @Test
     fun closingRecentInformationReturnsFocusAndMarksNotesSeen() = asyncSetup(object {
         val actor = userEvent.setup()
     }) {

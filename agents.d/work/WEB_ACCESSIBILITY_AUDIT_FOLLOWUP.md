@@ -213,3 +213,34 @@ is introduced by this consolidation. Formatting and focused components checks
 passed. Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 59 E2E
 scenarios, zero failures). Final review confirmed unchanged production and retained
 contract coverage; diff check clean. Recorded in this test-consolidation commit.
+
+## About Navigation and News Popup Feedback
+
+2026-11-18: user reported awkward About Back-link positioning, vertical news-popup
+clipping at some window sizes, and missing Close hover feedback. Comparison with
+10689abe8's parent confirmed the About link retained its old absolute-positioned
+wrapper. A Chrome geometry regression reproduced the lack of reserved space above
+the article. The wrapper is now a right-aligned normal-flow row, keeping the link
+above the article and preserving its destination and single focus stop.
+
+The shared Close button now has a pointer cursor and subtle rounded hover background
+without changing dimensions or dismissal behavior. Existing interaction checks
+remain in place; native visual review is separate from simulated user-event checks.
+
+The news dialog already has `max-height: 80vh` and `overflow-y: auto`. New real-Chrome
+geometry checks pass for scrolling to the end of a long post at a short height and
+for a long URL at narrow width; no overflow production change is claimed. Native
+Chrome at 150% zoom also reached the actual current post's final “– RoB” line via
+scrolling. User confirmed the reported clipping was vertical; browser/window/zoom
+details requested to reproduce that remaining case. Do not mark the report fixed
+based only on the passing Chrome cases.
+
+Focused Chrome checks and formatting passed. Full
+`fish -lc './gradlew check --no-daemon'` passed (690 tasks; 59 E2E tests, zero
+failures). Native Chrome review of the fresh local build confirmed the Back link
+above the article, the Close hover highlight, and Escape returning focus to the
+info trigger. Browser zoom restored to 100%. Test review distinguished the failing
+About geometry regression from already-passing overflow evidence; production
+review confirmed only the requested Back placement and shared Close styling changed.
+Diff check clean. Recorded in this UI-correction slice commit. Clipping reproduction
+remains open alongside the broader audit matrix.

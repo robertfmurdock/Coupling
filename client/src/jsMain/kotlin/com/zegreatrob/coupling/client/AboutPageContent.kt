@@ -18,8 +18,8 @@ import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import web.cssom.ClassName
 import web.cssom.Color
-import web.cssom.Float
-import web.cssom.Position
+import web.cssom.Display
+import web.cssom.JustifyContent
 import web.cssom.deg
 import web.cssom.em
 import web.cssom.px
@@ -42,16 +42,13 @@ val aboutPageContent by nfc<PropsWithChildren> { props ->
 
 private val backButtonSection by nfc<Props> {
     div {
-        css { position = Position.relative }
-        ReactHTML.span {
-            css {
-                float = Float.Companion.left
-                position = Position.absolute
-                right = (-15).px
-                top = 20.px
-            }
-            backButton()
+        css {
+            display = Display.flex
+            justifyContent = JustifyContent.flexEnd
+            marginRight = (-15).px
+            paddingTop = 20.px
         }
+        backButton()
     }
 }
 
