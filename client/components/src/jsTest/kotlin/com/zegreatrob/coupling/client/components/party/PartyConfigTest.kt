@@ -2,9 +2,11 @@ package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.client.components.DescribedRoleOptions
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.TestRouter
+import com.zegreatrob.coupling.client.components.accessibilityScreen
 import com.zegreatrob.coupling.client.components.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -13,6 +15,7 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
@@ -31,6 +34,28 @@ import react.router.createMemoryRouter
 import kotlin.test.Test
 
 class PartyConfigTest {
+
+    @Test
+    fun newPartyIdDescribesItsPermanentUrlEffect() = setup(object {
+        val expectedParty = PartyDetails(stubPartyId())
+    }) exercise {
+        render(RenderOptions(wrapper = TestRouter)) {
+            PartyConfigContent {
+                party = expectedParty
+                isNew = true
+                onChange = {}
+                onSave = {}
+            }
+        }
+    } verify {
+        accessibilityScreen.getByRole(
+            "textbox",
+            DescribedRoleOptions(
+                name = "Unique Id",
+                description = "This affects your party's URL. This is permanently assigned.",
+            ),
+        ).getAttribute("value").assertIsEqualTo(expectedParty.id.value.toString())
+    }
 
     @Test
     fun willDefaultPartyThatIsMissingData() = asyncSetup(object {

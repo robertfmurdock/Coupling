@@ -98,7 +98,10 @@ private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEven
         if (isNew) {
             li {
                 uniqueIdInput(party, onChange)
-                span { +"This affects your party's URL. This is permanently assigned." }
+                span {
+                    id = ElementId("party-id-hint")
+                    +"This affects your party's URL. This is permanently assigned."
+                }
             }
         }
         li {
@@ -228,6 +231,7 @@ private fun ChildrenBuilder.enableCallSignsInput(party: PartyDetails, onChange: 
 private fun ChildrenBuilder.uniqueIdInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Unique Id",
     id = "party-id",
+    describedBy = "party-id-hint",
     name = "id",
     value = party.id.value.toString(),
     type = InputType.text,

@@ -276,3 +276,29 @@ returned inconsistent AX/screenshot state, then `noWindowsAvailable`; browser-ho
 inventory also reported unavailable. Do not treat those attempts as visual evidence
 for this refinement. Automated Chrome geometry evidence passes. The previously
 reported browser/window-specific vertical clipping case remains unreproduced.
+
+
+## Continued Play: Permanent Party URL Warning
+
+2026-11-18: Party and Pin configuration source review found visible labels already
+associated with their controls, but adjacent help text generally unassociated.
+Selected the new-party Unique Id warning first because it explains a permanent
+URL consequence; ordinary explanatory copy is not automatically a description.
+This bounded slice reuses the shared configInput describedBy support to associate
+only the existing permanent-URL warning. Text, styles, order, value, and save
+behavior are unchanged. Other form hints remain review candidates, not verified
+assistive-technology defects.
+
+Added the scenario beside existing PartyConfig tests in components/jsdom: render
+PartyConfigContent for a new party, query Unique Id by its computed description,
+and verify the supplied ID value. The regression failed on the empty description,
+then passed with the association. Focused components tests (124 scenarios) and
+formatting passed. No Chrome or E2E scenario is added for this local description
+contract. Full validation and final review are recorded below before commit.
+
+Full `fish -lc './gradlew check --no-daemon'` passed (690 tasks). Test review
+confirmed the computed description and supplied value at the owning component;
+production review confirmed only the existing hint ID and describedBy association
+changed. `git diff --check` clean. This is computed-description evidence, not a
+calibrated spoken-announcement result. Recorded in this permanent-URL-warning
+slice commit; broad route/manual audit remains open. No push or release.
