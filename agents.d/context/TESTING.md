@@ -41,6 +41,34 @@ a test, though teams use some of them differently:
 Choose based on what must actually run and what the test needs to observe, rather
 than the label alone.
 
+### Choose the UI Suite Before Writing the Test
+
+In the delivery shot, name the behavior's owner, the runtime capabilities needed
+to observe it, and the existing suite chosen for the test. Inspect tests beside
+the owning component before adding a scenario to a convenient application/browser
+suite. Accessibility or React Router involvement alone does not require Chrome
+or E2E.
+
+- Start component-owned rendering and interaction contracts in
+  `client/components/src/jsTest` (`:client:components:jsTest`, Node with jsdom).
+  Accessible names/descriptions, labels, selected values, dispatched actions, and
+  memory-router navigation can be observed here without running the application
+  or services. Reuse its router/provider setup; keep application-owned contracts
+  with their owner rather than moving production code merely to fit this suite.
+- Use real-browser component tests (`:client:jsBrowserTest`) when the assertion
+  needs browser behavior that jsdom cannot faithfully provide: geometry/reflow,
+  computed visual styles, native dialog modality, or inert/focus enforcement.
+  Identify that dependency explicitly; a DOM query or simulated user-event Tab
+  sequence alone is not a reason to require a real browser.
+- Use E2E for assembled route/auth/service contracts, such as saving a selection
+  and loading it again. Keep rendering and input variations at the component
+  level instead of repeating full authenticated flows for each variation.
+
+When adding lower-level coverage, review nearby broader tests for overlap. Retain
+distinct integration evidence, but consolidate redundant checks once the same
+contract is meaningfully covered below. Check actual selection/state when that
+is the claim; option existence alone does not prove which option is selected.
+
 Search for existing module patterns and utilities with `rg --files` and reuse them
 when they improve clarity. Verify the feature, not source text, types, or plumbing:
 for example, test that a component renders a value rather than that a query contains
