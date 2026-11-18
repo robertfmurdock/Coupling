@@ -73,7 +73,6 @@ val Editor by nfc<PropsWithChildren> { props ->
                 asDynamic()["-moz-box-sizing"] = "border-box"
                 width = 100.pct
                 display = Display.block
-                outline = None.none
                 border = None.none
                 height = 25.px
                 lineHeight = 25.px

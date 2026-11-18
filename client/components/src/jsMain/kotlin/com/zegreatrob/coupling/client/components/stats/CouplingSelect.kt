@@ -36,7 +36,6 @@ val CouplingSelect = FC<CouplingSelectProps> { props ->
         ReactHTML.select {
             css {
                 display = Display.block
-                outline = None.none
                 border = None.none
                 fontSize = FontSize.larger
                 borderRadius = 0.41.em
@@ -95,7 +94,6 @@ val CouplingInput = FC<CouplingInputProps> { props ->
         ReactHTML.input {
             css {
                 display = Display.block
-                outline = None.none
                 border = None.none
                 fontSize = FontSize.larger
                 borderRadius = 0.41.em

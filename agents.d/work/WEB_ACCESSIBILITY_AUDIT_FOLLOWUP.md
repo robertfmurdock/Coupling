@@ -364,3 +364,29 @@ Focused Chrome checks and formatting passed. Full `fish -lc './gradlew check
 test review retained alongside/vertical overlap evidence. Manual fresh-build review
 remains pending while native Chrome returns inconsistent page/screenshot states.
 Recorded in this About-header-alignment slice commit; broader audit continues.
+
+
+## Continued Play: Shared Form Focus Visibility
+
+Reproduced three real-Chrome computed-style regressions: Editor text fields,
+CouplingSelect statistics filters, and CouplingInput secret fields receive focus
+but suppress its outline. Tests use the existing ControlFocusTest runtime because
+computed CSS visibility requires Chrome; user-event Tab is simulated input, not
+native-key evidence. Removed only three local outline:none declarations, allowing
+existing application focus styling/native indicators. No dimensions, colors of
+unfocused controls, placement, values or handlers changed. All three red assertions
+failed on the invisible outline, then passed. Focused Chrome tests and formatting
+passed. Full gate result follows below.
+
+Fresh native Chrome confirmed the About group centered at desktop width after
+709b2b30b. At 200% zoom the fixed 40em article causes horizontal scrolling; user
+authorized a shrink/wrap correction as the next slice. Zoom restored to 100%.
+Browser-host connector remains unavailable and native AX/screenshot updates are
+intermittent; record only individually observed results, not a passed full matrix.
+User agreed to perform the final Safari/VoiceOver checklist; prepare explicit
+calibration, fixtures, actions and expected results before handoff.
+
+Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks). Test review
+confirmed actual focus plus nontransparent, nonzero outlines; production review
+confirmed only the suppressing overrides were removed. Diff check clean. Recorded
+in this shared-form-focus slice commit. Broad audit remains open.
