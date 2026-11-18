@@ -41,12 +41,11 @@ by that card here merely to close it.
 
 ## Closeout Review Inputs
 
-- User feedback (2026-11-17): reconsider the shared skip link on sparse Welcome
-  screens, where there is no repeated navigation to skip. The user accepted the
-  Get started view and explicitly deferred this design question. Review the main
-  landmark boundary as well: the current template wraps the whole React mount,
-  including route-owned navigation. Keep this as a deliberate design review,
-  not a claim that the current link skips every navigation control.
+- The ineffective shell skip link was removed by WEB_KEYBOARD_UX_REFINEMENT:
+  its target wrapped the entire React mount, including navigation. The main
+  landmark remains. Consider a meaningful bypass only where repeated navigation
+  and a distinct content target make it useful; sparse Welcome screens need no
+  artificial extra focus stop.
 - DemoPageFrame marks the simulated application pointer-events:none while
   advertising that its controls do not work. Audit keyboard/assistive-technology
   treatment of those controls; pointer-event suppression alone is not inertness.

@@ -13,7 +13,7 @@ positive tabindex values in leaf controls. No saved party data changes.
 - [x] Put party navigation before utilities in ConfigHeader and Spin before Copy
       through the owning pairing composition. Assembled component keyboard tests
       should fail on current order. Preserve all controls and screenshot boundary.
-- [ ] Remove ineffective shell skip link, which targets a main wrapping the entire
+- [x] Remove ineffective shell skip link, which targets a main wrapping the entire
       application including navigation. Retain main landmark; reassess meaningful
       bypass navigation separately if future page structure needs it.
 
@@ -26,8 +26,10 @@ Keep native dialog and bounded scrolling, restore 5px outer padding, use shared
 close affordance beside news rather than adding another content heading.
 
 ## Current State
-2026-11-18: starting at c04b8bc8e, previously clean tree. No push/release authorized.
-Next: notification presentation regression tests.
+Completed 2026-11-18. Commits: b3e1901bb (notification presentation), ffafa026a
+(shared keyboard composition), and this closeout (shell link removal).
+No push/release performed. Extended screen-reader and route audit remains in the
+separate WEB_ACCESSIBILITY_AUDIT_FOLLOWUP card.
 
 ## Validation
 Slice 1: both presentation tests red on the intended assertions (13.33px vs
@@ -47,3 +49,18 @@ copy-image boundary, and optional notification use on shared headers. Diff check
 clean. Chrome visually confirmed full-size party info icon and Spin beside Copy.
 Native keyboard review was incomplete: automation returned delayed focus states;
 component simulated-Tab evidence must not be described as native-key evidence.
+
+Slice 3: mechanical removal of the ineffective link, unused target id/tabindex,
+and CSS; main landmark and global focus-visible rules retained. No invented red
+test for this deletion. Full check green (680 tasks; 61 E2E tests, zero failures).
+Reviewed template/CSS and follow-up scope; no remaining shell references to
+skip-link or main-content. Chrome reload confirmed the link absent from the
+rendered accessibility tree. Native Escape returned focus from news to the info
+button. A complete final native Tab walkthrough remains unverified because the
+computer-use capture repeatedly returned stale states/errors; simulated component
+keyboard checks are green. No saved party data changed.
+
+Completion review: presentation retains native button/dialog semantics, layout
+and order belong to page compositions, and clipboard image capture excludes the
+new toolbar. Testing guidance was already added in c04b8bc8e after the original
+card closed; no duplicate agent-context rules needed.
