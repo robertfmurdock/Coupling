@@ -40,7 +40,6 @@ import react.useRef
 import react.useState
 import web.cssom.Auto
 import web.cssom.Color
-import web.cssom.None
 import web.cssom.Position
 import web.cssom.px
 import web.cssom.vw
@@ -90,7 +89,7 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
         }
 
         div {
-            css { pointerEvents = None.none }
+            inert = state != Start && state != ShowIntro
             when (state) {
                 is Start -> aboutPageContent {
                     div { dangerouslySetInnerHTML = DangerouslySetInnerHTML(HtmlSource(parse(state.text))) }

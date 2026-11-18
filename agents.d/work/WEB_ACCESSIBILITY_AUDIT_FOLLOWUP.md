@@ -71,3 +71,32 @@ Run focused checks and full `fish -lc './gradlew check --no-daemon'` outside the
 sandbox for implementation slices. Review tests and production design separately,
 commit passing slices together, and record validation gaps without claiming
 unperformed manual checks. No push/release authorization is implied.
+
+## Active Play: 2026-11-18
+
+Starting at e9d85a535 with a clean tree. Begin with the concrete residual
+findings; do not claim a calibrated full-route audit from component checks.
+
+1. Demo boundary: reproduce native programmatic focus entering an illustrated
+   form; make only illustrated content inert, retaining explanatory popup and
+   real return navigation. Verify final-frame return-link usability separately.
+   This is independently useful without other audit changes.
+2. Inventory portrait ownership and names; fix redundant/generic alternatives at
+   the narrowest owner only after tests capture the actual link/card contract.
+3. Record route/control evidence and prioritize remaining audit work, including
+   explicit browser/screen-reader/zoom gaps. Do not mark the broad audit complete
+   while required manual evidence is missing.
+
+Demo slice complete: native programmatic-focus regression red (input took focus),
+then green with inert illustrated application frames. Introduction return-link
+regression also red under over-broad inert, then green with introduction states
+excluded. Final-frame return remains focusable outside the inert subtree. These
+are native DOM focus calls in real Chrome component tests, not a native Tab or
+screen-reader walkthrough. Three Demo tests pass. Test-only Karma asset mapping
+resolves real processed Demo images instead of placeholder modules.
+
+Final full `fish -lc './gradlew check --no-daemon'` green: 680 tasks, 61 E2E
+scenarios with no failures. Test review checked focus outcomes and real return
+navigation; production review checked shared ownership, unchanged visuals, and
+preserved introductory content. `git diff --check` clean. Commit: this slice.
+Next: roster accessible-name regression and decorative portrait alternative.
