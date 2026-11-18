@@ -12,5 +12,6 @@ external fun waitFor(callback: () -> Unit): kotlin.js.Promise<Unit>
 external val screen: NavigationScreen
 
 external interface NavigationScreen {
+    fun getByText(text: String): HTMLElement
     fun getByRole(role: String, options: RoleOptions): HTMLElement
 }

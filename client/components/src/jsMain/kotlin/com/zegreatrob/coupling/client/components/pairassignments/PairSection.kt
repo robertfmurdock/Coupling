@@ -27,10 +27,8 @@ import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.useRef
-import web.cssom.AlignItems
 import web.cssom.ClassName
 import web.cssom.Display
-import web.cssom.JustifyContent
 import web.cssom.Position
 import web.cssom.VerticalAlign
 import web.cssom.px
@@ -63,16 +61,7 @@ val PairSection by nfc<PairSectionProps> { props ->
             css { display = Display.inlineBlock }
             PairSectionPanel(party, players, pairs, allowSave, setPairs, controls)
         }
-        div {
-            css {
-                display = Display.flex
-                justifyContent = JustifyContent.center
-                alignItems = AlignItems.center
-                gap = 10.px
-            }
-            +props.children
-            copyToClipboardButton(pairSectionNode)
-        }
+        div { +props.children }
         div {
             css {
                 position = Position.absolute
@@ -80,6 +69,7 @@ val PairSection by nfc<PairSectionProps> { props ->
                 top = 0.px
                 width = 0.px
             }
+            div { copyToClipboardButton(pairSectionNode) }
             TinyPlayerList(party, players)
         }
     }

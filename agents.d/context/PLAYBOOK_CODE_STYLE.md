@@ -16,6 +16,9 @@ The contribution sequence is defined in [AGENTS.md](../../AGENTS.md).
   and stable semantics justify them, not for hypothetical future needs.
 - Make ownership and contracts explicit; follow the architecture guidance for
   cross-module changes. Keep edits scoped to the requested outcome.
+- Preserve established visual placement when changing semantics or keyboard
+  navigation. Ask the user before repositioning existing controls or changing
+  header arrangements unless that layout change is already authorized.
 - Prefer code that expresses its intent. Retain comments explaining reasons and
   constraints that the code cannot express.
 

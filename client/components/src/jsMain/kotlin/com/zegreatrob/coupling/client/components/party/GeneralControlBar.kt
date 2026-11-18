@@ -12,6 +12,7 @@ import react.dom.html.ReactHTML.span
 import web.cssom.AlignItems
 import web.cssom.Color
 import web.cssom.Display
+import web.cssom.FlexWrap
 import web.cssom.Margin
 import web.cssom.Position
 import web.cssom.TextAlign
@@ -42,7 +43,9 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                 css {
                     position = Position.relative
                     flexGrow = number(2.0)
-                    display = Display.inlineBlock
+                    display = Display.inlineFlex
+                    flexWrap = FlexWrap.wrap
+                    alignItems = AlignItems.center
                 }
                 span {
                     css { display = Display.inlineFlex }
