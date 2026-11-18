@@ -1,24 +1,24 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.components.player
 
-import com.zegreatrob.coupling.client.components.player.PlayerConfigContent
+import com.zegreatrob.coupling.client.components.DescribedRoleOptions
+import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
-import kotlin.test.AfterTest
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import kotlin.test.Test
+import com.zegreatrob.coupling.client.components.accessibilityScreen as screen
 
-class PlayerConfigNamingTest {
-    @AfterTest
-    fun cleanUp() = cleanup()
-
+class PlayerConfigAccessibilityTest {
     @Test
-    fun emailDescribesThePartyAccessItGrants() = asyncSetup(object {
+    fun emailDescribesThePartyAccessItGrants() = setup(object {
         val expectedParty = stubPartyDetails()
         val expectedPlayer = stubPlayer()
     }) exercise {
-        renderNavigation {
+        render(RenderOptions(wrapper = TestRouter)) {
             PlayerConfigContent {
                 party = expectedParty
                 player = expectedPlayer
@@ -40,7 +40,7 @@ class PlayerConfigNamingTest {
     }
 
     @Test
-    fun badgeOptionsUseThePartyConfiguredVisibleNames() = asyncSetup(object {
+    fun badgeOptionsUseThePartyConfiguredVisibleNames() = setup(object {
         val expectedParty = stubPartyDetails().copy(
             badgesEnabled = true,
             defaultBadgeName = "Navigator",
@@ -48,7 +48,7 @@ class PlayerConfigNamingTest {
         )
         val expectedPlayer = stubPlayer()
     }) exercise {
-        renderNavigation {
+        render(RenderOptions(wrapper = TestRouter)) {
             PlayerConfigContent {
                 party = expectedParty
                 player = expectedPlayer

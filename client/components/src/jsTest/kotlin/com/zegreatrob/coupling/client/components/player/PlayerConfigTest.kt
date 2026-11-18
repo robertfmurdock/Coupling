@@ -27,6 +27,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
 import kotlinx.browser.window
+import org.w3c.dom.HTMLSelectElement
 import org.w3c.dom.Window
 import react.ChildrenBuilder
 import react.Fragment
@@ -114,9 +115,9 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
+    fun whenTheGivenPlayerHasDefaultBadgeWillSelectIt() = setup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = stubPlayer()
+        val player = stubPlayer().copy(badge = Badge.Default)
     }) exercise {
         render(
             RouterProvider.create {
@@ -132,15 +133,14 @@ class PlayerConfigTest {
                 }
             },
         )
-    } verify { wrapper ->
-        wrapper.baseElement
-            .querySelectorAll("select[name='badge'] [value='${Badge.Default.name}']")
-            .length
-            .assertIsEqualTo(1)
+    } verify {
+        screen.getByRole("combobox", RoleOptions(name = "Badge"))
+            .unsafeCast<HTMLSelectElement>().value
+            .assertIsEqualTo(Badge.Default.name)
     }
 
     @Test
-    fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
+    fun whenTheGivenPlayerHasAltBadgeWillSelectIt() = setup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = stubPlayer().copy(badge = Badge.Alternate)
     }) exercise {
@@ -158,11 +158,10 @@ class PlayerConfigTest {
                 }
             },
         )
-    } verify { wrapper ->
-        wrapper.baseElement
-            .querySelectorAll("select[name='badge'] [value='${Badge.Alternate.name}']")
-            .length
-            .assertIsEqualTo(1)
+    } verify {
+        screen.getByRole("combobox", RoleOptions(name = "Badge"))
+            .unsafeCast<HTMLSelectElement>().value
+            .assertIsEqualTo(Badge.Alternate.name)
     }
 
     @Test

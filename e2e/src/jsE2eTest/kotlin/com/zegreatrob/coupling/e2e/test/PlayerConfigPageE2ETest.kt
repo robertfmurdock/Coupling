@@ -244,34 +244,6 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun willShowBadgeSelector() = playerSetup.with(
-            object : PlayerContext() {
-                val page = PlayerConfigPage
-            }.attachPlayer(),
-        ) exercise {
-            PlayerConfigPage.goTo(party.id, player.id)
-        } verify {
-            WebdriverElement("option[value=\"Default\"]")
-                .text()
-                .assertIsEqualTo("Badge 1")
-            WebdriverElement("option[value=\"Alternate\"]")
-                .text()
-                .assertIsEqualTo("Badge 2")
-        }
-
-        @Test
-        fun willSelectTheDefaultBadge() = playerSetup.with(
-            object : PlayerContext() {
-                val page = PlayerConfigPage
-            }.attachPlayer(),
-        ) exercise {
-            PlayerConfigPage.goTo(party.id, player.id)
-        } verify {
-            PlayerConfigPage.badgeOption(party.defaultBadgeName).isSelected()
-                .assertIsEqualTo(true)
-        }
-
-        @Test
         fun willRememberBadgeSelection() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
@@ -282,8 +254,8 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.badgeOption(party.alternateBadgeName).click()
             saveButton().click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
-        } verify {
             PlayerConfigPage.goTo(party.id, player.id)
+        } verify {
             PlayerConfigPage.badgeOption(party.alternateBadgeName).isSelected()
                 .assertIsEqualTo(true)
         }

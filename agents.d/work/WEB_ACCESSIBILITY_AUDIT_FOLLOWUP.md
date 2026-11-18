@@ -186,3 +186,30 @@ instructions; production review confirmed an opt-in shared helper with unchanged
 layout and handlers. Diff check clean. Recorded in this email-description slice
 commit. This is computed-description evidence, not a calibrated screen-reader
 announcement check. The remaining inventory and manual matrix stay open.
+
+## Testmints Review and Test-Level Consolidation
+
+Reviewed recent naming/description, layout, focus, Settings, Demo, keyboard-order,
+and badge persistence tests. Rendering-only player names, badge names, and Email
+descriptions do not need Chrome: moved four scenarios to the existing components
+jsdom suite with synchronous Testmints phases and the existing router wrapper.
+Kept roster and compact-roster scenarios separate because they exercise distinct
+composition paths. Kept Email and badge contracts separate; shared render boilerplate
+does not justify hiding their subject calls behind a generic test factory.
+
+Existing default/alternate badge component tests asserted only that options existed.
+They now assert the selected value and have names matching that evidence. Temporarily
+forcing the dropdown to Default produced the intended alternate-selection failure;
+restoring production made all 122 component scenarios pass. No production diff
+remains. Removed two redundant badge rendering/initial-selection E2E scenarios;
+retained assembled save-and-reload persistence coverage and moved reload into
+`exercise` so `verify` only observes the persisted selection.
+
+Layout, computed focus styling, native dialog, and inert behavior retain real-browser
+evidence. Router/user-event tests are already component tests, not E2E; simulated
+keyboard input remains distinct from native Tab evidence. Further jsdom migration
+is possible for browser-independent interaction cases, but no new runner/harness
+is introduced by this consolidation. Formatting and focused components checks
+passed. Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks; 59 E2E
+scenarios, zero failures). Final review confirmed unchanged production and retained
+contract coverage; diff check clean. Recorded in this test-consolidation commit.
