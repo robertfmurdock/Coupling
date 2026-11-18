@@ -46,6 +46,7 @@ fun ChildrenBuilder.configInput(
     list: String? = null,
     checked: Boolean = false,
     autoFocus: Boolean? = false,
+    describedBy: String? = null,
 ) {
     label {
         htmlFor = ElementId(id)
@@ -53,6 +54,7 @@ fun ChildrenBuilder.configInput(
     }
     input {
         this.ariaLabel = labelText
+        this.ariaDescribedBy = describedBy?.let { ElementId(it) }
         this.name = name
         this.id = ElementId(id)
         this.type = type

@@ -216,10 +216,17 @@ private fun ChildrenBuilder.emailInput(
         type = InputType.text,
         onChange = onChange,
         placeholder = "email",
+        describedBy = "player-email-access-hint player-email-access-details",
     )
     span {
-        div { +"Email provides access privileges;" }
-        div { +"That means if someone with that email logs into Coupling, they can see their party!" }
+        div {
+            id = ElementId("player-email-access-hint")
+            +"Email provides access privileges;"
+        }
+        div {
+            id = ElementId("player-email-access-details")
+            +"That means if someone with that email logs into Coupling, they can see their party!"
+        }
         div {
             +"To change your player picture, assign a"
             gravatarLink()

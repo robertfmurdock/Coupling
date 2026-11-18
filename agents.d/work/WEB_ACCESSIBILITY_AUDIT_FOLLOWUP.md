@@ -165,3 +165,24 @@ failures). Test review confirmed custom names map to the original values and
 existing selection/save scenarios remain covered. Production review confirmed
 unchanged styles, placement, values, and handlers. Diff check clean. Recorded in
 this badge-name slice commit; remaining inventory and manual matrix stay open.
+
+## Continued Play: Email Access Instructions
+
+2026-11-18, following badge-name slice 08ee09bbf. The existing player Email
+instructions explain that the address grants party access, but were not associated
+with the field. A rendered component query by name and description reproduced the
+missing accessible description. Added optional `describedBy` support to the shared
+`configInput` helper and linked only the two existing access-instruction lines.
+The separate Gravatar link remains outside the description. Text, styles, DOM
+order, focus behavior, field value, and change/save handlers are unchanged.
+
+The test query required a separate typed options binding because the dependency's
+generated `RoleOptions` cannot be extended. After resolving that harness issue,
+the test failed on the missing Email description, then passed with the association.
+Focused `:client:jsBrowserTest` and formatting passed. Full
+`fish -lc './gradlew check --no-daemon'` passed (680 tasks; 61 E2E tests, zero
+failures). Test review confirmed the description is computed from the existing
+instructions; production review confirmed an opt-in shared helper with unchanged
+layout and handlers. Diff check clean. Recorded in this email-description slice
+commit. This is computed-description evidence, not a calibrated screen-reader
+announcement check. The remaining inventory and manual matrix stay open.
