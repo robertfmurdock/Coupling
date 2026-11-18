@@ -46,12 +46,11 @@ by that card here merely to close it.
   landmark remains. Consider a meaningful bypass only where repeated navigation
   and a distinct content target make it useful; sparse Welcome screens need no
   artificial extra focus stop.
-- DemoPageFrame marks the simulated application pointer-events:none while
-  advertising that its controls do not work. Audit keyboard/assistive-technology
-  treatment of those controls; pointer-event suppression alone is not inertness.
-- Shared player portraits still use the generic alt text "player-icon" beside
-  visible player names. Evaluate decorative alternatives/contextual names at
-  their actual link and card owners.
+- Demo illustration focus leak fixed in 1e3bbf33d: application frames are inert,
+  introductory content and real return links remain outside that restriction.
+  Still verify spoken explanations and animation timing in calibrated AT.
+- Shared player portraits repeated generic image text before visible names.
+  Roster naming regression and decorative portrait fix recorded in active play.
 - Shared data loading collapses failed/null results into the same recovery UI.
   GraphiQL has a distinct authorization loader. Review error distinctions and
   calibrated announcements separately before claiming all errors are covered.
@@ -63,8 +62,8 @@ by that card here merely to close it.
 
 ## Validation and Current State
 
-Draft created 2026-11-17; closeout review inputs added the same day. No additional
-implementation or full route/assistive-technology audit performed here.
+Draft created 2026-11-17; active implementation began 2026-11-18. See active-play
+evidence below. A full route/assistive-technology audit is not yet complete.
 Follow Testmints for behavioral tests. Prefer component/router tests for local
 navigation; use E2E when a contract depends on assembled routes/auth/services.
 Run focused checks and full `fish -lc './gradlew check --no-daemon'` outside the
@@ -98,5 +97,50 @@ resolves real processed Demo images instead of placeholder modules.
 Final full `fish -lc './gradlew check --no-daemon'` green: 680 tasks, 61 E2E
 scenarios with no failures. Test review checked focus outcomes and real return
 navigation; production review checked shared ownership, unchanged visuals, and
-preserved introductory content. `git diff --check` clean. Commit: this slice.
-Next: roster accessible-name regression and decorative portrait alternative.
+preserved introductory content. `git diff --check` clean. Commit: 1e3bbf33d.
+Portrait slice: both roster regressions failed with accessible link name
+"player-icon Alex" instead of "Alex", then passed with the redundant PlayerCard
+portrait alt set to empty. Visible name/image sources/styles unchanged. Existing
+Welcome image-selection checks still assert the same source URLs. The spin E2E
+image locator now selects img within its existing player-card scope.
+
+Focused `:client:jsBrowserTest :client:components:jsTest` green; full
+`fish -lc './gradlew check --no-daemon'` green (680 tasks; 61 E2E tests, zero
+failures). Reviewed tests for exact accessible names and retained artwork/click
+contracts; reviewed production for a single shared decorative-image owner.
+Diff check clean. Commit: this portrait slice.
+
+Handoff: no uncommitted implementation expected after this slice; no push or
+release. Remaining work is the manual matrix and deeper route/control checks
+below. Keep this card open until that evidence is obtained; no calibrated
+screen-reader, contrast or zoom/reflow result is claimed by this play.
+
+## Bounded Inventory and Remaining Evidence
+
+Inventory source: CouplingRouter, CouplingRoute, DemoPageFrame, PlayerCard,
+PlayerRoster, TinyPlayerList, and CouplingQueryLoadState. This table distinguishes
+source/component evidence from unperformed route walkthroughs. Use disposable
+local fixtures from existing test setup; no production writes are needed.
+
+| Route/control boundary | Evidence available | Remaining audit |
+| --- | --- | --- |
+| `/welcome/`, `/about` | Existing heading, navigation, focus and reduced-motion component checks | Spoken outline, zoom and contrast |
+| `/demo` introduction, forms, final return | Native DOM focus regression tests; real frame data and images | Native Tab, spoken descriptions, timing/pause usability |
+| `/parties/`, `/user` | Shared header order tests from keyboard UX card | Saved-account form labels/errors and zoom |
+| `/:partyId/pairAssignments/current/`, `/prepare/` | Shared roster names, Spin/Copy order, existing spin E2E scenarios | Keyboard alternative to drag/drop, announcements, zoom |
+| `/:partyId/edit/`, `/player/new`, `/player/:playerId/`, `/pin/new`, `/pin/:pinId/` | Shared cards/header source inspected; existing form E2E coverage | Explicit labels, hints, validation/error recovery and spoken state per form |
+| `/:partyId/history`, `/statistics`, `/contributions*` | Route inventory only | Table/header relationships, charts, filtering, keyboard interaction |
+| `/graphiql/`, integrations/callbacks | Distinct auth/loading owners identified | Frame title/keyboard reachability and integration status announcements |
+| Shared pending/null/error boundary | CouplingQueryLoadState handles pending and null results | Distinguish network failure, missing data and recovery announcements before redesign |
+
+Working priority rubric: first fix unintended navigation/editing or unreachable
+core actions; then misleading names/roles; then redundant announcements. Treat
+unmeasured contrast/reflow and screen-reader behavior as unknown, not passing.
+Current verified fixes: Demo focus containment (core interaction) and roster link
+names (redundant announcements). Do not infer AT results from DOM focus or role
+queries.
+
+Manual matrix still to execute: Chrome keyboard at normal and 200% zoom, narrow
+viewport reflow, forced colors where supported, and Safari with VoiceOver using
+standard bindings. Screen-reader calibration and fixture coverage must be recorded
+before completing the broad audit. No screen-reader certification is claimed.

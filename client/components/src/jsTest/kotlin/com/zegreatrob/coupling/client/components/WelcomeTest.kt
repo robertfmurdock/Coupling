@@ -22,7 +22,7 @@ class WelcomeTest {
             .assertIsNotEqualTo(null)
         screen.queryByText("Sam")
             .assertIsNotEqualTo(null)
-        screen.queryAllByAltText("player-icon")
+        screen.queryAllByAltText("")
             .map { it.getAttribute("src") }
             .assertIsEqualTo(listOf(CouplingImages.images.frodo, CouplingImages.images.samwise))
         screen.queryByText("Together, climb mountains.")
@@ -41,7 +41,7 @@ class WelcomeTest {
             .assertIsNotEqualTo(null)
         screen.queryByText("Robin")
             .assertIsNotEqualTo(null)
-        screen.queryAllByAltText("player-icon")
+        screen.queryAllByAltText("")
             .map { it.getAttribute("src") }
             .assertIsEqualTo(listOf(CouplingImages.images.grayson, CouplingImages.images.wayne))
         screen.queryByText("Clean up the city, together.")
@@ -60,7 +60,7 @@ class WelcomeTest {
             .assertIsNotEqualTo(null)
         screen.queryByText("Wendy")
             .assertIsNotEqualTo(null)
-        screen.queryAllByAltText("player-icon")
+        screen.queryAllByAltText("")
             .map { it.getAttribute("src") }
             .assertIsEqualTo(listOf(CouplingImages.images.rosie, CouplingImages.images.wendy))
         screen.queryByText("Team up. Get things done.")

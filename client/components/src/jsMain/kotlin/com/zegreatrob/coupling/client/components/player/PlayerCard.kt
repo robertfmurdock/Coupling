@@ -122,7 +122,7 @@ fun Int.inCouplingEm(): Double = this / 14.0
 private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = thirdPartyAvatarsDisabledContext.Consumer {
     children = { disabled ->
         img.create {
-            alt = "player-icon"
+            alt = ""
             css {
                 width = size.inCouplingEm().em
                 height = size.inCouplingEm().em

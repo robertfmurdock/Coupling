@@ -51,7 +51,7 @@ object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
 object PlayerCard : BrowserSyntax {
     const val PLAYER_LOCATOR = "[data-player-id]"
     val playerElements get() = WebdriverElementArray(PLAYER_LOCATOR)
-    const val ICON_LOCATOR = "[alt=player-icon]"
+    const val ICON_LOCATOR = "img"
 }
 
 object PlayerRoster {
