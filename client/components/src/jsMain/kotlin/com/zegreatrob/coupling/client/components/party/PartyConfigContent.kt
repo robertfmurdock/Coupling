@@ -118,15 +118,24 @@ private fun ChildrenBuilder.editorDiv(party: PartyDetails, onChange: (ChangeEven
         }
         li {
             enableBadgesInput(party, onChange)
-            span { +"Advanced users only: this lets you divide your party into two groups." }
+            span {
+                id = ElementId("party-badges-hint")
+                +"Advanced users only: this lets you divide your party into two groups."
+            }
         }
         li {
             defaultBadgeInput(party, onChange)
-            span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
+            span {
+                id = ElementId("party-default-badge-hint")
+                +"The first badge a player can be given. When badges are enabled, existing players default to having this badge."
+            }
         }
         li {
             altBadgeInput(party, onChange)
-            span { +"The other badge a player can be given. A player can only have one badge at a time." }
+            span {
+                id = ElementId("party-alt-badge-hint")
+                +"The other badge a player can be given. A player can only have one badge at a time."
+            }
         }
         li {
             pairingRuleSelect(party, onChange)
@@ -183,6 +192,7 @@ private fun ChildrenBuilder.pairingRuleSelect(party: PartyDetails, onChange: (Ch
 private fun ChildrenBuilder.altBadgeInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Alt Badge Name",
     id = "alt-badge-name",
+    describedBy = "party-alt-badge-hint",
     name = "alternateBadgeName",
     value = party.alternateBadgeName,
     type = InputType.text,
@@ -192,6 +202,7 @@ private fun ChildrenBuilder.altBadgeInput(party: PartyDetails, onChange: (Change
 private fun ChildrenBuilder.defaultBadgeInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Default Badge Name",
     id = "default-badge-name",
+    describedBy = "party-default-badge-hint",
     name = "defaultBadgeName",
     value = party.defaultBadgeName,
     type = InputType.text,
@@ -201,6 +212,7 @@ private fun ChildrenBuilder.defaultBadgeInput(party: PartyDetails, onChange: (Ch
 private fun ChildrenBuilder.enableBadgesInput(party: PartyDetails, onChange: (ChangeEvent<*, *>) -> Unit) = configInput(
     labelText = "Enable Badges",
     id = "badge-checkbox",
+    describedBy = "party-badges-hint",
     name = "badgesEnabled",
     value = party.id.value.toString(),
     type = InputType.checkbox,

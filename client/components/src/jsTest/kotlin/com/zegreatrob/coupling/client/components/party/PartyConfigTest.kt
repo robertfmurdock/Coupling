@@ -36,6 +36,50 @@ import kotlin.test.Test
 class PartyConfigTest {
 
     @Test
+    fun badgeSettingsDescribeGroupingAndPlayerAssignment() = setup(object {
+        val expectedParty = PartyDetails(
+            stubPartyId(),
+            badgesEnabled = true,
+            defaultBadgeName = "Navigator",
+            alternateBadgeName = "Driver",
+        )
+    }) exercise {
+        render(RenderOptions(wrapper = TestRouter)) {
+            PartyConfigContent {
+                party = expectedParty
+                isNew = false
+                onChange = {}
+                onSave = {}
+            }
+        }
+    } verify {
+        (
+            accessibilityScreen.getByRole(
+                "checkbox",
+                DescribedRoleOptions(
+                    name = "Enable Badges",
+                    description = "Advanced users only: this lets you divide your party into two groups.",
+                ),
+            ) as HTMLInputElement
+            ).checked.assertIsEqualTo(expectedParty.badgesEnabled)
+        accessibilityScreen.getByRole(
+            "textbox",
+            DescribedRoleOptions(
+                name = "Default Badge Name",
+                description = "The first badge a player can be given. " +
+                    "When badges are enabled, existing players default to having this badge.",
+            ),
+        ).getAttribute("value").assertIsEqualTo(expectedParty.defaultBadgeName)
+        accessibilityScreen.getByRole(
+            "textbox",
+            DescribedRoleOptions(
+                name = "Alt Badge Name",
+                description = "The other badge a player can be given. A player can only have one badge at a time.",
+            ),
+        ).getAttribute("value").assertIsEqualTo(expectedParty.alternateBadgeName)
+    }
+
+    @Test
     fun newPartyIdDescribesItsPermanentUrlEffect() = setup(object {
         val expectedParty = PartyDetails(stubPartyId())
     }) exercise {

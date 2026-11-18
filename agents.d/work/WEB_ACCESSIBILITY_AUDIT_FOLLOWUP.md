@@ -325,3 +325,27 @@ confirmed the description assertion fails on the original missing association;
 production review confirmed unchanged visual structure and only the intended hint
 association. Diff check clean. Recorded in this pin-icon-instructions slice commit.
 Broad audit remains open; no push or release.
+
+
+## Continued Play: Party Badge Setting Instructions
+
+2026-11-18: associated existing hints for Enable Badges, Default Badge Name,
+and Alt Badge Name. These describe grouping, default assignment of existing
+players, and one-badge-per-player semantics not communicated by the labels.
+PartyConfigContent retains ownership of hint text; configInput's existing
+optional describedBy support supplies each association. No text, styles, order,
+handlers, or control values changed.
+
+One Testmints rendering scenario beside PartyConfig tests covers the related badge
+settings: query each control by name and computed description and verify the
+configured enabled state and distinct badge names. Components/jsdom is sufficient;
+no Chrome/E2E duplicate added. Red failed on Enable Badges' missing description;
+green resolved all three description queries. All 126 component tests and
+formatting passed. Final full validation follows below. This is computed-description
+evidence; calibrated screen-reader behavior and the wider audit remain open.
+
+Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks). Test review
+confirmed three distinct computed descriptions and retained configured state;
+production review confirmed six attributes added to existing controls/spans with
+no visual or action changes. Diff check clean. Recorded in this badge-setting-hints
+slice commit; no push or release.
