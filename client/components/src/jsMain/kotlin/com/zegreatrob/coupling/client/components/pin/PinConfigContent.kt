@@ -110,6 +110,7 @@ private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*, *>) ->
     configInput(
         labelText = "Icon",
         id = "pin-icon",
+        describedBy = "pin-icon-hint",
         name = "icon",
         value = pin.icon,
         type = InputType.text,
@@ -118,6 +119,7 @@ private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*, *>) ->
         autoFocus = false,
     )
     span {
+        id = ElementId("pin-icon-hint")
         +"This is the icon for the pin. This will be its primary identifier, so "
         a {
             href = "https://fontawesome.com/icons?d=gallery&m=free"

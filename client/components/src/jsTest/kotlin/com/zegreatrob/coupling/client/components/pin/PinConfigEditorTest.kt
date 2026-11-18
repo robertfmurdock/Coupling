@@ -1,8 +1,11 @@
 package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.client.components.DescribedRoleOptions
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.TestRouter
+import com.zegreatrob.coupling.client.components.accessibilityScreen
 import com.zegreatrob.coupling.client.components.assertNotNull
 import com.zegreatrob.coupling.client.components.player.singleRouteRouter
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -16,12 +19,37 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import react.create
 import react.router.RouterProvider
 import kotlin.test.Test
 
 class PinConfigEditorTest {
+
+    @Test
+    fun iconDescribesItsRoleAsThePrimaryIdentifier() = setup(object {
+        val expectedParty = PartyDetails(stubPartyId())
+        val expectedPin = stubPin()
+    }) exercise {
+        render(RenderOptions(wrapper = TestRouter)) {
+            PinConfigContent {
+                party = expectedParty
+                pin = expectedPin
+                pinList = emptyList()
+                onChange = {}
+                onSubmit = {}
+            }
+        }
+    } verify {
+        accessibilityScreen.getByRole(
+            "textbox",
+            DescribedRoleOptions(
+                name = "Icon",
+                description = "This is the icon for the pin. This will be its primary identifier, so choose wisely.",
+            ),
+        ).getAttribute("value").assertIsEqualTo(expectedPin.icon)
+    }
 
     @Test
     fun whenGivenPinIsNotInListWillNotShowDeleteButton() = setup(object {

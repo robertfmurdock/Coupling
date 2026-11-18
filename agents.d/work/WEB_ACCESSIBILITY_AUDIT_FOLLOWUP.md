@@ -302,3 +302,26 @@ production review confirmed only the existing hint ID and describedBy associatio
 changed. `git diff --check` clean. This is computed-description evidence, not a
 calibrated spoken-announcement result. Recorded in this permanent-URL-warning
 slice commit; broad route/manual audit remains open. No push or release.
+
+
+## Continued Play: Pin Icon Instructions
+
+2026-11-18: associated the existing Icon hint with its input. It explains that the
+icon is the pin's primary identifier, information not conveyed by the short label.
+The existing sentence including the Font Awesome link reads sensibly as a complete
+description; no new text or relocated elements were needed. Used existing
+configInput describedBy support, preserving styles, handlers, and link destination.
+
+Testmints scenario lives beside PinConfigEditor tests in components/jsdom, renders
+PinConfigContent, queries Icon by computed description, and verifies its supplied
+value. It failed for the missing description and passed after the two-attribute
+production change. Components tests (125 scenarios) and formatting passed. No
+browser/E2E duplicate added. Final full validation follows below. Remaining pin
+hints and icon-code input-format assistance have not been comprehensively audited;
+this slice does not establish a calibrated screen-reader result.
+
+Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks). Test review
+confirmed the description assertion fails on the original missing association;
+production review confirmed unchanged visual structure and only the intended hint
+association. Diff check clean. Recorded in this pin-icon-instructions slice commit.
+Broad audit remains open; no push or release.
