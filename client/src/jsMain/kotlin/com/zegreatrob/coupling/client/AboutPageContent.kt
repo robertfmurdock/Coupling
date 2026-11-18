@@ -46,7 +46,7 @@ private val aboutHeader by nfc<Props> {
     div {
         css {
             display = Display.flex
-            justifyContent = JustifyContent.spaceBetween
+            justifyContent = JustifyContent.center
             alignItems = AlignItems.center
             flexWrap = FlexWrap.wrap
             gap = 16.px

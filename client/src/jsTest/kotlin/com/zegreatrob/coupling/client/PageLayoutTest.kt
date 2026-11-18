@@ -12,6 +12,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import web.cssom.px
+import kotlin.math.abs
 import kotlin.test.AfterTest
 import kotlin.test.Test
 
@@ -20,14 +21,19 @@ class PageLayoutTest {
     fun cleanUp() = cleanup()
 
     @Test
-    fun aboutBackLinkSitsBesideTheTitle() = asyncSetup() exercise {
+    fun aboutHeaderCentersTitleAndBackAsOneGroup() = asyncSetup() exercise {
         renderNavigation {
             aboutPageContent { +"Article content" }
         }
     } verify {
         val back = screen.getByRole("link", RoleOptions(name = "Back to Coupling!")).getBoundingClientRect()
-        val heading = screen.getByRole("heading", RoleOptions(name = "About This App")).getBoundingClientRect()
+        val title = screen.getByRole("heading", RoleOptions(name = "About This App"))
+        val heading = title.getBoundingClientRect()
+        val header = title.parentElement!!.getBoundingClientRect()
         (heading.right <= back.left).assertIsEqualTo(true)
+        (heading.left > header.left + 16).assertIsEqualTo(true, "Title is inset from the content edge")
+        (abs((heading.left - header.left) - (header.right - back.right)) <= 4)
+            .assertIsEqualTo(true, "Group is centered allowing the link's existing margins")
         (back.top < heading.bottom && back.bottom > heading.top).assertIsEqualTo(true)
     }
 

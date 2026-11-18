@@ -349,3 +349,18 @@ confirmed three distinct computed descriptions and retained configured state;
 production review confirmed six attributes added to existing controls/spans with
 no visual or action changes. Diff check clean. Recorded in this badge-setting-hints
 slice commit; no push or release.
+
+
+## Continued Play: About Header Group Alignment
+
+User found the About title too far left. Compared GeneralControlBar's centered
+inline title/control group with About's stretched space-between row. Changed only
+About's justify-content to center, retaining peer layout, wrapping, gap, text,
+styles and destination. Extended the existing Chrome geometry scenario to require
+an inset title and balanced space around the group (allowing existing link margins).
+The inset assertion failed on the previous layout, then passed with centering.
+Focused Chrome checks and formatting passed. Full `fish -lc './gradlew check
+--no-daemon'` passed. Production review confirmed the single alignment declaration;
+test review retained alongside/vertical overlap evidence. Manual fresh-build review
+remains pending while native Chrome returns inconsistent page/screenshot states.
+Recorded in this About-header-alignment slice commit; broader audit continues.
