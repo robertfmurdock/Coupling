@@ -244,3 +244,35 @@ About geometry regression from already-passing overflow evidence; production
 review confirmed only the requested Back placement and shared Close styling changed.
 Diff check clean. Recorded in this UI-correction slice commit. Clipping reproduction
 remains open alongside the broader audit matrix.
+
+## Follow-up Visual Refinement
+
+User preferred Back beside the About title instead of its own row, and disliked
+the square scrollbar at the news dialog's rounded edge. This supersedes the
+above-article Back placement in e7f6b0734. About's shared header now owns its single
+`h1` and Back link in one wrapping, vertically centered flex row. The Markdown body
+starts at the existing Welcome subheading, avoiding a duplicate title.
+
+News scrolling moves from the outer dialog to the existing inset content wrapper.
+Only an open dialog becomes a flex column; the inner area can shrink and scroll
+within the height bound while the outer shell retains its rounded edge. Native
+scrollbars and their default hit-target size are preserved. No custom scrollbar
+widget, global body scroll lock, new focus stop, or changed Close placement.
+
+Both revised Chrome regressions failed before implementation, then passed: peer
+header alignment and inset scrolling to the last paragraph. Narrow overflow checks
+cover the inner scroll area as well as the shell, so clipping cannot masquerade
+as successful wrapping. That stronger check caught horizontal overflow inside the
+new narrower scroll area; `overflow-wrap: anywhere` at the content owner resolved
+it. All focused Chrome tests and formatting pass. Full
+`fish -lc './gradlew check --no-daemon'` passed (680 tasks; 59 E2E scenarios, zero
+failures). Test review confirmed the selected alignment, inset scrolling, final
+paragraph reachability, and inner overflow assertions. Production review confirmed
+one About title owner, native scrolling, and display styling scoped to open dialogs.
+Diff check clean. Recorded in this visual-refinement commit.
+
+Fresh manual visual review could not be completed: the native browser connection
+returned inconsistent AX/screenshot state, then `noWindowsAvailable`; browser-host
+inventory also reported unavailable. Do not treat those attempts as visual evidence
+for this refinement. Automated Chrome geometry evidence passes. The previously
+reported browser/window-specific vertical clipping case remains unreproduced.

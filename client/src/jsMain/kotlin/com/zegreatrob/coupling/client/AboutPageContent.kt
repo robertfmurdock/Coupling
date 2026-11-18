@@ -16,9 +16,11 @@ import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
+import web.cssom.AlignItems
 import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Display
+import web.cssom.FlexWrap
 import web.cssom.JustifyContent
 import web.cssom.deg
 import web.cssom.em
@@ -32,7 +34,7 @@ val aboutPageContent by nfc<PropsWithChildren> { props ->
         ) {
             div {
                 css { width = 40.em }
-                backButtonSection()
+                aboutHeader()
                 +props.children
                 playerHeader()
             }
@@ -40,14 +42,17 @@ val aboutPageContent by nfc<PropsWithChildren> { props ->
     }
 }
 
-private val backButtonSection by nfc<Props> {
+private val aboutHeader by nfc<Props> {
     div {
         css {
             display = Display.flex
-            justifyContent = JustifyContent.flexEnd
+            justifyContent = JustifyContent.spaceBetween
+            alignItems = AlignItems.center
+            flexWrap = FlexWrap.wrap
+            gap = 16.px
             marginRight = (-15).px
-            paddingTop = 20.px
         }
+        ReactHTML.h1 { +"About This App" }
         backButton()
     }
 }

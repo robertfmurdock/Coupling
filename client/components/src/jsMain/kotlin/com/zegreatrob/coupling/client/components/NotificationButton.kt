@@ -21,6 +21,7 @@ import web.cssom.Auto
 import web.cssom.Border
 import web.cssom.ClassName
 import web.cssom.Display
+import web.cssom.FlexDirection
 import web.cssom.Float
 import web.cssom.FontWeight
 import web.cssom.Globals
@@ -29,6 +30,7 @@ import web.cssom.LineStyle
 import web.cssom.NamedColor
 import web.cssom.None
 import web.cssom.Overflow
+import web.cssom.OverflowWrap
 import web.cssom.OverscrollBehavior
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
@@ -88,7 +90,11 @@ val NotificationButton by nfc<Props> {
                 width = 50.vw
                 maxWidth = 90.vw
                 maxHeight = 80.vh
-                overflowY = Auto.auto
+                overflow = Overflow.hidden
+                "&[open]" {
+                    display = Display.flex
+                    flexDirection = FlexDirection.column
+                }
                 overscrollBehavior = OverscrollBehavior.contain
                 "&::backdrop" {
                     backgroundColor = rgb(0, 0, 0, 0.5)
@@ -113,6 +119,10 @@ private fun ChildrenBuilder.recentInformationContent(recentInfoMd: String, dialo
             fontWeight = FontWeight.normal
             verticalAlign = VerticalAlign.baseline
             borderRadius = 20.px
+            minHeight = 0.px
+            overflowY = Auto.auto
+            overflowWrap = OverflowWrap.anywhere
+            overscrollBehavior = OverscrollBehavior.contain
             "*" {
                 verticalAlign = VerticalAlign.baseline
             }

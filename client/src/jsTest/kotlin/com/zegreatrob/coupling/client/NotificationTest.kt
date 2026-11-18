@@ -113,10 +113,12 @@ class NotificationTest {
         }
     } verify { dialog ->
         (dialog.scrollWidth <= dialog.clientWidth).assertIsEqualTo(true)
+        val content = dialog.firstElementChild!!.unsafeCast<HTMLElement>()
+        (content.scrollWidth <= content.clientWidth).assertIsEqualTo(true)
     }
 
     @Test
-    fun shortRecentInformationCanScrollToTheEndOfALongPost() = asyncSetup(object {
+    fun shortRecentInformationScrollsInsideItsRoundedShellToTheEndOfALongPost() = asyncSetup(object {
         val actor = userEvent.setup()
     }) {
         MarkdownContent.content = originalContent.copy(
@@ -127,11 +129,14 @@ class NotificationTest {
         screen.getByRole("dialog", RoleOptions(name = "Recent information")).style.maxHeight = "180px"
     } exercise {
         screen.getByRole("dialog", RoleOptions(name = "Recent information")).apply {
-            scrollTop = scrollHeight.toDouble()
+            firstElementChild!!.unsafeCast<HTMLElement>().apply { scrollTop = scrollHeight.toDouble() }
         }
     } verify { dialog ->
-        (dialog.scrollHeight > dialog.clientHeight).assertIsEqualTo(true)
-        (dialog.scrollTop > 0).assertIsEqualTo(true)
+        val content = dialog.firstElementChild!!.unsafeCast<HTMLElement>()
+        (dialog.scrollHeight <= dialog.clientHeight).assertIsEqualTo(true)
+        (content.scrollHeight > content.clientHeight).assertIsEqualTo(true)
+        (content.scrollTop > 0).assertIsEqualTo(true)
+        (content.getBoundingClientRect().right < dialog.getBoundingClientRect().right - 10).assertIsEqualTo(true)
         val lastParagraph = dialog.querySelector("p:last-child")!!.getBoundingClientRect()
         (lastParagraph.bottom <= dialog.getBoundingClientRect().bottom).assertIsEqualTo(true)
     }

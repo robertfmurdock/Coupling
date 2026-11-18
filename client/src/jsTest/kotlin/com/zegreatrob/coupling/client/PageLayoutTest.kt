@@ -11,7 +11,6 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import emotion.react.css
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.h1
 import web.cssom.px
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -21,14 +20,15 @@ class PageLayoutTest {
     fun cleanUp() = cleanup()
 
     @Test
-    fun aboutBackLinkReservesSpaceBeforeTheArticle() = asyncSetup() exercise {
+    fun aboutBackLinkSitsBesideTheTitle() = asyncSetup() exercise {
         renderNavigation {
-            aboutPageContent { h1 { +"About This App" } }
+            aboutPageContent { +"Article content" }
         }
     } verify {
         val back = screen.getByRole("link", RoleOptions(name = "Back to Coupling!")).getBoundingClientRect()
         val heading = screen.getByRole("heading", RoleOptions(name = "About This App")).getBoundingClientRect()
-        (back.bottom <= heading.top).assertIsEqualTo(true)
+        (heading.right <= back.left).assertIsEqualTo(true)
+        (back.top < heading.bottom && back.bottom > heading.top).assertIsEqualTo(true)
     }
 
     @Test

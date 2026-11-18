@@ -1,5 +1,3 @@
-# About This App
-
 ## Welcome to Coupling!
 ### The program that tries to make it as easy to pair as possible.
 
