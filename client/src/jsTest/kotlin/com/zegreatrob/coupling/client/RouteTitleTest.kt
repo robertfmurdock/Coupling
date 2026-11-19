@@ -28,49 +28,43 @@ class RouteTitleTest {
 
     @Test
     fun navigationIdentifiesIntegrationAndContributionViews() = asyncSetup(object {
+        val appTitle = "Coupling Review"
+        val destinations = listOf(
+            "/:partyId/integrations" to "Integrations",
+            "/:partyId/contributions/list" to "Contributions List",
+            "/:partyId/contributions/visualization" to "Contributions Visualization",
+            "/:partyId/contributions" to "Contributions Overview",
+        )
         val config = ClientConfig(false, "test", "example.invalid", "", "test", "", "")
+        val routes = config.authenticatedRoutes()
         val expectedRouter = createMemoryRouter(
-            config.authenticatedRoutes().filter {
-                it.path in setOf(
-                    "/:partyId/integrations",
-                    "/:partyId/contributions",
-                    "/:partyId/contributions/list",
-                    "/:partyId/contributions/visualization",
-                )
-            }.map { route ->
-                unsafeJso<RouteObject> {
-                    path = route.path
-                    val original = route.element.unsafeCast<ReactElement<CouplingRouteProps>>().props
-                    element = CouplingRoute.create {
-                        title = original.title
-                        this.config = original.config
-                        rComponent = FC {}
-                    }
-                }
-            }.toTypedArray(),
+            destinations.map { (path, _) -> routes.single { it.path == path }.withoutPageQueries() }.toTypedArray(),
             unsafeJso { initialEntries = arrayOf("/review-party/contributions") },
         )
     }) {
-        document.title = "Coupling Review"
+        document.title = appTitle
         render(RouterProvider.create { router = expectedRouter })
     } exercise {
-        listOf(
-            "/review-party/integrations",
-            "/review-party/contributions/list",
-            "/review-party/contributions/visualization",
-            "/review-party/contributions",
-        ).map { path ->
-            act { expectedRouter.navigate(path) }.await()
+        destinations.map { (path, _) ->
+            act { expectedRouter.navigate(path.replace(":partyId", "review-party")) }.await()
             document.title
         }
-    } verify { titles ->
-        titles.assertIsEqualTo(
-            listOf(
-                "Coupling Review - Integrations",
-                "Coupling Review - Contributions List",
-                "Coupling Review - Contributions Visualization",
-                "Coupling Review - Contributions Overview",
-            ),
-        )
+    } verifyAnd { titles ->
+        titles.assertIsEqualTo(destinations.map { (_, title) -> "$appTitle - $title" })
+    } teardown {
+        expectedRouter.dispose()
+    }
+}
+
+private fun RouteObject.withoutPageQueries(): RouteObject {
+    val original = element.unsafeCast<ReactElement<CouplingRouteProps>>().props
+    val originalPath = path
+    return unsafeJso {
+        path = originalPath
+        element = CouplingRoute.create {
+            title = original.title
+            config = original.config
+            rComponent = FC {}
+        }
     }
 }

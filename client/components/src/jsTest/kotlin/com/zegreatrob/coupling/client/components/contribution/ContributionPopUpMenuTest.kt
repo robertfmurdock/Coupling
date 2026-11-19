@@ -3,9 +3,10 @@ package com.zegreatrob.coupling.client.components.contribution
 import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
 import com.zegreatrob.coupling.client.components.MemoryRouter
 import com.zegreatrob.coupling.client.components.StubDispatcher
-import com.zegreatrob.coupling.client.components.assertNotNull
 import com.zegreatrob.coupling.client.components.create
 import com.zegreatrob.coupling.client.components.userEvent
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -18,6 +19,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.external.Result
 import kotlinx.browser.document
 import kotlinx.coroutines.await
 import popper.core.ReferenceElement
+import react.ChildrenBuilder
 import react.Key
 import react.dom.html.ReactHTML.button
 import kotlin.test.Test
@@ -25,30 +27,16 @@ import kotlin.test.Test
 class ContributionPopUpMenuTest {
 
     @Test
-    fun selectingPlayerCardWillShowPopUp() = asyncSetup(object {
+    fun openingPopupNamesTheDialogAndFocusesClose() = asyncSetup(object {
         val partyId = stubPartyId()
         val targetPlayer = stubPlayer()
         val actor = userEvent.setup()
     }) {
-        render(
-            ContributionPopUpMenu.create(
-                partyId = partyId,
-                players = emptyList(),
-                dispatchFunc = StubDispatcher().func(),
-            ) { setSelectedPlayer ->
-                button {
-                    key = Key("participant-trigger")
-                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                    +"Press me"
-                }
-            },
-            RenderOptions(wrapper = MemoryRouter),
-        )
+        render(popupWithParticipant(partyId, targetPlayer), RenderOptions(wrapper = MemoryRouter))
     } exercise {
-        actor.click(screen.findByRole("button", RoleOptions(name = "Press me"))).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Participant"))).await()
     } verify {
-        screen.findByText("Create Player")
-            .assertNotNull()
+        screen.getByRole("button", RoleOptions(name = "Create Player")).textContent.assertIsEqualTo("Create Player")
         document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Close")))
         screen.getByRole("dialog", RoleOptions(name = "Contributor actions for ${targetPlayer.name}"))
             .getAttribute("aria-modal").assertIsEqualTo("false")
@@ -62,20 +50,10 @@ class ContributionPopUpMenuTest {
         lateinit var rendered: Result
     }) {
         rendered = render(
-            ContributionPopUpMenu.create(
-                partyId = partyId,
-                players = listOf(targetPlayer),
-                dispatchFunc = StubDispatcher().func(),
-            ) { setSelectedPlayer ->
-                button {
-                    key = Key("participant-trigger")
-                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                    +"Press me"
-                }
-            },
+            popupWithParticipant(partyId, targetPlayer, players = listOf(targetPlayer)),
             RenderOptions(wrapper = MemoryRouter),
         )
-        actor.click(screen.findByRole("button", RoleOptions(name = "Press me"))).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Participant"))).await()
     } exercise {
         rendered.rerender(
             ContributionPopUpMenu.create(
@@ -99,68 +77,32 @@ class ContributionPopUpMenuTest {
         lateinit var originalTrigger: org.w3c.dom.HTMLElement
     }) {
         rendered = render(
-            ContributionPopUpMenu.create(
-                partyId = partyId,
-                players = listOf(targetPlayer),
-                dispatchFunc = StubDispatcher().func(),
-            ) { setSelectedPlayer ->
-                button {
-                    key = Key("participant-trigger")
-                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                    +"Press me"
-                }
-            },
+            popupWithParticipant(partyId, targetPlayer, players = listOf(targetPlayer)),
             RenderOptions(wrapper = MemoryRouter),
         )
-        originalTrigger = screen.findByRole("button", RoleOptions(name = "Press me"))
+        originalTrigger = screen.getByRole("button", RoleOptions(name = "Participant"))
         actor.click(originalTrigger).await()
     } exercise {
-        rendered.rerender(
-            ContributionPopUpMenu.create(
-                partyId = partyId,
-                players = emptyList(),
-                dispatchFunc = StubDispatcher().func(),
-            ) { setSelectedPlayer ->
-                button {
-                    key = Key("participant-trigger")
-                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                    +"Press me"
-                }
-            },
-        )
+        rendered.rerender(popupWithParticipant(partyId, targetPlayer, players = emptyList()))
     } verify {
-        originalTrigger.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Press me")), "Trigger survives rerender")
+        screen.getByRole("button", RoleOptions(name = "Participant")).assertIsEqualTo(originalTrigger, "Trigger survives rerender")
         screen.queryByRole("dialog").assertIsEqualTo(null)
-        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Press me")))
+        document.activeElement.assertIsEqualTo(originalTrigger)
     }
 
     @Test
-    fun clickingCloseWillHidePopUp() = asyncSetup(object {
+    fun closeButtonDismissesPopupAndReturnsFocus() = asyncSetup(object {
         val partyId = stubPartyId()
         val targetPlayer = stubPlayer()
         val actor = userEvent.setup()
     }) {
-        render(
-            ContributionPopUpMenu.create(
-                partyId = partyId,
-                players = emptyList(),
-                dispatchFunc = StubDispatcher().func(),
-            ) { setSelectedPlayer ->
-                button {
-                    key = Key("participant-trigger")
-                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                    +"Press me"
-                }
-            },
-            RenderOptions(wrapper = MemoryRouter),
-        )
-        actor.click(screen.findByRole("button", RoleOptions(name = "Press me"))).await()
+        render(popupWithParticipant(partyId, targetPlayer), RenderOptions(wrapper = MemoryRouter))
+        actor.click(screen.getByRole("button", RoleOptions(name = "Participant"))).await()
     } exercise {
-        actor.click(screen.findByRole("button", RoleOptions(name = "Close"))).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Close"))).await()
     } verify {
-        screen.queryByText("Create Player")
-            .assertIsEqualTo(null, "Pop up should have closed.")
-        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Press me")))
+        screen.queryByText("Create Player").assertIsEqualTo(null, "Pop up should have closed.")
+        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Participant")))
     }
 
     @Test
@@ -169,26 +111,13 @@ class ContributionPopUpMenuTest {
         val targetPlayer = stubPlayer()
         val actor = userEvent.setup()
     }) {
-        render(
-            ContributionPopUpMenu.create(
-                partyId = partyId,
-                players = emptyList(),
-                dispatchFunc = StubDispatcher().func(),
-            ) { setSelectedPlayer ->
-                button {
-                    key = Key("participant-trigger")
-                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                    +"Press me"
-                }
-            },
-            RenderOptions(wrapper = MemoryRouter),
-        )
-        actor.click(screen.findByRole("button", RoleOptions(name = "Press me"))).await()
+        render(popupWithParticipant(partyId, targetPlayer), RenderOptions(wrapper = MemoryRouter))
+        actor.click(screen.getByRole("button", RoleOptions(name = "Participant"))).await()
     } exercise {
         actor.keyboard("{Escape}").await()
     } verify {
         screen.queryByText("Create Player").assertIsEqualTo(null)
-        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Press me")))
+        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Participant")))
     }
 
     @Test
@@ -198,25 +127,32 @@ class ContributionPopUpMenuTest {
         val actor = userEvent.setup()
     }) {
         render(
-            ContributionPopUpMenu.create(
-                partyId = partyId,
-                players = emptyList(),
-                dispatchFunc = StubDispatcher().func(),
-            ) { setSelectedPlayer ->
-                button {
-                    key = Key("participant-trigger")
-                    onClick = { event -> setSelectedPlayer(ReferenceElement(event.currentTarget)!!, targetPlayer) }
-                    +"Press me"
-                }
-                button { +"After popup" }
-            },
+            popupWithParticipant(partyId, targetPlayer) { button { +"After popup" } },
             RenderOptions(wrapper = MemoryRouter),
         )
-        actor.click(screen.findByRole("button", RoleOptions(name = "Press me"))).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Participant"))).await()
     } exercise {
         repeat(3) { actor.tab().await() }
     } verify {
         document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "After popup")))
         screen.queryByText("Create Player").assertIsEqualTo(null)
     }
+}
+
+private fun popupWithParticipant(
+    partyId: PartyId,
+    participant: Player,
+    players: List<Player> = emptyList(),
+    afterTrigger: ChildrenBuilder.() -> Unit = {},
+) = ContributionPopUpMenu.create(
+    partyId = partyId,
+    players = players,
+    dispatchFunc = StubDispatcher().func(),
+) { selectPlayer ->
+    button {
+        key = Key("participant-trigger")
+        onClick = { event -> selectPlayer(ReferenceElement(event.currentTarget)!!, participant) }
+        +"Participant"
+    }
+    afterTrigger()
 }
