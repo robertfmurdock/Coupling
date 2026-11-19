@@ -36,10 +36,13 @@ before implementation; source evidence alone is not a calibrated AT result.
 
 ## Completion and Current State
 
-Drafted 2026-11-19. No implementation or manual reproduction yet. Run focused and
-full checks for each implementation slice; complete native keyboard and calibrated
-Safari/VoiceOver review before closing. No push/release authorization. Define how
-participant actions work when there is no onPlayerClick handler before playing.
+Implemented native participant buttons, nonmodal popup focus/dismissal, stable
+unknown-participant anchors, and save-completion focus restoration. Cards without
+a handler remain static. All implementation slices pass focused and full checks.
+Native Chrome overview/list review passed for anchoring and keyboard interaction;
+the final save-focus correction still needs a native recheck because browser
+access failed. Calibrated Safari/VoiceOver review remains required before closing.
+No push/release authorization.
 
 
 ## Active Play: 2026-11-19
@@ -172,3 +175,54 @@ focus falls to the page instead of returning to the participant. Reopening and
 explicit dismissal work. Investigate the assembled refresh/unmount path as the
 next slice; the card stays open. Safari/VoiceOver still requires owner validation.
 No push/release or fixture deletion performed.
+
+
+## Save Completion Focus Slice: 2026-11-19
+
+Previous completed anchor slice: `2e507da37`. Investigation found UpdatingPlayerList
+updates in place; no route reload is needed to reproduce the loss. Successful
+creation replaces ContributorMenu's focused Create Player action before the
+player-refresh effect checks document.activeElement, which has already become
+body. Added a component/jsdom regression composing UpdatingPlayerList with the
+real ContributionOverviewContent and a Channel dispatcher. It reproduces accepted
+SavePlayerCommand, the surviving participant trigger and lost focus. It failed
+on body instead of the trigger.
+
+Smallest correction: when players update while the popup is still open, dismiss
+with return-focus enabled. Tab/outside focus already dismisses the popup, so a
+later save completion does not restore focus after the user has left. Added that
+pending-save/Tab-exit scenario explicitly. Connected-trigger guard still prevents
+focus on removed nodes. No changes to player state, save commands, layout or popup
+positioning. Focused/full validation and native save recheck follow before commit.
+
+
+Save-focus validation: components/jsdom (136 tests) and formatting pass. Full
+`fish -lc './gradlew check --no-daemon'` passes (680 tasks); log
+`/tmp/coupling-contributor-save-focus-check.log`. Test review confirms the actual
+UpdatingPlayerList/overview refresh composition exercises removal of the focused
+action and separately verifies that a pending response cannot steal focus after
+Tab exit. Production review confirms only the open-popup refresh dismissal decision
+changes; the connected-anchor guard and focus-leave dismissal remain intact.
+
+Attempted final native Chrome reload and reconnection both failed with “Sky
+Computer Use native pipe startup failed.” No native save-focus pass is claimed.
+Sam remains unknown in the retained fixture; Alex is known. No additional fixture
+changes, push or release performed.
+
+## Remaining Owner Walkthrough
+
+Open https://localhost/accessibility-contributor-review-20261119/contributions/list
+(and the corresponding `/contributions` overview) in Safari with VoiceOver. First
+confirm VoiceOver speaks an ordinary known control on the page, then:
+
+- Reach Alex and Sam: each participant should be announced as a named button.
+- Open either participant: focus enters Close in a named nonmodal contributor
+  actions dialog; Escape/Close returns to that participant.
+- Tab through and out: actions are reachable and focus is not trapped.
+- Known Alex exposes Player Config; unknown Sam exposes Create Player and the
+  existing-player email action. Check their names and anchored appearance.
+- Last, Create Player for fictional Sam: after success, the popup closes and focus
+  returns to Sam. This is also the outstanding native recheck of the final fix.
+
+Record browser/VoiceOver versions and observations before marking the card done.
+Keep this card open until the native save check and calibrated AT review pass.

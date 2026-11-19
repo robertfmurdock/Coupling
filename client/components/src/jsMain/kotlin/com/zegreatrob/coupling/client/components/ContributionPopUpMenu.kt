@@ -31,7 +31,6 @@ import web.aria.dialog
 import web.cssom.Position
 import web.cssom.em
 import web.dom.Node
-import web.dom.document
 import web.html.HTMLElement
 
 external interface ContributionPopUpMenuProps : Props {
@@ -59,7 +58,8 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
     }
 
     useEffect(players) {
-        if (menuTarget != null) dismiss(contentRef.current?.contains(document.activeElement) == true)
+        // A successful save can remove the focused action before this effect runs.
+        if (menuTarget != null) dismiss(restoreFocus = true)
     }
     useEffect(menuTarget) {
         if (menuTarget != null) contentRef.current?.querySelector("button")?.unsafeCast<HTMLElement>()?.focus()
