@@ -9,7 +9,10 @@ established a performance baseline or claimed measured improvements.
 
 Lightweight draft: refine route selection, measurement conditions, and acceptance
 criteria before playing. Keep Auth0, analytics, GraphiQL, integrations, GraphQL,
-and WebSocket behavior functional. Coordinate resource changes with the separate
+and WebSocket behavior functional. For CDN/externalization changes, compare local
+production JS (including lazy chunks) and browser network evidence together;
+fewer CDN requests alone does not prove a smaller delivered payload. Coordinate
+resource changes with the separate
 [CSP follow-up](CPL-52-WEB_CSP_HARDENING_FOLLOWUP.md) and its CDN-loading constraints.
 
 ## Proposed Safe Slices
@@ -266,3 +269,52 @@ React sharing and actual module consumers remain unchanged. Existing formatting
 and application regressions are retained. Diff checked; no push/release.
 CPL-54 remains open for non-resetting signed-in setup and analysis of the remaining
 active module payload before selecting any broader loading-strategy change.
+
+
+## Remaining Unused Namespace Slice
+
+Starting after `d503f84d5`. Audited repository and emitted production modules.
+Four roots occur only in generated startup namespace imports/global assignments:
+lodash, @nivo/line, @popperjs/core and react-virtualized-auto-sizer. No emitted
+application component imports these roots. Line charts use Recharts; remaining
+NivoLineData references are plain data interfaces, not the Nivo Line runtime.
+Active popup imports react-popper; its dependencies can still load transitively.
+No remaining generated CDN URL lists these four roots in its external parameter.
+
+Remove only those four eager import-map/settings entries. Retain all npm packages,
+active bindings and providers; do not remove Popper's runtime dependency or redesign
+charts. Mechanical dead-loading removal needs no fabricated failing test. Compare
+all surviving generated URLs byte-for-byte, then production build, existing chart/
+popup/component/browser suites, six-sample measurement and full check. No visual,
+interaction or dependency-version changes intended. Validation pending.
+
+
+Owner requested explicit verification that removing CDN entries does not merely
+rebundle their code locally. Performed three controlled production builds with
+identical app source/artwork and different CDN settings only: pre-date-removal,
+current committed settings, then the four-entry candidate restored. Retained
+[bundle-size comparison](../research/WEB_CDN_BUNDLE_SIZE_COMPARISON.json).
+All builds emit 115 JS/MJS files (source maps excluded). Total local JS bytes:
+2,333,969 before date removal; 2,333,913 after; candidate 2,333,607. Only the index
+bridge chunk group changes byte length (-56, then -306); no other JS chunk group
+grows. Offline gzip estimates differ slightly with hashed references (recorded
+separately, not described as actual transfer). All surviving generated CDN URLs
+are byte-identical; only the four intended map entries disappear (26 to 22).
+Thus neither namespace-removal slice shifts package bodies into local JS.
+
+Focused lookup/production, components/jsdom (137), and application Chrome (52)
+checks pass. [Candidate network baseline](../research/WEB_WELCOME_UNUSED_NAMESPACES_BASELINE.json)
+has three cold samples at 323 module responses each, down from 334; reported cold
+CDN bytes approximately 1.143MB vs 1.207MB. Local asset size comparison is controlled;
+aggregate static network bytes still vary with random portraits/cache. First warm
+sample has 91 module ERR_ABORTED events; five other samples have no failures.
+Preexisting baselines also captured transient module aborts. Retain the evidence;
+do not call that warm sample clean or claim the cause is resolved. No timing
+improvement is claimed from this noisy comparison. Full
+`fish -lc './gradlew check --no-daemon'` passes (680 tasks), log
+`/tmp/coupling-unused-namespaces-check.log`. Final source/output review confirms
+all active consumers and npm packages remain; only unused eager namespaces were
+removed. No source map/runtime code movement is hidden by the comparison: the
+size inventory includes every emitted JS/MJS file and separately records gzip
+estimates. Diff checked; no push/release. CPL-54 stays open for active-loading and
+authenticated-fixture work.

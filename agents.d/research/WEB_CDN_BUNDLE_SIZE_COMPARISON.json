@@ -1,0 +1,32 @@
+{
+  "scope": "All emitted production JS/MJS including lazy chunks; excludes source maps. Three builds differ only in CDN settings; app source and portrait assets held fixed.",
+  "gzipNote": "Per-file offline gzip estimates; not actual browser-transferred bytes. Hashed chunk references can alter compression slightly.",
+  "beforeDateRemoval": {
+    "jsBytes": 2333969,
+    "gzipBytes": 682722,
+    "fileCount": 115
+  },
+  "afterDateRemoval": {
+    "jsBytes": 2333913,
+    "gzipBytes": 682755,
+    "fileCount": 115
+  },
+  "candidate": {
+    "jsBytes": 2333607,
+    "gzipBytes": 682584,
+    "fileCount": 115
+  },
+  "candidateChunkByteChanges": {
+    "assets/index.js": -306
+  },
+  "dateRemovalChunkByteChanges": {
+    "assets/index.js": -56
+  },
+  "removedImports": [
+    "@nivo/line",
+    "@popperjs/core",
+    "lodash",
+    "react-virtualized-auto-sizer"
+  ],
+  "changedSurvivingUrls": []
+}

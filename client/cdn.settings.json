@@ -69,12 +69,6 @@
     "@nivo/heatmap": {
       "global": "NivoHeatmap"
     },
-    "@nivo/line": {
-      "global": "NivoLine"
-    },
-    "@popperjs/core": {
-      "global": "PopperCore"
-    },
     "react-flip-toolkit": {
       "global": "ReactFlipToolkit"
     },
@@ -84,14 +78,8 @@
     "react-popper": {
       "global": "ReactPopper"
     },
-    "react-virtualized-auto-sizer": {
-      "global": "ReactVirtualizedAutoSizer"
-    },
     "marked": {
       "global": "Marked"
-    },
-    "lodash": {
-      "global": "_"
     },
     "@emotion/css": {
       "global": "EmotionCss"
