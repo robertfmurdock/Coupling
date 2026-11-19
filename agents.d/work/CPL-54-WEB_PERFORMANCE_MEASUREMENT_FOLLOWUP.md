@@ -225,3 +225,44 @@ lossless edit. Bit/metadata comparisons own the no-visual-change contract; full
 suite owns application regression coverage. Diff checked; no push/release.
 CPL-54 remains open for non-resetting authenticated setup, module-graph analysis
 and better-controlled comparisons before further loading changes.
+
+
+## Unused Date Namespace Slice
+
+Starting after `e10d870fe`. Source/generated-output investigation found an unused
+root date-fns CDN namespace import. Client settings loaded `date-fns` into the
+DateFns global, but repository runtime source has no consumer of that global.
+The real formatter binding imports `date-fns/formatDistance`, which Vite bundles
+locally. Both client/components and client retain their npm date-fns dependency.
+The default esm.sh date-fns root wrapper fans out over hundreds of entry modules;
+current provider docs confirm exported submodules affect its bundling strategy.
+Do not change React sharing or add a new generic bundling flag to address a dead
+import when removing the unused root entry is sufficient.
+
+Smallest change removes only the unused date-fns entry from client/cdn.settings.
+No formatting API, package version, npm dependency, CDN provider, app component or
+visual behavior changes. Mechanical dead-loading removal needs no fabricated red
+phase. Existing PartyStatistics component test checks median duration renders as
+“2 days”; retain it. Rebuild lookup/import map/production, run existing suites and
+capture request-count evidence before full-check/commit. Validation pending.
+
+
+Date namespace validation: focused production lookup/build, components/jsdom (137)
+and application Chrome suite (52) pass. Rebuilt import map has 26 entries and no
+root date-fns entry; emitted JS has no DateFns global, while the production
+statistics module still contains the locally bundled formatter/English locale.
+The existing median-duration “2 days” component scenario remains unchanged.
+
+[Post-removal baseline](../research/WEB_WELCOME_NO_DATE_NAMESPACE_BASELINE.json)
+completed six samples with no failed fetches. Every sample reports 334 module
+responses, versus the previous consistent 601: 267 fewer (44%). Cold readiness
+775–896ms and warm 186–203ms are observations of this run, not a field metric or
+broad speed guarantee; randomized portrait content/cache conditions remain.
+This slice changes one CDN settings entry only, plus measurement evidence/notes.
+Full `fish -lc './gradlew check --no-daemon'` passes (680 tasks), log
+`/tmp/coupling-date-namespace-check.log`. Final production review confirms only
+one unused CDN-map entry was removed; npm packages, the active formatter binding,
+React sharing and actual module consumers remain unchanged. Existing formatting
+and application regressions are retained. Diff checked; no push/release.
+CPL-54 remains open for non-resetting signed-in setup and analysis of the remaining
+active module payload before selecting any broader loading-strategy change.

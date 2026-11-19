@@ -87,9 +87,6 @@
     "react-virtualized-auto-sizer": {
       "global": "ReactVirtualizedAutoSizer"
     },
-    "date-fns": {
-      "global": "DateFns"
-    },
     "marked": {
       "global": "Marked"
     },
