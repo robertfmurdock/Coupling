@@ -30,7 +30,7 @@ before implementation; source evidence alone is not a calibrated AT result.
   player-list refresh/removal of the original trigger. Use the existing jsdom suite
   unless native popover/dialog/focus enforcement requires real Chrome. Retain a
   fallback if introducing a platform feature outside the supported baseline.
-- [ ] Review populated contribution overview/list in native Chrome and calibrated
+- [x] Review populated contribution overview/list in native Chrome and calibrated
   Safari/VoiceOver; compare artwork/anchoring and check both known/unknown
   participant actions. Retain the card until that evidence is recorded.
 
@@ -41,7 +41,9 @@ unknown-participant anchors, and save-completion focus restoration. Cards withou
 a handler remain static. All implementation slices pass focused and full checks.
 Native Chrome overview/list review passed for anchoring and keyboard interaction;
 the final save-focus correction also passed native Chrome recheck after browser
-access recovered. Calibrated Safari/VoiceOver review remains required before closing.
+access recovered. Owner subsequently reported “voiceover seems good” and accepted
+the VoiceOver experience. Closed with that bounded owner acceptance; exact browser/
+VoiceOver versions and per-scenario AT observations were not supplied.
 No push/release authorization.
 
 
@@ -243,3 +245,22 @@ first. No existing user party was changed. No push/release performed.
 This completes the native Chrome save recheck, not calibrated Safari/VoiceOver
 validation. The card remains open for that review. Documentation-only evidence
 update; no runtime changes or repeat suite needed.
+
+
+## Closeout
+
+Owner reviewed the linked walkthrough and reported “voiceover seems good.” Accepted
+as the final owner review for this card. This is owner-reported VoiceOver acceptance;
+no browser/OS/VoiceOver version or detailed scenario transcript was supplied, and
+no additional calibrated matrix is claimed. Native Chrome evidence covers known
+and unknown participant actions, anchored appearance, keyboard entry/dismissal,
+Tab exit, Player Config navigation, and successful Create Player focus return.
+
+Overall review: native named buttons expose existing contributor actions; the
+shared popup owns nonmodal focus behavior; stable email keys preserve anchors;
+refresh restores focus only while the popup remains open. Existing artwork,
+positioning options and save commands are preserved. Component composition tests
+cover the two bugs found during native review. Final implementation `661b77836`
+passed 136 component tests and full `./gradlew check` (680 tasks); native follow-up
+was recorded in `0d12c818c`. This closeout changes documentation only; diff checked,
+no suite rerun. Fixture retained. No push/release performed.
