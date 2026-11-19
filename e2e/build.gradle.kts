@@ -1,3 +1,5 @@
+import com.zegreatrob.coupling.plugins.js.NodeExec
+import com.zegreatrob.coupling.plugins.js.setup
 import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameter
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode
@@ -184,3 +186,26 @@ val browserDiagnosticsBrowserTest = tasks.register("browserDiagnosticsBrowserTes
 tasks.named("check") { dependsOn(browserDiagnosticsTest, browserDiagnosticsBrowserTest) }
 tasks.named("e2eRun") { mustRunAfter("jsNodeDiagnosticsBrowserTest") }
 tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter("jsNodeDiagnosticsBrowserTest", "jsNodeTest") }
+
+
+val performanceSources = layout.projectDirectory.dir("performance")
+tasks.withType<KotlinJsTest>().configureEach { inputs.dir(performanceSources) }
+tasks.register<NodeExec>("measureWelcomePerformance") {
+    description = "Records six bounded Welcome lab samples; requires browser execution outside the sandbox"
+    group = "verification"
+    setup(project)
+    taskWorkingDirectory.set(rootProject.layout.projectDirectory)
+    dependsOn(appConfiguration, clientConfiguration, ":composeUp", ":kotlinNpmInstall")
+    val report = layout.buildDirectory.file("reports/web-performance/welcome.json")
+    val chromeBinary = providers.environmentVariable("WDIO_CHROME_BINARY").orElse("")
+    inputs.dir(performanceSources)
+    inputs.property("chromeBinary", chromeBinary)
+    outputs.file(report)
+    outputs.upToDateWhen { false }
+    arguments.set(listOf(
+        performanceSources.file("measure-welcome.mjs").asFile.absolutePath,
+        rootProject.layout.projectDirectory.asFile.absolutePath,
+        report.get().asFile.absolutePath,
+        chromeBinary.get(),
+    ))
+}

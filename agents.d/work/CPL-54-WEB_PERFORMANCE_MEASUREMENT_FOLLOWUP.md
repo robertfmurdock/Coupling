@@ -94,3 +94,47 @@ checked. No native network trace, LCP/CLS/INP improvement, or transferred-byte
 reduction is claimed from the source stylesheet size/import count. No push/release
 performed. Next slice: choose repeatable baseline routes/conditions and measurement
 harness before selecting any remaining active-resource optimization.
+
+
+## Welcome Baseline Harness Slice
+
+Starting after `e8badbcf4`. Deliver an opt-in Gradle measurement task for Welcome
+before tackling authenticated flows: three fresh-profile/warm-refresh pairs,
+fixed outer window, unthrottled, visible Come on in! readiness plus a bounded 2s
+observation. This is independently useful tooling, not completion of the planned
+three-route baseline. No runtime UI or loading-policy change.
+
+Three Node/Testmints regressions confirmed meaningful failures for CLS session
+windowing/recent-input exclusion, reporting zero resource sizes separately, and
+unsupported versus empty metrics. The collector stores numeric timing/size data
+only; no URLs, headers, page text or credentials. Real observer installation is
+exercised by the opt-in task, which completed six samples with explicit environment,
+revision/dirty-state, supported-observer, viewport and visibility metadata. Each
+browser/driver is owned and closed in finally blocks. Reports remain partial until
+all samples complete and are always freshly measured, outside the check task.
+
+Use [the measurement instructions](../../e2e/performance/README.md). Retained
+[first bounded baseline](../research/WEB_WELCOME_BASELINE.json) has all six samples;
+it was captured from the pre-commit working tree (dirty state recorded). This
+snapshot does not establish a bottleneck or a performance improvement. Most
+cross-origin resource sizes are unavailable, so reported bytes cannot be treated
+as total transfer. Missing LCP is retained as null rather than zero. Randomized
+Welcome content, live CDN caches and unthrottled host conditions limit comparison.
+Authenticated routes, traces, complete transfer evidence and controlled conditions
+remain open.
+
+Validation: Node/Testmints aggregation suite passes (18 total, three new),
+`:e2e:measureWelcomePerformance` completes all six samples, formatting passes,
+and full `fish -lc './gradlew check --no-daemon'` passes (690 tasks), log
+`/tmp/coupling-welcome-harness-check.log`. Final retained run: fresh-profile
+readiness 899–1857ms and LCP 960–1916ms; warm readiness 277–413ms with LCP absent.
+Each cold sample reported 638 resource entries, 636 with zero size fields. Thus
+this does not establish total page bytes or a measured loading improvement.
+
+Test review keeps aggregation rules in the Node suite, outside browser/E2E flows;
+measurement smoke execution owns actual pre-navigation observer/driver integration.
+Production/tooling review confirms no app runtime changes, no new dependencies,
+Gradle-owned automation, bounded numeric-only records and explicit unknown/partial
+states. Task is opt-in and always executes, so local timing variability cannot
+make normal check flaky. Diff checked; no push/release performed. CPL-54 stays open
+for the authenticated baseline and measurement gaps above.

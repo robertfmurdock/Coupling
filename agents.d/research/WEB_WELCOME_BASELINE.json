@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "status": "complete",
+  "revision": "e8badbcf459416fda6dc8e8cb515ed8a47871662",
+  "workingTreeDirty": true,
+  "timestamp": "2026-11-19T18:21:49.941Z",
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "osRelease": "27.2.0",
+    "cpuModel": "Apple M2 Pro"
+  },
+  "route": "/welcome/",
+  "auth": "signed-out, fresh Chrome profile per pair",
+  "conditions": {
+    "network": "unthrottled local app plus live external CDNs",
+    "cpu": "unthrottled",
+    "window": [
+      1280,
+      900
+    ],
+    "observationAfterReadyMs": 2000
+  },
+  "caveats": [
+    "Cold means fresh browser profile; OS DNS/TLS and CDN server caches are uncontrolled.",
+    "Welcome chooses randomized content; content variation is not controlled by this baseline.",
+    "A supported observer with no LCP entry is reported as null, not zero.",
+    "Reported transfer bytes exclude resources hidden by Timing-Allow-Origin; zero sizes may mean unavailable timing or empty resources.",
+    "LCP and CLS are bounded lab observations, not field Core Web Vitals. No INP is measured.",
+    "Readiness is the visible Come on in! button. No authenticated data is loaded or changed."
+  ],
+  "samples": [
+    {
+      "pair": 1,
+      "cache": "cold-profile",
+      "readinessElapsedMs": 1050.7899169999996,
+      "readyAtMs": 1048.8000000715256,
+      "lcpMs": 1112,
+      "cls": 0.00033479783151830946,
+      "longTaskDurationMs": 114,
+      "longTaskCount": 1,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 638,
+      "reportedTransferBytes": 2643,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 3055.3000000715256,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 54.10000002384186,
+        "domContentLoadedMs": 934.3000000715256,
+        "loadMs": 960.3999999761581
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      }
+    },
+    {
+      "pair": 1,
+      "cache": "warm-reload",
+      "readinessElapsedMs": 412.92645899999934,
+      "readyAtMs": 410.89999997615814,
+      "lcpMs": null,
+      "cls": 0,
+      "longTaskDurationMs": 0,
+      "longTaskCount": 0,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 639,
+      "reportedTransferBytes": 0,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2416.399999976158,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 31.200000047683716,
+        "domContentLoadedMs": 153,
+        "loadMs": 153.89999997615814
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      }
+    },
+    {
+      "pair": 2,
+      "cache": "cold-profile",
+      "readinessElapsedMs": 898.7278750000005,
+      "readyAtMs": 896.7000000476837,
+      "lcpMs": 960,
+      "cls": 0.00033199666823659625,
+      "longTaskDurationMs": 91,
+      "longTaskCount": 1,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 638,
+      "reportedTransferBytes": 2643,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2902,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 16,
+        "domContentLoadedMs": 816.5,
+        "loadMs": 831.4000000953674
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      }
+    },
+    {
+      "pair": 2,
+      "cache": "warm-reload",
+      "readinessElapsedMs": 298.59137499999997,
+      "readyAtMs": 297,
+      "lcpMs": null,
+      "cls": 0,
+      "longTaskDurationMs": 0,
+      "longTaskCount": 0,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 639,
+      "reportedTransferBytes": 0,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2301.7999999523163,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 20,
+        "domContentLoadedMs": 130.09999990463257,
+        "loadMs": 130.5
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      }
+    },
+    {
+      "pair": 3,
+      "cache": "cold-profile",
+      "readinessElapsedMs": 1857.3878330000025,
+      "readyAtMs": 1856.3999999761581,
+      "lcpMs": 1916,
+      "cls": 0.000042649597674608235,
+      "longTaskDurationMs": 95,
+      "longTaskCount": 1,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 638,
+      "reportedTransferBytes": 2643,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 3860.7999999523163,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 19.199999928474426,
+        "domContentLoadedMs": 1778.6999999284744,
+        "loadMs": 1794.1000000238419
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      }
+    },
+    {
+      "pair": 3,
+      "cache": "warm-reload",
+      "readinessElapsedMs": 277.0322500000002,
+      "readyAtMs": 275.39999997615814,
+      "lcpMs": null,
+      "cls": 0,
+      "longTaskDurationMs": 0,
+      "longTaskCount": 0,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 639,
+      "reportedTransferBytes": 0,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2279.7000000476837,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 10.5,
+        "domContentLoadedMs": 129.29999995231628,
+        "loadMs": 129.79999995231628
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      }
+    }
+  ],
+  "browser": {
+    "version": "158.0.8127.36",
+    "platform": "mac"
+  }
+}
