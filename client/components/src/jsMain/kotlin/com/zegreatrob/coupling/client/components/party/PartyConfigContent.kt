@@ -50,13 +50,13 @@ val PartyConfigContent by nfc<PartyConfigContentProps> { (party, boost, isNew, o
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")
         borderColor = Color("#ff8c00")
 
-        ConfigHeader(party = party, boost = boost) {
+        ConfigHeader(party = party, boost = boost, partyNavigable = isNew != true) {
             +"Party Configuration"
         }
         div {
             css { display = Display.flex }
             partyConfigEditor(party, isNew == true, onChange, onSave, onDelete)
-            PartyCard(party)
+            PartyCard(party = party, navigable = isNew != true)
         }
     }
 }

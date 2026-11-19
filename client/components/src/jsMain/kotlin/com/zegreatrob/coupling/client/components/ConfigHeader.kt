@@ -32,6 +32,7 @@ import web.cssom.repeat
 external interface ConfigHeaderProps : PropsWithChildren {
     var party: PartyDetails
     var boost: Boost?
+    var partyNavigable: Boolean?
 }
 
 @ReactFunc
@@ -56,7 +57,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                     gridRowStart = integer(1)
                     gridRowEnd = integer(3)
                 }
-                PartyCard(party = party, size = 75, boost = props.boost)
+                PartyCard(party = party, size = 75, boost = props.boost, navigable = props.partyNavigable)
             }
             div {
                 css {

@@ -36,6 +36,49 @@ import kotlin.test.Test
 class PartyConfigTest {
 
     @Test
+    fun newPartyCardsAreStaticPreviews() = setup(object {
+        val expectedParty = PartyDetails(stubPartyId(), name = "Unsaved party")
+    }) exercise {
+        render(RenderOptions(wrapper = TestRouter)) {
+            PartyConfigContent {
+                party = expectedParty
+                isNew = true
+                onChange = {}
+                onSave = {}
+            }
+        }
+    } verify { result ->
+        val cards = result.container.querySelectorAll("[data-party-id]")
+        cards.length.assertIsEqualTo(2)
+        repeat(cards.length) { index ->
+            val card = cards.item(index) as org.w3c.dom.Element
+            card.closest("a, button, [tabindex]").assertIsEqualTo(null)
+            card.querySelector("a, button, input, select, textarea, [tabindex]").assertIsEqualTo(null)
+        }
+    }
+
+    @Test
+    fun savedPartyCardsLinkToTheirHomePage() = setup(object {
+        val expectedParty = PartyDetails(PartyId("saved-party"))
+    }) exercise {
+        render(RenderOptions(wrapper = TestRouter)) {
+            PartyConfigContent {
+                party = expectedParty
+                isNew = false
+                onChange = {}
+                onSave = {}
+            }
+        }
+    } verify { result ->
+        val cards = result.container.querySelectorAll("[data-party-id]")
+        cards.length.assertIsEqualTo(2)
+        repeat(cards.length) { index ->
+            val card = cards.item(index) as org.w3c.dom.Element
+            card.closest("a")?.getAttribute("href").assertIsEqualTo("/saved-party/pairAssignments/current/")
+        }
+    }
+
+    @Test
     fun badgeSettingsDescribeGroupingAndPlayerAssignment() = setup(object {
         val expectedParty = PartyDetails(
             stubPartyId(),

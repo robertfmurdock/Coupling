@@ -485,3 +485,39 @@ resolved. Next and remaining gate is the manual matrix, including the user's
 agreed calibrated Safari/VoiceOver pass and fresh visual review. Do not mark the
 card complete before recording that evidence, resolving regressions, and explicitly
 disposing of remaining conditions. No push/release performed.
+
+
+## Manual Review and Unsaved Party Preview: 2026-11-19
+
+Native Chrome access recovered. A fresh hard reload loaded About; at 200% zoom
+its text wrapped within the window and the centered peer header remained visible.
+Native Tab reached Back to Coupling and Enter returned to Party List. Recent
+information scrolled to its final “– RoB” at 200%; Escape closed it and returned
+focus to its trigger. Zoom restored to 100%. This does not establish forced-colors,
+contrast, or screen-reader behavior; Party List itself showed horizontal overflow
+at 200%, within the broader reflow inventory for follow-up.
+
+Owner's manual feedback: player configuration tabbing seems good. New-party cards
+were tabbable and could navigate to a party that had not been saved. The remaining
+sentence (“everything else seems”) was incomplete; browser/OS versions and specific
+VoiceOver results are not supplied, so no complete matrix pass is inferred.
+
+Both cards in PartyConfigContent now render as static previews when isNew is true.
+The shared PartyCard owns optional link wrapping, ConfigHeader forwards the option,
+and existing callers retain navigation by default. Existing card styles and source
+placement remain. Saved-party links retain their current-pairs destination. Other
+party navigation controls are outside this bounded correction.
+
+Component/jsdom regression failed on the existing link ancestor. The companion
+saved-party scenario retains destination coverage. Focused components tests (128)
+and formatting passed. Full-suite result is recorded below after completion.
+The audit card remains open pending explicit disposition of remaining manual gates.
+
+Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks). Test review:
+the new-party scenario observes both card ancestors and descendants for focusable
+controls; saved-party coverage checks both native link destinations. Production
+review: optional navigation defaults preserve all existing saved-party callers,
+with shared visual rendering and no CSS changes. Native Chrome loaded the fresh
+new-party page in a separate tab: both previews appear as static content in the
+AX tree and retain their established placement visually. No saved data changed.
+`git diff --check` passed. No push/release performed.

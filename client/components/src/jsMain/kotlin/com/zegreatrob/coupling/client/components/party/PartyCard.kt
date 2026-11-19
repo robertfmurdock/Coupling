@@ -46,6 +46,7 @@ external interface PartyCardProps : Props {
     var party: PartyDetails
     var size: Int?
     var boost: Boost?
+    var navigable: Boolean?
 }
 
 private val boostPin = Pin(
@@ -56,25 +57,32 @@ private val boostPin = Pin(
 
 @ReactFunc
 val PartyCard by nfc<PartyCardProps> { props ->
-    val (party) = props
-    val size = props.size ?: 150
-    Link {
-        to = party.id.currentPairsPath()
-        visuallyHidden { +"Party Home Page" }
-        span {
-            css {
-                staticCardStyles()
-                partyCardCss(size)
-            }
-            asDynamic()["data-party-id"] = party.id.value
-            ariaHidden = true
+    if (props.navigable == false) {
+        partyCardContent(props)
+    } else {
+        Link {
+            to = props.party.id.currentPairsPath()
+            visuallyHidden { +"Party Home Page" }
+            partyCardContent(props)
+        }
+    }
+}
 
-            div {
-                css { margin = ((size * 0.02).px) }
-                PartyCardHeader(party, size)
-                props.boost?.let { boostIndicator(it) }
-                partyGravatar(party, size)
-            }
+private fun ChildrenBuilder.partyCardContent(props: PartyCardProps) {
+    val party = props.party
+    val size = props.size ?: 150
+    span {
+        css {
+            staticCardStyles()
+            partyCardCss(size)
+        }
+        asDynamic()["data-party-id"] = party.id.value
+        ariaHidden = props.navigable != false
+        div {
+            css { margin = ((size * 0.02).px) }
+            PartyCardHeader(party, size)
+            props.boost?.let { boostIndicator(it) }
+            partyGravatar(party, size)
         }
     }
 }
