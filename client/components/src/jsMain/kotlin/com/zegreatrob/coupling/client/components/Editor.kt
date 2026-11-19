@@ -52,7 +52,7 @@ val Editor by nfc<PropsWithChildren> { props ->
                 backgroundColor = Color("#FDF9EDFF")
                 height = 14.px
                 padding = Padding(2.px, 5.px, 2.px, 5.px)
-                color = Color("#CDA018FF")
+                color = Color("#856000FF")
                 fontSize = 14.px
                 overflow = Overflow.hidden
                 fontFamily = string("Arial, Helvetica, sans-serif")
@@ -87,7 +87,7 @@ val Editor by nfc<PropsWithChildren> { props ->
                 padding = 3.px
                 margin = Margin(0.px, (-9).px, (-9).px, (-9).px)
                 textAlign = TextAlign.center
-                color = Color("#CDA018FF")
+                color = Color("#856000FF")
                 fontSize = 11.px
             }
 

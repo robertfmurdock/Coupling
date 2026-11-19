@@ -22,6 +22,16 @@ The contribution sequence is defined in [AGENTS.md](../../AGENTS.md).
 - Prefer code that expresses its intent. Retain comments explaining reasons and
   constraints that the code cannot express.
 
+## Visual Character
+
+Coupling aims for a playful game-show feel with an eclectic, Price Is Right-inspired
+palette. Preserve its energy, vivid accents, and varied control colors rather than
+standardizing the UI into a muted or uniform palette. Accessibility improvements
+should retain that character: readable text can use a darker related shade while
+bright borders, backgrounds, artwork, and accents carry the color. Review palette
+changes in the surrounding page as well as in isolated samples; obtain approval
+for visual changes within the task's agreed scope.
+
 ## Kotlin/JS Interop
 
 - The `jstools` convention enables Kotlin's plain-object plugin.

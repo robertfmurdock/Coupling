@@ -22,10 +22,10 @@ playing rather than treating every chart and page as one implementation slice.
 - Statistics and contribution views contain fixed 600px plots and nowrap/inline
   containers. Native narrow-width/zoom walkthroughs must establish which controls
   or data become unreachable before selecting a responsive design.
-- Editor declares 14px gold #CDA018 labels on #FDF9ED and 11px hints on #FBF3DA.
-  WCAG sRGB contrast calculation for those source pairs gives 2.31:1 and 2.19:1,
-  below the 4.5:1 normal-text criterion. Confirm computed runtime colors, states and
-  backgrounds; source calculation does not establish a complete contrast audit.
+- Shared Editor label/hint contrast is complete in [CPL-61](../work_completed/CPL-61-EDITOR_TEXT_CONTRAST.md).
+  Owner accepted the before/candidate sample; the full-page candidate visual pass
+  was blocked by local blank rendering/browser access. Other contrast/states and
+  forced-colors remain outside that bounded slice.
 - GeneralControlBar heading correction is split into [shared header semantics](../work_completed/CPL-60-WEB_GENERAL_HEADER_SEMANTICS_FOLLOWUP.md);
   keep its implementation and native before/after evidence on that bounded card.
 - Route-title correction is split into [distinct browser titles](../work_completed/CPL-59-WEB_ROUTE_TITLES_FOLLOWUP.md);
@@ -50,7 +50,7 @@ playing rather than treating every chart and page as one implementation slice.
 
 ## Completion and Current State
 
-Drafted 2026-11-19. Page-title and shared-header semantics slices are complete
+Drafted 2026-11-19. Page-title, shared-header semantics and Editor text-contrast slices are complete
 in the linked cards. Remaining findings are review candidates; the broader
 runtime/AT matrix is not complete. The approved About-only reflow correction stays on the
 original audit card; do not transfer that unfinished work here. Each slice requires
