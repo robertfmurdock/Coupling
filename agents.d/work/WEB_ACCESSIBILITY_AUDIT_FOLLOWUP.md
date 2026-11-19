@@ -390,3 +390,98 @@ Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks). Test review
 confirmed actual focus plus nontransparent, nonzero outlines; production review
 confirmed only the suppressing overrides were removed. Diff check clean. Recorded
 in this shared-form-focus slice commit. Broad audit remains open.
+
+
+## Completion Pass: 2026-11-19
+
+Completed release-safe slices in this pass:
+- 709b2b30b: centered About title/Back group; Chrome geometry red/green and full
+  check passed. Subsequent native Chrome screenshot confirmed centered desktop
+  rendering, and native Tab reached Back. Native 200% zoom exposed fixed-width
+  article overflow; zoom restored to 100%.
+- 6ffe87731: removed three shared form outline suppressions; three Chrome regressions
+  red/green and full check passed. These are computed-style tests with simulated
+  user-event Tab, not a native-keyboard or screen-reader certification.
+
+### Inventory disposition
+
+The route inventory above remains the bounded route set. Additional source review
+covered CouplingRouter/CouplingRoute, GraphiQL/GraphIQLPageLoader, UserConfig,
+CouplingDataLoadWrapper, History, PairSection/DraggableThing, PinButton,
+PartyStatistics/TeamStatistics/PairReportTable/PlayerHeatmap, Heatmap and
+CouplingResponsiveLine, ContributionLabelFilter/PairFrequencyControls,
+ContributionCard/Header/Overview, ContributionPopUpMenu/CouplingPopUp and
+ContributorMenu. All routes have declared titles; title correctness/uniqueness has
+specific residual findings. Config forms have visible labels; important selected
+hints were associated in completed slices. User identity fields are intentionally
+disabled, not missing edit interactions. GraphiQL already has a descriptive iframe
+title. History and PairReportTable render cards, so absence of HTML table headers
+alone is not evidence that they are malformed tables.
+
+Remaining larger findings have bounded draft owners:
+- [Manual pairing/pin keyboard operations](WEB_PAIRING_KEYBOARD_FOLLOWUP.md):
+  source drag/drop on noninteractive spans/divs; reproduce full operation set first.
+- [Contributor keyboard popup](WEB_CONTRIBUTOR_POPOVER_FOLLOWUP.md): real participant
+  trigger is a click span; existing test's artificial button misses that boundary.
+- [Data views, reflow and contrast](WEB_ACCESSIBLE_DATA_AND_REFLOW_FOLLOWUP.md):
+  heatmap values only in color, chart/legend runtime audit, fixed plot dimensions,
+  measured source contrast pairs, heading/title and loading/error model candidates.
+  Source calculations and absent attributes are not claimed as runtime/AT passes.
+
+### Remaining completion gate and handoff
+
+User agreed to perform the final Safari/VoiceOver pass. The concrete
+[manual checklist](../research/WEB_ACCESSIBILITY_MANUAL_REVIEW.md) names calibration,
+local fixtures, route actions, expected results and untested conditions. It is not
+a passing result. Chrome native walkthrough remains partial because browser-host
+access is unavailable and native AX/screenshot states update intermittently.
+Forced-colors, calibrated screen-reader results, populated saved-route walkthroughs
+and runtime contrast evidence remain unperformed. Do not mark the broad card
+complete or move it to work_completed based only on the source inventory.
+
+User explicitly approved About narrow-width reflow. Added a 320px Chrome regression
+that fails on existing overflow. Initial frame-width attempt still overflowed by
+20px. Current uncommitted revision lets About's frame shrink as a centered flex
+item, retaining its original margins, and limits the article width to available
+space. Its rerun stopped during Gradle configuration before tests: AWS SSO expired.
+Both normal shell and fish `aws sts get-caller-identity` report expired token;
+requested owner `aws sso login` per GRADLE_PLAYBOOK. No AWS profiles modified.
+
+Historical handoff at credential expiry: committed head 6ffe87731. Uncommitted: AboutPageContent.kt,
+PageLayoutTest.kt, this card, manual checklist and the three draft follow-up cards.
+Next: after owner login, run focused Chrome checks, resolve any remaining reflow
+failure, full check, review and commit; then obtain/manual-record required evidence
+and prioritize any remaining fixes before closure. No push/release performed.
+Repository testing-guidance additions requested only after this card finishes
+remain deferred until its actual closeout.
+
+
+## About Reflow Completion: 2026-11-19
+
+Owner renewed AWS SSO. Identity check succeeded outside the sandbox (AWS needs to
+refresh its credential cache); no profile changes were made. Focused Chrome tests
+and formatting passed with the revised shrinkable frame. The 320px test now uses
+an explicit test-owned host rather than a chain of production parent elements.
+It checks horizontal overflow across the whole About composition, including the
+article, header and portrait cards, and checks Back remains within the host.
+The existing desktop peer-group alignment scenario remains green.
+
+About alone now uses a centered flex wrapper and a shrinkable border-box frame
+with its original margins; its 40em article has max-width:100%. This preserves the
+desktop width and allows article/header wrapping in a narrow container. It does
+not mask overflow or change the shared PageFrame default. Test review confirmed
+geometry belongs in the real-browser suite and existing regression assertions
+remain; production review confirmed styles are local to About.
+
+Full `fish -lc './gradlew check --no-daemon'` passed: 680 tasks, 59 E2E scenarios,
+zero failures. `git diff --check` clean. Fresh native visual verification was
+attempted but blocked by the computer-use server's noWindowsAvailable error;
+therefore only automated geometry evidence is claimed for this reflow revision.
+
+Current state after this slice: approved About reflow complete and recorded in
+this commit, along with the manual-review checklist and three draft finding cards.
+No uncommitted implementation should remain after commit. Credential blocker is
+resolved. Next and remaining gate is the manual matrix, including the user's
+agreed calibrated Safari/VoiceOver pass and fresh visual review. Do not mark the
+card complete before recording that evidence, resolving regressions, and explicitly
+disposing of remaining conditions. No push/release performed.

@@ -10,8 +10,11 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import emotion.react.css
+import kotlinx.browser.document
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.p
 import web.cssom.px
+import web.dom.ElementId
 import kotlin.math.abs
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -35,6 +38,28 @@ class PageLayoutTest {
         (abs((heading.left - header.left) - (header.right - back.right)) <= 4)
             .assertIsEqualTo(true, "Group is centered allowing the link's existing margins")
         (back.top < heading.bottom && back.bottom > heading.top).assertIsEqualTo(true)
+    }
+
+    @Test
+    fun narrowAboutKeepsArticleAndNavigationWithinItsContainer() = asyncSetup() exercise {
+        renderNavigation {
+            div {
+                id = ElementId("about-test-viewport")
+                css { width = 320.px }
+                aboutPageContent {
+                    p { +"A readable article with enough words to wrap across several lines in a narrow window." }
+                }
+            }
+        }
+    } verify {
+        val host = document.getElementById("about-test-viewport")!!
+        (host.scrollWidth <= host.clientWidth).assertIsEqualTo(
+            true,
+            "About fits without horizontal scrolling: ${host.scrollWidth} within ${host.clientWidth}",
+        )
+        val bounds = host.getBoundingClientRect()
+        val back = screen.getByRole("link", RoleOptions(name = "Back to Coupling!")).getBoundingClientRect()
+        (back.left >= bounds.left && back.right <= bounds.right).assertIsEqualTo(true)
     }
 
     @Test

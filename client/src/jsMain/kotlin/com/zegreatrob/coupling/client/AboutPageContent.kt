@@ -17,6 +17,7 @@ import react.PropsWithChildren
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import web.cssom.AlignItems
+import web.cssom.BoxSizing
 import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Display
@@ -24,16 +25,29 @@ import web.cssom.FlexWrap
 import web.cssom.JustifyContent
 import web.cssom.deg
 import web.cssom.em
+import web.cssom.pct
 import web.cssom.px
 
 val aboutPageContent by nfc<PropsWithChildren> { props ->
     div {
+        css {
+            display = Display.flex
+            justifyContent = JustifyContent.center
+        }
         PageFrame(
             borderColor = Color("rgb(94, 84, 102)"),
             backgroundColor = Color("floralwhite"),
+            className = emotion.css.ClassName {
+                boxSizing = BoxSizing.borderBox
+                maxWidth = 100.pct
+                minWidth = 0.px
+            },
         ) {
             div {
-                css { width = 40.em }
+                css {
+                    width = 40.em
+                    maxWidth = 100.pct
+                }
                 aboutHeader()
                 +props.children
                 playerHeader()
