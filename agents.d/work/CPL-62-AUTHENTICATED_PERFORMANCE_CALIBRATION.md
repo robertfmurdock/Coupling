@@ -1,4 +1,6 @@
-# CPL-62 — Authenticated performance baseline and calibration
+# CPL-62 — Authenticated performance and route-scoped CDN loading
+
+**Work card protocol: 2**
 
 ## Goal and Constraints
 
@@ -6,7 +8,19 @@ Complete the signed-in and measurement-calibration work transferred from
 [CPL-54](../work_completed/CPL-54-WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md).
 Measure Party List and saved current pairs with known data and repeated cold-cache/
 warm runs. Preserve app behavior, visuals and ordinary E2E coverage. No timing
-budgets until variability is understood; no production deployment implied.
+budgets until variability is understood. The baseline is independently deliverable.
+After calibration, use it to assess one route-only CDN dependency group. Preserve
+shared React identity, all actions and the established visuals and animations.
+
+## Acceptance Evidence
+
+- Reproduce Party List and saved current-pairs readiness with an owned fixture
+  and three cold/warm pairs per route. Keep observer limitations, aborts and
+  missing samples visible alongside measurements.
+- For one selected dependency group, show absence on startup and correct
+  loading on first use in a production build. Retain matched request, byte and
+  emitted JavaScript comparisons plus action and recovery evidence. A runtime
+  inventory that rules out a safe candidate can close the loading investigation.
 
 ## Evidence and Starting Points
 
@@ -26,8 +40,8 @@ budgets until variability is understood; no production deployment implied.
 
 ## Safe Slice Sequence
 
-- [ ] Isolate reusable, non-resetting auth/fixture setup. Test its contract at the
-  narrowest helper boundary; preserve normal E2E login. Seed fresh browser profiles
+- [ ] Isolate reusable, non-resetting auth/fixture setup. At the helper boundary, test that setup leaves unrelated parties intact
+  and cleanup targets only the named fixture. Preserve normal E2E login. Seed fresh browser profiles
   without warming application assets during login, or explicitly label that cost.
   Confirm how the same test identity can coexist with ordinary E2E runs.
 - [ ] Measure `/parties/` and `/:partyId/pairAssignments/current/` with a small saved
@@ -42,14 +56,41 @@ budgets until variability is understood; no production deployment implied.
   explicitly. Add one representative interaction trace if reliable tooling is
   available; label lab interaction observations separately from field INP.
 
-## Completion and Validation
+## Route-Scoped CDN Loading
 
-Done when both authenticated routes have reproducible readiness/data contracts,
-owned setup/cleanup, retained repeated measurements and documented observer/network
-limits. If interaction/field telemetry requires a separate project, scope that
-explicitly before playing rather than calling an absent measurement complete.
-Use Testmints for helper tests, real browsers for observer/route/auth integration,
-then full `fish -lc './gradlew check --no-daemon'` outside the sandbox per slice.
-No implementation or measured authenticated baseline exists yet. Use the existing
-configured test identity; do not create accounts or perform global fixture resets.
-No push/release.
+`client/src/jsMain/resources/index.html` eagerly imports every configured CDN
+namespace and assigns it to window. Meanwhile, emitted lazy route chunks have
+real ESM imports. This suggests possible redundant startup loading of active
+chart, clipboard or drag/drop libraries. It does not prove that removing every
+namespace assignment is safe: audit globals, side effects, peers, GraphiQL and
+first-use behavior first. Preserve inline/server-injected configuration timing.
+
+The retained final Welcome baseline has 323 CDN module responses per load. Removing
+unused entries reduced requests without local bundle growth; remaining packages
+have active consumers. Do not apply a blanket CDN bundling or self-hosting change.
+
+### Safe Slice Sequence
+
+- [ ] Inventory generated startup/route imports and global/side-effect consumers.
+  Choose one active route-only package group. Declare Welcome readiness and the
+  affected action/route contract; consult current Modern Web Guidance.
+- [ ] Add production-built browser evidence showing that the chosen package is
+  absent from startup and loads when actually needed, while the feature works.
+  Keep detailed component behavior below E2E. Confirm a meaningful failure before
+  changing loading. A source-string test or lower request count alone is insufficient.
+- [ ] Defer that group with existing module/route mechanisms. Retain import maps
+  and externals where required so code is not simply rebundled locally. Preserve
+  singletons and server/dev configuration; obtain approval for any visible changes.
+- [ ] Compare all emitted JS including lazy chunks and network bytes/request counts
+  under matched conditions. Validate first use, repeat use, and error/loading
+  recovery on affected routes; retain before/after evidence and full-suite results.
+
+Reuse the generated import map and runtime request inventory from
+[CPL-52](CPL-52-WEB_CSP_HARDENING_FOLLOWUP.md) where conditions match. Coordinate
+script and header changes there. Avoid blanket bundling or self-hosting changes.
+
+## Resume Note
+
+Start by isolating non-resetting fixture setup. Signed-in measurements, observer
+calibration and loading implementation are pending. Keep field telemetry as a
+separate decision if reliable interaction tooling is unavailable.

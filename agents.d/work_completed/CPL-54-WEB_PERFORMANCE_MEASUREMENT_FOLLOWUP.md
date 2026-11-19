@@ -7,8 +7,7 @@ verified dead-loading removal, and lossless artwork compression. The original
 draft also proposed authenticated routes, broader calibration and interaction
 traces. Those are not complete; they are transferred to
 [CPL-62](../work/CPL-62-AUTHENTICATED_PERFORMANCE_CALIBRATION.md).
-Further active route-only dependency loading is scoped in
-[CPL-63](../work/CPL-63-ROUTE_SCOPED_CDN_LOADING.md).
+That card also owns the route-scoped CDN loading work.
 
 Keep Auth0, GraphQL/WebSockets, GraphiQL and integrations functional; preserve
 visual placement, artwork and the eclectic game-show palette. No CSP enforcement,
@@ -97,7 +96,7 @@ query URLs, bodies or party identifiers are captured by these reports.
 
 CPL-62 owns non-resetting auth fixtures, authenticated routes, warm-observer/abort
 calibration and interaction evidence. The normal E2E bootstrap clears test-account
-parties and is not an appropriate profiling entry point. CPL-63 owns further
+parties and is not an appropriate profiling entry point. CPL-62 also owns further
 active-library deferral, including local-bundle and first-use tradeoffs. CPL-56
 continues the separate accessibility data/reflow work. None of those findings is
 claimed resolved by this closeout.

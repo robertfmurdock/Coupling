@@ -1,36 +1,39 @@
 # CPL-58 — Keyboard alternatives for manual pairing and pins
 
+**Work card protocol: 2**
+
 ## Goal and Constraints
 
-Make manual player rearrangement and pin assignment usable without drag gestures.
-Finding from [accessibility audit](../work_completed/CPL-53-WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
-Priority: core keyboard capability. This is a draft; agree the visible interaction
-before implementation. Preserve pointer drag behavior and obtain approval before
-adding/repositioning controls or changing the established pairing layout.
+Make manual pairing and pin assignment operable without dragging. Preserve pointer
+drag behavior, the existing save path, and the keyboard-operable Spin control.
+Agree the visible interaction before adding or repositioning controls.
+[Extended accessibility audit](../work_completed/CPL-53-WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
 
-## Evidence and Starting Points
+## Acceptance Evidence
 
-Source review: components/pairassignments/DraggableThing.kt registers drag/drop on
-span/div refs with no keyboard interaction. Review PairSectionPanel and pin bag
-call sites to enumerate move/swap/unpair/pin/remove operations before claiming all
-manual paths are covered. This is not a recorded native-keyboard reproduction.
-Spin itself remains a separately named, keyboard-operable control.
+- A keyboard user can complete every supported manual operation. Inventory
+  move, swap, unpair, assign pin, and remove pin against the existing callbacks.
+- Cancel and invalid or no-op actions leave the arrangement intact. Focus stays
+  on a predictable control after a move, and relevant state changes are announced
+  in calibrated assistive technology.
+- Pointer drag still performs the same operations. Verify save and reload for
+  changed paths whose contract includes persistence.
 
 ## Safe Slice Sequence
 
-- [ ] Reproduce one representative unavailable operation with a local two-player,
-  one-pin fixture and native keyboard; map the current callbacks and save behavior.
-  Agree a minimal interaction that exposes equivalent operations without dragging.
-- [ ] Deliver one complete operation at its owning component/action boundary;
-  use jsdom for selection/action contracts and real Chrome for actual focus/style
-  enforcement. Reuse existing mutation paths; keep save/reload E2E evidence only
-  when persistence is part of the changed contract.
-- [ ] Complete remaining distinct operations, including cancel/no-op behavior and
-  stable focus after a move. Test relevant announcements with calibrated AT.
+1. Reproduce one unavailable operation in native Chrome using the two-player,
+   one-pin fixture from the [manual checklist](../research/WEB_ACCESSIBILITY_MANUAL_REVIEW.md).
+   Trace `DraggableThing.kt`, PairSectionPanel, and the pin bag to map operations
+   and callbacks. Agree the interaction and exact operation inventory.
+2. Ship one operation at its owning component and action boundary. A keyboard
+   scenario should initially fail to invoke that operation. Verify the action
+   contract in jsdom and actual reachability and focus in Chrome. Reuse the
+   existing action so the result is useful with pointer drag still available.
+3. Deliver the remaining operations in complete slices using the same
+   interaction. Check cancel, stable focus, and announcements with calibrated
+   assistive technology.
 
-## Completion and Current State
+## Evidence
 
-Drafted 2026-11-19 from source audit. No implementation or passing manual evidence.
-Finish with focused checks, full ./gradlew check, visual comparison and independent
-safe commits. No push/release authorization. Define the precise operation inventory
-and stopping point before playing; do not turn this into a general pairing redesign.
+Source review found drag/drop registration on span/div refs without keyboard
+handlers. Native reproduction and implementation are pending.

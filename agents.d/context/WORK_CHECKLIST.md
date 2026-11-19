@@ -1,84 +1,43 @@
 # Work Cards and Safe Slices
 
-Follow the contribution protocol in [AGENTS.md](../../AGENTS.md). Use a card in
-`agents.d/work/` for a multi-commit feature or a handoff. A small single-slice change
-can keep its design statements in the conversation instead.
+Use a work card for multi-commit work or a handoff. For a small single-slice
+change, state the design in the conversation. Follow the contribution protocol
+in [AGENTS.md](../../AGENTS.md).
 
-## Required Identity and Filename
+## Open a Card
 
-Every work card must have a permanent, unique `CPL-N` identifier, starting at
-`CPL-1`, and a filename of `CPL-N-<description>.md`. Prefix its top-level title
-with the same identifier, for example `# CPL-61 — Improve pairing navigation`.
-Use a descriptive filename suffix; existing suffixes may retain their original style.
+In `agents.d/work/`, name the file `CPL-N-<description>.md` and start the title
+with `# CPL-N — Specific outcome`. For new or substantively revised cards, put
+`**Work card protocol: 2**` below the title.
 
-Active and completed cards share one sequence. Before creating a card, inspect
-both `agents.d/work/` and `agents.d/work_completed/` and choose one greater than
-the highest assigned number (compare numerically). Allocate consecutive numbers
-when creating multiple cards. Coordinate allocation with other contributors and
-resolve duplicate IDs before committing. Never reuse an assigned number or renumber
-a card when its title, scope, status, or directory changes. Retain the filename
-when moving a completed card and update references to its new path.
+Allocate the next number above the highest in `work/` and `work_completed/`.
+Coordinate allocation with other contributors. The ID and filename stay with
+the card when it moves.
 
-The initial backfill assigns `CPL-1` through `CPL-60` by earliest Git-recorded
-creation, following former names and directories, including the earlier task-card
-system. Cards created in the same commit are ordered by their original filename;
-equal timestamps across commits are ordered by commit hash first. These numbers
-reflect recorded creation order, not priority or delivery order. Subsequent cards
-take the next available number; do not insert numbers into the historical sequence.
+## Define Done and Plan the Slices
 
-## Call the Delivery Shot
+- **Goal and constraints** cover the outcome, scope, and compatibility needs.
+- **Acceptance evidence** states what someone can observe to verify the outcome.
+- **Safe slice sequence** gives the delivery order. For each slice, name the
+  behavior, owning boundary, proposed design, test and expected failure for
+  behavior changes, and why the slice can ship independently. Include any
+  cross-layer changes needed to make it work on its own.
 
-Before implementation, state the intended outcome and an ordered sequence of
-independently releasable slices. For each slice, declare:
+Use headings that fit the task. Link shared procedures and record decisions that
+affect scope, design, or validation.
 
-- The meaningful behavior or capability it establishes.
-- The tests that express the intent and their expected failure.
-- The proposed contract, production design, and affected boundaries.
-- Why releasing this slice before later slices is safe.
+## Deliver and Close
 
-Prefer small complete capabilities. A slice must remain safe and useful indefinitely
-if work stops. Include required cross-layer changes together; splitting by technical
-layer is inappropriate when those layers cannot ship independently. Use compatibility
-or feature gating only when needed for a safe release; avoid speculative scaffolding.
-
-Update the sequence before material design or slice-boundary changes. Before test
-edits and again before production edits, visibly call the next shot as described in
-AGENTS.md; a card does not replace those timely updates.
-
-## Commit and Handoff
-
-Each slice ends with a review and a passing `./gradlew check`, followed by a commit
-containing its tests and implementation. Record validation and the commit before
-starting the next slice. Never commit a failing red phase. Pushing or releasing
-follows the user's authorization; neither is required to record a completed slice.
-If validation is blocked, record the blocker and leave the slice incomplete.
-
-Before handing off or pausing, record the current commit, uncommitted work, remaining
-slices, blockers, and relevant paths. On resume, verify git state and whether the
-recorded validation still applies. Avoid rerunning unchanged successful checks unless
-new evidence or the current working state requires it.
-
-Review the full result against the goal at completion, then move the card to
-`agents.d/work_completed/`. Keep notes to decisions and evidence, not a transcript.
-
-## Template
-
-```markdown
-# CPL-N — Outcome
-
-## Goal and Constraints
-Intended result, scope, and compatibility requirements.
-
-## Safe Slice Sequence
-- [ ] Slice: meaningful capability; test intent and expected failure;
-      proposed contract/design/boundary; why independently releasable.
-
-## Design Decisions
-Material discoveries and revisions to the sequence or contracts.
-
-## Current State
-Date, current commit, uncommitted changes, next slice, blockers, handoff paths.
-
-## Validation
-Commands, outcomes, and gaps per slice; completed commit IDs.
-```
+1. State the slice plan before tests, then state the implementation approach
+   after confirming the expected failure and before editing production code.
+   Update the plan when the design or slice boundary changes materially.
+2. Review test quality and implementation design separately. Resolve findings,
+   pass `./gradlew check`, and commit the slice before starting the next one.
+   Record meaningful validation evidence, gaps, and the implementation commit.
+3. If paused or blocked, keep the card active and record the blocker, relevant
+   uncommitted work, and next action. On resume, verify Git state and whether the
+   recorded checks still apply.
+4. When the result meets the goal and acceptance evidence, move the card to
+   `agents.d/work_completed/` and update inbound links. For consolidation, move
+   the superseded card there as a redirect to the active owner. Push or release
+   only with user authorization.

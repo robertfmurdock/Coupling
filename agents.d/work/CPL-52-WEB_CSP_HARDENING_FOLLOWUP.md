@@ -1,4 +1,6 @@
-# CPL-52 — Outcome
+# CPL-52 — Enforce a compatible content security policy
+
+**Work card protocol: 2**
 
 ## Goal and Constraints
 
@@ -7,78 +9,49 @@ client, accounting for the repository's CDN lookup/template pipeline and all
 runtime integrations. Preserve Auth0, Slack/Discord OAuth, analytics, GraphQL,
 WebSocket, GraphiQL, and supported browser behavior.
 
-This card is intentionally a lightweight draft. Flesh out the exact policy,
-deployment ownership, browser-support target, and violation collection plan
-before playing the card.
+## Acceptance Evidence
 
-## Scope
+- Capture the release-generated HTML/import map, transitive requests, and actual
+  deployed headers. Cover Welcome, authenticated party and contribution views,
+  Auth0 return, integration navigation, GraphiQL, and WebSockets. Distinguish
+  document, navigation, and subresource origins.
+- Verify report-only collection with sanitized reports. Establish header
+  ownership, browser support, retention, request size and rate limits first.
+  Keep tokens, identifiers, queries and raw script samples out of stored evidence.
+- Demonstrate enforcement with real browser regressions across those flows,
+  including Slack and Discord OAuth and GraphiQL query execution. Record any
+  required compatibility exception and the reason for it.
 
-- Inventory generated and inline scripts/styles from `client/vite.config.mjs`,
-  `cdn.json`, the HTML template, server-injected configuration, and GraphiQL's
-  `srcDoc`.
-- Identify required `script-src`, `style-src`, `connect-src`, `frame-src`,
-  `img-src`, `font-src`, `worker-src`, `base-uri`, `object-src`, and
-  `frame-ancestors` sources.
-- Define report-only rollout and violation collection/redaction, then promote
-  to enforcement after authenticated, OAuth, integration, GraphiQL, and
-  WebSocket flows are covered.
-- Prefer nonces or static hashes over broad origin allowlists; document any
-  unavoidable compatibility fallback.
+## Safe Slice Sequence
 
-## Planned Slices
+1. Extend the source inventory below with sanitized runtime evidence. Reuse the
+   release import map and request evidence in [CPL-62](CPL-62-AUTHENTICATED_PERFORMANCE_CALIBRATION.md)
+   where conditions match. The resulting inventory supports either project.
+2. Add report-only collection at the confirmed document-header owner. Test that
+   an expected report is retained in sanitized form and sensitive fields are
+   excluded. The current browsing contract continues during collection.
+3. Authorize trusted scripts using nonces or stable hashes where supported.
+   Verify caching, server-injected configuration, the import map, Emotion
+   styles and the GraphiQL iframe. Use report-only evidence to test changes
+   to script, style, connect, frame, image, font, worker, object and document
+   directives before enforcement. Resolve treatment of mutable analytics,
+   Font Awesome and Google Fonts.
+4. Enable enforcement once representative flows pass without unexpected
+   violations. The browser scenarios should expose breakage from a policy that
+   blocks a required resource or allows an unauthorized test resource.
 
-- [ ] Reproduce and document the complete runtime resource inventory.
-- [ ] Add report-only CSP observability and focused browser scenarios.
-- [ ] Remove or nonce/hash inline execution and narrow CDN allowances.
-- [ ] Enforce CSP with authenticated, OAuth, integration, GraphiQL, and
-      WebSocket regression coverage.
+## Evidence and Resume Note
 
-## Flesh Out Before Playing
+Local Caddy carries report-only headers without a report collector. Native Chrome
+on November 17 showed script, style, font, connection and static.localhost
+manifest notices plus a cross-origin manifest start URL warning. Production
+header ownership and transitive runtime coverage remain open. Start by capturing
+sanitized headers and network evidence from a representative release build.
+The [contributor closeout](../work_completed/CPL-57-WEB_CONTRIBUTOR_POPOVER_FOLLOWUP.md)
+records native save-focus and owner-reported VoiceOver acceptance. The broader
+calibrated accessibility matrix is tracked in CPL-56.
 
-- Confirm whether Caddy, the server, or an upstream CDN owns production
-  headers.
-- Confirm the production browser-support policy and whether CSP Level 3
-  features are acceptable.
-- Choose a durable violation sink and retention/redaction rules; do not log
-  tokens, authorization headers, or query-bearing URLs.
-- Decide whether mutable analytics and Font Awesome/Google Fonts remain
-  third-party or move behind a deliberate self-hosting/privacy decision.
-- Capture a baseline of current CSP console violations on representative
-  authenticated and unauthenticated routes.
-
-## Validation Expectations
-
-- Testmints browser scenarios name their starting resource/auth state, perform
-  one navigation or integration action, and verify loaded resources plus
-  absence or expected reporting of CSP violations.
-- Run focused browser checks, then `fish -lc './gradlew check --no-daemon'`
-  outside the sandbox before each complete implementation slice.
-- Record policy changes, compatibility risks, residual violations, and commit
-  IDs here.
-
-## Initial Evidence
-
-- Current deployment has a report-only policy in `Caddyfile` from the web best
-  practices remediation card.
-- The client uses generated CDN import metadata, inline HTML/template scripts,
-  Auth0, analytics, GraphQL, WebSockets, and a GraphiQL `srcDoc`.
-- No violation reporting endpoint is currently configured.
-- Manual local Chrome review (2026-11-17) observed report-only notices for
-  scripts, styles, fonts, connections, and the manifest hosted at static.localhost.
-  The manifest also reports a cross-origin start_url warning. These are local
-  observations, not a production-origin allowlist or evidence of enforcement;
-  capture exact sanitized origins and required behavior before changing policy.
-
-
-## Source Inventory Slice: 2026-11-19
-
-Documentation-only investigation after contributor implementation `661b77836`.
-No policy, resource loading, headers, UI, or deployment behavior changed. Native
-browser access still fails with “Sky Computer Use native pipe startup failed”; this
-is source evidence, not a complete runtime inventory. The first planned slice
-remains unchecked until transitive resources and actual response headers are
-captured. Contributor native save-focus and calibrated VoiceOver checks remain on
-its own open card.
+### Source Inventory
 
 | Owner/source | Loading behavior | CSP work to resolve |
 | --- | --- | --- |
@@ -89,25 +62,3 @@ its own open card.
 | `client/.../graphql/GraphiQL.kt` | Sandboxed `srcDoc` iframe with scripts/same-origin allowed; React/ReactDOM 18.3.1 from unpkg, GraphiQL 3.8.3 JS/CSS from jsDelivr, inline bootstrap and style attributes. Versioned external resources have SRI. Fetcher is passed from the parent. | Test iframe policy inheritance and bootstrap explicitly. Noncing only the outer page is insufficient evidence that the embedded editor works. Retain introspection/query behavior without storing credentials or query content in reports. |
 | Emotion-styled client/components | Runtime CSS generation is used throughout, including popup styling. | Inspect actual style elements and style attributes before removing `style-src 'unsafe-inline'`; script authorization does not resolve style authorization. |
 | `Caddyfile`, mounted by `docker-compose.yml` | Local localhost/static.localhost blocks carry report-only CSP; no report endpoint is configured. Static host allows reads from localhost. Socket host proxies separately. | Local policy is observational, not enforced protection or proof of production header ownership. Capture headers at the deployed app and asset origins; establish production owner before editing rollout logic. |
-
-### Bounded Next Slices
-
-1. Capture sanitized release-generated HTML/import map plus native network and
-   violation evidence for Welcome, authenticated party/contributions, GraphiQL,
-   Auth0 return, WebSocket, and integration navigation. Record only origin/path
-   categories; strip tokens, queries, participant data and identifiers. Separate
-   navigation destinations from subresource/connect requirements.
-2. Select the production header owner and report collector. Define retention,
-   redaction, request size/rate limits and endpoint tests before receiving reports.
-   Script samples can contain sensitive content: decide whether to omit them or
-   redact them before persistence; do not blindly log raw CSP bodies.
-3. Design nonce/hash handling against the actual generated module/import-map and
-   server-injection paths, including caching and GraphiQL. Test report-only first;
-   measure legitimate violations before choosing enforcement. No unrelated COOP,
-   Trusted Types, or dependency-hosting migration is bundled into this inventory.
-
-Reviewed Modern Web Guidance `security`, especially “Enumerate inline scripts and
-styles” and “Do not blindly apply strict policies to an existing application.”
-Validation: source paths and generation flow inspected; documentation diff checked.
-No tests invented or suite rerun for this documentation-only slice. Runtime
-inventory, production ownership, reporting and enforcement remain unfinished.

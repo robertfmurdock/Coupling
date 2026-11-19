@@ -104,8 +104,8 @@ Constraints:
 - **Transferred, not completed — measured critical-path optimization**:
   [Initial performance pass](CPL-54-WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md) completed
   Welcome measurement and verified payload cleanup. Remaining authenticated
-  baselines/calibration are in [CPL-62](../work/CPL-62-AUTHENTICATED_PERFORMANCE_CALIBRATION.md),
-  and active-library deferral is in [CPL-63](../work/CPL-63-ROUTE_SCOPED_CDN_LOADING.md).
+  baselines, calibration and route-scoped CDN loading are in
+  [CPL-62](../work/CPL-62-AUTHENTICATED_PERFORMANCE_CALIBRATION.md).
   No broader performance improvement is claimed without comparable evidence.
 
 ## Bounded Finish Line
