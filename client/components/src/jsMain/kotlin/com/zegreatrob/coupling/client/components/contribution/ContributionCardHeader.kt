@@ -131,15 +131,16 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
                 top = (-0.5).em
             }
             TiltedPlayerList(playerList = contributionPlayerList) { tilt, player ->
+                val participantKey = Key(contribution.participantEmails.first { it in player.emails })
                 val onPlayerClick = props.onPlayerClick
                 if (onPlayerClick == null) {
                     span {
-                        key = Key(player.id.value.toString())
+                        key = participantKey
                         PlayerCard(player = player, tilt = tilt, size = 30)
                     }
                 } else {
                     button {
-                        key = Key(player.id.value.toString())
+                        key = participantKey
                         type = ButtonType.button
                         css {
                             border = None.none

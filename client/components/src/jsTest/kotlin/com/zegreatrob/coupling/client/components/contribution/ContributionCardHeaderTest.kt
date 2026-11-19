@@ -1,5 +1,9 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.ContributionPopUpMenu
+import com.zegreatrob.coupling.client.components.MemoryRouter
+import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.create
 import com.zegreatrob.coupling.client.components.userEvent
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubContribution
@@ -11,12 +15,52 @@ import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.external.RenderOptions
 import kotlinx.browser.document
 import kotlinx.coroutines.await
+import popper.core.ReferenceElement
 import web.html.HTMLElement
 import kotlin.test.Test
 
 class ContributionCardHeaderTest {
+
+    @Test
+    fun unknownParticipantKeepsItsAnchorAcrossPopupOpenAndDismiss() = asyncSetup(object {
+        val expectedPartyId = stubPartyId()
+        val expectedContribution = stubContribution().copy(
+            participantEmails = setOf("alex@example.invalid", "sam@example.invalid"),
+            link = null,
+        )
+        val actor = userEvent.setup()
+        lateinit var originalTrigger: org.w3c.dom.HTMLElement
+    }) {
+        render(
+            ContributionPopUpMenu.create(
+                partyId = expectedPartyId,
+                players = emptyList(),
+                dispatchFunc = StubDispatcher().func(),
+            ) { selectPlayer ->
+                ContributionCardHeader {
+                    partyId = expectedPartyId
+                    contribution = expectedContribution
+                    players = emptyList()
+                    onPlayerClick = { player, element -> selectPlayer(ReferenceElement(element)!!, player) }
+                }
+            },
+            RenderOptions(wrapper = MemoryRouter),
+        )
+        originalTrigger = screen.getByRole("button", RoleOptions(name = "alex"))
+    } exercise {
+        actor.click(originalTrigger).await()
+        val openedTrigger = screen.getByRole("button", RoleOptions(name = "alex"))
+        actor.keyboard("{Escape}").await()
+        openedTrigger
+    } verify { openedTrigger ->
+        openedTrigger.assertIsEqualTo(originalTrigger, "Opening must preserve the popup anchor")
+        originalTrigger.isConnected.assertIsEqualTo(true)
+        document.activeElement.assertIsEqualTo(originalTrigger)
+        screen.queryByRole("dialog").assertIsEqualTo(null)
+    }
 
     @Test
     fun participantSupportsTabEnterAndSpaceWithItsVisibleName() = asyncSetup(object {

@@ -125,3 +125,50 @@ fixture, native Chrome artwork/anchoring and keyboard walkthrough, then calibrat
 Safari/VoiceOver review. The local browser currently shows the empty Contributions
 onboarding page; existing player/new-party tabs were preserved. Do not mark the
 card complete from jsdom and computed-style/geometry checks alone.
+
+
+## Live Fixture and Unknown-Participant Anchor Regression: 2026-11-19
+
+Continued at `563e7143a`. Created a separate local party through the logged-in
+GraphiQL UI, without changing existing parties or creating secrets/integrations:
+`accessibility-contributor-review-20261119` (“Disposable accessibility review”).
+One contribution (`accessibility-review-20261119`, label “Keyboard review”) has
+fictional `alex@example.invalid` and `sam@example.invalid` participants. Retain
+this named fixture for owner review; no cleanup/deletion performed.
+
+Fresh native Chrome at 100%, 1200x953 window: Tab reaches alex with visible focus;
+Enter opens actions and focuses Close, Tab reaches Create Player. But the popup
+appeared at the viewport's top-left instead of its participant, and Escape left
+focus on the page. Unknown participants receive new generated IDs on each header
+render; using that ID as the React key detached the selected reference node.
+
+Added a components/jsdom composition regression using real ContributionCardHeader
+inside ContributionPopUpMenu. It failed because opening replaced the original
+button. Smallest correction: key participants by their first matching contribution
+email, preserving known-player alias deduplication and the same key when an unknown
+participant is saved. Generated player IDs/save commands and artwork/styles are
+unchanged. No memoization cache or new overlay positioning is introduced.
+Focused/full validation and native recheck follow before commit.
+
+
+Anchor slice validation: component tests (134) and formatting pass; full
+`fish -lc './gradlew check --no-daemon'` passes (680 tasks), log
+`/tmp/coupling-contributor-anchor-check.log`. Test review confirms actual header +
+popup composition and connected-node identity, not only an artificial trigger.
+Production review confirms the sole behavior change is stable participant keys;
+existing alias matching and player generation/save data stay intact. Diff clean.
+
+Fresh native Chrome after hard reload: unknown-participant popup is now anchored
+beside its card rather than at viewport origin. Enter/Space opens, Close receives
+focus, Escape and pointer Close return to the participant; Tab reaches actions and
+leaves without trapping. Overview and List both show the existing anchored artwork
+for known alex and unknown sam. Player Config activates by native Tab/Enter and
+loads alex's form. Created fixture alex using the popup's Create Player action;
+fictional email only. Sam remains unknown so both branches remain reviewable.
+Fixture URL: https://localhost/accessibility-contributor-review-20261119/contributions/list
+
+One residual live finding: after Create Player saves and refreshes the page data,
+focus falls to the page instead of returning to the participant. Reopening and
+explicit dismissal work. Investigate the assembled refresh/unmount path as the
+next slice; the card stays open. Safari/VoiceOver still requires owner validation.
+No push/release or fixture deletion performed.
