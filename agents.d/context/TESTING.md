@@ -98,6 +98,24 @@ needed; placeholder image URLs do not establish successful loading or layout
 stability. Keep test-only API fixtures in the harness, with the used event/state
 contract, rather than weakening production behavior to accommodate their omissions.
 
+### Exercise the Production Composition
+
+For trigger, focus and navigation regressions, render the actual owning
+composition. A popup exercised through a test-created button proves the popup's
+contract, but not that its production trigger is keyboard accessible. Likewise,
+a shared card's link test does not prove its use as an unsaved form preview is
+safe. Include the relevant new/saved state and inspect ancestors and descendants
+for unintended interactive targets; a leaf's tabindex alone is insufficient.
+Keep detailed child behavior in child tests and add only the composition evidence
+needed to catch the real failure.
+
+For geometry/reflow tests, establish a named, test-owned viewport/container and
+assert against that boundary. Avoid locating it through a chain of production
+parents. Check the region that must remain reachable, including inner scroll
+content when appropriate: a bounded outer shell can conceal overflow inside it.
+Use content representative of the reported failure rather than asserting exact
+pixel details that are incidental to the intended layout.
+
 ## TestMints Phase Discipline
 
 - Use the module's existing TestMints patterns and `assertIsEqualTo` assertions.
