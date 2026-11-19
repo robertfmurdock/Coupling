@@ -26,10 +26,13 @@ before implementation; source evidence alone is not a calibrated AT result.
   problem behind the test's artificial button.
 - [x] Deliver named native triggers without duplicate nested controls or visual
   changes; compare before/after. Reuse menu callbacks and save commands.
-- [ ] Specify and test entry, Escape, Close and return-focus behavior, including
+- [x] Specify and test entry, Escape, Close and return-focus behavior, including
   player-list refresh/removal of the original trigger. Use the existing jsdom suite
   unless native popover/dialog/focus enforcement requires real Chrome. Retain a
   fallback if introducing a platform feature outside the supported baseline.
+- [ ] Review populated contribution overview/list in native Chrome and calibrated
+  Safari/VoiceOver; compare artwork/anchoring and check both known/unknown
+  participant actions. Retain the card until that evidence is recorded.
 
 ## Completion and Current State
 
@@ -73,3 +76,52 @@ Owner agreed the next popup slice should remain nonmodal with anchored appearanc
 focus entry, Escape/Close return, and Tab leaving freely. No focus trap or dimming.
 Native keyboard/visual and calibrated Safari/VoiceOver review remain required for
 card completion. No push/release performed.
+
+
+## Nonmodal Focus Slice: 2026-11-19
+
+Previous completed slice: `76d930633`. Owner selected the nonmodal design. Preserve
+Popper's existing anchored shell/arrow and appearance; do not introduce a focus
+trap, backdrop or native top-layer positioning change in this slice. The existing
+popup component owns focus entry and dismissal. Its content is a named nonmodal
+dialog, focus enters Close, explicit Close/Escape restores a connected trigger,
+and blur out of the popup closes without pulling focus back. Player refresh closes
+it and returns focus only when it held focus and the trigger survives; a removed
+trigger is not focused (document fallback remains).
+
+Four original regressions failed for missing entry, return, Escape dismissal and
+Tab-leave behavior before production edits. Existing refresh test was vacuous:
+it checked absence of Create Player although that fixture showed Player Config.
+It now checks the actual content and popup removal, with separate surviving and
+removed trigger cases. Prerequisite render/open moved to setup; rerender is the
+exercise. The shared TestRouter remounts on rerender by recreating its router, so
+this suite uses a typed test-only MemoryRouter export with stable provider identity
+instead. The legacy Kotlin binding does not expose that installed React Router
+export; no production router changes are needed.
+
+Native Chrome reached the local populated-player party's Contributions route,
+but it shows onboarding rather than contribution records. No popup visual/native
+keyboard pass is claimed, and no contributions/secrets/integrations were created.
+Need a contribution-bearing local fixture for final native/VoiceOver review.
+Focused/full results and final review follow before commit.
+
+
+Focus slice focused validation: 133 component tests and formatting pass. The
+surviving-trigger fixture also needed an explicit stable key, matching the real
+header's participant-ID key; otherwise React replaced the button and correctly
+prevented return to a detached node. The test asserts trigger identity survives
+the update as well as final focus, so it cannot silently become the removal case.
+Temporary diagnostic output removed. Test review retains six distinct popup
+contracts and real-trigger tests in ContributionCardHeaderTest; production review
+confirms focus is owned locally, Tab is not trapped, and Popper options and styles
+are unchanged. Full-suite gate follows before commit. No push/release performed.
+
+
+Full `fish -lc './gradlew check --no-daemon'` passed (680 tasks); log
+`/tmp/coupling-contributor-focus-check.log`. `git diff --check` clean. No temporary
+diagnostics remain. This completes the automated focus/dismissal slice following
+`76d930633`; no push/release. Remaining card work: contribution-bearing local
+fixture, native Chrome artwork/anchoring and keyboard walkthrough, then calibrated
+Safari/VoiceOver review. The local browser currently shows the empty Contributions
+onboarding page; existing player/new-party tabs were preserved. Do not mark the
+card complete from jsdom and computed-style/geometry checks alone.

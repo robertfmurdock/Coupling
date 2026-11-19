@@ -26,8 +26,12 @@ import react.popper.usePopper
 import react.useEffect
 import react.useRef
 import react.useState
+import web.aria.AriaRole
+import web.aria.dialog
 import web.cssom.Position
 import web.cssom.em
+import web.dom.Node
+import web.dom.document
 import web.html.HTMLElement
 
 external interface ContributionPopUpMenuProps : Props {
@@ -44,9 +48,22 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
     val (menuTarget, setMenuTarget) = useState<Pair<ReferenceElement, Player>?>(null)
     val popperRef = useRef<HTMLElement>()
     val arrowRef = useRef<HTMLElement>()
+    val contentRef = useRef<HTMLElement>()
     val popperInstance = usePopper(menuTarget?.first, popperRef.current, popperOptions(arrowRef))
 
-    useEffect(players) { setMenuTarget(null) }
+    fun dismiss(restoreFocus: Boolean) {
+        if (restoreFocus) {
+            menuTarget?.first?.unsafeCast<HTMLElement>()?.takeIf { it.isConnected }?.focus()
+        }
+        setMenuTarget(null)
+    }
+
+    useEffect(players) {
+        if (menuTarget != null) dismiss(contentRef.current?.contains(document.activeElement) == true)
+    }
+    useEffect(menuTarget) {
+        if (menuTarget != null) contentRef.current?.querySelector("button")?.unsafeCast<HTMLElement>()?.focus()
+    }
 
     CouplingPopUp(
         hide = menuTarget == null,
@@ -54,15 +71,33 @@ val ContributionPopUpMenu by nfc<ContributionPopUpMenuProps> { props ->
         arrowRef = arrowRef,
         popperInstance = popperInstance,
     ) {
-        div {
-            css {
-                position = Position.absolute
-                right = 1.em
-            }
-            CloseButton { onClose = { setMenuTarget(null) } }
-        }
         if (menuTarget != null) {
-            ContributorMenu(menuTarget.second, players, partyId, dispatchFunc)
+            div {
+                ref = contentRef
+                role = AriaRole.dialog
+                ariaModal = false
+                ariaLabel = "Contributor actions for ${menuTarget.second.name}"
+                onKeyDown = { event ->
+                    if (event.key == "Escape") {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        dismiss(restoreFocus = true)
+                    }
+                }
+                onBlur = { event ->
+                    if (!event.currentTarget.contains(event.relatedTarget?.unsafeCast<Node>())) {
+                        dismiss(restoreFocus = false)
+                    }
+                }
+                div {
+                    css {
+                        position = Position.absolute
+                        right = 1.em
+                    }
+                    CloseButton { onClose = { dismiss(restoreFocus = true) } }
+                }
+                ContributorMenu(menuTarget.second, players, partyId, dispatchFunc)
+            }
         }
     }
     +child { element, player ->
