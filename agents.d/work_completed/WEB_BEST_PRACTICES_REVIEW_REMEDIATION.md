@@ -127,7 +127,7 @@ record that evidence instead of manufacturing a change or failing test.
 - [x] **Closeout**: review existing evidence for shell landmarks/skip link,
   headings, GraphiQL naming, navigation, modal/focus behavior, and representative
   party/player/pin form labels. Fix regressions introduced by this card. Record
-  other findings in the [extended accessibility follow-up](../work/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md),
+  other findings in the [extended accessibility follow-up](../work_completed/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md),
   reconcile the broad checkboxes above, and move this card to work_completed.
 
 After completion, perform the deferred agent-context review below. Do not extend

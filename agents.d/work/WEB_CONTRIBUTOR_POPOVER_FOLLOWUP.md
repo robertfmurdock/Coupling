@@ -4,7 +4,7 @@
 
 Allow keyboard users to open and dismiss contributor actions with predictable
 focus, retaining the current popup artwork and anchored placement. Finding from
-[accessibility audit](WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md). Priority: inaccessible
+[accessibility audit](../work_completed/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md). Priority: inaccessible
 actions. Agree modal versus nonmodal interaction before implementation; this draft
 does not prescribe a modal or permission to reposition existing UI.
 

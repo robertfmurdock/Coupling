@@ -3,7 +3,7 @@
 ## Goal and Constraints
 
 Make manual player rearrangement and pin assignment usable without drag gestures.
-Finding from [accessibility audit](WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
+Finding from [accessibility audit](../work_completed/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
 Priority: core keyboard capability. This is a draft; agree the visible interaction
 before implementation. Preserve pointer drag behavior and obtain approval before
 adding/repositioning controls or changing the established pairing layout.

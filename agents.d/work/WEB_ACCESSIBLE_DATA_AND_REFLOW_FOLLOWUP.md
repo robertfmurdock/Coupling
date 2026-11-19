@@ -4,7 +4,7 @@
 
 Provide usable nonvisual data access and responsive presentation for statistics,
 contributions and shared forms. Follow-up to the bounded
-[accessibility audit](WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md). Preserve established
+[accessibility audit](../work_completed/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md). Preserve established
 controls; seek user approval for color, layout, or new visible data alternatives.
 This draft groups review inputs; split independently designed deliverables before
 playing rather than treating every chart and page as one implementation slice.
@@ -55,3 +55,21 @@ passing runtime matrix. The approved About-only reflow correction stays on the
 original audit card; do not transfer that unfinished work here. Each slice requires
 focused checks, full ./gradlew check and a passing test-plus-implementation commit.
 No push/release authorization. Refine the route/metric set and stopping point first.
+
+
+## Audit Closeout Handoff: 2026-11-19
+
+The bounded parent audit closed with owner acceptance; its full calibrated matrix
+was not completed. Use the [remaining manual checklist](../research/WEB_ACCESSIBILITY_MANUAL_REVIEW.md)
+when defining this card's scope. Record browser/OS versions, VoiceOver calibration,
+populated saved-route coverage, runtime contrast and forced-colors conditions;
+route integration/status checks must not connect real accounts or create secrets.
+Pairing and contributor-specific checks stay with their respective follow-ups.
+Split general route/state/AT deliverables into further cards if needed before play.
+
+Native Chrome showed horizontal Party List overflow at 200% zoom; reproduce with
+exact dimensions before choosing a correction. New-party card navigation is fixed
+in `421fe94ca`, but its other party-specific navigation still targets unsaved IDs;
+review the intended pre-save navigation/state contract. Existing About reflow is
+complete and must not be reclassified as unfinished work here. Owner acceptance
+is not measured contrast, forced-colors, or calibrated screen-reader evidence.

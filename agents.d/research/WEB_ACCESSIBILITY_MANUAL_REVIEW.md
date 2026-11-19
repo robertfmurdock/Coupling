@@ -1,7 +1,15 @@
 # Accessibility review: final manual pass
 
-Status: pending user execution. This is a checklist, not evidence of a pass.
-Related card: [Extended Web Accessibility Audit](../work/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
+Status: bounded walkthrough accepted by owner on 2026-11-19; full calibrated
+matrix not recorded. Rows below remain unverified unless explicit evidence is
+listed here. Owner reported player configuration tabbing good and everything else
+reviewed good, after identifying the unsaved-card defect fixed in `421fe94ca`.
+Safari/macOS versions and VoiceOver calibration were not supplied. Native Chrome
+About/news results are recorded in the completed card. Remaining matrix conditions
+are owned by the [data/reflow follow-up](../work/WEB_ACCESSIBLE_DATA_AND_REFLOW_FOLLOWUP.md)
+and the pairing/contributor cards linked from that audit. This checklist remains
+available for those cards; its pending rows do not reopen the accepted bounded card.
+Related card: [Extended Web Accessibility Audit](../work_completed/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
 
 ## Environment and fixture
 
@@ -62,6 +70,5 @@ conditions untested.
 
 For each failure: route, fixture/state, exact action, spoken/visible result,
 expected result, browser/version, size/zoom and whether it repeats. For each pass:
-record the row and tested conditions. Partial results are useful. No broad audit
-completion or screen-reader certification is claimed while required rows remain
-untested; larger interaction/visual redesigns need their own bounded work cards.
+record the row and tested conditions. Partial results are useful. No full-matrix pass or screen-reader certification is claimed for untested rows;
+the bounded audit closed with these conditions explicitly deferred to follow-ups.
