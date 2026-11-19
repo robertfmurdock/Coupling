@@ -137,6 +137,16 @@ See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/
 - Run `./gradlew check` before each safe slice commit, as required by
   [AGENTS.md](../../AGENTS.md). Use `build`/`test` additionally when the task needs them.
 
+### Browser Bundle and CDN Delivery Changes
+
+Removing a CDN import or external declaration can move code into local bundles.
+Compare the full emitted production JS graph, including lazy chunks, and actual
+browser network evidence with app source/assets held fixed. Record any tradeoff;
+fewer CDN requests alone does not establish a smaller delivered payload. Inspect
+emitted consumers and surviving peer/external URLs as well as source references.
+Use the [performance harness](../../e2e/performance/README.md) where applicable;
+keep measured byte/request changes separate from timing claims.
+
 ### AWS SSO and Gradle Daemons
 
 - Before treating an AWS failure as an expired login, verify the active shell

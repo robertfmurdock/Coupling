@@ -48,7 +48,7 @@ Interpretation:
 
 Metric aggregation is tested in `:e2e:jsNodeTest` using Testmints. Authenticated
 party/pair routes, controlled throttling, full network byte capture, and interaction
-traces remain separate CPL-54 work. Do not select active-resource optimizations
+traces remain in the CPL-62 follow-up. Do not select active-resource optimizations
 from these partial measurements alone.
 
 
@@ -85,3 +85,9 @@ failed fetches in its first warm sample. The later retained baseline had none in
 six samples; that does not establish a cause or fix for the earlier failures.
 Keep both observations when assessing variation. Complete means the measurement
 sequence finished, not that every sample was free of network errors.
+
+
+CPL-54 closed as the bounded Welcome baseline/payload-cleanup pass. Its final
+clean-commit capture is `agents.d/research/WEB_PERFORMANCE_CLOSEOUT_BASELINE.json`.
+Follow-ups are CPL-62 (authenticated baseline/calibration) and CPL-63 (route-only
+CDN loading). Neither is claimed complete by the Welcome measurements.

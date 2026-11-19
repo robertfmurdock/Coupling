@@ -98,6 +98,16 @@ needed; placeholder image URLs do not establish successful loading or layout
 stability. Keep test-only API fixtures in the harness, with the used event/state
 contract, rather than weakening production behavior to accommodate their omissions.
 
+### Browser Performance Evidence
+
+Keep metric aggregation/privacy contracts in Node tests and platform delivery in
+browser measurements. Label lab observations separately from field Web Vitals;
+missing LCP is not zero, and cross-origin Resource Timing sizes may be hidden by
+Timing-Allow-Origin. Report pending, unknown, truncated and failed/aborted samples
+explicitly and retain anomalous runs. A completed measurement sequence need not
+be error-free. Establish fixture, cache/content conditions and repeated-run
+variation before proposing timing budgets or making before/after speed claims.
+
 ### Exercise the Production Composition
 
 For trigger, focus and navigation regressions, render the actual owning
