@@ -28,8 +28,8 @@ playing rather than treating every chart and page as one implementation slice.
   backgrounds; source calculation does not establish a complete contrast audit.
 - GeneralControlBar's h1 includes navigation controls; validate spoken outline and
   scope a semantic-only correction with before/after visuals if confusing.
-- CouplingRouter labels integrations as Pin List and gives all three contribution
-  views the same title. Validate rendered document titles and choose distinct names.
+- Route-title correction is split into [distinct browser titles](../work_completed/WEB_ROUTE_TITLES_FOLLOWUP.md);
+  keep its implementation and navigation evidence on that bounded card.
 - Shared query loading converts failures to null, sharing not-found recovery UI.
   Distinguishing network failure/authorization/missing data changes the state model;
   define ownership and recovery contracts before implementing announcements.

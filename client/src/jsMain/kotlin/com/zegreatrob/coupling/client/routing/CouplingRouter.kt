@@ -89,7 +89,7 @@ private fun redirectUnauthenticated(): RouteObject = unsafeJso {
     element = RedirectUnauthenticated.create()
 }
 
-private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNull(
+internal fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNull(
     unsafeJso {
         path = "/"
         element = navigateToPartyList()
@@ -111,7 +111,7 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/:partyId/edit/", "Party Config", PartyConfigPage),
     couplingRoute("/:partyId/secrets/", "Party Secrets", PartySecretsPage),
     couplingRoute("/:partyId/history", "History", HistoryPage),
-    couplingRoute("/:partyId/integrations", "Pin List", IntegrationPage),
+    couplingRoute("/:partyId/integrations", "Integrations", IntegrationPage),
     couplingRoute("/:partyId/pins", "Pin List", PinListPage),
     couplingRoute("/:partyId/pin/new", "New Pin", PinPage),
     couplingRoute("/:partyId/pin/:pinId/", "Pin Config", PinPage),
@@ -121,9 +121,9 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/:partyId/player/:playerId/", "Player Config", PlayerPage),
     couplingRoute("/:partyId/players/retired", "Retired Player List", RetiredPlayersPage),
     couplingRoute("/:partyId/statistics", "Statistics", StatisticsPage),
-    couplingRoute("/:partyId/contributions", "Contributions", ContributionOverviewPage),
-    couplingRoute("/:partyId/contributions/list", "Contributions", ContributionListPage),
-    couplingRoute("/:partyId/contributions/visualization", "Contributions", ContributionVisualizationPage),
+    couplingRoute("/:partyId/contributions", "Contributions Overview", ContributionOverviewPage),
+    couplingRoute("/:partyId/contributions/list", "Contributions List", ContributionListPage),
+    couplingRoute("/:partyId/contributions/visualization", "Contributions Visualization", ContributionVisualizationPage),
     couplingRoute("/incubating", "Incubating", IncubatingPage),
     couplingRoute("/integration/slack/connect", "Slack Connect", SlackConnectPage),
     couplingRoute("/integration/slack/callback", "Slack Callback", SlackCallbackPage),
