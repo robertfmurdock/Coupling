@@ -26,8 +26,8 @@ playing rather than treating every chart and page as one implementation slice.
   WCAG sRGB contrast calculation for those source pairs gives 2.31:1 and 2.19:1,
   below the 4.5:1 normal-text criterion. Confirm computed runtime colors, states and
   backgrounds; source calculation does not establish a complete contrast audit.
-- GeneralControlBar's h1 includes navigation controls; validate spoken outline and
-  scope a semantic-only correction with before/after visuals if confusing.
+- GeneralControlBar heading correction is split into [shared header semantics](../work_completed/WEB_GENERAL_HEADER_SEMANTICS_FOLLOWUP.md);
+  keep its implementation and native before/after evidence on that bounded card.
 - Route-title correction is split into [distinct browser titles](../work_completed/WEB_ROUTE_TITLES_FOLLOWUP.md);
   keep its implementation and navigation evidence on that bounded card.
 - Shared query loading converts failures to null, sharing not-found recovery UI.
@@ -50,8 +50,9 @@ playing rather than treating every chart and page as one implementation slice.
 
 ## Completion and Current State
 
-Drafted 2026-11-19. Source findings and candidates only; no implementation or
-passing runtime matrix. The approved About-only reflow correction stays on the
+Drafted 2026-11-19. Page-title and shared-header semantics slices are complete
+in the linked cards. Remaining findings are review candidates; the broader
+runtime/AT matrix is not complete. The approved About-only reflow correction stays on the
 original audit card; do not transfer that unfinished work here. Each slice requires
 focused checks, full ./gradlew check and a passing test-plus-implementation commit.
 No push/release authorization. Refine the route/metric set and stopping point first.

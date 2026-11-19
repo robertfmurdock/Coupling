@@ -13,10 +13,12 @@ import web.cssom.AlignItems
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.FlexWrap
+import web.cssom.FontWeight
 import web.cssom.Margin
 import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
+import web.cssom.em
 import web.cssom.number
 import web.cssom.px
 
@@ -39,8 +41,13 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                 textAlign = TextAlign.left
                 margin = (5.px)
             }
-            h1 {
+            div {
                 css {
+                    // Preserve the former h1 layout while keeping controls outside its semantics.
+                    fontSize = 2.em
+                    fontWeight = FontWeight.bold
+                    marginTop = 0.67.em
+                    marginBottom = 0.67.em
                     position = Position.relative
                     flexGrow = number(2.0)
                     display = Display.inlineFlex
@@ -65,8 +72,10 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                                 verticalAlign = VerticalAlign.middle
                             }
                         }
-                        span {
+                        h1 {
                             css {
+                                fontSize = 1.em
+                                margin = 0.px
                                 flexGrow = number(2.0)
                                 textAlign = TextAlign.left
                             }
