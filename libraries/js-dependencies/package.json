@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.30.0",
-    "@continuous-excellence/ze-great-dashboard-aws": "0.31.79",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.1172.0",
-    "@aws-sdk/client-dynamodb": "3.1172.0",
-    "@aws-sdk/client-lambda": "~3.1172.0",
-    "@aws-sdk/lib-dynamodb": "3.1172.0",
+    "@continuous-excellence/ze-great-dashboard-aws": "0.31.80",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.1173.0",
+    "@aws-sdk/client-dynamodb": "3.1173.0",
+    "@aws-sdk/client-lambda": "~3.1173.0",
+    "@aws-sdk/lib-dynamodb": "3.1173.0",
     "@graphql-codegen/cli": "^8.0.0",
     "@graphql-codegen/java-common": "^5.0.0",
     "@graphql-codegen/kotlin": "^5.0.0",
@@ -70,10 +70,10 @@
     "serverless-offline": "^14.8.5",
     "serverless-offline-ssm": "^6.2.0",
     "sonda": "^0.14.0",
-    "stripe": "^23.1.0",
+    "stripe": "^23.2.0",
     "ulid": "3.0.2",
     "vite-plugin-html": "^3.2.2",
-    "webpack": "5.112.2",
+    "webpack": "5.113.0",
     "webpack-cli": "^7.3.1"
   }
 }
