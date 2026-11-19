@@ -40,8 +40,8 @@ Implemented native participant buttons, nonmodal popup focus/dismissal, stable
 unknown-participant anchors, and save-completion focus restoration. Cards without
 a handler remain static. All implementation slices pass focused and full checks.
 Native Chrome overview/list review passed for anchoring and keyboard interaction;
-the final save-focus correction still needs a native recheck because browser
-access failed. Calibrated Safari/VoiceOver review remains required before closing.
+the final save-focus correction also passed native Chrome recheck after browser
+access recovered. Calibrated Safari/VoiceOver review remains required before closing.
 No push/release authorization.
 
 
@@ -226,3 +226,20 @@ confirm VoiceOver speaks an ordinary known control on the page, then:
 
 Record browser/VoiceOver versions and observations before marking the card done.
 Keep this card open until the native save check and calibrated AT review pass.
+
+
+## Native Save-Focus Recheck
+
+Browser access recovered. Opened the retained local Contributions List fixture in
+native Chrome; Sam was still unknown. Pointer opening focused Close, native Tab
+focused Create Player, and Return saved the fictional Sam participant. The popup
+closed and the native accessibility state reported focus on the same Sam button
+(element 125 before and after), confirming the outstanding save-focus behavior in
+`661b77836`. Both Alex and Sam are now known players in this fixture; the earlier
+owner checklist's unknown-Sam prerequisite no longer applies. For further unknown
+participant AT coverage, add a new fictional participant to this disposable fixture
+first. No existing user party was changed. No push/release performed.
+
+This completes the native Chrome save recheck, not calibrated Safari/VoiceOver
+validation. The card remains open for that review. Documentation-only evidence
+update; no runtime changes or repeat suite needed.
