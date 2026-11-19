@@ -4,6 +4,28 @@ Follow the contribution protocol in [AGENTS.md](../../AGENTS.md). Use a card in
 `agents.d/work/` for a multi-commit feature or a handoff. A small single-slice change
 can keep its design statements in the conversation instead.
 
+## Required Identity and Filename
+
+Every work card must have a permanent, unique `CPL-N` identifier, starting at
+`CPL-1`, and a filename of `CPL-N-<description>.md`. Prefix its top-level title
+with the same identifier, for example `# CPL-61 — Improve pairing navigation`.
+Use a descriptive filename suffix; existing suffixes may retain their original style.
+
+Active and completed cards share one sequence. Before creating a card, inspect
+both `agents.d/work/` and `agents.d/work_completed/` and choose one greater than
+the highest assigned number (compare numerically). Allocate consecutive numbers
+when creating multiple cards. Coordinate allocation with other contributors and
+resolve duplicate IDs before committing. Never reuse an assigned number or renumber
+a card when its title, scope, status, or directory changes. Retain the filename
+when moving a completed card and update references to its new path.
+
+The initial backfill assigns `CPL-1` through `CPL-60` by earliest Git-recorded
+creation, following former names and directories, including the earlier task-card
+system. Cards created in the same commit are ordered by their original filename;
+equal timestamps across commits are ordered by commit hash first. These numbers
+reflect recorded creation order, not priority or delivery order. Subsequent cards
+take the next available number; do not insert numbers into the historical sequence.
+
 ## Call the Delivery Shot
 
 Before implementation, state the intended outcome and an ordered sequence of
@@ -42,7 +64,7 @@ Review the full result against the goal at completion, then move the card to
 ## Template
 
 ```markdown
-# Outcome
+# CPL-N — Outcome
 
 ## Goal and Constraints
 Intended result, scope, and compatibility requirements.

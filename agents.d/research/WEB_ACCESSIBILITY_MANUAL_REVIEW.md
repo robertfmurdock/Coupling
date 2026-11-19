@@ -6,10 +6,10 @@ listed here. Owner reported player configuration tabbing good and everything els
 reviewed good, after identifying the unsaved-card defect fixed in `421fe94ca`.
 Safari/macOS versions and VoiceOver calibration were not supplied. Native Chrome
 About/news results are recorded in the completed card. Remaining matrix conditions
-are owned by the [data/reflow follow-up](../work/WEB_ACCESSIBLE_DATA_AND_REFLOW_FOLLOWUP.md)
+are owned by the [data/reflow follow-up](../work/CPL-56-WEB_ACCESSIBLE_DATA_AND_REFLOW_FOLLOWUP.md)
 and the pairing/contributor cards linked from that audit. This checklist remains
 available for those cards; its pending rows do not reopen the accepted bounded card.
-Related card: [Extended Web Accessibility Audit](../work_completed/WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
+Related card: [Extended Web Accessibility Audit](../work_completed/CPL-53-WEB_ACCESSIBILITY_AUDIT_FOLLOWUP.md).
 
 ## Environment and fixture
 

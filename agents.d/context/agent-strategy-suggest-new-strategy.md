@@ -25,10 +25,12 @@ and to propose one new strategy that a future agent run could act on systematica
 
 Identify the single most actionable recurring pattern you observe. Create a new work card at:
 ```
-agents.d/work/CLEANUP_STRATEGY_<NAME>_CARD.md
+agents.d/work/CPL-<N>-CLEANUP_STRATEGY_<NAME>_CARD.md
 ```
 
-Where `<NAME>` is a short uppercase identifier for the strategy (e.g., `NAMING_CONSISTENCY`,
+Allocate `<N>` from the shared active/completed sequence according to
+[the work-card convention](WORK_CHECKLIST.md), and include `CPL-<N>` in the card title.
+`<NAME>` is a short uppercase identifier for the strategy (e.g., `NAMING_CONSISTENCY`,
 `TEST_PLACEMENT`, `REDUNDANT_ABSTRACTIONS`).
 
 The work card must describe:

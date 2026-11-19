@@ -34,9 +34,9 @@ At each environment's cutover remove its normal runtime legacy access; retain
 legacy recovery evidence under separately authorized recovery access. Do not
 wait for global legacy-code removal to retire that environment's permissions.
 
-The [migration IAM work card](agents.d/work/DYNAMODB_MIGRATION_IAM.md) owns this
+The [migration IAM work card](agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.md) owns this
 rollout and the mandatory isolated AWS endpoint red/green evidence. The
-[security remediation card](agents.d/work/SECURITY_CRITICAL_HIGH_REMEDIATION.md)
+[security remediation card](agents.d/work/CPL-47-SECURITY_CRITICAL_HIGH_REMEDIATION.md)
 tracks the transfer as outstanding, not remediated. No provisioning, deployment,
 or AWS profile changes are authorized by these documents.
 
