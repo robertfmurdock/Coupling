@@ -1,0 +1,681 @@
+{
+  "schemaVersion": 2,
+  "status": "complete",
+  "revision": "3c3969426bc490afd16ba83d65e3469021531c77",
+  "workingTreeDirty": true,
+  "timestamp": "2026-11-19T19:56:30.477Z",
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "osRelease": "27.2.0",
+    "cpuModel": "Apple M2 Pro"
+  },
+  "route": "/welcome/",
+  "auth": "signed-out, fresh Chrome profile per pair",
+  "conditions": {
+    "network": "unthrottled local app plus live external CDNs",
+    "cpu": "unthrottled",
+    "window": [
+      1280,
+      900
+    ],
+    "observationAfterReadyMs": 2000
+  },
+  "caveats": [
+    "Cold means fresh browser profile; OS DNS/TLS and CDN server caches are uncontrolled.",
+    "Welcome chooses randomized content; content variation is not controlled by this baseline.",
+    "A supported observer with no LCP entry is reported as null, not zero.",
+    "Resource Timing bytes exclude sizes hidden by Timing-Allow-Origin; network.reportedBytesReceived is a separate browser-protocol counter, not a wire capture.",
+    "Network totals include only responses to requests started in the sample and completed before its snapshot. Pending and failed requests are separate.",
+    "LCP and CLS are bounded lab observations, not field Core Web Vitals. No INP is measured.",
+    "Readiness is the visible Come on in! button. No authenticated data is loaded or changed."
+  ],
+  "samples": [
+    {
+      "pair": 1,
+      "cache": "cold-profile",
+      "readinessElapsedMs": 935.3492080000001,
+      "readyAtMs": 933.5,
+      "lcpMs": 952,
+      "cls": 0.00004264266416430473,
+      "longTaskDurationMs": 98,
+      "longTaskCount": 1,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 638,
+      "reportedTransferBytes": 2643,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2939.899999976158,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 20.799999952316284,
+        "domContentLoadedMs": 788.3999999761581,
+        "loadMs": 807.5
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      },
+      "network": {
+        "responses": 641,
+        "cachedResponses": 1,
+        "reportedBytesReceived": 3883243,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0,
+        "pendingRequests": 0,
+        "droppedRequests": 0,
+        "groups": {
+          "app": {
+            "responses": 1,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 4326,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "static": {
+            "responses": 28,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 2305802,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "other": {
+            "responses": 2,
+            "cachedResponses": 1,
+            "reportedBytesReceived": 1138,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "icons": {
+            "responses": 5,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 35704,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "fonts": {
+            "responses": 2,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 15521,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "modules": {
+            "responses": 601,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 1336933,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "analytics": {
+            "responses": 2,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 183819,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          }
+        }
+      }
+    },
+    {
+      "pair": 1,
+      "cache": "warm-reload",
+      "readinessElapsedMs": 310.319125,
+      "readyAtMs": 302.2999999523163,
+      "lcpMs": null,
+      "cls": 0,
+      "longTaskDurationMs": 0,
+      "longTaskCount": 0,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 640,
+      "reportedTransferBytes": 0,
+      "zeroSizeResourceCount": 637,
+      "observedUntilMs": 2310.2999999523163,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 22.399999976158142,
+        "domContentLoadedMs": 134.10000002384186,
+        "loadMs": 134.5
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      },
+      "network": {
+        "responses": 642,
+        "cachedResponses": 637,
+        "reportedBytesReceived": 276633,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0,
+        "pendingRequests": 0,
+        "droppedRequests": 0,
+        "groups": {
+          "icons": {
+            "responses": 6,
+            "cachedResponses": 5,
+            "reportedBytesReceived": 5848,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "fonts": {
+            "responses": 2,
+            "cachedResponses": 2,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "other": {
+            "responses": 2,
+            "cachedResponses": 2,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "static": {
+            "responses": 28,
+            "cachedResponses": 26,
+            "reportedBytesReceived": 267065,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "analytics": {
+            "responses": 2,
+            "cachedResponses": 1,
+            "reportedBytesReceived": 20,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "app": {
+            "responses": 1,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 3700,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "modules": {
+            "responses": 601,
+            "cachedResponses": 601,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          }
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "cache": "cold-profile",
+      "readinessElapsedMs": 912.0637079999997,
+      "readyAtMs": 910.7000000476837,
+      "lcpMs": 900,
+      "cls": 0.000042865746920662266,
+      "longTaskDurationMs": 87,
+      "longTaskCount": 1,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 638,
+      "reportedTransferBytes": 2643,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2916.2999999523163,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 18.899999976158142,
+        "domContentLoadedMs": 776.2999999523163,
+        "loadMs": 789.7000000476837
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      },
+      "network": {
+        "responses": 641,
+        "cachedResponses": 1,
+        "reportedBytesReceived": 3410481,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0,
+        "pendingRequests": 0,
+        "droppedRequests": 0,
+        "groups": {
+          "app": {
+            "responses": 1,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 4326,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "static": {
+            "responses": 28,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 1833071,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "other": {
+            "responses": 2,
+            "cachedResponses": 1,
+            "reportedBytesReceived": 1143,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "icons": {
+            "responses": 5,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 35692,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "modules": {
+            "responses": 601,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 1336909,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "fonts": {
+            "responses": 2,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 15521,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "analytics": {
+            "responses": 2,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 183819,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          }
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "cache": "warm-reload",
+      "readinessElapsedMs": 294.2028329999994,
+      "readyAtMs": 292.2000000476837,
+      "lcpMs": null,
+      "cls": 0,
+      "longTaskDurationMs": 0,
+      "longTaskCount": 0,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 639,
+      "reportedTransferBytes": 0,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2298.899999976158,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 17.100000023841858,
+        "domContentLoadedMs": 119.70000004768372,
+        "loadMs": 120.5
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      },
+      "network": {
+        "responses": 641,
+        "cachedResponses": 639,
+        "reportedBytesReceived": 3758,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0,
+        "pendingRequests": 0,
+        "droppedRequests": 0,
+        "groups": {
+          "icons": {
+            "responses": 5,
+            "cachedResponses": 5,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "fonts": {
+            "responses": 2,
+            "cachedResponses": 2,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "other": {
+            "responses": 2,
+            "cachedResponses": 2,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "static": {
+            "responses": 28,
+            "cachedResponses": 28,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "analytics": {
+            "responses": 2,
+            "cachedResponses": 1,
+            "reportedBytesReceived": 58,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "app": {
+            "responses": 1,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 3700,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "modules": {
+            "responses": 601,
+            "cachedResponses": 601,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          }
+        }
+      }
+    },
+    {
+      "pair": 3,
+      "cache": "cold-profile",
+      "readinessElapsedMs": 901.3806669999994,
+      "readyAtMs": 900.1000000238419,
+      "lcpMs": 968,
+      "cls": 0.0007264488469277109,
+      "longTaskDurationMs": 105,
+      "longTaskCount": 1,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 638,
+      "reportedTransferBytes": 2643,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2906.5,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 18.90000009536743,
+        "domContentLoadedMs": 811,
+        "loadMs": 834.1000000238419
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      },
+      "network": {
+        "responses": 641,
+        "cachedResponses": 1,
+        "reportedBytesReceived": 3883242,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0,
+        "pendingRequests": 0,
+        "droppedRequests": 0,
+        "groups": {
+          "app": {
+            "responses": 1,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 4326,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "static": {
+            "responses": 28,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 2305826,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "other": {
+            "responses": 2,
+            "cachedResponses": 1,
+            "reportedBytesReceived": 1145,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "icons": {
+            "responses": 5,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 35743,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "fonts": {
+            "responses": 2,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 15521,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "modules": {
+            "responses": 601,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 1336869,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "analytics": {
+            "responses": 2,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 183812,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          }
+        }
+      }
+    },
+    {
+      "pair": 3,
+      "cache": "warm-reload",
+      "readinessElapsedMs": 380.33237499999814,
+      "readyAtMs": 378.39999997615814,
+      "lcpMs": null,
+      "cls": 0,
+      "longTaskDurationMs": 0,
+      "longTaskCount": 0,
+      "supportedObserverTypes": [
+        "largest-contentful-paint",
+        "layout-shift",
+        "longtask"
+      ],
+      "visibilityState": "visible",
+      "resourceCount": 639,
+      "reportedTransferBytes": 0,
+      "zeroSizeResourceCount": 636,
+      "observedUntilMs": 2387.1999999284744,
+      "truncated": false,
+      "navigation": {
+        "ttfbMs": 19.799999952316284,
+        "domContentLoadedMs": 145.69999992847443,
+        "loadMs": 146.29999995231628
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 700,
+        "devicePixelRatio": 1
+      },
+      "network": {
+        "responses": 641,
+        "cachedResponses": 637,
+        "reportedBytesReceived": 270785,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0,
+        "pendingRequests": 0,
+        "droppedRequests": 0,
+        "groups": {
+          "icons": {
+            "responses": 5,
+            "cachedResponses": 5,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "fonts": {
+            "responses": 2,
+            "cachedResponses": 2,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "other": {
+            "responses": 2,
+            "cachedResponses": 2,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "static": {
+            "responses": 28,
+            "cachedResponses": 26,
+            "reportedBytesReceived": 267065,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "analytics": {
+            "responses": 2,
+            "cachedResponses": 1,
+            "reportedBytesReceived": 20,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "app": {
+            "responses": 1,
+            "cachedResponses": 0,
+            "reportedBytesReceived": 3700,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          },
+          "modules": {
+            "responses": 601,
+            "cachedResponses": 601,
+            "reportedBytesReceived": 0,
+            "unknownByteResponses": 0,
+            "httpErrors": 0,
+            "failedRequests": 0,
+            "abortedRequests": 0
+          }
+        }
+      }
+    }
+  ],
+  "browser": {
+    "version": "158.0.8127.36",
+    "platform": "mac"
+  }
+}

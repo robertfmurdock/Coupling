@@ -186,3 +186,42 @@ and cleanup through the existing measurement session lifecycle. Diff checked.
 No new dependencies, test login, party mutation, push or release performed in
 measurements. CPL-54 remains open: isolate authenticated fixture/login setup and
 break down static/module payload before selecting an active-loading optimization.
+
+
+## Lossless Welcome PNG Slice
+
+Starting after `3c3969426`. Source inventory explains a large part of static-byte
+variation: Welcome randomly selects one of three portrait pairs. Rosie/Wendy
+source PNGs total 860,089 bytes; Grayson/Wayne total 356,854 bytes (503,235-byte
+difference), closely matching the earlier static-category swing. This identifies
+an actual loaded asset family rather than assuming all variation is JavaScript.
+
+Recompressed only the six Welcome portrait PNGs (Frodo, Samwise, Grayson, Wayne,
+Rosie, Wendy), preserving PNG format and merging/recompressing only IDAT chunks.
+No code, dimensions, image selection, palette, timing or loading-priority changes.
+This mechanical asset optimization needs no fabricated failing UI test.
+
+Verified each new file against its Git HEAD original: inflated IDAT scanline data
+is byte-identical; every non-IDAT chunk and its ordering/content/CRC is identical;
+all PNG chunk CRCs validate. Color profiles, gamma, dimensions and other metadata
+are preserved. [Verification record](../research/WEB_WELCOME_PNG_COMPRESSION.json)
+contains original/new sizes and scanline/metadata hashes. Total 1,518,489 to
+1,384,200 bytes: 134,289 bytes saved (8.8%); each selected pair saves 34–65KB of
+source PNG payload. This is not a measured LCP or network-time improvement.
+Validation: full `fish -lc './gradlew check --no-daemon'` passes (680 tasks),
+log `/tmp/coupling-welcome-png-check.log`. Each of the six production-emitted PNGs
+was verified byte-identical to its new source file. Post-change measurement task
+passes with six samples and zero failed fetches; retained
+[post-compression baseline](../research/WEB_WELCOME_PNG_AFTER_BASELINE.json).
+Readiness ranged 901–935ms cold and 294–380ms warm in that run. Random portrait
+selection and cache variation remain uncontrolled, so these timings and aggregate
+received-byte totals are not a matched before/after speed comparison. The verified
+benefit is smaller PNG payload with identical image data and metadata.
+
+Review confirms this slice modifies only six image assets plus evidence/card
+notes; no app/runtime/CDN policy, dimensions, image selection or accessibility
+semantics changed. No artificial failing tests introduced for this mechanical,
+lossless edit. Bit/metadata comparisons own the no-visual-change contract; full
+suite owns application regression coverage. Diff checked; no push/release.
+CPL-54 remains open for non-resetting authenticated setup, module-graph analysis
+and better-controlled comparisons before further loading changes.

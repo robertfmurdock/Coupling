@@ -1,0 +1,80 @@
+[
+  {
+    "file": "client/src/jsMain/resources/images/players/frodo.png",
+    "beforeBytes": 80483,
+    "afterBytes": 71452,
+    "savedBytes": 9031,
+    "inflatedScanlinesSha256": "75c89fd1dfbb3263612221df9844fbd1ca7a60178ab7f700ed3090ba814a145b",
+    "nonIdatChunksSha256": "936169c4d6c52f288ee2d24129d7f2c8425d0287879f438aa50dd86ea1426854",
+    "verifiedAgainstRevision": "3c3969426bc490afd16ba83d65e3469021531c77",
+    "scanlineDataIdentical": true,
+    "allNonIdatChunksIdentical": true,
+    "chunkCrcsValid": true,
+    "productionAsset": "assets/frodo-Bnl8MW18.png"
+  },
+  {
+    "file": "client/src/jsMain/resources/images/players/samwise.png",
+    "beforeBytes": 221063,
+    "afterBytes": 195339,
+    "savedBytes": 25724,
+    "inflatedScanlinesSha256": "dd7e72d532d13fdf29ccc19156f213c9e6f8c79a76930a1c80f9d677e06af3c2",
+    "nonIdatChunksSha256": "bd5341194bfbe14049ef2f970ade507fa7d9d097e9a13ae81c680837863d03cd",
+    "verifiedAgainstRevision": "3c3969426bc490afd16ba83d65e3469021531c77",
+    "scanlineDataIdentical": true,
+    "allNonIdatChunksIdentical": true,
+    "chunkCrcsValid": true,
+    "productionAsset": "assets/samwise-CxEOg-lH.png"
+  },
+  {
+    "file": "client/src/jsMain/resources/images/players/grayson.png",
+    "beforeBytes": 165004,
+    "afterBytes": 146942,
+    "savedBytes": 18062,
+    "inflatedScanlinesSha256": "70287fe4b1bd514b3f4c371435bd4d35a895b8e0a566ee78c4ad5fc6b76fd6e4",
+    "nonIdatChunksSha256": "45b52288084e4d8cf814d70a37fb65fb86872e353aef9536fe2cf02cd745f8b7",
+    "verifiedAgainstRevision": "3c3969426bc490afd16ba83d65e3469021531c77",
+    "scanlineDataIdentical": true,
+    "allNonIdatChunksIdentical": true,
+    "chunkCrcsValid": true,
+    "productionAsset": "assets/grayson-CeDw0fok.png"
+  },
+  {
+    "file": "client/src/jsMain/resources/images/players/wayne.png",
+    "beforeBytes": 191850,
+    "afterBytes": 175520,
+    "savedBytes": 16330,
+    "inflatedScanlinesSha256": "467e2100492618afb83dcd9f799d190b794222edcd01ccf7665a3b53778b5e2f",
+    "nonIdatChunksSha256": "45b52288084e4d8cf814d70a37fb65fb86872e353aef9536fe2cf02cd745f8b7",
+    "verifiedAgainstRevision": "3c3969426bc490afd16ba83d65e3469021531c77",
+    "scanlineDataIdentical": true,
+    "allNonIdatChunksIdentical": true,
+    "chunkCrcsValid": true,
+    "productionAsset": "assets/wayne-BKAecbME.png"
+  },
+  {
+    "file": "client/src/jsMain/resources/images/players/rosie.png",
+    "beforeBytes": 615313,
+    "afterBytes": 578788,
+    "savedBytes": 36525,
+    "inflatedScanlinesSha256": "df27661a33ce91804d50533e76c0b30c5dcd91e0dd1245cfccb877be7409686e",
+    "nonIdatChunksSha256": "14fc9ca7b6300e4095fc1c9c12d24e1beccb53074f1de086ed1b13bebb3edda7",
+    "verifiedAgainstRevision": "3c3969426bc490afd16ba83d65e3469021531c77",
+    "scanlineDataIdentical": true,
+    "allNonIdatChunksIdentical": true,
+    "chunkCrcsValid": true,
+    "productionAsset": "assets/rosie-DYvsiksF.png"
+  },
+  {
+    "file": "client/src/jsMain/resources/images/players/wendy.png",
+    "beforeBytes": 244776,
+    "afterBytes": 216159,
+    "savedBytes": 28617,
+    "inflatedScanlinesSha256": "9fb00e8c62c745f9829609338c00b75ebdeedddd38e8fb9235f124e8b6577f71",
+    "nonIdatChunksSha256": "01305e415db9f233afbbc637131dfc4df809ff2d6d091ea5c3219571ae0e0499",
+    "verifiedAgainstRevision": "3c3969426bc490afd16ba83d65e3469021531c77",
+    "scanlineDataIdentical": true,
+    "allNonIdatChunksIdentical": true,
+    "chunkCrcsValid": true,
+    "productionAsset": "assets/wendy-Cd2E0tJA.png"
+  }
+]
