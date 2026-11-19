@@ -1,16 +1,21 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.client.components.contribution.ContributionCardHeader
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.party.PartyList
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.stubmodel.stubContribution
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import emotion.react.css
 import kotlinx.browser.document
+import kotlinx.browser.window
+import kotlinx.coroutines.await
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.p
 import web.cssom.px
@@ -22,6 +27,57 @@ import kotlin.test.Test
 class PageLayoutTest {
     @AfterTest
     fun cleanUp() = cleanup()
+
+    @Test
+    fun contributorActionPreservesCardGeometryAndVisibleFocus() = asyncSetup(object {
+        val alex = stubPlayer().copy(name = "Alex")
+        val sam = stubPlayer().copy(name = "Sam")
+        val expectedContribution = stubContribution().copy(participantEmails = setOf(alex.email, sam.email), link = null)
+        val actor = userEvent.setup()
+    }) {
+        renderNavigation {
+            listOf(false, true).forEach { interactive ->
+                div {
+                    id = ElementId(if (interactive) "action-header-host" else "static-header-host")
+                    css {
+                        width = 800.px
+                        height = 100.px
+                    }
+                    ContributionCardHeader {
+                        partyId = PartyId("contributor-layout")
+                        contribution = expectedContribution
+                        players = listOf(alex, sam)
+                        if (interactive) onPlayerClick = { _, _ -> }
+                    }
+                }
+            }
+        }
+    } exercise {
+        actor.tab().await()
+    } verify {
+        val staticHost = document.getElementById("static-header-host")!!
+        val actionHost = document.getElementById("action-header-host")!!
+        val before = staticHost.querySelector("[data-player-id]")!!.getBoundingClientRect()
+        val after = actionHost.querySelector("[data-player-id]")!!.getBoundingClientRect()
+        after.width.assertIsEqualTo(before.width)
+        after.height.assertIsEqualTo(before.height)
+        (
+            abs(
+                (after.left - actionHost.getBoundingClientRect().left) -
+                    (before.left - staticHost.getBoundingClientRect().left),
+            ) < 0.5
+            ).assertIsEqualTo(true)
+        (
+            abs(
+                (after.top - actionHost.getBoundingClientRect().top) -
+                    (before.top - staticHost.getBoundingClientRect().top),
+            ) < 0.5
+            ).assertIsEqualTo(true)
+        val trigger = screen.getByRole("button", RoleOptions(name = "Alex"))
+        document.activeElement.assertIsEqualTo(trigger)
+        val style = window.getComputedStyle(trigger)
+        (style.outlineStyle != "none" && style.outlineWidth != "0px").assertIsEqualTo(true)
+    }
 
     @Test
     fun aboutHeaderCentersTitleAndBackAsOneGroup() = asyncSetup() exercise {

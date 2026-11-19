@@ -18,16 +18,20 @@ import emotion.react.css
 import org.kotools.types.ExperimentalKotoolsTypesApi
 import react.Key
 import react.Props
+import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import web.cssom.AlignItems
 import web.cssom.BackgroundRepeat
 import web.cssom.Color
+import web.cssom.Cursor
 import web.cssom.Display
 import web.cssom.FlexDirection
 import web.cssom.FontWeight
+import web.cssom.Globals
 import web.cssom.LineStyle
 import web.cssom.Margin
+import web.cssom.None
 import web.cssom.Overflow
 import web.cssom.Position
 import web.cssom.TextWrap
@@ -42,7 +46,9 @@ import web.cssom.rotatex
 import web.cssom.scale
 import web.cssom.translate
 import web.cssom.url
+import web.html.ButtonType
 import web.html.HTMLElement
+import web.html.button
 
 external interface ContributionCardHeaderProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
@@ -125,10 +131,28 @@ val ContributionCardHeader by nfc<ContributionCardHeaderProps> { props ->
                 top = (-0.5).em
             }
             TiltedPlayerList(playerList = contributionPlayerList) { tilt, player ->
-                span {
-                    key = Key(player.id.value.toString())
-                    onClick = { props.onPlayerClick?.invoke(player, it.currentTarget) }
-                    PlayerCard(player = player, tilt = tilt, size = 30)
+                val onPlayerClick = props.onPlayerClick
+                if (onPlayerClick == null) {
+                    span {
+                        key = Key(player.id.value.toString())
+                        PlayerCard(player = player, tilt = tilt, size = 30)
+                    }
+                } else {
+                    button {
+                        key = Key(player.id.value.toString())
+                        type = ButtonType.button
+                        css {
+                            border = None.none
+                            padding = 0.px
+                            margin = 0.px
+                            background = None.none
+                            font = Globals.inherit
+                            color = Globals.inherit
+                            cursor = Cursor.pointer
+                        }
+                        onClick = { onPlayerClick(player, it.currentTarget) }
+                        PlayerCard(player = player, tilt = tilt, size = 30)
+                    }
                 }
             }
         }
