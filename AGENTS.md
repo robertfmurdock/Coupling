@@ -60,6 +60,11 @@ Load the documents relevant to the work, not the entire context directory:
   [upstream Testmints skill](https://github.com/robertfmurdock/testmints/tree/master/skills/testmints)
   can be installed with `$skill-installer`.
 - [Production code style](agents.d/context/PLAYBOOK_CODE_STYLE.md): production source edits.
+- UI adjustments: consult the Modern Web Guidance skill before changing HTML,
+  CSS, client-side interactions, or accessibility behavior. Search for the relevant
+  pattern and read the applicable guidance; preserve established visuals and
+  placement unless a change is authorized. If the skill is unavailable, report
+  that gap and consult current authoritative web-platform documentation.
 - [GraphQL](agents.d/context/PLAYBOOK_GRAPHQL.md): schema, operations, and mutation routing.
 - [Gradle](agents.d/context/GRADLE_PLAYBOOK.md): build logic, dependencies, automation, or build failures.
 - [GitHub Actions](agents.d/context/GITHUB_ACTIONS_PLAYBOOK.md): workflow changes.
