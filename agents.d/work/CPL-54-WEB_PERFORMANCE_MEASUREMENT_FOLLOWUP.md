@@ -138,3 +138,51 @@ Gradle-owned automation, bounded numeric-only records and explicit unknown/parti
 states. Task is opt-in and always executes, so local timing variability cannot
 make normal check flaky. Diff checked; no push/release performed. CPL-54 stays open
 for the authenticated baseline and measurement gaps above.
+
+
+## Network Visibility Slice
+
+Starting after `cf235ba80`. Investigation of signed-in setup found the ordinary
+E2E bootstrap deletes test-account parties before login. Do not invoke that
+bootstrap as a baseline entry point. Dedicated reusable auth/fixture setup remains
+open. Prioritized the existing baseline's concrete missing-byte evidence first.
+
+New Node/Testmints scenarios cover module-byte aggregation without retaining URL,
+query/header/body secrets, reset excluding prior-sample responses, and cached zero
+bytes versus unknown counts. The aggregation/count scenarios failed meaningfully
+before implementation; the reset scenario is retained as a distinct boundary.
+Collector tracks sample-started request IDs in memory (bounded), then reduces
+completed responses into fixed provider categories. Unknown bytes, pending/failed
+requests and dropped tracking are explicit. Numeric-only snapshots are detached
+from mutable collector state. BiDi subscription listeners are removed on failure
+or before session cleanup. No application loading/UI behavior changed.
+
+The preliminary schema-2 run is retained as
+[preliminary network evidence](../research/WEB_WELCOME_NETWORK_PRELIMINARY.json). Cold loads each
+reported 641 completed responses, including 601 esm.sh/module responses; total
+browser-protocol bytes were 3.44–3.95MB, local static category about 1.87–2.37MB.
+Warm loads reused 637 responses from cache and reported 0.31–0.87MB. No unknown
+byte counts, pending requests or tracking drops appeared in these snapshots.
+These counters include the document and differ from page Resource Timing scope.
+They are not wire captures or final page-lifetime totals. Instrumentation changed;
+no timing improvement over schema 1 is claimed. Module fan-out and static payload
+both warrant further breakdown before changing loading strategy.
+
+Review caught 87 failed fetches in the preliminary run's first warm sample; do not
+silently treat that sample as clean. Added an abort-subset assertion, confirmed it
+failed, then classified ERR_ABORTED numerically per category without storing raw
+error text. The final [network baseline](../research/WEB_WELCOME_NETWORK_BASELINE.json)
+has no failed requests in six samples; the earlier cause remains unknown, not
+claimed resolved. Final cold received bytes range 3.39–3.44MB; warm 0.004–0.864MB,
+reinforcing that cache/response variation must be understood before budgeting.
+The 601 module responses per cold load remain consistent. Both runs retained.
+
+Focused `:e2e:jsNodeTest` passes (21 tests), formatting and opt-in measurement task
+pass. Final `fish -lc './gradlew check --no-daemon'` passes (680 tasks), log
+`/tmp/coupling-network-baseline-final-check.log`. Test review preserves aggregation,
+privacy, reset and unknown/cached contracts at the Node boundary. Tooling review
+confirms bounded tracking, copied snapshots, no raw request/error metadata retained,
+and cleanup through the existing measurement session lifecycle. Diff checked.
+No new dependencies, test login, party mutation, push or release performed in
+measurements. CPL-54 remains open: isolate authenticated fixture/login setup and
+break down static/module payload before selecting an active-loading optimization.

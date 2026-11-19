@@ -50,3 +50,38 @@ Metric aggregation is tested in `:e2e:jsNodeTest` using Testmints. Authenticated
 party/pair routes, controlled throttling, full network byte capture, and interaction
 traces remain separate CPL-54 work. Do not select active-resource optimizations
 from these partial measurements alone.
+
+
+## Browser-protocol network totals (schema 2)
+
+`network` uses WebDriver BiDi events, independent of page Timing-Allow-Origin
+restrictions. It aggregates only responses whose requests started in the current
+sample; responses from before reset are excluded. It includes the navigation
+document, unlike the Resource Timing totals above. Fixed categories are app,
+static, modules, fonts, icons, analytics, auth, and other. Hostnames/paths, query
+strings, cookies, headers and bodies are discarded; request IDs are held only in
+bounded in-memory tracking and never written to reports.
+
+`reportedBytesReceived` is the browser-protocol counter, not a packet capture or
+an estimate from decoded body size. Cached responses and missing byte counters
+are separate. Pending requests, fetch failures, HTTP errors and dropped tracking
+are disclosed. Samples stop after the same bounded observation period, not network
+idle. Do not equate protocol totals with complete page-lifetime/wire traffic.
+Network event collection adds instrumentation overhead; don't interpret differences
+from schema 1 timing as app performance changes. BiDi is required rather than
+silently dropping this evidence on classic-only browsers.
+
+The retained schema-2 baseline is
+`agents.d/research/WEB_WELCOME_NETWORK_BASELINE.json`. Signed-in measurement still
+needs dedicated, non-resetting login/fixture setup: the ordinary E2E bootstrap
+clears the configured test account's parties, so it is not used by this runner.
+
+
+`abortedRequests` is the subset of failedRequests whose protocol error contains
+ERR_ABORTED; only the numeric classification is retained, never error text.
+The preliminary network capture in
+`agents.d/research/WEB_WELCOME_NETWORK_PRELIMINARY.json` includes 87 unclassified
+failed fetches in its first warm sample. The later retained baseline had none in
+six samples; that does not establish a cause or fix for the earlier failures.
+Keep both observations when assessing variation. Complete means the measurement
+sequence finished, not that every sample was free of network errors.
