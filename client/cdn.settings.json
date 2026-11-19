@@ -87,9 +87,6 @@
     "react-virtualized-auto-sizer": {
       "global": "ReactVirtualizedAutoSizer"
     },
-    "reactjs-popup": {
-      "global": "ReactjsPopup"
-    },
     "date-fns": {
       "global": "DateFns"
     },
