@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.contribution
 import com.apollographql.apollo.api.Optional
 import com.zegreatrob.coupling.client.components.contribution.ContributionContentFrame
 import com.zegreatrob.coupling.client.components.contribution.ContributionOverviewContent
+import com.zegreatrob.coupling.client.components.contribution.ContributionQuickStatsPanel
 import com.zegreatrob.coupling.client.components.contribution.ContributionStartContent
 import com.zegreatrob.coupling.client.components.player.UpdatingPlayerList
 import com.zegreatrob.coupling.client.gql.ContributionOverviewPageQuery
@@ -29,9 +30,9 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
     ) { _, dispatchFunc, queryResult ->
         val party = queryResult.party?.partyDetails?.toDomain()
             ?: return@CouplingQuery
-        val contributions = queryResult.party.contributionReport?.contributions?.map {
-            it.contributionDetails.toDomain()
-        } ?: return@CouplingQuery
+        val report = queryResult.party.contributionReport ?: return@CouplingQuery
+        val contributions = report.contributions.map { it.contributionDetails.toDomain() }
+        val contributorCount = contributions.flatMap { it.participantEmails }.toSet().size
         val players = queryResult.party.playerList.map { it.playerDetails.toDomain() }
         val retiredPlayers = queryResult.party.retiredPlayers.map { it.playerDetails.toDomain() }
         UpdatingPlayerList(
@@ -39,6 +40,12 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
             dispatchFunc = dispatchFunc,
         ) { playerList, dispatchFunc ->
             ContributionContentFrame(party = party) {
+                ContributionQuickStatsPanel(
+                    contributionCount = report.count,
+                    medianCycleTime = report.medianCycleTime,
+                    cycleTimeCount = report.withCycleTimeCount ?: 0,
+                    contributorCount = contributorCount,
+                )
                 if (contributions.isEmpty()) {
                     ContributionStartContent(party)
                 } else {

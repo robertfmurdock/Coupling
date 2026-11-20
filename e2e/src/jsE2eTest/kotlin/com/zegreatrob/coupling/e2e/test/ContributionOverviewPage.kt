@@ -9,6 +9,7 @@ object ContributionOverviewPage : BrowserSyntax {
 
     private suspend fun header() = TestingLibraryBrowser.getByText("Contributions")
     suspend fun setupInstructions() = TestingLibraryBrowser.getByText("Want to get started with Contributions?")
+    suspend fun summaryValue(label: String) = TestingLibraryBrowser.getByText(label).parentElement().element("dd").text()
     suspend fun mostRecentHeader(recentContributions: Int) = TestingLibraryBrowser.getByText(
         "Most Recent $recentContributions Contributions:",
     )

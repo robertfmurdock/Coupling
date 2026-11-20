@@ -200,6 +200,9 @@ query contributionOverviewPageQuery($partyInput: PartyInput!, $contributionRepor
         playerList { ...PlayerDetails }
         retiredPlayers { ...PlayerDetails }
         contributionReport(input: $contributionReportInput) {
+            count
+            medianCycleTime
+            withCycleTimeCount
             contributions { ...ContributionDetails }
         }
     }
