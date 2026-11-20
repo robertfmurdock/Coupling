@@ -41,8 +41,9 @@ gh issue comment <issue-number> --body 'Implementation: <commit-sha>' \
 Record the implementation SHA and actual image and viewport dimensions; a requested
 window size does not prove the viewport size. Match viewport, theme, and sample data
 where practical; disclose differences. Add clips when motion or timing matters.
-Verify uploaded attachments before closing the issue. Capture automation is tracked
-in [CPL-64](../work/CPL-64-VISUAL_EVIDENCE_CAPTURE.md); it is not available yet.
+Verify uploaded attachments before closing the issue. Use the opt-in
+[`captureVisualEvidence` task](../../e2e/visual-evidence/README.md) for named local
+fixtures, labeled PNGs and manifests with measured viewport/image dimensions.
 
 ## Resume, Deliver, and Close
 

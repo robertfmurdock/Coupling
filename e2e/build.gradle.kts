@@ -5,8 +5,12 @@ import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode
 import org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
+import com.zegreatrob.jsmints.plugins.WdioTest
+import com.zegreatrob.jsmints.plugins.setup as setupWdio
 
 plugins {
+    kotlin("plugin.serialization")
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.jsmints.plugins.wdiotest")
     alias(libs.plugins.apollo)
@@ -32,6 +36,8 @@ kotlin {
         val diagnosticsBrowserTest = compilations.create("diagnosticsBrowserTest") {
             associateWith(this@js.compilations.getByName("main"))
             defaultSourceSet.kotlin.srcDir(testSupport)
+            defaultSourceSet.kotlin.srcDir(layout.projectDirectory.dir("src/jsVisualEvidence/kotlin"))
+            defaultSourceSet.kotlin.exclude("**/CaptureFixture.kt")
         }
         val browserTestBinary = binaries.executable(diagnosticsBrowserTest)
             .single { it.mode == KotlinJsBinaryMode.DEVELOPMENT }
@@ -92,6 +98,7 @@ apollo {
 }
 
 dependencies {
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     listOf("jsTestImplementation", "jsDiagnosticsBrowserTestImplementation").forEach { testImplementation ->
         add(testImplementation, kotlin("test-js"))
         add(testImplementation, "com.zegreatrob.testmints:async")
@@ -189,6 +196,71 @@ tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter("jsNodeDiagnosticsB
 
 
 val performanceSources = layout.projectDirectory.dir("performance")
+val visualEvidenceSources = layout.projectDirectory.dir("visual-evidence")
+val captureCompilation = kotlin.js().compilations.create("visualEvidence") {
+    associateWith(kotlin.js().compilations.getByName("main"))
+    defaultSourceSet.kotlin.apply {
+        srcDir("src/jsE2eTest/kotlin")
+        include(
+            "**/CaptureFixture.kt", "**/WdioEvidenceBrowser.kt",
+            "**/AuthorizedKtor.kt", "**/CouplingLogin.kt", "**/TestLogin.kt",
+            "**/Process.kt", "**/LazyDeferred.kt", "**/PartyListPage.kt", "**/PartyCard.kt",
+            "**/ContributionOverviewPage.kt", "**/BrowserSyntax.kt", "**/JwtDecode.kt",
+        )
+    }
+}
+configurations.named("jsVisualEvidenceImplementation") {
+    extendsFrom(configurations.getByName("jsE2eTestImplementation"))
+}
+val captureBinary = kotlin.js().binaries.executable(captureCompilation)
+    .single { it.mode == KotlinJsBinaryMode.DEVELOPMENT }
+tasks.register<WdioTest>("captureVisualEvidence") {
+    description = "Captures a named local fixture as labeled PNG evidence with a measured manifest"
+    group = "verification"
+    setupWdio(captureCompilation)
+    val runnerProject = kotlin.js().compilations.getByName("e2eTest").npmProject.dir
+    val captureProject = captureCompilation.npmProject.dir
+    dependsOn(captureBinary.linkSyncTask, "copyWdio", "installRunner", appConfiguration, clientConfiguration, ":composeUp")
+    inputs.files(appConfiguration, clientConfiguration)
+    inputs.dir(visualEvidenceSources)
+    inputs.files(captureBinary.linkSyncTask, tasks.named("copyWdio"), tasks.named("copyWdioConfDir"))
+    val fixture = providers.gradleProperty("captureFixture").orElse("contribution-overview")
+    val label = providers.gradleProperty("captureLabel").orElse("Capture")
+    val viewport = providers.gradleProperty("captureViewport").orElse("1280x900")
+    inputs.property("fixture", fixture)
+    inputs.property("label", label)
+    inputs.property("viewport", viewport)
+    outputs.upToDateWhen { false }
+    val report = layout.buildDirectory.dir("reports/visual-evidence")
+    reportDirectory.set(layout.buildDirectory.dir("reports/visual-evidence-runner"))
+    testResultsDirectory.set(layout.buildDirectory.dir("visual-evidence-runner/test-results"))
+    outputs.dir(report)
+    npmWorkingDirectory.set(captureProject)
+    specCandidates.set(captureProject.map { listOf(it.file("kotlin/Coupling-e2e-visualEvidence.js")) })
+    argumentList.set(runnerProject.map { listOf(it.file("runner/jsmints-wdiorunner.js").asFile.absolutePath) })
+    environment("WDIO_CONFIG", runnerProject.get().file("wdio.conf.mjs").asFile.absolutePath)
+    environment("BASEURL", "https://localhost/")
+    environment("REPORT_DIR", reportDirectory.get().asFile.absolutePath)
+    environment("TEST_RESULTS_DIR", testResultsDirectory.get().asFile.absolutePath)
+    environment("LOGS_DIR", layout.buildDirectory.dir("reports/logs/visual-evidence").get().asFile.absolutePath)
+    environment("NODE_TLS_REJECT_UNAUTHORIZED", "0")
+    environment("COUPLING_REPOSITORY_ROOT", rootProject.layout.projectDirectory.asFile.absolutePath)
+    environment("COUPLING_CAPTURE_DIRECTORY", report.get().asFile.absolutePath)
+    environment("COUPLING_CAPTURE_HOOK", visualEvidenceSources.file("capture.mjs").asFile.toURI().toString())
+    environment("COUPLING_CAPTURE_POLICY_MODULE", captureProject.get().file("kotlin/Coupling-e2e.js").asFile.absolutePath)
+    environment("COUPLING_CAPTURE_DIAGNOSTICS_MODULE", layout.projectDirectory.file("diagnostics/browser-diagnostics.mjs").asFile.toURI().toString())
+    environment("COUPLING_CAPTURE_FIXTURE", fixture.get())
+    environment("COUPLING_CAPTURE_LABEL", label.get())
+    environment("COUPLING_CAPTURE_VIEWPORT", viewport.get())
+    val testPassword = providers.fetchAwsSsmParameter("/local/COUPLING_E2E_TEST_PASSWORD")
+    doFirst { environment("COUPLING_E2E_TEST_PASSWORD", testPassword.get()) }
+}
+val visualEvidenceTest = tasks.register("visualEvidenceTest") {
+    description = "Tests the visual evidence manifest and failure contracts without a browser"
+    group = "verification"
+    dependsOn("jsNodeTest")
+}
+tasks.named("check") { dependsOn(visualEvidenceTest) }
 tasks.withType<KotlinJsTest>().configureEach { inputs.dir(performanceSources) }
 tasks.register<NodeExec>("measureWelcomePerformance") {
     description = "Records six bounded Welcome lab samples; requires browser execution outside the sandbox"
