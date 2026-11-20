@@ -5,49 +5,48 @@ are defined in [AGENTS.md](../../AGENTS.md).
 
 ## Tests Express Intent
 
-Declare the intended behavior and observable contract before writing the test.
-Write one focused scenario, run it, and confirm it fails for the missing behavior
-rather than an unrelated syntax/setup problem. Implement the simplest solution,
-then refactor with tests green. Keep tests and implementation in the same safe commit.
+Declare the behavior and observable contract before writing a focused scenario.
+Confirm it fails for missing behavior, not syntax or setup. Implement the smallest
+solution, refactor with tests green, and commit tests with implementation.
 
-A test describes a property of the system or component at its own boundary. Match
-its language to that boundary. Anchor confidence at the highest affected level,
-with variations at lower levels. Preserve existing behavioral constraints during
-refactoring; do not add token tests for mechanical edits or documentation.
+Test at the behavior’s owning boundary. Anchor confidence at the highest affected
+level, with variations below it. Preserve existing constraints; do not invent
+failing tests for documentation, mechanical edits, or behavior-preserving refactors.
+
+### Resuming an Inherited Implementation
+
+Inspect prior commits, tests, and red/green evidence before choosing the next test.
+Reuse evidence that still applies to the current contract and source; record its
+provenance and gaps. Do not remove working code merely to replay completed TDD.
+
+Test uncovered contracts at their owning boundary. When test sensitivity is
+uncertain, use a small reversible fault grounded in a plausible regression, confirm
+the intended assertion fails, then restore and rerun. Avoid repeated fault checks
+that add no evidence. Prior results do not replace the current full-suite gate.
 
 ## Choosing a Test Boundary
 
-Use the narrowest boundary that fully observes the behavior, then add a broader
-test when the contract crosses that boundary. These familiar labels can help route
-a test, though teams use some of them differently:
+Choose the narrowest boundary that observes the behavior; add broader coverage
+when the contract crosses it:
 
-- **Unit tests** exercise logic or data rules in process. Tests for adapters and
-  actions also stay at their own local boundary; they may use test doubles for
-  collaborators. Platform-specific behavior belongs in the matching test source
-  set.
-- **UI/component tests** render client components and exercise user interactions,
-  commonly with dispatchers stubbed. Use these for rendering and for checking which
-  action the UI sends. A memory router can also prove local link activation,
-  destination changes, and disclosure/focus behavior without running services.
-- **Endpoint/API tests** use the SDK against the running network service, without
-  driving a browser or full client application. These are often called integration
-  tests; the endpoint boundary is the more precise description here. Use this layer
-  for client-to-service contracts and behavior that depends on the running service.
-- **End-to-end/system tests** drive browser flows through the assembled client and
-  server. Use these when behavior depends on assembled route wiring, authentication, or
-  interactions across the running application. Separate browser diagnostics tests
-  exercise the diagnostic harness itself, not product flows.
+- **Unit:** in-process logic, data rules, adapters, or actions at their local
+  boundary, with collaborator doubles where useful. Put platform-specific behavior
+  in the matching source set.
+- **UI/component:** rendered content, input, dispatched actions, and local navigation
+  with stubbed dispatchers. A memory router can prove destinations, disclosure,
+  and focus without services.
+- **Endpoint/API:** SDK calls against the running service for network contracts
+  and service-dependent behavior, without a browser.
+- **End-to-end/system:** browser flows through the assembled client and server for
+  route/auth/service wiring. Keep diagnostic harness tests separate from product flows.
 
-Choose based on what must actually run and what the test needs to observe, rather
-than the label alone.
+Choose by the capabilities the assertion needs, not the suite’s label.
 
 ### Choose the UI Suite Before Writing the Test
 
-In the delivery shot, name the behavior's owner, the runtime capabilities needed
-to observe it, and the existing suite chosen for the test. Inspect tests beside
-the owning component before adding a scenario to a convenient application/browser
-suite. Accessibility or React Router involvement alone does not require Chrome
-or E2E.
+In the delivery shot, name the owner, required runtime capabilities, and existing
+suite. Read tests beside the owner before choosing an application/browser suite.
+Accessibility or React Router involvement alone does not require Chrome or E2E.
 
 - Start component-owned rendering and interaction contracts in
   `client/components/src/jsTest` (`:client:components:jsTest`, Node with jsdom).
@@ -64,17 +63,14 @@ or E2E.
   and loading it again. Keep rendering and input variations at the component
   level instead of repeating full authenticated flows for each variation.
 
-When adding lower-level coverage, review nearby broader tests for overlap. Retain
-distinct integration evidence, but consolidate redundant checks once the same
-contract is meaningfully covered below. Check actual selection/state when that
-is the claim; option existence alone does not prove which option is selected.
+When adding lower-level coverage, consolidate redundant broader checks while
+preserving distinct integration evidence. Assert actual selection/state when that
+is the claim; an option’s existence does not prove it is selected.
 
-Search for existing module patterns and utilities with `rg --files` and reuse them
-when they improve clarity. Verify the feature, not source text, types, or plumbing:
-for example, test that a component renders a value rather than that a query contains
-its field name. Related observations can share a test; distinct scenarios should
-remain explicit. Avoid exhaustive imagined edge cases or passing tests with no
-additional intent.
+Find reusable patterns with `rg --files`. Verify behavior, not source text or
+plumbing: assert a rendered value rather than a query’s field name. Group related
+observations; keep distinct scenarios explicit. Avoid imagined edge-case matrices
+or passing tests with no additional intent.
 
 ## Browser Interaction Evidence
 
@@ -143,14 +139,11 @@ pixel details that are incidental to the intended layout.
 
 ## Test Design Is Different from Production Design
 
-Keep scenarios readable at the call site. Explicit data and some duplication can
-communicate intent better than a shared abstraction. Introduce narrowly scoped
-helpers only when they make the scenarios easier to understand; do not impose
-production function-size or deduplication preferences mechanically on tests.
-
-Use immutable data where it helps, but make scenario arrangement and observation
-clear rather than disguising them as production transformation pipelines. Follow
-local formatting, including breaking assertion chains before `?.` and assertions.
+Keep scenarios readable at the call site. Prefer explicit data and some duplication
+to helpers that obscure intent; production function-size and deduplication rules
+do not transfer mechanically to tests. Use immutable data where helpful without
+hiding arrangement or observations in transformation pipelines. Follow local
+formatting, breaking chains before `?.` and assertions.
 
 When adding an alternative API, cover both supported paths. Preserve legacy
 behavioral assertions through migrations; do not weaken a test merely to make the

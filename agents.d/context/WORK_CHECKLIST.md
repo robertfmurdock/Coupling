@@ -1,59 +1,63 @@
 # Work Cards and Safe Slices
 
-Use a work card for multi-commit work or a handoff. For a small single-slice
-change, state the design in the conversation. Follow the contribution protocol
-in [AGENTS.md](../../AGENTS.md).
+Use a card for multi-commit work or handoffs; declare a single-slice design in the
+conversation. Follow [AGENTS.md](../../AGENTS.md) for delivery and validation.
 
 ## Open a Card
 
-In `agents.d/work/`, name the file `CPL-N-<description>.md` and start the title
-with `# CPL-N — Specific outcome`. For new or substantively revised cards, put
+Create `agents.d/work/CPL-N-<description>.md` with title
+`# CPL-N — Specific outcome`. New or substantively revised cards put
 `**Work card protocol: 2**` below the title.
-
-Allocate the next number above the highest in `work/` and `work_completed/`.
-Coordinate allocation with other contributors. The ID and filename stay with
-the card when it moves.
+Allocate above the highest number in `work/` and `work_completed/`; coordinate
+with other contributors. Keep the ID and filename when moving the card.
 
 ## Define Done and Plan the Slices
 
-- **Goal and constraints** cover the outcome, scope, and compatibility needs.
-- **Acceptance evidence** states what someone can observe to verify the outcome.
-- **Safe slice sequence** gives the delivery order. For each slice, name the
-  behavior, owning boundary, proposed design, test and expected failure for
-  behavior changes, and why the slice can ship independently. Include any
-  cross-layer changes needed to make it work on its own.
+- **Goal and constraints:** outcome, scope, and compatibility requirements.
+- **Acceptance evidence:** observable proof of completion.
+- **Safe slice sequence:** delivery order and each slice’s behavior, owner, design,
+  and independent release value. For behavior changes, name test scenarios and
+  expected failure. Include required cross-layer changes in the same slice.
 
-Use headings that fit the task. Link shared procedures and record decisions that
-affect scope, design, or validation.
+Choose useful headings. Link shared procedures; record decisions affecting scope,
+design, or validation.
 
 ## Record Visual Evidence
 
-Capture the affected state before editing when a visual change is expected. If
-the work confirms a visual change, open one GitHub issue for the card and link
-it under **Visual evidence** on the card. Include the card ID and a link to the
-card in the issue. Cards without a confirmed visual change do not require an issue.
+Capture affected states before visual edits. For a confirmed visual change, open
+one GitHub issue with the card ID and card link, then link it under **Visual
+evidence** on the card. Reuse that issue for every visual slice. No visible change
+means no evidence issue or screenshot pair is required.
 
-Post labeled **Before** and **After** screenshots in the issue for each visual
-slice. Match the viewport, theme, and sample data where practical, and include
-the implementation commit SHA. Add short clips when motion or timing matters.
-Reuse the same issue for all captures related to the card.
-If reviewing the affected states confirms there is no visible change, you can
-omit before-and-after screenshots.
+Use `gh` to create, update, and close issues. Upload labeled captures with the
+CLI’s attachment support, for example:
 
-## Deliver and Close
+```sh
+gh issue comment <issue-number> --body 'Implementation: <commit-sha>' \
+  --attach './before.png#Before — desktop' \
+  --attach './after.png#After — desktop'
+```
 
-1. State the slice plan before tests, then state the implementation approach
-   after confirming the expected failure and before editing production code.
-   Update the plan when the design or slice boundary changes materially.
-2. Review test quality and implementation design separately. Resolve findings,
-   pass `./gradlew check`, and commit the slice before starting the next one.
-   Record meaningful validation evidence, gaps, and the implementation commit.
-3. If paused or blocked, keep the card active and record the blocker, relevant
-   uncommitted work, and next action. On resume, verify Git state and whether the
-   recorded checks still apply.
-4. When the result meets the goal and acceptance evidence, move the card to
-   `agents.d/work_completed/` and update inbound links. If the card has a visual
-   evidence issue, verify the screenshots are present, update the issue's link
-   to the completed card, and close the issue as part of closing the card.
-   For consolidation, move the superseded card there as a redirect to the
-   active owner. Push or release only with user authorization.
+Record the implementation SHA and actual image and viewport dimensions; a requested
+window size does not prove the viewport size. Match viewport, theme, and sample data
+where practical; disclose differences. Add clips when motion or timing matters.
+Verify uploaded attachments before closing the issue. Capture automation is tracked
+in [CPL-64](../work/CPL-64-VISUAL_EVIDENCE_CAPTURE.md); it is not available yet.
+
+## Resume, Deliver, and Close
+
+1. On resume, inspect Git state, prior commits, tests, and recorded evidence.
+   Reuse applicable red/green evidence under [Testing](TESTING.md#resuming-an-inherited-implementation);
+   record gaps rather than replaying completed work.
+2. State the slice plan before tests and the implementation approach after the
+   expected failure, before production edits. Revise materially changed plans.
+3. Review tests and production design separately, resolve findings, pass
+   `./gradlew check`, and commit before starting another slice. Record validation,
+   gaps, and the implementation commit.
+4. If paused or blocked, leave the card active with the blocker, uncommitted work,
+   and next action.
+5. Once acceptance evidence is complete, move the card to `agents.d/work_completed/`
+   and update inbound links. Verify visual uploads, update the issue’s card link,
+   record the implementation SHA, and close the issue. For consolidation, move the
+   superseded card there as a redirect to its active owner. Push or release only
+   with user authorization.
