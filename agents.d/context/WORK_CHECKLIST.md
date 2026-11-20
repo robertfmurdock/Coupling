@@ -26,6 +26,20 @@ the card when it moves.
 Use headings that fit the task. Link shared procedures and record decisions that
 affect scope, design, or validation.
 
+## Record Visual Evidence
+
+Capture the affected state before editing when a visual change is expected. If
+the work confirms a visual change, open one GitHub issue for the card and link
+it under **Visual evidence** on the card. Include the card ID and a link to the
+card in the issue. Cards without a confirmed visual change do not require an issue.
+
+Post labeled **Before** and **After** screenshots in the issue for each visual
+slice. Match the viewport, theme, and sample data where practical, and include
+the implementation commit SHA. Add short clips when motion or timing matters.
+Reuse the same issue for all captures related to the card.
+If reviewing the affected states confirms there is no visible change, you can
+omit before-and-after screenshots.
+
 ## Deliver and Close
 
 1. State the slice plan before tests, then state the implementation approach
@@ -38,6 +52,8 @@ affect scope, design, or validation.
    uncommitted work, and next action. On resume, verify Git state and whether the
    recorded checks still apply.
 4. When the result meets the goal and acceptance evidence, move the card to
-   `agents.d/work_completed/` and update inbound links. For consolidation, move
-   the superseded card there as a redirect to the active owner. Push or release
-   only with user authorization.
+   `agents.d/work_completed/` and update inbound links. If the card has a visual
+   evidence issue, verify the screenshots are present, update the issue's link
+   to the completed card, and close the issue as part of closing the card.
+   For consolidation, move the superseded card there as a redirect to the
+   active owner. Push or release only with user authorization.
