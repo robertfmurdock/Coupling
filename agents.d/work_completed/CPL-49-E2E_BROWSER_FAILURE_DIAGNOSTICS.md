@@ -125,7 +125,7 @@ samples and recorded below. XML evidence was retained during implementation as
 ## Relevant Paths
 
 - `e2e/src/jsE2eTest/kotlin/com/zegreatrob/coupling/e2e/test/E2eSetup.kt`
-- `e2e/src/jsE2eTest/kotlin/com/zegreatrob/coupling/e2e/test/TestLogin.kt`
+- `e2e/src/browserTestSupport/kotlin/com/zegreatrob/coupling/e2e/test/TestLogin.kt`
 - `e2e/src/jsE2eTest/kotlin/com/zegreatrob/coupling/e2e/test/CheckLogs.kt`
 - `e2e/src/jsE2eTest/kotlin/com/zegreatrob/coupling/e2e/test/E2eJsonlTestMintsReporter.kt`
 - `e2e/build.gradle.kts`, `libraries/test-logging/`

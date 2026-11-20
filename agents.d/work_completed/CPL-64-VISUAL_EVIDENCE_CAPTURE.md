@@ -178,3 +178,30 @@ the separate `capture.mjs` launcher adapter into Kotlin.
 
 Browser-executed JavaScript snippets in Kotlin strings are deliberately outside
 this follow-up; they are a separate browser callback/compilation interop concern.
+
+## Shared source sets and operator docs — 2026-11-20
+
+Replaced capture's Kotlin filename allowlist and diagnostics' capture-spec
+exclusion with source-set dependencies. `browserTestSupport` owns reusable auth
+and page helpers for E2E/capture; `browserCaptureSupport` owns the WDIO adapter for
+capture/browser diagnostics; `diagnosticsTestSupport` is now a source set shared
+by Node/browser diagnostics. Each compilation keeps its own scenarios in its
+default directory. Shared dependencies live with support instead of capture
+inheriting the E2E test configuration. Eleven moved Kotlin files are byte-identical.
+
+Reduced the capture README from 115 to 58 lines, retaining operator commands,
+artifact/status interpretation, comparison conditions, concurrency constraints,
+and explicit upload instructions. Removed implementation narrative and validation
+commentary; its relative documentation links resolve.
+
+All four compilations and focused checks passed. Real 390x844 authenticated
+capture and browser diagnostics passed; a repeated invocation reused configuration
+cache and wrote fresh evidence. Source inspection confirms no Kotlin filename
+include/exclude rules or cross-compilation source-directory injection remain in
+`e2e/build.gradle.kts`, and shared support directories register no tests.
+Full `fish -lc './gradlew check --no-daemon'` passed: 697 tasks, including normal
+E2E and test-log validation. The capture PNG remains byte-identical to the prior
+narrow evidence. Test review confirms unchanged scenario bodies and registration
+boundaries; production/build review confirms shared code and dependencies follow
+source-set ownership, with no new libraries or copied implementations. Updated
+the existing diagnostics card's moved `TestLogin.kt` reference.

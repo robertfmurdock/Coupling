@@ -1,11 +1,7 @@
-# Local visual evidence
+# Visual evidence
 
-Run from the repository root with the normal local E2E prerequisites: JDK and
-Docker, the configured AWS credentials for local SSM secrets, and network access
-for Gradle/npm, Chrome for Testing, Serverless, Auth0, and application assets.
-The task builds the client/server and starts the existing local Compose stack.
-Use a fresh daemon outside an agent sandbox, as described in the
-[Gradle playbook](../../agents.d/context/GRADLE_PLAYBOOK.md#browser-tests-and-sandboxed-daemons).
+From the repository root, with Docker running and the configured AWS credentials
+available for local SSM secrets:
 
 ```sh
 ./gradlew :e2e:captureVisualEvidence \
@@ -13,69 +9,44 @@ Use a fresh daemon outside an agent sandbox, as described in the
   -PcaptureViewport=1280x900 --no-daemon
 ```
 
-For narrow evidence use `-PcaptureViewport=390x844`. Repeat with
-`-PcaptureLabel=After` after the implementation. Defaults are the contribution
-overview fixture, label `Capture`, and viewport `1280x900`. Width and height must
-be integers between 1 and 8192; unsupported browser sizes fail rather than
-silently producing a larger viewport. `WDIO_CHROME_BINARY` uses the existing
-plugin override when a specific installed Chrome is needed.
+The task builds and starts the local stack and requires the normal E2E network
+access. Agents must run it outside the sandbox; see the
+[Gradle playbook](../../agents.d/context/GRADLE_PLAYBOOK.md#browser-tests-and-sandboxed-daemons).
+Use `-PcaptureViewport=390x844` for narrow evidence and `-PcaptureLabel=After` for
+the matching later capture. Defaults are `contribution-overview`, `Capture`, and
+`1280x900`. Viewport dimensions must be integers from 1 to 8192; unsupported sizes
+fail. `WDIO_CHROME_BINARY` selects an installed Chrome when needed.
 
-The task prints its manifest path. Each invocation creates a unique directory
-under `e2e/build/reports/visual-evidence/`, containing `capture.png` and
-`manifest.json`. Labels are manifest metadata, never file paths. Repeated labels
-preserve every previous run; there is no overwrite. The task always executes
-when requested and does not restore evidence from the build cache. `clean`
-removes these generated artifacts, so copy evidence elsewhere before cleaning.
+## Inspect the result
 
-Inspect the PNG and require `status: complete` before using it. The manifest
-records the source revision and dirty state, fixture version/conditions, label,
-requested and measured viewport, PNG dimensions, device scale, theme,
-browser/version, paths, and lifecycle status. Dirty-state evidence identifies
-the checkout but does not encode the uncommitted diff; preserve that diff or
-commit before making reproducibility claims.
+The printed manifest path identifies a unique run directory under
+`e2e/build/reports/visual-evidence/`, containing `capture.png` and `manifest.json`.
+Inspect the image and require `status: complete`. `partial`, `captured`, and
+`failed` are not completed evidence; `captured` still awaits runner cleanup.
 
-`partial` means capture has not finished, `captured` means the PNG is ready but
-the WDIO runner has not finished cleanup, and `complete` requires both capture
-and a successful runner exit. Failures record only their stage in the manifest,
-excluding exception messages that could contain auth payloads. Normal Ctrl-C
-uses WDIO's worker/browser shutdown. An abruptly killed process can leave a
-partial/captured manifest; neither is successful evidence. As with other browser
-tools, SIGKILL or a host crash cannot guarantee cleanup; inspect and stop any
-orphaned browser processes after such an interruption.
+The manifest records source revision/dirty state, fixture conditions, label,
+browser/version, theme, scale, requested/actual viewport and PNG dimensions.
+Preserve the diff for dirty checkouts. Captures always execute; repeated labels
+preserve all runs. Copy evidence elsewhere before `clean` removes build output.
+Runner reports are in `e2e/build/reports/visual-evidence-runner/`.
 
-Runner HTML/JUnit output is separate, in `e2e/build/reports/visual-evidence-runner/`
-and `e2e/build/visual-evidence-runner/test-results/`; diagnostics use the existing
-collector. Do not upload raw runner logs as evidence without reviewing them.
-Capture is opt-in: normal `check` runs harness tests but never creates product
-evidence or seeds this fixture.
+## Compare captures
 
-## Fixture and comparison conditions
+The fixture uses fixed contribution data, light theme, UTC, en-US, and scale 1,
+with animations and external avatars disabled. Save Timestamp display text is
+normalized to `12:00:00, 2026-11-19`; server records are unchanged. These conditions
+are recorded in the manifest. Capture waits for the summary, fonts and images.
 
-`contribution-overview-v1` uses a reserved local party ID and fixed contribution
-IDs, names, dates, authors, and cycle times. Preparation resets only that party;
-cleanup deletes it after capture. Do not run captures concurrently against the
-same local stack, or alongside the normal E2E suite, whose bootstrap clears the
-test account's parties. Authentication and SDK writes reuse E2E helpers.
+Match fixture version, viewport, theme, browser version and scale for Before/After.
+These are viewport screenshots: narrow overflow is preserved, and narrow size
+alone is not mobile device emulation. Remote assets/browser upgrades can affect
+rendering. Do not run captures concurrently or alongside E2E tests against the
+same stack: they share a test account, and normal E2E setup clears its parties.
+After a forced process kill or host crash, inspect for orphaned browser processes.
 
-Readiness requires the expected contribution summary (five contributions, two
-contributors, median cycle time 20m), loaded fonts and decoded images, followed
-by two animation frames. Animations and third-party avatars are disabled using
-existing test settings. The browser uses light color scheme, UTC, en-US and
-device scale 1. Server-assigned Save Timestamp **display text only** is replaced
-with `12:00:00, 2026-11-19` for the five fixture cards; actual server records are
-unchanged. This normalization is disclosed in every manifest and fails if the
-five expected values cannot be identified. No product styles or code change.
+## Upload explicitly
 
-These are viewport screenshots, not full-page screenshots, pixel-diff baselines,
-or mobile device emulation. Narrow evidence intentionally preserves any actual
-overflow. Match fixture version, viewport, theme, browser version and device
-scale when comparing Before/After. Remote assets and browser upgrades can still
-change rendering; inspect both images.
-
-## Explicit upload
-
-Follow the [work-card visual evidence procedure](../../agents.d/context/WORK_CHECKLIST.md#record-visual-evidence).
-Uploads remain an explicit operator action, for example:
+Follow the [work-card evidence procedure](../../agents.d/context/WORK_CHECKLIST.md#record-visual-evidence):
 
 ```sh
 gh issue comment <issue-number> --body 'Implementation: <commit-sha>; viewport/PNG: 390x844; scale 1' \
@@ -83,33 +54,5 @@ gh issue comment <issue-number> --body 'Implementation: <commit-sha>; viewport/P
   --attach './e2e/build/reports/visual-evidence/<after-run>/capture.png#After — narrow'
 ```
 
-Verify the uploaded attachments. The capture task does not post issues/comments.
-
-## Ownership and reuse
-
-Kotlin owns capture policy, serializable manifests, failure contracts, the WDIO
-adapter, fixture orchestration, launcher hook composition and Testmints tests.
-The native `wdio.visual-evidence.conf.mjs` loads the plugin's generated base config
-and compiled Kotlin module, then calls `CaptureHooks.configure`; there is no
-separate JavaScript capture harness. Applying Kotlin hooks after the generated
-config finishes loading avoids fragment-order dependencies with reporter hooks.
-Kotlin hooks publish the manifest before worker startup and finalize it after
-runner completion. Browser-executed snippets remain in the Kotlin fixture/adapter
-as a separate interop concern. No extra npm dependencies are required.
-
-The existing Gradle WDIO plugin supports public `WdioTest` tasks, separately
-compiled specs, config fragments, browser installation/lifecycle, reporters and
-screenshots. It lacks a named evidence-fixture/manifest API and current jsmints
-Kotlin browser bindings omit `setViewport`, emulation and screenshot operations.
-The local adapter binds those existing WDIO methods rather than implementing a
-second driver. A future upstream binding improvement can replace it directly.
-Shared source inclusion reuses auth/page helpers without copying their code or
-registering product tests in the capture compilation.
-
-Validation entry points:
-
-```sh
-./gradlew :e2e:visualEvidenceTest
-./gradlew :e2e:jsNodeDiagnosticsBrowserTest --no-daemon
-./gradlew check --no-daemon
-```
+Verify the attachments. Uploads are operator actions; review raw runner logs for
+credentials before sharing them.

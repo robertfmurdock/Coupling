@@ -17,6 +17,12 @@ plugins {
 }
 
 kotlin {
+    // Shared source sets contain support code only; scenarios stay in their compilation.
+    val diagnosticsTestSupport = sourceSets.create("diagnosticsTestSupport")
+    val browserTestSupport = sourceSets.create("browserTestSupport")
+    val browserCaptureSupport = sourceSets.create("browserCaptureSupport")
+    sourceSets.getByName("jsTest").dependsOn(diagnosticsTestSupport)
+    sourceSets.getByName("jsE2eTest").dependsOn(browserTestSupport)
     js {
         useCommonJs()
         compilations.matching { it.name in setOf("test", "diagnosticsBrowserTest") }.configureEach {
@@ -31,13 +37,10 @@ kotlin {
                 linkTask.configure { compilerOptions.moduleKind.set(JsModuleKind.MODULE_ES) }
             }
         }
-        val testSupport = layout.projectDirectory.dir("src/diagnosticsTestSupport/kotlin")
-        this@kotlin.sourceSets.getByName("jsTest").kotlin.srcDir(testSupport)
         val diagnosticsBrowserTest = compilations.create("diagnosticsBrowserTest") {
             associateWith(this@js.compilations.getByName("main"))
-            defaultSourceSet.kotlin.srcDir(testSupport)
-            defaultSourceSet.kotlin.srcDir(layout.projectDirectory.dir("src/jsVisualEvidence/kotlin"))
-            defaultSourceSet.kotlin.exclude("**/CaptureFixture.kt")
+            defaultSourceSet.dependsOn(diagnosticsTestSupport)
+            defaultSourceSet.dependsOn(browserCaptureSupport)
         }
         val browserTestBinary = binaries.executable(diagnosticsBrowserTest)
             .single { it.mode == KotlinJsBinaryMode.DEVELOPMENT }
@@ -99,33 +102,28 @@ apollo {
 
 dependencies {
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    listOf("jsTestImplementation", "jsDiagnosticsBrowserTestImplementation").forEach { testImplementation ->
-        add(testImplementation, kotlin("test-js"))
-        add(testImplementation, "com.zegreatrob.testmints:async")
-        add(testImplementation, "com.zegreatrob.testmints:minassert")
-        add(testImplementation, "com.zegreatrob.testmints:standard")
-        add(testImplementation, "org.jetbrains.kotlinx:kotlinx-serialization-json")
+    listOf("diagnosticsTestSupportImplementation", "browserTestSupportImplementation").forEach { supportImplementation ->
+        add(supportImplementation, kotlin("test-js"))
+        add(supportImplementation, "com.zegreatrob.testmints:async")
+        add(supportImplementation, "com.zegreatrob.testmints:minassert")
+        add(supportImplementation, "com.zegreatrob.testmints:standard")
+        add(supportImplementation, "org.jetbrains.kotlinx:kotlinx-serialization-json")
     }
     clientConfiguration(project(":client"))
     appConfiguration(project(":server"))
-    jsE2eTestImplementation(platform(project(":libraries:dependency-bom")))
-    jsE2eTestImplementation(project(":sdk"))
+    add("browserTestSupportImplementation", platform(project(":libraries:dependency-bom")))
+    add("browserTestSupportImplementation", project(":sdk"))
     jsE2eTestImplementation(project(":libraries:test-logging"))
     jsE2eTestImplementation(project(":libraries:stub-model"))
-    jsE2eTestImplementation(kotlin("test-js"))
-    jsE2eTestImplementation("com.zegreatrob.jsmints:wdio")
-    jsE2eTestImplementation("com.zegreatrob.jsmints:wdio-testing-library")
-    jsE2eTestImplementation("com.zegreatrob.testmints:async")
-    jsE2eTestImplementation("com.zegreatrob.testmints:minassert")
-    jsE2eTestImplementation("com.zegreatrob.testmints:standard")
-    jsE2eTestImplementation("io.github.oshai:kotlin-logging")
-    jsE2eTestImplementation("io.ktor:ktor-client-content-negotiation")
-    jsE2eTestImplementation("io.ktor:ktor-client-core")
-    jsE2eTestImplementation("io.ktor:ktor-client-logging")
-    jsE2eTestImplementation("io.ktor:ktor-serialization-kotlinx-json")
-    jsE2eTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    add("browserTestSupportImplementation", "com.zegreatrob.jsmints:wdio")
+    add("browserTestSupportImplementation", "com.zegreatrob.jsmints:wdio-testing-library")
+    add("browserTestSupportImplementation", "io.github.oshai:kotlin-logging")
+    add("browserTestSupportImplementation", "io.ktor:ktor-client-content-negotiation")
+    add("browserTestSupportImplementation", "io.ktor:ktor-client-core")
+    add("browserTestSupportImplementation", "io.ktor:ktor-client-logging")
+    add("browserTestSupportImplementation", "io.ktor:ktor-serialization-kotlinx-json")
     jsE2eTestImplementation(npmConstrained("fs-extra"))
-    jsE2eTestImplementation(npmConstrained("jwt-decode"))
+    add("browserTestSupportImplementation", npmConstrained("jwt-decode"))
 }
 
 wdioTest {
@@ -198,18 +196,8 @@ tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter("jsNodeDiagnosticsB
 val performanceSources = layout.projectDirectory.dir("performance")
 val captureCompilation = kotlin.js().compilations.create("visualEvidence") {
     associateWith(kotlin.js().compilations.getByName("main"))
-    defaultSourceSet.kotlin.apply {
-        srcDir("src/jsE2eTest/kotlin")
-        include(
-            "**/CaptureFixture.kt", "**/WdioEvidenceBrowser.kt",
-            "**/AuthorizedKtor.kt", "**/CouplingLogin.kt", "**/TestLogin.kt",
-            "**/Process.kt", "**/LazyDeferred.kt", "**/PartyListPage.kt", "**/PartyCard.kt",
-            "**/ContributionOverviewPage.kt", "**/BrowserSyntax.kt", "**/JwtDecode.kt",
-        )
-    }
-}
-configurations.named("jsVisualEvidenceImplementation") {
-    extendsFrom(configurations.getByName("jsE2eTestImplementation"))
+    defaultSourceSet.dependsOn(kotlin.sourceSets.getByName("browserTestSupport"))
+    defaultSourceSet.dependsOn(kotlin.sourceSets.getByName("browserCaptureSupport"))
 }
 val captureBinary = kotlin.js().binaries.executable(captureCompilation)
     .single { it.mode == KotlinJsBinaryMode.DEVELOPMENT }
