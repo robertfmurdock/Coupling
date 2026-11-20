@@ -104,8 +104,9 @@ display normalization is disclosed because the service owns creation times.
   JavaScript adapt launcher hooks. Existing WDIO owns sessions/drivers, SDK helpers
   own auth, and no new npm dependency or product source/test edits were needed.
 
-Implementation and documentation are validated; implementation commit and card
-closeout are the remaining bookkeeping steps.
+Completed in implementation commit `963e8d188abc1ff3812ebb41505c5b8593850a1e`.
+The subsequent card-closeout change is documentation only; the passing full gate
+above covers the unchanged implementation. Nothing was pushed or released.
 
 No product visuals changed, so no visual-evidence issue/upload is required.
 See [usage and limitations](../../e2e/visual-evidence/README.md).
