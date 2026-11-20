@@ -10,6 +10,7 @@ import kotools.types.text.toNotBlankString
 import react.Key
 import react.Props
 import react.ReactNode
+import react.useRef
 import web.cssom.Angle
 import web.cssom.AnimationIterationCount
 import web.cssom.NamedColor
@@ -19,6 +20,7 @@ import web.cssom.deg
 import web.cssom.ident
 import web.cssom.rotate
 import web.cssom.s
+import web.html.HTMLElement
 
 const val PLAYER_DRAG_ITEM_TYPE = "PLAYER"
 
@@ -34,8 +36,10 @@ external interface DraggablePlayerProps : Props {
 @ReactFunc
 val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
     val (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) = props
+    val cardRef = useRef<HTMLElement>()
     DraggableThing(
         itemType = PLAYER_DRAG_ITEM_TYPE,
+        dragSource = cardRef,
         itemId = pinnedPlayer.player.id.value.toString(),
         dropCallback = {},
         css = {},
@@ -52,6 +56,7 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
         PlayerCard(
             player = pinnedPlayer.player,
             tilt = tilt,
+            cardRef = cardRef,
             assignmentAction = props.assignmentAction,
             className = ClassName {
                 if (zoomOnHover) {

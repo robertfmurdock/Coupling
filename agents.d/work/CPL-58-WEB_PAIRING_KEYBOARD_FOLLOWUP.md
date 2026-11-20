@@ -83,6 +83,19 @@ closed. The touch tests used a window at least 1200 pixels tall. The first
 pin drag run reached the loading screen before its fixture was ready. Waiting
 for the editable board resolved that setup race.
 
+### Board polish after owner review
+
+Completed edits clear their confirmation after five seconds. Destination
+instructions stay until the user completes or cancels the edit. The action
+is positioned against its card in an overlay above the board. Player dragging
+uses the rendered card as the drag image source.
+
+The component test reproduced the permanent status. Chrome tests reproduced
+the covered action and rejected the previous drag image source. They now
+verify hit testing over an overlapping control and a grab point within the
+visible card. The full Gradle check passed on November 20, including all 61
+Chrome E2E tests and both touch drag scenarios.
+
 ### Remaining manual verification
 
 Confirm the spoken prompt and completion status, plus focus movement, in a

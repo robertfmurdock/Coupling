@@ -15,6 +15,7 @@ import js.uri.encodeURIComponent
 import react.ChildrenBuilder
 import react.Props
 import react.ReactNode
+import react.RefObject
 import react.create
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML
@@ -45,6 +46,7 @@ import web.cssom.rgb
 import web.cssom.rotate
 import web.cssom.s
 import web.cssom.url
+import web.html.HTMLElement
 import kotlin.random.Random
 
 external interface PlayerCardProps : Props {
@@ -55,6 +57,7 @@ external interface PlayerCardProps : Props {
     var deselected: Boolean?
     var tilt: Angle?
     var assignmentAction: ReactNode?
+    var cardRef: RefObject<HTMLElement>?
 }
 
 @ReactFunc
@@ -65,6 +68,7 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
     val tilt = props.tilt ?: 0.deg
     val deselected = props.deselected == true
     ReactHTML.div {
+        ref = props.cardRef
         css(className) {
             playerCardStyles(tilt, deselected)
             "img" { display = Display.block }

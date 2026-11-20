@@ -13,19 +13,28 @@ import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.browser.document
+import kotlinx.coroutines.delay
 import kotools.types.collection.NotEmptyList
 import org.w3c.dom.HTMLElement
+import popper.core.Placement
+import popper.core.Popper
+import popper.core.PositioningStrategy
+import popper.core.ReferenceElement
 import react.ChildrenBuilder
 import react.Fragment
 import react.Key
 import react.Props
 import react.ReactNode
 import react.create
+import react.dom.createPortal
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
+import react.popper.UsePopperOptions
+import react.popper.usePopper
 import react.useEffect
 import react.useId
 import react.useRef
+import react.useRefCallback
 import react.useState
 import web.aria.AriaRole
 import web.aria.status
@@ -40,6 +49,8 @@ import web.cssom.px
 import web.dom.ElementId
 import web.html.ButtonType
 import web.html.button
+import web.dom.document as webDocument
+import web.html.HTMLElement as WebHTMLElement
 
 external interface PairAssignmentBoardProps : Props {
     var party: PartyDetails
@@ -71,6 +82,12 @@ internal val PairAssignmentBoard by nfc<PairAssignmentBoardProps> { (party, pair
         focusAfterUpdate.current = buttonId
         setSelection(nextSelection)
         setAnnouncement(prompt)
+    }
+    useEffect(announcement, selection) {
+        if (selection == null && announcement.isNotEmpty()) {
+            delay(5_000)
+            setAnnouncement("")
+        }
     }
     useEffect {
         focusAfterUpdate.current?.let { id ->
@@ -259,20 +276,48 @@ private fun assignmentCardAction(
 ) = Fragment.create {
     +assignmentCardButton(label, buttonId, menuOpen, selected, validTarget, onActivate)
     if (menuOpen) {
-        button {
-            id = ElementId("$buttonId-action")
-            type = ButtonType.button
-            css {
-                position = Position.absolute
-                top = 100.pct
-                left = 0.px
-                zIndex = integer(1)
-            }
-            onClick = { onChooseAction() }
-            +actionLabel
+        AssignmentActionPopover {
+            triggerId = buttonId
+            this.label = actionLabel
+            onChoose = onChooseAction
         }
     }
 }
+
+external interface AssignmentActionPopoverProps : Props {
+    var triggerId: String
+    var label: String
+    var onChoose: () -> Unit
+}
+
+private val AssignmentActionPopover by nfc<AssignmentActionPopoverProps> { props ->
+    val (action, setAction) = useState<WebHTMLElement?>(null)
+    val actionRef = useRefCallback<WebHTMLElement> { setAction(it) }
+    val trigger = webDocument.getElementById(ElementId(props.triggerId))?.let { ReferenceElement(it) }
+    val popper = usePopper(trigger, action, assignmentPopoverPlacement)
+    +createPortal(
+        button.create {
+            id = ElementId("${props.triggerId}-action")
+            type = ButtonType.button
+            ref = actionRef
+            style = popper.styles[Popper]
+            +popper.attributes[Popper]
+            css {
+                position = Position.fixed
+                zIndex = integer(200)
+            }
+            onClick = { props.onChoose() }
+            +props.label
+        },
+        webDocument.body!!,
+    )
+}
+
+private val assignmentPopoverPlacement = UsePopperOptions(
+    placement = Placement.bottomStart,
+    strategy = PositioningStrategy.fixed,
+    modifiers = emptyArray(),
+)
 
 private fun assignmentCardButton(
     label: String,

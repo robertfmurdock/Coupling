@@ -25,12 +25,13 @@ external interface DraggableThingProps : Props {
     var css: (PropertiesBuilder) -> Unit
     var children: (isOver: Boolean) -> ReactNode
     var onDragStarted: (() -> Unit)?
+    var dragSource: RefObject<HTMLElement>
 }
 
 @ReactFunc
 val DraggableThing by nfc<DraggableThingProps> { props ->
     val (itemType, itemId, dropCallback, endCallback, _, handler) = props
-    val draggableRef = useRef<HTMLElement>(null)
+    val dropTarget = useRef<HTMLElement>(null)
     val dragged = useRef(false)
 
     val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId, endCallback = endCallback)
@@ -42,11 +43,12 @@ val DraggableThing by nfc<DraggableThingProps> { props ->
         },
         collect = { monitor -> monitor.isOver() },
     )
-    drag(drop(draggableRef))
+    drag(props.dragSource)
+    drop(dropTarget)
 
     ReactHTML.span {
         css(props.css)
-        ref = draggableRef
+        ref = dropTarget
         props.onDragStarted?.let { suppressClickAfterDrag(dragged, it) }
         +handler(isOver)
     }

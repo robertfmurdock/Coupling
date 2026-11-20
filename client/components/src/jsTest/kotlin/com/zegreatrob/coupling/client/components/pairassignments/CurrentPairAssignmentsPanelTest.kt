@@ -26,6 +26,7 @@ import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.objects.unsafeJso
 import kotlinx.browser.document
 import kotlinx.coroutines.await
+import kotlinx.coroutines.delay
 import kotools.types.collection.notEmptyListOf
 import react.Props
 import react.ReactNode
@@ -89,6 +90,20 @@ class CurrentPairAssignmentsPanelTest {
         changes.single().pairs.toList().map { it.pinnedPlayers.toList().single().player }.assertIsEqualTo(listOf(sam, alex))
         document.activeElement.assertIsEqualTo(player("Alex"))
         screen.getByRole("status").textContent.assertIsEqualTo("Alex and Sam swapped.")
+    }
+
+    @Test
+    fun completedSwapConfirmationClearsWithoutTakingFocus() = asyncSetup(SwapBoard()) {
+        renderBoard()
+        actor.click(player("Alex")).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Swap with…"))).await()
+        actor.click(player("Sam")).await()
+        screen.getByRole("status").textContent.assertIsEqualTo("Alex and Sam swapped.")
+    } exercise {
+        delay(5_500)
+    } verify {
+        screen.getByRole("status").textContent.assertIsEqualTo("")
+        document.activeElement.assertIsEqualTo(player("Alex"))
     }
 
     @Test
