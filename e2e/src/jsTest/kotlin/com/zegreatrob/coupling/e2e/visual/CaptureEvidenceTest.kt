@@ -7,7 +7,7 @@ import kotlin.test.Test
 
 class CaptureEvidenceTest {
     @Test
-    fun completedCaptureRecordsMeasuredEvidenceAndWaitsForRunnerCleanup() = asyncSetup(World()) {
+    fun captureRecordsMeasuredEvidenceWithoutCompletingTheRun() = asyncSetup(World()) {
         open()
     } exercise {
         captureEvidence(browser, request, initial) {}
@@ -22,7 +22,18 @@ class CaptureEvidenceTest {
         report.source.assertIsEqualTo(source)
         report.fixture.assertIsEqualTo(FixtureIdentity(CAPTURE_FIXTURE))
         report.label.assertIsEqualTo("Before")
-        finishEvidence(report.paths.manifest, 0).status.assertIsEqualTo("complete")
+        readManifest(report.paths.manifest).assertIsEqualTo(report)
+    } teardown { close() }
+
+    @Test
+    fun successfulRunnerCompletesCapturedEvidence() = asyncSetup(World()) {
+        open()
+        captureEvidence(browser, request, initial) {}
+    } exercise {
+        finishEvidence(initial.paths.manifest, 0)
+    } verifyAnd { report ->
+        report.status.assertIsEqualTo("complete")
+        readManifest(initial.paths.manifest).assertIsEqualTo(report)
     } teardown { close() }
 
     @Test
@@ -52,22 +63,27 @@ class CaptureEvidenceTest {
     } teardown { close() }
 
     @Test
-    fun partialPreparationIsVisibleAndFailureExcludesAuthPayload() = asyncSetup(World()) {
-        open()
+    fun partialPreparationIsVisibleAndFailureExcludesAuthPayload() = asyncSetup(object {
+        val world = World()
+        val preparationFailure = IllegalStateException("Bearer secret-token password=secret")
+        var statusDuringPreparation: String? = null
+    }) {
+        world.open()
     } exercise {
         runCatching {
-            captureEvidence(browser, request, initial) {
-                readManifest(initial.paths.manifest).status.assertIsEqualTo("partial")
-                error("Bearer secret-token password=secret")
+            captureEvidence(world.browser, world.request, world.initial) {
+                statusDuringPreparation = readManifest(world.initial.paths.manifest).status
+                throw preparationFailure
             }
         }
     } verifyAnd { result ->
-        result.isFailure.assertIsEqualTo(true)
-        val report = readManifest(initial.paths.manifest)
+        statusDuringPreparation.assertIsEqualTo("partial")
+        result.exceptionOrNull().assertIsEqualTo(preparationFailure)
+        val report = readManifest(world.initial.paths.manifest)
         report.status.assertIsEqualTo("failed")
         report.failureStage.assertIsEqualTo("fixture")
-        CaptureFiles.readFile(initial.paths.manifest, "utf8").await().contains("secret").assertIsEqualTo(false)
-    } teardown { close() }
+        CaptureFiles.readFile(world.initial.paths.manifest, "utf8").await().contains("secret").assertIsEqualTo(false)
+    } teardown { world.close() }
 
     @Test
     fun partialRunCannotCompleteEvenWhenRunnerExitsSuccessfully() = asyncSetup(World()) {
@@ -120,7 +136,12 @@ private class World {
 
     suspend fun open() {
         directory = CaptureFiles.mkdtemp("/tmp/coupling-evidence-").await()
-        initial = beginEvidence(directory, source, request)
+        try {
+            initial = beginEvidence(directory, source, request)
+        } catch (failure: Throwable) {
+            runCatching { close() }.onFailure(failure::addSuppressed)
+            throw failure
+        }
     }
 
     suspend fun close() {

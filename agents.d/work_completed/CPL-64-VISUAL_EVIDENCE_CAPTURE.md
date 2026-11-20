@@ -110,3 +110,33 @@ above covers the unchanged implementation. Nothing was pushed or released.
 
 No product visuals changed, so no visual-evidence issue/upload is required.
 See [usage and limitations](../../e2e/visual-evidence/README.md).
+
+## Testmints refactoring follow-up — 2026-11-20
+
+Review found that the partial-state assertion could be swallowed by the expected
+failure capture, runner completion was hidden in verification, and setup could
+leak its directory if manifest acquisition failed.
+
+- Capture and successful runner completion now have separate Node scenarios.
+  Verification only observes outcomes, including the persisted manifest.
+- The preparation callback records its intermediate status and throws a known
+  exception. Verification outside `runCatching` checks both the status and the
+  original exception, preventing assertion/setup failures from posing as success.
+- Node fixture acquisition unwinds resources on setup failure and preserves the
+  primary error. Browser readiness/manifest arrangement moved into setup, with
+  cleanup if that setup fails; exercise now contains only capture.
+- Sensitivity check: temporarily marking evidence `captured` before preparation
+  made the strengthened partial-state assertion fail; the production fault was
+  restored. A separate deliberate failure after resource acquisition failed all
+  nine Node capture scenarios with the original error and left no new fixture
+  directories. That temporary fault was also restored.
+- Formatting, all nine Node capture contracts, and the real-Chrome geometry/PNG
+  check pass. Full `fish -lc './gradlew check --no-daemon'` passed: 684 tasks,
+  configuration cache reused. Existing unchanged checks retained normal cache
+  behavior; no cache policy or test filtering changed.
+- Final test review confirms lifecycle triggers are in exercise and intermediate
+  observations are verified outside failure capture. Production review confirms
+  no implementation diff remains after restoring the sensitivity fault.
+
+This follow-up changes test code only; capture implementation, Gradle task wiring,
+and product behavior remain unchanged.
