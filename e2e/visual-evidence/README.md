@@ -88,9 +88,14 @@ Verify the uploaded attachments. The capture task does not post issues/comments.
 ## Ownership and reuse
 
 Kotlin owns capture policy, serializable manifests, failure contracts, the WDIO
-adapter, fixture orchestration and Testmints tests. A small JS fragment connects
-WDIO launcher hooks to exported Kotlin lifecycle functions, before a browser
-worker starts and after it exits. No extra npm dependencies are required.
+adapter, fixture orchestration, launcher hook composition and Testmints tests.
+The native `wdio.visual-evidence.conf.mjs` loads the plugin's generated base config
+and compiled Kotlin module, then calls `CaptureHooks.configure`; there is no
+separate JavaScript capture harness. Applying Kotlin hooks after the generated
+config finishes loading avoids fragment-order dependencies with reporter hooks.
+Kotlin hooks publish the manifest before worker startup and finalize it after
+runner completion. Browser-executed snippets remain in the Kotlin fixture/adapter
+as a separate interop concern. No extra npm dependencies are required.
 
 The existing Gradle WDIO plugin supports public `WdioTest` tasks, separately
 compiled specs, config fragments, browser installation/lifecycle, reporters and

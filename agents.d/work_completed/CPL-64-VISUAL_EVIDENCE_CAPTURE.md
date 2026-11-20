@@ -59,8 +59,9 @@ One slice owned by `e2e/`: opt-in `captureVisualEvidence`, Kotlin manifest/captu
 policy in `jsMain`, Testmints Node tests, and an isolated fixture compilation
 sharing existing authentication/page sources. The public WDIO task and config
 fragment seams support capture without a second browser runner or new libraries.
-Small local bindings cover missing jsmints viewport/emulation/screenshot methods;
-the only JS policy-free glue connects launcher hooks to exported Kotlin methods.
+Small local bindings cover missing jsmints viewport/emulation/screenshot methods.
+Native WDIO capture config loads the generated base config and invokes the Kotlin
+hook composer; lifecycle sequencing and failure handling live in Kotlin.
 
 User direction: prefer Kotlin for consistency and reuse; treat interop friction
 as an ecosystem improvement opportunity. Keep this as a candidate for a future
@@ -140,3 +141,40 @@ leak its directory if manifest acquisition failed.
 
 This follow-up changes test code only; capture implementation, Gradle task wiring,
 and product behavior remain unchanged.
+
+## Kotlin launcher hooks follow-up — 2026-11-20
+
+User preference: keep native WDIO configuration JavaScript where needed, but move
+the separate `capture.mjs` launcher adapter into Kotlin.
+
+- Removed `e2e/visual-evidence/capture.mjs`. `CaptureHooks.kt` owns hook composition,
+  option preservation, manifest publication before startup, and completion/error
+  sequencing. Only `CaptureHooks` needs a JavaScript export; lifecycle helpers are
+  internal Kotlin code.
+- Six Testmints Node scenarios cover preserved Mocha options, hook argument/order
+  forwarding, synchronous/asynchronous hooks, native JavaScript error identity,
+  absent original hooks, and rejecting incomplete evidence. A temporary fault
+  replacing the runner's exit code with zero failed the forwarding scenario;
+  restored before validation.
+- Real capture exposed a pre-existing plugin seam: config fragments load
+  concurrently, and the HTML reporter can overwrite an earlier `onPrepare`.
+  The former capture fragment depended on import timing. Seven lines of native
+  `wdio.visual-evidence.conf.mjs` now load the complete generated config before
+  applying Kotlin hooks. No runner configuration, auth, or browser driver is
+  duplicated; no upstream plugin or new dependency is required.
+- Gradle owns the new native config as an input, selects it only for opt-in
+  capture, and passes the generated base-config location. The obsolete capture
+  hook URL and fragment were removed. Normal E2E configuration stays on the
+  plugin's generated config.
+- Focused Node tests and authenticated 390x844 capture passed, including HTML
+  report completion. The resulting PNG is byte-identical to the earlier narrow
+  capture: SHA-256 `057efa2eee4a9303e79b032e731ac16c8acd15896ca0de9bf7af234946afc432`.
+  Repeating the invocation reused configuration cache and produced fresh evidence.
+- Full `fish -lc './gradlew check --no-daemon'` passed: 694 tasks, including normal
+  E2E, browser diagnostics, lint and test-log validation. Test review confirms
+  explicit hook actions and independently verified outcomes; production review
+  confirms the native config only loads/delegates, with all hook behavior in
+  Kotlin and no remaining `capture.mjs`/obsolete hook-URL references in `e2e/`.
+
+Browser-executed JavaScript snippets in Kotlin strings are deliberately outside
+this follow-up; they are a separate browser callback/compilation interop concern.

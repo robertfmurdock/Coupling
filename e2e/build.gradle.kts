@@ -196,7 +196,6 @@ tasks.named("copyReportsToCircleCIDirectory") { mustRunAfter("jsNodeDiagnosticsB
 
 
 val performanceSources = layout.projectDirectory.dir("performance")
-val visualEvidenceSources = layout.projectDirectory.dir("visual-evidence")
 val captureCompilation = kotlin.js().compilations.create("visualEvidence") {
     associateWith(kotlin.js().compilations.getByName("main"))
     defaultSourceSet.kotlin.apply {
@@ -222,8 +221,8 @@ tasks.register<WdioTest>("captureVisualEvidence") {
     val captureProject = captureCompilation.npmProject.dir
     dependsOn(captureBinary.linkSyncTask, "copyWdio", "installRunner", appConfiguration, clientConfiguration, ":composeUp")
     inputs.files(appConfiguration, clientConfiguration)
-    inputs.dir(visualEvidenceSources)
     inputs.files(captureBinary.linkSyncTask, tasks.named("copyWdio"), tasks.named("copyWdioConfDir"))
+    inputs.file(layout.projectDirectory.file("wdio.visual-evidence.conf.mjs"))
     val fixture = providers.gradleProperty("captureFixture").orElse("contribution-overview")
     val label = providers.gradleProperty("captureLabel").orElse("Capture")
     val viewport = providers.gradleProperty("captureViewport").orElse("1280x900")
@@ -238,7 +237,8 @@ tasks.register<WdioTest>("captureVisualEvidence") {
     npmWorkingDirectory.set(captureProject)
     specCandidates.set(captureProject.map { listOf(it.file("kotlin/Coupling-e2e-visualEvidence.js")) })
     argumentList.set(runnerProject.map { listOf(it.file("runner/jsmints-wdiorunner.js").asFile.absolutePath) })
-    environment("WDIO_CONFIG", runnerProject.get().file("wdio.conf.mjs").asFile.absolutePath)
+    environment("WDIO_CONFIG", layout.projectDirectory.file("wdio.visual-evidence.conf.mjs").asFile.absolutePath)
+    environment("COUPLING_CAPTURE_BASE_CONFIG", runnerProject.get().file("wdio.conf.mjs").asFile.toURI().toString())
     environment("BASEURL", "https://localhost/")
     environment("REPORT_DIR", reportDirectory.get().asFile.absolutePath)
     environment("TEST_RESULTS_DIR", testResultsDirectory.get().asFile.absolutePath)
@@ -246,7 +246,6 @@ tasks.register<WdioTest>("captureVisualEvidence") {
     environment("NODE_TLS_REJECT_UNAUTHORIZED", "0")
     environment("COUPLING_REPOSITORY_ROOT", rootProject.layout.projectDirectory.asFile.absolutePath)
     environment("COUPLING_CAPTURE_DIRECTORY", report.get().asFile.absolutePath)
-    environment("COUPLING_CAPTURE_HOOK", visualEvidenceSources.file("capture.mjs").asFile.toURI().toString())
     environment("COUPLING_CAPTURE_POLICY_MODULE", captureProject.get().file("kotlin/Coupling-e2e.js").asFile.absolutePath)
     environment("COUPLING_CAPTURE_DIAGNOSTICS_MODULE", layout.projectDirectory.file("diagnostics/browser-diagnostics.mjs").asFile.toURI().toString())
     environment("COUPLING_CAPTURE_FIXTURE", fixture.get())

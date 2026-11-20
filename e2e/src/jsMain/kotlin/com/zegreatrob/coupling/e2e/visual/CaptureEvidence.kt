@@ -152,9 +152,7 @@ suspend fun finishEvidence(path: String, exitCode: Int): EvidenceManifest {
 
 fun captureRequest() = CaptureRequest(captureEnv("COUPLING_CAPTURE_FIXTURE"), captureEnv("COUPLING_CAPTURE_LABEL"), captureEnv("COUPLING_CAPTURE_VIEWPORT"))
 
-@OptIn(ExperimentalJsExport::class)
-@JsExport
-object CaptureLifecycle {
+internal object CaptureLifecycle {
     fun begin(): Promise<String> = MainScope().promise {
         val root = captureEnv("COUPLING_REPOSITORY_ROOT")
         fun git(vararg args: String) = CaptureChildProcess.execFileSync("git", args, GitOptions(cwd = root, encoding = "utf8")).trim()

@@ -53,3 +53,7 @@ private external object CaptureProcess {
 }
 
 fun captureEnv(name: String): String = requireNotNull(CaptureProcess.env[name] as String?) { "Missing capture setting: $name" }
+
+internal fun setCaptureEnv(name: String, value: String) {
+    CaptureProcess.env[name] = value
+}
