@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.pin.SavePinCommand
@@ -13,6 +15,10 @@ import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.querySaveBut
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectAllButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectNoneButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSpinButton
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSet
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingSetId
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
@@ -23,10 +29,13 @@ import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
+import kotools.types.collection.notEmptyListOf
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class PrepareToSpinPageE2ETest {
 
@@ -118,6 +127,63 @@ class PrepareToSpinPageE2ETest {
             TestingLibraryBrowser.queryByRole("button", RoleOptions("Swap with…")).isPresent().assertIsEqualTo(false)
         }
     }
+
+    @Test
+    fun touchDropMovesAnAssignedPinWithoutOpeningItsAction() = pinPartySetup {
+        openEditablePairsWithPin()
+        prepareTouchSwap(PinButton.PIN_BUTTON_LOCATOR)
+    } exercise {
+        performTouchSwap(PinButton.PIN_BUTTON_LOCATOR)
+    } verify {
+        val expected = listOf(emptySet(), setOf(pins.single().id.value.toString()))
+        WebdriverBrowser.waitUntil({ assignedPinIds() == expected }, 2000, "touch pin move")
+        TestingLibraryBrowser.queryByRole("button", RoleOptions("Move to…")).isPresent().assertIsEqualTo(false)
+    }
+
+    @Test
+    fun cardActionsSwapPlayersAndMovePinsAndPersistAfterReload() = pinPartySetup {
+        openEditablePairsWithPin()
+    } exercise {
+        val (alex, _, jordan, taylor) = players
+        suspend fun roleButton(name: String) = TestingLibraryBrowser.getByRole("button", RoleOptions(name))
+        roleButton(alex.name).click()
+        roleButton("Swap with…").click()
+        roleButton(jordan.name).click()
+        roleButton(pins.single().name).click()
+        roleButton("Move to…").click()
+        roleButton("Move ${pins.single().name} to ${alex.name} and ${taylor.name}").click()
+        getSaveButton().click()
+        PairAssignmentsPage.goTo(party.id)
+    } verify {
+        val (alex, sam, jordan, taylor) = players
+        val expectedPlayers = listOf(setOf(jordan, sam), setOf(alex, taylor)).map { group ->
+            group.map { it.id.value.toString() }.toSet()
+        }
+        val expectedPins = listOf(emptySet(), setOf(pins.single().id.value.toString()))
+        val assignedPlayers = assignedPairElements.map { pair ->
+            pair.all(PlayerCard.PLAYER_LOCATOR).map { it.attribute("data-player-id") }.toSet()
+        }.toList()
+        assignedPlayers.assertIsEqualTo(expectedPlayers)
+        assignedPinIds().assertIsEqualTo(expectedPins)
+    }
+
+    private suspend fun FullPartyData.openEditablePairsWithPin() {
+        val pairing = PairingSet(
+            id = PairingSetId.new(),
+            date = Clock.System.now(),
+            pairs = notEmptyListOf(
+                pairOf(players[0], players[1]).withPins(setOf(pins.single())),
+                pairOf(players[2], players[3]).withPins(),
+            ),
+        )
+        sdk.fire(SavePairAssignmentsCommand(party.id, pairing))
+        WebdriverBrowser.setLocation("/${party.id.value}/pairAssignments/new")
+        WebdriverElement(".current-pair-assignments").waitToExist()
+    }
+
+    private suspend fun assignedPinIds() = assignedPairElements.map { pair ->
+        pair.all(PinButton.PIN_BUTTON_LOCATOR).map { it.attribute("data-pin-button") }.toSet()
+    }.toList()
 
     // Tests related to Drag and Drop. WDIO support doesn't seem compatible with the react-dnd library, and these were original written as unit tests in Enzyme. Enzyme's gotta go, so they're here in limbo for now.
     // @Test

@@ -8,6 +8,8 @@ import csstype.PropertiesBuilder
 import emotion.react.css
 import react.Props
 import react.ReactNode
+import react.RefObject
+import react.dom.html.HTMLAttributes
 import react.dom.html.ReactHTML
 import react.useRef
 import web.cssom.Display
@@ -45,20 +47,22 @@ val DraggableThing by nfc<DraggableThingProps> { props ->
     ReactHTML.span {
         css(props.css)
         ref = draggableRef
-        if (props.onDragStarted != null) {
-            onPointerDownCapture = { dragged.current = false }
-            onDragStartCapture = {
-                dragged.current = true
-                props.onDragStarted?.invoke()
-            }
-            onClickCapture = { event ->
-                if (dragged.current == true && event.detail != 0) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-            }
-        }
+        props.onDragStarted?.let { suppressClickAfterDrag(dragged, it) }
         +handler(isOver)
+    }
+}
+
+internal fun <T : HTMLElement> HTMLAttributes<T>.suppressClickAfterDrag(dragged: RefObject<Boolean>, onDragStarted: () -> Unit) {
+    onPointerDownCapture = { dragged.current = false }
+    onDragStartCapture = {
+        dragged.current = true
+        onDragStarted()
+    }
+    onClickCapture = { event ->
+        if (dragged.current == true && event.detail != 0) {
+            event.preventDefault()
+            event.stopPropagation()
+        }
     }
 }
 

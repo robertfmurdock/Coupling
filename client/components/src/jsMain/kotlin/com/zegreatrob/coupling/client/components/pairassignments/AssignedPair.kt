@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
@@ -61,8 +62,10 @@ external interface AssignedPairProps : Props {
     var canDrag: Boolean
     var swapPlayersFunc: ((PinnedPlayer, PlayerId) -> Unit)?
     var pinDropFunc: PinMoveCallback?
-    var playerAction: ((PinnedPlayer) -> ReactNode)?
-    var onPlayerDragStarted: (() -> Unit)?
+    var playerAction: ((PinnedPlayer) -> ReactNode?)?
+    var pinAction: ((Pin) -> ReactNode?)?
+    var pinDestination: ReactNode?
+    var onAssignmentDragStarted: (() -> Unit)?
 }
 
 @ReactFunc
@@ -81,7 +84,7 @@ val AssignedPair by nfc<AssignedPairProps> { props ->
         pinMoveCallback?.invoke(pinId, data?.get("dropTargetId").toString()) ?: Unit
     }.takeIf { canDrag }
 
-    val playerCard = playerCardComponent(canDrag, swapCallback, props.playerAction, props.onPlayerDragStarted)
+    val playerCard = playerCardComponent(canDrag, swapCallback, props.playerAction, props.onAssignmentDragStarted)
 
     DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { }) {
         ReactHTML.span {
@@ -131,7 +134,13 @@ val AssignedPair by nfc<AssignedPairProps> { props ->
                 }
             }
 
-            PinSection(pinList = pair.pins.toList(), endCallback = onPinDropEnd)
+            PinSection(
+                pinList = pair.pins.toList(),
+                endCallback = onPinDropEnd,
+                pinAction = props.pinAction,
+                onDragStarted = props.onAssignmentDragStarted,
+            )
+            +props.pinDestination
         }
     }
 }
@@ -160,7 +169,7 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
 private fun playerCardComponent(
     canDrag: Boolean,
     swap: ((PinnedPlayer, PlayerId) -> Unit)?,
-    action: ((PinnedPlayer) -> ReactNode)?,
+    action: ((PinnedPlayer) -> ReactNode?)?,
     onDragStarted: (() -> Unit)?,
 ): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) {
     { player, tilt ->

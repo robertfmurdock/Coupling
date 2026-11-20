@@ -6,6 +6,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
+import react.ReactNode
 import react.dom.html.ReactHTML
 import web.cssom.ClassName
 import web.cssom.Position
@@ -19,6 +20,8 @@ external interface PinSectionProps : Props {
     var scale: PinButtonScale?
     var className: ClassName?
     var endCallback: ((PinId, Json?) -> Unit)?
+    var pinAction: ((Pin) -> ReactNode?)?
+    var onDragStarted: (() -> Unit)?
 }
 
 @ReactFunc
@@ -36,7 +39,13 @@ val PinSection by nfc<PinSectionProps> { props ->
         }
         pinList.map { pin ->
             if (endCallback != null) {
-                DraggablePinButton(pin, scale, endCallback)
+                DraggablePinButton(
+                    pin = pin,
+                    scale = scale,
+                    endCallback = endCallback,
+                    assignmentAction = props.pinAction?.invoke(pin),
+                    onDragStarted = props.onDragStarted,
+                )
             } else {
                 PinButton(pin, scale, showTooltip = true)
             }

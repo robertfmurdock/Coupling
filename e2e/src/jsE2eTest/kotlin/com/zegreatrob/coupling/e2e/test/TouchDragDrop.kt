@@ -8,7 +8,7 @@ import kotlin.js.Promise
 
 @JsName("browser")
 private external object TouchBrowser {
-    fun execute(script: (Boolean) -> TouchSwap, applyPolyfill: Boolean): Promise<TouchSwap>
+    fun execute(script: (Boolean, String) -> TouchSwap, applyPolyfill: Boolean, sourceSelector: String): Promise<TouchSwap>
     fun execute(script: () -> Boolean): Promise<Boolean>
     fun getWindowSize(): Promise<TouchViewport>
     fun setWindowSize(width: Int, height: Int): Promise<Unit>
@@ -53,7 +53,7 @@ sealed external interface TouchAction {
 
 private val touchSwapScript =
     js(
-        """(function(applyPolyfill) {
+        """(function(applyPolyfill, sourceSelector) {
         if (applyPolyfill) {
             window.MobileDragDrop.polyfill({forceApply: true});
             window.__touchEnded = false;
@@ -61,22 +61,22 @@ private val touchSwapScript =
 
         }
         const pairs = Array.from(document.querySelectorAll('[data-assigned-pair]'));
-        const source = pairs[0].querySelector('[data-player-id]');
+        const source = pairs[0].querySelector(sourceSelector);
         const target = pairs[1].querySelector('[data-player-id]');
         const first = source.getBoundingClientRect(), second = target.getBoundingClientRect();
         return {sourceX: Math.round(first.x + first.width / 2), sourceY: Math.round(first.y + first.height / 2),
             targetX: Math.round(second.x + second.width / 2), targetY: Math.round(second.y + second.height / 2),
             pairs: pairs.map(pair => Array.from(pair.querySelectorAll('[data-player-id]')).map(card => card.getAttribute('data-player-id')))};
     })""",
-    ).unsafeCast<(Boolean) -> TouchSwap>()
+    ).unsafeCast<(Boolean, String) -> TouchSwap>()
 
-suspend fun prepareTouchSwap(): TouchSwap = TouchBrowser.execute(touchSwapScript, true).await()
+suspend fun prepareTouchSwap(sourceSelector: String = PlayerCard.PLAYER_LOCATOR): TouchSwap = TouchBrowser.execute(touchSwapScript, true, sourceSelector).await()
 
-suspend fun performTouchSwap() {
+suspend fun performTouchSwap(sourceSelector: String = PlayerCard.PLAYER_LOCATOR) {
     val viewport = TouchBrowser.getWindowSize().await()
     withTestDiagnostics({ TouchBrowser.setWindowSize(viewport.width, viewport.height).await() }) {
         TouchBrowser.setWindowSize(viewport.width, maxOf(1200, viewport.height)).await()
-        val visible = TouchBrowser.execute(touchSwapScript, false).await()
+        val visible = TouchBrowser.execute(touchSwapScript, false, sourceSelector).await()
         withTestDiagnostics({ TouchBrowser.releaseActions().await() }) {
             TouchBrowser.performActions(touchPointer(visible)).await()
             WebdriverBrowser.waitUntil({

@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
+import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -37,10 +38,13 @@ import kotlin.time.Clock
 
 class CurrentPairAssignmentsPanelTest {
 
-    private class SwapBoard {
+    private class SwapBoard(withPin: Boolean = false, withPartner: Boolean = false, pinName: String = "Facilitator") {
         val alex = stubPlayer().copy(name = "Alex")
         val sam = stubPlayer().copy(name = "Sam")
-        val pairs = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(alex).withPins(), pairOf(sam).withPins()))
+        val pin = stubPin().copy(name = pinName)
+        val pins = if (withPin) setOf(pin) else emptySet()
+        val firstPair = if (withPartner) pairOf(alex, stubPlayer().copy(name = "Jordan")) else pairOf(alex)
+        val pairs = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(firstPair.withPins(pins), pairOf(sam).withPins()))
         val changes = mutableListOf<PairingSet>()
         val actor = userEvent.setup()
 
@@ -88,17 +92,58 @@ class CurrentPairAssignmentsPanelTest {
     }
 
     @Test
-    fun selectingTheSourceAndCancellingLeavesAssignmentsIntact() = asyncSetup(SwapBoard()) {
+    fun selectingASamePairPlayerAndPressingEscapeLeavesAssignmentsIntact() = asyncSetup(SwapBoard(withPartner = true)) {
         renderBoard()
         actor.click(player("Alex")).await()
         actor.click(screen.getByRole("button", RoleOptions(name = "Swap with…"))).await()
     } exercise {
-        actor.click(player("Alex")).await()
+        actor.click(player("Jordan")).await()
         actor.keyboard("{Escape}").await()
     } verify {
         changes.isEmpty().assertIsEqualTo(true)
         document.activeElement.assertIsEqualTo(player("Alex"))
         screen.getByRole("status").textContent.assertIsEqualTo("")
+    }
+
+    @Test
+    fun keyboardSelectionMovesAnAssignedPinToTheChosenPair() = asyncSetup(SwapBoard(withPin = true)) {
+        renderBoard()
+        actor.tab().await()
+        actor.tab().await()
+    } exercise {
+        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Facilitator")))
+        actor.keyboard("{Enter}").await()
+        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Move to…")))
+        actor.keyboard("{Enter}").await()
+        actor.tab().await()
+        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Move Facilitator to Sam")))
+        actor.keyboard(" ").await()
+    } verify {
+        changes.single().pairs.toList().map { it.pins }.assertIsEqualTo(listOf(emptySet(), setOf(pin)))
+        screen.getByRole("status").textContent.assertIsEqualTo("Facilitator moved to Sam.")
+        document.activeElement.assertIsEqualTo(screen.getByRole("button", RoleOptions(name = "Facilitator")))
+    }
+
+    @Test
+    fun activatingTheSourcePinAgainCancelsTheMove() = asyncSetup(SwapBoard(withPin = true)) {
+        renderBoard()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Facilitator"))).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Move to…"))).await()
+    } exercise {
+        actor.click(screen.getByRole("button", RoleOptions(name = "Facilitator"))).await()
+    } verify {
+        changes.isEmpty().assertIsEqualTo(true)
+        screen.queryByRole("button", RoleOptions(name = "Move Facilitator to Sam")).assertIsEqualTo(null)
+    }
+
+    @Test
+    fun anUnnamedPinHasAnAccessibleActionAndDestination() = asyncSetup(SwapBoard(withPin = true, pinName = "")) {
+        renderBoard()
+    } exercise {
+        actor.click(screen.getByRole("button", RoleOptions(name = "Unnamed pin"))).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Move to…"))).await()
+    } verify {
+        screen.getByRole("button", RoleOptions(name = "Move Unnamed pin to Sam"))
     }
 
     @Test

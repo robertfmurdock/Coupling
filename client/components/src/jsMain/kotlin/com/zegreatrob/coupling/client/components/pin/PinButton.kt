@@ -7,6 +7,7 @@ import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
 import react.Props
+import react.ReactNode
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML
 import react.useCallback
@@ -47,6 +48,7 @@ external interface PinButtonProps : Props {
     var showTooltip: Boolean?
     var tooltipMessage: String?
     var onClick: (() -> Unit)?
+    var assignmentAction: ReactNode?
 }
 
 @ReactFunc
@@ -70,6 +72,7 @@ val PinButton by nfc<PinButtonProps> { props ->
             }
         }
         ReactHTML.i { this.className = ClassName("${scale.faTag} ${targetIcon(pin)}") }
+        +props.assignmentAction
     }
 }
 

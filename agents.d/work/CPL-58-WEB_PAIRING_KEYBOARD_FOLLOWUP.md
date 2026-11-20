@@ -36,7 +36,8 @@ Agree the visible interaction before adding or repositioning controls.
 ## Evidence
 
 Source review found drag/drop registration on span/div refs without keyboard
-handlers. Native reproduction and implementation are pending.
+handlers. The component regressions reproduced the missing actions for editable
+player and pin cards before implementation.
 
 ## Interaction decision
 
@@ -54,7 +55,7 @@ Keyboard changes use the same autosave callback as pointer drops.
 
 ### Player swaps
 
-The post-spin board now exposes each eligible player card as a button with a
+Commit `ed220675d` exposes each eligible player card as a button with a
 single Swap with action. Destination selection reuses the visible cards and
 the same cross-pair swap and autosave path as dragging. Keyboard tests cover
 activation, an invalid source selection, cancellation, focus after rerender,
@@ -62,4 +63,30 @@ and the status message. The red test failed on the missing card button.
 
 Full `./gradlew check --no-daemon` passed on November 20, including 59 native
 Chrome E2E tests. The existing touch drag swapped players and left the action
-closed. Calibrated screen-reader review and explicit reload coverage are pending.
+closed.
+
+### Pin moves and shared board behavior
+
+The same interaction is available for already assigned pins. Choosing Move to
+uses the visible pairs as destinations. The board reuses the existing drag/drop
+mutation functions for both actions and sends them through autosave. The
+component tests cover keyboard activation, invalid same-pair selection,
+cancellation via Escape and by reactivating the source, focus restoration,
+status text, and a blank-name pin. The pin tests failed on missing accessible
+buttons and labels before the implementation.
+
+Full `./gradlew check --no-daemon` passed on November 20 with 61 E2E tests
+on Chrome 158.0.8127.36 and macOS 27.2.1. The browser used a local fixture
+with two pairs and one assigned pin. It verified that both card actions
+persisted after a reload, plus touch drag for each item type with its action
+closed. The touch tests used a window at least 1200 pixels tall. The first
+pin drag run reached the loading screen before its fixture was ready. Waiting
+for the editable board resolved that setup race.
+
+### Remaining manual verification
+
+Confirm the spoken prompt and completion status, plus focus movement, in a
+calibrated Safari and VoiceOver session with the populated post-spin fixture.
+The component and Chrome browser results cover DOM focus and app behavior.
+A native desktop mouse-drag walkthrough and idle visual comparison are also
+pending. Keep the work card active until the manual acceptance is recorded.

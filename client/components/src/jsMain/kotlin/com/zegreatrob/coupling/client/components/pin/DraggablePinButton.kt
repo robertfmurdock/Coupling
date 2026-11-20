@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrag
+import com.zegreatrob.coupling.client.components.pairassignments.suppressClickAfterDrag
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
 import com.zegreatrob.minreact.ReactFunc
@@ -8,6 +9,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotools.types.text.toNotBlankString
 import react.Props
+import react.ReactNode
 import react.dom.html.ReactHTML
 import react.useRef
 import web.cssom.AnimationIterationCount
@@ -25,6 +27,8 @@ external interface DraggablePinButtonProps : Props {
     var pin: Pin
     var scale: PinButtonScale
     var endCallback: (pinId: PinId, dropResult: Json?) -> Unit
+    var assignmentAction: ReactNode?
+    var onDragStarted: (() -> Unit)?
 }
 
 @ReactFunc
@@ -42,11 +46,13 @@ val DraggablePinButton by nfc<DraggablePinButtonProps> { props ->
         },
     )
     val draggableRef = useRef<HTMLElement>(null)
+    val dragged = useRef(false)
 
     drag(draggableRef)
 
     ReactHTML.span {
         ref = draggableRef
+        props.onDragStarted?.let { suppressClickAfterDrag(dragged, it) }
         css {
             display = Display.inlineBlock
             transitionDuration = 0.4.s
@@ -56,6 +62,6 @@ val DraggablePinButton by nfc<DraggablePinButtonProps> { props ->
             animationName = ident("pulsate")
             animationIterationCount = AnimationIterationCount.infinite
         }
-        PinButton(pin = pin, scale = scale, showTooltip = true)
+        PinButton(pin = pin, scale = scale, showTooltip = true, assignmentAction = props.assignmentAction)
     }
 }
