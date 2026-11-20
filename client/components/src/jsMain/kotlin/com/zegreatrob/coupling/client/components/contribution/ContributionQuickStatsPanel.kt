@@ -10,19 +10,20 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.dl
 import react.dom.html.ReactHTML.dt
 import react.dom.html.ReactHTML.h2
+import react.dom.html.ReactHTML.p
 import react.dom.html.ReactHTML.section
 import web.cssom.BoxSizing
-import web.cssom.Color
 import web.cssom.Display
 import web.cssom.Flex
 import web.cssom.FlexWrap
 import web.cssom.FontWeight
-import web.cssom.LineStyle
+import web.cssom.JustifyContent
 import web.cssom.TextAlign
+import web.cssom.dvw
 import web.cssom.em
 import web.cssom.number
+import web.cssom.pct
 import web.cssom.px
-import web.cssom.vw
 import kotlin.time.Duration
 
 external interface ContributionQuickStatsPanelProps : Props {
@@ -36,49 +37,72 @@ external interface ContributionQuickStatsPanelProps : Props {
 
 @ReactFunc
 val ContributionQuickStatsPanel by nfc<ContributionQuickStatsPanelProps> { props ->
-    section {
+    div {
         css {
-            boxSizing = BoxSizing.borderBox
-            width = 70.vw
-            maxWidth = 38.em
-            marginBlock = 12.px
-            padding = 12.px
-            borderWidth = 2.px
-            borderStyle = LineStyle.solid
-            borderColor = Color("#c9a754")
-            borderRadius = 10.px
-            backgroundColor = Color("#fff7df")
-            color = Color("#392809")
-            textAlign = TextAlign.start
+            width = 100.pct
+            maxWidth = 75.dvw
+            textAlign = TextAlign.center
         }
-        h2 {
-            css { margin = 0.px }
-            +"Contribution summary"
-        }
-        dl {
+        section {
             css {
-                display = Display.flex
-                flexWrap = FlexWrap.wrap
-                gap = 12.px
-                margin = 0.px
-                marginBlockStart = 8.px
+                boxSizing = BoxSizing.borderBox
+                display = Display.inlineBlock
+                width = 46.em
+                maxWidth = 100.pct
+                marginBlock = 12.px
+                padding = 12.px
+                textAlign = TextAlign.center
             }
-            summaryMetric("Recent contributions", props.contributionCount.toString())
-            summaryMetric("With cycle time", props.cycleTimeCount.toString())
-            summaryMetric("Median cycle time", props.medianCycleTime?.toString() ?: "Unavailable")
-            summaryMetric("Contributors", props.contributorCount.toString())
+            h2 {
+                css {
+                    margin = 0.px
+                    fontWeight = FontWeight.bold
+                }
+                +"Contribution summary"
+            }
+            p {
+                css {
+                    marginBlock = 8.px
+                    fontSize = 0.85.em
+                }
+                +"Based on the recent contributions shown here."
+            }
+            dl {
+                css {
+                    display = Display.flex
+                    flexWrap = FlexWrap.wrap
+                    justifyContent = JustifyContent.center
+                    gap = 16.px
+                    margin = 0.px
+                    marginBlockStart = 16.px
+                }
+                summaryMetric("Recent contributions", props.contributionCount.toString())
+                summaryMetric("With cycle time", props.cycleTimeCount.toString())
+                summaryMetric("Median cycle time", props.medianCycleTime?.toString() ?: "Unavailable")
+                summaryMetric("Contributors", props.contributorCount.toString())
+            }
         }
     }
 }
 
 private fun ChildrenBuilder.summaryMetric(label: String, value: String) {
     div {
-        css { flex = Flex(number(1.0), number(1.0), 8.em) }
-        dt { +label }
+        css {
+            flex = Flex(number(1.0), number(1.0), 8.em)
+            minWidth = 0.px
+        }
+        dt {
+            css {
+                fontWeight = FontWeight.bold
+                fontSize = 0.9.em
+            }
+            +label
+        }
         dd {
             css {
                 marginInlineStart = 0.px
-                fontWeight = FontWeight.bold
+                marginBlockStart = 8.px
+                fontSize = 1.5.em
             }
             +value
         }

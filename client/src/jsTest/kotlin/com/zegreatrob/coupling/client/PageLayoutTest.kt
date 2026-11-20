@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.contribution.ContributionCardHeader
+import com.zegreatrob.coupling.client.components.contribution.ContributionQuickStatsPanel
 import com.zegreatrob.coupling.client.components.external.reactdnd.dndProvider
 import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.html5Backend
 import com.zegreatrob.coupling.client.components.pairassignments.CurrentPairAssignmentsPanel
@@ -26,6 +27,7 @@ import kotools.types.collection.notEmptyListOf
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.p
 import web.cssom.Position
+import web.cssom.TextAlign
 import web.cssom.integer
 import web.cssom.px
 import web.dom.ElementId
@@ -36,6 +38,49 @@ import kotlin.test.Test
 class PageLayoutTest {
     @AfterTest
     fun cleanUp() = cleanup()
+
+    @Test
+    fun contributionSummaryStaysVisibleWhenSurroundingPageOverflows() = asyncSetup() exercise {
+        renderNavigation {
+            div {
+                id = ElementId("overflowing-summary-host")
+                css {
+                    width = (window.innerWidth * 2).px
+                    textAlign = TextAlign.center
+                }
+                ContributionQuickStatsPanel(5, kotlin.time.Duration.parse("20m"), 3, 2)
+            }
+        }
+    } verify {
+        val host = document.getElementById("overflowing-summary-host")!!
+        val summary = host.querySelector("section")!!.getBoundingClientRect()
+        (summary.left >= 0 && summary.right <= window.innerWidth).assertIsEqualTo(true)
+    }
+
+    @Test
+    fun contributionSummaryFitsNarrowContainerWithEnlargedText() = asyncSetup() exercise {
+        renderNavigation {
+            div {
+                id = ElementId("summary-layout-host")
+                css {
+                    width = 320.px
+                    fontSize = 32.px
+                }
+                ContributionQuickStatsPanel(5, kotlin.time.Duration.parse("1d 12h 30m"), 3, 4)
+            }
+        }
+    } verify {
+        val host = document.getElementById("summary-layout-host")!!
+        val panel = host.querySelector("section")!!
+        val bounds = host.getBoundingClientRect()
+        (panel.getBoundingClientRect().width <= bounds.width).assertIsEqualTo(true)
+        panel.querySelectorAll("dt, dd").let { metrics ->
+            (0 until metrics.length).forEach { index ->
+                val metric = (metrics.item(index) as org.w3c.dom.Element).getBoundingClientRect()
+                (metric.left >= bounds.left && metric.right <= bounds.right).assertIsEqualTo(true)
+            }
+        }
+    }
 
     @Test
     fun pairingActionRemainsClickableAboveNeighboringControls() = asyncSetup(object {

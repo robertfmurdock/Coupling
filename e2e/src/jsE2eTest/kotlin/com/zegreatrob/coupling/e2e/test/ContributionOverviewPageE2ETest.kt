@@ -12,16 +12,9 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.await
-import kotlin.js.Promise
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
-
-@JsName("browser")
-private external object SummaryCaptureBrowser {
-    fun saveScreenshot(path: String): Promise<Unit>
-    fun setWindowSize(width: Int, height: Int): Promise<Unit>
-}
+import kotlin.time.Instant
 
 @Suppress("unused")
 class ContributionOverviewPageE2ETest {
@@ -47,30 +40,40 @@ class ContributionOverviewPageE2ETest {
     }
 
     @Test
-    fun summarizesRecentContributionsAndCountsEachContributorOnce() = e2eSetup(object {
+    fun summarizesOnlyLatestFiveContributionsAndCountsEachContributorOnce() = e2eSetup(object {
         val party = stubPartyDetails().copy(name = "Contribution summary example")
         val alex = "alex@example.invalid"
         val sam = "sam@example.invalid"
-        val contributions = listOf(
-            stubContributionInput().copy(name = "First change", participantEmails = setOf(alex), cycleTime = 10.minutes),
-            stubContributionInput().copy(name = "Second change", participantEmails = setOf(alex, sam), cycleTime = null),
-        )
+        val contributions = (0..5).map { index ->
+            stubContributionInput().copy(
+                name = "Change $index",
+                dateTime = Instant.parse("2026-11-19T12:0$index:00Z"),
+                integrationDateTime = Instant.parse("2026-11-19T12:0$index:00Z"),
+                participantEmails = when (index) {
+                    0 -> setOf("older@example.invalid")
+                    1 -> setOf(alex, sam)
+                    else -> setOf(alex)
+                },
+                cycleTime = when (index) {
+                    0 -> 1000.minutes
+                    1 -> 10.minutes
+                    2 -> 20.minutes
+                    3 -> 30.minutes
+                    else -> null
+                },
+            )
+        }
     }) {
         sdk().fire(SavePartyCommand(party))
         sdk().fire(SaveContributionCommand(party.id, contributions))
     } exercise {
         ContributionOverviewPage.goTo(party.id)
     } verify {
-        ContributionOverviewPage.mostRecentHeader(2).isDisplayed()
+        ContributionOverviewPage.mostRecentHeader(5).isDisplayed()
             .assertIsEqualTo(true)
-        SummaryCaptureBrowser.setWindowSize(1280, 900).await()
-        SummaryCaptureBrowser.saveScreenshot("/private/tmp/cpl23-after-desktop.png").await()
-        SummaryCaptureBrowser.setWindowSize(390, 844).await()
-        SummaryCaptureBrowser.saveScreenshot("/private/tmp/cpl23-after-mobile.png").await()
-        SummaryCaptureBrowser.setWindowSize(1280, 900).await()
-        ContributionOverviewPage.summaryValue("Recent contributions").assertIsEqualTo("2")
-        ContributionOverviewPage.summaryValue("With cycle time").assertIsEqualTo("1")
-        ContributionOverviewPage.summaryValue("Median cycle time").assertIsEqualTo("10m")
+        ContributionOverviewPage.summaryValue("Recent contributions").assertIsEqualTo("5")
+        ContributionOverviewPage.summaryValue("With cycle time").assertIsEqualTo("3")
+        ContributionOverviewPage.summaryValue("Median cycle time").assertIsEqualTo("20m")
         ContributionOverviewPage.summaryValue("Contributors").assertIsEqualTo("2")
     }
 
