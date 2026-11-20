@@ -9,6 +9,7 @@ import emotion.css.ClassName
 import kotools.types.text.toNotBlankString
 import react.Key
 import react.Props
+import react.ReactNode
 import web.cssom.Angle
 import web.cssom.AnimationIterationCount
 import web.cssom.NamedColor
@@ -26,6 +27,8 @@ external interface DraggablePlayerProps : Props {
     var zoomOnHover: Boolean
     var tilt: Angle
     var onPlayerDrop: (PlayerId) -> Unit
+    var assignmentAction: ReactNode?
+    var onDragStarted: (() -> Unit)?
 }
 
 @ReactFunc
@@ -36,6 +39,7 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
         itemId = pinnedPlayer.player.id.value.toString(),
         dropCallback = {},
         css = {},
+        onDragStarted = props.onDragStarted,
         endCallback = { _, data ->
             val playerId: PlayerId? =
                 data?.get("dropTargetId")?.toString()
@@ -48,6 +52,7 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { props ->
         PlayerCard(
             player = pinnedPlayer.player,
             tilt = tilt,
+            assignmentAction = props.assignmentAction,
             className = ClassName {
                 if (zoomOnHover) {
                     hover {

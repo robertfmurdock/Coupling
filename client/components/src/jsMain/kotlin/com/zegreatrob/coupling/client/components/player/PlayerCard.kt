@@ -14,6 +14,7 @@ import emotion.react.css
 import js.uri.encodeURIComponent
 import react.ChildrenBuilder
 import react.Props
+import react.ReactNode
 import react.create
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML
@@ -53,6 +54,7 @@ external interface PlayerCardProps : Props {
     var size: Int?
     var deselected: Boolean?
     var tilt: Angle?
+    var assignmentAction: ReactNode?
 }
 
 @ReactFunc
@@ -79,6 +81,7 @@ val PlayerCard by nfc<PlayerCardProps> { props ->
             playerGravatarImage(player, size)
             PlayerCardHeader(player, size)
         }
+        +props.assignmentAction
     }
 }
 

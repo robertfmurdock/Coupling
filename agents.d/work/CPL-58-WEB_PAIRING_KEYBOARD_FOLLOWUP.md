@@ -37,3 +37,29 @@ Agree the visible interaction before adding or repositioning controls.
 
 Source review found drag/drop registration on span/div refs without keyboard
 handlers. Native reproduction and implementation are pending.
+
+## Interaction decision
+
+The owner chose to keep the board visually quiet and drag as the direct path.
+Activating a card opens its actions. After choosing Swap with or Move to, the
+user activates a destination on the board itself. The editable post-spin view
+owns this interaction. Existing controls and card placement stay in place.
+
+The source inventory identified two drag operations in the editable pairing
+board: swapping players across existing assignments and moving a pin that is
+already assigned to another existing assignment. The Pin Bag configures the
+party's pin definitions and is separate from this board. The existing drop
+handlers provide no standalone unpair, add-pin, or remove-pin operation.
+Keyboard changes use the same autosave callback as pointer drops.
+
+### Player swaps
+
+The post-spin board now exposes each eligible player card as a button with a
+single Swap with action. Destination selection reuses the visible cards and
+the same cross-pair swap and autosave path as dragging. Keyboard tests cover
+activation, an invalid source selection, cancellation, focus after rerender,
+and the status message. The red test failed on the missing card button.
+
+Full `./gradlew check --no-daemon` passed on November 20, including 59 native
+Chrome E2E tests. The existing touch drag swapped players and left the action
+closed. Calibrated screen-reader review and explicit reload coverage are pending.

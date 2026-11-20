@@ -23,6 +23,8 @@ import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 import kotools.types.text.toNotBlankString
 import kotlin.test.Test
 
@@ -113,6 +115,7 @@ class PrepareToSpinPageE2ETest {
             assignedPairElements.map { pair ->
                 pair.all(PlayerCard.PLAYER_LOCATOR).map { it.attribute("data-player-id") }.toSet()
             }.toList().assertIsEqualTo(expected)
+            TestingLibraryBrowser.queryByRole("button", RoleOptions("Swap with…")).isPresent().assertIsEqualTo(false)
         }
     }
 

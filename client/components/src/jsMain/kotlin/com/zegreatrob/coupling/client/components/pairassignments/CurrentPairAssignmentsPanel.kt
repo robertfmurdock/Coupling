@@ -17,20 +17,38 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import kotlinx.browser.document
 import kotools.types.collection.NotEmptyList
+import org.w3c.dom.HTMLElement
 import react.ChildrenBuilder
 import react.Key
 import react.Props
+import react.create
+import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.router.Navigate
+import react.useEffect
+import react.useId
+import react.useRef
 import react.useState
+import web.aria.AriaRole
+import web.aria.status
 import web.cssom.ClassName
+import web.cssom.Color
+import web.cssom.LineStyle
+import web.cssom.Position
 import web.cssom.WhiteSpace
+import web.cssom.integer
+import web.cssom.pct
 import web.cssom.px
+import web.dom.ElementId
+import web.html.ButtonType
+import web.html.button
 
 external interface CurrentPairAssignmentsPanelProps : Props {
     var party: PartyDetails
@@ -44,6 +62,22 @@ external interface CurrentPairAssignmentsPanelProps : Props {
 val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props ->
     val (party, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+    val (swap, setSwap) = useState<PlayerSwap?>(null)
+    val (announcement, setAnnouncement) = useState("")
+    val actionId = useId()
+    val focusAfterUpdate = useRef<String>()
+    val playerButtonId = { playerId: PlayerId -> "$actionId-${playerId.value}" }
+    val sourcePair = swap?.let { pairAssignments.pairs.findPairContainingPlayer(it.player.id) }
+    val finishSwap = { playerId: PlayerId ->
+        focusAfterUpdate.current = playerButtonId(playerId)
+        setSwap(null)
+    }
+    useEffect {
+        focusAfterUpdate.current?.let { id ->
+            focusAfterUpdate.current = null
+            (document.getElementById(id) as? HTMLElement)?.focus()
+        }
+    }
     val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPath()) }
     val onCancel = dispatchFunc {
         fire(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
@@ -55,7 +89,67 @@ val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props
         div {
             className = ClassName("current-pair-assignments")
             dateHeader(pairAssignments)
-            pairAssignmentList(party, pairAssignments, setPairAssignments, allowSave)
+            div {
+                onKeyDown = { event ->
+                    if (event.key == "Escape" && swap != null) {
+                        event.preventDefault()
+                        finishSwap(swap.player.id)
+                        setAnnouncement("")
+                    }
+                }
+                pairAssignmentList(
+                    party,
+                    pairAssignments,
+                    setPairAssignments,
+                    allowSave,
+                    onPlayerDragStarted = {
+                        setSwap(null)
+                        setAnnouncement("")
+                    },
+                ) { pair, player ->
+                    val id = player.player.id
+                    val menuOpen = swap?.player?.id == id && !swap.choosingTarget
+                    val choosingTarget = swap?.choosingTarget == true && sourcePair != null
+                    val validTarget = choosingTarget && sourcePair != pair
+                    playerSwapAction(
+                        player = player.player,
+                        buttonId = playerButtonId(id),
+                        menuOpen = menuOpen,
+                        selected = choosingTarget && swap?.player?.id == id,
+                        validTarget = validTarget,
+                        onActivate = {
+                            when {
+                                validTarget -> {
+                                    setPairAssignments(pairAssignments.copyWithSwappedPlayers(swap.player.id, player, pair))
+                                    finishSwap(swap.player.id)
+                                    setAnnouncement("${swap.player.name} and ${player.player.name} swapped.")
+                                }
+
+                                !choosingTarget -> {
+                                    setAnnouncement("")
+                                    if (menuOpen) {
+                                        finishSwap(id)
+                                    } else {
+                                        focusAfterUpdate.current = "${playerButtonId(id)}-swap"
+                                        setSwap(PlayerSwap(player.player))
+                                    }
+                                }
+                            }
+                        },
+                        onChooseSwap = {
+                            focusAfterUpdate.current = playerButtonId(id)
+                            setSwap(PlayerSwap(player.player, choosingTarget = true))
+                            setAnnouncement("Choose a player in another pair to swap with ${player.player.name}.")
+                        },
+                    )
+                }
+                if (allowSave) {
+                    div {
+                        role = AriaRole.status
+                        +announcement
+                    }
+                }
+            }
             if (allowSave) {
                 div {
                     saveButton(redirectToCurrentFunc)
@@ -75,11 +169,14 @@ private fun ChildrenBuilder.pairAssignmentList(
     pairAssignments: PairingSet,
     setPairAssignments: (PairingSet) -> Unit,
     allowSave: Boolean,
+    onPlayerDragStarted: () -> Unit,
+    playerAction: (PinnedCouplingPair, PinnedPlayer) -> react.ReactNode,
 ) = div {
     css {
         whiteSpace = WhiteSpace.preLine
     }
-    pairAssignments.pairs.toList().mapIndexed { index, pair ->
+    val pairs = pairAssignments.pairs.toList()
+    pairs.forEachIndexed { index, pair ->
         AssignedPair(
             party = party,
             pair = pair,
@@ -91,7 +188,62 @@ private fun ChildrenBuilder.pairAssignmentList(
                 setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, targetId))
             },
             key = Key("$index"),
+            playerAction = playerAction.takeIf { pairs.size > 1 }?.let { action -> { player -> action(pair, player) } },
+            onPlayerDragStarted = onPlayerDragStarted.takeIf { pairs.size > 1 },
         )
+    }
+}
+
+private data class PlayerSwap(val player: Player, val choosingTarget: Boolean = false)
+
+private fun playerSwapAction(
+    player: Player,
+    buttonId: String,
+    menuOpen: Boolean,
+    selected: Boolean,
+    validTarget: Boolean,
+    onActivate: () -> Unit,
+    onChooseSwap: () -> Unit,
+) = react.Fragment.create {
+    button {
+        id = ElementId(buttonId)
+        type = ButtonType.button
+        ariaLabel = player.name
+        ariaExpanded = menuOpen
+        onClick = { onActivate() }
+        css {
+            position = Position.absolute
+            top = 0.px
+            left = 0.px
+            width = 100.pct
+            height = 100.pct
+            borderWidth = 0.px
+            padding = 0.px
+            backgroundColor = Color.transparent
+            borderRadius = 5.px
+            if (selected || validTarget) {
+                boxShadow = web.cssom.BoxShadow(0.px, 0.px, 0.px, 3.px, Color(if (selected) "#151515" else "#23578b"))
+            }
+            "&:focus-visible" {
+                outlineWidth = 3.px
+                outlineStyle = LineStyle.solid
+                outlineColor = Color("#151515")
+            }
+        }
+    }
+    if (menuOpen) {
+        button {
+            id = ElementId("$buttonId-swap")
+            type = ButtonType.button
+            css {
+                position = Position.absolute
+                top = 100.pct
+                left = 0.px
+                zIndex = integer(1)
+            }
+            onClick = { onChooseSwap() }
+            +"Swap with…"
+        }
     }
 }
 

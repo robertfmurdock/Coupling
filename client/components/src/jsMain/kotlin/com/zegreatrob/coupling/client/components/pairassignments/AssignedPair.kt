@@ -61,10 +61,13 @@ external interface AssignedPairProps : Props {
     var canDrag: Boolean
     var swapPlayersFunc: ((PinnedPlayer, PlayerId) -> Unit)?
     var pinDropFunc: PinMoveCallback?
+    var playerAction: ((PinnedPlayer) -> ReactNode)?
+    var onPlayerDragStarted: (() -> Unit)?
 }
 
 @ReactFunc
-val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
+val AssignedPair by nfc<AssignedPairProps> { props ->
+    val (party, pair, canDrag, swapCallback, pinMoveCallback) = props
     val callSign = pair.callSign()
 
     val (pinIsOver, drop) = useDrop(
@@ -78,7 +81,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
         pinMoveCallback?.invoke(pinId, data?.get("dropTargetId").toString()) ?: Unit
     }.takeIf { canDrag }
 
-    val playerCard = playerCardComponent(canDrag, swapCallback)
+    val playerCard = playerCardComponent(canDrag, swapCallback, props.playerAction, props.onPlayerDragStarted)
 
     DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { }) {
         ReactHTML.span {
@@ -157,12 +160,16 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
 private fun playerCardComponent(
     canDrag: Boolean,
     swap: ((PinnedPlayer, PlayerId) -> Unit)?,
+    action: ((PinnedPlayer) -> ReactNode)?,
+    onDragStarted: (() -> Unit)?,
 ): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) {
     { player, tilt ->
         playerFlipped(player.player) {
             DraggablePlayer.create(
                 pinnedPlayer = player,
                 zoomOnHover = canDrag,
+                assignmentAction = action?.invoke(player),
+                onDragStarted = onDragStarted,
                 tilt = tilt,
                 onPlayerDrop = { droppedPlayerId -> swap?.invoke(player, droppedPlayerId) },
             )
