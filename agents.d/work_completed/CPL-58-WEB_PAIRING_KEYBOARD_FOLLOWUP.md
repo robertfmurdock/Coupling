@@ -96,10 +96,29 @@ verify hit testing over an overlapping control and a grab point within the
 visible card. The full Gradle check passed on November 20, including all 61
 Chrome E2E tests and both touch drag scenarios.
 
-### Remaining manual verification
+### Closeout evidence
 
-Confirm the spoken prompt and completion status, plus focus movement, in a
-calibrated Safari and VoiceOver session with the populated post-spin fixture.
-The component and Chrome browser results cover DOM focus and app behavior.
-A native desktop mouse-drag walkthrough and idle visual comparison are also
-pending. Keep the work card active until the manual acceptance is recorded.
+On November 20, native Chrome 158.0.8127.36 on macOS 27.2.1 passed both
+desktop mouse drag scenarios at `20664d8b8`. The run used the existing E2E
+fixtures, native mouse input, and the resulting assignments as the assertion.
+Swapping players and moving a pin both left the card action closed. A
+document-level `dragend` wait timed out in an initial run even though Chrome
+delivered `dragstart` and `drop`. The verified run checked the board state
+after the drop. The temporary verification changes were removed.
+
+The full `./gradlew check --no-daemon` run passed at `20664d8b8`, with
+61 native Chrome E2E tests. The full check passed again after restoring the
+current sources from the baseline comparison, reusing the E2E result.
+
+Compared the editable board at `09f2da229` and `20664d8b8` using the same
+fixture of two populated pairs, one assigned pin, and one unpaired player.
+The matching 741 × 985 Chrome screenshots showed the same placement of the
+pairs, pin, Save, Cancel, Spin, and unpaired player with the action closed.
+The timestamp and transient card tilt differed between captures.
+
+The accessibility review confirmed native buttons, named destinations,
+focus restoration to the source card, and a persistent status region
+whose text changes for destination instructions and completion. Component
+coverage verifies DOM focus and status text. The owner accepted best-effort
+closure with the calibrated Safari and VoiceOver walkthrough deferred.
+Actual VoiceOver speech and focus tracking in Safari are untested.

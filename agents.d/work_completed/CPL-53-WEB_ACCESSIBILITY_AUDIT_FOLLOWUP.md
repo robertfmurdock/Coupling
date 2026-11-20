@@ -65,9 +65,9 @@ retains the unverified conditions for future use.
 The owner authorized follow-up cards to bound this effort and accepted closure.
 The following work remains outside this completed card:
 
-- [Pairing keyboard operations](../work/CPL-58-WEB_PAIRING_KEYBOARD_FOLLOWUP.md):
-  inventory and reproduce keyboard alternatives to player/pin drag operations,
-  including populated prepare/current/history flows and announcements.
+- [Pairing keyboard operations](CPL-58-WEB_PAIRING_KEYBOARD_FOLLOWUP.md):
+  completed player swap and pin move alternatives on the editable board.
+  The closeout records the remaining Safari and VoiceOver verification gap.
 - [Contributor popup](CPL-57-WEB_CONTRIBUTOR_POPOVER_FOLLOWUP.md): test the real
   participant trigger and agree keyboard/focus/dismissal semantics.
 - [Data, reflow and contrast](../work/CPL-56-WEB_ACCESSIBLE_DATA_AND_REFLOW_FOLLOWUP.md):
