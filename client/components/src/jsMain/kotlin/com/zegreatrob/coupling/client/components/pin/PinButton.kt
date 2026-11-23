@@ -19,6 +19,7 @@ import web.cssom.FontSize
 import web.cssom.Length
 import web.cssom.LineStyle
 import web.cssom.NamedColor
+import web.cssom.Normal
 import web.cssom.Padding
 import web.cssom.Position
 import web.cssom.TextAlign
@@ -90,7 +91,7 @@ private val tooltipStyles = emotion.css.ClassName {
     backgroundColor = Color("#222222")
     color = Color("#fff")
     display = Display.inlineBlock
-    lineHeight = Length.normal
+    lineHeight = Normal.normal
     fontSize = FontSize.larger
     whiteSpace = WhiteSpace.nowrap
     after {

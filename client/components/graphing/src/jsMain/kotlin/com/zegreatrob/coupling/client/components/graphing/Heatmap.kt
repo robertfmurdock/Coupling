@@ -17,7 +17,7 @@ import react.useLayoutEffect
 import react.useRef
 import web.cssom.ClassName
 import web.cssom.Display
-import web.cssom.WhiteSpace
+import web.cssom.Normal
 import web.cssom.px
 import web.html.HTMLElement
 
@@ -82,7 +82,7 @@ val Heatmap by nfc<HeatmapProps> { (data, className) ->
             lineHeight = 0.px
             width = rowSize.px
             height = rowSize.px
-            whiteSpace = WhiteSpace.normal
+            whiteSpace = Normal.normal
         }
         ref = rootRef
     }
