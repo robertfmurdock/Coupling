@@ -19,6 +19,24 @@ constraint without necessarily producing a build failure. See [TESTING.md](TESTI
 
 ## Build and Deployment
 
+All environments run the same application with different normal configuration.
+Production serves normal usage; sandbox provides isolated data and integrations
+for trying released behavior; prerelease enables incubating features through the
+shared `ENABLE_PRERELEASE_FEATURES` flag. These are operating configurations,
+not successive deployment gates.
+
+Avoid branching application behavior on environment identity. Prefer universal
+configuration settings that apply consistently in every environment. Minimize
+feature flags and use the existing prerelease flag for incubating features where
+appropriate rather than adding a flag for each feature. Environment-specific
+origins, credentials and data namespaces remain ordinary configuration values.
+
+This consistency is critical to trustworthy tests and to local development being
+as good a proxy for the released application as possible. Keep concessions to a
+minimum: reuse the released application's behavior and execution paths wherever
+practical, and make necessary differences explicit so their validation limits
+remain visible.
+
 Use the commands and safe delivery protocol in [AGENTS.md](../../AGENTS.md).
 Generated build artifacts are not version-controlled; agent entry files are
 hand-maintained committed documentation.

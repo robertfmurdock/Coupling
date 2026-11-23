@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "status": "complete",
+  "timestamp": "2026-11-22T14:11:40.631Z",
+  "revision": "f9c17e2990b80252ac7331e887803fe0e6fa87f1",
+  "workingTreeDirty": true,
+  "scenario": "local-release-welcome",
+  "policyId": "self-discovery-v1",
+  "policy": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'self'",
+  "conditions": {
+    "mode": "normal application report-only header",
+    "auth": "signed-out fresh Chrome profile",
+    "observationAfterReadyMs": 2000
+  },
+  "caveats": [
+    "This deliberately restrictive discovery policy is not an enforcement proposal.",
+    "The candidate must be delivered by the normal app document renderer; this runner never overrides responses.",
+    "Welcome readiness and a bounded observation window do not cover authenticated views, OAuth return, GraphiQL or WebSockets.",
+    "Unknown dependency origins become other and require source or interactive inspection before classification is extended.",
+    "Network counts include incomplete and failed requests; complete describes the capture sequence, not policy compatibility."
+  ],
+  "observation": {
+    "supported": true,
+    "observedEvents": 792,
+    "droppedEvents": 0,
+    "groups": [
+      {
+        "directive": "script-src-elem",
+        "disposition": "report",
+        "resource": "inline",
+        "count": 3
+      },
+      {
+        "directive": "script-src-elem",
+        "disposition": "report",
+        "resource": "kit.fontawesome.com",
+        "count": 1
+      },
+      {
+        "directive": "connect-src",
+        "disposition": "report",
+        "resource": "ka-f.fontawesome.com",
+        "count": 8
+      },
+      {
+        "directive": "style-src-elem",
+        "disposition": "report",
+        "resource": "fonts.googleapis.com",
+        "count": 1
+      },
+      {
+        "directive": "style-src-elem",
+        "disposition": "report",
+        "resource": "cdnjs.cloudflare.com",
+        "count": 1
+      },
+      {
+        "directive": "img-src",
+        "disposition": "report",
+        "resource": "static.localhost",
+        "count": 18
+      },
+      {
+        "directive": "script-src-elem",
+        "disposition": "report",
+        "resource": "static.localhost",
+        "count": 57
+      },
+      {
+        "directive": "script-src-elem",
+        "disposition": "report",
+        "resource": "www.googletagmanager.com",
+        "count": 1
+      },
+      {
+        "directive": "script-src-elem",
+        "disposition": "report",
+        "resource": "esm.sh",
+        "count": 646
+      },
+      {
+        "directive": "manifest-src",
+        "disposition": "report",
+        "resource": "static.localhost",
+        "count": 1
+      },
+      {
+        "directive": "font-src",
+        "disposition": "report",
+        "resource": "fonts.gstatic.com",
+        "count": 10
+      },
+      {
+        "directive": "style-src-elem",
+        "disposition": "report",
+        "resource": "inline",
+        "count": 5
+      },
+      {
+        "directive": "font-src",
+        "disposition": "report",
+        "resource": "ka-f.fontawesome.com",
+        "count": 34
+      },
+      {
+        "directive": "connect-src",
+        "disposition": "report",
+        "resource": "www.google-analytics.com",
+        "count": 2
+      },
+      {
+        "directive": "style-src-elem",
+        "disposition": "report",
+        "resource": "static.localhost",
+        "count": 3
+      },
+      {
+        "directive": "img-src",
+        "disposition": "report",
+        "resource": "other",
+        "count": 1
+      }
+    ]
+  },
+  "delivery": {
+    "documents": 1,
+    "matchingPolicies": 1
+  },
+  "network": {
+    "responses": 363,
+    "cachedResponses": 1,
+    "reportedBytesReceived": 3164879,
+    "unknownByteResponses": 0,
+    "httpErrors": 0,
+    "failedRequests": 0,
+    "abortedRequests": 0,
+    "pendingRequests": 0,
+    "droppedRequests": 0,
+    "groups": {
+      "app": {
+        "responses": 1,
+        "cachedResponses": 0,
+        "reportedBytesReceived": 3969,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0
+      },
+      "static": {
+        "responses": 28,
+        "cachedResponses": 0,
+        "reportedBytesReceived": 1777454,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0
+      },
+      "other": {
+        "responses": 2,
+        "cachedResponses": 1,
+        "reportedBytesReceived": 1142,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0
+      },
+      "icons": {
+        "responses": 5,
+        "cachedResponses": 0,
+        "reportedBytesReceived": 35674,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0
+      },
+      "fonts": {
+        "responses": 2,
+        "cachedResponses": 0,
+        "reportedBytesReceived": 15519,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0
+      },
+      "modules": {
+        "responses": 323,
+        "cachedResponses": 0,
+        "reportedBytesReceived": 1147312,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0
+      },
+      "analytics": {
+        "responses": 2,
+        "cachedResponses": 0,
+        "reportedBytesReceived": 183809,
+        "unknownByteResponses": 0,
+        "httpErrors": 0,
+        "failedRequests": 0,
+        "abortedRequests": 0
+      }
+    }
+  },
+  "browser": {
+    "version": "158.0.8127.36",
+    "platform": "mac"
+  },
+  "page": {
+    "viewportWidth": 1280,
+    "viewportHeight": 700,
+    "prereleaseFeatures": true,
+    "importMapEntries": 22
+  }
+}
