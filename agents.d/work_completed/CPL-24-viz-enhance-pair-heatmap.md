@@ -310,3 +310,26 @@ Full `./gradlew check --quiet` passed outside the sandbox. Local guidance links,
 including the philosophy anchor, and `git diff --check` passed. The implementation
 commit and attachment verification are recorded in the visual issue closeout.
 No push, release or deployment was performed.
+
+
+## Editorial trim · 2026-11-23
+
+At the owner's request, remove the sentence announcing that the comparison is not
+a goal/prediction and that decisions belong to the team. The product explanation
+now contains only the factual definition and history/context information. The
+underlying principle remains in PERSONA.md, with a clarification to express agency
+through behavior and neutral wording rather than repeated declarations. Removed
+the sentence's container and its required-copy assertion; no calculation, styling
+or interaction behavior changed. No artificial failing test was added for this
+editorial cut. Existing `:client:components:jsTest --quiet` passed.
+
+[Matched before/after](https://github.com/robertfmurdock/Coupling/issues/3483#issuecomment-7114966267):
+`5cefa9f6-cf04-4ae9-9e78-6165160a2725` before, matching parent `feceec887`, and
+`b1e1d124-735c-4d6a-975f-4ff5a084aceb` after. Complete manifests, measured
+viewport/PNG 1280×1350, Chrome 158.0.8127.36, light, scale 1, en-US/UTC, same
+synthetic four-player/six-spin pattern with both disclosures open. Fresh reserved
+party IDs and small random card tilts differ. The browser verified the removed
+sentence is absent, the definition remains and all six pair rows/descriptions
+remain intact. Both uploads were downloaded and matched byte-for-byte. Temporary
+capture edits were removed. Full check and implementation commit are recorded in
+the visual issue closeout. No push, release or deployment was performed.

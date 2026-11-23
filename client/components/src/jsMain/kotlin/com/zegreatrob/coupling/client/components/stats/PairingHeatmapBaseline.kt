@@ -160,13 +160,6 @@ private fun ChildrenBuilder.referenceExplanation() = details {
             padding = 6.px
             paddingTop = 0.px
         }
-        +"A comparison, not a goal or prediction. Pairing decisions belong to your team."
-    }
-    div {
-        css {
-            padding = 6.px
-            paddingTop = 0.px
-        }
         +"Uses up to five full rotations of saved history. Absences, pins and team changes can all shape the counts."
     }
 }

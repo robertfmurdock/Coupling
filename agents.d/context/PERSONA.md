@@ -43,7 +43,9 @@ A design that weakens honest reporting undermines the evidence the app needs.
 - Comprehensibility is a product requirement. People should understand what an
   observation or suggestion means, why it appears and where its limits are. Favor
   a clear mental model and concise, well-placed explanation over opaque
-  sophistication or a wall of prose.
+  sophistication or a wall of prose. Explain the data and model where useful;
+  express respect for team agency through behavior and neutral wording rather
+  than repeatedly announcing that teams have agency.
 - Distinguish observations, comparison models and interpretation. Show actual
   counts, time windows, coverage and assumptions. An even split is a descriptive
   mathematical comparison, not the app's prediction, goal or standard of good work.

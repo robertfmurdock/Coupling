@@ -29,7 +29,6 @@ class PairingHeatmapBaselineTest {
         val distribution = screen.getByRole("group", RoleOptions(name = "Pairing distribution"))
         within(distribution).getByText("Even split per pair")
         within(distribution).getByText("2.0")
-        within(distribution).getByText("A comparison, not a goal or prediction. Pairing decisions belong to your team.")
         screen.queryByText("Expected per pair").assertIsEqualTo(null)
         screen.queryByText("Within ±1 of reference").assertIsEqualTo(null)
     }
