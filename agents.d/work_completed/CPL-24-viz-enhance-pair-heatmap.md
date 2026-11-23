@@ -1,4 +1,4 @@
-# CPL-24 — Annotate the pairing heatmap with an expected baseline
+# CPL-24 — Compare recent pairings with an even split
 
 **Work card protocol: 2**
 
@@ -248,4 +248,65 @@ unverified; no claim is made for those conditions.
 
 `./gradlew check --quiet` passed outside the sandbox for this complete slice.
 The presentation implementation SHA is recorded in the visual issue closeout.
+No push, release or deployment was performed.
+
+
+## Neutral comparisons and domain philosophy · 2026-11-23
+
+Owner clarification supersedes this card's earlier expected-count, scorecard and
+±1-band choices. The app should anchor a lead's and team's decisions in what
+happened, support questions when patterns are surprising, and preserve the choice
+not to act. Accurate reporting must not feel penalized. The normal pairing
+algorithm remains a comprehensible, predictable starting suggestion that people
+can override without justifying themselves to the system; its coordination benefit
+and gentle nudge are intentional. No pairing algorithm or override behavior changed.
+
+The authoritative principle is now in
+[Collaboration Metrics and Team Agency](../context/PERSONA.md#collaboration-metrics-and-team-agency),
+with task-based discovery in AGENTS.md, the context index and visualization guide.
+That guidance incorporates the owner's clarification about leadership context,
+comprehensibility, team agency, truthful inputs and understandable defaults. It
+allows useful interpretation and suggestions while rejecting app-imposed verdicts
+and required compliance. Historical risk/health/ideal proposals must be reviewed
+against that current guidance before implementation.
+
+UI delivery: Pairing distribution, Even split per pair, and more/fewer than an even
+split in cell/table accessible descriptions. The explanation explicitly says this
+is not a goal or prediction and pairing decisions belong to the team. Remove the
+arbitrary ±1 proximity outlines and legend item, rather than merely relabeling a
+preferred band. The unused renderer outline flag/styles and obsolete marker-only
+test were removed; count, unavailable-data, accessible-description and D3 rerender
+coverage remain. Actual counts, comparison arithmetic, five-cycle window and fill
+palette are unchanged. The normal algorithm's deliberate nudge is separate from
+this descriptive mathematical comparison.
+
+Red: 156 component tests with two intended failures, for the missing new comparison
+disclosure and missing neutral accessible cell description. After implementation,
+155 component tests pass (one obsolete marker-classification scenario removed,
+one neutral comparison scenario added). A remaining assertion about the old inline
+outline property was removed as part of intentionally deleting that capability;
+real-browser evidence verifies the user-visible absence of all proximity outlines.
+Test review retains the numerical/table contract and full comparison wording, plus
+the disclosure's explanation of team ownership. Production review confirms no
+algorithm, scheduling, server or query changes and no new UI interaction framework.
+No artificial tests were added for the documentation changes.
+
+[Neutral comparison evidence](https://github.com/robertfmurdock/Coupling/issues/3483#issuecomment-7114764473).
+Before: `be248818-b27d-43a2-8820-bf93b3c5a3fc`, 1280×900, applicable to parent
+`85608c910`. Collapsed after: `5ee8dce8-8fb6-487a-93cb-d96bf2b4da48`, 1280×900.
+Final expanded explanation/table: `5cefa9f6-cf04-4ae9-9e78-6165160a2725`, 1280×1350.
+All complete, actual viewport and PNG measured, Chrome 158.0.8127.36, light, scale
+1, en-US/UTC, same synthetic four-player/six-spin pattern. Fresh party IDs avoid
+retained history; small random card tilts differ. The collapsed capture remains
+applicable after the final hidden sentence was changed to “Pairing decisions belong
+to your team”; the expanded capture uses final text. Browser assertions confirmed
+zero outlined cells, unchanged numerical comparison, twelve neutral cell accessible
+names and six unique rows with complete more/fewer descriptions. Temporary capture
+edits were removed. Earlier local native keyboard evidence still applies to these
+unchanged native disclosures; calibrated screen-reader, forced-colors and narrow
+page reflow coverage remain unverified.
+
+Full `./gradlew check --quiet` passed outside the sandbox. Local guidance links,
+including the philosophy anchor, and `git diff --check` passed. The implementation
+commit and attachment verification are recorded in the visual issue closeout.
 No push, release or deployment was performed.

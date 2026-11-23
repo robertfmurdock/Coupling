@@ -47,7 +47,6 @@ import web.cssom.Normal
 import web.cssom.TextAlign
 import web.cssom.pct
 import web.cssom.px
-import kotlin.math.abs
 
 external interface PairingHeatmapBaselineProps : Props {
     var players: List<Player>
@@ -75,7 +74,7 @@ val PairingHeatmapBaseline by nfc<PairingHeatmapBaselineProps> { props ->
         heatmapKey()
         div {
             role = AriaRole.group
-            ariaLabel = "Pairing scorecard"
+            ariaLabel = "Pairing distribution"
             css { heatmapInformationPanel(Color("#75429c")) }
             div {
                 css {
@@ -88,7 +87,7 @@ val PairingHeatmapBaseline by nfc<PairingHeatmapBaselineProps> { props ->
                     borderBottom = Border(2.px, LineStyle.solid, Color("#75429c"))
                     fontWeight = FontWeight.bold
                 }
-                +"Pairing scorecard"
+                +"Pairing distribution"
             }
             referenceSpotlight(baseline)
             referenceExplanation()
@@ -108,7 +107,7 @@ private fun ChildrenBuilder.referenceSpotlight(baseline: PairingBaseline?) = dl 
         padding = 8.px
     }
     dt {
-        strong { +"Expected per pair" }
+        strong { +"Even split per pair" }
         if (baseline != null) {
             div {
                 css {
@@ -150,18 +149,25 @@ private fun ChildrenBuilder.referenceExplanation() = details {
             cursor = Cursor.pointer
             padding = 3.px
         }
-        +"About this reference"
+        +"About this comparison"
     }
     div {
         css { padding = 6.px }
-        +"An equal-turn reference for the current team. Absences, pins and team changes can affect counts."
+        +"What the counts would be if pairings were spread evenly across the current team."
     }
     div {
         css {
             padding = 6.px
             paddingTop = 0.px
         }
-        +"Uses up to five full rotations of saved history. Outlined cells are within one pairing of the reference."
+        +"A comparison, not a goal or prediction. Pairing decisions belong to your team."
+    }
+    div {
+        css {
+            padding = 6.px
+            paddingTop = 0.px
+        }
+        +"Uses up to five full rotations of saved history. Absences, pins and team changes can all shape the counts."
     }
 }
 
@@ -220,11 +226,11 @@ private fun ChildrenBuilder.pairBreakdown(players: List<Player>, pairs: List<Pla
                     fontWeight = FontWeight.bold
                     textAlign = TextAlign.left
                 }
-                +"Recent pairings · reference ${baseline?.expectedPairings?.toFixed(1) ?: "unavailable"} per pair"
+                +"Recent pairings · even split ${baseline?.expectedPairings?.toFixed(1) ?: "unavailable"} per pair"
             }
             thead {
                 tr {
-                    listOf("Pair", "Count", "vs reference", "Spins ago").forEach { label ->
+                    listOf("Pair", "Count", "vs even split", "Spins ago").forEach { label ->
                         th {
                             scope = "col"
                             +label
@@ -265,28 +271,28 @@ private fun ChildrenBuilder.pairBreakdown(players: List<Player>, pairs: List<Pla
     }
 }
 
-private fun compactPairingDifference(actual: Int?, expected: Double?): String {
-    if (actual == null || expected == null) return "Unavailable"
-    val difference = actual - expected
+private fun compactPairingDifference(actual: Int?, comparison: Double?): String {
+    if (actual == null || comparison == null) return "Unavailable"
+    val difference = actual - comparison
     return (if (difference > 0) "+" else "") + difference.toFixed(1)
 }
 
 fun pairingHeatmapCells(players: List<Player>, pairs: List<PlayerPair>, spinsUntilFullRotation: Int, savedSpinCount: Int?): List<List<HeatmapCell>> {
-    val expected = pairingBaseline(savedSpinCount, spinsUntilFullRotation)?.expectedPairings
+    val comparison = pairingBaseline(savedSpinCount, spinsUntilFullRotation)?.expectedPairings
     return heatmapData(players, pairs).mapIndexed { row, values ->
         values.mapIndexed { column, value ->
-            if (row == column) HeatmapCell(value) else pairingHeatmapCell(value, players[row], players[column], pairs, expected)
+            if (row == column) HeatmapCell(value) else pairingHeatmapCell(value, players[row], players[column], pairs, comparison)
         }
     }
 }
 
-private fun pairingHeatmapCell(value: Double?, first: Player, second: Player, pairs: List<PlayerPair>, expected: Double?): HeatmapCell {
+private fun pairingHeatmapCell(value: Double?, first: Player, second: Player, pairs: List<PlayerPair>, comparison: Double?): HeatmapCell {
     val pair = pairs.pairFor(first, second)
     val actual = pair?.recentTimesPaired
     val description = "${first.name} / ${second.name}. Recent pairings: ${actual ?: "Unavailable"}. " +
-        "Expected: ${expected?.toFixed(1) ?: "Unavailable"}. ${pairingDifference(actual, expected)}. " +
+        "Even split: ${comparison?.toFixed(1) ?: "Unavailable"} per pair. ${pairingDifference(actual, comparison)}. " +
         "Spins since last paired: ${pair.lastPairedLabel()}."
-    return HeatmapCell(value, description, actual != null && expected != null && abs(actual - expected) <= 1)
+    return HeatmapCell(value, description)
 }
 
 private fun List<PlayerPair>.pairFor(first: Player, second: Player) = firstOrNull {
@@ -295,12 +301,12 @@ private fun List<PlayerPair>.pairFor(first: Player, second: Player) = firstOrNul
 
 private fun PlayerPair?.lastPairedLabel() = if (this == null) "Unavailable" else spinsSinceLastPaired?.toString() ?: "Never paired"
 
-private fun pairingDifference(actual: Int?, expected: Double?): String {
-    if (actual == null || expected == null) return "Unavailable"
-    val difference = actual - expected
+private fun pairingDifference(actual: Int?, comparison: Double?): String {
+    if (actual == null || comparison == null) return "Unavailable"
+    val difference = actual - comparison
     return when {
-        difference > 0 -> "${difference.toFixed(1)} above expected"
-        difference < 0 -> "${(-difference).toFixed(1)} below expected"
-        else -> "At expected frequency"
+        difference > 0 -> "${difference.toFixed(1)} more than an even split"
+        difference < 0 -> "${(-difference).toFixed(1)} fewer than an even split"
+        else -> "Same count as an even split"
     }
 }

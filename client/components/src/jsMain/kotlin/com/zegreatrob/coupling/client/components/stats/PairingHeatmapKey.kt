@@ -67,8 +67,7 @@ internal fun ChildrenBuilder.heatmapKey() = div {
                 gap = 10.px
                 fontSize = 12.px
             }
-            heatmapKeyItem("#eee", false, "No count")
-            heatmapKeyItem("#fff", true, "Within ±1 of reference")
+            noCountKey()
         }
     }
     div {
@@ -98,7 +97,7 @@ internal fun ChildrenBuilder.heatmapKey() = div {
     }
 }
 
-private fun ChildrenBuilder.heatmapKeyItem(fill: String, outlined: Boolean, label: String) = span {
+private fun ChildrenBuilder.noCountKey() = span {
     css {
         display = Display.inlineFlex
         alignItems = AlignItems.center
@@ -110,9 +109,9 @@ private fun ChildrenBuilder.heatmapKeyItem(fill: String, outlined: Boolean, labe
             display = Display.inlineBlock
             width = 13.px
             height = 13.px
-            backgroundColor = Color(fill)
-            border = Border(if (outlined) 2.px else 1.px, LineStyle.solid, Color(if (outlined) "#000" else "#777"))
+            backgroundColor = Color("#eee")
+            border = Border(1.px, LineStyle.solid, Color("#777"))
         }
     }
-    +label
+    +"No count"
 }

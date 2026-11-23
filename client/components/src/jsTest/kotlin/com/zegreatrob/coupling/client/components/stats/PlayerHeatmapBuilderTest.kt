@@ -8,33 +8,28 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.external.Result
-import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import kotlin.test.Test
 
 class PlayerHeatmapBuilderTest {
 
     @Test
-    fun changingHeatmapDataUpdatesDescriptionsMarkersAndRemovesOldCells() = asyncSetup(object {
+    fun changingHeatmapDataUpdatesDescriptionsAndRemovesOldCells() = asyncSetup(object {
         val players = listOf(stubPlayer(), stubPlayer())
         val initial = listOf(
-            listOf(HeatmapCell(null), HeatmapCell(1.0, "Before", true)),
+            listOf(HeatmapCell(null), HeatmapCell(1.0, "Before")),
             listOf(HeatmapCell(1.0), HeatmapCell(null)),
         )
         val updated = listOf(listOf(HeatmapCell(7.0, "Updated")))
         lateinit var rendered: Result
-        var initialOutline: String? = null
     }) {
         rendered = render { PlayerHeatmap(players, initial) }
-        val cell = screen.findByRole("img", RoleOptions(name = "Before"))
-        initialOutline = (cell as HTMLElement).style.outline
+        screen.findByRole("img", RoleOptions(name = "Before"))
     } exercise {
         rendered.rerender(PlayerHeatmap.create(players.take(1), updated))
     } verify {
-        initialOutline.assertIsEqualTo("2px solid #000")
         val cell = screen.findByRole("img", RoleOptions(name = "Updated"))
         cell.getAttribute("title").assertIsEqualTo("Updated")
-        (cell as HTMLElement).style.outline.assertIsEqualTo("none")
         screen.queryByRole("img", RoleOptions(name = "Before")).assertIsEqualTo(null)
         rendered.baseElement.querySelectorAll("[data-heatmap] > div").length.assertIsEqualTo(1)
     }

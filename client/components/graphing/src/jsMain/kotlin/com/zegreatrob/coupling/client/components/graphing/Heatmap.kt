@@ -28,7 +28,7 @@ external interface D3Thing {
     fun style(styleName: String, block: (HeatmapCell) -> String): D3Thing
 }
 
-data class HeatmapCell(val value: Double?, val description: String? = null, val outlined: Boolean = false)
+data class HeatmapCell(val value: Double?, val description: String? = null)
 
 val colorSuggestions = arrayOf(
     rgb("#2c7bb6"),
@@ -56,8 +56,6 @@ suspend fun renderD3Heatmap(element: HTMLElement, data: List<HeatmapCell>, cellC
         .attr("title") { it.description }
         .attr("role") { if (it.description == null) null else "img" }
         .attr("aria-label") { it.description }
-        .style("outline") { if (it.outlined) "2px solid #000" else "none" }
-        .style("outline-offset") { "-2px" }
         .style("background-color") { cell ->
             if (cell.value == null) {
                 "#EEE"

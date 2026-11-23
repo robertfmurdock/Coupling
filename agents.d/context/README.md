@@ -16,7 +16,7 @@ available before any build runs; edit Markdown directly without regeneration.
 | [Gradle](GRADLE_PLAYBOOK.md) | Build/dependency/automation edits or build failures | Build conventions, cache policy, AWS diagnosis |
 | [GitHub Actions](GITHUB_ACTIONS_PLAYBOOK.md) | Workflow edits | CI orchestration and safety gates |
 | [Work cards](WORK_CHECKLIST.md) | Multi-commit work or handoffs | Safe slice planning and durable progress |
-| [Owner values](PERSONA.md) | Ambiguity or competing design choices | Product, collaboration, and decision preferences |
+| [Owner values and domain philosophy](PERSONA.md) | Product language, collaboration metrics, visualizations, recommendations, or competing design choices | Product philosophy, team agency, collaboration, and decision preferences |
 | [Contribution visualizations](CONTRIBUTION_VISUALIZATIONS.md) | Contribution visualization work | Feature-specific design context |
 
 Cleanup strategies (`agent-strategy-*.md`) are loaded by the weekly-cleanup prompt

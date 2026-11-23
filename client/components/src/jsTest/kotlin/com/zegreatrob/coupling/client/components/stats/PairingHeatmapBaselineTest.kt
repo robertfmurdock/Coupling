@@ -18,23 +18,40 @@ import kotlin.test.Test
 
 class PairingHeatmapBaselineTest {
     @Test
+    fun describesAnEvenSplitWithoutRecommendingPairingDecisions() = asyncSetup(object {
+        val players = List(4) { stubPlayer() }
+        val actor = UserEvent.setup()
+    }) {
+        render { PairingHeatmapBaseline(players, emptyList(), 3, 6) }
+    } exercise {
+        actor.click(screen.getByText("About this comparison"))
+    } verify {
+        val distribution = screen.getByRole("group", RoleOptions(name = "Pairing distribution"))
+        within(distribution).getByText("Even split per pair")
+        within(distribution).getByText("2.0")
+        within(distribution).getByText("A comparison, not a goal or prediction. Pairing decisions belong to your team.")
+        screen.queryByText("Expected per pair").assertIsEqualTo(null)
+        screen.queryByText("Within ±1 of reference").assertIsEqualTo(null)
+    }
+
+    @Test
     fun keepsTheKeyAndReferenceDistinctWithExplanationOnDemand() = asyncSetup(object {
         val players = List(4) { stubPlayer() }
         val actor = UserEvent.setup()
     }) {
         render { PairingHeatmapBaseline(players, emptyList(), 3, 6) }
     } exercise {
-        actor.click(screen.getByText("About this reference"))
+        actor.click(screen.getByText("About this comparison"))
     } verify {
         within(screen.getByRole("group", RoleOptions(name = "Heatmap key"))).getByText("0 pairings")
-        val scorecard = screen.getByRole("group", RoleOptions(name = "Pairing scorecard"))
+        val scorecard = screen.getByRole("group", RoleOptions(name = "Pairing distribution"))
         within(scorecard).getByText("2.0")
         within(scorecard).getByText("6 saved spins")
-        val explanation = screen.getByText("About this reference").closest("details") as HTMLDetailsElement
+        val explanation = screen.getByText("About this comparison").closest("details") as HTMLDetailsElement
         explanation.open.assertIsEqualTo(true)
         val breakdown = screen.getByText("Pair breakdown").closest("details") as HTMLDetailsElement
         breakdown.open.assertIsEqualTo(false)
-        within(explanation).getByText("An equal-turn reference for the current team. Absences, pins and team changes can affect counts.")
+        within(explanation).getByText("What the counts would be if pairings were spread evenly across the current team.")
     }
 
     @Test
@@ -52,7 +69,7 @@ class PairingHeatmapBaselineTest {
     } exercise {
         actor.click(screen.getByText("Pair breakdown"))
     } verify {
-        within(screen.getByRole("group", RoleOptions(name = "Pairing scorecard"))).getByText("2.0")
+        within(screen.getByRole("group", RoleOptions(name = "Pairing distribution"))).getByText("2.0")
         val table = screen.getByRole("table")
         val rows = table.querySelectorAll("tbody tr")
         (0 until rows.length).map { index ->
@@ -65,10 +82,10 @@ class PairingHeatmapBaselineTest {
                 listOf("Blair / Casey", "2", "0.0", "1"),
             ),
         )
-        within(table).getByText("Recent pairings · reference 2.0 per pair")
+        within(table).getByText("Recent pairings · even split 2.0 per pair")
         (0 until rows.length).map { index ->
             (rows.item(index) as Element).querySelectorAll("td").item(1)?.let { (it as Element).getAttribute("aria-label") }
-        }.assertIsEqualTo(listOf("2.0 above expected", "2.0 below expected", "At expected frequency"))
+        }.assertIsEqualTo(listOf("2.0 more than an even split", "2.0 fewer than an even split", "Same count as an even split"))
     }
 
     @Test
@@ -77,7 +94,7 @@ class PairingHeatmapBaselineTest {
     }) exercise {
         render { PairingHeatmapBaseline(players, emptyList(), 1, null) }
     } verify { result ->
-        screen.getByRole("group", RoleOptions(name = "Pairing scorecard")).querySelector("dd")?.textContent.assertIsEqualTo("Unavailable")
+        screen.getByRole("group", RoleOptions(name = "Pairing distribution")).querySelector("dd")?.textContent.assertIsEqualTo("Unavailable")
         result.baseElement.querySelector("tbody tr")?.textContent
             .assertIsEqualTo("Alex / BlairUnavailableUnavailableUnavailable")
     }

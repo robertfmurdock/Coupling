@@ -39,14 +39,13 @@ class PartyStatisticsTest {
             PartyStatistics(party, players, pairs, 1, null, savedSpinCount = 2)
         }
     } verify {
-        val description = "Alex / Blair. Recent pairings: 4. Expected: 2.0. 2.0 above expected. Spins since last paired: 0."
+        val description = "Alex / Blair. Recent pairings: 4. Even split: 2.0 per pair. 2.0 more than an even split. Spins since last paired: 0."
         val cell = screen.findByRole("img", RoleOptions(name = description))
         cell.getAttribute("title").assertIsEqualTo(description)
-        (cell as HTMLElement).style.outline.assertIsEqualTo("none")
     }
 
     @Test
-    fun heatmapExplainsExpectedPairingsForAnEmptyHistory() = setup(object {
+    fun heatmapExplainsAnEvenSplitForAnEmptyHistory() = setup(object {
         val players = listOf(stubPlayer(), stubPlayer(), stubPlayer(), stubPlayer())
         val party = PartyDetails(PartyId("baseline"), name = "Baseline example")
     }) exercise {
@@ -54,7 +53,7 @@ class PartyStatisticsTest {
             PartyStatistics(party, players, emptyList(), 3, null, savedSpinCount = 0)
         }
     } verify {
-        val scorecard = screen.getByRole("group", RoleOptions(name = "Pairing scorecard"))
+        val scorecard = screen.getByRole("group", RoleOptions(name = "Pairing distribution"))
         within(scorecard).getByText("0.0")
         within(scorecard).getByText("0 saved spins")
         within(scorecard).getByText("3 spins / rotation")

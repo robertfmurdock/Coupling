@@ -2,7 +2,9 @@
 
 ## Purpose
 
-Coupling's contribution visualization system helps tech leads and coaches understand team collaboration patterns, identify pairing gaps, monitor contribution health, and spot trends in team effectiveness.
+Coupling's contribution visualizations help team leads and teams explore
+collaboration patterns and discuss them in context. For interpretation, labels and visual emphasis, follow
+the [domain philosophy on collaboration metrics and team agency](PERSONA.md#collaboration-metrics-and-team-agency).
 
 ## Architecture Overview
 
