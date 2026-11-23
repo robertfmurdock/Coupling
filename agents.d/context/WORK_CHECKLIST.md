@@ -14,7 +14,9 @@ with other contributors. Keep the ID and filename when moving the card.
 ## Define Done and Plan the Slices
 
 - **Goal and constraints:** outcome, scope, and compatibility requirements.
-- **Acceptance evidence:** observable proof of completion.
+- **Acceptance evidence:** observable proof of completion, favoring objective
+  checks already produced by normal delivery. State which outcome each check
+  covers and any essential behavior it cannot establish.
 - **Safe slice sequence:** delivery order and each slice’s behavior, owner, design,
   and independent release value. For behavior changes, name test scenarios and
   expected failure. Include required cross-layer changes in the same slice.
@@ -26,6 +28,48 @@ recurring need and owner, or keep the experiment temporary and retain findings.
 
 Choose useful headings. Link shared procedures; record decisions affecting scope,
 design, or validation.
+
+## Keep Cards Independently Deliverable
+
+Prefer one card per independently deliverable outcome. Link related cards for
+context rather than maintaining an active umbrella that only duplicates their
+status. An umbrella is justified only when it owns a concrete integration or
+acceptance outcome that no other card owns; state that outcome explicitly.
+
+Minimize ordered work across cards. A requirement to finish another card first
+is a last resort, not the default planning structure. Prefer a smaller useful
+outcome, an existing contract, or keeping tightly dependent slices in one card.
+Do not introduce speculative abstractions or duplicate implementations merely
+to remove an ordering dependency.
+
+When a cross-card prerequisite is unavoidable, name the exact missing capability,
+why the outcome cannot safely ship without it, and the observable condition that
+unblocks the card. A preferred sequence or shared topic alone is insufficient.
+On resume, remove satisfied prerequisites rather than preserving obsolete gates.
+
+## Prefer Existing Delivery Evidence
+
+For changes whose failures would be detected by normal delivery, pushed
+implementation commits, a passing build for those commits, and a successful
+deployment with the site still live are strong completion evidence. Prefer
+existing CI, deployment and health results; record commit/run links and the
+relevant health observation rather than creating follow-up verification work.
+Use only the signals relevant to the change: a build-only refactor need not
+acquire a deployment requirement. Never infer a passing build or live site
+merely from elapsed time.
+
+Define additional acceptance checks only for outcomes those signals cannot
+establish, such as authorization boundaries, data correctness, accessibility,
+visual behavior or measured performance. Name that gap concretely. A live site
+alone does not establish those outcomes. Prefer a bounded check with an explicit
+pass condition over an open-ended review or investigation.
+
+When closing older cards, reconcile stale checklist items against subsequent
+delivery evidence. Do not replay completed work or keep a card open solely for
+obsolete plans or administrative steps. Record the evidence or explicit owner
+disposition and archive the card; leave historical gaps labeled accurately.
+These closeout rules do not replace the full-check gate for new implementation
+slices or authorize pushing or releasing.
 
 ## Record Visual Evidence
 

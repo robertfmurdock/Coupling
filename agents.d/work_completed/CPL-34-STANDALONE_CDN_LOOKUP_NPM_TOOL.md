@@ -1,5 +1,13 @@
 # CPL-34 — Publish CDN Lookup as a Standalone npm Tool
 
+## Disposition — retired 2026-11-23
+
+Retired by owner decision as a tracking umbrella with no separate deliverable.
+CPL-29 through CPL-32 are complete. [CPL-33](../work/CPL-33-05_CDN_LOOKUP_COUPLING_MIGRATION_AND_RELEASE.md)
+owns the remaining client migration, packaging, documentation and release wiring.
+Archival does not claim those outcomes are complete. The sequence and criteria
+below are historical context, not an active ordering or umbrella-closeout gate.
+
 ## Goal
 Incrementally refactor `scripts/cdn-lookup` into a standalone npm CLI whose package-resolution core is independent of CDN-provider behavior.
 
@@ -18,7 +26,7 @@ This is a refactor of the existing production path, not a rewrite beside it.
 2. [CPL-30-02_CDN_LOOKUP_RELIABLE_PACKAGE_RESOLUTION.md](../work_completed/CPL-30-02_CDN_LOOKUP_RELIABLE_PACKAGE_RESOLUTION.md) — accurate, fixture-tested installed-version resolution
 3. [CPL-31-03_CDN_LOOKUP_PROVIDER_BOUNDARY.md](../work_completed/CPL-31-03_CDN_LOOKUP_PROVIDER_BOUNDARY.md) — extract current esm.sh behavior behind a provider contract
 4. [CPL-32-04_CDN_LOOKUP_PUBLIC_CLI_UX.md](../work_completed/CPL-32-04_CDN_LOOKUP_PUBLIC_CLI_UX.md) — add public command ergonomics one behavior at a time
-5. [CPL-33-05_CDN_LOOKUP_COUPLING_MIGRATION_AND_RELEASE.md](CPL-33-05_CDN_LOOKUP_COUPLING_MIGRATION_AND_RELEASE.md) — move the client to the public invocation and add release readiness
+5. [CPL-33-05_CDN_LOOKUP_COUPLING_MIGRATION_AND_RELEASE.md](../work/CPL-33-05_CDN_LOOKUP_COUPLING_MIGRATION_AND_RELEASE.md) — move the client to the public invocation and add release readiness
 
 ## Shared Constraints
 

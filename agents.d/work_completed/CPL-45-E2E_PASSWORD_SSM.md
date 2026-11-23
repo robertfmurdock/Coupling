@@ -1,5 +1,15 @@
 # CPL-45 — E2E Password from AWS SSM
 
+## Disposition — closed 2026-11-23
+
+Closed by owner decision. The implementation is committed in `be4856be0` and
+has remained in use through subsequent development and passing full checks.
+Its age and implementation completeness make the historical follow-up checklist
+unnecessary for closeout. The notes below are retained as historical evidence,
+not outstanding requirements. No fresh validation was run for this closeout.
+
+Later full-check evidence is recorded in [CPL-64](CPL-64-VISUAL_EVIDENCE_CAPTURE.md).
+
 ## Goal and Constraints
 Load the browser test password from `/local/COUPLING_E2E_TEST_PASSWORD`, stored
 as an AWS SSM SecureString using the configured AWS identity. Follow the existing

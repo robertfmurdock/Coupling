@@ -1,5 +1,13 @@
 # CPL-18 — Task: Organize gradle plugin structure with sub-packages
 
+## Disposition — closed 2026-11-23
+
+Closed by owner decision. The implementation is committed in `fa61a30a3` and
+has remained in use through subsequent development and passing full checks.
+Its age and implementation completeness make the historical follow-up checklist
+unnecessary for closeout. The notes below are retained as historical evidence,
+not outstanding requirements. No fresh validation was run for this closeout.
+
 > Guidance migration note (2026-10-30): AI context generation tasks were removed.
 > Their structure and checked steps below record earlier work, not current tasks
 > to recreate. Use weekly-cleanup prompt rendering for current task validation.

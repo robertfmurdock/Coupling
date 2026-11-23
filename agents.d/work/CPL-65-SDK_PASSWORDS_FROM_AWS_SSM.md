@@ -37,7 +37,7 @@ passed through `fish -lc './gradlew check --no-daemon'`. SDK passwords currently
 come from shell exports locally and GitHub Actions secrets in CI; the separate
 E2E password already comes from SSM.
 
-[CPL-45](CPL-45-E2E_PASSWORD_SSM.md) describes the earlier E2E migration. Its status
+[CPL-45](../work_completed/CPL-45-E2E_PASSWORD_SSM.md) describes the earlier E2E migration. Its status
 is historical; inspect current code and [Testing](../context/TESTING.md#local-integration-environment)
 for the implemented behavior rather than replaying that work.
 

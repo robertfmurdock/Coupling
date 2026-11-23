@@ -1,5 +1,17 @@
 # CPL-41 — Dashboard Deploy Role SSM Boundary
 
+## Disposition — closed 2026-11-23
+
+Closed by owner decision. The SSM boundary and subsequent deployment fixes are
+implemented and committed, including `eede0a79d`, `16c955f0c`, and `1fe6f9ef2`.
+[GitHub Actions run 44834636953](https://github.com/robertfmurdock/Coupling/actions/runs/44834636953)
+at `5528547316203b6a541e1a4197829f39eb878d2b` passed both Build and Deploy
+Dashboard, including the Deploy and verify dashboard step. That deployment path
+uses the restricted role and verifies the application through the public gateway,
+covering the card's intended boundary and superseding the earlier rollout failure
+below. Run and job results were inspected at closeout; no fresh tests or deployment
+were run.
+
 ## Goal
 Allow the restricted dashboard deployment role to configure dashboard Gradle tasks without reading unrelated test SSM parameters.
 
@@ -15,8 +27,8 @@ Allow the restricted dashboard deployment role to configure dashboard Gradle tas
 - [x] Verify a dashboard task configures without SSM resolution
 - [x] Record and fix the subsequent focused CI failure: artifact upload did not depend on generated application parameters
 - [x] Record and fix the gateway deployment failure: HTTP API does not expose `ExecutionArn`
-- [ ] Run scoped and broad checks
-- [ ] Move to `agents.d/work_completed/`
+- [x] Run scoped and broad checks — subsequent successful build and deployment linked above
+- [x] Move to `agents.d/work_completed/`
 
 ## Validation
 - Commands:

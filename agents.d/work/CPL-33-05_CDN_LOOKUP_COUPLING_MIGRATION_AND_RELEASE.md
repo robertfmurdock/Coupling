@@ -5,7 +5,7 @@ Make the Coupling client invoke the standalone public CLI contract, then finish 
 
 ## Constraints
 
-- Requires completion of `CPL-32-04_CDN_LOOKUP_PUBLIC_CLI_UX.md`.
+- The public CLI contract is already delivered in [CPL-32](../work_completed/CPL-32-04_CDN_LOOKUP_PUBLIC_CLI_UX.md).
 - This is invocation migration, not implementation migration: the client must consume the already-canonical command and lookup engine.
 - Do not retain duplicate Gradle-only and npm-only command behavior.
 - Remove compatibility inputs only after reference discovery proves no consumer remains.
@@ -37,7 +37,6 @@ Make the Coupling client invoke the standalone public CLI contract, then finish 
   - [ ] Verify documented commands against the packed artifact
 - [ ] Run affected module checks, then broad repository check
 - [ ] Final refactor pass and move card to `agents.d/work_completed/`
-- [ ] Mark the umbrella card complete after all child cards are complete
 
 ## Validation
 

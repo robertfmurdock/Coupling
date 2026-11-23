@@ -1,5 +1,17 @@
 # CPL-12 — Chrome for Testing Sleep/Wake Corruption Investigation
 
+## Disposition — closed 2026-11-23
+
+Closed by owner decision: the documented workaround is sufficient. Chrome cache
+cleanup and re-download are covered in the repository's
+[Chrome E2E troubleshooting guide](../utilities/CHROME_E2E_TROUBLESHOOTING.md),
+including `chrome-e2e-diagnostics.sh --clean`. No further root-cause investigation,
+automatic recovery, or upstream report is required for this card.
+
+The investigation below is historical. Cache corruption after sleep/wake remains
+a suspected explanation rather than a confirmed mechanism. No fresh browser tests
+or cache cleanup were run for this documentation-only closeout.
+
 ## Problem Statement
 
 E2E tests fail periodically after the laptop has been asleep/idle for a while. The failure manifests as:
