@@ -135,11 +135,60 @@ profiles to obtain a green result.
 
 ## Progress and closeout
 
-- Planning revision only: no resource-generation or delivery checks have run.
-- Active contributor: unassigned until implementation begins.
-- Next action: establish the resource contract and record each consumer's
-  disposition before choosing the implementation.
-- Implementation commits and acceptance evidence: pending.
+- Active contributor: Codex (single owner across all three consumers).
+- Disposition: remove all three copies. The configured SDK main resource roots
+  are only `src/commonMain/resources`, `src/webMain/resources`, and
+  `src/jsMain/resources`; none contains files. A temporary init-script inspection
+  found `jsProcessResources.source.files = []` and no producer dependencies.
+  SDK Apollo generation produces Kotlin sources/data builders and metadata through
+  Apollo dependencies, not processed JS resources. No conditional resource
+  generation is configured in the SDK or its conventions.
+- Client: `additionalResources` had no downstream file consumer (repository search
+  and Vite configuration review). Client-owned resources reach the npm Kotlin
+  directory and Vite production output through existing Kotlin/JS tasks.
+- CLI: the removed task wrote to the same directory as `jsProcessResources`.
+  There are no required SDK files; CLI-owned resources and compiled SDK code
+  continue through the existing compilation/package pipeline into `jsCliTar`.
+- E2E: the removed task similarly shared the resource-processing destination.
+  Required `browser-diagnostics.mjs` is owned by E2E's diagnostics directory and
+  remains an explicit input of `jsE2eTestProcessResources`. SDK code and GraphQL
+  operations retain their Kotlin/JS and Apollo dependencies.
+- Implementation: removed copies, hardcoded SDK output paths, and their obsolete
+  orchestration edges. No SDK artifact or shared convention is needed for an
+  empty resource contract. Clarified this decision rule in the Gradle playbook.
+- Validation on 2026-11-23 (all Gradle commands outside the sandbox):
+  - `./gradlew :sdk:clean :sdk:jsProcessResources --info --no-configuration-cache`
+    passed; SDK processing reported `NO-SOURCE` from a clean SDK output state.
+  - `./gradlew :sdk:jsProcessResources -I /tmp/cpl21-resources.init.gradle --no-configuration-cache --console=plain`
+    passed and established the configured roots, empty input files and absent
+    producer dependencies above. Initial probe failed on the included build;
+    guarding absent SDK projects fixed the temporary probe. No probe is retained.
+  - `./gradlew :client:clean :cli:clean :e2e:clean --console=plain` initially
+    failed because new Apollo files appeared while deleting client output;
+    repeating the same invocation passed, establishing controlled module outputs.
+  - `./gradlew :client:jsBrowserProductionVite :cli:jsCliTar :e2e:compileE2eTestDevelopmentExecutableKotlinJs :e2e:jsE2eTestProcessResources --configuration-cache --console=plain`
+    passed twice: first entry stored (260 tasks: 43 executed, 23 restored from
+    cache), then entry reused (250 tasks: 22 executed). The stored configuration
+    report contained 5,400 input diagnostics and zero problem entries; no
+    configuration-cache problems were reported for this invocation.
+  - Output inspection: `client/build/dist/js/production/index.html` and hashed
+    assets exist; `client/build/additionalResources` is absent. CLI tarball
+    `cli/build/distributions/coupling-cli-js.tgz` has 2,236 entries, including
+    `kotlin/bin/coupling` and `kotlin/Coupling-cli.mjs`. E2E diagnostics exist in
+    `e2e/build/processedResources/js/e2eTest/browser-diagnostics.mjs` and the
+    executable npm project `build/js/packages/Coupling-e2e-e2eTest/kotlin/`.
+    SDK processed resources remain absent. Cache restoration is normal delivery
+    evidence; assemblies did not depend on stale module outputs.
+  - Resource mutation/propagation check: inapplicable, since no shared resource
+    contract remains. No claim is made about hypothetical future SDK resources.
+  - Full `./gradlew check --console=plain` passed in 55 seconds: 694 tasks
+    (78 executed, 39 from cache, 577 up-to-date), including E2E execution.
+- Separate reviews: test coverage remains existing application/runtime coverage;
+  no artificial failing tests were added for obsolete wiring removal. Build design
+  review confirms single ownership of processing destinations, unchanged real
+  dependency paths, no new configurations or duplicated logic, and removal of all
+  three consumer references to SDK build internals. `git diff --check` passed.
+- Implementation commit: pending full validation.
 
 When all dispositions are implemented and acceptance evidence is complete, move
 this card to `agents.d/work_completed/` with its existing ID and filename and

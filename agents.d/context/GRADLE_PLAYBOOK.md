@@ -117,6 +117,12 @@ See: [Gradle Configuration Cache: Task access](https://docs.gradle.org/current/u
 
 ### Cross-Project Dependency Patterns
 
+First establish which files the consumer needs and whether its existing plugin
+or dependency handling already delivers them. Remove obsolete copies when the
+producer has no required resources; do not introduce an artifact configuration
+for an empty contract. Resource-processing tasks should own their destinations;
+avoid separate copy tasks writing into those same directories.
+
 For sharing build outputs between projects, prefer configuration-based artifact
 sharing over direct task references:
 

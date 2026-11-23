@@ -115,16 +115,6 @@ tasks {
         mustRunAfter(copyWebpackConfig)
     }
 
-    jsProcessResources {
-        dependsOn("dependencyResources")
-    }
-
-    register("dependencyResources", Copy::class) {
-        dependsOn(":sdk:jsProcessResources")
-        into(jsProcessResources.map { it.destinationDir })
-        from("$rootDir/sdk/build/processedResources/js/main")
-    }
-
     distTar {
         duplicatesStrategy = DuplicatesStrategy.WARN
     }

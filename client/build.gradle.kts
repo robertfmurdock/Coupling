@@ -212,16 +212,6 @@ tasks {
             finalizedBy(uploadToS3)
         }
 
-    val additionalResources = register<Copy>("additionalResources") {
-        description = "Moves SDK processed resources into client additional resources"
-        dependsOn(":sdk:jsProcessResources")
-        from("$rootDir/sdk/build/processedResources/js/main")
-        into(project.layout.buildDirectory.file("additionalResources"))
-    }
-    jsProcessResources {
-        dependsOn(additionalResources)
-    }
-
     named("jsBrowserTest") {
         outputs.cacheIf { true }
     }
