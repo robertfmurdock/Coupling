@@ -191,3 +191,40 @@ profiles to obtain a green result.
 - Implementation commit: `2b98c6615` — Remove obsolete SDK resource copies from JS consumers.
 - Status: complete; acceptance evidence above covers all three removals. No push
   or release was performed.
+
+## Follow-up: artifact example and Apollo cleanup investigation
+
+On 2026-11-23, tightened the Gradle playbook's hypothetical sharing example with
+role-specific configurations, a matching resource-directory attribute,
+non-transitive resolution, explicit artifact build provenance, and assembly in
+the consumer's existing resource task. No SDK resource configuration was added.
+
+Cleanup reproduction attempts:
+
+- `./gradlew :client:clean :cli:clean :e2e:clean --no-configuration-cache --console=plain`
+  passed from populated module outputs.
+- `./gradlew :client:clean :cli:clean :e2e:clean --console=plain` passed with
+  configuration-cache reuse. Neither isolated invocation reproduced the failure.
+- Historical logs establish a concurrent IntelliJ sync: `idea.log` records
+  `RESOLVE_PROJECT:11` starting at 12:00:53.476, and Gradle daemon 37913 ran that
+  sync from 12:00:54 through 12:01:14. The clean invocation in daemon 31099 failed
+  at 12:01:06 while new Apollo files appeared. The sync's Kotlin build report
+  (`Coupling-build-2026-11-23-12-01-14-0.txt`) confirms IDE sync properties; IDE
+  indexing logs record generated Apollo files during the overlap. Source generation
+  during sync is explicitly enabled for SDK, client and E2E.
+- Conclusion: overlapping IDE sync is the supported explanation for the original
+  race; the failure was not reproduced in isolation. This does not establish a
+  deterministic failure on every overlap. No Apollo configuration was changed.
+  Avoid overlapping clean and IDE sync when diagnosing this symptom; do not disable
+  useful sync generation based solely on this transient failure.
+
+The documentation example was extracted into a temporary two-project Gradle
+fixture outside tracked source. Invoking only `:client:jsProcessResources` ran
+the SDK producer first, copied its fixture contents, stored the configuration
+cache, and then reused it successfully. Changing the producer fixture also
+reran both tasks and delivered the updated contents with configuration-cache reuse.
+No probe or fixture is retained in the repository.
+
+Follow-up `./gradlew check --console=plain` passed in 54 seconds (684 tasks:
+86 executed, 51 from cache, 547 up-to-date), including E2E, with configuration-cache
+reuse. Documentation diff review and `git diff --check` passed.

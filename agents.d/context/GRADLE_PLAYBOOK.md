@@ -123,35 +123,58 @@ producer has no required resources; do not introduce an artifact configuration
 for an empty contract. Resource-processing tasks should own their destinations;
 avoid separate copy tasks writing into those same directories.
 
-For sharing build outputs between projects, prefer configuration-based artifact
-sharing over direct task references:
+For necessary sharing, expose a producer-owned output as a consumable variant.
+Give producer and consumer matching attributes that identify its contents and
+format. Define whether dependencies belong in that contract; a directory of only
+the producer's resources should resolve non-transitively and should not extend
+runtime configurations. Keep shared attribute definitions in convention code
+when real consumers reuse them.
 
-**Correct pattern (configuration-based, fully lazy):**
+**Example for a demonstrated resource-directory contract (not currently needed
+by the SDK):**
 ```kotlin
 // Producer (sdk/build.gradle.kts)
-val jsResourcesElements by configurations.creating {
-    isCanBeConsumed = true
-    isCanBeResolved = false
+val resourceKind = Attribute.of("com.zegreatrob.resource-kind", String::class.java)
+val jsResourcesElements = configurations.consumable("jsResourcesElements") {
+    attributes {
+        attribute(resourceKind, "sdk-js-main-directory")
+    }
 }
+val processedJsResources = tasks.named<ProcessResources>("jsProcessResources")
 artifacts {
-    add(jsResourcesElements.name, tasks.named("jsProcessResources").map { 
-        (it as ProcessResources).destinationDir 
-    })
+    add(jsResourcesElements.name, processedJsResources.map { it.destinationDir }) {
+        builtBy(processedJsResources)
+        type = ArtifactTypeDefinition.DIRECTORY_TYPE
+    }
 }
 
 // Consumer (client/build.gradle.kts)
-val sdkJsResources by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
+val resourceKind = Attribute.of("com.zegreatrob.resource-kind", String::class.java)
+val sdkJsResourceDependencies = configurations.dependencyScope("sdkJsResourceDependencies")
+val sdkJsResources = configurations.resolvable("sdkJsResources") {
+    extendsFrom(sdkJsResourceDependencies.get())
+    isTransitive = false // This contract includes only the SDK's own directory.
+    attributes {
+        attribute(resourceKind, "sdk-js-main-directory")
+    }
 }
 dependencies {
-    sdkJsResources(project(":sdk"))
+    add(sdkJsResourceDependencies.name, project(":sdk"))
 }
-tasks.register("copyResources", Copy::class) {
-    from(sdkJsResources)  // Gradle handles task dependencies automatically
-    into(layout.buildDirectory.dir("resources"))
+tasks.named<ProcessResources>("jsProcessResources") {
+    from(sdkJsResources) // Artifact provenance schedules the producer.
 }
 ```
+
+`ProcessResources` above is `org.gradle.language.jvm.tasks.ProcessResources`;
+`ArtifactTypeDefinition` is `org.gradle.api.artifacts.type.ArtifactTypeDefinition`.
+The role-specific configuration APIs separate declarations, consumption and
+resolution. Resolve through task inputs, not during configuration. Attach the
+artifact to the actual producing task and preserve its build dependency; do not
+add a consumer-side `dependsOn(":sdk:jsProcessResources")`. The consumer's normal
+resource task owns final assembly and its existing collision policy must remain
+explicit and deterministic. If resources become transitive, define and validate
+that expanded contract before enabling traversal.
 
 **Avoid:**
 ```kotlin
@@ -165,7 +188,7 @@ from("$rootDir/sdk/build/processedResources/js/main")
 Cross-project task references can fail with configuration cache, and hardcoded
 paths bypass Gradle's dependency tracking.
 
-See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/userguide/cross_project_publications.html)
+See: [Gradle: Sharing outputs between projects](https://docs.gradle.org/current/userguide/how_to_share_outputs_between_projects.html)
 
 ## Validation Ladder
 - Run the smallest sufficient check first (for example `./gradlew :module:task`).
