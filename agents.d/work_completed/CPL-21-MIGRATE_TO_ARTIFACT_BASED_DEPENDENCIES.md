@@ -188,8 +188,6 @@ profiles to obtain a green result.
   review confirms single ownership of processing destinations, unchanged real
   dependency paths, no new configurations or duplicated logic, and removal of all
   three consumer references to SDK build internals. `git diff --check` passed.
-- Implementation commit: pending full validation.
-
-When all dispositions are implemented and acceptance evidence is complete, move
-this card to `agents.d/work_completed/` with its existing ID and filename and
-update inbound links. Push and release remain subject to user authorization.
+- Implementation commit: `2b98c6615` — Remove obsolete SDK resource copies from JS consumers.
+- Status: complete; acceptance evidence above covers all three removals. No push
+  or release was performed.
