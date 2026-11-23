@@ -54,8 +54,10 @@ class PartyStatisticsTest {
             PartyStatistics(party, players, emptyList(), 3, null, savedSpinCount = 0)
         }
     } verify {
-        screen.getByText("Expected pairings per pair: 0.0")
-        screen.getByText("Based on 0 saved spins; one full rotation takes 3 spins.")
+        val scorecard = screen.getByRole("group", RoleOptions(name = "Pairing scorecard"))
+        within(scorecard).getByText("0.0")
+        within(scorecard).getByText("0 saved spins")
+        within(scorecard).getByText("3 spins / rotation")
     }
 
     @Test

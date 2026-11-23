@@ -186,3 +186,66 @@ screen-reader calibration, native keyboard-only operation and narrow-width reflo
 were not independently exercised. No production deployment or real-team observation
 is claimed. The card is complete under this recorded scope and is archived.
 No push, deployment or release was performed.
+
+
+## Presentation iteration · 2026-11-23
+
+After the first delivery, the owner described the added area as “text dumpy,”
+with the visualization key and data mixed together as flat text on the gray
+background, and requested more playful styling. One complete UI slice owns this
+iteration; metrics, server/query contracts, heatmap fills/outlines and the
+surrounding Statistics controls are unchanged.
+
+The area now has two framed cream panels: a compact visual key with the color ramp
+and marker samples, and a purple/gold pairing scorecard. The reference is shown
+prominently once with saved-spin context. A native About this reference disclosure
+holds the longer caveat and window explanation; Pair breakdown has a separate
+mint summary and pair count. Both disclosures can stay open together. The table
+has a purple header, alternating rows, spacing, signed-difference badges and a
+shared reference caption instead of repeating the same reference in every row.
+Full above/below wording remains available as each difference cell's accessible
+name. A focusable horizontal scrolling boundary keeps the table usable when it
+needs more width; tiny reference layouts can wrap. Existing native markers and
+focus indicators are preserved, with solid panel borders and system-color
+fallbacks rather than relying on shadows or the decorative gradient alone.
+
+Before tests, the declared contract separated the key from the scorecard and
+made the explanation available on demand. The new component scenario failed
+meaningfully for the absent disclosure (155 tests, one failure). After the
+presentation change, all 155 component tests passed. Existing populated-row,
+unknown-count and assembled zero-history assertions were updated to the new
+presentation without losing their numerical or accessible-description coverage.
+CSS-only variations were checked in rendered Chrome, not with CSS-string tests.
+
+Test review: the new scenario exercises opening the explanation and checks the
+other disclosure remains closed; table scenarios still exercise opening real
+pair data, and verify the reference once in the caption plus every row's actual
+count, signed difference, full accessible description and last-paired state.
+Production review: native details/summary, scoped CSS, typed colors/gradient, no
+new JS interaction state, dependencies or maintained capture tooling. Numerical
+calculation and existing cell descriptions are unchanged.
+
+[Presentation evidence](https://github.com/robertfmurdock/Coupling/issues/3483#issuecomment-7113400763).
+The prior final capture `4a816160-0f65-47d3-80fc-7853309d313d` is the applicable
+before state for parent `931c9b541`. Collapsed after:
+`be248818-b27d-43a2-8820-bf93b3c5a3fc`, measured viewport/PNG 1280×900.
+Expanded final source: `f977cf65-f44d-4f74-86c6-de640104b4aa`, 1280×1350 to show
+all six rows and both open disclosures. All complete, Chrome 158.0.8127.36, light,
+scale 1, en-US/UTC, same synthetic four-player/six-spin pattern. Fresh reserved
+party IDs avoid retained history; small random card tilts differ. The collapsed
+capture remains applicable after final forced-colors and tiny-panel wrapping
+additions, which do not alter that four-player/light view. Earlier intermediate
+captures were used only for iteration. Uploaded PNGs were downloaded and matched
+byte-for-byte. Temporary fixture and keyboard-binding changes were removed.
+
+Native Chrome keyboard evidence now closes that earlier local gap: Enter opens
+and closes the explanation, Tab reaches Pair breakdown with visible focus, Enter
+opens the breakdown, and Tab reaches the scrollable table. The browser probe also
+verified the reference and six unique rows with complete accessible differences.
+New text color pairs, including hover, calculate to at least 5.85:1. Calibrated
+screen readers, forced-colors emulation and full-page narrow reflow remain
+unverified; no claim is made for those conditions.
+
+`./gradlew check --quiet` passed outside the sandbox for this complete slice.
+The presentation implementation SHA is recorded in the visual issue closeout.
+No push, release or deployment was performed.
