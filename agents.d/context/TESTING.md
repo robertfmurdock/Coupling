@@ -167,7 +167,7 @@ before changing auth behavior.
 ## Browser Diagnostics
 
 On this development host, SDK password variables are loaded by fish. Run local
-validation through `fish -lc './gradlew check --no-daemon'`; CI supplies its own
+validation through `fish -lc './gradlew check'`; CI supplies its own
 secret environment. Do not request password values or bypass configured profiles.
 
 The E2E runner installs browser capture before navigation. BiDi sessions collect
@@ -194,15 +194,15 @@ bindings and fixtures live in `src/diagnosticsTestSupport`. The fast task never
 launches a browser. The browser fixture deliberately
 injects failures and writes its expected evidence under
 `e2e/build/reports/browser-diagnostics-fixture/`, even when its assertions pass.
-Run browser-bearing tasks outside the sandbox with `--no-daemon`, following the
-Gradle playbook. Capture ownership, limits, and redaction live in
+Run browser-bearing tasks outside the sandbox with a daemon started outside it,
+following the Gradle playbook. Capture ownership, limits, and redaction live in
 `e2e/diagnostics/browser-diagnostics.mjs`.
 
 The fixture owns ChromeDriver before requesting a session and stops it even when
 session creation fails; the original startup error remains the test failure.
 
 Use `FGREP` for focused E2E scenarios, for example
-`fish -lc 'env FGREP=BrowserLogPolicyTest ./gradlew :e2e:e2eRun --no-daemon --rerun'`.
+`fish -lc 'env FGREP=BrowserLogPolicyTest ./gradlew :e2e:e2eRun --rerun'`.
 The filter is a declared task input and explicitly passed environment value, so
 configuration/build-cache reuse cannot confuse focused and unfiltered results.
 Clear the filter for the required full-suite gate; verify the report's test count.
@@ -211,7 +211,8 @@ Clear the filter for the required full-suite gate; verify the report's test coun
 
 If `:e2e:jsNodeDiagnosticsBrowserTest` or `:e2e:e2eRun` reports `tab crashed` or
 `session not created` on `POST /session`, first confirm Gradle ran outside the
-agent sandbox with `--no-daemon`. On macOS, look for matching
+agent sandbox and used a daemon started outside it, following the Gradle playbook.
+On macOS, look for matching
 `Google Chrome for Testing*.ips` reports in `~/Library/Logs/DiagnosticReports/`.
 The WebDriver error or test output gives the browser version. For the diagnostic
 fixture, the XML report is under `e2e/build/test-results/jsNodeDiagnosticsBrowserTest/`.
@@ -237,7 +238,7 @@ WebdriverIO downloads Chrome again. This task starts its own local fixture
 and can check browser startup without bringing up the application stack.
 
 ```sh
-fish -lc 'env -u WDIO_CHROME_BINARY ./gradlew :e2e:jsNodeDiagnosticsBrowserTest --rerun --no-daemon'
+fish -lc 'env -u WDIO_CHROME_BINARY ./gradlew :e2e:jsNodeDiagnosticsBrowserTest --rerun'
 ```
 
 Once the focused check passes, retry the original build command.
@@ -246,7 +247,7 @@ If the fresh download still crashes, compare with installed Chrome. Both
 browser runners honor `WDIO_CHROME_BINARY`.
 
 ```sh
-fish -lc 'env WDIO_CHROME_BINARY="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ./gradlew :e2e:jsNodeDiagnosticsBrowserTest --rerun --no-daemon'
+fish -lc 'env WDIO_CHROME_BINARY="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ./gradlew :e2e:jsNodeDiagnosticsBrowserTest --rerun'
 ```
 
 ## Focused Contexts

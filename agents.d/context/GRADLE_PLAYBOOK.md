@@ -194,20 +194,23 @@ Chrome launched by Gradle inherits the daemon's execution restrictions. On this
 macOS agent host, browser startup has failed inside the sandbox and succeeded
 outside it. Do not spend an initial run rediscovering this restriction.
 
-- From the first attempt, run browser-bearing Gradle commands outside the agent
-  sandbox through the tool's approved execution mechanism (for `exec_command`,
-  request `sandbox_permissions = "require_escalated"`). Follow the active approval
-  policy and use an existing matching command rule when available.
-- This includes `./gradlew check`, `:e2e:e2eRun`, browser test tasks, and aggregate
-  `test` or `build` commands whose task graphs include browser tests. Focused
-  Node/JVM-only tasks can stay sandboxed.
-- Add `--no-daemon` to browser-bearing invocations so they do not reuse a daemon
-  started inside the sandbox: for example, `./gradlew check --no-daemon` or
-  `./gradlew :e2e:e2eRun --no-daemon`. A single-use daemon still inherits the
-  command's permissions, so this option does not replace outside-sandbox execution.
-- If choosing to reuse daemons instead, run `./gradlew --stop` through the approved
-  outside-sandbox mechanism before the first browser run when daemon provenance
-  is unknown or sandboxed. Avoid stopping another contributor's active build.
+- Run Gradle outside the agent sandbox from the first attempt, including focused
+  Node/JVM tasks: they can otherwise start a sandboxed daemon that a later browser
+  task reuses. Use the execution tool's outside-sandbox mode and existing matching
+  permissions (such as `gradle-docker`) without asking for redundant confirmation.
+  For `exec_command`, use `sandbox_permissions = "require_escalated"`; the active
+  execution policy determines whether additional approval is actually needed.
+- Reuse daemons started outside the sandbox. Do not routinely add `--no-daemon`:
+  browser tests require an unsandboxed daemon, not a fresh or single-use daemon.
+- If a daemon was accidentally started inside the sandbox, run `./gradlew --stop`
+  outside the sandbox before retrying browser-bearing tasks, then run normally.
+  If provenance is unknown, establish it or stop idle daemons once before the
+  browser run. Avoid stopping another contributor's active build.
+- Invoke `./gradlew` directly when the required environment is already available.
+  Prefer the execution tool's output/session capture to shell redirection and
+  task-specific log filenames, which can prevent existing command approvals from
+  matching. Use a shell wrapper only when needed for environment setup (for example,
+  fish-loaded SDK credentials); reuse an existing matching approval when available.
 - If outside-sandbox execution is denied, report that blocker. Do not retry the
   same sandboxed browser launch, weaken tests, disable Chrome's own sandbox, or
   change global agent permissions to work around it.
