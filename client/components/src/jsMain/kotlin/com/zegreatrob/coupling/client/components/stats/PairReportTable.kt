@@ -22,9 +22,9 @@ import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.LineStyle
+import web.cssom.Normal
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
-import web.cssom.WhiteSpace
 import web.cssom.deg
 import web.cssom.px
 import kotlin.random.Random
@@ -39,9 +39,9 @@ val PairReportTable by nfc<PairReportTableProps> { (pairReports) ->
         css {
             display = Display.inlineBlock
             textAlign = TextAlign.left
-            whiteSpace = WhiteSpace.normal
+            whiteSpace = Normal.normal
         }
-        pairReports.mapIndexed { index, pairReport ->
+        pairReports.forEachIndexed { index, pairReport ->
             PairReportView(pairReport, key = Key("$index"))
         }
     }

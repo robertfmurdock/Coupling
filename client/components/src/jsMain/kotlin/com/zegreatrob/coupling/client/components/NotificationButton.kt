@@ -23,12 +23,12 @@ import web.cssom.ClassName
 import web.cssom.Display
 import web.cssom.FlexDirection
 import web.cssom.Float
-import web.cssom.FontWeight
 import web.cssom.Globals
 import web.cssom.JustifyContent
 import web.cssom.LineStyle
 import web.cssom.NamedColor
 import web.cssom.None
+import web.cssom.Normal
 import web.cssom.Overflow
 import web.cssom.OverflowWrap
 import web.cssom.OverscrollBehavior
@@ -116,7 +116,7 @@ private fun ChildrenBuilder.recentInformationContent(recentInfoMd: String, dialo
     div {
         css {
             fontSize = 14.px
-            fontWeight = FontWeight.normal
+            fontWeight = Normal.normal
             verticalAlign = VerticalAlign.baseline
             borderRadius = 20.px
             minHeight = 0.px

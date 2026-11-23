@@ -9,8 +9,8 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Display
+import web.cssom.Normal
 import web.cssom.TextAlign
-import web.cssom.WhiteSpace
 import web.cssom.px
 
 external interface PartyBrowserProps : Props {
@@ -22,7 +22,7 @@ external interface PartyBrowserProps : Props {
 val PartyBrowser by nfc<PartyBrowserProps> { (party, boost) ->
     div {
         css {
-            whiteSpace = WhiteSpace.normal
+            whiteSpace = Normal.normal
             display = Display.block
             margin = 5.px
             textAlign = TextAlign.left
