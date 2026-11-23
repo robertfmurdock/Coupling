@@ -2,365 +2,169 @@
 
 **Work card protocol: 2**
 
-## Goal and Constraints
+## Goal and Ownership
 
-Design and safely enforce a Content Security Policy for the Coupling web
-client, accounting for the repository's CDN lookup/template pipeline and all
-runtime integrations. Preserve Auth0, Slack/Discord OAuth, analytics, GraphQL,
-WebSocket, GraphiQL, and supported browser behavior.
+Implement and safely enforce a Content Security Policy for the Coupling web
+client. This card owns CSP policy construction, trusted-script authorization,
+compatibility checks and enforcement. Preserve Auth0, Slack/Discord OAuth,
+analytics, GraphQL, WebSockets, GraphiQL and supported browser behavior.
 
-Apply the [environment convention](../context/ARCHITECTURE_CANONICAL.md#build-and-deployment):
-local, sandbox, prerelease and production exercise the same CSP implementation.
-Use normal configured origins and shared deployment wiring; avoid environment-name
-branches and minimize flags. CSP is baseline application behavior, independent of
-the existing prerelease feature flag. That flag changes the features the policy
-must support, not whether CSP runs. Local development must remain a trustworthy
-proxy for the released app, with necessary concessions explicit and minimal.
+Use the same application path across local, sandbox, prerelease and production,
+with ordinary configured origins. CSP is baseline behavior, independent of the
+existing prerelease flag; test the features enabled by both flag states. Follow
+[environment conventions](../context/ARCHITECTURE_CANONICAL.md#build-and-deployment).
 
-## Strategy
+## Related Card Disposition
 
-Use controlled local browser evidence to develop and verify one CSP implementation
-for the released app. No additional AWS resources, deployed collection service,
-new gateway methods, roles or log groups are authorized. Do not make field-report
-collection a prerequisite for policy improvement. The withdrawn collector
-implementation and its opt-in flag are removed. Do not reintroduce a report receiver as preparation for local discovery.
+- This is the sole active CSP owner. The completed
+  [CPL-51 review](../work_completed/CPL-51-WEB_BEST_PRACTICES_REVIEW_REMEDIATION.md)
+  delivered the original local report-only starting point and transferred CSP
+  hardening here; its completed work is not reopened.
+- [CPL-62](CPL-62-AUTHENTICATED_PERFORMANCE_CALIBRATION.md) remains a separate
+  performance/CDN follow-up. Policy can cover the current dependency graph without
+  deferring CDN loading. Neither card is a prerequisite for the other; reuse
+  applicable inventories and coordinate actual shared-source changes.
+- [CPL-54](../work_completed/CPL-54-WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md) is
+  completed performance evidence. [CPL-63](../work_completed/CPL-63-ROUTE_SCOPED_CDN_LOADING.md)
+  remains completed as a redirect to CPL-62. Neither owns unfinished CSP work.
+- Collector and observation-subsystem proposals are will-not-do work recorded
+  below, not additional cards or future deliverables.
 
-Start with the source inventory and release import map already captured. Observe
-candidate policies through real browser violation events and request evidence
-while exercising the normal local app with release-generated assets. Any one-off
-event observation must start before application scripts; keep sanitized directive, disposition,
-resource classification and counts, never raw URLs, queries, identifiers, samples
-or console dumps. Preserve enough fixed dependency classification to make the
-findings actionable. Disclose bounded capture windows, truncation and uncovered
-flows; an empty capture does not prove the policy is compatible.
+## Design and Constraints
 
-Use HTTP response headers for report-only trials: a CSP meta tag cannot substitute
-for a report-only header. Keep maintained tests at existing application boundaries:
-server response tests for policy construction and trusted markup, and normal
-application browser tests for required behavior and unauthorized-script blocking.
-Do not build a separate measurement subsystem or fixture-only CSP test category
-as a prerequisite. One-off browser discovery can be documented without retaining
-its source as maintained tooling. No browser report endpoint is needed.
-
-Implement policy construction and script authorization at the document renderer
-(`IndexRoute`). Derive application, asset and socket origins from existing
-configuration. Prefer per-response nonces for explicitly trusted generated markup
-and stable hashes for immutable inline blocks. Never stamp a nonce onto every
-script encountered in already-rendered HTML. Evaluate loader trust, the import
-map, GraphiQL's inherited iframe policy and Emotion styles against browser
-results before selecting the final directives.
-
-Cover meaningful configuration variations, including both states of the existing
-prerelease flag, rather than duplicating the suite for environment names. Keep
-normal local behavior faithful to release; declare necessary simulated-service or
-browser concessions. Real integration checks and deployed header verification
-close those specific gaps through existing infrastructure. They are not an
-environment promotion sequence or a new telemetry project.
+- Construct document policy at `IndexRoute`, which serves the final HTML and
+  injects runtime configuration. Derive application, asset and socket origins
+  from existing configuration. Static-host headers do not establish document policy.
+- Authorize explicitly trusted generated scripts using per-response nonces or
+  hashes of immutable emitted bytes. Never stamp nonces onto every script found
+  in rendered HTML. Verify import-map, configuration injection and cache behavior.
+- Resolve third-party loader trust, GraphiQL iframe inheritance/bootstrap and
+  Emotion styles from actual requirements. Preserve package versions, dependency
+  parameters and shared React identity. Do not widen policy to hide unknowns.
+- Use response headers for report-only discovery; a meta tag cannot supply a
+  report-only policy. Discovery evidence is not enforcement or compatibility proof.
+- Use existing server response tests and the normal application browser suite.
+  Add tests alongside application behavior, not a separate CSP observation tool,
+  synthetic instrument suite or reporting subsystem. Follow
+  [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
+- No new report receiver, deployed collection service, AWS resources, gateway
+  methods, roles, log groups or feature flags. Field telemetry is not a prerequisite.
+  Do not restore the discarded manual-production-edit experiment workflow.
+- Retain only sanitized findings: fixed dependency/directive categories and
+  counts, never raw URLs, identifiers, queries, samples or console dumps. Record
+  capture conditions, truncation, pending requests and uncovered flows.
 
 ## Acceptance Evidence
 
-- Capture release-generated HTML/import map and transitive resource requirements.
-  Reuse existing evidence where release and configuration match. Distinguish
-  document navigation, subresource origins and application connections.
-- Verify policy delivery and behavior through existing server response and normal
-  application browser tests. During discovery, sanitize any retained evidence and
-  disclose bounded observation, truncation and pending requests.
-- Exercise Welcome, authenticated party and contribution views, Auth0 return,
+- Release HTML/import map and required transitive resources are understood;
+  distinguish document navigation, subresources and application connections.
+- Existing server tests verify delivered policy, trusted markup, nonce freshness
+  or hash matching, configuration variations and HTML caching behavior.
+- Normal application browser tests prove required scripts execute and deliberately
+  unauthorized scripts are blocked through the actual document-rendering path
+  with release assets. Report-only discovery must preserve required behavior.
+- Exercise Welcome, authenticated party/contribution views, Auth0 return,
   Slack/Discord authorization navigation and return, GraphiQL query execution,
-  WebSockets and incubating feature paths. Record concessions and unverified
-  boundaries rather than claiming synthetic fixtures cover real integrations.
-- Prove trusted scripts still execute and unauthorized test scripts are blocked
-  through the actual document-rendering path using release assets. Verify nonce
-  freshness, caching, configuration injection, import map and iframe behavior.
-- Keep policy behavior common across local and deployed configurations. Verify
-  delivered headers and real integration behavior after an authorized release,
-  without provisioning resources or adding collection infrastructure.
+  WebSockets and incubating features. Record real-service/browser gaps explicitly.
+- After an authorized release, verify delivered headers and real integration
+  behavior through existing infrastructure. No environment promotion sequence.
 
 ## Safe Slice Sequence
 
-1. **Use the existing evidence.** Review the source inventory and sanitized
-   captures below. Document remaining dependency and integration gaps without
-   adding a dedicated observer tool or tests of that tool.
-2. **Develop policy through application tests.** Use the existing server response
-   tests and normal application browser suite with release assets. Cover actual
-   policy delivery, required application behavior and unauthorized resources.
-   Keep configuration and capture scope explicit; reuse applicable evidence from
-   [CPL-62](CPL-62-AUTHENTICATED_PERFORMANCE_CALIBRATION.md).
-3. **Authorize trusted scripts and tighten directives.** Deliver small useful
-   renderer/policy slices with focused tests, using nonces or hashes and minimal
-   ordinary configuration. Browser scenarios must catch missing authorization
-   and unintended authorization. Address caching, import-map dependencies,
-   server-injected configuration, GraphiQL bootstrap/inheritance, Emotion and
-   mutable third-party loaders. Evaluate script, style, connect, frame, image,
-   font, worker, object and document directives from observed requirements.
-4. **Enforce the shared policy.** Once representative flows pass, enable the
-   common enforcing header through the same application path. Verify required
-   behavior and deliberately unauthorized resources in local browser regressions.
-   Close real-service and supported-browser gaps; verify deployed header delivery
-   after an authorized release. Document remaining compatibility exceptions and
-   their reasons.
+1. **Authorize trusted application scripts.** Read the existing renderer tests and
+   source inventory; reuse the evidence below. Declare a small useful renderer
+   contract and failing scenarios before edits. Implement nonce/hash authorization
+   with its cross-layer changes and tests in existing suites. Resolve import-map,
+   configuration and caching requirements for that slice.
+2. **Tighten directives in useful increments.** Use actual application behavior
+   and bounded browser evidence to select script, style, connect, frame, image,
+   font, worker, object and document directives. Test required integrations and
+   unauthorized resources; do not make building measurement tools a delivery step.
+3. **Enforce the shared policy.** Once representative flows pass, enable the
+   enforcing header through the same document path. Close real-service and
+   supported-browser gaps, explain necessary compatibility exceptions, and verify
+   deployed delivery after an authorized release.
 
-Each implementation slice follows the repository red–green–refactor and full
-`./gradlew check` commit gate. Pushing, releasing and deployment require the
-owner's authorization. No additional AWS resources are authorized. If credentials
-prevent normal local-stack validation, retain the blocker and continue independent
-fixture/unit work without bypassing the configured AWS identity.
+Each implementation slice follows [AGENTS.md](../../AGENTS.md), including focused
+red–green–refactor and the full `./gradlew check` commit gate. No artificial red
+is required for documentation. Pushing, release and deployment need authorization.
 
-## Evidence and Resume Note
+## Existing Evidence and Limits
 
-**Resume · 2026-11-23:** Outgoing-history review removed the superseded report
-collector, standalone server export, flag and local wiring. Server source,
-Caddy and Compose configuration match the production baseline. The
-outgoing content is documentation and sanitized research only. There are no
-CSP source, build or test changes. Research remains evidence of bounded
-discovery, not enforcement or full compatibility.
+### Production and entry points · 2026-11-20
 
-The CSP observer, its tool-only Node/Chrome tests, fixture extensions and build
-wiring were also removed after the owner challenged maintaining a separate
-measurement subsystem. They used existing runners, but tested the instrument
-rather than application behavior. The one-off Welcome recorder and Gradle task
-were removed rather than retained as unmaintained source. The experiment is
-documented below. Next: design a
-small, maintained document-renderer authorization/policy slice, with local
-release-browser evidence and tests. Do not restore the discarded collector or
-manual production-edit workflow as a prerequisite.
+- Release generation at `60c09477d` produced a 22-entry import map matching the
+  generated `cdn.json` and live document, including dependency/version parameters.
+  Every entry used `esm.sh`; transitive requirements still need contextual review.
+- The public document returned HTTP 200 through API Gateway/Express without CSP,
+  report-only or reporting endpoint headers. Asset responses came through
+  CloudFront/S3. Code inspection identified `IndexRoute` as document-header owner.
+- One fresh Chrome visit observed 323 esm.sh script responses, 21 asset-host
+  scripts, Font Awesome and Tag Manager loaders; CSS/fonts came from the asset
+  host, cdnjs, Google Fonts and Font Awesome. Analytics reached Google Analytics.
+  These are session observations, not a complete dependency allowlist.
+- Login navigated to Auth0. Signed-out GraphiQL did not render within eight
+  seconds. Neither observation proves authenticated-return or query compatibility.
+- Prerelease exposed only the existing root/proxy API routes and no CSP headers.
+  This historical check does not establish other deployments' current state.
 
-Before the application-owned collector, local Caddy supplied a report-only
-policy without a receiver. Native Chrome on November 17 showed script, style,
-font, connection and static.localhost manifest notices plus a cross-origin manifest start URL warning. Subsequent
-captures below identified `IndexRoute` as the document-header owner and recorded
-release and runtime evidence. Transitive coverage is still incomplete. Resume
-with local browser observation and release-asset validation; reuse applicable
-inventory rather than restarting baseline captures.
-The [contributor closeout](../work_completed/CPL-57-WEB_CONTRIBUTOR_POPOVER_FOLLOWUP.md)
-records native save-focus and owner-reported VoiceOver acceptance. The broader
-calibrated accessibility matrix is tracked in CPL-56.
+### Signed-in sandbox · 2026-11-20
 
-### Production baseline · 2026-11-20
+The session covered Auth0 sign-in/return, pair assignments, contributions and
+opening GraphiQL. Aggregation was session-wide, so requests cannot always be
+attributed to a view. Same-origin GraphQL returned four HTTP 200 responses, an
+Auth0 fetch succeeded and a socket frame was received. GraphiQL requested unpkg
+and jsDelivr scripts/styles, but query execution was not verified.
 
-- `./gradlew :client:jsBrowserProductionVite` succeeded at `60c09477d`. The
-  22-entry import map in the generated HTML matched both the generated
-  `build/js/packages/Coupling-client/cdn.json` and the live document's map,
-  including version and dependency parameters. All entries point to
-  `https://esm.sh`. This comparison establishes map parity for this capture.
-- The public document at `https://coupling.zegreatrob.com/` returned HTTP 200
-  with API Gateway and Express response markers and without CSP, CSP
-  report-only, or reporting endpoint headers. The rewritten entry module at
-  `https://assets.zegreatrob.com` returned HTTP 200 through CloudFront from S3
-  without CSP headers. In repository code, Express `IndexRoute` serves the
-  final document at the root and fallback routes, and the deployment passes a
-  release-versioned asset URL to the API Lambda. Put document policy ownership
-  at that response boundary so the header and rendered configuration can be
-  tested together. Verify header forwarding through API Gateway in each deployment.
-- A fresh headless Chrome 158 visit to the public route observed a single
-  document navigation to the app origin. Script responses were from
-  `esm.sh` (323), `assets.zegreatrob.com` (21),
-  `kit.fontawesome.com` (1), and `www.googletagmanager.com` (1).
-  Stylesheets came from the asset host, `cdnjs.cloudflare.com`, and
-  `fonts.googleapis.com`. A font loaded from `fonts.gstatic.com`.
-  Font Awesome fetched from `ka-f.fontawesome.com`, and analytics sent
-  requests to `www.google-analytics.com`. The asset host also supplied
-  images and another request classified as “other” by the browser.
-  These are origin and resource-type observations from one session. A separate
-  fresh session confirmed that the Welcome “Come on in!” control rendered
-  and observed the same script counts.
+Images included the asset host, DiceBear, Robohash, Gravatar and WordPress image
+redirect hosts. Fonts/telemetry included Google Fonts, Font Awesome and Google
+Analytics. Other parties can use other avatar sources. Auth0's hosted document
+has its own subresources; those navigations do not justify Coupling policy grants.
+Slack/Discord OAuth return and the supported-browser matrix remain unverified.
 
-### Public entry points · 2026-11-20
+### Welcome dependency discovery · 2026-11-22
 
-- In a fresh Chrome session, opening the production GraphiQL URL returned
-  HTTP 200 without an enforcing CSP header. The editor iframe did not render
-  within eight seconds in the signed-out session. No editor CDN requests were
-  observed in that window. Signed-in editor loading and query execution remain
-  required checks.
-- From Welcome, opening the login chooser and selecting Login produced an
-  Auth0 top-level navigation (HTTP 302 then 200). This records the outgoing
-  navigation only. The authenticated return, Auth0 fetches and any silent
-  authentication iframe need their own evidence.
+The [normal-origin capture](../research/WEB_CSP_WELCOME_LOCAL_DISCOVERY.json)
+used release assets at `https://localhost/welcome/`, Chrome 158.0.8127.36, measured
+1280×700 viewport, prerelease features enabled and 22 import-map entries. It
+checked the exact response-header candidate `default-src 'self'; base-uri 'none';
+object-src 'none'; frame-ancestors 'self'`, without reporting endpoints or samples.
+The window ended two seconds after the Welcome control appeared.
 
-### Prerelease gateway baseline · 2026-11-20
+It recorded 792 report-only events with zero drops: three inline-script events,
+646 esm.sh script events, 57 local-static script events, five inline-style events
+and known font/icon/analytics requirements. These are events, not distinct
+resources. There were 363 completed network responses (323 esm.sh), with no
+recorded HTTP errors, failures or pending requests. One image category was
+`other`; investigate before selecting an image grant.
 
-- The custom domain maps its root to the prerelease REST API stage. The deployed
-  REST API exposes only `ANY /` and `ANY /{proxy+}`. Stage method settings are
-  empty, access logging is unconfigured, and tracing is disabled. A fresh GET
-  returned HTTP 200 without CSP, CSP report-only, or Reporting-Endpoints headers.
-- The application's Lambda log group had no configured retention period. This
-  was relevant to the withdrawn collection proposal; no report storage is planned.
+This signed-out discovery pass does not establish enforcement, authenticated
+compatibility, the prerelease-off configuration or GraphiQL/OAuth coverage. Its
+one-off recorder and experimental header edits are not maintained source.
+The [rejected proxy attempt](../research/WEB_CSP_WELCOME_PROXY_REJECTED.json) is
+partial evidence only: changing the origin broke the static host's CORS contract.
+BiDi response overriding also failed to prove browser policy replacement. No
+CORS exceptions or browser-security bypasses were introduced.
 
-These observations cover prerelease only; inspect the other deployment packages
-and effective controls without assuming the same live state.
+## Disposition of Discarded Work
 
-### Withdrawn collection approach · reviewed 2026-11-23
-
-Earlier local commits added an opt-in report-only header, a same-origin report
-route, bounded/sanitized report aggregation and a standalone Lambda export with
-HTTP-boundary tests. A dedicated gateway route, role and log group were proposed
-but never deployed. This expanded a CSP task into a reporting service without
-providing the dependency evidence needed for policy design.
-
-The owner rejected additional AWS resources and environment promotion gates.
-The agreed direction is one application policy across ordinary configurations,
-local browser observation, and tested script authorization/enforcement. The
-outgoing history was rewritten to omit the collector implementation and its
-receiver-only tests entirely. No dormant collector or collection feature flag
-is retained. The original work is preserved only on the local backup branch
+Earlier local work explored a collector, standalone server export and opt-in
+header, then a browser observation subsystem with tool-only tests. All were
+removed from outgoing source, tests, fixtures and build wiring. No collector was
+deployed. The owner rejected the infrastructure expansion and ongoing maintenance
+of exploratory tooling. This record preserves conclusions, not recipes to rebuild
+those systems. The original local history is on
 `backup/cpl52-before-outgoing-review-20261123`.
 
-Modern Web Guidance `security` supports discovery before enforcement and warns
-against blanket nonce stamping. Its generic deployed-reporting and script-sample
-recommendations do not override the owner's local-first, no-new-resource and
-sanitized-evidence constraints. Trusted Types and isolation policies are not
-automatic additions to this card's scope.
+The prior documentation-only slice `bf54e769d` passed the full check after removal
+of CSP tooling (697 tasks, 1m 19s), including normal application E2E. No CSP
+implementation is currently delivered by that slice. This follow-up consolidates
+the plan and shared tooling guidance. `fish -lc './gradlew check --no-daemon'`
+passed outside the sandbox (697 tasks, 24s: 56 executed, 641 up-to-date).
+Local document links and `git diff --check` also passed. This follow-up changes
+only documentation; no source, tests, build logic or runtime behavior changed.
 
-### Discarded local observation instrument · 2026-11-21/22
-
-The earlier implementation added a browser-side observer, covered by the
-existing Node and Chrome diagnostic-fixture compilations. It installs before
-navigation using WebdriverIO's preload API and aggregates genuine CSP events by
-fixed directive, disposition and dependency resource label. Unknown strings
-become `other`; no raw URLs, samples or policy text reach the snapshot. The
-1,000-event cap exposes dropped-event counts. No report endpoint or AWS resources
-are used and no application policy changed.
-
-The two Node scenarios first failed the intended observed-count assertions
-against a non-recording observer. They subsequently verified fixed known-origin matching,
-same-origin classification, lookalike-host rejection, sensitive-field exclusion
-and the event cap. Real Chrome fixtures prove that a nonce-authorized script
-executes in both modes, while an unauthorized inline script executes under
-report-only and is blocked under enforcement; each produces the expected real
-violation disposition. This is instrument validation only, not release-app or
-integration acceptance. This source and its tests are no longer retained.
-
-The initial downloaded Chrome 158.0.8127.36 crashed during session creation.
-Following the playbook, the cached browser was preserved and downloaded afresh;
-both CSP browser scenarios then passed. The complete independent harness check
-passed: 38 Node tests, five Chrome fixture tests and Kotlin lint. Test review
-confirmed that a working page alone cannot pass the violation assertions; harness
-code review confirmed fixed labels and bounded state, with no raw-event storage
-or application/environment branches.
-
-The first full checks found binding naming/annotation-spacing lint issues, which
-were fixed. A later cached full check reported expired SSO, but identity and the
-exact SSM read succeeded in the normal fish shell (only the parameter count was
-printed). `fish -lc './gradlew check --no-daemon --no-configuration-cache'`
-passed on November 22 in 1m 21s (697 tasks: 206 executed, one from cache,
-490 up-to-date), including the application E2E suite. Fresh configuration avoided
-the stale credential failure; no profile, permanent cache setting or AWS resource
-changes were made. This historical validation does not justify keeping the
-measurement subsystem. Supported-browser and real-integration coverage remain open.
-
-### Normal-origin Welcome discovery · 2026-11-22
-
-A one-off recorder observed the actual local release app at
-`https://localhost/welcome/`. It installed the validated observer before
-navigation, checked the exact delivered candidate header, required the visible
-Welcome control, and captured a bounded two-second period afterward. No login,
-party creation or saved-data mutation occurred. The recorder and Gradle task
-were discarded during review because they depended on manually editing
-production header code; they are not maintained repository tooling.
-
-Two proposed delivery mechanisms were rejected during this slice. Chrome's BiDi
-header overrides/response fulfillment acknowledged the candidate but a real
-fixture still evaluated the original policy (a distinct `base-uri` probe failed).
-A loopback proxy passed HTTP/fixture tests but changed the app origin, conflicting
-with the static host's `https://localhost` CORS contract and preventing Welcome
-readiness. That is a concrete example of why local identity/parity matters; no
-CORS exceptions or browser-security bypasses were introduced. The proxy and its
-tests were removed, not retained as another supported path. The sanitized
-[rejected proxy attempt](../research/WEB_CSP_WELCOME_PROXY_REJECTED.json) remains
-`partial` and is not application compatibility evidence.
-
-For the accepted experiment, the existing `setCspReportOnlyHeaders` policy text
-was temporarily changed to `default-src 'self'; base-uri 'none'; object-src
-'none'; frame-ancestors 'self'`, using the then-existing local report-only opt-in
-(now removed).
-The candidate has no report-uri/report-to or script samples. The normal renderer
-and local release stack delivered it at their real origin. After capture the
-temporary production edit was restored; no production source diff remains.
-
-The [accepted capture](../research/WEB_CSP_WELCOME_LOCAL_DISCOVERY.json) records
-Chrome 158.0.8127.36, a measured 1280×700 viewport, local prerelease features
-enabled and 22 import-map entries. The matching-header check passed. It captured
-792 report-only events with zero drops, including three inline-script events,
-646 esm.sh script events, 57 local-static script events, five inline-style
-events, and known fonts, icon-kit and analytics requirements. These are violation
-events, not counts of distinct resources: the network observer recorded 363
-completed responses, including 323 esm.sh responses, with zero HTTP errors,
-failed requests or pending requests at the snapshot. One image violation remains
-`other` and needs investigation before choosing an image directive. Do not infer
-the origin from that category or widen the policy speculatively.
-
-This is a signed-out, single-session dependency discovery pass, not an enforcing
-policy or compatibility proof. It independently supports authorizing trusted
-script bootstraps and their module graph, while handling Emotion styles, font
-loaders and analytics deliberately. Authenticated views, the existing prerelease
-flag's off state, GraphiQL query execution, OAuth return and supported-browser
-coverage remain open. Next: implement small, tested renderer authorization
-patterns using this evidence. No additional AWS resources, feature flags,
-deployment or field reporting are authorized/required.
-
-The restored full check attempted on November 23 initially failed before tests
-with an expired SSO token, and Docker was unavailable. During outgoing-history
-review later that day, the normal stack started healthy and the focused Node,
-Chrome fixture and full Gradle check passed (697 tasks, 1m 47s). That check
-validated the inherited tree before removing the withdrawn code. Validation of
-the final rewritten slice is recorded below; the experiment remains discovery
-rather than application compatibility evidence.
-
-### Outgoing-history review · 2026-11-23
-
-The first review retained the observer because its tests proved bounded,
-sanitized aggregation and real fixture report-only/enforcement behavior. The
-owner then challenged the maintenance and test scope. Although those scenarios
-used existing runners, they protected a new tool rather than the application's
-CSP contract. The observer, bindings, fixture changes, tests and build input were
-removed. Future implementation should add tests to the existing server and
-application browser suites alongside the behavior they protect.
-
-The initial reduced tree passed `fish -lc './gradlew check --no-daemon'` outside
-the sandbox in 1m 50s (697 tasks). After removing the measurement subsystem,
-`fish -lc './gradlew check --no-daemon'` passed again outside the sandbox in
-1m 19s (697 tasks: 62 executed, nine from cache, 626 up-to-date), including the
-normal application E2E suite. `git diff --check` passed. All source, test and
-build files match `origin/master`.
-The outgoing commit contains only this card, shared environment guidance and two
-sanitized historical captures. The unrelated untracked IDE schema mapping
-remains outside this slice.
-
-### Policy design to verify
-
-Keep package versions, dependency parameters, and shared React identity in the
-generated import map. Evaluate deriving hashes for build-stable inline blocks
-from the emitted release bytes and using a per-response nonce on the
-server-generated config script. Verify that the delivered script bytes still
-match the release hashes after rewriting and that the response path does not
-share-cache nonce-bearing HTML. Release CDN assets can retain their own
-caching behavior. Evaluate explicit script and connection origins against
-report-only evidence before granting any third-party loader transitive trust.
-
-### Signed-in sandbox capture · 2026-11-20
-
-A fresh Chrome session covered interactive Auth0 sign-in and return, a party's
-pair assignment and contribution views, and opening GraphiQL. The party had
-Slack and Discord configured per its owner. The capture retained origins,
-resource types, HTTP status codes and counts. Observations were aggregated at
-session level, so a request cannot always be attributed to an individual view.
-
-| Boundary | Observed evidence |
-| --- | --- |
-| Top-level navigation | Sandbox app and `zegreatrob.us.auth0.com`. Auth0-hosted sign-in loaded script and CSS from `cdn.auth0.com`. |
-| Application connections | Four HTTP 200 responses from same-origin GraphQL, one successful fetch to `zegreatrob.us.auth0.com`, and a received WebSocket frame from `wss://socket.sandbox.coupling.zegreatrob.com`. |
-| GraphiQL | Two script responses from `unpkg.com` and JS and CSS responses from `cdn.jsdelivr.net`. This confirms the editor's CDN requests were made. Query execution was not verified. |
-| Images | `assets.zegreatrob.com`, `api.dicebear.com`, `robohash.org`, and `www.gravatar.com`, with image redirects reaching `i0.wp.com`, `i1.wp.com`, and `i2.wp.com`. |
-| Fonts and telemetry | Fonts from `fonts.gstatic.com` and `ka-f.fontawesome.com`. Fetches reached `ka-f.fontawesome.com` and `www.google-analytics.com`. |
-
-Before enforcement, verify Slack and Discord authorization navigation and return
-with a disposable fixture, execute a GraphiQL query, and test policy reporting
-and behavior across supported browsers. Auth0's hosted sign-in document has its
-own subresources. Keep that navigation evidence separate from grants for the
-Coupling document. Treat observed avatar hosts as compatibility evidence for
-the sampled party because other parties can have different avatar sources.
-
-### Source Inventory
+## Source Inventory
 
 | Owner/source | Loading behavior | CSP work to resolve |
 | --- | --- | --- |

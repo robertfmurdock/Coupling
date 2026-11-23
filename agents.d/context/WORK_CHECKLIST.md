@@ -19,6 +19,11 @@ with other contributors. Keep the ID and filename when moving the card.
   and independent release value. For behavior changes, name test scenarios and
   expected failure. Include required cross-layer changes in the same slice.
 
+Evidence requirements do not authorize new maintained tooling. Apply
+[tooling purpose and lifetime](GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime)
+when a slice proposes investigation scripts, harnesses or automation; state the
+recurring need and owner, or keep the experiment temporary and retain findings.
+
 Choose useful headings. Link shared procedures; record decisions affecting scope,
 design, or validation.
 

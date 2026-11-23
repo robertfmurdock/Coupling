@@ -24,6 +24,36 @@ repository automation behavior.
 - Add root-level tasks only when they are true cross-repo orchestration entry
   points that must coordinate multiple modules.
 
+## Tooling Purpose and Lifetime
+
+Treat committed tooling as maintained product code: it adds dependencies,
+execution paths, tests and future work. Before adding or expanding a tool, name
+its recurring user/workflow, the gap in existing capabilities, its owning module
+and its supported contract. An investigation, a work-card evidence requirement,
+or wrapping a script in a Gradle task does not by itself justify permanent code.
+
+- Reuse existing application paths, test suites, Gradle tasks and external tools
+  first. Extend the owner of the behavior rather than creating a parallel runner,
+  configuration path, fixture framework or reporting subsystem.
+- Keep one-off probes and experimental scripts in temporary locations outside
+  tracked source. Retain concise findings, sanitized evidence, conditions and
+  limitations. Remove experimental source and wiring before the slice is committed;
+  do not archive executable source in research directories for hypothetical reuse.
+- Promote an experiment to maintained tooling only when the recurring need is
+  concrete and within the agreed scope. Describe its users, owner, invocation,
+  inputs/outputs, side effects, cleanup and maintenance cost in the slice design.
+  If that changes the task's scope materially, resolve it with the owner first.
+- For retained repository automation, use Gradle as the execution and dependency
+  model, with logic in the appropriate module and established project language
+  and conventions. A Gradle wrapper around an ad hoc program does not establish
+  reuse, ownership or correctness; apply the task conventions below as well.
+- Test application behavior at its existing owning boundary. Add tests of a tool
+  when that tool's supported behavior is itself an intended maintained deliverable;
+  proving a new probe works is not progress on the application's contract.
+- Remove superseded tooling and its exclusive tests, dependencies and wiring.
+  Passing tests and dormant/opt-in status do not establish ongoing value. In work
+  cards, distinguish historical experiments from current implementation instructions.
+
 ## Task and Automation Conventions
 - Express repository automation as Gradle tasks executed via `./gradlew`.
 - Use the same task graph and artifact generation locally and in CI. CI metadata

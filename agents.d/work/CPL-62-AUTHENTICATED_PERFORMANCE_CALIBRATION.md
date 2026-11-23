@@ -12,6 +12,20 @@ budgets until variability is understood. The baseline is independently deliverab
 After calibration, use it to assess one route-only CDN dependency group. Preserve
 shared React identity, all actions and the established visuals and animations.
 
+## Scope Boundary and Tooling
+
+This performance work is independent of CSP. [CPL-52](CPL-52-WEB_CSP_HARDENING_FOLLOWUP.md)
+owns policy, script authorization and security compatibility checks against the
+current dependency graph; it does not require route-only loading or performance
+calibration first. This card owns performance measurement and optional CDN
+loading changes. Existing inventories can inform both without merging delivery.
+
+Follow [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
+Reuse existing measurement capabilities and application tests. Evidence requests
+below do not require a new recorder, browser fixture framework, observer subsystem
+or persistent experiment script. Document one-off findings and limitations;
+justify any retained tool extension by a concrete recurring need in the slice.
+
 ## Acceptance Evidence
 
 - Reproduce Party List and saved current-pairs readiness with an owned fixture
@@ -48,10 +62,12 @@ shared React identity, all actions and the established visuals and animations.
   fixture (four players, two pairs). Readiness requires fixture data and the usable
   destination action, not merely a header/loading shell. Record fixture counts,
   auth/cache/animation state, actual viewport, browser/host and three repeated
-  cold/warm pairs. Use Gradle-owned opt-in automation, not normal timing CI gates.
-- [ ] Calibrate observer delivery on a controlled browser fixture, including warm
-  refresh, and investigate/classify aborts before excluding any samples. Unsupported
-  or missing metrics remain explicit. Preserve original failures/anomalies.
+  cold/warm pairs. Reuse existing opt-in Gradle measurement capabilities; do not
+  introduce normal timing CI gates or a new runner just to obtain this evidence.
+- [ ] Establish measurement limitations, including warm refresh, using existing
+  tooling and bounded experiments. Investigate/classify aborts before excluding
+  samples. Unsupported or missing metrics remain explicit. Preserve original
+  failures/anomalies; a dedicated observer fixture suite is not a deliverable.
 - [ ] Retain full repeated evidence; choose any controlled CPU/network conditions
   explicitly. Add one representative interaction trace if reliable tooling is
   available; label lab interaction observations separately from field INP.
@@ -87,10 +103,13 @@ have active consumers. Do not apply a blanket CDN bundling or self-hosting chang
 
 Reuse the generated import map and runtime request inventory from
 [CPL-52](CPL-52-WEB_CSP_HARDENING_FOLLOWUP.md) where conditions match. Coordinate
-script and header changes there. Avoid blanket bundling or self-hosting changes.
+script and header changes there if this work affects their compatibility. CSP
+implementation is not a prerequisite for performance investigation, and CDN
+deferral is not a prerequisite for CSP. Avoid blanket bundling or self-hosting changes.
 
 ## Resume Note
 
-Start by isolating non-resetting fixture setup. Signed-in measurements, observer
-calibration and loading implementation are pending. Keep field telemetry as a
-separate decision if reliable interaction tooling is unavailable.
+Start by evaluating whether existing auth/fixture capabilities can support the
+bounded measurements without resetting unrelated data. Signed-in measurements,
+measurement-limit investigation and loading implementation are pending. Keep
+field telemetry as a separate decision if reliable interaction tooling is unavailable.

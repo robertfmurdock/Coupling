@@ -42,6 +42,8 @@ design separately, and review the overall outcome at completion.
 - Run Gradle tasks that launch browsers outside the agent sandbox from the first
   attempt, using the approved execution mechanism and a fresh daemon. This includes
   `./gradlew check`; follow [browser execution guidance](agents.d/context/GRADLE_PLAYBOOK.md#browser-tests-and-sandboxed-daemons).
+- Before retaining investigation or automation code, apply the
+  [tooling purpose and lifetime guidance](agents.d/context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
 - Reuse established capabilities; keep changes scoped and consistent with local
   patterns. Investigate intentional-looking overrides before changing them.
 - For GraphQL changes, keep schema, server, SDK, and tests synchronized. Deprecated
