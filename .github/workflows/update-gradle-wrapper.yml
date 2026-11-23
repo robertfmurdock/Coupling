@@ -46,7 +46,7 @@ jobs:
         with:
           branch: "create-pull-request/${{github.job}}/${{github.run_id}}"
           commit-message: "[patch] ${{github.workflow}}"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.COUPLING_PAT }}
           delete-branch: true
       - name: Enable Pull Request Auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
