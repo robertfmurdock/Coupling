@@ -87,9 +87,9 @@ as never paired; a missing pair record is unavailable.
   spins without relying on color or pointer hover. Unknown is distinct from zero.
 - [x] Preserve existing grid colors/placement, Recent Pairing chart and contribution
   behavior in the first slice. Verify assembled short-history data in a browser.
-- [ ] Deliver cell-level annotations and a clearly explained baseline marker/color
+- [x] Deliver cell-level annotations and a clearly explained baseline marker/color
   interpretation, or record explicit owner disposition of that remaining scope.
-- [ ] Record focused tests, full check, visual evidence and passing slice commit.
+- [x] Record focused tests, full check, visual evidence and passing slice commits.
 
 ## Visual evidence
 
@@ -130,5 +130,59 @@ constant, party-scope history count via the existing query, nullable baseline fo
 unavailable inputs, and changes confined to the Statistics view. No contribution
 or scheduling behavior changes. Full `./gradlew check --quiet` passed outside the sandbox, including the normal
 application/browser and SDK suites. Uploaded attachment bytes were downloaded and
-verified against all three local PNGs. The complete first slice is ready to commit.
+verified against all three local PNGs. First-slice implementation commit: `8f4974a24`.
 No release, push or deployment is authorized.
+
+
+## Cell-annotation slice · 2026-11-23
+
+The owner was unsure about the original green-above/red-below proposal. Delivery
+uses neutral numerical differences, keeps the existing fill palette, and adds an
+inset black outline to known two-player cells within one pairing of the exact
+baseline. The legend explains the ±1 marker. This replaces the contradictory
+health-color proposal; contribution heatmaps remain unchanged.
+
+Cells carry names, recent count, expected count, difference and last-paired spins
+as native title descriptions and explicit accessible names. The semantic table
+is the non-hover alternative; passive cells are not added to the Tab sequence.
+The generic graphing cell owns only its value, description and outline flag;
+Statistics owns the pairing interpretation. D3 now joins existing/new/removed
+cells so data changes update descriptions, outlines and cell count together.
+
+Red: `:client:components:jsTest --quiet` ran 150 tests with one meaningful failure,
+missing the assembled cell's descriptive accessible name. After implementation,
+154 component tests passed, including marker boundaries at expected ±1, missing
+counts/baselines and a rerender that replaces descriptions, clears an old marker
+and removes obsolete cells. Test review kept setup's prior rendering as a
+prerequisite and asserted its captured observation in verification; table data
+remains covered by the first slice. Production review confirmed the same color
+interpolator and 90px cells, inset outlines, shared numerical formatting and no
+new interaction framework or dependencies.
+
+The production-built Chrome probe passed with baseline 2.0, four computed 2px
+solid outlines and twelve off-diagonal title/accessible-name descriptions.
+Final capture `4a816160-0f65-47d3-80fc-7853309d313d` is complete at measured
+1280×900 viewport/PNG, light, scale 1, Chrome 158.0.8127.36. The previous matched
+after capture is this slice's before. Temporary probe changes have been removed.
+Final `./gradlew check --quiet` passed outside the sandbox. Both uploaded cell-slice
+PNGs were downloaded and verified byte-for-byte against the local captures.
+[Cell-slice evidence](https://github.com/robertfmurdock/Coupling/issues/3483#issuecomment-7110106596).
+The implementation commit containing this archive is recorded in the visual issue's
+closeout alongside first-slice commit `8f4974a24`.
+
+## Completion review
+
+The outcome serves actual saved pairing history on Statistics, with a short-history
+baseline capped consistently at five full rotations. Unknown values remain unknown,
+unique active-player pairs appear in the table, and descriptions and markers update
+on rerender. Existing color fills, grid dimensions, Recent Pairing chart and
+contribution views are preserved. The original contradictory health-color proposal
+is replaced with descriptive counts plus the ±1 marker; no scheduling quality claim
+is made. No maintained investigation code, extra fixture or new dependency remains.
+
+Both implementation slices passed their focused checks and full repository check.
+Matched local Chrome evidence proves assembled six-spin data and visible markers;
+screen-reader calibration, native keyboard-only operation and narrow-width reflow
+were not independently exercised. No production deployment or real-team observation
+is claimed. The card is complete under this recorded scope and is archived.
+No push, deployment or release was performed.

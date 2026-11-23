@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.action.stats.PairReport
-import com.zegreatrob.coupling.action.stats.heatmap.heatmapData
 import com.zegreatrob.coupling.action.timeSincePairSort
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.CouplingButton
@@ -126,7 +125,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
                     }
                 }
             } else {
-                PlayerHeatmap(players, heatmapData(players, pairs))
+                PlayerHeatmap(players, pairingHeatmapCells(players, pairs, spinsUntilFullRotation, props.savedSpinCount))
                 PairingHeatmapBaseline(players, pairs, spinsUntilFullRotation, props.savedSpinCount)
             }
         }

@@ -11,7 +11,9 @@ import com.zegreatrob.coupling.stubmodel.record
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
@@ -24,6 +26,24 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Instant
 
 class PartyStatisticsTest {
+
+    @Test
+    fun heatmapCellDescribesPairingsAgainstTheBaseline() = asyncSetup(object {
+        val players = listOf(stubPlayer().copy(name = "Alex"), stubPlayer().copy(name = "Blair"))
+        val party = PartyDetails(PartyId("cell-baseline"), name = "Cell baseline example")
+        val pairs = listOf(
+            PlayerPair(players.map { record(party.id, it) }, recentTimesPaired = 4, spinsSinceLastPaired = 0, pairAssignmentHistory = emptyList()),
+        )
+    }) exercise {
+        render(RenderOptions(wrapper = TestRouter)) {
+            PartyStatistics(party, players, pairs, 1, null, savedSpinCount = 2)
+        }
+    } verify {
+        val description = "Alex / Blair. Recent pairings: 4. Expected: 2.0. 2.0 above expected. Spins since last paired: 0."
+        val cell = screen.findByRole("img", RoleOptions(name = description))
+        cell.getAttribute("title").assertIsEqualTo(description)
+        (cell as HTMLElement).style.outline.assertIsEqualTo("none")
+    }
 
     @Test
     fun heatmapExplainsExpectedPairingsForAnEmptyHistory() = setup(object {

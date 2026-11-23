@@ -7,10 +7,8 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
-import kotlinx.browser.document
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
-import org.w3c.dom.Element
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
@@ -23,11 +21,14 @@ import web.html.HTMLElement
 
 external interface D3Thing {
     fun selectAll(elementType: String): D3Thing
-    fun data(data: Array<Double?>): D3Thing
-    fun enter(): D3Thing
-    fun append(block: () -> Element): D3Thing
-    fun style(styleName: String, block: (Double?) -> String)
+    fun data(data: Array<HeatmapCell>): D3Thing
+    fun join(elementType: String): D3Thing
+    fun attr(name: String, value: String): D3Thing
+    fun attr(name: String, value: (HeatmapCell) -> String?): D3Thing
+    fun style(styleName: String, block: (HeatmapCell) -> String): D3Thing
 }
+
+data class HeatmapCell(val value: Double?, val description: String? = null, val outlined: Boolean = false)
 
 val colorSuggestions = arrayOf(
     rgb("#2c7bb6"),
@@ -45,27 +46,29 @@ val interpolatorAsync = MainScope().async { makeInterpolator() }
 
 private fun makeInterpolator() = interpolateRgbBasis(colorSuggestions)
 
-suspend fun renderD3Heatmap(element: HTMLElement, data: List<Double?>, cellClassName: ClassName) {
+suspend fun renderD3Heatmap(element: HTMLElement, data: List<HeatmapCell>, cellClassName: ClassName) {
     val colorInterpolator = interpolatorAsync.await()
     select(element)
         .selectAll("div")
         .data(data.toTypedArray())
-        .enter()
-        .append {
-            document.createElement("div")
-                .also { it.setAttribute("class", "$cellClassName") }
-        }
-        .style("background-color") { dataNumber ->
-            if (dataNumber == null) {
+        .join("div")
+        .attr("class", "$cellClassName")
+        .attr("title") { it.description }
+        .attr("role") { if (it.description == null) null else "img" }
+        .attr("aria-label") { it.description }
+        .style("outline") { if (it.outlined) "2px solid #000" else "none" }
+        .style("outline-offset") { "-2px" }
+        .style("background-color") { cell ->
+            if (cell.value == null) {
                 "#EEE"
             } else {
-                colorInterpolator(dataNumber / 10)
+                colorInterpolator(cell.value / 10)
             }
         }
 }
 
 external interface HeatmapProps : Props {
-    var data: List<List<Double?>>
+    var data: List<List<HeatmapCell>>
     var className: ClassName
 }
 
@@ -77,7 +80,7 @@ val Heatmap by nfc<HeatmapProps> { (data, className) ->
         rootRef.current?.renderD3Heatmap(data.flatten())
     }
     div {
-        asDynamic()["data-heatmap"] = data.joinToString(",") { "[${it.joinToString(",")}]" }
+        asDynamic()["data-heatmap"] = data.joinToString(",") { "[${it.joinToString(",") { cell -> cell.value.toString() }}]" }
         css(className) {
             lineHeight = 0.px
             width = rowSize.px
@@ -88,7 +91,7 @@ val Heatmap by nfc<HeatmapProps> { (data, className) ->
     }
 }
 
-private suspend fun HTMLElement.renderD3Heatmap(flatten: List<Double?>) {
+private suspend fun HTMLElement.renderD3Heatmap(flatten: List<HeatmapCell>) {
     renderD3Heatmap(
         this,
         flatten,

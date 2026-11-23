@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.action.stats.heatmap.heatmapData
 import com.zegreatrob.coupling.action.stats.heatmap.pairingBaseline
+import com.zegreatrob.coupling.client.components.graphing.HeatmapCell
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.player.Player
@@ -21,6 +23,7 @@ import react.dom.html.ReactHTML.thead
 import react.dom.html.ReactHTML.tr
 import web.cssom.Normal
 import web.cssom.px
+import kotlin.math.abs
 
 external interface PairingHeatmapBaselineProps : Props {
     var players: List<Player>
@@ -38,6 +41,7 @@ val PairingHeatmapBaseline by nfc<PairingHeatmapBaselineProps> { props ->
             maxWidth = (62 + props.players.size * 90).px
         }
         div { +"Color scale: blue = 0, red = 5 or more; gray = no count." }
+        div { +"Outlined cells are within one pairing of expected." }
         div { +"Expected pairings per pair: ${baseline?.expectedPairings?.toFixed(1) ?: "Unavailable"}" }
         if (baseline != null) {
             div { +"Based on ${baseline.savedSpinsInWindow} saved spins; one full rotation takes ${baseline.spinsUntilFullRotation} spins." }
@@ -60,7 +64,7 @@ val PairingHeatmapBaseline by nfc<PairingHeatmapBaselineProps> { props ->
                 tbody {
                     props.players.forEachIndexed { index, first ->
                         props.players.drop(index + 1).forEach { second ->
-                            val pair = props.pairs.firstOrNull { it.players.elements.map(Player::id).toSet() == setOf(first.id, second.id) }
+                            val pair = props.pairs.pairFor(first, second)
                             val actual = pair?.recentTimesPaired
                             tr {
                                 th {
@@ -70,7 +74,7 @@ val PairingHeatmapBaseline by nfc<PairingHeatmapBaselineProps> { props ->
                                 td { +(actual?.toString() ?: "Unavailable") }
                                 td { +(baseline?.expectedPairings?.toFixed(1) ?: "Unavailable") }
                                 td { +pairingDifference(actual, baseline?.expectedPairings) }
-                                td { +(if (pair == null) "Unavailable" else pair.spinsSinceLastPaired?.toString() ?: "Never paired") }
+                                td { +pair.lastPairedLabel() }
                             }
                         }
                     }
@@ -79,6 +83,30 @@ val PairingHeatmapBaseline by nfc<PairingHeatmapBaselineProps> { props ->
         }
     }
 }
+
+fun pairingHeatmapCells(players: List<Player>, pairs: List<PlayerPair>, spinsUntilFullRotation: Int, savedSpinCount: Int?): List<List<HeatmapCell>> {
+    val expected = pairingBaseline(savedSpinCount, spinsUntilFullRotation)?.expectedPairings
+    return heatmapData(players, pairs).mapIndexed { row, values ->
+        values.mapIndexed { column, value ->
+            if (row == column) HeatmapCell(value) else pairingHeatmapCell(value, players[row], players[column], pairs, expected)
+        }
+    }
+}
+
+private fun pairingHeatmapCell(value: Double?, first: Player, second: Player, pairs: List<PlayerPair>, expected: Double?): HeatmapCell {
+    val pair = pairs.pairFor(first, second)
+    val actual = pair?.recentTimesPaired
+    val description = "${first.name} / ${second.name}. Recent pairings: ${actual ?: "Unavailable"}. " +
+        "Expected: ${expected?.toFixed(1) ?: "Unavailable"}. ${pairingDifference(actual, expected)}. " +
+        "Spins since last paired: ${pair.lastPairedLabel()}."
+    return HeatmapCell(value, description, actual != null && expected != null && abs(actual - expected) <= 1)
+}
+
+private fun List<PlayerPair>.pairFor(first: Player, second: Player) = firstOrNull {
+    it.players.elements.map(Player::id).toSet() == setOf(first.id, second.id)
+}
+
+private fun PlayerPair?.lastPairedLabel() = if (this == null) "Unavailable" else spinsSinceLastPaired?.toString() ?: "Never paired"
 
 private fun pairingDifference(actual: Int?, expected: Double?): String {
     if (actual == null || expected == null) return "Unavailable"
