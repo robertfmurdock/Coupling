@@ -27,6 +27,7 @@ val StatisticsPage = partyPageFunction { props, partyId ->
             spinsUntilFullRotation = queryResult.party.spinsUntilFullRotation ?: return@CouplingQuery,
             medianSpinDuration = queryResult.party.medianSpinDuration,
             chartComponent = CouplingResponsiveLine,
+            savedSpinCount = queryResult.party.savedSpins.size,
         )
     }
 }

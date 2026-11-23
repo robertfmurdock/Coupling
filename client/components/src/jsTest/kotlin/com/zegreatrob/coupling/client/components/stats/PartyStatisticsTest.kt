@@ -26,6 +26,19 @@ import kotlin.time.Instant
 class PartyStatisticsTest {
 
     @Test
+    fun heatmapExplainsExpectedPairingsForAnEmptyHistory() = setup(object {
+        val players = listOf(stubPlayer(), stubPlayer(), stubPlayer(), stubPlayer())
+        val party = PartyDetails(PartyId("baseline"), name = "Baseline example")
+    }) exercise {
+        render(RenderOptions(wrapper = TestRouter)) {
+            PartyStatistics(party, players, emptyList(), 3, null, savedSpinCount = 0)
+        }
+    } verify {
+        screen.getByText("Expected pairings per pair: 0.0")
+        screen.getByText("Based on 0 saved spins; one full rotation takes 3 spins.")
+    }
+
+    @Test
     fun willShowPairings() = setup(object {
         val players = listOf(
             stubPlayer().copy(name = "Harry"),

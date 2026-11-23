@@ -43,6 +43,7 @@ external interface PartyStatisticsProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var medianSpinDuration: Duration?
     var chartComponent: FC<CouplingResponsiveLineProps>?
+    var savedSpinCount: Int?
 }
 
 @ReactFunc
@@ -54,7 +55,7 @@ val PartyStatistics by nfc<PartyStatisticsProps> { props ->
                 this.party = party
                 +"Statistics"
             }
-            PartyStatisticsContent(spinsUntilFullRotation, players, medianSpinDuration, pairs, chartComponent)
+            PartyStatisticsContent(spinsUntilFullRotation, players, medianSpinDuration, pairs, chartComponent, props.savedSpinCount)
         }
     }
 }
@@ -67,6 +68,7 @@ external interface PartyStatisticsContentProps : Props {
     var medianSpinDuration: Duration?
     var pairs: List<PlayerPair>
     var chartComponent: FC<CouplingResponsiveLineProps>?
+    var savedSpinCount: Int?
 }
 
 @ReactFunc
@@ -125,6 +127,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
                 }
             } else {
                 PlayerHeatmap(players, heatmapData(players, pairs))
+                PairingHeatmapBaseline(players, pairs, spinsUntilFullRotation, props.savedSpinCount)
             }
         }
     }

@@ -72,7 +72,7 @@ Statistics for a specific pair:
 10. **CycleTimeBoxPlot** - Cycle time distribution (Nivo box plot)
 
 ### Pairing Frequency
-11. **PairFrequencyHeatmap** - 2D heatmap showing pairing frequency (Nivo heatmap)
+11. **PairFrequencyHeatmap** - 2D heatmap of pair contribution-record counts (Nivo heatmap); the enum name is historical, and these are not saved pairing occurrences.
 
 ### Statistics Page (Separate Route)
 - **PlayerHeatmap** - D3-based heatmap of player pairing frequency

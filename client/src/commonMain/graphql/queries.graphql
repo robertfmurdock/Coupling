@@ -77,6 +77,7 @@ query StatisticsPageQuery($partyId: PartyId!) {
     party(input: {partyId: $partyId}) {
         ...PartyDetails
         playerList { ...PlayerDetails }
+        savedSpins: pairingSetList { id }
         pairList(input: {includeRetired: false}) {
             players { ...PartyPlayerDetails }
             spinsSinceLastPaired

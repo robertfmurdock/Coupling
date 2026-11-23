@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.action.stats.heatmap.RECENT_PAIRING_ROTATION_CYCLES
 import com.zegreatrob.coupling.action.stats.spinsUntilFullRotation
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -13,8 +14,6 @@ import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 import kotlin.math.min
-
-const val ROTATION_HEAT_WINDOW = 5
 
 @ActionMint
 data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, val lastAssignments: PairingSetId?) {
@@ -48,7 +47,7 @@ data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, 
             this
         }
 
-        private fun getLastRelevantRotation(rotationPeriod: Int) = rotationPeriod * ROTATION_HEAT_WINDOW
+        private fun getLastRelevantRotation(rotationPeriod: Int) = rotationPeriod * RECENT_PAIRING_ROTATION_CYCLES
 
         private fun List<PairingSet>.flattenedPairings() = map(PairingSet::pairs)
             .map(NotEmptyList<PinnedCouplingPair>::toList)
