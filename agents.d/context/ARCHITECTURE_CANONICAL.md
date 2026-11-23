@@ -73,6 +73,33 @@ evidence conflicts. Keep parallel ownership disjoint and integration touchpoints
 explicit. Surface conceptual conflicts promptly. For deployment-affecting changes,
 consider the integration path, build/deploy ergonomics, and rollback.
 
+## Observability
+
+Design application observability as a reusable system capability. Prefer ordinary
+application logs as the primary evidence for performance, reliability and
+correctness investigations, so people with log access can answer routine questions
+without a profiler, custom parser or dedicated measurement runner. Improve signals
+at the owning application boundary rather than building parallel instrumentation
+only for tests or experiments.
+
+Use structured, directly queryable events with stable operation names, meaningful
+lifecycle boundaries, correlation, explicit outcomes and numeric elapsed durations
+where timing matters, including failures and cancellations. Preserve types and
+context through formatting and collection. Reuse existing logging and request
+paths; keep volume bounded and exclude secrets and sensitive application data.
+
+Verify what reaches the intended logging destination. Browser console output or
+normalized test logs alone do not establish runtime collection coverage. Make
+sampling, missing events and unsupported boundaries explicit; missing duration is
+not zero, and overlapping command durations are not total request elapsed time.
+
+Use specialized tools for concrete questions logs cannot establish, such as paint
+behavior, controlled cache comparisons or actual network bytes. Retain findings
+and limitations, and feed reusable signals back into application observability
+where useful. New collection infrastructure or maintained tooling needs a concrete
+recurring use and clear ownership; follow
+[tooling purpose and lifetime](GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
+
 ## Existing Utilities
 
 `agents.d/utilities/` contains reference discovery, safe dead-code deletion, and
