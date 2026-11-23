@@ -1,139 +1,98 @@
-# CPL-5 — Task: Semantics-preserving test suite performance improvement
+# CPL-5 — Reduce test runtime using ordinary structured logs
 
-Goal
-- Reduce end-to-end test runtime and p95 command latency in `:sdk:jvmTest`, `:sdk:jsNodeTest`, and `:e2e:e2eRun`.
-- Preserve current behavioral coverage and intended real-world usage semantics.
-- Avoid invalidating existing tests or weakening assertions.
+**Work card protocol: 2**
 
-Hard constraints
-- No test removals for performance.
-- No assertion weakening or semantic downgrades.
-- No replacing realistic command paths with mocks/fakes in integration-style tests unless already present by design.
-- Any optimization must keep command/API flows representative of intended production usage.
+## Goal and Constraints
 
-What analysis says today (from `build/test-output/test.jsonl`)
-- Main hot actions:
-  - `DeletePartyCommand` is high-volume and high-latency, with heavy tail.
-  - `ApplyBoostCommand` has severe tail latency in JS despite lower count.
-  - `GqlQuery` is the highest-volume action and compounds total cost.
-- Concurrency is very high in SDK test tasks:
-  - many overlapping commands (max parallel ~54-59), which amplifies contention.
-- Run-to-run variability is substantial in SDK tasks:
-  - same command counts, but large p95/avg latency swings between runs.
-- Current per-test command attribution is approximate under overlap (until explicit command-to-test tagging lands).
+Reduce runtime and command tail latency in `:sdk:jvmTest`, `:sdk:jsNodeTest`
+and, where justified, `:e2e:e2eRun`, using ordinary execution logs as the primary
+evidence. Preserve behavioral coverage, assertions and representative command/API
+flows. No removed tests, hidden shared mutable fixtures or substitution of fakes
+for realistic integration paths.
 
-Optimization strategy
-- Prioritize reducing contention and variance first; then target hottest command paths in test setup/teardown usage patterns.
-- Focus on harness/data-shape/test-structure improvements that keep business semantics intact.
-- Use log-derived metrics as acceptance gates for every slice.
+Make the same logs useful for correctness, flake diagnosis, concurrency analysis
+and performance. A custom analyzer or measurement harness may provide convenience,
+but must not be required to understand the evidence. Prefer a missing structured
+field at its owning emitter over downstream message parsing.
 
-Success metrics (initial targets)
-- `:sdk:jsNodeTest`
-  - reduce command p95 at task level by >=20% from current median baseline across 5 runs.
-  - reduce `DeletePartyCommand` p95 by >=20%.
-- `:sdk:jvmTest`
-  - reduce command p95 at task level by >=15% from current median baseline across 5 runs.
-  - reduce `DeletePartyCommand` p95 by >=15%.
-- Stability
-  - coefficient of variation for task-level avg command duration reduced by >=30% across repeated runs.
-- Correctness
-  - zero test regressions, zero strict analyzer violations.
+## Acceptance Evidence
 
-Baseline protocol (must run before changes)
-- Execute each target task 5 times with stable machine conditions; store analyzer JSON snapshots per run.
-- Commands:
-  - `./gradlew resetTestJsonl --no-configuration-cache`
-  - repeat 5x:
-    - `./gradlew -Pcoupling.testLog.reset=true :sdk:jsNodeTest :sdk:jvmTest --no-configuration-cache`
-    - `./gradlew analyzeTestJsonl --no-configuration-cache > build/test-output/analyze-baseline-<n>.json`
-- Produce baseline medians for:
-  - task-level `avg_command_ms`, `p95_command_ms`
-  - action-level p95 for `DeletePartyCommand`, `ApplyBoostCommand`, `GqlQuery`
-  - run-to-run variance metrics
+- Retain raw `test.jsonl` with run/task/platform/test identity and structured
+  command timing, plus source revision, execution conditions and command outcomes.
+  Include direct `jq` or ordinary log-query examples for command counts, p50/p95,
+  failures/cancellations, exact test attribution and task elapsed time. Distinguish
+  summed overlapping command time from elapsed time; missing durations are not zero.
+- Establish five complete control runs under comparable conditions; compare at
+  least three complete runs per candidate and five for final acceptance. Retain
+  failures and missing coverage separately instead of silently filtering them out.
+  Report sample counts and variability; historical baselines are context, not
+  current controls. Ensure measured tasks actually execute rather than reuse cache.
+- Initial targets remain JS task/action DeleteParty p95 reductions of 20%, JVM
+  reductions of 15%, and 30% lower CV of task average command duration. Revise these
+  only with recorded evidence and rationale. Report total runtime and throughput
+  so lower concurrency cannot masquerade as improvement by moving cost elsewhere.
+- Preserve correctness and strict log contracts. Run focused checks, existing
+  `analyzeTestJsonl`/attribution checks and `./gradlew check` for each implementation
+  slice. No noisy timing release gate until its baseline is demonstrably stable.
 
-Rollout slices
+## Ownership and Existing Capabilities
 
-- [x] Slice 1 - reproducibility + measurement harness
-  - Add a repeatable local script in `scripts/` to run N iterations and aggregate key metrics.
-  - Report median/p95/min/max/CV by task and key actions.
-  - Keep this script read-only against test semantics (measurement only).
+One contributor owns each slice through tests, implementation and review. Test
+orchestration belongs to the existing Gradle conventions; command emission belongs
+to `libraries/action`; test normalization and analysis remain in their current
+owners. Reuse CPL-1–4's structured schema and exact attribution, already delivered
+in [CPL-4](../work_completed/CPL-4-TEST_COMMAND_TEST_ATTRIBUTION_TASK_DONE.md).
+Do not retain the obsolete approximate-attribution prerequisite.
 
-- [ ] Slice 2 - reduce artificial contention in test orchestration (without reducing behavior)
-  - Audit SDK test execution parallelism knobs (Gradle workers/test framework parallel settings).
-  - Tune for lower contention while preserving total behavior coverage:
-    - avoid globally serializing everything unless data proves it is best throughput.
-    - prefer bounded concurrency over unbounded overlap.
-  - Validate net wall-clock and p95 improvements from logs.
+[CPL-66](CPL-66-APPLICATION_LOG_PERFORMANCE_OBSERVABILITY.md) improves runtime
+observability beyond test logs. It is not a gate: deliver a required emitter fix
+here if necessary and share the committed contract/evidence.
 
-- [ ] Slice 3 - setup/teardown efficiency patterns in high-churn tests
-  - Target suites with high `DeletePartyCommand`/`GqlQuery` counts.
-  - Refactor repetitive setup flows into semantic-preserving fixtures/helpers that:
-    - avoid unnecessary repeated create/delete cycles when same behavior can be asserted in one realistic flow.
-    - preserve externally observable behavior and assertions.
-  - Keep test intent explicit; no hidden shared mutable state across tests.
+Follow [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
+The existing shell harness and its invocations below are historical evidence,
+not instructions to expand it. Use ordinary Gradle tasks and standard queries;
+retain automation only for a demonstrated recurring need, with an owner and
+supported contract. Remove superseded automation when replacing it, without
+building a new reporting subsystem just to close this card.
 
-- [ ] Slice 4 - targeted hotspots in test-invoked command paths (non-semantic)
-  - Investigate JS-heavy `ApplyBoostCommand` tail behavior under test load.
-  - Investigate `DeletePartyCommand` tail under concurrent SDK tests.
-  - Prefer low-risk improvements first:
-    - request construction overhead
-    - redundant query calls in test helper paths
-    - avoid duplicate command invocations in fixtures
-  - Do not change command semantics; only remove avoidable overhead.
+## Safe Slice Sequence
 
-- [ ] Slice 5 - variance hardening
-  - Identify and reduce noisy factors in test runtime:
-    - unnecessary retries/polls with aggressive intervals
-    - unstable timing assumptions in asynchronous waits
-    - expensive one-time initialization repeated per test when safely reusable
-  - Validate improvement via 5-run trend comparison.
+- [ ] Reconfirm current controls and log sufficiency. Inspect existing attributed
+  events before adding anything; document queries and coverage limitations. If a
+  contract gap prevents analysis, test its smallest emitter/normalizer boundary
+  first: missing or incorrectly typed timing/identity must fail, and concurrent
+  tests must not leak attribution. Ship the fix with its consumers in one slice.
+  This slice independently improves diagnosis even if optimization stops.
+- [ ] Reduce demonstrated orchestration contention. Use current logs to select one
+  bounded concurrency change; own it in the existing Gradle convention. Declare
+  the preserved execution contract and relevant test scenarios before changes.
+  This may be behavior-preserving: do not fabricate a failing test. Compare both
+  throughput and latency and reject regressions rather than weakening coverage.
+- [ ] Improve one demonstrated setup/teardown or command hotspot at a time.
+  Candidate actions from historical logs are DeletePartyCommand, ApplyBoostCommand
+  and GqlQuery; reconfirm their relevance. Keep test intent and real API semantics.
+  Name each behavioral scenario and expected failure before any behavior change;
+  test at the existing helper/command owner, then compare complete repeated runs.
+  Each passing commit must be useful without subsequent optimizations.
+- [ ] Reduce a demonstrated source of variance, such as redundant initialization
+  or aggressive polling, under the same contract and evidence rules. Document
+  what logs now explain about flakiness as well as speed.
+- [ ] Publish the final standard queries and matched comparison. Reuse existing
+  CI log artifacts; add a non-blocking trend warning only if there is a concrete
+  recurring consumer and stable baseline. A new performance gate is optional,
+  not a completion requirement. Record remaining noise and missed targets honestly.
 
-- [ ] Slice 6 - guardrails + regression gates
-  - Add performance smoke gate in CI/local tooling:
-    - compare current run metrics against rolling baseline envelope.
-    - non-blocking warn first, then promote to thresholded failure once stable.
-  - Keep correctness gates mandatory (`test`, `check`, analyzer strict).
+## Resume Note and Historical Evidence
 
-Candidate first targets (based on current logs)
-- `:sdk:jsNodeTest`:
-  - `SdkPartyTest.deleteWillMakePartyInaccessible`
-  - `SdkPartyTest.saveMultipleThenGetEachByIdWillReturnSavedParties`
-  - `SdkPairs*` tests with very high command-call density
-- `:sdk:jvmTest`:
-  - `RequestCombineEndpointTest.postPlayersAndPinsThenGet()`
-  - `SdkPairs*` and `SdkPlayer*` high command-density tests
-- `:e2e:e2eRun`:
-  - lower priority for raw speed (already relatively stable), but keep as regression check
+The historical harness and five-run baseline were delivered. Two orchestration
+candidates were rejected. A later update records stabilization of the modification
+metadata test; inspect current commits and logs rather than carrying its old
+blocker forward. Start with a fresh short control, then establish the current
+five-run baseline. Old lockfile exclusions and environment workarounds below are
+historical, not standing permission to bypass current checks.
 
-Validation checklist for every slice
-- Correctness:
-  - `./gradlew test --no-configuration-cache`
-  - `./gradlew analyzeTestJsonl --no-configuration-cache` (strict violations must remain 0)
-- Performance:
-  - at least 3 repeated runs on touched tasks
-  - compare median and p95 vs pre-slice baseline
-  - summarize gains/losses by task and key actions
-
-Reporting template (per slice)
-- Change summary
-- Why semantics are preserved
-- Before/after metrics (median and p95)
-- Variance impact (CV/range)
-- Residual risks
-
-Open dependency
-- Exact per-test command attribution is currently approximate under high overlap.
-- The companion plan in `agents.d/TEST_COMMAND_TEST_ATTRIBUTION_TASK.md` should run in parallel or early to improve confidence in per-test targeting.
-
-Definition of done
-- Targeted command/task p95 reductions met (or thresholds revised with data-backed rationale).
-- No correctness regressions.
-- Performance measurement workflow is repeatable and documented.
-- Team can identify bottlenecks from raw log-derived reports without bespoke manual analysis.
-
-Continuation status
-- checkpoint: working tree (uncommitted)
-- next: `NEXT=SLICE_2_REDUCE_ARTIFICIAL_CONTENTION_IN_TEST_ORCHESTRATION`
+The following record is retained verbatim for provenance; the plan above governs
+future work.
 
 Continuation update (2026-04-25, slice-1 reproducibility + measurement harness)
 - Added repeatable performance harness script:

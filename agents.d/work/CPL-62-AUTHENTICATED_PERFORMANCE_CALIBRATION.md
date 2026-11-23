@@ -1,76 +1,100 @@
-# CPL-62 — Authenticated performance and route-scoped CDN loading
+# CPL-62 — Explain authenticated route performance with application logs
 
 **Work card protocol: 2**
 
 ## Goal and Constraints
 
-Complete the signed-in and measurement-calibration work transferred from
-[CPL-54](../work_completed/CPL-54-WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md).
-Measure Party List and saved current pairs with known data and repeated cold-cache/
-warm runs. Preserve app behavior, visuals and ordinary E2E coverage. No timing
-budgets until variability is understood. The baseline is independently deliverable.
-After calibration, use it to assess one route-only CDN dependency group. Preserve
-shared React identity, all actions and the established visuals and animations.
+Make Party List and saved current-pairs readiness measurable and explainable from
+ordinary application logs, then use matched evidence to assess one route-only CDN
+dependency group. Reuse application signals for support, reliability diagnosis and
+release comparisons as well as performance. Preserve behavior, visuals, animations,
+authentication and ordinary E2E coverage. No timing budgets until variability is
+understood. The route-observability baseline is independently deliverable.
 
-## Scope Boundary and Tooling
+This continues [CPL-54](../work_completed/CPL-54-WEB_PERFORMANCE_MEASUREMENT_FOLLOWUP.md).
+Its Welcome lab baseline remains historical evidence, not field certification.
+[CPL-52](CPL-52-WEB_CSP_HARDENING_FOLLOWUP.md) owns CSP independently.
+[CPL-66](CPL-66-APPLICATION_LOG_PERFORMANCE_OBSERVABILITY.md) owns general runtime
+command log quality. Neither card must finish first: reuse existing contracts or
+ship a necessary shared change with this card's complete slice and share evidence.
 
-This performance work is independent of CSP. [CPL-52](CPL-52-WEB_CSP_HARDENING_FOLLOWUP.md)
-owns policy, script authorization and security compatibility checks against the
-current dependency graph; it does not require route-only loading or performance
-calibration first. This card owns performance measurement and optional CDN
-loading changes. Existing inventories can inform both without merging delivery.
+## Evidence Policy and Scope
 
-Follow [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
-Reuse existing measurement capabilities and application tests. Evidence requests
-below do not require a new recorder, browser fixture framework, observer subsystem
-or persistent experiment script. Document one-off findings and limitations;
-justify any retained tool extension by a concrete recurring need in the slice.
+Start with existing client, SDK and server logs and their actual destinations.
+Document what a person with log access can answer before proposing instrumentation.
+Route readiness belongs in the application's routing/data/action lifecycle, not
+solely in a WebDriver polling loop. Define readiness as fixture data plus the usable
+destination action, never just a header/loading shell. Name what that semantic
+signal cannot establish about paint, layout or user-perceived responsiveness.
+
+Use bounded structured route/interaction summaries through existing logging paths.
+Audit browser-log availability: console output alone does not establish centrally
+accessible telemetry. If existing collection cannot carry a required signal, make
+that gap and the smallest delivery choice explicit before implementation. Do not
+silently add an ingestion service, vendor SDK or browser-to-server transport.
+A material infrastructure/scope change must be resolved with the user; keep any
+useful local-log slice independently deliverable and central coverage labeled open.
+
+Browser tooling remains appropriate for evidence logs cannot establish: cold/warm
+cache control, rendering metrics, protocol bytes, generated imports and first-use
+loading behavior. Reuse `e2e/performance/` and ordinary application tests. Do not
+create a parallel recorder, observer framework, fixture system or experiment runner.
+Apply [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
 
 ## Acceptance Evidence
 
-- Reproduce Party List and saved current-pairs readiness with an owned fixture
-  and three cold/warm pairs per route. Keep observer limitations, aborts and
-  missing samples visible alongside measurements.
-- For one selected dependency group, show absence on startup and correct
-  loading on first use in a production build. Retain matched request, byte and
-  emitted JavaScript comparisons plus action and recovery evidence. A runtime
-  inventory that rules out a safe candidate can close the loading investigation.
-
-## Evidence and Starting Points
-
-- `e2e/performance/` owns the opt-in Welcome runner, numeric metric aggregation and
-  WebDriver BiDi network totals. Instructions and caveats are in its README.
-- `e2e/src/jsE2eTest/.../TestLogin.kt` owns the current Auth0 test cache-seeding
-  scheme. Reuse/extract that contract rather than invent a divergent login path.
-- Ordinary `E2eSetup.kt` deletes the configured test account's parties. Do not use
-  that bootstrap for measurement. Own a named disposable fixture and touch only
-  that fixture; report party/player/pair counts needed to assess comparability.
-- Existing Gradle E2E execution retrieves its test password from configured AWS
-  SSM. Preserve profiles and credential ownership; keep tokens/cache payloads in
-  memory and out of logs, reports, source and CLI arguments.
-- Welcome cold/warm timing varies; some warm observations have null LCP despite
-  support, and some earlier runs recorded module ERR_ABORTED events. Those runs
-  are retained, not silently discarded. Final CPL-54 baseline had no failures.
+- Ordinary route logs identify route template, elapsed duration, terminal outcome,
+  navigation correlation and available release/environment context. Dynamic party
+  IDs, user content, tokens, raw URLs and request bodies are excluded. Define units,
+  readiness boundary and sample/collection limitations; missing samples are not zero.
+- Supply standard log queries for route count, p50/p95 readiness, failure/cancellation
+  rate and correlation with relevant command/request work. Report counts and missing
+  coverage; do not sum overlapping child durations as total route time. Show actual
+  emitted records through the intended logging path, not only synthetic fixtures.
+- Reproduce `/parties/` and `/:partyId/pairAssignments/current/` with four players,
+  two saved pairs and three cold/warm pairs per route. Record fixture counts,
+  auth/cache/animation state, actual viewport, host/browser and source revision.
+  Compare application readiness logs to the lab observation and explain differences.
+  Retain aborts, failures, null metrics and collection limitations.
+- For a selected CDN group, retain matched startup/first-use request, byte and full
+  emitted-JS comparisons with action/recovery evidence. A runtime inventory that
+  rules out a safe candidate can close the loading investigation. Logs alone cannot
+  prove actual CDN bytes or visual correctness.
+- Focused contract tests and `./gradlew check` pass for each implementation slice.
+  Existing deployment/log access may validate destination coverage when available;
+  this card does not authorize deployment. Explicitly label unverified field coverage.
 
 ## Safe Slice Sequence
 
-- [ ] Isolate reusable, non-resetting auth/fixture setup. At the helper boundary, test that setup leaves unrelated parties intact
-  and cleanup targets only the named fixture. Preserve normal E2E login. Seed fresh browser profiles
-  without warming application assets during login, or explicitly label that cost.
-  Confirm how the same test identity can coexist with ordinary E2E runs.
-- [ ] Measure `/parties/` and `/:partyId/pairAssignments/current/` with a small saved
-  fixture (four players, two pairs). Readiness requires fixture data and the usable
-  destination action, not merely a header/loading shell. Record fixture counts,
-  auth/cache/animation state, actual viewport, browser/host and three repeated
-  cold/warm pairs. Reuse existing opt-in Gradle measurement capabilities; do not
-  introduce normal timing CI gates or a new runner just to obtain this evidence.
-- [ ] Establish measurement limitations, including warm refresh, using existing
-  tooling and bounded experiments. Investigate/classify aborts before excluding
-  samples. Unsupported or missing metrics remain explicit. Preserve original
-  failures/anomalies; a dedicated observer fixture suite is not a deliverable.
-- [ ] Retain full repeated evidence; choose any controlled CPU/network conditions
-  explicitly. Add one representative interaction trace if reliable tooling is
-  available; label lab interaction observations separately from field INP.
+One contributor carries each slice across its required layers through completion.
+
+- [ ] Inventory existing route/command signals and log destinations; retain concise
+  query examples, missing fields and coverage findings. Choose the smallest useful
+  route first. Record the exact semantic readiness/outcome contract and owner in
+  the existing client routing/data lifecycle before tests.
+- [ ] Deliver that route's structured lifecycle summary. Test successful data plus
+  usable action, failed load, superseded navigation/cancellation, repeat navigation
+  and duplicate-render protection at the owning boundary. Expect missing, duplicate
+  or premature terminal records to fail before edits. Emit once per defined
+  navigation outcome; preserve existing behavior and correlate existing commands.
+  Test formatter/forwarding preservation in the same slice. Bound log volume and
+  exclude sensitive values. This provides useful diagnosis without the lab runner.
+- [ ] Apply the proven contract to the second route with its own data/action and
+  cancellation scenarios. Reuse the same application logging path and document
+  queries against actual emitted logs. Do not duplicate a lab-only event schema.
+- [ ] Reuse/extract non-resetting Auth0/fixture setup only as needed for matched lab
+  calibration. Test preservation of unrelated parties and cleanup limited to the
+  owned named fixture. Ordinary E2E bootstrap deletes test-account parties and is
+  unsuitable. Preserve configured AWS/SSM credentials and normal login; keep tokens
+  in memory. Account for auth asset warming and coexistence with ordinary E2E runs.
+- [ ] Collect the repeated baseline with existing Gradle measurement capabilities.
+  Explain warm refresh, missing LCP and aborts using bounded experiments; preserve
+  anomalous samples. No dedicated observer suite or normal timing CI gate. Add an
+  interaction trace only for a concrete unanswered question; distinguish lab
+  observations from field INP. Field Web Vitals expansion is not required here.
+- [ ] Assess and, if safe, deliver one CDN deferral using the sequence below.
+  Compare the application route signals alongside necessary browser evidence;
+  publish queries and remaining limits for future investigations.
 
 ## Route-Scoped CDN Loading
 
@@ -109,7 +133,8 @@ deferral is not a prerequisite for CSP. Avoid blanket bundling or self-hosting c
 
 ## Resume Note
 
-Start by evaluating whether existing auth/fixture capabilities can support the
-bounded measurements without resetting unrelated data. Signed-in measurements,
-measurement-limit investigation and loading implementation are pending. Keep
-field telemetry as a separate decision if reliable interaction tooling is unavailable.
+Start by inspecting existing runtime logs and identifying the first route's semantic
+readiness boundary and actual collection coverage. Signed-in measurements and CDN
+deferral remain pending. Do not replay CPL-54 or make a new measurement platform
+an implicit prerequisite. Any shared emitter improvements reuse or update CPL-66's
+evidence without introducing reciprocal dependencies.
