@@ -36,9 +36,13 @@ class BuildCacheDeploymentTaskTest {
     fun `builds a validation command for dry runs`() {
         assertEquals(
             listOf(
-                "aws", "cloudformation", "validate-template",
-                "--template-body", "file://${template.absolutePath}",
-                "--region", "us-east-1",
+                "aws",
+                "cloudformation",
+                "validate-template",
+                "--template-body",
+                "file://${template.absolutePath}",
+                "--region",
+                "us-east-1",
                 "--no-cli-pager",
             ),
             buildCacheDeploymentCommand(

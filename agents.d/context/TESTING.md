@@ -152,23 +152,29 @@ intent explicitly before changing it.
 
 ## Local Integration Environment
 
-SDK integration tests authenticate test users using
-`COUPLING_PRIMARY_TEST_PASSWORD` and `COUPLING_ALT_TEST_PASSWORD`; browser/e2e
-login uses `COUPLING_E2E_TEST_PASSWORD`. Gradle's `:e2e:e2eRun` reads the Standard
-SecureString parameter
-`/local/COUPLING_E2E_TEST_PASSWORD` from AWS SSM using the configured AWS identity.
-The parameter is fetched only when the E2E task executes and supplied to the test
-process; exported E2E password values are overridden. SDK passwords still
-come from the configured shell/credential loader. These are separate from AWS
-credentials. Check presence without printing values; do not copy secrets into the
-repository. If AWS works but SDK tests receive HTTP 401, inspect this environment
-before changing auth behavior.
+Gradle-run SDK integration tests (`:sdk:jsNodeTest` and `:sdk:jvmTest`) read
+Standard SecureString parameters `/local/COUPLING_PRIMARY_TEST_PASSWORD`,
+`/local/COUPLING_ALT_TEST_PASSWORD`, and `/local/COUPLING_E2E_TEST_PASSWORD`
+from AWS SSM using the configured AWS identity. The primary, alternate, and E2E
+accounts are distinct. Browser/E2E tasks use only the E2E parameter.
+
+Passwords are fetched when a consuming test task executes and injected through
+its existing environment variable names; inherited password values are overridden.
+Task discovery and unrelated tasks do not fetch these SDK passwords. Run
+`./gradlew check` from an ordinary shell; no fish password exports are required.
+Keep existing Docker, local certificate, and integration-stack prerequisites.
+
+Local and CI identities need `ssm:GetParameters` on the named parameters and
+decryption access to their encryption key. Missing/blank parameters fail with the
+parameter name; AWS lookup failures ask you to check credentials and access.
+Follow the [AWS diagnosis](GRADLE_PLAYBOOK.md#aws-sso-and-gradle-daemons) before
+changing profiles or authentication behavior. If lookup succeeds but SDK tests
+receive HTTP 401, verify that the named parameter belongs to the correct test
+account. Do not print passwords, copy them into files, or substitute the E2E
+password for a primary/alternate password. Test-account passwords are separate
+from AWS credentials.
 
 ## Browser Diagnostics
-
-On this development host, SDK password variables are loaded by fish. Run local
-validation through `fish -lc './gradlew check'`; CI supplies its own
-secret environment. Do not request password values or bypass configured profiles.
 
 The E2E runner installs browser capture before navigation. BiDi sessions collect
 console/script events and failed-network/HTTP-error metadata; classic sessions

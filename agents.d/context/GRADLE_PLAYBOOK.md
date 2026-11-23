@@ -238,8 +238,9 @@ outside it. Do not spend an initial run rediscovering this restriction.
 - Invoke `./gradlew` directly when the required environment is already available.
   Prefer the execution tool's output/session capture to shell redirection and
   task-specific log filenames, which can prevent existing command approvals from
-  matching. Use a shell wrapper only when needed for environment setup (for example,
-  fish-loaded SDK credentials); reuse an existing matching approval when available.
+  matching. Use a shell wrapper only when needed for environment setup; reuse an
+  existing matching approval when available. SDK passwords come from execution-time
+  SSM lookup, as described in [Testing](TESTING.md#local-integration-environment).
 - If outside-sandbox execution is denied, report that blocker. Do not retry the
   same sandboxed browser launch, weaken tests, disable Chrome's own sandbox, or
   change global agent permissions to work around it.

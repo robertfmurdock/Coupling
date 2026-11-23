@@ -57,9 +57,13 @@ internal fun buildCacheDeploymentCommand(
     dryRun: Boolean,
 ): List<String> = if (dryRun) {
     listOf(
-        "aws", "cloudformation", "validate-template",
-        "--template-body", "file://${template.absolutePath}",
-        "--region", region,
+        "aws",
+        "cloudformation",
+        "validate-template",
+        "--template-body",
+        "file://${template.absolutePath}",
+        "--region",
+        region,
         "--no-cli-pager",
     )
 } else {

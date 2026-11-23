@@ -1,7 +1,7 @@
 @file:OptIn(ApolloExperimental::class)
 
 import com.apollographql.apollo.annotations.ApolloExperimental
-import com.zegreatrob.coupling.plugins.util.fetchAwsSsmParameter
+import com.zegreatrob.coupling.plugins.util.useSdkTestPasswords
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import org.gradle.api.tasks.testing.Test
 
@@ -132,11 +132,5 @@ tasks {
     }
 }
 
-tasks.withType<Test>().configureEach {
-    val connectionTestPassword = providers.fetchAwsSsmParameter("/local/COUPLING_E2E_TEST_PASSWORD")
-    doFirst { environment("COUPLING_E2E_TEST_PASSWORD", connectionTestPassword.get()) }
-}
-tasks.withType<KotlinJsTest>().configureEach {
-    val connectionTestPassword = providers.fetchAwsSsmParameter("/local/COUPLING_E2E_TEST_PASSWORD")
-    doFirst { environment("COUPLING_E2E_TEST_PASSWORD", connectionTestPassword.get()) }
-}
+tasks.withType<Test>().configureEach { useSdkTestPasswords() }
+tasks.withType<KotlinJsTest>().configureEach { useSdkTestPasswords() }

@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.plugins.deploy
 
-import java.io.File
-import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -14,6 +12,8 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
+import java.io.File
+import javax.inject.Inject
 
 abstract class ServerlessConfigTask : DefaultTask() {
     @get:InputFile

@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.plugins.dashboard
 
+import org.gradle.api.GradleException
 import java.io.File
 import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import org.gradle.api.GradleException
 
 class DashboardHandoffCommandTest {
     @Test
