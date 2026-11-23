@@ -29,6 +29,24 @@ recurring need and owner, or keep the experiment temporary and retain findings.
 Choose useful headings. Link shared procedures; record decisions affecting scope,
 design, or validation.
 
+## Keep the Writing Focused
+
+Write for the next contributor deciding what to build, why, and how to know it
+works. Include the product contract, relevant findings, consequential decisions,
+delivery slices, evidence and concrete blockers or next actions. Scale detail to
+the work; a small feature does not need an exhaustive implementation manual.
+
+Omit commentary about writing or reviewing the card: what was rewritten, which
+standards were consulted, why headings or filenames were retained, or how the
+proposal was modernized. Record the resulting decision and its reason when they
+affect the work, rather than narrating the editing process.
+
+Link shared delivery, testing, approval and closeout procedures instead of
+restating them. Include task-specific constraints or exceptions where needed.
+Keep each contract or evidence requirement in one place; avoid repeating it in
+the goal, slice plan and acceptance list. Retain concise status and handoff facts
+that change the next action, without a running diary of routine activity.
+
 ## Keep Cards Independently Deliverable
 
 Prefer one card per independently deliverable outcome. Link related cards for
