@@ -36,6 +36,21 @@ context rather than maintaining an active umbrella that only duplicates their
 status. An umbrella is justified only when it owns a concrete integration or
 acceptance outcome that no other card owns; state that outcome explicitly.
 
+Minimize or avoid co-ownership of a card. Give each card a clear primary outcome
+and one contributor responsible for carrying its current slice through completion.
+That contributor may make all changes needed for the outcome across module and
+layer boundaries. Focused investigation or review can help without dividing
+implementation into reciprocal handoffs.
+
+Different cards may need the same change on the way to different primary outcomes.
+Either contributor may deliver it first; the other reuses the committed change
+and records the applicable evidence. Overlap alone does not require exclusive
+ownership, a shared prerequisite card, or waiting for the other contributor.
+Coordinate concurrent edits when needed, but avoid plans where each card waits
+for the other to supply part of its implementation. If that split is unavoidable,
+keep the dependent work together under one owner or state a concrete prerequisite
+as described below.
+
 Minimize ordered work across cards. A requirement to finish another card first
 is a last resort, not the default planning structure. Prefer a smaller useful
 outcome, an existing contract, or keeping tightly dependent slices in one card.

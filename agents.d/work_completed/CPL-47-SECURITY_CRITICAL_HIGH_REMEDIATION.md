@@ -1,5 +1,20 @@
 # CPL-47 — Critical and High Security Remediation
 
+## Disposition — archived 2026-11-23
+
+Archived by owner decision. Application remediation slices 1–3 are complete,
+slice 4 resolved the intentional permissions policy, and slice 5b's scoped Lambda
+invocation grant was deployed and verified through the production notification
+flow. Their implementation and validation evidence is retained below.
+
+The DynamoDB permission finding is **not remediated**. [CPL-48](../work/CPL-48-DYNAMODB_MIGRATION_IAM.md)
+is its sole active work card and owns the remaining implementation and acceptance
+evidence. CPL-47 has no separate deliverable left; it does not remain open merely
+to mirror CPL-48. This disposition supersedes the historical instructions below
+to keep this card active until DynamoDB hardening finishes. It does not claim all
+critical/high findings are resolved. No fresh tests or AWS changes were made for
+this documentation-only closeout.
+
 ## Goal and Constraints
 
 Address all critical and high findings from the 2026-10-30 source review:
@@ -114,7 +129,7 @@ review remain outside this card: URL token logging and GraphQL work budgets.
     demonstrated security violation; do not manufacture denial tests.
 
 - [ ] **5a. Restrict DynamoDB permissions: transferred, still outstanding.**
-  - Owned by [DynamoDB migration IAM](CPL-48-DYNAMODB_MIGRATION_IAM.md), coordinated with
+  - Owned by [DynamoDB migration IAM](../work/CPL-48-DYNAMODB_MIGRATION_IAM.md), coordinated with
     the target-table rollout. Production `coupling-*`, other stages
     `<stage>-coupling-*`; new tables within authorized namespaces/families need
     no per-table IAM edit. Preserve legacy naming during migration.

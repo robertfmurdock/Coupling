@@ -3,7 +3,7 @@
 ## Goal and Constraints
 Replace `AmazonDynamoDBFullAccess` as part of the target-schema rollout without
 requiring role edits for each new table. This owns the outstanding DynamoDB
-finding transferred from [security remediation](CPL-47-SECURITY_CRITICAL_HIGH_REMEDIATION.md),
+finding transferred from [archived security remediation](../work_completed/CPL-47-SECURITY_CRITICAL_HIGH_REMEDIATION.md),
 not a completed remediation. Lambda invocation remains in that security card.
 
 Follow the [schema proposal](../../DYNAMODB_SCHEMA_PROPOSAL.md) and
@@ -63,4 +63,6 @@ commit: `git log -1 --format=%H -- agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.m
 
 For implementation record endpoint red/green, focused checks, full check,
 separate test/design reviews, complete-slice review, cleanup, and commit IDs.
-Link completed evidence back to the security card before closing its finding.
+This is the sole active owner of the remaining DynamoDB finding. Record completion
+evidence here; the archived security card is historical context and adds no
+separate closeout gate.
