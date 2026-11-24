@@ -1,5 +1,7 @@
 # CPL-48 — DynamoDB Migration IAM Boundary
 
+**Work card protocol: 2**
+
 ## Goal and Constraints
 Replace `AmazonDynamoDBFullAccess` as part of the target-schema rollout without
 requiring role edits for each new table. This owns the outstanding DynamoDB
@@ -15,7 +17,8 @@ Do not expand the separate ledger-schema compatibility card into this work.
 ## Safe Slice Sequence
 - [ ] Inventory effective generated policies, required DynamoDB operations and
   resource families for application persistence, bootstrap/table creation, TTL,
-  ledger, backfill, dual-write, reconciliation, and notification persistence.
+  ledger, backfill/read-triggered import, catch-up, dual-write, reconciliation,
+  recovery, and notification persistence.
   Design the minimum role boundaries; preserve existing paths or provide their
   tested replacement in the same slice.
 - [ ] After explicit fixture authorization, establish endpoint red using an
@@ -30,7 +33,9 @@ Do not expand the separate ledger-schema compatibility card into this work.
   access to a newly created target table without editing IAM, and AccessDenied
   outside the namespace. Deliver tests and implementation together after full
   checks; preserve legacy and target operation while migration is incomplete.
-- [ ] At each environment's cutover remove ordinary runtime legacy access.
+- [ ] At each environment's target-only retirement remove ordinary runtime legacy
+  access. Promotion to always-enabled migration retains dual writes, read-triggered
+  import and catch-up, so it must retain their required legacy permissions.
   Verify target flows still work and legacy access is denied using synthetic
   fixtures. Keep recovery access separately authorized. Retire temporary
   migration privileges only after their duties stop or move to a tested path.

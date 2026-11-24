@@ -7,9 +7,9 @@ the legacy record-history DynamoDB tables to the workload-oriented tables in
 [DYNAMODB_SCHEMA_PROPOSAL.md](DYNAMODB_SCHEMA_PROPOSAL.md). It deliberately
 does not change GraphQL fields, resolver contracts, or endpoint behavior.
 
-The server remains legacy-backed unless an environment explicitly requests a
-migration mode. A migration request is fail-closed: a missing or unrecognized
-mode prevents the server from selecting a storage implementation.
+The current server remains legacy-backed while migration capabilities are built.
+The rollout below defines the intended behavior; it does not claim the online
+migration catalog or freshness detection is already implemented.
 
 ## Table namespace and IAM rollout
 
@@ -30,7 +30,7 @@ target namespace permissions plus explicit required legacy table/index access.
 Inventory and preserve bootstrap, ledger, backfill, dual-write, reconciliation,
 and TTL operations before removing permissions. Separate migration privileges
 from runtime only where required and with a validated replacement execution path.
-At each environment's cutover remove its normal runtime legacy access; retain
+At each environment's target-only retirement remove normal runtime legacy access; retain
 legacy recovery evidence under separately authorized recovery access. Do not
 wait for global legacy-code removal to retire that environment's permissions.
 
@@ -40,71 +40,127 @@ rollout and the mandatory isolated AWS endpoint red/green evidence. The
 tracks the transfer as outstanding, not remediated. No provisioning, deployment,
 or AWS profile changes are authorized by these documents.
 
-## Mode and ledger
+## Operating states and rollout
 
-During implementation, `DYNAMODB_SCHEMA_MIGRATION_MODE` is required in every
-deployment configuration. Its only valid values are `disabled`, `dual_write`,
-and `cutover`. Every checked-in stage configuration starts at `disabled`; local
-execution is legacy-backed unless temporarily configured otherwise. Prerelease
-is the first existing deployment configuration eligible to request
-`dual_write` after the repository migration checks exist.
+Migration is a repeatable application capability throughout the transition, not
+an operation whose success depends on running once at exactly the right time.
+The intended runtime sequence is:
 
-The flags have a deliberate, temporary lifecycle:
+1. **Legacy only.** Existing reads and writes continue while useful target and
+   import capabilities are delivered in independently releasable slices.
+2. **Incubating migration.** `ENABLE_PRERELEASE_FEATURES=true` requests the
+   migration catalog: coordinated writes to both stores, target reads, and
+   repeatable import/catch-up of missing or stale legacy data before returning
+   affected results. Environments without incubation remain legacy-backed.
+3. **Always-enabled migration.** Promote that same migration behavior to normal
+   operation independently of the prerelease flag. Both writes and self-healing
+   reads remain active while confidence accumulates across ordinary usage.
+4. **Target only.** After fleet reconciliation and retirement evidence are
+   complete, remove legacy writes, import/detection, migration routing and the
+   storage interpretation of the flag. Target repositories become unconditional.
+   The shared prerelease flag remains available for other incubating features.
 
-1. `DYNAMODB_SCHEMA_MIGRATION_MODE` is the explicit implementation and early
-   incubation control.
-2. Once that control is proven, remove it and let
-   `ENABLE_PRERELEASE_FEATURES=true` request dual-write behavior. `false`
-   retains legacy behavior for an environment that has not cut over.
-3. Once the target system is live everywhere, remove the prerelease-controlled
-   storage branch as well. The target catalog becomes unconditional and both
-   feature flags and legacy catalog selection are deleted.
+These are application capabilities with normal configuration, not a sequence of
+named environment deployment gates. Each environment has independent durable
+migration progress. Local execution and tests exercise the same paths.
 
-A ledger already in `CUTOVER` always selects the target catalog regardless of
-the prerelease setting; neither temporary flag can reverse a cutover.
+`DYNAMODB_SCHEMA_MIGRATION_MODE` already exists as a foundation control. Keep
+checked-in values disabled until the migration catalog is implemented; replace
+its runtime selection role with the shared prerelease flag as part of delivering
+incubation. Do not build another long-lived control lifecycle around it.
+Ledger commands, rather than feature flags, own durable progress and target-only
+retirement. Invalid configuration and unsupported ledger schemas fail explicitly.
 
-| Requested mode | Ledger phase | Request catalog |
-| --- | --- | --- |
-| `disabled` | not cut over | legacy |
-| `dual_write` | disabled or backfilling | legacy |
-| `dual_write` | dual write | migration |
-| `cutover` | cut over | target |
+Before target-only retirement, disabling incubation returns to legacy operation
+only after coordinated writes are completed or durably recoverable there. A later
+activation rechecks freshness and catches up; it does not trust a historical
+completion marker. A target-only ledger always selects target storage regardless
+of the prerelease setting. Neither configuration nor an older supported binary
+may silently restore legacy routing after retirement. Each transition slice must
+cover in-flight work and deployment overlap; a flag change alone is not evidence
+that prior writers have drained.
+
+## Repeatable import and timestamp detection
+
+Initial backfill constructs most target data. During both incubating and
+always-enabled migration, reads also detect legacy data that is absent or newer
+than imported progress and run the same import capability before answering from
+the target. This is explicit migration behavior, not silent legacy fallback.
+Do not require fleet-wide parity before any target read: prove completeness and
+freshness for the scope needed by that read. Discovery/list operations must also
+find legacy-only entities; checking only existing target IDs is insufficient.
+
+Use legacy persistence/revision timestamps as the starting point for incremental
+detection, not contribution authored/effective dates or target current-row
+modification times. Track progress by source and the smallest useful access scope
+(entity, collection or partition), with the full source key and schema version.
+A newer target row does not prove that older history, related rows or deletions
+were imported. Completeness includes a successfully checked empty source.
+
+The existing party-configuration source orders revisions by entity ID and a
+canonical millisecond timestamp; deletes are revision records. Timestamps come
+from application clocks, not a database commit sequence. Inspect each source's
+actual key, timestamp and write semantics before applying this pattern elsewhere.
+Reread timestamp boundaries inclusively and deduplicate by complete source
+identity; use a stable key tie-breaker where several records share a timestamp.
+Advance durable progress only with successful, idempotent import effects.
+
+A timestamp maximum is a catch-up optimization, not proof that no delayed or
+out-of-order write can arrive behind it. Recheck an overlapping range where a
+bounded lateness assumption is supported; repeatable full-scope reconciliation
+must cover records outside that range and same-key content changes. Do not claim
+an arbitrary overlap interval guarantees completeness. A read that cannot establish
+its required freshness must retry, resume work, or report an explicit incomplete
+operation rather than serve a knowingly partial target result. A source lacking
+reliable incremental detection needs its own bounded comparison rule before use.
+
+Import preserves source revision identity, timestamps, actors and deletion
+semantics. Replay must neither duplicate history or aggregate increments nor
+resurrect deleted entities. Conditional versions and shared mutation identity
+coordinate import with normal writes so old source data cannot overwrite newer
+target state. Never decide authority solely by comparing wall-clock timestamps.
+Ambiguous canonical conflicts are reported for reviewed repair; only derived
+projections may be automatically rebuilt.
+
+Ordinary writes must first establish the source state their change depends on,
+then coordinate legacy and target effects through durable, replayable plans.
+Reads cannot claim freshness while an affecting plan is incomplete. The delivery
+slice defines atomicity, visible outcomes and recovery for its actual boundary;
+use transactions where feasible and stable child work for larger operations.
+Migration-plan receipts and domain idempotency receipts share a defined mutation
+identity and outcome contract. Unfinished work must remain recoverable beyond any
+ordinary retry-receipt expiry. Preserve existing caller behavior; a required new
+transport header is a separate compatibility decision, not an implicit storage
+migration requirement.
 
 ## Durable migration ledger
 
-The migration ledger is a small, durable set of system items in the target
-`coupling-core` table. It is created with the target tables before any runtime
-catalog can select them, and is scoped by DynamoDB prefix and `STAGE`, so each
-environment has independent progress.
+Keep migration state in target Core, scoped by configured namespace and stage.
+It records schema version, monotonic ledger version, operating phase, run ownership,
+source progress, reconciliation evidence and target-only retirement revision.
+Per-source checkpoints record full source identity, timestamp/key boundaries,
+completed import effects and comparison evidence. Write-plan receipts record
+mutation identity, fingerprint, completion on each store and replayable outcome.
 
-| Item | Key | Required contents |
-| --- | --- | --- |
-| Migration state | `PK = MIGRATION#<stage>`, `SK = STATE` | Target schema version, phase, monotonic ledger version, requested mode, active run ID, reconciliation summary, cutover revision, and timestamps. |
-| Backfill checkpoint | `PK = MIGRATION#<stage>`, `SK = BACKFILL#<source>#<segment>` | Deterministic legacy source/segment identity, exclusive checkpoint, source watermark, completed count, and checksum. |
-| Reconciliation result | `PK = MIGRATION#<stage>`, `SK = RECONCILIATION#<runId>#<source>` | Compared source/target counts and checksums, mismatch samples, completion status, and target schema version. |
-| Write-plan receipt | `PK = MIGRATION#<stage>`, `SK = WRITE#<mutationId>` | Stable mutation identity, target/legacy completion status, and replayable outcome while dual-write is active. |
+Schema checks precede interpretation; unsupported state is preserved and rejected.
+Conditional ledger updates prevent competing workers from independently advancing
+state. Checkpoints, imports, reconciliation and recovery are safe to repeat after
+interruptions, retries and subsequent releases. Historical reconciliation evidence
+describes a scope and source boundary; it is not permanent authority to skip checks.
 
-The `STATE` item is the source of truth for catalog selection. Ledger reads reject
-missing or unsupported target schema versions before interpreting the phase;
-bootstrap preserves that ledger and reports the incompatibility. Commands use an
-expected ledger version condition when advancing it, so concurrent workers
-cannot independently promote or cut over an environment. Checkpoint and
-receipt writes are idempotent; their source/segment and mutation keys make a
-stopped worker resumable without reapplying target mutations. Reconciliation
-items are evidence, not authority: only a command that verifies the complete
-matching result may promote `BACKFILLING` to `DUAL_WRITE`.
+The current `DISABLED`/`BACKFILLING`/`DUAL_WRITE`/`CUTOVER` foundation model must be
+adapted by implementation slices to support concurrent catch-up while migration
+serves requests. In particular, `BACKFILLING` is not a global prohibition on target
+reads, and `CUTOVER` means target-only retirement, not promotion of dual writes to
+always-enabled operation. Existing offline snapshot imports remain useful but do
+not yet implement this online contract.
 
-The configuration requests a mode; server commands advance the ledger only
-after their prerequisites are true. A requested `cutover` without a completed
-dual-write ledger, or any attempt to select legacy or dual-write after
-cutover, is an error.
-
-While a dual-write request is backfilling, the public server remains on the
-legacy catalog. Once the backfill and reconciliation commands mark the ledger
-ready, the migration catalog serves reads from the target model and coordinates
-each mutation across legacy and target stores. Returning to `disabled` before
-cutover restores legacy reads and writes. A later dual-write request resumes
-from its checkpoint and catches up legacy changes before target reads resume.
+Before target-only retirement, reconcile every legacy source and scope, including
+cold data never encountered by reads. Account for outstanding write plans and
+legacy-only writers across deployment overlap, and verify parity through that
+boundary. Retire detection only when subsequent accepted writes are guaranteed to
+use the target path. Preserve recovery evidence under separate access; do not
+silently re-enable legacy as a recovery response.
 
 ## Repository and action boundaries
 
@@ -112,8 +168,8 @@ from its checkpoint and catches up legacy changes before target reads resume.
 three catalog implementations:
 
 - Legacy catalog: existing DynamoDB repository implementations.
-- Migration catalog: target read repositories plus coordinated legacy and
-  target mutation repositories.
+- Migration catalog: target reads with repeatable legacy detection/import, plus
+  coordinated legacy and target mutation repositories.
 - Target catalog: target repositories only after cutover.
 
 Existing contracts stay in place when they express an application behavior.
@@ -128,49 +184,57 @@ dispatchers may obtain repositories. Backfill, ledger progression,
 reconciliation, and projection repair are commands/actions as well; deployment
 configuration and resolvers do not access DynamoDB directly.
 
-## Phased implementation vision
+## Delivery milestones
 
-1. **Foundation.** Add target table provisioning, target repository contracts,
-   the ledger item mapping, and catalog-selection code while every checked-in
-   configuration remains disabled. The legacy catalog is the only reachable
-   request catalog.
-2. **Data construction.** Implement deterministic legacy readers and target
-   writers for current rows, audit revisions, relationships, timeline buckets,
-   summaries, and rebuildable projections. Backfill commands partition legacy
-   sources deterministically and commit a checkpoint only after its complete,
-   idempotent target write plan succeeds.
-3. **Proof.** Implement reconciliation commands that derive expected target
-   state from legacy data and write immutable comparison evidence. Projection
-   repair commands may change only rebuildable target rows. This phase proves
-   full-history parity before target data serves a request.
-4. **Incubation.** Implement the migration catalog and enable it only when a
-   ledger is reconciled. Queries read target models; mutations create durable,
-   idempotent write plans that complete both legacy and target effects. Bounded
-   plans use DynamoDB transactions; larger operations use stable child work.
-5. **Maturity.** Replace the temporary migration-mode configuration with
-   `ENABLE_PRERELEASE_FEATURES` as the dual-write request. Remove the temporary
-   flag and its compatibility path; the ledger remains the cutover authority.
-6. **Cutover.** Promote only a reconciled dual-write ledger to target-only
-   catalogs. Legacy tables become read-only recovery evidence and remain
-   outside normal repository routing.
-7. **Always live.** After every supported environment has cut over, remove the
-   prerelease-controlled storage branch, `ENABLE_PRERELEASE_FEATURES` storage
-   interpretation, the legacy catalog, and the temporary migration code. Target
-   repositories become the only runtime path.
+1. **Foundation and repeatable construction.** Deliver scoped target repositories
+   and resumable imports, reusing completed bootstrap and party-configuration
+   snapshot work. Introduce contracts when concrete access patterns require them.
+2. **Incubating migration.** Deliver coordinated writes, freshness detection,
+   read-triggered import and repeatable reconciliation for the affected boundaries.
+   Enable the catalog through the shared prerelease flag only when its supported
+   application flows meet this contract. Keep cross-layer changes in the same slice.
+3. **Always-enabled migration.** Promote the proven migration catalog to ordinary
+   operation. Retain both stores, detection and repair while validating real usage.
+4. **Target only and cleanup.** Establish fleet completeness and writer retirement,
+   remove legacy runtime permissions, then delete dual writes, imports, temporary
+   ledger/control code and legacy implementations as safely releasable slices.
+   Retain ordinary target domain idempotency and observability capabilities.
 
-No code path may silently fall back to legacy data after cutover.
+Work cards own bounded outcomes, mechanisms and acceptance evidence under the
+[delivery protocol](agents.d/context/WORK_CHECKLIST.md). Each slice is useful and
+safe to release if subsequent work stops. These milestones do not require building
+all target abstractions before delivering any useful migration capability.
 
-## Verification
+## Verification and operational evidence
 
-Existing endpoint and end-to-end test sources run unchanged against disabled
-and explicitly enabled configurations. Their configuration/bootstrap may vary,
-but the GraphQL operations and assertions do not fork.
+Run the same endpoint and end-to-end application contracts against legacy,
+incubating migration, always-enabled migration and target-only configurations.
+Extend them for new contracts without forking expected product results by storage
+mode. Preserve authorization, exact statistics, historical membership, timestamps,
+team choices and deletions; counts/checksums alone do not prove semantic parity.
 
-Existing DynamoDB repository tests are an inventory of valuable data-layer
-behavior, not a required implementation model. Target repositories add tests
-for their access patterns and the proposal's correctness rules: direct and
-bounded reads, cursor/bucket boundaries, authorization relationships,
-idempotent write plans, full-history backfill/resume, dual-write catch-up,
-aggregate parity, ledger optimistic concurrency, and irreversible cutover. No
-target request path may use a scan or reconstruct current state from
-legacy-style history.
+At the owning boundaries test first import, empty sources, partial imports,
+repeated reads, interruption/resume, equal timestamps, delayed older writes,
+deletes/restorations, cold legacy-only entities, import/write races, partial dual
+writes, disable/re-enable, deployment overlap and target-only retirement. Add these
+scenarios with the slices that introduce the behavior, rather than duplicating
+the full matrix at every layer. Existing repository tests constrain valuable
+behavior without mandating their legacy implementation model.
+
+The target request path uses direct/bounded access patterns and does not scan or
+reconstruct current state from revision history. Migration-only import and
+reconciliation may traverse legacy history with bounded pages and durable progress;
+large repairs resume through ordinary commands rather than unbounded request work.
+Define request budgets and explicit resumable outcomes in the affected slice.
+
+Use ordinary structured application logs for import/catch-up, reconciliation,
+write-plan recovery and transitions: stable operation names, run/request correlation,
+source scope without sensitive payloads, counts, progress, outcomes and elapsed
+durations. Verify collection at the intended destination and expose useful non-secret
+status through appropriately authorized application contracts where needed.
+
+Before retirement, record completeness, unresolved-conflict and outstanding-work
+evidence, deployment compatibility and recovery results. Measure representative
+current-party reads, pairing and contribution imports at realistic history sizes;
+use the proposal's product/performance criteria and existing delivery signals.
+A passing build or time spent incubating alone does not prove data completeness.

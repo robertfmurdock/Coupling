@@ -552,7 +552,8 @@ avoid crossing 1 KB write and 4 KB read billing boundaries unintentionally.
   within an authorized family need no per-table IAM edit. Any broader target
   namespace grant must be justified by that role's cross-family duties.
   During migration, add explicit legacy-table/index permissions as required;
-  remove normal runtime legacy access at cutover. Recovery access is separately
+  remove normal runtime legacy access at target-only retirement, after the
+  always-enabled dual-write period. Recovery access is separately
   authorized. Preserve bootstrap and migration operations until their safe
   replacement exists; see the migration strategy and IAM work card.
 - Enable DynamoDB Streams on Core and Activity only if derived aggregates are
@@ -916,11 +917,12 @@ regression is caught before users feel it.
 
 No GraphQL schema change is required to adopt this design. The current schema,
 operations, inputs, response shapes, and user-visible behavior can remain as
-they are while resolvers move to the new read models. Clients and raw
-integrations must send an `Idempotency-Key` HTTP header for mutations; the
-SDK/client creates it automatically, so it is request metadata rather than a
-GraphQL input. Internal DynamoDB cursors, generation selection, aggregate
-reads, and shard merges are implementation details, not GraphQL contract
+they are while resolvers move to the new read models. The target mutation design
+uses an `Idempotency-Key` HTTP header; the SDK/client creates it automatically. Requiring that header from existing raw
+integrations is a transport compatibility change and must be resolved explicitly
+in a cross-layer delivery slice before enforcement. Storage migration alone does
+not authorize rejecting existing callers. Internal DynamoDB cursors, generation
+selection, aggregate reads, and shard merges are implementation details, not GraphQL contract
 changes.
 
 The design does suggest optional, additive future connections or report fields

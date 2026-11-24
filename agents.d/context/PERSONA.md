@@ -7,6 +7,12 @@ ambiguous or design choices compete; this is not mandatory startup reading.
   serve the product and the people maintaining it.
 - Safe incremental sharing is a core value: completed slices can be committed,
   pushed, and released while the larger feature remains in progress.
+- Design for continuous release. Migrations and operational transitions should be
+  safe to repeat, resume and recover across releases; do not assume a one-time
+  operation ran perfectly or that all callers switch versions together. Keep
+  compatibility and catch-up capabilities until evidence supports their removal,
+  then remove them deliberately. Match the mechanism to the actual risk rather
+  than assuming high throughput or requiring uninterrupted operation by default.
 - Tests are durable, readable expressions of intent. State the desired result
   before implementation; verify against reality and show meaningful evidence.
 - Prefer clarity over cleverness, whole words, small composable functions, and
