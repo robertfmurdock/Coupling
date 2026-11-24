@@ -62,7 +62,7 @@ under the migration strategy. It is outside this card and is not a completion ga
 
 ## Delivery Slice — Restrict Current Permissions
 
-- [ ] Inventory generated policies and actual operations by execution role,
+- [x] Inventory generated policies and actual operations by execution role,
   table/index family and calling path. Identify any required replacement path
   before removing its permissions. Retain a concise sanitized operation/resource
   matrix and the proposed fixture resources, role, account/region and cleanup.
@@ -103,12 +103,101 @@ fixture framework. Apply [tooling purpose and lifetime](../context/GRADLE_PLAYBO
 before retaining automation.
 
 ## Current State
-2026-11-24: planning only; the DynamoDB security finding remains outstanding.
-No AWS fixtures or policy changes have been made for this card. Next: inventory
-effective generated permissions and implemented operations, then present concrete
-isolated fixtures for authorization.
+2026-11-24: inventory complete; the DynamoDB security finding remains outstanding.
+No AWS fixtures or policy changes have been made. Required endpoint red is pending
+fixture authorization and a provisioning/execution identity; the current session
+is `AWSReservedSSO_ReadOnlyAccess_8f5ea127031c9918`. Do not change profiles to
+work around that boundary. Next: authorize/provision the fixtures below, establish
+endpoint red, then implement the smallest scoped replacement and endpoint green.
+
+## Inventory and Proposed Boundary
+
+Read-only AWS inspection on 2026-11-24 used account `174159267544`, region
+`us-east-1`. The deployed `coupling-server-prod` CloudFormation template and live
+IAM attachment both retain `AmazonDynamoDBFullAccess`. The role
+`coupling-server-prod-us-east-1-lambdaRole` has no permissions boundary; API,
+connect, disconnect, message and notify-connect Lambdas all reference it. Its
+other inline policies grant logging, connection management and scoped notification
+invocation, with no additional DynamoDB grant. These checks inspect infrastructure
+metadata, not application records. Fresh local Serverless packaging has not been
+performed; verify the candidate generated template before accepting implementation.
+
+The immediate design keeps the existing shared execution role. There is no
+existing per-handler DynamoDB separation to preserve; introducing one is not
+necessary to remove the broad managed policy. Preserve existing non-DynamoDB
+policies and do not grant other roles the same storage authority by default.
+
+| Implemented owner/path | Resources | Required DynamoDB IAM actions |
+| --- | --- | --- |
+| Legacy repository initialization | Configured legacy `TRIBE`, `USER`, `PLAYER`, `PIN`, `PAIR_ASSIGNMENTS`, `CONTRIBUTION`, `BOOST`, `SECRET`, `SLACK`, `DISCORD`, `LIVE_CONNECTION` | `CreateTable`, `DescribeTable` |
+| Legacy revision persistence and lookup | Those explicit legacy tables; `USER/USER_EMAIL_INDEX` and `PLAYER/PlayerEmailIndex` for index queries | `PutItem`, `Query`; scope each action to actual owners when constructing statements |
+| Legacy discovery | `TRIBE`, `USER`, `PLAYER` | `Scan` |
+| Physical deletion/receipt consumption | `CONTRIBUTION`, `LIVE_CONNECTION`, `DISCORD` | `DeleteItem` |
+| User identity transaction | `USER` | `PutItem` on both transaction items |
+| Target bootstrap | Configured target Core, Activity, History and Live Connections tables, including creation of `byConnection` | `CreateTable`, `DescribeTable` |
+| Target TTL initialization | Target Live Connections | `DescribeTimeToLive`, `UpdateTimeToLive` |
+| Ledger and target party configuration/import | Target Core and History; legacy `TRIBE` source | Core `GetItem`, `PutItem`, `DeleteItem`, `ConditionCheckItem`; History `Query`, `PutItem`; source `Query` |
+
+Operation discovery: repository implementations and shared syntax under
+`libraries/repository/dynamo/src/jsMain/kotlin`, especially
+`MigrationSchemaBootstrap`, `DynamoPartyConfigurationBackfill`,
+`TargetPartyConfigurationRepository` and `DynamoUserRepository`.
+PartiQL and batch-get helpers have no discovered application callers; their mere
+existence does not justify permissions. No discovered application path requires
+`DeleteTable`, `ListTables`, backups, exports, streams or `UpdateItem`.
+[AWS transaction authorization](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis-iam.html)
+uses underlying item permissions, including `ConditionCheckItem` for ledger guards.
+Keep control-plane grants separate from item/index grants; avoid a blanket
+`dynamodb:*` replacement. Target resource families remain extensible under the
+existing namespace contract; new capabilities add necessary operations with tests.
+
+## Isolated Endpoint Fixture Proposal — Not Yet Authorized
+
+Use account `174159267544`, region `us-east-1`, synthetic namespace `cpl48`.
+Before creation, check exact names are unused; stop on collision rather than
+reusing any existing resource. This namespace tests configuration substitution,
+not an additional application environment or feature setting.
+
+- Temporary role `CouplingCpl48DynamoCanary`, trusted only by the specifically
+  authorized operator identity, with short sessions and no application-role trust.
+  Use a permissions boundary limiting all DynamoDB authority to the exact fixture
+  table/index ARNs below. It must prevent the broad baseline managed policy from
+  granting access to real data or unrelated AWS services. The operator identity
+  and corresponding trust policy remain to be supplied before provisioning.
+- Tables `cpl48-TRIBE`, `cpl48-USER` (with `USER_EMAIL_INDEX`),
+  `cpl48-coupling-core`, `cpl48-coupling-activity`, `cpl48-coupling-history`,
+  `cpl48-coupling-live-connections` (with `byConnection` and TTL),
+  `cpl48-coupling-future-canary`, and negative controls `cpl48-outside-canary`
+  and `cpl48-other-coupling-canary`. Use on-demand billing and synthetic data only.
+  Source tables use the actual legacy key shapes; target tables use `PK`/`SK`.
+- Baseline: attach the current effective DynamoDB managed policy to the bounded
+  canary role. Establish allowed persistence and successful negative-control
+  operations. Candidate: remove that attachment and install the generated scoped
+  DynamoDB statements with fixture namespace substitution. The unchanged boundary
+  allows both controls, so their subsequent denial must come from the candidate.
+- Exercise table creation/description, index queries, physical deletion, TTL,
+  conditional Core/History transactions, ledger bootstrap and named-party snapshot
+  import through existing paths where possible. Create the future-family canary
+  only after installing the candidate, without editing its permissions. Compare
+  preserved imported history/current metadata, not only API status codes.
+- The operator handles fixture deletion, not the candidate runtime policy. Cleanup:
+  delete all nine named tables, detach the baseline managed policy if attached,
+  delete candidate inline policies, remove the role and its boundary policy.
+  Verify table absence and IAM cleanup. Do not grant canary `DeleteTable` merely
+  to make cleanup convenient. Record failures and any remaining resources.
+
+Prepare one-off requests/probes in temporary storage and retain only sanitized
+results here. No new maintained fixture runner is proposed. This proposal does
+not authorize creation, role assumption, policy mutation or deployed-data access.
 
 ## Validation
+2026-11-24 inventory handoff: local links and `git diff --check` passed.
+Full `./gradlew check` passed outside the sandbox in 6s (689 tasks: 56 executed,
+633 up-to-date). Existing integration/browser results were reused. Review of
+the operation inventory and fixture design found that bootstrap also needs the
+Activity fixture; it is included above. No endpoint red/green or remediation is
+claimed. Investigation commit: `git log -1 --format=%H -- agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.md`.
+
 Historical handoff documentation local links and `git diff --check` passed. Full
 `./gradlew check --no-daemon` passed outside the sandbox with a fresh daemon
 in 29s (596 tasks: 54 executed, 542 up-to-date); existing test outputs were
