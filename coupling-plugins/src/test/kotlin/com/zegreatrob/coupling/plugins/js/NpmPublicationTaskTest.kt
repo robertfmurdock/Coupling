@@ -13,6 +13,23 @@ import kotlin.test.assertTrue
 
 class NpmPublicationTaskTest {
     @Test
+    fun `npm 12 singleton version array resolves one exact baseline`() {
+        withPublicationFixture { directory ->
+            directory.resolve("latest.json").writeText("[\"1.0.0\"]")
+            directory.resolve("pack-response.json").writeText(
+                """{"@continuous-excellence/coupling-cli":{"filename":"baseline.tgz"}}""",
+            )
+
+            val result = runner(directory).withArguments("publish", "--configuration-cache").build()
+
+            val commands = directory.resolve("commands.txt").readLines()
+            assertEquals(1, commands.count { it.startsWith("view ") }, result.output)
+            assertEquals(1, commands.count { it.startsWith("pack @continuous-excellence/coupling-cli@1.0.0 ") }, result.output)
+            assertEquals(false, commands.any { it.startsWith("publish ") }, result.output)
+        }
+    }
+
+    @Test
     fun `identical package skips npm publication through either entry point`() {
         listOf("jsPublish", "publish").forEach { entryPoint ->
             val directory = Files.createTempDirectory("npm-publication-test").toFile().canonicalFile
@@ -58,6 +75,12 @@ class NpmPublicationTaskTest {
             "missing latest" to { it.resolve("latest.json").writeText("null") },
             "invalid latest metadata" to { it.resolve("latest.json").writeText("not-json") },
             "invalid latest version" to { it.resolve("latest.json").writeText("\"1.0.0-..\"") },
+            "empty latest array" to { it.resolve("latest.json").writeText("[]") },
+            "ambiguous latest array" to { it.resolve("latest.json").writeText("[\"1.0.0\",\"1.0.1\"]") },
+            "non-version latest array" to { it.resolve("latest.json").writeText("[null]") },
+            "empty pack response" to { it.resolve("pack-response.json").writeText("{}") },
+            "wrong keyed package" to { it.resolve("pack-response.json").writeText("""{"other":{"filename":"baseline.tgz"}}""") },
+            "multiple packed artifacts" to { it.resolve("pack-response.json").writeText("""[{"filename":"a.tgz"},{"filename":"b.tgz"}]""") },
             "baseline fetch failure" to { it.resolve("fail-pack").writeText("") },
             "invalid archive" to { it.resolve("baseline.tgz").writeText("not-an-archive") },
             "wrong exact baseline" to { writePackage(it.resolve("baseline.tgz"), "0.9.0") },
@@ -185,6 +208,7 @@ private fun publicationFixture(directory: File) {
         """.trimIndent(),
     )
     directory.resolve("latest.json").writeText("\"1.0.0\"")
+    directory.resolve("pack-response.json").writeText("""[{"filename":"baseline.tgz"}]""")
     writePackage(directory.resolve("candidate.tgz"), "1.1.0")
     writePackage(directory.resolve("baseline.tgz"), "1.0.0")
     directory.resolve("npm-fixture.sh").writeText(
@@ -199,7 +223,7 @@ private fun publicationFixture(directory: File) {
           pack)
             for argument in "${'$'}@"; do destination="${'$'}argument"; done
             cp baseline.tgz "${'$'}destination/baseline.tgz"
-            printf '[{"filename":"baseline.tgz"}]'
+            cat pack-response.json
             ;;
           publish) ;;
           *) exit 42 ;;

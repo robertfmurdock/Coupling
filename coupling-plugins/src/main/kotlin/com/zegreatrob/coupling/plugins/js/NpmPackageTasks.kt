@@ -141,10 +141,12 @@ abstract class NpmPublishTask : DefaultTask() {
 
     private fun latestVersion(name: String): String {
         val response = npmJsonMapper().readTree(npm(listOf("view", "$name@latest", "version", "--json", "--prefer-online")))
-        check(response?.isTextual == true && validNpmVersion(response.asText())) {
+        // npm 11 emits a scalar; npm 12 emits an array even for one exact version.
+        val version = if (response?.isArray == true && response.size() == 1) response.single() else response
+        check(version?.isTextual == true && validNpmVersion(version.asText())) {
             "Unable to resolve an exact npm latest version for $name"
         }
-        return response.asText()
+        return version.asText()
     }
 
     private fun fetchBaseline(name: String, version: String): File {
@@ -155,8 +157,13 @@ abstract class NpmPublishTask : DefaultTask() {
         val response = npmJsonMapper().readTree(
             npm(listOf("pack", "$name@$version", "--ignore-scripts", "--json", "--pack-destination", destination.absolutePath)),
         )
-        check(response?.isArray == true && response.size() == 1) { "Invalid npm pack response for $name@$version" }
-        val filename = response.single()["filename"]
+        val packed = when {
+            response?.isArray == true && response.size() == 1 -> response.single()
+            response?.isObject == true && response.size() == 1 -> response[name]
+            else -> null
+        }
+        check(packed?.isObject == true) { "Invalid npm pack response for $name@$version" }
+        val filename = packed["filename"]
         check(filename?.isTextual == true && filename.asText().matches(Regex("[A-Za-z0-9._-]+\\.tgz"))) {
             "Invalid npm baseline archive filename for $name@$version"
         }

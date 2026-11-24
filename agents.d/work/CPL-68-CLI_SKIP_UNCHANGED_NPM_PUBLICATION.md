@@ -11,8 +11,10 @@ commit messages. Keep Coupling's existing application version calculation, Git
 tags/releases, deployments, JVM distribution, and S3 uploads independent of this
 decision. An npm version may legitimately lag the application version or have gaps.
 
-Status: complete. Slice 1: `d5cd275d4`; slice 2: `68e00ae80`. Both implementation
-commits passed full checks before commit. No push or release performed.
+Status: reopened after live CI exposed npm 12 response incompatibility. Prior
+slices: `d5cd275d4`, `68e00ae80`; compatibility correction is locally validated,
+awaiting owner push and live CI verification. The owner
+pushed those commits; no agent push or release is authorized.
 One contributor owns each dependent slice through tests, implementation, review,
 full checks, and commit. No push or release is authorized by this card.
 
@@ -181,10 +183,54 @@ required to commit this independently useful change.
   version gaps. Any live CI/npm observation requires separate push/release
   authorization; record it if available, otherwise label it unverified without
   inventing a follow-up monitoring system.
-- [x] Review overall outcome, update relevant links, and archive when the required
+- [ ] Review overall outcome, update relevant links, and archive when the required
   implementation evidence is complete under [work-card rules](../context/WORK_CHECKLIST.md).
 
 ## Delivery evidence
+
+### Live CI compatibility correction
+
+- [Build 45313023650](https://github.com/robertfmurdock/Coupling/actions/runs/45313023650)
+  for `528acaf62` passed checks, packed-consumer verification, application tag/release
+  `1.1.920`, and production deployment, then failed in `:cli:jsPublish` while
+  resolving npm latest. No npm publication occurred; latest remains `1.1.919`.
+- Existing Actions setup upgrades npm to latest: this run used npm 12.2.3. Its
+  `npm view <package>@latest version --json` returns `["1.1.919"]`, whereas local
+  npm 11.20.0 returns `"1.1.919"`. Both responses were reproduced directly; the
+  scalar-only gate incorrectly rejected the valid singleton array.
+- Correction contract: accept a version string or exactly one version string in
+  an array, still rejecting empty/multiple/non-string results and malformed semver.
+  Resolve once and fetch that exact version. No YAML, registry-failure policy,
+  package-equality rules or publication ordering changes are needed.
+- The actual npm 12 non-publishing probe then exposed its second shape change:
+  `npm pack --json` returns an object keyed by the package name; npm 11 returns
+  an array. The producer's existing single-child reader already worked in CI,
+  but the baseline reader required an array. Its regression also failed before
+  correction. Accept only a single-item array or a single-key object for the
+  requested package, then retain filename and archive identity validation.
+- Add a controlled task regression for the observed array and fail-closed array
+  variations, then validate actual npm 11/12 through the non-publishing task and
+  run the full suite before committing. The owner must push the correction before
+  another live CI result can establish success.
+- Focused correction checks pass: `./gradlew :coupling-plugins:test --tests
+  '*Npm*Test' :coupling-plugins:lintKotlin --console=plain`. The observed npm 12
+  lookup and pack shapes each produced a meaningful failure before correction.
+  Empty/ambiguous/non-string lookup arrays and empty/wrong-package/multiple-artifact
+  pack results continue to prevent publication through both public task names.
+- Real registry comparison now passes with npm 12.2.3 through a temporary init
+  setting the comparison task's npm command to an isolated `npm exec` installation.
+  The ordinary npm 11.20.0 `:cli:compareNpmPackage` also passes. Both fetch exact
+  baseline `1.1.919` and report the candidate changed; neither publishes.
+- Test review confirms both real response shapes exercise retrieval at the task
+  boundary; production review retains exact-one-result checks, requested package
+  identity, filename safety and archive validation. No equality normalization or
+  workflow change was introduced.
+- Correction full gate: `./gradlew check --console=plain` passed in 3m 16s,
+  including 35 build-logic tests, CLI platform suites, SDK integration, browser
+  and E2E tests. `git diff --check` passed. Next action: push the correction and
+  watch the resulting CI run; do not rerun the unchanged failing commit.
+
+### Initial implementation
 
 - Direct `./gradlew` works; no fish wrapper is needed in this environment.
 - `./gradlew :cli:jsCliTar --no-daemon` and
