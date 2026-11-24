@@ -21,7 +21,6 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GRADLE_BUILD_CACHE_BUCKET: ${{ vars.GRADLE_BUILD_CACHE_BUCKET }}
       GRADLE_BUILD_CACHE_REGION: us-east-1
-      SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v7
         with:

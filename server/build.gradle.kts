@@ -1,6 +1,7 @@
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.CacheableNodeExec
 import com.zegreatrob.coupling.plugins.js.setup
+import com.zegreatrob.coupling.plugins.util.useServerlessAccessKey
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
@@ -202,6 +203,7 @@ tasks {
         )
     }
     register<NodeExec>("serverlessStart") {
+        useServerlessAccessKey()
         dependsOn(assemble, clientConfiguration, jsTest, compileKotlinJs)
         setup(project)
         val serverlessConfigFile = project.relativePath("serverless.yml")

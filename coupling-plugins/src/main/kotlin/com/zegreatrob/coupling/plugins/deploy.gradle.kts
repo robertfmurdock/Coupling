@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.plugins
 import com.zegreatrob.coupling.plugins.deploy.ServerlessConfigTask
 import com.zegreatrob.coupling.plugins.js.NodeExec
 import com.zegreatrob.coupling.plugins.js.setup
+import com.zegreatrob.coupling.plugins.util.useServerlessAccessKey
 import com.zegreatrob.tools.tagger.ReleaseVersion
 
 plugins {
@@ -41,7 +42,7 @@ tasks {
 
     fun NodeExec.configureServerless() {
         setup(project)
-        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
+        useServerlessAccessKey()
         taskWorkingDirectory.set(deployDir)
         nodeCommand.set("serverless")
     }

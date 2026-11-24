@@ -206,6 +206,23 @@ emitted consumers and surviving peer/external URLs as well as source references.
 Use the [performance harness](../../e2e/performance/README.md) where applicable;
 keep measured byte/request changes separate from timing claims.
 
+### Serverless Credential
+
+Gradle Serverless package, prune, deploy and local-start tasks read the existing
+SSM SecureString `/local/SERVERLESS_ACCESS_KEY` at execution time through
+`fetchAwsSsmParameter`. SSM overrides any inherited `SERVERLESS_ACCESS_KEY`;
+ordinary shells and reused daemons do not need a fish export. Compose uses the
+same parameter through its existing lazy SSM environment providers. Task discovery
+and unrelated tasks must not introduce a Serverless credential lookup.
+
+Use the configured AWS identity with `ssm:GetParameters` and key decryption access.
+If AWS lookup succeeds but Serverless returns `Forbidden`, check whether the stored
+key is current without printing it. If a required resource cannot be provisioned
+through the existing Serverless system, prepare exact CloudShell commands for the
+owner. Do not change AWS profiles or copy credentials into tracked files, task
+inputs or logs. Remote GitHub secret deletion and shell-profile edits are separate
+owner cleanup.
+
 ### AWS SSO and Gradle Daemons
 
 - Before treating an AWS failure as an expired login, verify the active shell
