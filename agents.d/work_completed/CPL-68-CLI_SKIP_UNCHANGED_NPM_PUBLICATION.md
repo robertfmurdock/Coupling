@@ -11,8 +11,8 @@ commit messages. Keep Coupling's existing application version calculation, Git
 tags/releases, deployments, JVM distribution, and S3 uploads independent of this
 decision. An npm version may legitimately lag the application version or have gaps.
 
-Status: slice 1 committed as `d5cd275d4`; slice 2 implemented and fully validated,
-ready for implementation commit and archival.
+Status: complete. Slice 1: `d5cd275d4`; slice 2: `68e00ae80`. Both implementation
+commits passed full checks before commit. No push or release performed.
 One contributor owns each dependent slice through tests, implementation, review,
 full checks, and commit. No push or release is authorized by this card.
 
@@ -34,10 +34,11 @@ full checks, and commit. No push or release is authorized by this card.
   `jsPublish` is disabled for snapshots and ordered after checks, root release,
   and production deployment when those tasks are present. `mustRunAfter` does
   not itself schedule or require those tasks.
-- The same build generates `Versions.couplingVersion` from the root version in
-  [Versions.kt](../../cli/src/commonMain/templates/Versions.kt).
+- At planning time the build generated `Versions.couplingVersion` from the root
+  version in [Versions.kt](../../cli/src/jvmMain/templates/Versions.kt) (then common,
+  now JVM-only).
   [CouplingCli](../../cli/src/commonMain/kotlin/com/zegreatrob/coupling/cli/CouplingCli.kt)
-  uses it for `--version`. Ignoring only manifest version would still detect a
+  used it for `--version`. Ignoring only manifest version would still detect a
   compiled-code change on every release. Generated source maps and any local
   package dependency versions also need inspection; their actual packed form
   has not yet been established.
@@ -46,7 +47,7 @@ full checks, and commit. No push or release is authorized by this card.
   and enables GitHub releases. Inspect the plugin-provided release task graph
   before modifying wiring; the direct CLI build script does not establish all
   release dependencies or failure propagation.
-- [CPL-33](CPL-33-05_CDN_LOOKUP_COUPLING_MIGRATION_AND_RELEASE.md) concerns a
+- [CPL-33](../work/CPL-33-05_CDN_LOOKUP_COUPLING_MIGRATION_AND_RELEASE.md) concerns a
   different npm package. It is context, not a prerequisite or a reason to create
   a shared multi-package publishing framework.
 
@@ -173,14 +174,14 @@ required to commit this independently useful change.
   retain their existing behavior. Cover both public CLI publication task paths.
 - [x] Confirm application release, deployment, JVM and S3 wiring is unaffected by
   npm equality; use task-graph/composition evidence rather than source assertions.
-- [ ] Record focused commands, full `./gradlew check` results and slice commits.
+- [x] Record focused commands, full `./gradlew check` results and slice commits.
   Follow the documented external-sandbox/fish Gradle execution guidance. Full
   checks alone cannot prove npm comparison, so retain the bounded evidence above.
 - [x] Document the local non-publishing command and intentional application/npm
   version gaps. Any live CI/npm observation requires separate push/release
   authorization; record it if available, otherwise label it unverified without
   inventing a follow-up monitoring system.
-- [ ] Review overall outcome, update relevant links, and archive when the required
+- [x] Review overall outcome, update relevant links, and archive when the required
   implementation evidence is complete under [work-card rules](../context/WORK_CHECKLIST.md).
 
 ## Delivery evidence
@@ -286,3 +287,8 @@ required to commit this independently useful change.
 - After that full suite, the actual default-version packed artifact also compared
   equal to the controlled `.3` baseline via `:cli:compareNpmPackage`; consumer
   verification and comparison passed with the final npm working-directory wiring.
+- Slice 2 commit: `68e00ae80` (`Skip unchanged CLI npm publications`). Overall
+  outcome reviewed: the exact verified tarball is compared and conditionally
+  published, application delivery remains independent, and failures stop npm
+  publication. All required local evidence is complete; live release observation
+  remains intentionally unverified. No inbound card links required updating.
