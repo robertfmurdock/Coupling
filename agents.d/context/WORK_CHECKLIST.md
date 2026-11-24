@@ -21,6 +21,11 @@ with other contributors. Keep the ID and filename when moving the card.
   and independent release value. For behavior changes, name test scenarios and
   expected failure. Include required cross-layer changes in the same slice.
 
+Evidence requirements do not justify provisioning temporary external resources.
+Use existing capabilities first; any strictly necessary new infrastructure needs
+a concrete task requirement and explicit authorization. Do not turn an evidence
+gap into a provisioning prerequisite.
+
 Evidence requirements do not authorize new maintained tooling. Apply
 [tooling purpose and lifetime](GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime)
 when a slice proposes investigation scripts, harnesses or automation; state the

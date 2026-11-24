@@ -6,6 +6,7 @@ log4j = "2.26.1"
 [libraries]
 commons-compress = "org.apache.commons:commons-compress:1.28.0"
 jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.23.0"
+jackson-yaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.23.0"
 jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.14.36"
 # @pin
 kfc-gradle-plugin = "io.github.turansky.kfc:kfc-gradle-plugin:18.8.0"

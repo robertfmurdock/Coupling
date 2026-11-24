@@ -24,10 +24,7 @@ provider:
   timeout: 25
   stage: ${opt:stage, 'local'}
   runtime: nodejs22.x
-  iam:
-    role:
-      managedPolicies:
-        - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+  iam: ${file(${env:SERVER_DIR, '.'}/deploy/dynamodb-iam.json)}
   environment:
     COUPLING_IN_MEMORY: false
     APP_TITLE: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):APP_TITLE}
@@ -77,6 +74,9 @@ functions:
     events:
       - websocket: $default
 resources:
+  Conditions:
+    UnprefixedTargetTables:
+      Fn::Equals: ['${sls:stage}', 'prod']
   Resources:
     NotifyConnectInvocationPolicy:
       Type: AWS::IAM::Policy

@@ -107,8 +107,9 @@ the second slice must reinterpret silently.
 Fleet discovery, other legacy sources, online read-triggered freshness, coordinated
 dual writes, migration catalog activation through `ENABLE_PRERELEASE_FEATURES`
 and target-only retirement remain later
-outcomes. [CPL-48](CPL-48-DYNAMODB_MIGRATION_IAM.md) continues to own IAM; its AWS
-fixture authorization does not block local implementation of this card.
+outcomes. [CPL-48](../work_completed/CPL-48-DYNAMODB_MIGRATION_IAM.md) delivered
+the scoped IAM implementation. No temporary AWS fixtures are required for local
+implementation of this card.
 
 ## Current State
 

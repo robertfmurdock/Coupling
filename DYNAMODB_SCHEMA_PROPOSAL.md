@@ -180,7 +180,7 @@ per-table role edit. Scope ARNs to the configured account and region.
 
 Production's empty legacy `DYNAMO_PREFIX` remains unchanged during migration;
 changing it globally would redirect legacy reads. Keep legacy and target name
-resolution distinct. See the [migration IAM work card](agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.md)
+resolution distinct. See the [migration IAM work card](agents.d/work_completed/CPL-48-DYNAMODB_MIGRATION_IAM.md)
 for transitional permissions, endpoint evidence, and cutover gates.
 
 All keys below use UTF-8 strings. `#` separates stable key components; values

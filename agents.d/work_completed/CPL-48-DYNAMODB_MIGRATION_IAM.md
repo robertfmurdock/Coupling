@@ -6,7 +6,9 @@
 Replace `AmazonDynamoDBFullAccess` as part of the target-schema rollout without
 requiring role edits for each new table. This owns the outstanding DynamoDB
 finding transferred from [archived security remediation](../work_completed/CPL-47-SECURITY_CRITICAL_HIGH_REMEDIATION.md),
-not a completed remediation. Lambda invocation remains in that security card.
+with implementation now delivered locally. Deployed remediation remains
+unverified until an authorized normal deployment. Lambda invocation remains in
+that security card.
 
 Follow the [schema proposal](../../DYNAMODB_SCHEMA_PROPOSAL.md) and
 [migration strategy](../../DYNAMODB_SCHEMA_MIGRATION_STRATEGY.md). Preserve
@@ -17,11 +19,12 @@ the policy change, affected execution paths and validation under
 the [delivery protocol](../context/WORK_CHECKLIST.md). Migration functionality is
 owned by its implementation cards; IAM work does not wait for the entire migration.
 No provisioning, deployment, push, release, or AWS profile edits are authorized
-by this card. Prepare concrete isolated fixtures before requesting authorization.
+by this card. Temporary AWS tables, roles and policies for verification were
+explicitly declined; do not provision them or make them a delivery prerequisite.
 
 ## Starting Point and Ownership
 
-`server/serverless.yml` still attaches `AmazonDynamoDBFullAccess`. The archived
+Before this slice, `server/serverless.yml` attached `AmazonDynamoDBFullAccess`. The archived
 security card records a shared Lambda execution role and deployed retention of
 that policy; regenerate configuration and verify applicable effective grants
 before changing them. Do not assume a source declaration proves deployed access
@@ -29,7 +32,7 @@ or that every function already has a separate role.
 
 [Ledger schema compatibility](../work_completed/CPL-46-TARGET_LEDGER_SCHEMA_COMPATIBILITY.md)
 and the [party snapshot importer](../work_completed/CPL-50-PARTY_CONFIGURATION_BACKFILL.md)
-are delivered. [Party catch-up](CPL-69-PARTY_CONFIGURATION_CATCH_UP.md) is planned;
+are delivered. [Party catch-up](../work/CPL-69-PARTY_CONFIGURATION_CATCH_UP.md) is planned;
 online migration catalogs, coordinated writes and freshness detection remain
 implementation work. Inventory implemented paths now and update permissions with
 later capabilities rather than granting speculative operations in advance.
@@ -63,33 +66,26 @@ under the migration strategy. It is outside this card and is not a completion ga
 ## Delivery Slice — Restrict Current Permissions
 
 - [x] Inventory generated policies and actual operations by execution role,
-  table/index family and calling path. Identify any required replacement path
-  before removing its permissions. Retain a concise sanitized operation/resource
-  matrix and the proposed fixture resources, role, account/region and cleanup.
-- [ ] After fixture authorization, prove authentication and allowed synthetic
-  persistence, then demonstrate that the current broad policy permits an
-  out-of-namespace DynamoDB operation. This successful operation is the expected
-  security red; an authentication or missing-resource error is not evidence.
-- [ ] Replace the managed policy with the permission contract above. Test generated
-  policy scope and effective endpoint behavior together, including legacy and
-  target persistence, index access, cross-table transactions, implemented migration
-  operations, a newly created authorized-family table without a policy edit,
-  and denial outside the namespace and across unauthorized role/stage boundaries.
-  Deliver tests and policy changes together. This slice independently removes the
-  broad grant while keeping current application and migration paths operational.
+  table/index family and calling path. Retain the sanitized matrix below.
+- [x] Add parsed configuration and general scope regression assertions. Use AWS
+  IAM simulation for permission decisions rather than maintaining a custom IAM
+  evaluator or copying the policy into expected literals. Expected red: the
+  generated role still attaches `AmazonDynamoDBFullAccess`.
+- [x] Replace the managed policy with the permission contract above. Preserve
+  implemented persistence, index access, transactions, bootstrap and TTL paths.
+  Deliver tests and policy changes together using existing validation capabilities.
+  No temporary AWS infrastructure is part of this slice.
 
 ## Acceptance Evidence
 
 - Generated configuration establishes the intended role attachments, operations
   and resource boundaries, including removal of the broad managed policy. Review
   all effective grants; a narrow inline policy cannot cancel another broad allow.
-- Mandatory isolated AWS endpoint red/green establishes actual authorization.
-  Use only synthetic resources and record the policy/configuration revision,
-  assumed identity, exact operations/resources, results and cleanup. Never read
-  real application data. Simulation and local DynamoDB checks are supplementary;
-  ordinary build/deployment health cannot prove an IAM denial boundary. If fixture
-  authorization is unavailable, continue read-only preparation but leave the
-  policy change undelivered and remediation unclaimed.
+- Policy assertions and available AWS policy validation/simulation establish the
+  intended authorization boundary, including allowed operations, out-of-namespace
+  denial and future authorized-family table names without a policy edit. Record
+  which checks actually ran. Simulation does not prove deployed endpoint behavior;
+  keep that limitation explicit rather than creating infrastructure to close it.
 - Existing application/repository checks establish behavior preservation. Record
   focused checks, full `./gradlew check`, separate test/design reviews and slice
   commits. Reuse existing delivery evidence for any authorized deployment; do not
@@ -97,18 +93,21 @@ under the migration strategy. It is outside this card and is not a completion ga
   scoped policy change and the evidence above, not future migration capabilities
   or legacy permission retirement.
 
-Reuse existing tasks and application paths. Keep one-off endpoint probes temporary
-and retain sanitized findings; evidence requirements do not authorize a maintained
-fixture framework. Apply [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime)
-before retaining automation.
+Reuse existing tasks and application paths under [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpose-and-lifetime).
+Do not create a fixture framework or AWS resources solely to produce evidence.
 
 ## Current State
-2026-11-24: inventory complete; the DynamoDB security finding remains outstanding.
-No AWS fixtures or policy changes have been made. Required endpoint red is pending
-fixture authorization and a provisioning/execution identity; the current session
-is `AWSReservedSSO_ReadOnlyAccess_8f5ea127031c9918`. Do not change profiles to
-work around that boundary. Next: authorize/provision the fixtures below, establish
-endpoint red, then implement the smallest scoped replacement and endpoint green.
+2026-11-24: implementation and local acceptance complete. Serverless now includes
+`server/deploy/dynamodb-iam.json` in the existing shared role. No additional AWS
+resources or CloudShell setup are needed for this change. The CloudFormation
+condition preserves the established unprefixed target naming for `prod`; it does
+not select feature behavior. Other target names derive from the configured stage,
+independently of legacy `DYNAMO_PREFIX`.
+
+No deployment, role mutation or real data operation was performed. The live role
+still carries the broad grant until an authorized normal deployment applies this
+change. This card's implementation is complete; that deployed security gap is
+explicitly unverified. Implementation commit: `git log -1 --format=%H -- agents.d/work_completed/CPL-48-DYNAMODB_MIGRATION_IAM.md`.
 
 ## Inventory and Proposed Boundary
 
@@ -119,8 +118,7 @@ IAM attachment both retain `AmazonDynamoDBFullAccess`. The role
 connect, disconnect, message and notify-connect Lambdas all reference it. Its
 other inline policies grant logging, connection management and scoped notification
 invocation, with no additional DynamoDB grant. These checks inspect infrastructure
-metadata, not application records. Fresh local Serverless packaging has not been
-performed; verify the candidate generated template before accepting implementation.
+metadata, not application records. Fresh candidate packaging and simulation are recorded below.
 
 The immediate design keeps the existing shared execution role. There is no
 existing per-handler DynamoDB separation to preserve; introducing one is not
@@ -151,59 +149,53 @@ Keep control-plane grants separate from item/index grants; avoid a blanket
 `dynamodb:*` replacement. Target resource families remain extensible under the
 existing namespace contract; new capabilities add necessary operations with tests.
 
-## Isolated Endpoint Fixture Proposal — Not Yet Authorized
+## Acceptance Results
 
-Use account `174159267544`, region `us-east-1`, synthetic namespace `cpl48`.
-Before creation, check exact names are unused; stop on collision rather than
-reusing any existing resource. This namespace tests configuration substitution,
-not an additional application environment or feature setting.
+- Red: the parsed YAML test failed at the actual generated `provider.iam` value
+  because it still contained the broad managed-policy declaration. Before edits,
+  `iam:SimulatePrincipalPolicy` on the deployed role reported `allowed` for
+  `GetItem` and `DeleteTable` against an unrelated example ARN. Those operations
+  were simulated, never executed.
+- Green: two local tests parse generated YAML and the referenced JSON. They guard
+  the role wiring, established target-naming condition, absent managed-policy
+  attachment, explicit actions and account/region-scoped resources. They do not
+  claim to evaluate IAM authorization. Source files are declared Gradle test inputs.
+- AWS `SimulateCustomPolicy` matched 88 expected decisions per configured namespace:
+  72 allows and 16 implicit denies, 264 total, with no missing context. Allowed
+  cases cover the inventory, legacy email indexes, Core condition checks, History,
+  TTL and future namespace/family tables. Denials cover unrelated namespaces,
+  another account/region, unsupported operations, legacy secret scans, unnecessary
+  legacy deletes, index writes and TTL on the wrong family.
+- Fresh existing `serverlessPackage` tasks passed for all three deployed
+  configurations from fish. Generated CloudFormation contains eight scoped
+  DynamoDB statements, no managed-policy attachment, the existing five-function
+  shared role and unchanged non-DynamoDB grants. Resolved packaged statements
+  exactly match the policies used for simulation. Initial packaging from zsh
+  returned `Forbidden`; comparison showed only fish had the Serverless key.
+  No credentials or profiles were changed.
+- Final `fish -lc './gradlew :coupling-plugins:check check'` passed outside the
+  sandbox in 21s: 692 tasks, 60 executed, 632 up-to-date. Existing SDK/E2E results
+  were reused. Focused parsed-policy test and generation checks passed earlier.
+  `git diff --check` and local documentation links passed.
+- Test review: retained assertions parse data and guard general scope properties;
+  authorization evidence comes from AWS's simulator, not string matching or a new
+  evaluator. Production review: all discovered operations retained, explicit
+  legacy/index lists, separate bootstrap/item/TTL authority, family wildcards
+  limited to configured account/region, no feature-dependent IAM configuration.
+  Complete-slice review found no new infrastructure or migration behavior.
 
-- Temporary role `CouplingCpl48DynamoCanary`, trusted only by the specifically
-  authorized operator identity, with short sessions and no application-role trust.
-  Use a permissions boundary limiting all DynamoDB authority to the exact fixture
-  table/index ARNs below. It must prevent the broad baseline managed policy from
-  granting access to real data or unrelated AWS services. The operator identity
-  and corresponding trust policy remain to be supplied before provisioning.
-- Tables `cpl48-TRIBE`, `cpl48-USER` (with `USER_EMAIL_INDEX`),
-  `cpl48-coupling-core`, `cpl48-coupling-activity`, `cpl48-coupling-history`,
-  `cpl48-coupling-live-connections` (with `byConnection` and TTL),
-  `cpl48-coupling-future-canary`, and negative controls `cpl48-outside-canary`
-  and `cpl48-other-coupling-canary`. Use on-demand billing and synthetic data only.
-  Source tables use the actual legacy key shapes; target tables use `PK`/`SK`.
-- Baseline: attach the current effective DynamoDB managed policy to the bounded
-  canary role. Establish allowed persistence and successful negative-control
-  operations. Candidate: remove that attachment and install the generated scoped
-  DynamoDB statements with fixture namespace substitution. The unchanged boundary
-  allows both controls, so their subsequent denial must come from the candidate.
-- Exercise table creation/description, index queries, physical deletion, TTL,
-  conditional Core/History transactions, ledger bootstrap and named-party snapshot
-  import through existing paths where possible. Create the future-family canary
-  only after installing the candidate, without editing its permissions. Compare
-  preserved imported history/current metadata, not only API status codes.
-- The operator handles fixture deletion, not the candidate runtime policy. Cleanup:
-  delete all nine named tables, detach the baseline managed policy if attached,
-  delete candidate inline policies, remove the role and its boundary policy.
-  Verify table absence and IAM cleanup. Do not grant canary `DeleteTable` merely
-  to make cleanup convenient. Record failures and any remaining resources.
+Simulation validates the supplied identity policy, not live service execution,
+all account-level controls or a deployed role update. No deployed remediation or
+endpoint enforcement is claimed. Temporary extraction/simulation probes remain
+outside tracked source; no fixture framework is retained. Local logs are
+`/tmp/cpl48-parsed-red.log`, `/tmp/cpl48-green.log`,
+`/tmp/cpl48-package-fish.log` and `/tmp/cpl48-final-check.log`.
 
-Prepare one-off requests/probes in temporary storage and retain only sanitized
-results here. No new maintained fixture runner is proposed. This proposal does
-not authorize creation, role assumption, policy mutation or deployed-data access.
+Resolved packaged policy SHA-256 (compact JSON, account `174159267544`,
+region `us-east-1`):
 
-## Validation
-2026-11-24 inventory handoff: local links and `git diff --check` passed.
-Full `./gradlew check` passed outside the sandbox in 6s (689 tasks: 56 executed,
-633 up-to-date). Existing integration/browser results were reused. Review of
-the operation inventory and fixture design found that bootstrap also needs the
-Activity fixture; it is included above. No endpoint red/green or remediation is
-claimed. Investigation commit: `git log -1 --format=%H -- agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.md`.
-
-Historical handoff documentation local links and `git diff --check` passed. Full
-`./gradlew check --no-daemon` passed outside the sandbox with a fresh daemon
-in 29s (596 tasks: 54 executed, 542 up-to-date); existing test outputs were
-reused. No IAM implementation or AWS endpoint evidence is claimed. Handoff
-commit: `git log -1 --format=%H -- agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.md`.
-
-This is the sole active owner of the remaining DynamoDB finding. Record completion
-evidence here; the archived security card is historical context and adds no
-separate closeout gate.
+| Configuration | SHA-256 |
+| --- | --- |
+| prod | `84fd5e2852c621c5be04726cea3e9d317b5e33fd34f3888d62b99d3c3b2a45b5` |
+| sandbox | `f5412d5b0a8617df02565e03a35b8b70a2fbddee62acbe5f122a7755bee7aac6` |
+| prerelease | `fc51cad6edec5b09400bdf64e7a6a2da133df05a6649777495ee279987bbd420` |

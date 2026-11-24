@@ -51,6 +51,7 @@ dependencies {
     implementation(platform(libs.testmints.bom))
     implementation(platform(libs.tools.bom))
 
+    testImplementation(libs.jackson.yaml)
     testImplementation(kotlin("test"))
     testImplementation(gradleTestKit())
 
@@ -74,4 +75,11 @@ versionCatalogUpdate {
     versionSelector { versionCandidate ->
         !rejectRegex.matches(versionCandidate.candidate.version)
     }
+}
+
+// Deployment tests inspect the service configuration, not a copied test fixture.
+tasks.test {
+    inputs.file("../server/serverless.yml")
+    inputs.files(fileTree("../server/deploy") { include("*.json") })
+    inputs.file("../libraries/js-dependencies/package.json")
 }
