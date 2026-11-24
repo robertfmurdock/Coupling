@@ -11,10 +11,10 @@ commit messages. Keep Coupling's existing application version calculation, Git
 tags/releases, deployments, JVM distribution, and S3 uploads independent of this
 decision. An npm version may legitimately lag the application version or have gaps.
 
-Status: reopened after live CI exposed npm 12 response incompatibility. Prior
-slices: `d5cd275d4`, `68e00ae80`; compatibility correction is locally validated,
-awaiting owner push and live CI verification. The owner
-pushed those commits; no agent push or release is authorized.
+Status: complete, including successful live CI publication with npm 12.2.3.
+Implementation slices: `d5cd275d4`, `68e00ae80`; compatibility correction:
+`0958c192d` after the owner's rebase. The owner pushed the implementation;
+the agent observed CI and npm read-only. No agent push or release was performed.
 One contributor owns each dependent slice through tests, implementation, review,
 full checks, and commit. No push or release is authorized by this card.
 
@@ -183,17 +183,29 @@ required to commit this independently useful change.
   version gaps. Any live CI/npm observation requires separate push/release
   authorization; record it if available, otherwise label it unverified without
   inventing a follow-up monitoring system.
-- [ ] Review overall outcome, update relevant links, and archive when the required
+- [x] Review overall outcome, update relevant links, and archive when the required
   implementation evidence is complete under [work-card rules](../context/WORK_CHECKLIST.md).
 
 ## Delivery evidence
 
 ### Live CI compatibility correction
 
+- [Build 45321693707](https://github.com/robertfmurdock/Coupling/actions/runs/45321693707)
+  for `0958c192d` completed successfully: both Build and Deploy Dashboard passed.
+  npm 12.2.3 packed and verified the consumer, resolved exact baseline `1.1.919`,
+  compared the candidate (1,611 changed paths), and published the canonical tarball
+  as `1.1.922`. Application release `1.1.922` and S3 upload also succeeded.
+  An independent `npm view @continuous-excellence/coupling-cli@latest version
+  --json --prefer-online` confirmed `1.1.922` after publication.
+- Live evidence establishes the changed-package publication path and existing
+  workflow integration without YAML changes. The unchanged-package no-op remains
+  established by controlled task tests and independent-link comparisons; no
+  additional publication or monitoring run is required to close this card.
+
 - [Build 45313023650](https://github.com/robertfmurdock/Coupling/actions/runs/45313023650)
   for `528acaf62` passed checks, packed-consumer verification, application tag/release
   `1.1.920`, and production deployment, then failed in `:cli:jsPublish` while
-  resolving npm latest. No npm publication occurred; latest remains `1.1.919`.
+  resolving npm latest. No npm publication occurred; latest remained `1.1.919`.
 - Existing Actions setup upgrades npm to latest: this run used npm 12.2.3. Its
   `npm view <package>@latest version --json` returns `["1.1.919"]`, whereas local
   npm 11.20.0 returns `"1.1.919"`. Both responses were reproduced directly; the
@@ -208,10 +220,10 @@ required to commit this independently useful change.
   but the baseline reader required an array. Its regression also failed before
   correction. Accept only a single-item array or a single-key object for the
   requested package, then retain filename and archive identity validation.
-- Add a controlled task regression for the observed array and fail-closed array
-  variations, then validate actual npm 11/12 through the non-publishing task and
-  run the full suite before committing. The owner must push the correction before
-  another live CI result can establish success.
+- Controlled task regressions cover the observed responses and fail-closed
+  variations; actual npm 11/12 non-publishing comparisons and the full suite passed
+  before the correction was committed. The owner's push supplied the live success
+  recorded above.
 - Focused correction checks pass: `./gradlew :coupling-plugins:test --tests
   '*Npm*Test' :coupling-plugins:lintKotlin --console=plain`. The observed npm 12
   lookup and pack shapes each produced a meaningful failure before correction.
@@ -227,8 +239,8 @@ required to commit this independently useful change.
   workflow change was introduced.
 - Correction full gate: `./gradlew check --console=plain` passed in 3m 16s,
   including 35 build-logic tests, CLI platform suites, SDK integration, browser
-  and E2E tests. `git diff --check` passed. Next action: push the correction and
-  watch the resulting CI run; do not rerun the unchanged failing commit.
+  and E2E tests. `git diff --check` passed. The subsequent owner push and live
+  success above complete the compatibility correction.
 
 ### Initial implementation
 
@@ -294,8 +306,8 @@ required to commit this independently useful change.
   The controlled delivery composition additionally executes application/deployment,
   JVM and S3 stand-ins successfully when npm equality produces a no-op.
 - Local inspection command and intentional application/npm version gaps are
-  documented in [CLI packaging](../../cli/README.md). Live npm publication and CI
-  release observation remain unverified and require separate authorization.
+  documented in [CLI packaging](../../cli/README.md). Live publication was
+  unverified at initial closeout; subsequent authorized observation is above.
 - Independent relinking exposed three nondeterministic dependency files:
   `BufferedChannel.mjs`, `ChannelCoroutine.mjs`, and `WebSocketChannelsConfig.mjs`.
   Changes were `SendChannel`/`ReceiveChannel` import and interface metadata order.
@@ -336,5 +348,5 @@ required to commit this independently useful change.
 - Slice 2 commit: `68e00ae80` (`Skip unchanged CLI npm publications`). Overall
   outcome reviewed: the exact verified tarball is compared and conditionally
   published, application delivery remains independent, and failures stop npm
-  publication. All required local evidence is complete; live release observation
-  remains intentionally unverified. No inbound card links required updating.
+  publication. All required local evidence was complete at initial closeout;
+  subsequent live release evidence is above. No inbound card links required updating.
