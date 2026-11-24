@@ -11,7 +11,7 @@ commit messages. Keep Coupling's existing application version calculation, Git
 tags/releases, deployments, JVM distribution, and S3 uploads independent of this
 decision. An npm version may legitimately lag the application version or have gaps.
 
-Status: planned; investigation and work card only. No publication behavior changed.
+Status: slice 1 in progress; implementation and validation underway.
 One contributor owns each dependent slice through tests, implementation, review,
 full checks, and commit. No push or release is authorized by this card.
 
@@ -162,7 +162,7 @@ required to commit this independently useful change.
 
 ## Acceptance evidence and completion
 
-- [ ] Installed packed CLI reports its manifest version from an unrelated working
+- [x] Installed packed CLI reports its manifest version from an unrelated working
   directory; JVM/development behavior remains covered by owning suites.
 - [ ] Two otherwise identical builds at distinct release versions compare equal;
   changed runtime contents/metadata compare different. Record the actual packed
@@ -184,8 +184,42 @@ required to commit this independently useful change.
 
 ## Current evidence and next action
 
-Read-only source investigation completed in both repositories. No Gradle checks,
-registry queries, package builds, commits or releases were performed for this
-documentation-only planning task. Existing generated CLI manifest was inspected
-as a local clue, not proof of current release package contents. Next: begin slice 1
-with the release task graph, actual npm pack inventory, and adjacent version tests.
+- Direct `./gradlew` works; no fish wrapper is needed in this environment.
+- `./gradlew :cli:jsCliTar --no-daemon` and
+  `./gradlew check release --dry-run --no-daemon` passed. The latter shows
+  application tag/release and deployment before CLI npm publication, followed by
+  GitHub release finalization. Preserve that existing ordering.
+- Actual `npm pack` of the generated project contains 1,890 files (8,183,505
+  unpacked bytes), including compiled shared modules and source maps. No bundled
+  node_modules; runtime dependencies are ordinary manifest dependencies.
+- Isolated installation under `/tmp`, invoked from `/tmp`, runs on repository
+  Node 26.13.0 with the existing launcher. Manifest version is
+  `0.0.0-unspecified` but executable reports `unspecified`: concrete evidence of
+  the generated-version mismatch. The packed-consumer Gradle check will retain
+  this contract. No real publication or release has run.
+- Slice 1 red: `:cli:verifyNpmPackage` failed with expected manifest version
+  `0.0.0-unspecified`, actual `coupling-cli version unspecified`. Initial consumer
+  setup needed its own private manifest so npm would not walk to a parent project;
+  that setup failure was corrected before counting the behavior failure.
+- Slice 1 focused green: `./gradlew :cli:verifyNpmPackage :cli:jsNodeTest
+  :cli:jvmTest --no-daemon --console=plain` passed, including 23 tests per platform.
+  Consumer execution strips application credentials and supplies a deliberately
+  wrong `COUPLING_VERSION` to prove it cannot override the installed manifest.
+- Version-input finding: `KotlinPackageJsonTask` did not invalidate its working
+  package manifest on project-version changes (public manifest changed correctly).
+  Declaring `cliVersion` on the owning CLI package tasks corrects this producer;
+  packing also rejects a stale manifest. This was not merely a configuration-cache
+  issue: disabling that cache alone did not correct the working manifest.
+- Two normal `:cli:verifyNpmPackage` builds at `-Pversion=0.0.0-cpl68.1` and
+  `-Pversion=0.0.0-cpl68.2` passed. Temporary Python tar inspection compared all
+  1,890 paths, bytes and executable bits: zero differences after removing only
+  top-level manifest `version`. All compiled shared modules and maps count.
+- Test review: existing common version scenario exercises the CLI command on
+  both platforms; the packed-consumer check covers installed layout, executable,
+  unrelated working directory, help and credential independence. Production
+  review: only JVM retains generated version source; JS locates the nearest
+  manifest from its module URL; lazy artifact providers connect pack/verify/publish.
+  No changes to JVM distribution, S3 artifact, workflow or application versioning.
+- Slice 1 full `./gradlew check --console=plain` passed in 2m 56s (699 actionable
+  tasks), including SDK integration, real-browser and E2E checks. Complete slice
+  review and `git diff --check` passed; no push or release performed.

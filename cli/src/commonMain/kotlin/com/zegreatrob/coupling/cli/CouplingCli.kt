@@ -13,7 +13,7 @@ import kotlin.time.Instant
 class CouplingCli : SuspendingCliktCommand() {
 
     init {
-        versionOption(Versions.couplingVersion)
+        versionOption(couplingVersion())
         context { readEnvvar = { key -> getEnv(key) } }
     }
 

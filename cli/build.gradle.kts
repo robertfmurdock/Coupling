@@ -3,10 +3,14 @@
 // Kotlin/JS executable binary configuration still requires this opt-in.
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import com.zegreatrob.coupling.plugins.deploy.S3SyncTask
+import com.zegreatrob.coupling.plugins.js.NpmPackTask
+import com.zegreatrob.coupling.plugins.js.NpmPublishTask
+import com.zegreatrob.coupling.plugins.js.VerifyNpmPackageTask
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.RootPackageJsonTask
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -34,7 +38,7 @@ kotlin {
             compilerOptions { target = "es2015" }
             binaries.executable()
             testTask {
-                environment("COUPLING_VERSION", project.version.toString())
+                environment("COUPLING_VERSION", project.version.toString().let { if (it == "unspecified") "0.0.0-unspecified" else it })
                 environment("COUPLING_CLI_ACCESS_TOKEN", "fake")
             }
         }
@@ -93,6 +97,9 @@ dependencies {
 version = rootProject.version
 
 tasks {
+    withType<KotlinPackageJsonTask>().configureEach {
+        inputs.property("cliVersion", project.version.toString())
+    }
     named<Test>("jvmTest") {
         environment("COUPLING_VERSION", project.version.toString())
         environment("COUPLING_CLI_ACCESS_TOKEN" to "fake")
@@ -137,12 +144,21 @@ tasks {
         workingDir(mainNpmProjectDir)
         commandLine("npm", "link")
     }
-    val jsPublish = register<Exec>("jsPublish") {
+    val npmPack = register<NpmPackTask>("npmPack") {
         dependsOn(jsCliTar)
+        packageDirectory.set(mainNpmProjectDir)
+        archiveFile.set(layout.buildDirectory.file("npm/coupling-cli.tgz"))
+        packageVersion.set(project.version.toString().let { if (it == "unspecified") "0.0.0-unspecified" else it })
+    }
+    val verifyNpmPackage = register<VerifyNpmPackageTask>("verifyNpmPackage") {
+        archiveFile.set(npmPack.flatMap { it.archiveFile })
+    }
+    check { dependsOn(verifyNpmPackage) }
+    val jsPublish = register<NpmPublishTask>("jsPublish") {
+        dependsOn(verifyNpmPackage)
         enabled = !isSnapshot()
         mustRunAfter(check, ":release", ":deploy:prod:deploy")
-        workingDir(mainNpmProjectDir)
-        commandLine("npm", "publish")
+        archiveFile.set(npmPack.flatMap { it.archiveFile })
     }
     register("publish") {
         dependsOn(jsPublish)
@@ -169,7 +185,7 @@ tasks {
     val copyTemplates = register<Copy>("copyTemplates") {
         inputs.property("version", rootProject.version)
         filteringCharset = "UTF-8"
-        from(project.projectDir.resolve("src/commonMain/templates")) {
+        from(project.projectDir.resolve("src/jvmMain/templates")) {
             filter<ReplaceTokens>("tokens" to mapOf("COUPLING_VERSION" to rootProject.version))
         }
         into(generatedDirectory)
@@ -178,7 +194,7 @@ tasks {
         dependsOn(copyTemplates)
     }
     kotlin.sourceSets {
-        commonMain { kotlin.srcDir(copyTemplates) }
+        named("jvmMain") { kotlin.srcDir(copyTemplates) }
     }
 
 }
