@@ -4,6 +4,7 @@ ksp = "2.3.14"
 log4j = "2.26.1"
 
 [libraries]
+commons-compress = "org.apache.commons:commons-compress:1.28.0"
 jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.23.0"
 jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:6.14.36"
 # @pin

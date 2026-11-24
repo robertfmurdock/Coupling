@@ -31,6 +31,7 @@ tasks {
 }
 
 dependencies {
+    implementation(libs.commons.compress)
     implementation("com.zegreatrob.jsmints:plugins")
     implementation("com.zegreatrob.testmints:mint-logs-plugin")
     implementation("com.zegreatrob.testmints:action-mint-plugin")

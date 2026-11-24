@@ -4,10 +4,11 @@
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import com.zegreatrob.coupling.plugins.deploy.S3SyncTask
 import com.zegreatrob.coupling.plugins.js.NpmPackTask
-import com.zegreatrob.coupling.plugins.js.NpmPublishTask
 import com.zegreatrob.coupling.plugins.js.VerifyNpmPackageTask
+import com.zegreatrob.coupling.plugins.js.registerCliNpmPublication
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.RootPackageJsonTask
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask
@@ -97,6 +98,12 @@ dependencies {
 version = rootProject.version
 
 tasks {
+    named<KotlinJsIrLink>("compileProductionExecutableKotlinJs") {
+        // Kotlin 2.4.21 DCE expands this interface via HashSet, producing unstable interface metadata order.
+        compilerOptions.freeCompilerArgs.add("-Xir-keep=kotlinx.coroutines.channels.Channel")
+        // Keeping Channel.iterator requires consistent names across its stdlib overrides.
+        compilerOptions.freeCompilerArgs.add("-Xir-minimized-member-names=false")
+    }
     withType<KotlinPackageJsonTask>().configureEach {
         inputs.property("cliVersion", project.version.toString())
     }
@@ -154,15 +161,7 @@ tasks {
         archiveFile.set(npmPack.flatMap { it.archiveFile })
     }
     check { dependsOn(verifyNpmPackage) }
-    val jsPublish = register<NpmPublishTask>("jsPublish") {
-        dependsOn(verifyNpmPackage)
-        enabled = !isSnapshot()
-        mustRunAfter(check, ":release", ":deploy:prod:deploy")
-        archiveFile.set(npmPack.flatMap { it.archiveFile })
-    }
-    register("publish") {
-        dependsOn(jsPublish)
-    }
+    project.registerCliNpmPublication(npmPack, verifyNpmPackage, isSnapshot())
 
     val uploadToS3 = register<S3SyncTask>("uploadToS3") {
         group = "deployment"

@@ -11,11 +11,12 @@ commit messages. Keep Coupling's existing application version calculation, Git
 tags/releases, deployments, JVM distribution, and S3 uploads independent of this
 decision. An npm version may legitimately lag the application version or have gaps.
 
-Status: slice 1 in progress; implementation and validation underway.
+Status: slice 1 committed as `d5cd275d4`; slice 2 implemented and fully validated,
+ready for implementation commit and archival.
 One contributor owns each dependent slice through tests, implementation, review,
 full checks, and commit. No push or release is authorized by this card.
 
-## Findings and source references
+## Planning findings and source references
 
 - The sibling repository's `../testmints-js/scripts/compare-release.mjs` compares
   the candidate tarball with the exact npm `latest` version. It compares paths,
@@ -164,25 +165,25 @@ required to commit this independently useful change.
 
 - [x] Installed packed CLI reports its manifest version from an unrelated working
   directory; JVM/development behavior remains covered by owning suites.
-- [ ] Two otherwise identical builds at distinct release versions compare equal;
+- [x] Two otherwise identical builds at distinct release versions compare equal;
   changed runtime contents/metadata compare different. Record the actual packed
   layout and all supported exclusions.
-- [ ] Controlled task-boundary evidence shows equality invokes no npm publication,
+- [x] Controlled task-boundary evidence shows equality invokes no npm publication,
   changes publish the compared artifact, errors prevent publication, and snapshots
   retain their existing behavior. Cover both public CLI publication task paths.
-- [ ] Confirm application release, deployment, JVM and S3 wiring is unaffected by
+- [x] Confirm application release, deployment, JVM and S3 wiring is unaffected by
   npm equality; use task-graph/composition evidence rather than source assertions.
 - [ ] Record focused commands, full `./gradlew check` results and slice commits.
   Follow the documented external-sandbox/fish Gradle execution guidance. Full
   checks alone cannot prove npm comparison, so retain the bounded evidence above.
-- [ ] Document the local non-publishing command and intentional application/npm
+- [x] Document the local non-publishing command and intentional application/npm
   version gaps. Any live CI/npm observation requires separate push/release
   authorization; record it if available, otherwise label it unverified without
   inventing a follow-up monitoring system.
 - [ ] Review overall outcome, update relevant links, and archive when the required
   implementation evidence is complete under [work-card rules](../context/WORK_CHECKLIST.md).
 
-## Current evidence and next action
+## Delivery evidence
 
 - Direct `./gradlew` works; no fish wrapper is needed in this environment.
 - `./gradlew :cli:jsCliTar --no-daemon` and
@@ -192,8 +193,8 @@ required to commit this independently useful change.
 - Actual `npm pack` of the generated project contains 1,890 files (8,183,505
   unpacked bytes), including compiled shared modules and source maps. No bundled
   node_modules; runtime dependencies are ordinary manifest dependencies.
-- Isolated installation under `/tmp`, invoked from `/tmp`, runs on repository
-  Node 26.13.0 with the existing launcher. Manifest version is
+- Isolated installation under `/tmp`, invoked from `/tmp`, runs on shell
+  Node 26.13.1 with the existing launcher (repository pin: 26.13.0). Manifest version is
   `0.0.0-unspecified` but executable reports `unspecified`: concrete evidence of
   the generated-version mismatch. The packed-consumer Gradle check will retain
   this contract. No real publication or release has run.
@@ -219,7 +220,69 @@ required to commit this independently useful change.
   unrelated working directory, help and credential independence. Production
   review: only JVM retains generated version source; JS locates the nearest
   manifest from its module URL; lazy artifact providers connect pack/verify/publish.
-  No changes to JVM distribution, S3 artifact, workflow or application versioning.
+  No changes to JVM/S3 distribution contracts or wiring, workflow or application versioning.
 - Slice 1 full `./gradlew check --console=plain` passed in 2m 56s (699 actionable
   tasks), including SDK integration, real-browser and E2E checks. Complete slice
   review and `git diff --check` passed; no push or release performed.
+- Slice 1 commit: `d5cd275d4` (`Verify and publish the canonical CLI npm artifact`).
+- Slice 2 red: the controlled TestKit equality scenario observed an npm publish
+  command against an identical candidate. A strict-metadata scenario also exposed
+  acceptance of malformed semver before that validation was tightened.
+- Slice 2 focused green: `./gradlew :coupling-plugins:test --tests '*Npm*Test'
+  :coupling-plugins:lintKotlin --console=plain`. TestKit uses the production task
+  registration with disabled artifact producers and a recording local npm process;
+  it covers both publication names, equality, changed artifacts, missing/invalid
+  latest, lookup/fetch/archive/baseline errors, snapshots, publication failure,
+  non-publishing comparison, and a second registry resolution with configuration
+  cache reused. Archive tests cover file/metadata changes and malformed input.
+- Publication owns its fresh registry resolution and exact artifact comparison in
+  one task action. No decision report exists to become stale; tasks declare no
+  reusable external-state output and explicitly disable build caching. Baseline
+  downloads disable lifecycle scripts, and archives are validated without extraction.
+- Real release graph probe: `check release --dry-run -Pversion=1.2.3` retains
+  check → tag → release → production deployment → JVM distribution/S3 upload →
+  CLI publication → GitHub release. Pack/consumer verification precede check.
+  A snapshot graph at `1.2.3-SNAPSHOT` confirms `:cli:jsPublish` is disabled.
+  Temporary init probes only print selected graph nodes; no release actions ran.
+  The controlled delivery composition additionally executes application/deployment,
+  JVM and S3 stand-ins successfully when npm equality produces a no-op.
+- Local inspection command and intentional application/npm version gaps are
+  documented in [CLI packaging](../../cli/README.md). Live npm publication and CI
+  release observation remain unverified and require separate authorization.
+- Independent relinking exposed three nondeterministic dependency files:
+  `BufferedChannel.mjs`, `ChannelCoroutine.mjs`, and `WebSocketChannelsConfig.mjs`.
+  Changes were `SendChannel`/`ReceiveChannel` import and interface metadata order.
+  The installed Kotlin 2.4.21 compiler source artifact identifies the producer:
+  `UselessDeclarationsRemover.collectUsedSuperTypes()` expands removed supertypes
+  using `toHashSet()`. No package comparison exclusions were added.
+- The CLI production linker keeps `kotlinx.coroutines.channels.Channel` to avoid
+  that expansion and disables member-name minification. Keeping it alone failed
+  the packed-consumer check with a mismatched `iterator_jk1svi_k$` call; consistent
+  unminified member names restore executable behavior. This is scoped to the CLI
+  production linker and must be re-evaluated when Kotlin is upgraded. Packed size
+  increased from 1,660,850 to 1,758,092 bytes (5.9%); files remain 1,890.
+- Final independent-link evidence: `:cli:verifyNpmPackage` at
+  `-Pversion=0.0.0-cpl68.3` passed; then
+  `./gradlew :cli:compileProductionExecutableKotlinJs --rerun :cli:compareNpmPackage
+  -Pversion=0.0.0-cpl68.4 --no-configuration-cache --no-daemon --console=plain`
+  with a temporary init supplying the actual `.3` tarball as a controlled npm
+  baseline passed. The linker executed again, consumer verification passed, and
+  the production comparator reported `npm package unchanged; skipping publication`.
+  The temporary npm stand-in rejects publication commands; no live baseline or
+  publish request was used. This supplements the earlier incremental-build proof.
+- Separate final reviews: tests observe process commands and task outcomes through
+  production registration, with archive variations below that boundary. Production
+  review confirmed fresh registry state, exact baseline identity, no extraction,
+  strict metadata, and unchanged foreign release ownership. Compiler instability
+  was corrected at its producer rather than normalized in comparison.
+- npm lookup, retrieval and publication explicitly retain the previous generated
+  package working directory, supplied by the artifact provider. Controlled tests
+  assert this directory independently of the candidate tarball's directory, so
+  registry configuration context remains consistent. The final focused run passes
+  15 npm tests plus build-logic lint.
+- Final unfiltered `./gradlew check --console=plain` passed in 3m 7s, with 699
+  actionable tasks, including 34 build-logic tests, 23 tests per CLI platform,
+  SDK integration, client browser and E2E checks. `git diff --check` passed.
+- After that full suite, the actual default-version packed artifact also compared
+  equal to the controlled `.3` baseline via `:cli:compareNpmPackage`; consumer
+  verification and comparison passed with the final npm working-directory wiring.
