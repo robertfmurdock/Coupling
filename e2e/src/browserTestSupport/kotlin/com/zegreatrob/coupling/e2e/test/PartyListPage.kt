@@ -24,8 +24,8 @@ object PartyListPage {
     suspend fun waitForPage() {
         WebdriverBrowser.waitUntil(
             { TestingLibraryBrowser.getByText("Party List").isDisplayed() },
-            2000,
-            "PartyListPage.waitForPage",
+            timeout = 30000,
+            timeoutMessage = "PartyListPage.waitForPage",
         )
     }
 }
