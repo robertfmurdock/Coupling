@@ -17,5 +17,6 @@ val AboutPage by nfc<PageProps> {
                 __html = HtmlSource(parse(MarkdownContent.content.aboutMd)),
             )
         }
+        ClientLogHistoryControls()
     }
 }

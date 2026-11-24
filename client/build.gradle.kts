@@ -116,6 +116,14 @@ dependencies {
 
 rootProject.yarn.ignoreScriptsProperty = false
 
+val clientReleaseVersion = rootProject.version.toString().takeIf {
+    it.isNotBlank() && it != "0.0.0" && !it.contains("SNAPSHOT", ignoreCase = true)
+} ?: "unknown"
+
+tasks.withType<NodeExec>().configureEach {
+    environment("COUPLING_CLIENT_VERSION", clientReleaseVersion)
+}
+
 tasks {
     val npmProjectDir = kotlin.js().compilations.named("main").flatMap { it.npmProject.dir }
     val cdnBuildOutput = npmProjectDir.map { it.file("cdn.json") }

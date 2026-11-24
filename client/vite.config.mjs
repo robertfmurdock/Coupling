@@ -89,6 +89,7 @@ export default defineConfig(async ({command}) => {
                                 appMountClass: 'view-container',
                                 cdnSettings: cdnSettings,
                                 cdnImportMap: cdnImportMap,
+                                clientVersion: process.env.COUPLING_CLIENT_VERSION || "unknown",
                                 window: isServing ? {
                                     expressEnv: "dev",
                                     inMemory: true,

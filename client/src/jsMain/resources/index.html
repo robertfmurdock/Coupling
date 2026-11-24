@@ -49,6 +49,9 @@
       <% } %>
     </script>
     <% } %>
+    <script>
+      window['clientVersion'] = <%- JSON.stringify(htmlWebpackPlugin.options.clientVersion) %>;
+    </script>
     <%- htmlWebpackPlugin.tags.headTags %>
 </head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-F28M9PKERE"></script>

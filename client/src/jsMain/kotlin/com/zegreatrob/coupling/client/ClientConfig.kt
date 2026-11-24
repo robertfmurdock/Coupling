@@ -8,4 +8,5 @@ data class ClientConfig(
     val expressEnv: String,
     val webpackPublicPath: String,
     val websocketHost: String,
+    val clientVersion: String,
 )

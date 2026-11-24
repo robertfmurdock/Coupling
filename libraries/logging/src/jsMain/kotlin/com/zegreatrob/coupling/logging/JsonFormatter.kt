@@ -15,7 +15,9 @@ data object JsonFormatter : Formatter {
             level = level.name,
             name = loggerName,
             message = message,
-            properties = payload?.mapValues { (_, value) -> value.toString() },
+            properties = payload
+                ?.takeIf { loggerName != "ActionLogger" }
+                ?.mapValues { (_, value) -> value.toString() },
             timestamp = Clock.System.now().toString(),
             marker = marker?.getName(),
             stackTrace = cause.throwableToString(),

@@ -33,8 +33,8 @@ interface ActionLoggingSyntax :
         return result.value
     }
 
-    private fun logStart(className: String?) = logger.info {
-        mapOf(
+    private fun logStart(className: String?) = logger.atInfo {
+        val fields = mapOf(
             "command_action" to className,
             "command_phase" to "start",
             "command_trace_id" to traceId,
@@ -42,11 +42,13 @@ interface ActionLoggingSyntax :
             "type" to "Start",
             "traceId" to traceId,
         )
+        message = fields.toString()
+        payload = fields
     }
 
-    private fun logEnd(className: String?, duration: Duration) = logger.info {
+    private fun logEnd(className: String?, duration: Duration) = logger.atInfo {
         val durationMs = duration.inWholeMicroseconds.toDouble() / 1000.0
-        mapOf(
+        val fields = mapOf(
             "command_action" to className,
             "command_phase" to "end",
             "command_trace_id" to traceId,
@@ -56,10 +58,12 @@ interface ActionLoggingSyntax :
             "duration" to "$duration",
             "traceId" to traceId,
         )
+        message = fields.toString()
+        payload = fields
     }
 
-    private fun logException(exception: Exception, className: String?) = logger.info(exception) {
-        mapOf(
+    private fun logException(exception: Exception, className: String?) = logger.atInfo {
+        val fields = mapOf(
             "command_action" to className,
             "command_phase" to "end",
             "command_trace_id" to traceId,
@@ -69,5 +73,8 @@ interface ActionLoggingSyntax :
             "type" to "End",
             "traceId" to traceId,
         )
+        message = fields.toString()
+        cause = exception
+        payload = fields
     }
 }

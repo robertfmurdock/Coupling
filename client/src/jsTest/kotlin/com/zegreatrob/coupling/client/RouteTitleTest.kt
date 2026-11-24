@@ -35,7 +35,7 @@ class RouteTitleTest {
             "/:partyId/contributions/visualization" to "Contributions Visualization",
             "/:partyId/contributions" to "Contributions Overview",
         )
-        val config = ClientConfig(false, "test", "example.invalid", "", "test", "", "")
+        val config = ClientConfig(false, "test", "example.invalid", "", "test", "", "", "unknown")
         val routes = config.authenticatedRoutes()
         val expectedRouter = createMemoryRouter(
             destinations.map { (path, _) -> routes.single { it.path == path }.withoutPageQueries() }.toTypedArray(),
