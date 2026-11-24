@@ -9,6 +9,22 @@ available for local SSM secrets:
   -PcaptureViewport=1280x900 --no-daemon
 ```
 
+Supported fixtures are `contribution-overview` and `developer-settings`. The
+Developer settings fixture authenticates with the E2E test account, clears only
+the app-owned client-log namespace for a stable status count, and frames the
+Developer settings heading with the recovery controls.
+For example:
+
+```sh
+./gradlew :e2e:captureVisualEvidence \
+  -PcaptureFixture=developer-settings -PcaptureLabel=After-desktop \
+  -PcaptureViewport=1280x900 --no-daemon
+```
+
+The Developer settings fixture records its seed and setup conditions in the
+manifest. Use the same browser, viewport, theme, and fixture conditions for
+before/after pairs.
+
 The task builds and starts the local stack and requires the normal E2E network
 access. Agents must run it outside the sandbox; see the
 [Gradle playbook](../../agents.d/context/GRADLE_PLAYBOOK.md#browser-tests-and-sandboxed-daemons).

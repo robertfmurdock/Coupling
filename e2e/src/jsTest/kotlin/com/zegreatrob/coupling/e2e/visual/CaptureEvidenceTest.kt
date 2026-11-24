@@ -37,6 +37,25 @@ class CaptureEvidenceTest {
     } teardown { close() }
 
     @Test
+    fun developerSettingsIsARepeatableVisualEvidenceFixture() = asyncSetup(World()) {
+        request = request.copy(fixture = DEVELOPER_SETTINGS_FIXTURE)
+        open()
+    } exercise {
+        captureEvidence(browser, request, initial) {}
+    } verifyAnd { report ->
+        report.fixture.assertIsEqualTo(FixtureIdentity(DEVELOPER_SETTINGS_FIXTURE, DEVELOPER_SETTINGS_SEED))
+        report.status.assertIsEqualTo("captured")
+        browser.photographed.assertIsEqualTo(true)
+        report.fixtureConditions.assertIsEqualTo(
+            listOf(
+                "Authenticated E2E test account; app-owned client-log storage cleared before visiting Developer settings",
+                "Developer settings heading framed with client log history controls; animations and external avatars disabled",
+                "Browser locale en-US, timezone UTC, light color scheme, device scale 1",
+            ),
+        )
+    } teardown { close() }
+
+    @Test
     fun unknownFixtureFailsBeforePreparingData() = asyncSetup(World()) {
         request = request.copy(fixture = "unknown")
         open()

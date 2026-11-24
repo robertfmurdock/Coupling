@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.action.LoggingActionPipe
+import com.zegreatrob.coupling.client.routing.authenticatedRoutes
 import com.zegreatrob.coupling.logging.Message
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.async.SuspendAction
@@ -10,6 +11,8 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import io.github.oshai.kotlinlogging.KLoggingEvent
 import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 import io.github.oshai.kotlinlogging.Level
+import kotlinx.browser.document
+import kotlinx.coroutines.await
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import react.create
@@ -22,6 +25,7 @@ class ClientLogHistoryTest {
     @AfterTest
     fun cleanUp() {
         ClientLogCapture.uninstall()
+        ClientLogCapture.clear()
         cleanup()
     }
 
@@ -195,6 +199,59 @@ class ClientLogHistoryTest {
         )
     } verify { labels ->
         labels.assertIsEqualTo(listOf("Download client logs (JSONL)", "Clear saved client logs"))
+    }
+
+    @Test
+    fun aboutArticleDoesNotIncludeDeveloperRecoveryControls() = asyncSetup {
+        renderNavigation { AboutPage() }
+    } exercise {
+        waitFor { screen.getByRole("heading", RoleOptions(name = "About This App")) }.await()
+        document.body?.textContent?.contains("Client log history")
+    } verify { recoveryControlsInterruptArticle ->
+        recoveryControlsInterruptArticle.assertIsEqualTo(false)
+    }
+
+    @Test
+    fun developerSettingsIsRegisteredAsAnAuthenticatedPartyRoute() = setup(object {
+        val config = ClientConfig(false, "test", "example.invalid", "", "test", "", "", "unknown")
+    }) exercise {
+        config.authenticatedRoutes().mapNotNull { it.path }.filter { it.endsWith("developer-settings/") }
+    } verify { routes ->
+        routes.assertIsEqualTo(listOf("/:partyId/developer-settings/"))
+    }
+
+    @Test
+    fun developerSettingsShowsRecoveryActionsAndClearUpdatesStatus() = asyncSetup(object {
+        val actor = userEvent.setup()
+    }) {
+        ClientLogCapture.clear()
+        ClientLogHistory().append(actionEvent("end", "developer-settings-test"), "2.5.0", kotlin.js.Date.now().toLong())
+        renderNavigation { DeveloperSettingsPage() }
+    } exercise {
+        waitFor { screen.getByRole("heading", RoleOptions(name = "Developer settings")) }.await()
+        actor.click(screen.getByText("Querying the exported JSONL")).await()
+        actor.click(screen.getByRole("button", RoleOptions(name = "Clear saved client logs"))).await()
+        listOf(
+            screen.getByRole("heading", RoleOptions(name = "Developer settings")).textContent,
+            screen.getByRole("heading", RoleOptions(name = "Client log history")).textContent,
+            screen.getByRole("link", RoleOptions(name = "Back to parties")).getAttribute("href"),
+            screen.getByRole("button", RoleOptions(name = "Download client logs (JSONL)")).textContent,
+            screen.getByRole("button", RoleOptions(name = "Clear saved client logs")).textContent,
+            screen.getByText("Each line is JSON. The first line is export coverage metadata; event lines can be filtered with jq:").textContent,
+            screen.getByRole("status", RoleOptions()).textContent,
+        )
+    } verify { renderedPage ->
+        renderedPage.assertIsEqualTo(
+            listOf(
+                "Developer settings",
+                "Client log history",
+                "/parties/",
+                "Download client logs (JSONL)",
+                "Clear saved client logs",
+                "Each line is JSON. The first line is export coverage metadata; event lines can be filtered with jq:",
+                "0 saved client log events. Storage: available. History expires after 30 days and may be shortened by the 1 MiB storage cap. Exported logs stay on this device until you choose to share them.",
+            ),
+        )
     }
 }
 

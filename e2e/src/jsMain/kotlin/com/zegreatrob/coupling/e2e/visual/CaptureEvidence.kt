@@ -10,7 +10,14 @@ import kotlin.js.Promise
 
 const val CAPTURE_FIXTURE = "contribution-overview"
 const val CAPTURE_SEED = "contribution-overview-v1"
+const val DEVELOPER_SETTINGS_FIXTURE = "developer-settings"
+const val DEVELOPER_SETTINGS_SEED = "developer-settings-v1"
 const val CAPTURE_SAVE_TIMESTAMP = "12:00:00, 2026-11-19"
+
+private val fixtureSeeds = mapOf(
+    CAPTURE_FIXTURE to CAPTURE_SEED,
+    DEVELOPER_SETTINGS_FIXTURE to DEVELOPER_SETTINGS_SEED,
+)
 
 @Serializable
 data class Dimensions(val width: Int, val height: Int)
@@ -44,11 +51,7 @@ data class EvidenceManifest(
     val deviceScale: Double? = null,
     val browser: BrowserIdentity? = null,
     val failureStage: String? = null,
-    val fixtureConditions: List<String> = listOf(
-        "Fixed contribution IDs, dates, authors and cycle times; animations and external avatars disabled",
-        "Save Timestamp display normalized to $CAPTURE_SAVE_TIMESTAMP; server records remain unchanged",
-        "Browser locale en-US, timezone UTC, light color scheme, device scale 1",
-    ),
+    val fixtureConditions: List<String> = emptyList(),
 )
 
 data class CaptureRequest(val fixture: String, val label: String, val viewport: String)
@@ -80,11 +83,12 @@ suspend fun beginEvidence(directory: String, source: SourceIdentity, request: Ca
     CaptureFiles.mkdir(runDirectory, DirectoryOptions(recursive = true)).await()
     return EvidenceManifest(
         source,
-        FixtureIdentity(request.fixture),
+        FixtureIdentity(request.fixture, fixtureSeeds[request.fixture] ?: "unknown"),
         request.label,
         EvidencePaths(CapturePath.join(runDirectory, "manifest.json"), CapturePath.join(runDirectory, "capture.png")),
         requestedViewportInput = request.viewport,
         requestedViewport = runCatching { parseViewport(request.viewport) }.getOrNull(),
+        fixtureConditions = fixtureConditions(request.fixture),
     )
         .also { saveManifest(it) }
 }
@@ -105,7 +109,7 @@ suspend fun captureEvidence(
     var report = initial
     var stage = "validation"
     try {
-        require(request.fixture == CAPTURE_FIXTURE) { "Unknown fixture" }
+        require(request.fixture in fixtureSeeds) { "Unknown fixture" }
         require(request.label.isNotBlank() && request.label.length <= 120) { "Invalid capture label" }
         report = report.copy(requestedViewport = parseViewport(request.viewport))
         saveManifest(report)
@@ -151,6 +155,22 @@ suspend fun finishEvidence(path: String, exitCode: Int): EvidenceManifest {
 }
 
 fun captureRequest() = CaptureRequest(captureEnv("COUPLING_CAPTURE_FIXTURE"), captureEnv("COUPLING_CAPTURE_LABEL"), captureEnv("COUPLING_CAPTURE_VIEWPORT"))
+
+private fun fixtureConditions(fixture: String) = when (fixture) {
+    CAPTURE_FIXTURE -> listOf(
+        "Fixed contribution IDs, dates, authors and cycle times; animations and external avatars disabled",
+        "Save Timestamp display normalized to $CAPTURE_SAVE_TIMESTAMP; server records remain unchanged",
+        "Browser locale en-US, timezone UTC, light color scheme, device scale 1",
+    )
+
+    DEVELOPER_SETTINGS_FIXTURE -> listOf(
+        "Authenticated E2E test account; app-owned client-log storage cleared before visiting Developer settings",
+        "Developer settings heading framed with client log history controls; animations and external avatars disabled",
+        "Browser locale en-US, timezone UTC, light color scheme, device scale 1",
+    )
+
+    else -> emptyList()
+}
 
 internal object CaptureLifecycle {
     fun begin(): Promise<String> = MainScope().promise {

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.ClientConfig
+import com.zegreatrob.coupling.client.DeveloperSettingsPage
 import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.components.thirdPartyAvatarsDisabledContext
@@ -109,6 +110,7 @@ internal fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotN
     },
     couplingRoute("/:partyId/prepare/", "Prepare to Spin", PrepareSpinPage),
     couplingRoute("/:partyId/edit/", "Party Config", PartyConfigPage),
+    couplingRoute("/:partyId/developer-settings/", "Developer settings", DeveloperSettingsPage),
     couplingRoute("/:partyId/secrets/", "Party Secrets", PartySecretsPage),
     couplingRoute("/:partyId/history", "History", HistoryPage),
     couplingRoute("/:partyId/integrations", "Integrations", IntegrationPage),

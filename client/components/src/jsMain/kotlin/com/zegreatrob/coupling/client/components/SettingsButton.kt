@@ -61,6 +61,7 @@ val SettingsButton by nfc<PartyButtonProps> { props ->
                     CouplingDropDownLink(to = "/${props.partyId.value}/edit") { +"Party Settings" }
                     CouplingDropDownLink(to = "/${props.partyId.value}/secrets") { +"Secrets" }
                     CouplingDropDownLink(to = "/${props.partyId.value}/contributions") { +"Contributions" }
+                    CouplingDropDownLink(to = "/${props.partyId.value}/developer-settings/") { +"Developer settings" }
                 }
             }
         }

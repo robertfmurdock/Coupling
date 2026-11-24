@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 import io.github.oshai.kotlinlogging.Level
 import kotlinx.coroutines.await
@@ -33,8 +34,14 @@ class CaptureFixture {
     } exercise {
         try {
             captureEvidence(WdioEvidenceBrowser(), request, readManifest(manifest)) {
-                fixtureStarted = true
-                prepareContributionOverview()
+                when (request.fixture) {
+                    DEVELOPER_SETTINGS_FIXTURE -> prepareDeveloperSettings()
+
+                    CAPTURE_FIXTURE -> {
+                        fixtureStarted = true
+                        prepareContributionOverview()
+                    }
+                }
             }
         } finally {
             // Only this reserved fixture is deleted; the normal E2E bootstrap deletes all parties.
@@ -43,6 +50,28 @@ class CaptureFixture {
     } verify { report ->
         check(report.status == "captured")
     }
+}
+
+private suspend fun prepareDeveloperSettings() {
+    WebdriverBrowser.setUrl("https://localhost/")
+    CaptureWdio.execute(
+        """
+        sessionStorage.setItem('animationDisabled', 'true');
+        sessionStorage.setItem('thirdPartyAvatarsDisabled', 'true');
+        """.trimIndent(),
+    ).await()
+    TestLogin.login {
+        WebdriverBrowser.setLocation("/visual-evidence-client-logs/developer-settings/")
+        WebdriverBrowser.waitUntil({ TestingLibraryBrowser.getByText("Developer settings").isDisplayed() }, timeout = 30000, timeoutMessage = "Developer settings did not become ready")
+    }
+    CaptureWdio.execute(
+        """
+        Object.keys(localStorage)
+            .filter(key => key.startsWith('coupling:client-log:'))
+            .forEach(key => localStorage.removeItem(key));
+        """.trimIndent(),
+    ).await()
+    awaitVisualReadiness()
 }
 
 private val fixtureParty = PartyDetails(
