@@ -28,11 +28,13 @@ kotlin {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest>().configureEach {
-    val localStorageDirectory = layout.buildDirectory.dir("tmp/$name").get().asFile
-    environment("NODE_OPTIONS", "--localstorage-file=$localStorageDirectory/localstorage")
+    val localStorageDirectory = layout.buildDirectory.dir("tmp/$name")
     doFirst {
         // clean and configuration-cache reuse can remove a directory created during configuration.
-        Files.createDirectories(localStorageDirectory.toPath())
+        val directory = localStorageDirectory.get().asFile
+        Files.createDirectories(directory.toPath())
+        (this as org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest)
+            .environment("NODE_OPTIONS", "--localstorage-file=$directory/localstorage")
     }
 }
 
