@@ -1,5 +1,6 @@
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
+import java.nio.file.Files
 
 plugins {
     id("com.zegreatrob.jsmints.plugins.minreact")
@@ -27,7 +28,12 @@ kotlin {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest>().configureEach {
-    environment("NODE_OPTIONS", "--localstorage-file=${temporaryDir}/localstorage")
+    val localStorageDirectory = layout.buildDirectory.dir("tmp/$name").get().asFile
+    environment("NODE_OPTIONS", "--localstorage-file=$localStorageDirectory/localstorage")
+    doFirst {
+        // clean and configuration-cache reuse can remove a directory created during configuration.
+        Files.createDirectories(localStorageDirectory.toPath())
+    }
 }
 
 tasks {
