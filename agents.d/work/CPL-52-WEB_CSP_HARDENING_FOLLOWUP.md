@@ -9,8 +9,8 @@ client. This card owns CSP policy construction, trusted-script authorization,
 compatibility checks and enforcement. Preserve Auth0, Slack/Discord OAuth,
 analytics, GraphQL, WebSockets, GraphiQL and supported browser behavior.
 
-Use the same application path across local, sandbox, prerelease and production,
-with ordinary configured origins. CSP is baseline behavior, independent of the
+Use the same application path with ordinary configured origins.
+CSP is baseline behavior, independent of the
 existing prerelease flag; test the features enabled by both flag states. Follow
 [environment conventions](../context/ARCHITECTURE_CANONICAL.md#build-and-deployment).
 

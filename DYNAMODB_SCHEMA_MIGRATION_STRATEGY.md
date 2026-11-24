@@ -34,8 +34,10 @@ At each environment's target-only retirement remove normal runtime legacy access
 legacy recovery evidence under separately authorized recovery access. Do not
 wait for global legacy-code removal to retire that environment's permissions.
 
-The [migration IAM work card](agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.md) owns this
-rollout and the mandatory isolated AWS endpoint red/green evidence. The
+The [migration IAM work card](agents.d/work/CPL-48-DYNAMODB_MIGRATION_IAM.md) owns replacement
+of the broad managed policy while preserving implemented capabilities, including
+the mandatory isolated AWS endpoint red/green evidence. Later target-only
+transition work owns retirement of legacy and temporary migration permissions. The
 [security remediation card](agents.d/work_completed/CPL-47-SECURITY_CRITICAL_HIGH_REMEDIATION.md)
 tracks the transfer as outstanding, not remediated. No provisioning, deployment,
 or AWS profile changes are authorized by these documents.

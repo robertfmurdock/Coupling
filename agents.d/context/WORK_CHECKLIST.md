@@ -29,6 +29,11 @@ recurring need and owner, or keep the experiment temporary and retain findings.
 Choose useful headings. Link shared procedures; record decisions affecting scope,
 design, or validation.
 
+Describe feature incubation in terms of the shared flag being on or off, then
+unconditional behavior where relevant. Follow the [application configuration
+contract](ARCHITECTURE_CANONICAL.md#build-and-deployment); do not plan named
+environment rollout steps or introduce environment-specific feature configuration.
+
 ## Keep the Writing Focused
 
 Write for the next contributor deciding what to build, why, and how to know it

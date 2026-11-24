@@ -56,6 +56,10 @@ Apply [tooling purpose and lifetime](../context/GRADLE_PLAYBOOK.md#tooling-purpo
   auth/cache/animation state, actual viewport, host/browser and source revision.
   Compare application readiness logs to the lab observation and explain differences.
   Retain aborts, failures, null metrics and collection limitations.
+  Record `ENABLE_PRERELEASE_FEATURES` as enabled or disabled and relevant
+  integration configuration. Match those conditions when comparing samples under
+  the [application configuration contract](../context/ARCHITECTURE_CANONICAL.md#build-and-deployment).
+  Do not introduce environment-specific measurement or feature configuration.
 - For a selected CDN group, retain matched startup/first-use request, byte and full
   emitted-JS comparisons with action/recovery evidence. A runtime inventory that
   rules out a safe candidate can close the loading investigation. Logs alone cannot

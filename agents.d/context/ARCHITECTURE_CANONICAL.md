@@ -31,6 +31,14 @@ feature flags and use the existing prerelease flag for incubating features where
 appropriate rather than adding a flag for each feature. Environment-specific
 origins, credentials and data namespaces remain ordinary configuration values.
 
+Work cards describe incubating behavior through `ENABLE_PRERELEASE_FEATURES`
+being enabled or disabled, and promotion as making that behavior unconditional.
+Do not use named environments as feature states, acceptance gates or rollout
+steps, or invent environment-specific settings, policies or orchestration for a
+feature. Mention an environment name only when needed for an actual resource
+address, existing configuration constraint or historical evidence. A flag's
+removal does not itself justify new environment-specific behavior.
+
 This consistency is critical to trustworthy tests and to local development being
 as good a proxy for the released application as possible. Keep concessions to a
 minimum: reuse the released application's behavior and execution paths wherever
