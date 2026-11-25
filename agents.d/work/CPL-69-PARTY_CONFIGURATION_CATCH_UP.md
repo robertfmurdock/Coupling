@@ -116,5 +116,10 @@ The existing dispatcher result still reports cumulative count and last key
 for that bounded snapshot. The append path retains its existing guard and
 checkpoint format.
 
-Next: reconcile full history, including older arrivals and same-key changes,
-with explicit outcomes and a Core ownership check independent of import count.
+The command checks for missing source keys through its completed watermark
+and returns incomplete when one is absent from History. The check is read-only
+and does not establish canonical content or metadata parity.
+
+Next: import missing older revisions, then reconcile content, target-only
+history, and Core. Introduce explicit conflict outcomes and a Core ownership
+check independent of import count.

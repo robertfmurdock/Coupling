@@ -37,7 +37,7 @@ class DynamoPartyConfigurationBackfill(
         check(existing == null || ledger["phase"] == "BACKFILLING") { "Existing checkpoint requires its active backfill ledger" }
         var checkpoint = if (existing == null) initialize(run, ledger) else reopenIfAppended(run, ledger, existing)
         while (!checkpoint.complete) checkpoint = importPage(run, ledger, checkpoint)
-        return PartyConfigurationBackfillResult(checkpoint.count, checkpoint.lastKey, checkpoint.complete)
+        return PartyConfigurationBackfillResult(checkpoint.count, checkpoint.lastKey, hasImportedSourceKeys(run, checkpoint))
     }
 
     private suspend fun loadLedger(run: Run): Json {
@@ -120,10 +120,22 @@ class DynamoPartyConfigurationBackfill(
         return checkpoint
     }
 
+    private suspend fun hasImportedSourceKeys(run: Run, checkpoint: Checkpoint): Boolean {
+        if (checkpoint.watermark == null) return true
+        var cursor = checkpoint.copy(lastKey = null)
+        do {
+            val page = querySource(run, checkpoint = cursor)
+            for (source in page.items) {
+                val revisionId = sourceRevisionId(run, source)
+                if (get(historyTable, run.historyPartition, "REV#$revisionId") == null) return false
+            }
+            cursor = cursor.copy(lastKey = page.lastEvaluatedKey?.getDynamoStringValue("timestamp"))
+        } while (cursor.lastKey != null)
+        return true
+    }
+
     private suspend fun importRevision(run: Run, ledger: Json, previous: Checkpoint, source: Json): Checkpoint {
-        val timestamp = source.getDynamoDateTimeValue("timestamp") ?: error("Source timestamp is required")
-        check(timestamp.isoWithMillis() == source["timestamp"]) { "Source timestamp must use canonical millisecond precision" }
-        val revisionId = backfillRevisionId(timestamp, JSON.stringify(arrayOf(sourceTable, run.partyId, source["timestamp"])))
+        val revisionId = sourceRevisionId(run, source)
         val history = historyItem(run, previous, source, revisionId)
         val next = Checkpoint(
             previous.watermark,
@@ -143,8 +155,14 @@ class DynamoPartyConfigurationBackfill(
         return next
     }
 
+    private fun sourceRevisionId(run: Run, source: Json): String {
+        val timestamp = source.getDynamoDateTimeValue("timestamp") ?: error("Source timestamp is required")
+        check(timestamp.isoWithMillis() == source["timestamp"]) { "Source timestamp must use canonical millisecond precision" }
+        return backfillRevisionId(timestamp, JSON.stringify(arrayOf(sourceTable, run.partyId, source["timestamp"])))
+    }
+
     private fun historyItem(run: Run, previous: Checkpoint, source: Json, revisionId: String) = json(
-        "PK" to "ENTITY#PARTY#PARTY#${run.partyId}",
+        "PK" to run.historyPartition,
         "SK" to "REV#$revisionId",
         "actorId" to source.getDynamoStringValue("modifyingUserEmail"),
         "action" to if (source.getDynamoBoolValue("isDeleted") == true) "DELETE_PARTY" else "SAVE_PARTY",
@@ -246,7 +264,7 @@ class DynamoPartyConfigurationBackfill(
             tableName = historyTable,
             keyConditionExpression = "#pk = :pk",
             expressionAttributeNames = json("#pk" to "PK"),
-            expressionAttributeValues = json(":pk" to "ENTITY#PARTY#PARTY#${run.partyId}"),
+            expressionAttributeValues = json(":pk" to run.historyPartition),
             consistentRead = true,
             scanIndexForward = true,
             limit = 1,
@@ -263,6 +281,7 @@ class DynamoPartyConfigurationBackfill(
 
     private data class Run(val stage: String, val partyId: String, val id: String) {
         val partition get() = "MIGRATION#$stage"
+        val historyPartition get() = "ENTITY#PARTY#PARTY#$partyId"
         val checkpointKey get() = "BACKFILL#TRIBE#$partyId"
     }
 

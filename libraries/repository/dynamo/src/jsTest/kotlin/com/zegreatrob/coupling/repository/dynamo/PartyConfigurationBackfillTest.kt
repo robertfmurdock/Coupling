@@ -85,6 +85,22 @@ class PartyConfigurationBackfillTest {
     }
 
     @Test
+    fun lateLegacyRevisionMakesCatchUpIncomplete() = asyncSetup(Fixture()) {
+        prepare()
+        source("20240101000000.000", "First")
+        source("20240103000000.000", "Current")
+        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        source("20240102000000.000", "Late")
+    } exercise {
+        DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
+    } verify { result ->
+        result.complete.assertIsEqualTo(false)
+        result.checkpoint.assertIsEqualTo("20240103000000.000")
+        history().map { it["timestamp"] }.assertIsEqualTo(listOf("20240101000000.000", "20240103000000.000"))
+        metadata()?.get("name").assertIsEqualTo("Current")
+    }
+
+    @Test
     fun interruptionResumesFromTheLastAtomicCheckpointAndExcludesLaterWrites() = asyncSetup(Fixture()) {
         prepare()
         source("20240101000000.000", "First")
