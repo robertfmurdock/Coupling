@@ -8,6 +8,9 @@ client, backend services, and shared libraries.
 Deliver meaningful features as small, independently releasable test-plus-
 implementation commits. Each commit must pass the full test suite and be safe to
 push and release; it must remain useful and safe if subsequent work stops.
+Treat successful validation as a commit gate; do not repeat routine test-pass
+results or counts in work cards or tracked logs. Record durable findings, actual
+behavior/performance evidence, and unmet acceptance gaps when they matter.
 
 Defer speculative complexity until a concrete need appears. Add compatibility
 layers, abstractions, configuration, and generalized machinery when a real use
