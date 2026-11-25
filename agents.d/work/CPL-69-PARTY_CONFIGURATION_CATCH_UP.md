@@ -110,5 +110,11 @@ implementation of this card.
 
 ## Current State
 
-2026-11-24: planned; no implementation or deployed-data execution. Next: read the
-existing backfill and dispatcher tests and call the first slice's test shot.
+Same-run catch-up reopens completed checkpoints for appends, including after
+an empty snapshot. An unfinished invocation keeps its original watermark.
+The existing dispatcher result still reports cumulative count and last key
+for that bounded snapshot. The append path retains its existing guard and
+checkpoint format.
+
+Next: reconcile full history, including older arrivals and same-key changes,
+with explicit outcomes and a Core ownership check independent of import count.

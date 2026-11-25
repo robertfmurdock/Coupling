@@ -55,6 +55,36 @@ class PartyConfigurationBackfillTest {
     }
 
     @Test
+    fun completedSnapshotImportsLaterRevisions() = asyncSetup(Fixture()) {
+        prepare()
+        source("20240101000000.000", "Snapshot")
+        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        source("20240102000000.000", "Appended")
+    } exercise {
+        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+    } verify { result ->
+        result.importedCount.assertIsEqualTo(2)
+        result.checkpoint.assertIsEqualTo("20240102000000.000")
+        result.complete.assertIsEqualTo(true)
+        history().map { it["party"].unsafeCast<Json>()["name"] }.assertIsEqualTo(listOf("Snapshot", "Appended"))
+        metadata()?.get("name").assertIsEqualTo("Appended")
+    }
+
+    @Test
+    fun completedEmptySnapshotImportsFirstRevision() = asyncSetup(Fixture()) {
+        prepare()
+        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        source("20240101000000.000", "First")
+    } exercise {
+        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+    } verify { result ->
+        result.importedCount.assertIsEqualTo(1)
+        result.complete.assertIsEqualTo(true)
+        history().single()["timestamp"].assertIsEqualTo("20240101000000.000")
+        metadata()?.get("name").assertIsEqualTo("First")
+    }
+
+    @Test
     fun interruptionResumesFromTheLastAtomicCheckpointAndExcludesLaterWrites() = asyncSetup(Fixture()) {
         prepare()
         source("20240101000000.000", "First")

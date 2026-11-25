@@ -35,7 +35,7 @@ class DynamoPartyConfigurationBackfill(
         val ledger = loadLedger(run)
         val existing = loadCheckpoint(run)
         check(existing == null || ledger["phase"] == "BACKFILLING") { "Existing checkpoint requires its active backfill ledger" }
-        var checkpoint = existing ?: initialize(run, ledger)
+        var checkpoint = if (existing == null) initialize(run, ledger) else reopenIfAppended(run, ledger, existing)
         while (!checkpoint.complete) checkpoint = importPage(run, ledger, checkpoint)
         return PartyConfigurationBackfillResult(checkpoint.count, checkpoint.lastKey, checkpoint.complete)
     }
@@ -66,7 +66,7 @@ class DynamoPartyConfigurationBackfill(
     private suspend fun initialize(run: Run, ledger: Json): Checkpoint {
         check(get(coreTable, "PARTY#${run.partyId}", "META") == null) { "Target party metadata already exists" }
         check(queryHistory(run).isEmpty()) { "Target party history already exists" }
-        val watermark = querySource(run, descending = true).items.firstOrNull()?.getDynamoStringValue("timestamp")
+        val watermark = latestSourceKey(run)
         val checkpoint = Checkpoint(watermark, null, 0, sha256(""), watermark == null, false)
         val items = arrayOf(startLedger(run, ledger), checkpointPut(run, checkpoint, null))
         dynamoDBClient.transactWrite(TransactWriteCommandInput(transactItems = items)).await()
@@ -77,6 +77,19 @@ class DynamoPartyConfigurationBackfill(
         }
         return checkpoint
     }
+
+    private suspend fun reopenIfAppended(run: Run, ledger: Json, checkpoint: Checkpoint): Checkpoint {
+        if (!checkpoint.complete) return checkpoint
+        val watermark = latestSourceKey(run) ?: return checkpoint
+        if (checkpoint.lastKey?.let { watermark <= it } == true) return checkpoint
+
+        val reopened = checkpoint.copy(watermark = watermark, complete = false)
+        val items = arrayOf(ledgerGuard(run, ledger), checkpointPut(run, reopened, checkpoint))
+        dynamoDBClient.transactWrite(TransactWriteCommandInput(transactItems = items)).await()
+        return reopened
+    }
+
+    private suspend fun latestSourceKey(run: Run) = querySource(run, descending = true).items.firstOrNull()?.getDynamoStringValue("timestamp")
 
     private fun startLedger(run: Run, ledger: Json): TransactWriteItem = if (ledger["phase"] == "DISABLED") {
         val next = json().add(ledger).add(
@@ -196,7 +209,7 @@ class DynamoPartyConfigurationBackfill(
                 "runId = :run AND completedCount = :count AND checksum = :checksum AND complete = :complete"
             },
             expressionAttributeValues = previous?.let {
-                json(":run" to run.id, ":count" to it.count, ":checksum" to it.checksum, ":complete" to false)
+                json(":run" to run.id, ":count" to it.count, ":checksum" to it.checksum, ":complete" to it.complete)
             }.dynamoOptional(),
         ),
     )
