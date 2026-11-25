@@ -179,6 +179,46 @@ class ClientLogHistoryTest {
     }
 
     @Test
+    fun failedWriteDoesNotRestoreRecordsClearedByAnotherTab() = setup(object {
+        val storage = MemoryClientLogStorage()
+        val writingTab = ClientLogHistory(storage, maxRecords = 1)
+        val clearingTab = ClientLogHistory(storage)
+        val prefix = "coupling:client-log:record:"
+
+        init {
+            writingTab.append(actionEvent("end", "before-clear"), "2.4.1", emittedAtMillis = 1_000)
+            storage.failNextWrite = true
+            storage.onRecordWrite = clearingTab::clear
+        }
+    }) exercise {
+        val stored = writingTab.append(actionEvent("end", "failed-write"), "2.4.1", emittedAtMillis = 2_000)
+        stored to storage.keys().count { it.startsWith(prefix) }
+    } verify { (stored, retainedRecords) ->
+        stored.assertIsEqualTo(false)
+        retainedRecords.assertIsEqualTo(0)
+    }
+
+    @Test
+    fun clearDuringRollbackRemovesTheRestoredRecord() = setup(object {
+        val storage = MemoryClientLogStorage()
+        val writingTab = ClientLogHistory(storage, maxRecords = 1)
+        val clearingTab = ClientLogHistory(storage)
+        val prefix = "coupling:client-log:record:"
+
+        init {
+            writingTab.append(actionEvent("end", "before-clear"), "2.4.1", emittedAtMillis = 1_000)
+            storage.failNextWrite = true
+            storage.onRecordWrite = { storage.onRecordWrite = clearingTab::clear }
+        }
+    }) exercise {
+        val stored = writingTab.append(actionEvent("end", "failed-write"), "2.4.1", emittedAtMillis = 2_000)
+        stored to storage.keys().count { it.startsWith(prefix) }
+    } verify { (stored, retainedRecords) ->
+        stored.assertIsEqualTo(false)
+        retainedRecords.assertIsEqualTo(0)
+    }
+
+    @Test
     fun corruptRecordsAreRemovedAndCountedAsDropped() = setup(object {
         val storage = MemoryClientLogStorage().apply {
             put("coupling:client-log:record:0000000001000.00000001.00010.broken", "not-json")
@@ -343,11 +383,10 @@ private class MemoryClientLogStorage : ClientLogStorage {
     override fun get(key: String) = values[key]
     override fun put(key: String, value: String) {
         if (failWrites) error("storage blocked")
-        if (failNextWrite) {
-            failNextWrite = false
-            error("quota exceeded")
-        }
+        val failWrite = failNextWrite
+        failNextWrite = false
         if (key.startsWith("coupling:client-log:record:")) onRecordWrite?.also { onRecordWrite = null }?.invoke()
+        if (failWrite) error("quota exceeded")
         values[key] = value
     }
     override fun remove(key: String) {

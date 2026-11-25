@@ -49,7 +49,7 @@ internal class ClientLogHistory(
         emittedAtMillis: Long,
         structuredProperties: JsonObject? = null,
     ): Boolean = safely {
-        if ((storage.get(EPOCH_KEY) ?: "0") != expectedEpoch) {
+        if (!isCurrentEpoch()) {
             droppedCount += 1
             status = "cleared in another tab; reload to resume history"
             return@safely false
@@ -79,7 +79,12 @@ internal class ClientLogHistory(
             storage.put(key, serialized)
         } catch (failure: Throwable) {
             evicted.forEach { (oldKey, oldValue) ->
-                runCatching { storage.put(oldKey, oldValue) }
+                runCatching {
+                    if (isCurrentEpoch()) {
+                        storage.put(oldKey, oldValue)
+                        if (!isCurrentEpoch()) storage.remove(oldKey)
+                    }
+                }
             }
             throw failure
         }
@@ -89,7 +94,7 @@ internal class ClientLogHistory(
             evictedCount += evicted.size + additionallyEvicted
             return@safely false
         }
-        if ((storage.get(EPOCH_KEY) ?: "0") != expectedEpoch) {
+        if (!isCurrentEpoch()) {
             storage.remove(key)
             droppedCount += 1
             status = "cleared in another tab; reload to resume history"
@@ -115,6 +120,8 @@ internal class ClientLogHistory(
             true
         }
     }
+
+    private fun isCurrentEpoch() = (storage.get(EPOCH_KEY) ?: "0") == expectedEpoch
 
     private fun readRecord(key: String, nowMillis: Long): StoredClientLog? {
         val emittedAtMillis = key.removePrefix(RECORD_PREFIX).substringBefore('.').toLongOrNull()

@@ -137,6 +137,9 @@ Do not request persistent-storage permissions by default merely for diagnostics.
   1 MiB holds roughly 640 such loads. The append measurement below shows the storage cost in this browser. End-to-end interaction
   latency, slower devices and field event rates were outside the measurement.
 
+- A failed append restores capacity evictions only within the same clear epoch.
+  If clear occurs during restoration, the writing tab removes the restored record.
+
 ## Investigation Update — 2026-11-24
 
 - Client logging is initialized in `client/src/jsMain/kotlin/com/zegreatrob/coupling/client/App.kt` with `libraries/logging`'s `JsonFormatter`. The structured record contains level, logger name, message/payload, timestamp, marker, and throwable messages. JSON formatting is the console path; its output should not be persisted wholesale without deliberate field policy.
