@@ -33,8 +33,8 @@ class PartyConfigurationBackfillTest {
         source("20240101000000.000", "Integration", id = "INTEGRATION-${party.id.value}")
     } exercise {
         val sourceBefore = JSON.stringify(legacy().toTypedArray())
-        val first = DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
-        val second = DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
+        val first = repository(pageSize = 1).backfill(party.id, runId)
+        val second = repository(pageSize = 1).backfill(party.id, runId)
         SnapshotImportResult(first, second, history(), sourceBefore)
     } verify { (first, second, revisions, sourceBefore) ->
         first.importedCount.assertIsEqualTo(3)
@@ -58,11 +58,11 @@ class PartyConfigurationBackfillTest {
     fun completedSnapshotImportsMultiplePagesOfLaterRevisions() = asyncSetup(Fixture()) {
         prepare()
         source("20240101000000.000", "Snapshot")
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
         source("20240102000000.000", "First append")
         source("20240103000000.000", "Second append")
     } exercise {
-        DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
+        repository(pageSize = 1).backfill(party.id, runId)
     } verify { result ->
         result.assertIsEqualTo(PartyConfigurationBackfillResult(3, "20240103000000.000", complete = true))
         history().map { it["party"].unsafeCast<Json>()["name"] }.assertIsEqualTo(listOf("Snapshot", "First append", "Second append"))
@@ -72,10 +72,10 @@ class PartyConfigurationBackfillTest {
     @Test
     fun completedEmptySnapshotImportsFirstRevision() = asyncSetup(Fixture()) {
         prepare()
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
         source("20240101000000.000", "First")
     } exercise {
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
     } verify { result ->
         result.assertIsEqualTo(PartyConfigurationBackfillResult(1, "20240101000000.000", complete = true))
         history().single()["timestamp"].assertIsEqualTo(result.checkpoint)
@@ -87,10 +87,10 @@ class PartyConfigurationBackfillTest {
         prepare()
         source("20240101000000.000", "First")
         source("20240103000000.000", "Current")
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
         source("20240102000000.000", "Late")
     } exercise {
-        DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
+        repository(pageSize = 1).backfill(party.id, runId)
     } verify { result ->
         result.assertIsEqualTo(PartyConfigurationBackfillResult(2, "20240103000000.000", complete = false))
         history().map { it["timestamp"] }.assertIsEqualTo(listOf("20240101000000.000", "20240103000000.000"))
@@ -101,10 +101,10 @@ class PartyConfigurationBackfillTest {
     fun changedLegacyRevisionIsReportedWithoutOverwritingTheImport() = asyncSetup(Fixture()) {
         prepare()
         source("20240101000000.000", "Imported")
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
         source("20240101000000.000", "Changed")
     } exercise {
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
     } verify { result ->
         val timestamp = "20240101000000.000"
         result.assertIsEqualTo(PartyConfigurationBackfillResult(1, timestamp, complete = false, conflictingSourceKey = timestamp))
@@ -126,13 +126,13 @@ class PartyConfigurationBackfillTest {
             }
         }
         assertFailsWith<IllegalStateException> {
-            DynamoPartyConfigurationBackfill(syntax, pageSize = 1).backfill(stage, party.id, runId)
+            repository(syntax, pageSize = 1).backfill(party.id, runId)
         }
         val interruptedCheckpoint = checkpoint()
         val interruptedHistory = history()
         val interruptedMetadata = metadata()
         source("20240103000000.000", "Outside snapshot")
-        val result = DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
+        val result = repository(pageSize = 1).backfill(party.id, runId)
         ResumeResult(interruptedCheckpoint, interruptedHistory, interruptedMetadata, result)
     } verify { result ->
         result.checkpoint?.get("completedCount").assertIsEqualTo(1)
@@ -150,7 +150,7 @@ class PartyConfigurationBackfillTest {
         source("20240101000000.000", "First")
         source("20240102000000.000", "First", deleted = true)
     } exercise {
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
     } verify {
         metadata().assertIsEqualTo(null)
         history().map { it["action"] }.assertIsEqualTo(listOf("SAVE_PARTY", "DELETE_PARTY"))
@@ -164,7 +164,7 @@ class PartyConfigurationBackfillTest {
         source("20240102000000.000", "First", deleted = true)
         source("20240103000000.000", "Restored")
     } exercise {
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
     } verify {
         metadata()?.get("name").assertIsEqualTo("Restored")
         metadata()?.get("version").assertIsEqualTo(3)
@@ -175,7 +175,7 @@ class PartyConfigurationBackfillTest {
     fun absentPartyCompletesAnEmptySnapshot() = asyncSetup(Fixture()) {
         prepare()
     } exercise {
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
     } verify { result ->
         result.importedCount.assertIsEqualTo(0)
         result.checkpoint.assertIsEqualTo(null)
@@ -191,7 +191,7 @@ class PartyConfigurationBackfillTest {
         TargetPartyConfigurationRepository(actor.id, MagicClock()).save(party)
     } exercise {
         val failure = try {
-            DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+            repository().backfill(party.id, runId)
             null
         } catch (error: Throwable) {
             error
@@ -213,7 +213,7 @@ class PartyConfigurationBackfillTest {
         put("test-coupling-core", state)
     } exercise {
         assertFailsWith<IllegalStateException> {
-            DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+            repository().backfill(party.id, runId)
         }
     } verify {
         ledger()?.get("targetSchemaVersion").assertIsEqualTo(2)
@@ -232,16 +232,16 @@ class PartyConfigurationBackfillTest {
         val syntax = interceptTransactions { transaction ->
             if (transaction.input.transactItems.any { it.put?.tableName == "test-coupling-history" }) {
                 imports++
-                if (imports == 2) DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
+                if (imports == 2) repository(pageSize = 1).backfill(party.id, runId)
             }
         }
         val failure = try {
-            DynamoPartyConfigurationBackfill(syntax, pageSize = 1).backfill(stage, party.id, runId)
+            repository(syntax, pageSize = 1).backfill(party.id, runId)
             null
         } catch (error: Throwable) {
             error
         }
-        failure to DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        failure to repository().backfill(party.id, runId)
     } verify { (failure, replay) ->
         failure?.unsafeCast<TransactionCanceledError>()?.name.assertIsEqualTo("TransactionCanceledException")
         replay.importedCount.assertIsEqualTo(3)
@@ -265,7 +265,7 @@ class PartyConfigurationBackfillTest {
             }
         }
         try {
-            DynamoPartyConfigurationBackfill(syntax).backfill(stage, party.id, runId)
+            repository(syntax).backfill(party.id, runId)
             null
         } catch (error: Throwable) {
             error
@@ -284,7 +284,7 @@ class PartyConfigurationBackfillTest {
         put("test-coupling-core", json("PK" to "MIGRATION#$stage", "SK" to "STATE", "phase" to "DISABLED", "ledgerVersion" to 1))
     } exercise {
         assertFailsWith<IllegalStateException> {
-            DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+            repository().backfill(party.id, runId)
         }
     } verify {
         ledger()?.get("phase").assertIsEqualTo("DISABLED")
@@ -301,9 +301,8 @@ class PartyConfigurationBackfillTest {
         dualWrite.changePhase("DUAL_WRITE")
         cutover.changePhase("CUTOVER")
     } exercise {
-        val repository = DynamoPartyConfigurationBackfill()
-        assertFailsWith<IllegalStateException> { repository.backfill(dualWrite.stage, dualWrite.party.id, dualWrite.runId) }
-        assertFailsWith<IllegalStateException> { repository.backfill(cutover.stage, cutover.party.id, cutover.runId) }
+        assertFailsWith<IllegalStateException> { dualWrite.repository().backfill(dualWrite.party.id, dualWrite.runId) }
+        assertFailsWith<IllegalStateException> { cutover.repository().backfill(cutover.party.id, cutover.runId) }
     } verify {
         dualWrite.ledger()?.get("phase").assertIsEqualTo("DUAL_WRITE")
         cutover.ledger()?.get("phase").assertIsEqualTo("CUTOVER")
@@ -315,10 +314,10 @@ class PartyConfigurationBackfillTest {
     fun differentRunCannotTakeOverAnExistingCheckpoint() = asyncSetup(Fixture()) {
         prepare()
         source("20240101000000.000", "Source")
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
     } exercise {
         assertFailsWith<IllegalStateException> {
-            DynamoPartyConfigurationBackfill().backfill(stage, party.id, "different-run")
+            repository().backfill(party.id, "different-run")
         }
     } verify {
         checkpoint()?.get("runId").assertIsEqualTo(runId)
@@ -334,10 +333,10 @@ class PartyConfigurationBackfillTest {
             if (transaction.input.transactItems.any { it.put?.tableName == "test-coupling-history" }) error("response lost")
         }) { }
         assertFailsWith<IllegalStateException> {
-            DynamoPartyConfigurationBackfill(syntax).backfill(stage, party.id, runId)
+            repository(syntax).backfill(party.id, runId)
         }
         val committedCheckpoint = JSON.stringify(checkpoint())
-        val replay = DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        val replay = repository().backfill(party.id, runId)
         replay to committedCheckpoint
     } verify { (replay, committedCheckpoint) ->
         replay.importedCount.assertIsEqualTo(1)
@@ -359,7 +358,7 @@ class PartyConfigurationBackfillTest {
             }
         }
         try {
-            DynamoPartyConfigurationBackfill(syntax).backfill(stage, party.id, runId)
+            repository(syntax).backfill(party.id, runId)
             null
         } catch (error: Throwable) {
             error
@@ -374,11 +373,11 @@ class PartyConfigurationBackfillTest {
     @Test
     fun disabledLedgerCannotResumeAnExistingCheckpoint() = asyncSetup(Fixture()) {
         prepare()
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        repository().backfill(party.id, runId)
         changePhase("DISABLED")
     } exercise {
         assertFailsWith<IllegalStateException> {
-            DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+            repository().backfill(party.id, runId)
         }
     } verify {
         ledger()?.get("phase").assertIsEqualTo("DISABLED")
@@ -391,6 +390,8 @@ private class Fixture {
     val actor = stubUserDetails()
     val stage = "party-backfill-${party.id.value}"
     val runId = "run-${party.id.value}"
+
+    fun repository(syntax: DynamoDBSyntax = DynamoDbProvider, pageSize: Int = 100) = DynamoPartyConfigurationBackfill(stage, syntax, pageSize)
 
     suspend fun prepare() {
         TargetSchemaBootstrap.ensureUncached(stage, MigrationMode.DISABLED)

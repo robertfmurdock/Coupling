@@ -21,18 +21,26 @@ import kotlin.js.Json
 import kotlin.js.json
 import kotlin.time.Clock
 
-class DynamoPartyConfigurationBackfill(
+class DynamoPartyConfigurationBackfill internal constructor(
+    stage: String,
     private val dynamoDBSyntax: DynamoDBSyntax = DynamoDbProvider,
     private val pageSize: Int = 100,
 ) : PartyConfigurationBackfill,
     LegacyPartyConfigurationMapping,
     DynamoDBSyntax by dynamoDBSyntax {
 
-    override suspend fun backfill(stage: String, partyId: PartyId, runId: String): PartyConfigurationBackfillResult {
-        require(stage.isNotBlank() && runId.isNotBlank()) { "Stage and run ID are required" }
+    constructor() : this(requireNotNull(configuredStage()) { "STAGE is required for DynamoDB schema migration" })
+
+    private val ledgerPartition = "MIGRATION#$stage"
+
+    init {
+        require(stage.isNotBlank()) { "STAGE is required for DynamoDB schema migration" }
+    }
+
+    override suspend fun backfill(partyId: PartyId, runId: String): PartyConfigurationBackfillResult {
+        require(runId.isNotBlank()) { "Run ID is required" }
         require(pageSize in 1..1000) { "Page size must be between 1 and 1000" }
-        configuredStage()?.let { require(it == stage) { "Backfill stage must match configured STAGE" } }
-        val run = Run(stage, partyId.value.toString(), runId)
+        val run = Run(partyId.value.toString(), runId)
         val ledger = loadLedger(run)
         val existing = loadCheckpoint(run)
         check(existing == null || ledger["phase"] == "BACKFILLING") { "Existing checkpoint requires its active backfill ledger" }
@@ -42,8 +50,8 @@ class DynamoPartyConfigurationBackfill(
     }
 
     private suspend fun loadLedger(run: Run): Json {
-        val ledger = get(coreTable, run.partition, "STATE") ?: error("Migration ledger is required")
-        check(ledger["targetSchemaVersion"] == TARGET_SCHEMA_VERSION) { "Unsupported target schema version for ${run.stage}" }
+        val ledger = get(coreTable, ledgerPartition, "STATE") ?: error("Migration ledger is required")
+        check(ledger["targetSchemaVersion"] == TARGET_SCHEMA_VERSION) { "Unsupported target schema version in $ledgerPartition" }
         val phase = ledger["phase"]
         check(phase == "DISABLED" || phase == "BACKFILLING") { "Backfill requires disabled or backfilling phase" }
         check(phase == "DISABLED" || ledger["activeRunId"] == run.id) { "Migration run is owned by another worker" }
@@ -51,7 +59,7 @@ class DynamoPartyConfigurationBackfill(
         return ledger
     }
 
-    private suspend fun loadCheckpoint(run: Run): Checkpoint? = get(coreTable, run.partition, run.checkpointKey)?.let {
+    private suspend fun loadCheckpoint(run: Run): Checkpoint? = get(coreTable, ledgerPartition, run.checkpointKey)?.let {
         check(it["runId"] == run.id && it["targetSchemaVersion"] == TARGET_SCHEMA_VERSION) { "Backfill checkpoint belongs to another run or schema" }
         check(it["source"] == sourceTable && it["partyId"] == run.partyId) { "Backfill source identity changed" }
         Checkpoint(
@@ -235,7 +243,7 @@ class DynamoPartyConfigurationBackfill(
         put = DynamoPutItemInput(
             tableName = coreTable,
             item = json(
-                "PK" to run.partition, "SK" to run.checkpointKey,
+                "PK" to ledgerPartition, "SK" to run.checkpointKey,
                 "targetSchemaVersion" to TARGET_SCHEMA_VERSION, "runId" to run.id, "source" to sourceTable, "partyId" to run.partyId,
                 "sourceWatermark" to next.watermark, "lastKey" to next.lastKey, "completedCount" to next.count,
                 "checksum" to next.checksum, "complete" to next.complete, "metadataPresent" to next.metadataPresent,
@@ -254,7 +262,7 @@ class DynamoPartyConfigurationBackfill(
     private fun ledgerGuard(run: Run, ledger: Json) = TransactWriteItem(
         conditionCheck = DynamoConditionCheck(
             tableName = coreTable,
-            key = DynamoKey(partitionKey = run.partition, sortKey = "STATE"),
+            key = DynamoKey(partitionKey = ledgerPartition, sortKey = "STATE"),
             conditionExpression = "targetSchemaVersion = :schema AND ledgerVersion = :version AND phase = :phase AND activeRunId = :run",
             expressionAttributeValues = json(
                 ":schema" to TARGET_SCHEMA_VERSION,
@@ -299,12 +307,11 @@ class DynamoPartyConfigurationBackfill(
         GetItemCommandInput(tableName = table, key = DynamoKey(partitionKey = pk, sortKey = sk), consistentRead = true),
     ).await().item
 
-    private val coreTable get() = targetTableName("coupling-core")
-    private val historyTable get() = targetTableName("coupling-history")
-    private val sourceTable get() = "${legacyDynamoPrefix()}TRIBE"
+    private val coreTable = targetTableName("coupling-core")
+    private val historyTable = targetTableName("coupling-history")
+    private val sourceTable = "${legacyDynamoPrefix()}TRIBE"
 
-    private data class Run(val stage: String, val partyId: String, val id: String) {
-        val partition get() = "MIGRATION#$stage"
+    private data class Run(val partyId: String, val id: String) {
         val historyPartition get() = "ENTITY#PARTY#PARTY#$partyId"
         val checkpointKey get() = "BACKFILL#TRIBE#$partyId"
     }

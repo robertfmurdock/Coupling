@@ -11,12 +11,12 @@ import kotlin.test.Test
 class BackfillPartyConfigurationCommandTest {
     @Test
     fun dispatchesTheSelectedPartyAndReturnsTheConflictUnchanged() = asyncSetup(object {
-        val command = BackfillPartyConfigurationCommand("sandbox", stubPartyId(), "stable-run")
+        val command = BackfillPartyConfigurationCommand(stubPartyId(), "stable-run")
         val expected = PartyConfigurationBackfillResult(3, "20240103000000.000", complete = false, conflictingSourceKey = "20240102000000.000")
         val calls = mutableListOf<BackfillCall>()
         val dispatcher = object : BackfillPartyConfigurationCommand.Dispatcher {
-            override val partyConfigurationBackfill = PartyConfigurationBackfill { stage, partyId, runId ->
-                calls.add(BackfillCall(stage, partyId, runId))
+            override val partyConfigurationBackfill = PartyConfigurationBackfill { partyId, runId ->
+                calls.add(BackfillCall(partyId, runId))
                 expected
             }
         }
@@ -24,8 +24,8 @@ class BackfillPartyConfigurationCommandTest {
         dispatcher.perform(command)
     } verify { result ->
         result.assertIsEqualTo(expected)
-        calls.assertIsEqualTo(listOf(BackfillCall(command.stage, command.partyId, command.runId)))
+        calls.assertIsEqualTo(listOf(BackfillCall(command.partyId, command.runId)))
     }
 }
 
-private data class BackfillCall(val stage: String, val partyId: PartyId, val runId: String)
+private data class BackfillCall(val partyId: PartyId, val runId: String)
