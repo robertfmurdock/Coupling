@@ -10,9 +10,9 @@ import kotlin.test.Test
 
 class BackfillPartyConfigurationCommandTest {
     @Test
-    fun dispatchesTheSelectedPartyAndReturnsDurableProgress() = asyncSetup(object {
+    fun dispatchesTheSelectedPartyAndReturnsTheConflictUnchanged() = asyncSetup(object {
         val command = BackfillPartyConfigurationCommand("sandbox", stubPartyId(), "stable-run")
-        val expected = PartyConfigurationBackfillResult(3, "20240103000000.000", true)
+        val expected = PartyConfigurationBackfillResult(3, "20240103000000.000", complete = false, conflictingSourceKey = "20240102000000.000")
         val calls = mutableListOf<BackfillCall>()
         val dispatcher = object : BackfillPartyConfigurationCommand.Dispatcher {
             override val partyConfigurationBackfill = PartyConfigurationBackfill { stage, partyId, runId ->

@@ -37,7 +37,7 @@ class DynamoPartyConfigurationBackfill(
         check(existing == null || ledger["phase"] == "BACKFILLING") { "Existing checkpoint requires its active backfill ledger" }
         var checkpoint = if (existing == null) initialize(run, ledger) else reopenIfAppended(run, ledger, existing)
         while (!checkpoint.complete) checkpoint = importPage(run, ledger, checkpoint)
-        return PartyConfigurationBackfillResult(checkpoint.count, checkpoint.lastKey, hasImportedSourceKeys(run, checkpoint))
+        return compareSourceHistory(run, checkpoint)
     }
 
     private suspend fun loadLedger(run: Run): Json {
@@ -120,18 +120,35 @@ class DynamoPartyConfigurationBackfill(
         return checkpoint
     }
 
-    private suspend fun hasImportedSourceKeys(run: Run, checkpoint: Checkpoint): Boolean {
-        if (checkpoint.watermark == null) return true
+    private suspend fun compareSourceHistory(run: Run, checkpoint: Checkpoint): PartyConfigurationBackfillResult {
+        val result = PartyConfigurationBackfillResult(checkpoint.count, checkpoint.lastKey, complete = true)
+        if (checkpoint.watermark == null) return result
+        var missingRevision = false
         var cursor = checkpoint.copy(lastKey = null)
         do {
             val page = querySource(run, checkpoint = cursor)
             for (source in page.items) {
                 val revisionId = sourceRevisionId(run, source)
-                if (get(historyTable, run.historyPartition, "REV#$revisionId") == null) return false
+                val imported = get(historyTable, run.historyPartition, "REV#$revisionId")
+                if (imported == null) {
+                    missingRevision = true
+                } else if (!matchesSourceRevision(run, source, imported)) {
+                    return result.copy(complete = false, conflictingSourceKey = source.getDynamoStringValue("timestamp"))
+                }
             }
             cursor = cursor.copy(lastKey = page.lastEvaluatedKey?.getDynamoStringValue("timestamp"))
         } while (cursor.lastKey != null)
-        return true
+        return result.copy(complete = !missingRevision)
+    }
+
+    private fun matchesSourceRevision(run: Run, source: Json, imported: Json): Boolean {
+        val party = imported["party"].unsafeCast<Json?>() ?: return false
+        return containsFields(imported, sourceHistoryFields(run, source)) && containsFields(party, canonicalParty(source))
+    }
+
+    private fun containsFields(actual: Json, expected: Json): Boolean {
+        val keys = js("Object").keys(expected).unsafeCast<Array<String>>()
+        return keys.all { key -> actual[key] == expected[key] }
     }
 
     private suspend fun importRevision(run: Run, ledger: Json, previous: Checkpoint, source: Json): Checkpoint {
@@ -164,11 +181,14 @@ class DynamoPartyConfigurationBackfill(
     private fun historyItem(run: Run, previous: Checkpoint, source: Json, revisionId: String) = json(
         "PK" to run.historyPartition,
         "SK" to "REV#$revisionId",
+        "version" to previous.count + 1,
+        "party" to canonicalParty(source),
+    ).add(sourceHistoryFields(run, source))
+
+    private fun sourceHistoryFields(run: Run, source: Json) = json(
         "actorId" to source.getDynamoStringValue("modifyingUserEmail"),
         "action" to if (source.getDynamoBoolValue("isDeleted") == true) "DELETE_PARTY" else "SAVE_PARTY",
         "timestamp" to source["timestamp"],
-        "version" to previous.count + 1,
-        "party" to canonicalParty(source),
         "isDeleted" to (source.getDynamoBoolValue("isDeleted") == true),
         "source" to sourceTable,
         "sourceId" to run.partyId,

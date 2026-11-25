@@ -116,10 +116,11 @@ The existing dispatcher result still reports cumulative count and last key
 for that bounded snapshot. The append path retains its existing guard and
 checkpoint format.
 
-The command checks for missing source keys through its completed watermark
-and returns incomplete when one is absent from History. The check is read-only
-and does not establish canonical content or metadata parity.
+The command compares source revisions through its completed watermark against
+History. Missing revisions return incomplete. A same-key content difference
+returns incomplete with the conflicting source timestamp and preserves the
+imported revision. This check does not establish target-only History or Core
+parity. It compares the canonical fields shared with the import writer.
 
-Next: import missing older revisions, then reconcile content, target-only
-history, and Core. Introduce explicit conflict outcomes and a Core ownership
-check independent of import count.
+Next: import missing older revisions, then detect target-only History and
+reconcile Core with an ownership check independent of import count.

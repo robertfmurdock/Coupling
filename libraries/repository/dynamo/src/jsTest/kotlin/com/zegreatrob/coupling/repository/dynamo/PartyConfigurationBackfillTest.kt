@@ -101,6 +101,22 @@ class PartyConfigurationBackfillTest {
     }
 
     @Test
+    fun changedLegacyRevisionIsReportedWithoutOverwritingTheImport() = asyncSetup(Fixture()) {
+        prepare()
+        source("20240101000000.000", "Imported")
+        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        source("20240101000000.000", "Changed")
+    } exercise {
+        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+    } verify { result ->
+        result.complete.assertIsEqualTo(false)
+        result.checkpoint.assertIsEqualTo("20240101000000.000")
+        result.conflictingSourceKey.assertIsEqualTo("20240101000000.000")
+        history().single()["party"].unsafeCast<Json>()["name"].assertIsEqualTo("Imported")
+        metadata()?.get("name").assertIsEqualTo("Imported")
+    }
+
+    @Test
     fun interruptionResumesFromTheLastAtomicCheckpointAndExcludesLaterWrites() = asyncSetup(Fixture()) {
         prepare()
         source("20240101000000.000", "First")

@@ -10,4 +10,5 @@ data class PartyConfigurationBackfillResult(
     val importedCount: Int,
     val checkpoint: String?,
     val complete: Boolean,
+    val conflictingSourceKey: String? = null,
 )
