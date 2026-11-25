@@ -13,7 +13,11 @@ import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 import io.github.oshai.kotlinlogging.Level
 import kotlinx.browser.document
 import kotlinx.coroutines.await
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.put
 import react.create
 import kotlin.test.AfterTest
@@ -191,33 +195,57 @@ class ClientLogHistoryTest {
     @Test
     fun browserAppenderCapturesRealActionEventsWithTheEmissionVersion() = asyncSetup(object {
         val pipe = LoggingActionPipe(Uuid.random())
-    }) exercise {
+        val version = "2.5.0"
+    }) {
         ClientLogCapture.clear()
-        ClientLogCapture.install("2.5.0")
+        ClientLogCapture.install(version)
+    } exercise {
+        pipe.execute(Unit, ClientHistoryTestAction)
+        ClientLogCapture.export() to ClientLogHistory().read(kotlin.js.Date.now().toLong())
+    } verify { (jsonl, reopenedHistory) ->
+        val events = jsonl.lineSequence().drop(1).map { Json.decodeFromString<StoredClientLog>(it) }.toList()
+        events.assertIsEqualTo(reopenedHistory)
+        events.map { it.clientVersion }.assertIsEqualTo(listOf(version, version))
+        val properties = events.map { it.structuredProperties }
+        properties.map { it?.get("command_action") }.assertIsEqualTo(List(2) { JsonPrimitive("ClientHistoryTestAction") })
+        properties.map { it?.get("command_phase") }.assertIsEqualTo(listOf(JsonPrimitive("start"), JsonPrimitive("end")))
+        val traces = properties.map { it?.get("command_trace_id") }.distinct()
+        traces.size.assertIsEqualTo(1)
+        (traces.single() != null).assertIsEqualTo(true)
+        val duration = properties.last()?.get("command_duration_ms") as? JsonPrimitive
+        (duration != null && !duration.isString && duration.doubleOrNull != null).assertIsEqualTo(true)
+    }
+
+    @Test
+    fun browserAppenderFiltersUnlistedPayloadFieldsBeforePersistence() = setup(object {
+        lateinit var stored: StoredClientLog
+        val marker = "unlisted-payload-value"
+        val actionFields = mapOf(
+            "command_action" to "SyntheticAction",
+            "command_phase" to "start",
+            "command_trace_id" to Uuid.random().toString(),
+        )
+
+        init {
+            ClientLogCapture.clear()
+            ClientLogCapture.install("2.5.0")
+        }
+    }) exercise {
         KotlinLoggingConfiguration.direct.appender.log(
             KLoggingEvent(
                 level = Level.INFO,
                 marker = null,
                 loggerName = "ActionLogger",
-                message = "private_token=never-persist-this",
-                payload = mapOf(
-                    "command_action" to "SyntheticAction",
-                    "private_token" to "never-persist-this",
-                ),
+                message = "private_token=$marker",
+                payload = actionFields + ("private_token" to marker),
             ),
         )
-        pipe.execute(Unit, ClientHistoryTestAction)
-        ClientLogCapture.export() to ClientLogHistory().read(kotlin.js.Date.now().toLong())
-    } verify { (jsonl, reopenedHistory) ->
-        jsonl.contains("\"clientVersion\":\"2.5.0\"").assertIsEqualTo(true)
-        jsonl.contains("\"command_action\":\"ClientHistoryTestAction\"").assertIsEqualTo(true)
-        jsonl.contains("\"command_duration_ms\":").assertIsEqualTo(true)
-        jsonl.contains("\"command_trace_id\":").assertIsEqualTo(true)
-        jsonl.contains("never-persist-this").assertIsEqualTo(false)
-        jsonl.contains("private_token").assertIsEqualTo(false)
-        reopenedHistory.size.assertIsEqualTo(3)
-        reopenedHistory.map { it.clientVersion }.assertIsEqualTo(listOf("2.5.0", "2.5.0", "2.5.0"))
-        ClientLogCapture.clear()
+        stored = ClientLogHistory().read(kotlin.js.Date.now().toLong()).single()
+    } verify {
+        stored.structuredProperties.assertIsEqualTo(buildJsonObject { actionFields.forEach { (key, value) -> put(key, value) } })
+        val serialized = Json.encodeToString(stored)
+        serialized.contains(marker).assertIsEqualTo(false)
+        serialized.contains("private_token").assertIsEqualTo(false)
     }
 
     @Test
