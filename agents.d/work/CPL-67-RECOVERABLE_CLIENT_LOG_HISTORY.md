@@ -164,6 +164,7 @@ upgrade evidence and measuring synchronous storage cost under representative use
 - Records use distinct keys; each synchronous append checks shared capacity and the clear epoch around the write. There is no delayed in-memory write queue.
 - Unsupported/corrupt records are discarded and counted. Storage-format versioning is intentionally deferred: no prior format has shipped, and adding a marker when an actual second format or migration exists is routine.
 - A tab that observes a changed clear epoch stops appending and tells its user to reload. Real-browser cross-tab and account-switch evidence remains in the unchecked hardening slice.
+- The assembled browser flow in `ClientLogHistoryE2ETest` generates action logs through the party list, reloads the page, and invokes the visible JSONL download from Developer settings. Full browser-process restart and export-file inspection remain open.
 
 ### UI Evidence Follow-up — 2026-11-24
 

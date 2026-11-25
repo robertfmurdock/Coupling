@@ -207,11 +207,13 @@ following the Gradle playbook. Capture ownership, limits, and redaction live in
 The fixture owns ChromeDriver before requesting a session and stops it even when
 session creation fails; the original startup error remains the test failure.
 
-Use `FGREP` for focused E2E scenarios, for example
-`fish -lc 'env FGREP=BrowserLogPolicyTest ./gradlew :e2e:e2eRun --rerun'`.
-The filter is a declared task input and explicitly passed environment value, so
-configuration/build-cache reuse cannot confuse focused and unfiltered results.
-Clear the filter for the required full-suite gate; verify the report's test count.
+Use Gradle's `--tests` option for focused E2E scenarios, matching the TestMints
+test method name, for example
+`./gradlew :e2e:e2eRun --tests 'canSaveEditsCorrectly'`. The E2E runner maps this
+filter to Mocha's substring filter; class-qualified Gradle patterns can select no
+TestMints scenarios because the runner's displayed test title is the method name.
+Confirm the focused report contains the intended scenario, then omit the filter
+for the full-suite gate.
 
 ### Chrome for Testing startup failures
 
