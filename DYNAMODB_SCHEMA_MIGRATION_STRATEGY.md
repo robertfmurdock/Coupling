@@ -121,20 +121,23 @@ reliable incremental detection needs its own bounded comparison rule before use.
 
 Import preserves source revision identity, timestamps, actors and deletion
 semantics. Replay must neither duplicate history or aggregate increments nor
-resurrect deleted entities. Conditional versions and shared mutation identity
-coordinate import with normal writes so old source data cannot overwrite newer
-target state. Never decide authority solely by comparing wall-clock timestamps.
+resurrect deleted entities. Use stable revision identity for import replay.
+Within offline import ownership, current state follows the latest revision in
+recorded source order. Online
+migration must guard the boundary where imports and normal writes overlap to
+preserve accepted target writes. Never decide authority solely by comparing
+wall-clock timestamps.
 Ambiguous canonical conflicts are reported for reviewed repair; only derived
 projections may be automatically rebuilt.
 
-Ordinary writes must first establish the source state their change depends on,
-then coordinate legacy and target effects through durable, replayable plans.
+Ordinary writes that depend on prior source state establish that state first.
+During online migration, coordinate legacy and target effects through durable,
+replayable plans.
 Reads cannot claim freshness while an affecting plan is incomplete. The delivery
 slice defines atomicity, visible outcomes and recovery for its actual boundary;
 use transactions where feasible and stable child work for larger operations.
-Migration-plan receipts and domain idempotency receipts share a defined mutation
-identity and outcome contract. Unfinished work must remain recoverable beyond any
-ordinary retry-receipt expiry. Preserve existing caller behavior; a required new
+Reuse the same mutation identity for retries and write-plan recovery.
+Unfinished work must remain recoverable beyond any ordinary retry-receipt expiry. Preserve existing caller behavior; a required new
 transport header is a separate compatibility decision, not an implicit storage
 migration requirement.
 

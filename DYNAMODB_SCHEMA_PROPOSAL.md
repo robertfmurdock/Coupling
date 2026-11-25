@@ -211,13 +211,8 @@ configuration and relationship reads do not grow with audit retention.
 | Current pairing pointer | `PARTY#<partyId>` | `CURRENT_PAIRING` | Pointer and compact summary of the current pairing set. |
 | User boost | `USER#<userId>` | `BOOST` | Current entitlement and expiry. |
 | Party boost view | `PARTY#<partyId>` | `BOOST#<userId>` | Minimal current boost projection for party pages. |
-| Mutation receipt | `ACTOR#<actorId>` | `MUTATION#<idempotencyKey>` | Request fingerprint, accepted status, and replayable outcome for a mutation; `expiresAt` is 24 hours after acceptance. |
-| Global shard summary | `GLOBAL#STATS#<year>#SHARD#<0-15>` | `SUMMARY` | Additive non-sensitive totals for one of 16 deterministic party-ID-hash shards. |
-| Global party-stat projection | `GLOBAL#STATS#<year>#SHARD#<0-15>` | `PARTY#<partyId>` | Approved non-sensitive per-party statistic fields only, held in the party's deterministic shard and ordered by party ID. |
-
-The global shard is `SHA-256(UTF-8(partyId))[0] & 0x0f`, expressed as a decimal
-integer from `0` through `15`. This function is part of the stored-key contract;
-all writers and readers use it rather than choosing a language-specific hash.
+| Mutation receipt, where required | `ACTOR#<actorId>` | `MUTATION#<idempotencyKey>` | Request fingerprint and replayable outcome. Retention follows the operation’s retry contract. |
+| Party-year lookup | `GLOBAL#STATS#<year>` | `PARTY#<partyId>` | Candidate party ID for the occasional global report. |
 
 `partyList` queries the user's `OWNED_PARTY#` rows and each validated user email
 for `PLAYER_PARTY#` rows, unions the party IDs, then uses `BatchGetItem` for
@@ -257,18 +252,19 @@ pairing timelines are independently bucketed by calendar month.
 | Item type | PK | SK | Purpose |
 | --- | --- | --- | --- |
 | Active contribution generation | `PARTY#<partyId>` | `ACTIVE_CONTRIBUTION_GENERATION` | Current generation number used by all contribution reads and writes. |
-| Contribution locator | `PARTY#<partyId>#CONTRIB#GEN#<generation>` | `CONTRIBUTION#<contributionId>` | Canonical current location: effective timestamp, bucket, and version. |
+| Contribution locator | `PARTY#<partyId>#CONTRIB#GEN#<generation>` | `CONTRIBUTION#<contributionId>` | Canonical current location: effective timestamp and bucket. |
 | Contribution timeline | `PARTY#<partyId>#CONTRIB#GEN#<generation>#<YYYY-MM>` | `AT#<effectiveTimestamp>#<contributionId>` | Full current contribution payload ordered by integration time, falling back to authored time. |
 | Pairing locator | `PARTY#<partyId>` | `PAIRING#<pairingSetId>` | Canonical current location and pairing date. |
 | Pairing timeline | `PARTY#<partyId>#PAIRING#<YYYY-MM>` | `AT#<pairingDate>#<pairingSetId>` | Immutable pairing snapshot for history pages. |
-| Pair aggregate | `PARTY#<partyId>` | `PAIR#<canonicalPlayerPair>` | Counts and recent-pairing values used by Statistics and pairing views. |
-| Party-year aggregate | `PARTY#<partyId>` | `STATS#<year>` | Precisely defined additive values (such as spin count) used by pairing views and global shard totals. |
 | Contribution window summary | `PARTY#<partyId>#CONTRIB#GEN#<generation>` | `SUMMARY#<YYYY-MM>` | Precisely defined additive values, such as count and cycle-time-present count, for overview queries. |
 
 `effectiveTimestamp` is a persisted, non-null value chosen at write time:
 `integrationDateTime`, else `dateTime`, else the write timestamp. This removes
 the current query's `integrationDateTime OR dateTime` filter and makes the
-desired chronology a key condition.
+desired chronology a key condition. Preserve dated-window membership: a
+contribution with neither date stays available to all-time reads, while its
+fallback write timestamp serves storage placement only. Test both missing
+dates and records with both dates present.
 
 For a contribution save, first strongly read the active generation and its
 locator. A transaction deletes the prior timeline item when the bucket or sort
@@ -288,20 +284,17 @@ one all-or-nothing DynamoDB transaction, matching the current sequential-list
 behavior: completed entries can be visible before a later entry fails. A retry
 replays only unfinished entries. If a clear advances the generation, remaining
 chunks fail their condition and the caller retries them in the new generation;
-old-generation partial work is immediately invisible. Contribution chunks do
-not update pairing locators, pair aggregates, current-pair pointers, or global
-statistics, so they are orthogonal to normal coupling operations. Monthly
+old-generation partial work is immediately invisible. Contribution chunks
+stay within the contribution write path. Monthly
 summary contention is limited to concurrent contribution work in the same
 party/month and is retried with normal conditional-write backoff.
 
-For a pairing save, write the immutable timeline row, locator/current pointer,
-affected pair aggregates, party-year aggregate, deterministic global-year
-shard aggregate, and History record in one transaction when the write set fits
-DynamoDB's limits.
-For unusually large fan-outs, make the source pairing row authoritative and
-apply derived aggregate updates idempotently through a stream consumer; the
-GraphQL response must then declare that aggregate results are eventually
-consistent. Current party sizes make the transactional path the expected one.
+For a pairing save, write the immutable timeline row, locator, current pointer,
+party-year lookup, and History in one transaction. The lookup holds candidate
+IDs for imported pairings and new saves. A candidate can remain after its
+final pairing is deleted.
+Statistics queries compute results from the requested timeline windows. Add
+a stored statistic only if a measured read justifies maintaining it.
 
 Monthly buckets deliberately bound each query partition while retaining a
 simple date range. A Week, Month, Quarter, HalfYear, or Year contribution
@@ -327,23 +320,19 @@ It is not consulted to answer routine GraphQL current-state fields.
 
 | Item type | PK | SK | Contents |
 | --- | --- | --- | --- |
-| Entity revision | `ENTITY#<kind>#<scope>#<id>` | `REV#<revisionId>` | Before/after or canonical revision payload, actor, action, timestamp, and optimistic version. |
+| Entity revision | `ENTITY#<kind>#<scope>#<id>` | `REV#<revisionId>` | Canonical revision payload, actor, action, and timestamp. |
 | Party audit event | `PARTY#<partyId>#AUDIT#<YYYY-MM>` | `AT#<timestamp>#<revisionId>` | Compact event projection for a future party audit page. |
 
 Every mutable Core row and every Activity locator write emits exactly one
 entity-revision item. Pairing and contribution timeline rows are already
 immutable domain events; their audit item records mutation metadata and any
 later correction/deletion rather than duplicating a large snapshot needlessly.
-The transaction uses `attribute_not_exists(PK)` on the revision key, an
-expected version condition on the current item, and a conditional mutation
-receipt write. Every mutation request carries an `Idempotency-Key` HTTP header;
-the client/SDK creates one stable key per intended mutation, and a bulk save
-derives each item key from its parent key plus contribution ID. The receipt
-stores the request fingerprint and replayable outcome for 24 hours; a duplicate
-key with the same fingerprint returns that outcome, while a different
-fingerprint is rejected. DynamoDB's
-`ClientRequestToken` is used only for transport retries within its service
-window and is not the domain idempotency guarantee. DynamoDB transactions are
+Insert revisions conditionally by stable identity. For a full-state save,
+write the submitted state and its immutable revision in one transaction. Both
+overlapping saves can commit and the last commit supplies current state. Use
+operation-specific conditions when a write depends on a prior read, such as
+moving a contribution or updating a derived aggregate. See the correctness
+rules for retry behavior. DynamoDB transactions are
 atomic within an account and Region and can touch up to 100 distinct items with
 a 4 MB aggregate limit; writes beyond that boundary require an idempotent
 derived-model workflow.
@@ -398,7 +387,7 @@ round-trip per field.
 | `playerPageQuery`, `retiredPlayersPageQuery`; player pages | `PlayersQuery` and `RetiredPlayersQuery` load and reduce party-wide player revision history. | Query `PARTY#id` with `begins_with(SK, 'PLAYER#')` or `RETIRED_PLAYER#`; no deleted-row filter. |
 | `pinPageQuery`, `pinListPageQuery`; pin pages | `PinsQuery` loads party pin history. | Query `PARTY#id`, `begins_with(SK, 'PIN#')`. |
 | `prepareSpinPageQuery`, `newPairsPageQuery`, `currentPairsPageQuery`; spin and pair pages | Player/pin reads plus `CurrentPairAssignmentDocumentQuery`; current pairing currently searches full pairing history. | Batch get party meta/current-pair pointer, bounded player/pin query, then direct get pairing timeline row; party boost is direct `GetItem`. |
-| `StatisticsPageQuery`; statistics | `PairListQuery`, pairing history, and statistics functions read players, retired players, contributions, and pairing history. | Core player queries plus Pair Aggregate and Party-Year additive items for counters/recent values. Exact medians and distinct player/pin values read the requested party/year's bounded month buckets; no all-party scan is used. |
+| `StatisticsPageQuery`; statistics | `PairListQuery`, pairing history, and statistics functions read players, retired players, contributions, and pairing history. | Read Core player records and the requested party's timeline windows once. Compute counts, medians, distinct values and pair views from those records. |
 | `partySecretsPageQuery`; secrets | `SecretListQuery` loads party secret history; boost is a separate lookup. | Query `SECRET#` Core metadata items; direct party boost item. Read secret material only in the authorized integration path. |
 | `userQuery`, `userPageQuery`, `prereleaseUserPageQuery`; user pages | `UserQuery` returns current user; party list repeats the scan path. | `GetItem(USER#id, PROFILE)`, validated-email and owned-party queries for the party list, and direct user boost item. |
 | `contributionVisualizationPageQuery`; visualization shell | Party detail and `spinsUntilFullRotation`, which derives from player data. | Get party meta and bounded active-player query; optionally persist a current rotation estimate if profiling shows repeated calculation matters. |
@@ -406,7 +395,7 @@ round-trip per field.
 | `contributionListPageQuery`, `contributionOverviewPageQuery`; contribution pages | Player lists plus `PartyContributionQuery`, whose window is a filter over party contribution records. | Read the active contribution generation, then use internal cursors to traverse its bounded month buckets and assemble the existing list response. Use additive monthly summary rows when only counts are requested, and source buckets for exact medians/contributor-derived values. |
 | `integrationPageQuery`; integrations | Party detail plus `PartyIntegrationQuery`. | Batch get `META` and `INTEGRATION#SLACK`; configuration remains a direct configuration-provider read. |
 | `historyPageQuery`; pairing history | `PairAssignmentDocumentListQuery` returns the entire party pairing history. | Traverse pairing month buckets with internal cursors and assemble the existing full list response. The response remains intentionally unbounded; a future additive connection may expose the cursors. |
-| `globalStats`; administration/client test operation | `GlobalStatsQuery` scans all parties and loads every party's pairing history for the selected year. | Read and sum 16 `GLOBAL#STATS#year#SHARD#n / SUMMARY` items, then query and merge shard-local `PARTY#` projections in party-ID order. Each requested exact non-additive party field reads that party/year's source buckets. This eliminates scans and the hot single summary key, but the unchanged full-list API remains linear in its returned parties. |
+| `globalStats`; administration/client test operation | `GlobalStatsQuery` scans all parties and loads every party's pairing history for the selected year. | Page party-year candidate IDs in party-ID order. Read current party metadata and the requested year's pairing records, apply existing party inclusion and median-duration rules, and sum the resulting per-party values. Preserve the existing year boundary and approved response fields. |
 
 The remaining GraphQL query fields in the schema (`Party.integration`,
 `Party.boost`, `Party.currentPairingSet`, `Party.secretList`, `Party.pinList`,
@@ -422,7 +411,7 @@ does not repeat the same direct read for multiple selected fields.
 | `saveParty`, `deleteParty`, `saveSlackIntegration` | Core current item(s), current owner-party relationship changes where applicable, and one History revision per changed entity. |
 | `savePlayer`, `deletePlayer` | Active or retired player item, normalized primary and additional-player-email lookup changes, and History revision. Player-email verification is not part of the lookup rule. |
 | `savePin`, `deletePin`, `createSecret`, `deleteSecret` | Core current item or removal plus History; secret tokens/ciphertext use the restricted secret boundary. |
-| `spin`, `savePairAssignments`, `deletePairAssignments` | Activity pairing rows, current pointer, pair and yearly additive summaries, the party's deterministic global-year shard aggregate, and History event. Use a transaction or an idempotent projection worker when fan-out exceeds its limit. |
+| `spin`, `savePairAssignments`, `deletePairAssignments` | Activity pairing rows, current pointer, party-year lookup, and History event. Use a transaction for the supported write set. |
 | `saveContribution` (one or bulk) | After party authorization, save each contribution under the snapshotted active generation using an item-derived idempotency key, active-generation condition, locator/timeline rows, defined additive summaries, and History revision. Bulk chunks are bounded and retryable, not all-or-nothing; do not scan to find existing contribution IDs. |
 | `clearContributions` | Atomically advance the active contribution generation and write a History event. Clean up obsolete-generation locators, timelines, and summaries asynchronously and idempotently. |
 | `connectUser`, `disconnectUser`, `saveBoost`, `deleteBoost` | Core profile, validated-email and email-alias rows, boost views, and History revisions. |
@@ -433,9 +422,7 @@ does not repeat the same direct read for multiple selected fields.
 This target data model requires no GraphQL schema change. Existing fields,
 arguments, mutations, response shapes, and user-visible behavior remain
 compatible; resolvers use the new keys, internal cursors, and exact source
-windows behind the current contract. Mutation transport adds the required
-`Idempotency-Key` HTTP header, which the client/SDK supplies without adding a
-GraphQL input. In particular, `pairingSetList`,
+windows behind the current contract. In particular, `pairingSetList`,
 `contributionReport.contributions`, nested `Pair.pairingSetList`, `pairList`,
 and `globalStats(year)` do not need renamed fields or new required inputs.
 
@@ -449,8 +436,9 @@ aggregate-only, regardless of whether a future connection is added.
 
 ## Correctness rules
 
-1. A current row has an integer `version`; an update requires
-   `version = :expectedVersion` and writes `version + 1`.
+1. Full-state saves use commit order for current state and preserve every
+   accepted edit in immutable History. Use conditional writes for concrete
+   invariants such as unique claims, derived updates and generation changes.
 2. Every accepted domain mutation writes a unique History revision in the same
    transaction as its source-of-truth current row whenever possible.
 3. Authorization preserves the current owner-or-authenticated-user-email
@@ -461,10 +449,10 @@ aggregate-only, regardless of whether a future connection is added.
    independent permission model.
 4. Current reads do not interpret tombstones. Deleted state lives in History;
    current rows are removed or explicitly moved to the retired collection.
-5. Every mutation carries an `Idempotency-Key` HTTP header and request
-   fingerprint. Its durable receipt expires after 24 hours; within that
-   interval a duplicate request returns the original outcome rather than adding
-   revisions or aggregates twice, while mismatched reuse is rejected.
+5. Reuse stable operation or revision identity for retries. Add a durable
+   receipt where an operation needs to replay an outcome or recover unfinished
+   work and its existing records cannot supply that evidence. Preserve existing
+   caller contracts.
 6. Timeline cursors include bucket and exclusive-start key. They must not
    expose DynamoDB key format as a public contract; encode/sign them at the
    GraphQL boundary.
@@ -505,26 +493,9 @@ than retained history. Activity partition size is bounded by month, so an old
 party with many years of history has no slower current-player or current-pair
 read than a new party.
 
-Do **not** add write sharding now. Reconsider bucket granularity or sharding
-only after measurement shows one of the following for a party/month key:
-
-- sustained traffic approaching a material portion of a single-partition
-  ceiling (AWS documents 3,000 read units/s and 1,000 write units/s per
-  partition for items within the relevant size limits);
-- repeated `KeyRangeThroughputExceeded`/hot-key throttles after normal retry
-  handling;
-- a month bucket approaching an operational size chosen well below 10 GB; or
-- a realistic party produces enough same-month timeline items that pagination
-  or query latency violates its service objective.
-
-At that point first shorten the bucket (month to week) for new data. Add a
-deterministic shard suffix only if write rate, rather than retained size,
-remains the constraint; queries then fan out across a documented fixed shard
-count. This follows AWS's high-cardinality-key guidance and avoids making
-ordinary reads more complex before the domain needs it. Global statistics are
-the deliberate exception: they begin with 16 deterministic party-ID-hash
-shards because every pairing write would otherwise contend on one yearly
-summary key.
+Start with one partition per party/month for timelines and one per year for
+global party statistics. Revisit key layout if observed throttling, retained
+data size, or query latency warrants it.
 
 `partyList` remains intentionally unbounded at the GraphQL boundary. Its
 resolver must page relationship queries and chunk batch reads to respect Dynamo
@@ -569,12 +540,8 @@ avoid crossing 1 KB write and 4 KB read billing boundaries unintentionally.
   read. [AWS index guidance](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-indexes-general.html)
   explains the storage, throughput, and fetch trade-off.
 - Use exponential-backoff retries for transient throttling, bounded by a
-  request deadline. Retries must use the stable mutation receipt key and
-  fingerprint; DynamoDB's `ClientRequestToken` alone is insufficient outside
-  its service retry window.
-- Alarm on per-shard global-summary capacity and throttles in addition to the
-  existing hot-key signals. A global-stat query also records merge latency and
-  shard-page skew so one shard cannot silently dominate its response time.
+  request deadline. Reuse the operation identity on retry. Account for
+  the service retry window when relying on DynamoDB's `ClientRequestToken`.
 - Periodically reconcile rebuildable Core projections. Recompute
   `PLAYER_PARTY#` and party-list lookup rows from the current canonical User
   and Player items, compare them to stored projections, alert on divergence,
@@ -619,8 +586,8 @@ audit-feed rows are labeled projections. Immutable History records are the
 authoritative audit evidence for an accepted mutation, not the current-state
 read model.
 
-Critical source and projection writes are transactional with version and
-idempotency conditions. Non-critical aggregates may be eventually consistent
+Critical source and projection writes are transactional, with conditions
+that protect the invariants of the specific operation. Non-critical aggregates may be eventually consistent
 only when maintained by an idempotent stream consumer and declared as such to
 the API. Reconciliation rebuilds projections from canonical current data;
 it must never infer a new current state or permission from a stale projection.
@@ -630,8 +597,8 @@ it must never infer a new current state or permission from a stale projection.
 The implementation should have historical tests that replay user, player,
 party, contribution, and pairing mutations and assert the expected current
 state and audit history after every step. Property-style tests should permute
-retries and concurrent updates, proving that versions prevent lost updates and
-idempotency prevents duplicate revisions or aggregate increments. Regression
+retries and concurrent updates, proving that overlapping full-state saves retain both revisions, and
+that retries preserve history and aggregate counts. Regression
 fixtures preserve every previously discovered data-integrity failure.
 
 The repair path distinguishes authority from derived data. It may automatically
@@ -686,26 +653,6 @@ the answer from the authoritative timeline events. This is exact and bounded by
 the caller's explicit window; it avoids presenting an approximation as the
 current product statistic.
 
-### Why are global statistics split into 16 fixed shards?
-
-Every pairing can affect global yearly totals. A single yearly summary would
-make all those writes contend on one partition key. The specified
-`SHA-256(UTF-8(partyId))[0] & 0x0f` function selects one of 16 shards,
-distributing writes without a mutable routing table. Global totals are the sum
-of the 16 shard summaries. Party projections stay in the same shard and are
-merged by party ID for a stable, opaque-cursor page.
-
-### Why is a durable mutation receipt needed when DynamoDB has `ClientRequestToken`?
-
-The DynamoDB token protects a transaction retry only for its service-defined
-window. The client/SDK sends one stable `Idempotency-Key` HTTP header per
-intended mutation; bulk contribution entries derive stable child keys from it.
-Coupling stores a receipt with the actor, key, request fingerprint, outcome,
-and a 24-hour TTL in the same transaction as the domain write. Matching retries
-replay the stored outcome; a reused key with different contents fails. This
-makes the application's 24-hour retry contract explicit and prevents duplicate
-revisions or aggregate changes.
-
 ### How can clearing contributions be atomic when there may be many rows?
 
 `clearContributions` does not delete every row synchronously. It atomically
@@ -720,8 +667,7 @@ Contribution ingestion is a separate Activity workload. A single contribution
 does one conditional source-of-truth transaction: it reads the active
 generation, moves or writes that contribution's locator/timeline row, updates
 its defined summary state, writes History, and records its idempotency result.
-It does not touch pairing locators, pair aggregates, the current-pair pointer,
-or global statistics.
+Its writes stay within the contribution path.
 
 The existing `saveContribution` list input remains supported for integrations
 that update in bulk. It is deliberately a sequence of bounded, independently
@@ -759,12 +705,11 @@ Region, larger item, GSI, backup, stream, or transfer setting changes the math.
 | --- | --- | --- | --- |
 | Load current party after 500 one-KB revisions | 62.5 RRUs, about $0.000015625 | 1 strong `GetItem` RRU, about $0.00000025 | The target reads `META`, not 500 revisions. |
 | Read 40 recent contributions from a party holding 1,000 records | 125 RRUs, about $0.00003125, if the filter examines all records | 5 RRUs, about $0.00000125 | The target reads one month bucket instead of filtering the party partition. |
-| Save a player with a primary and one additional email | About 2 WRUs / $0.0000025 for a one-KB base write plus its current email GSI | 10 WRUs / $0.0000125 for five one-KB transactional writes: player, two lookup rows, History, receipt | The extra writes buy direct authorization and auditability. |
-| Save a pairing affecting four pair aggregates | About 1 WRU / $0.00000125 for a one-KB append | About 22 WRUs / $0.0000275 for 11 one-KB transactional writes: timeline, locator, pointer, four aggregates, party-year, one global shard, History, receipt | The write precomputes current-pair and counter paths while preserving one audit decision. |
+| Save a player with a primary and one additional email | About 2 WRUs / $0.0000025 for a one-KB base write plus its current email GSI | 8 WRUs / $0.0000100 for four one-KB transactional writes: player, two lookup rows, History | The extra writes buy direct authorization and auditability. |
+| Save a pairing | About 1 WRU / $0.00000125 for a one-KB append | About 10 WRUs / $0.0000125 for five one-KB transactional writes: timeline, locator, pointer, party-year lookup, History | The write gives current pairs a direct lookup and records the accepted change. |
 
 The target's stored bytes also increase: it retains current items and only the
-projections needed by readers alongside immutable History, mutation receipts
-for 24 hours, and additive summaries. It may therefore cost more per mutation
+projections needed by readers alongside immutable History and additive summaries. It may therefore cost more per mutation
 and per retained GB, especially with PITR and Streams enabled. The relevant
 comparison is not a single append but the total cost of a user-visible operation
 after years of history.
@@ -772,11 +717,10 @@ after years of history.
 Exact non-additive statistics remain an explicit read-cost trade-off. A median,
 distinct set, or contributor result reads its selected source window; a
 count-only request uses small additive summaries. `globalStats` is the important
-exception: its 16-shard summary is cheap, but the unchanged API asks for every
-party. If it requests exact per-party fields for 500 parties with 100 one-KB
+exception: the API computes and totals the qualifying per-party results from the selected year. If it requests exact per-party fields for 500 parties with 100 one-KB
 pairing records each, both designs still read roughly 50,000 source records
 (about 6,250 eventually consistent RRUs, or $0.0015625) to calculate them. The
-target removes scans and the hot single summary key, but does not turn that
+target removes scans, but does not turn that
 unbounded exact full-list response into a cheap operation without a future,
 additive bounded API.
 
@@ -812,11 +756,8 @@ window can therefore issue more independent requests, and the month queries may
 run concurrently. Count-only views can read the smaller monthly summaries
 instead of contribution payloads.
 
-Some deliberately distributed reads also increase request count: an exact
-global total reads and sums 16 shard summaries, and the preserved unbounded
-`partyList` may page relationship queries and chunk metadata reads internally.
-Those costs buy safe concurrent pairing writes and API compatibility,
-respectively. Authorization relationship reads are calculated once per party
+The full `globalStats` and `partyList` responses still scale with the rows
+they return. Authorization relationship reads are calculated once per party
 per GraphQL request and reused by its child resolvers.
 
 Measure both API-call count and work per call: record DynamoDB calls, returned
@@ -856,15 +797,13 @@ unbounded or ambiguous reads later. The following paths may have higher latency
 or more DynamoDB request units than their current simple append-only writes:
 
 - `saveParty`, `savePlayer`, `deletePlayer`, and identity-link changes update
-  the canonical row, relationship projections, History, and mutation receipt.
+  the canonical row, relationship projections and History.
   This makes party discovery and authorization direct lookups rather than
   scans or revision reduction.
 - `spin`, `savePairAssignments`, and `deletePairAssignments` are the most
   write-amplified interactive mutations: they conditionally update the pairing
-  source, current pointer, pair/year summaries, one global shard, audit, and
-  receipt. The transaction and optimistic-version check are acceptable because
-  they prevent lost updates and let subsequent current-pair/statistic reads
-  avoid replaying all pairing history.
+  source, current pointer, party-year lookup and audit. Current pairs stay
+  directly readable while reports use the relevant history.
 - A contribution edit that changes its effective time can cost more than a new
   contribution because it removes the old timeline location before writing the
   new one and updating its summaries. `clearContributions` returns after one
@@ -872,17 +811,13 @@ or more DynamoDB request units than their current simple append-only writes:
   and never delays the user-visible clear.
 - Exact median, distinct, and contributor report fields—and `globalStats`—can
   be slower than a small-history query because they intentionally read their
-  authoritative source window or fixed 16-shard fan-out. A selected party/date
+  authoritative source window or paginated party-year candidates and their source windows. A selected party/date
   range has a known bound; the unchanged full-list `globalStats` remains linear
   in every party it returns. That cost buys exact results rather than a hidden
   scan of every retained party record.
 
-Transactions can also surface an optimistic-concurrency conflict rather than
-silently accepting overlapping edits. A brief retry is acceptable because the
-durable mutation receipt makes it safe and because preserving one correct audit
-history is more valuable than returning a fast but lost update. These costs
-should be measured separately from ordinary current-state page reads; they are
-not evidence that the read-model design has failed.
+Measure write latency separately from ordinary current-state reads. Include
+contention and retries for operations that maintain shared derived state.
 
 ### Where should this design improve performance most, and how do we measure success?
 
@@ -917,12 +852,9 @@ regression is caught before users feel it.
 
 No GraphQL schema change is required to adopt this design. The current schema,
 operations, inputs, response shapes, and user-visible behavior can remain as
-they are while resolvers move to the new read models. The target mutation design
-uses an `Idempotency-Key` HTTP header; the SDK/client creates it automatically. Requiring that header from existing raw
-integrations is a transport compatibility change and must be resolved explicitly
-in a cross-layer delivery slice before enforcement. Storage migration alone does
-not authorize rejecting existing callers. Internal DynamoDB cursors, generation
-selection, aggregate reads, and shard merges are implementation details, not GraphQL contract
+they are while resolvers move to the new read models. A new caller-visible retry
+contract requires its own compatibility decision. Internal DynamoDB cursors,
+generation selection, and aggregate reads are implementation details, not GraphQL contract
 changes.
 
 The design does suggest optional, additive future connections or report fields
@@ -946,8 +878,8 @@ check before it reads or writes party data; command handlers repeat it as
 defense in depth. The allowed policy remains unchanged: ownership or a match
 between a resolved validated user email and any primary or additional email on
 an active player. `globalStats` is an intentional exception because it is
-broadly available, but its GraphQL and stored projections are restricted to
-approved aggregate fields and cannot traverse into party content.
+broadly available. Its GraphQL response exposes only approved statistics
+fields, and the party-year lookup holds only candidate IDs.
 
 ## Verification criteria for a later implementation
 
@@ -961,25 +893,23 @@ approved aggregate fields and cannot traverse into party content.
    visibility, single and bulk contribution retry/clear interleavings, and
    owner-or-authenticated-user-email access decisions for both primary and
    additional player emails.
-3. Concurrent-update tests prove that a losing writer cannot overwrite the
-   current version or create a duplicate audit revision.
-4. Load tests model small parties with long-lived histories, then deliberately
-   exercise the stated rebucketing/sharding thresholds and all 16 global-stat
-   shards.
+3. Concurrent full-state save tests prove both accepted edits appear in
+   History and the last committed save supplies current state.
+4. Verify that long-lived history does not add work to current-state reads and
+   that global statistics paginate correctly.
 5. Restore tests prove that Core, Activity, History, and Live Connections have
    their intended retention and recovery behavior. Live connection state is
    explicitly treated as rebuildable.
 6. Historical and property-style integrity tests replay authorization-relevant
    identity/player changes, concurrent writes, and retries. They prove
-   matching `Idempotency-Key` retries replay one result, mismatched reuse fails,
-   bulk child keys remain stable, and only derived rows are auto-repaired.
+   retries preserve revision and aggregate counts, bulk child identities remain
+   stable where needed, and only derived rows are auto-repaired.
 7. Authorization tests cover a multi-party GraphQL alias request, every
    party-scoped mutation, and WebSocket connection setup. They prove that a
    context authorized for one party cannot expose or mutate another party.
-8. Contract tests assert that broadly available `globalStats` exposes only its
-   approved aggregate fields, merges shard pages in stable party-ID order, and
-   cannot gain a path to party content. Cross-runtime tests prove the specified
-   SHA-256 shard function selects the same shard for every party ID.
+8. Contract tests verify that `globalStats` preserves year boundaries, party
+   inclusion, the median-duration filter, and totals of per-party distinct
+   counts. Verify stable internal paging and approved response fields.
 9. Exact-stat tests cover edits and deletes, proving median, distinct, and
    contributor-derived values come from the selected bounded source window
    rather than an approximate scalar summary.

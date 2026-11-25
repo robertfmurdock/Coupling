@@ -87,6 +87,20 @@ evidence conflicts. Keep parallel ownership disjoint and integration touchpoints
 explicit. Surface conceptual conflicts promptly. For deployment-affecting changes,
 consider the integration path, build/deploy ergonomics, and rollback.
 
+## Persistence and concurrent writes
+
+Keep ordinary inserts and full-state saves simple. Preserve each accepted
+revision where the domain keeps history, and use the last committed save for
+current state. Import historical data by stable source identity and use the
+source’s recorded order to reconstruct current state within the import’s
+ownership. Arrival order can differ from source order.
+
+Tie each write guard, receipt, and recovery mechanism to a concrete invariant
+or failure scenario. Examples include unique claims, updates derived from a
+prior read, atomic progress and recovery from partial cross-store writes.
+Reuse existing identities and transaction boundaries before introducing new
+state or caller requirements.
+
 ## Observability
 
 Design application observability as a reusable system capability. Prefer ordinary

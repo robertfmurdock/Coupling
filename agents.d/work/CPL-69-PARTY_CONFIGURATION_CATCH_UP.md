@@ -50,8 +50,11 @@ reuse it or evolve its contract rather than adding a public migration endpoint.
 - Reread timestamp boundaries inclusively and deduplicate by the complete source
   key. Compare full named-party history to detect delayed older revisions and
   same-key content changes; do not introduce an arbitrary lateness guarantee.
-  Historical insertion must not make processing order the authority for current
-  state or silently renumber previously persisted history.
+  Within proven import ownership, use the latest revision in recorded legacy
+  order for Core, including deletion. Insert older revisions by stable source
+  identity and preserve existing History entries. History order comes from the
+  source key. Preserve existing version values for compatibility and remove
+  reliance on import count as the Core write guard.
 - Preserve source timestamps, actors, deletion/restoration semantics and canonical
   values, including legacy defaults. Atomically couple each import effect to its
   durable progress. Retries after interruption or a lost response have the same
@@ -81,13 +84,8 @@ reuse it or evolve its contract rather than adding a public migration endpoint.
    missing history despite newer metadata, empty/deleted sources, target conflicts,
    concurrent source changes and interruption during comparison. Expected red:
    incremental progress misses changes behind its watermark and cannot establish
-   semantic parity. Reuse canonical mapping and deterministic identity; define
-   stable historical ordering/version behavior before production edits. This
+   semantic parity. Reuse canonical mapping and deterministic identity. This
    slice independently establishes bounded reconciliation for one named party.
-
-If preserving stable history versions requires changing the first slice's design,
-resolve that contract before delivering it; do not ship a checkpoint format that
-the second slice must reinterpret silently.
 
 ## Acceptance Evidence
 
@@ -98,9 +96,8 @@ the second slice must reinterpret silently.
   schema/ownership rejection and preservation of existing snapshot progress.
 - Existing catalog-selection tests continue to prove legacy routing. No checked-in
   migration enablement changes accompany this card.
-- Record focused repository/action checks, full `./gradlew check`, separate test
-  clarity and production design reviews, and each implementation commit. Normal
-  build evidence cannot establish deployed-data parity; none is claimed here.
+- Local evidence covers the checked source scope and boundary. Deployed-data
+  parity remains outside this card.
 
 ## Scope After Completion
 
@@ -114,5 +111,4 @@ implementation of this card.
 ## Current State
 
 2026-11-24: planned; no implementation or deployed-data execution. Next: read the
-existing backfill and dispatcher tests, settle stable history/version semantics
-for delayed revisions, and call the first slice's test shot before editing tests.
+existing backfill and dispatcher tests and call the first slice's test shot.
