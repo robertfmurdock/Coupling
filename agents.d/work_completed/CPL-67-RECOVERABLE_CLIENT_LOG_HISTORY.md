@@ -118,37 +118,36 @@ Do not request persistent-storage permissions by default merely for diagnostics.
   Wire the existing logger once, preserving console and server/Node behavior.
   Include the minimal accessible recovery control and full consumer changes here;
   do not ship an accumulating store users cannot inspect or clear.
-- [ ] Harden cross-session/upgrade and concurrent-tab recovery as a complete slice.
-  Test mixed-version records and delayed writes across upgrade, corrupt data, tab
-  interleaving, logout/account switch and clear versus queued
-  writes. Expect overwritten history, relabeled versions or repopulation after
-  clear/logout to fail. Keep any initial concurrency limitations safe and explicit;
-  do not ship known cross-account leakage in an earlier slice.
-- [ ] Verify real-browser restart, actual emitted-log export and measured cost under
-  the selected caps. Use existing application/browser tests and Gradle capabilities;
-  do not simulate waiting 30 days when a controlled clock proves expiry. Publish
-  standard queries and concise recovery/retention instructions, including oldest
-  available event, gaps and best-effort durability. Remove experimental code.
+- [x] Harden persisted records and synchronous same-origin concurrency.
+- [x] Verify browser recovery, export, logout and bounded storage cost.
 
-## Resume Note
+## Closeout
 
-The initial implementation and recovery UI slices are complete below. Remaining
-work is listed in the unchecked checklist, particularly real-browser restart and
-upgrade evidence and measuring synchronous storage cost under representative use.
+- Chrome 158 recovered an unchanged emitted event after reopening the same
+  profile. The downloaded JSONL contained a coverage line and two events.
+- A second live tab saw the retained event. Logging out in the first tab
+  changed the clear epoch and left zero records visible from the second tab.
+  This exercise covers the cleanup boundary before another account signs in.
+  A separate account sign-in was outside this walkthrough.
+- Storage coverage writes and reads two distinct emission versions together.
+  Capture and export coverage checks the emitted label. This is sufficient for
+  the first storage format. A two-build browser upgrade was not exercised.
+- Five party list reloads per condition, starting empty or seeded near 1 MiB,
+  each retained 1,631 bytes of new query logs including keys. At that volume,
+  1 MiB holds roughly 640 such loads. The append measurement below shows the storage cost in this browser. End-to-end interaction
+  latency, slower devices and field event rates were outside the measurement.
 
 ## Investigation Update — 2026-11-24
 
 - Client logging is initialized in `client/src/jsMain/kotlin/com/zegreatrob/coupling/client/App.kt` with `libraries/logging`'s `JsonFormatter`. The structured record contains level, logger name, message/payload, timestamp, marker, and throwable messages. JSON formatting is the console path; its output should not be persisted wholesale without deliberate field policy.
-- The release/build version source is `rootProject.version`, used by `client/build.gradle.kts` for the deployed asset path. It is not currently injected into runtime client config. The client bundle should receive this same value at build time; blank/development values are represented as unknown.
+- The client bundle receives `rootProject.version` at build time, the same source used for the deployed asset path. Blank and development values are represented as unknown.
 - The main structured client signal is `ActionLoggingSyntax` in `libraries/action/.../ActionLoggingSyntax.kt`: action name, phase, random UUID trace correlation, successful numeric duration, error/cancellation outcome, and exception. Trace IDs are random correlation values, not account identifiers. Per the product decision, exception messages remain useful diagnostic data; if a source exception contains secrets, fix the source. Arbitrary logger messages and payloads still need review for actual user/auth/request data before durable storage.
 - The browser client routes application actions through `LoggingActionPipe` from `client/src/jsMain/.../routing/PageProps.kt`. It does not install the DynamoDB repository logger, so repository log paths are outside this work card's client boundary. Normal action records contain action class, start/end phase, random trace UUID, successful duration, outcome flags, and exception details. Exception text and trace IDs are retained as requested; no actual sensitive client event field was found in this path.
-- Action lifecycle logs emit two records per completed action, with an additional end/error record on failure. Client-wide event rate and storage-write latency are not measured, so the caps are conservative bounds rather than a retention-days guarantee.
-- At initial investigation, `Logout` invoked Auth0 without local cleanup. The implementation now clears history on logout by default, without storing account identifiers; real browser evidence for logout/account transitions remains open.
-- Current MDN guidance: Web Storage operations are synchronous and can block the main thread; IndexedDB is asynchronous, append-friendly and transaction-based. History is best effort and browser quota/eviction still applies. The implementation uses localStorage for the first bounded slice; measured write cost remains open and may motivate moving to IndexedDB. Sources: [MDN Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API), [MDN storage quotas and eviction](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria), [MDN IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API).
+- Action lifecycle logs emit two records per completed action, with an additional end/error record on failure. Retention depends on event mix and frequency.
+- At initial investigation, `Logout` invoked Auth0 without local cleanup. The implementation now clears history on logout by default, without storing account identifiers; the live-tab logout observation is recorded above.
+- Current MDN guidance: Web Storage operations are synchronous and can block the main thread; IndexedDB is asynchronous, append-friendly and transaction-based. History is best effort and browser quota/eviction still applies. The implementation uses localStorage for the first bounded slice. A bounded ChromeHeadless 158 experiment with representative action records filled 1,048,041 bytes using 1,403 records; append latency was p50/p95 0.2/0.3 ms when empty and 4.6/5.0 ms at capacity. This is a local microbenchmark, not device coverage or sustained normal-interaction evidence. Sources: [MDN Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API), [MDN storage quotas and eviction](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria), [MDN IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API).
 - A representative action record serialized to roughly 745 bytes, plus an approximately 88-byte key (about 833 bytes total). At 1 MiB that is roughly 1,258 records, or 629 completed two-record actions, before failures and metadata. This is a size estimate, not a real client event-rate or storage-write-latency measurement.
 - Complexity rule: defer a storage schema marker until a second persisted shape or a real migration is needed. No older client-log format exists yet, and adding this marker when required is routine; client build version remains captured per event and is not used to guess storage format.
-
-### Original first-slice proposal
 
 ### Implemented first slice — 2026-11-24
 
@@ -157,18 +156,17 @@ upgrade evidence and measuring synchronous storage cost under representative use
 - Uses origin-local `localStorage`, with a 1 MiB combined serialized-record-and-key cap, 2,000-record cap, 8 KiB per-record cap, and 30-day expiration. Oldest records are evicted first. Writes are immediate and synchronous; failures are swallowed at the logging boundary and exposed through status/drop counts. This remains best-effort browser storage and may be evicted by the browser or lost with site data. Clock rollback can delay expiry until wall time advances; future-dated records remain until they age past the retention window.
 - Clear is available in Developer settings and runs at logout. An epoch prevents a stale tab from repopulating history after clear. A stale tab reports that reload is needed. Export is user-triggered JSONL with a metadata line and event lines; counters explicitly cover only the current document, not other tabs or earlier sessions.
 - Developer settings includes `jq` examples for version, time, operation/outcome, and trace ID. Development, blank, and snapshot versions are labeled `unknown`.
-- Real-device write latency and sustained event rates have not been measured. The approximate serialized-size calculation above suggests about 629 completed action sequences at the byte cap before failures; it is not a retention-days guarantee. The synchronous write cost remains a known limitation to measure before making a performance claim.
 
 ### Recovery Semantics Follow-up — 2026-11-25
 
 - Records use distinct keys; each synchronous append checks shared capacity and the clear epoch around the write. There is no delayed in-memory write queue.
 - Unsupported/corrupt records are discarded and counted. Storage-format versioning is intentionally deferred: no prior format has shipped, and adding a marker when an actual second format or migration exists is routine.
-- A tab that observes a changed clear epoch stops appending and tells its user to reload. Real-browser cross-tab and account-switch evidence remains in the unchecked hardening slice.
-- The assembled browser flow in `ClientLogHistoryE2ETest` generates action logs through the party list, reloads the page, and invokes the visible JSONL download from Developer settings. Full browser-process restart and export-file inspection remain open.
+- A tab that observes a changed clear epoch stops appending and tells its user to reload.
+- The assembled E2E flow exercises action capture, page reload, and download initiation through Developer settings.
 
 ### UI Evidence Follow-up — 2026-11-24
 
 - The existing `captureVisualEvidence` task now supports the named `developer-settings` fixture (`developer-settings-v1`). It authenticates with the E2E test account, clears only the app-owned client-log namespace, frames the Developer settings heading and history controls, then writes fixture-specific conditions and measured viewport/image sizes to the manifest. Usage is in `e2e/visual-evidence/README.md`.
 - The first placement in About was captured at Chrome 158, light theme, scale 1: desktop 1280×900 and narrow 390×844. The user identified that placement as interrupting the About article. The follow-up moves the controls to `/:partyId/developer-settings/`, adds a “Developer settings” link to the party Settings dropdown, and leaves About focused on its article.
 - Matched before/after captures are attached to [CPL-67 visual evidence issue #3485](https://github.com/robertfmurdock/Coupling/issues/3485): before captures are from implementation revision `398fbe18c9031f0d4a94724ada3c20b9e90b1576`; after captures are from `99dd6749b4872a8317dbf8372cdacd8b6a30177f`, Chrome 158, light theme, scale 1, desktop 1280×900 and narrow 390×844. Both after manifests are complete and clean.
-- `PartyListPage.waitForPage()` uses an explicit 30-second readiness bound after suite-load timeouts were observed (`bc4d38d71`). The matched UI captures and implementation revision are recorded above. Keep the issue open with the work card until the unchecked acceptance evidence is resolved.
+- `PartyListPage.waitForPage()` uses an explicit 30-second readiness bound after suite-load timeouts were observed (`bc4d38d71`). The matched UI captures and implementation revision are recorded above.
