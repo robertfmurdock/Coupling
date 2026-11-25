@@ -187,10 +187,11 @@ windows, aggregate reads, history, and live connections. Target query
 repositories own request-scoped batching so actions that share a party or
 window do not repeat DynamoDB calls.
 
-Resolvers continue to invoke command/query/action dispatchers. Only those
-dispatchers may obtain repositories. Backfill, ledger progression,
-reconciliation, and projection repair are commands/actions as well; deployment
-configuration and resolvers do not access DynamoDB directly.
+Resolvers continue to invoke command/query/action dispatchers, which obtain
+repositories at the application boundary. Automatic catch-up runs inside the
+migration catalog’s repository path. Model explicitly requested maintenance
+as a command when an operator workflow exists. Keep DynamoDB access inside
+the persistence layer. See [commands and automatic work](agents.d/context/ARCHITECTURE_CANONICAL.md#commands-and-automatic-work).
 
 ## Delivery milestones
 

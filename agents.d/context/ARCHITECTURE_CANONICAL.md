@@ -87,6 +87,14 @@ evidence conflicts. Keep parallel ownership disjoint and integration touchpoints
 explicit. Surface conceptual conflicts promptly. For deployment-affecting changes,
 consider the integration path, build/deploy ergonomics, and rollback.
 
+### Commands and automatic work
+
+Commands represent work explicitly requested by a user or operator. Automatic
+work belongs to the component that owns the triggering flow. For example, the
+migration catalog can catch up legacy records while serving a read through its
+repository path. Introduce a maintenance command when an operator workflow
+needs to invoke that work explicitly.
+
 ## Persistence and concurrent writes
 
 Keep ordinary inserts and full-state saves simple. Preserve each accepted

@@ -5,7 +5,7 @@
 ## Goal and Constraints
 
 Make the existing named-party configuration import repeatable after its first
-snapshot completes. An internal command must catch up later legacy revisions and
+snapshot completes. The repository operation catches up later legacy revisions and
 compare the complete source history with imported history and current metadata,
 including an empty source and deleted parties. This supplies a useful offline
 construction and reconciliation capability before online migration is enabled.
@@ -14,7 +14,7 @@ Follow the [migration strategy](../../DYNAMODB_SCHEMA_MIGRATION_STRATEGY.md)
 and [schema proposal](../../DYNAMODB_SCHEMA_PROPOSAL.md). Preserve legacy runtime
 routing, GraphQL behavior, source records and existing snapshot progress. No
 provisioning, deployed-data execution, IAM change, push or release is included.
-One contributor owns each slice across repository and command boundaries under
+One contributor owns each slice under
 the [delivery protocol](../context/WORK_CHECKLIST.md).
 
 Use the same import capability with the configured data namespace under the
@@ -33,9 +33,9 @@ import later appends or prove parity after source changes.
 
 The source is legacy `TRIBE`, keyed by party ID and canonical millisecond revision
 timestamp. Deletes are revisions. Application clocks and possible same-key changes
-mean the largest timestamp alone cannot establish completeness. The server's
-`PartyConfigurationBackfillDispatcher` is the existing internal command boundary;
-reuse it or evolve its contract rather than adding a public migration endpoint.
+mean the largest timestamp alone cannot establish completeness. Keep catch-up at
+the repository boundary for reuse by the migration catalog. An explicit
+operator entry point is outside this card.
 
 ## Contract and Design
 
@@ -70,8 +70,8 @@ reuse it or evolve its contract rather than adding a public migration endpoint.
 
 ## Safe Slice Sequence
 
-1. **Repeat a completed snapshot.** Extend repository and internal command results
-   together to reopen bounded work for the same party, including an initially
+1. **Repeat a completed snapshot.** Extend the repository operation
+   to reopen bounded work for the same party, including an initially
    empty source. Test later appends, unchanged reruns, delete/restoration, multiple
    pages, interruption/lost-response replay, competing workers, ownership changes
    and existing checkpoint compatibility. Expected red: completed checkpoints
@@ -92,7 +92,7 @@ reuse it or evolve its contract rather than adding a public migration endpoint.
 - Local DynamoDB tests prove exact historical and current-state equality for the
   scenarios above, with preserved legacy data and no duplicate history on replay.
   Counts and checksums alone do not establish semantic equality.
-- Repository and dispatcher tests prove explicit incomplete/conflict propagation,
+- Repository tests prove explicit incomplete/conflict results,
   schema/ownership rejection and preservation of existing snapshot progress.
 - Existing catalog-selection tests continue to prove legacy routing. No checked-in
   migration enablement changes accompany this card.
@@ -112,11 +112,11 @@ implementation of this card.
 
 Same-run catch-up reopens completed checkpoints for appends, including after
 an empty snapshot. An unfinished invocation keeps its original watermark.
-The existing dispatcher result still reports cumulative count and last key
+The repository result reports cumulative count and last key
 for that bounded snapshot. The append path retains its existing guard and
 checkpoint format.
 
-The command compares source revisions through its completed watermark against
+The repository compares source revisions through its completed watermark against
 History. Missing revisions return incomplete. A same-key content difference
 returns incomplete with the conflicting source timestamp and preserves the
 imported revision. This check does not establish target-only History or Core
