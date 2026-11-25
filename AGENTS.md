@@ -38,7 +38,8 @@ one contributor for dependent TDD steps. Delegate focused investigations or revi
 when a separate context has a clear purpose and session permissions allow it.
 Hand off a compact brief, relevant paths, constraints, and expected results;
 implementers still read the relevant tests. Review test clarity and production
-design separately, and review the overall outcome at completion.
+design separately. Before archiving a card, complete the whole-card review and
+refactor pass in the work-card closeout procedure.
 
 ## Commands and Constraints
 

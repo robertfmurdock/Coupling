@@ -53,6 +53,10 @@ affect the work, rather than narrating the editing process.
 
 Link shared delivery, testing, approval and closeout procedures instead of
 restating them. Include task-specific constraints or exceptions where needed.
+Include an exact revision in a card or tracked log only when it helps reproduce
+evidence or explains a decision that depends on that revision. Use the evidence
+issue or run when it already holds that information. Skip follow-up commits
+whose sole purpose is to add the SHA of a commit that already contains the work.
 Keep each contract or evidence requirement in one place; avoid repeating it in
 the goal, slice plan and acceptance list. Retain concise status and handoff facts
 that change the next action, without a running diary of routine activity.
@@ -95,8 +99,8 @@ On resume, remove satisfied prerequisites rather than preserving obsolete gates.
 For changes whose failures would be detected by normal delivery, pushed
 implementation commits, a passing build for those commits, and a successful
 deployment with the site still live are strong completion evidence. Prefer
-existing CI, deployment and health results; record commit/run links and the
-relevant health observation rather than creating follow-up verification work.
+existing CI, deployment and health results. Record the relevant health
+observation and link to existing evidence when that helps someone find it.
 Use only the signals relevant to the change: a build-only refactor need not
 acquire a deployment requirement. Never infer a passing build or live site
 merely from elapsed time.
@@ -130,8 +134,9 @@ gh issue comment <issue-number> --body 'Implementation: <commit-sha>' \
   --attach './after.png#After — desktop'
 ```
 
-Record the implementation SHA and actual image and viewport dimensions; a requested
-window size does not prove the viewport size. Match viewport, theme, and sample data
+Record the source revision in the evidence issue when it identifies what was
+captured. Record actual image and viewport dimensions. A requested window size
+does not prove the viewport size. Match viewport, theme, and sample data
 where practical; disclose differences. Add clips when motion or timing matters.
 Verify uploaded attachments before closing the issue. Use the opt-in
 [`captureVisualEvidence` task](../../e2e/visual-evidence/README.md) for named local
@@ -145,12 +150,26 @@ fixtures, labeled PNGs and manifests with measured viewport/image dimensions.
 2. State the slice plan before tests and the implementation approach after the
    expected failure, before production edits. Revise materially changed plans.
 3. Review tests and production design separately, resolve findings, pass
-   `./gradlew check`, and commit before starting another slice. Record validation,
-   gaps, and the implementation commit.
+   `./gradlew check`, and commit before starting another slice. Record
+   consequential evidence and any remaining gaps.
 4. If paused or blocked, leave the card active with the blocker, uncommitted work,
    and next action.
-5. Once acceptance evidence is complete, move the card to `agents.d/work_completed/`
+5. Once acceptance evidence is complete, review and refactor the whole change
+   before archiving, including earlier slices and their integration points.
+   Apply the relevant repository guidance and skills for the affected areas.
+   Use [architecture](ARCHITECTURE_CANONICAL.md) and
+   [code style](PLAYBOOK_CODE_STYLE.md) to check ownership, data flow, and
+   unnecessary complexity. Review tests separately using [Testing](TESTING.md)
+   and `$testmints` for Testmints scenarios. Check that each consequential
+   behavior has evidence at its owning boundary and that the assertions would
+   catch a plausible regression.
+6. Make warranted simplifications and fix in-scope gaps during closeout. Keep
+   small fixes with the current card and use the normal slice and validation
+   procedure for changes. Open a follow-up card for a distinct outcome that
+   warrants separate delivery. Keep only consequential decisions and remaining
+   limitations in the card.
+7. Once the review and any resulting fixes are complete, move the card to `agents.d/work_completed/`
    and update inbound links. Verify visual uploads, update the issue’s card link,
-   record the implementation SHA, and close the issue. For consolidation, move the
+   and close the issue. For consolidation, move the
    superseded card there as a redirect to its active owner. Push or release only
    with user authorization.
