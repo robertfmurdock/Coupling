@@ -9,6 +9,11 @@ Deliver meaningful features as small, independently releasable test-plus-
 implementation commits. Each commit must pass the full test suite and be safe to
 push and release; it must remain useful and safe if subsequent work stops.
 
+Defer speculative complexity until a concrete need appears. Add compatibility
+layers, abstractions, configuration, and generalized machinery when a real use
+case requires them, unless waiting would materially increase the cost or risk of
+addressing that need.
+
 Before tests, call the shot: state the behavior, affected boundary, proposed
 contract/design, scenarios, and expected failure. After confirming a meaningful
 failure and before production edits, state the smallest implementation, ownership,

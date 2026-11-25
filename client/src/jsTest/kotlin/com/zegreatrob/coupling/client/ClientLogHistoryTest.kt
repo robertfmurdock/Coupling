@@ -51,7 +51,7 @@ class ClientLogHistoryTest {
         records.last().structuredProperties?.get("command_duration_ms").toString().assertIsEqualTo("12.345")
         records.last().structuredProperties?.get("command_error").toString().assertIsEqualTo("false")
         history.read(nowMillis = 2_000).size.assertIsEqualTo(2)
-        storage.get(storage.keys().first())?.contains("\"schemaVersion\":1").assertIsEqualTo(true)
+        storage.get(storage.keys().first())?.contains("\"clientVersion\":\"2.4.1\"").assertIsEqualTo(true)
     }
 
     @Test
@@ -118,6 +118,37 @@ class ClientLogHistoryTest {
     }
 
     @Test
+    fun clearDuringAWriteRemovesTheStaleRecordBeforeItCanBeRecovered() = setup(object {
+        val storage = MemoryClientLogStorage()
+        val writingTab = ClientLogHistory(storage)
+        val clearingTab = ClientLogHistory(storage)
+    }) exercise {
+        storage.onRecordWrite = clearingTab::clear
+        val stored = writingTab.append(actionEvent("end", "stale-write"), "2.4.1", emittedAtMillis = 1_000)
+        stored to clearingTab.read(nowMillis = 1_000)
+    } verify { (stored, records) ->
+        stored.assertIsEqualTo(false)
+        records.assertIsEqualTo(emptyList())
+    }
+
+    @Test
+    fun interleavedTabsAppendToTheSharedHistoryWithinTheConfiguredCap() = setup(object {
+        val storage = MemoryClientLogStorage()
+        val firstTab = ClientLogHistory(storage, maxRecords = 3)
+        val secondTab = ClientLogHistory(storage, maxRecords = 3)
+    }) exercise {
+        firstTab.append(actionEvent("end", "first-tab-1"), "2.4.1", emittedAtMillis = 1_000)
+        secondTab.append(actionEvent("end", "second-tab"), "2.5.0", emittedAtMillis = 2_000)
+        firstTab.append(actionEvent("end", "first-tab-2"), "2.4.1", emittedAtMillis = 3_000)
+        secondTab.append(actionEvent("end", "second-tab-2"), "2.5.0", emittedAtMillis = 4_000)
+        secondTab.read(nowMillis = 4_000)
+    } verify { records ->
+        records.map { it.message.properties?.get("command_trace_id") }
+            .assertIsEqualTo(listOf("second-tab", "first-tab-2", "second-tab-2"))
+        records.size.assertIsEqualTo(3)
+    }
+
+    @Test
     fun storageWriteFailureDoesNotEscapeIntoTheApplication() = setup(object {
         val storage = MemoryClientLogStorage().apply { failWrites = true }
         val history = ClientLogHistory(storage)
@@ -146,7 +177,7 @@ class ClientLogHistoryTest {
     @Test
     fun corruptRecordsAreRemovedAndCountedAsDropped() = setup(object {
         val storage = MemoryClientLogStorage().apply {
-            put("coupling:client-log:v1:0000000001000.00000001.00010.broken", "not-json")
+            put("coupling:client-log:record:0000000001000.00000001.00010.broken", "not-json")
         }
         val history = ClientLogHistory(storage)
     }) exercise {
@@ -278,6 +309,7 @@ private class MemoryClientLogStorage : ClientLogStorage {
     val size get() = values.size
     var failWrites = false
     var failNextWrite = false
+    var onRecordWrite: (() -> Unit)? = null
 
     override fun keys() = values.keys.toList()
     override fun get(key: String) = values[key]
@@ -287,6 +319,7 @@ private class MemoryClientLogStorage : ClientLogStorage {
             failNextWrite = false
             error("quota exceeded")
         }
+        if (key.startsWith("coupling:client-log:record:")) onRecordWrite?.also { onRecordWrite = null }?.invoke()
         values[key] = value
     }
     override fun remove(key: String) {

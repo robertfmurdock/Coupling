@@ -30,7 +30,6 @@ internal interface ClientLogStorage {
 @Serializable
 internal data class StoredClientLog(
     val type: String,
-    val schemaVersion: Int,
     val clientVersion: String,
     val emittedAtMillis: Long,
     val message: Message,
@@ -68,7 +67,6 @@ internal class ClientLogHistory(
         }
         val record = StoredClientLog(
             type = "client-log-event",
-            schemaVersion = 1,
             clientVersion = clientVersion?.takeIf(String::isNotBlank) ?: "unknown",
             emittedAtMillis = emittedAtMillis,
             message = message,
@@ -133,7 +131,7 @@ internal class ClientLogHistory(
         val emittedAtMillis = key.removePrefix(RECORD_PREFIX).substringBefore('.').toLongOrNull()
         val raw = storage.get(key) ?: return null
         val record = runCatching { Json.decodeFromString<StoredClientLog>(raw) }.getOrNull()
-        if (emittedAtMillis == null || record == null || record.schemaVersion != 1) {
+        if (emittedAtMillis == null || record == null) {
             droppedCount += 1
             storage.remove(key)
             return null
@@ -214,7 +212,7 @@ internal class ClientLogHistory(
         const val MAX_RECORDS = 2_000
         const val MAX_RECORD_BYTES = 8_192
         const val MAX_AGE_MILLIS = 30L * 24L * 60L * 60L * 1_000L
-        private const val RECORD_PREFIX = "coupling:client-log:v1:"
+        private const val RECORD_PREFIX = "coupling:client-log:record:"
         private const val EPOCH_KEY = "coupling:client-log:epoch"
     }
 }
@@ -259,7 +257,6 @@ internal object ClientLogCapture {
         val records = history.read(nowMillis)
         val metadata = buildJsonObject {
             put("type", "client-log-export")
-            put("schemaVersion", 1)
             put("exportedAt", Date(nowMillis.toDouble()).toISOString())
             put("retainedFrom", records.firstOrNull()?.message?.timestamp ?: "unknown")
             put("retainedTo", records.lastOrNull()?.message?.timestamp ?: "unknown")

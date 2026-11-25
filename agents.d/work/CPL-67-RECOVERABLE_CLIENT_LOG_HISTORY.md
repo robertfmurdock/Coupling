@@ -44,7 +44,8 @@ reuse any delivered contract improvements without creating a second event schema
   accounting and supported failure behavior before implementation; do not build
   multiple storage backends without a demonstrated need.
 - Define a hard serialized-byte budget, maximum record size/count, bounded memory
-  queue and write batching policy. Select concrete limits from representative
+  queue and write batching policy; if writes are immediate, explicitly document
+  that no queue is used. Select concrete limits from representative
   emitted logs and origin storage use; record estimated bytes/day, achieved days
   at the cap and measured write/flush cost. Prefer discarding oldest eligible logs
   over affecting application data. Never evict unrelated origin storage.
@@ -74,9 +75,11 @@ Do not request persistent-storage permissions by default merely for diagnostics.
   Missing version is explicitly unknown, never inferred from the exporting build;
   define development/legacy-record behavior and expose its coverage.
 - Preserve useful structured fields/types, operation outcomes, durations and
-  correlation through persistence/export. Include a storage schema version for
-  compatibility independently of client version. Bound unsupported/oversized event
-  handling and report loss without recursive logging or a new event per dropped log.
+  correlation through persistence/export. Add a storage schema marker when a
+  second persisted shape or real migration makes it necessary; client version is
+  independent of storage shape. Until then, malformed records are discarded.
+  Bound unsupported/oversized event handling and report loss without recursive
+  logging or a new event per dropped log.
 - Demonstrate real application logs surviving reload and browser restart, mixed
   client versions after upgrade, expiry and oldest-first capacity eviction. Export
   must be directly queryable with standard tools; include queries filtering by
@@ -103,11 +106,11 @@ Do not request persistent-storage permissions by default merely for diagnostics.
 
 ## Safe Slice Sequence
 
-- [ ] Inspect current log fields, client-version source, destination and representative
+- [x] Inspect current log fields, client-version source, destination and representative
   volume. Retain sanitized findings and choose limits, storage mechanism, event
   allowlist, logout policy and minimal recovery action. Keep probes temporary; no
   maintained benchmark framework. State exact contracts/scenarios before tests.
-- [ ] Deliver bounded persistence plus usable export/clear in one independently
+- [x] Deliver bounded persistence plus usable export/clear in one independently
   useful slice, with client version captured per event from the start. At the
   owning boundary, test round-trip types/version, expiry, cap eviction, oversized
   records, redaction, denied storage and write failure. Expect absent history,
@@ -116,8 +119,8 @@ Do not request persistent-storage permissions by default merely for diagnostics.
   Include the minimal accessible recovery control and full consumer changes here;
   do not ship an accumulating store users cannot inspect or clear.
 - [ ] Harden cross-session/upgrade and concurrent-tab recovery as a complete slice.
-  Test mixed-version records and delayed writes across upgrade, schema compatibility,
-  corrupt data, tab interleaving, logout/account switch and clear versus queued
+  Test mixed-version records and delayed writes across upgrade, corrupt data, tab
+  interleaving, logout/account switch and clear versus queued
   writes. Expect overwritten history, relabeled versions or repopulation after
   clear/logout to fail. Keep any initial concurrency limitations safe and explicit;
   do not ship known cross-account leakage in an earlier slice.
@@ -129,9 +132,9 @@ Do not request persistent-storage permissions by default merely for diagnostics.
 
 ## Resume Note
 
-The first implementation slice is complete below. Remaining work is listed in the
-unchecked checklist, particularly restart/browser evidence and measuring synchronous
-storage cost under representative user activity.
+The initial implementation and recovery UI slices are complete below. Remaining
+work is listed in the unchecked checklist, particularly real-browser restart and
+upgrade evidence and measuring synchronous storage cost under representative use.
 
 ## Investigation Update — 2026-11-24
 
@@ -140,21 +143,29 @@ storage cost under representative user activity.
 - The main structured client signal is `ActionLoggingSyntax` in `libraries/action/.../ActionLoggingSyntax.kt`: action name, phase, random UUID trace correlation, successful numeric duration, error/cancellation outcome, and exception. Trace IDs are random correlation values, not account identifiers. Per the product decision, exception messages remain useful diagnostic data; if a source exception contains secrets, fix the source. Arbitrary logger messages and payloads still need review for actual user/auth/request data before durable storage.
 - The browser client routes application actions through `LoggingActionPipe` from `client/src/jsMain/.../routing/PageProps.kt`. It does not install the DynamoDB repository logger, so repository log paths are outside this work card's client boundary. Normal action records contain action class, start/end phase, random trace UUID, successful duration, outcome flags, and exception details. Exception text and trace IDs are retained as requested; no actual sensitive client event field was found in this path.
 - Action lifecycle logs emit two records per completed action, with an additional end/error record on failure. Client-wide event rate and storage-write latency are not measured, so the caps are conservative bounds rather than a retention-days guarantee.
-- `Logout` currently invokes Auth0 without local cleanup. Shared same-origin history would cross account transitions unless cleared on logout. The default first-slice policy should clear history on logout, without storing account identifiers.
+- At initial investigation, `Logout` invoked Auth0 without local cleanup. The implementation now clears history on logout by default, without storing account identifiers; real browser evidence for logout/account transitions remains open.
 - Current MDN guidance: Web Storage operations are synchronous and can block the main thread; IndexedDB is asynchronous, append-friendly and transaction-based. History is best effort and browser quota/eviction still applies. The implementation uses localStorage for the first bounded slice; measured write cost remains open and may motivate moving to IndexedDB. Sources: [MDN Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API), [MDN storage quotas and eviction](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria), [MDN IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API).
 - A representative action record serialized to roughly 745 bytes, plus an approximately 88-byte key (about 833 bytes total). At 1 MiB that is roughly 1,258 records, or 629 completed two-record actions, before failures and metadata. This is a size estimate, not a real client event-rate or storage-write-latency measurement.
+- Complexity rule: defer a storage schema marker until a second persisted shape or a real migration is needed. No older client-log format exists yet, and adding this marker when required is routine; client build version remains captured per event and is not used to guess storage format.
 
 ### Original first-slice proposal
 
 ### Implemented first slice — 2026-11-24
 
 - Captures only `ActionLogger` events at the browser client logging boundary. DynamoDB is not started or installed in the client. The existing console appender still receives events; action structured fields now also populate the logging event payload while preserving the existing formatted console message and JSON `Message.properties` shape.
-- Persists a versioned `client-log-event` record at emission with build version, timestamp, level/message, typed allowlisted action fields, trace ID, duration/outcome, and exception details. Arbitrary payload fields are filtered before persistence. Exception text is retained as agreed; unsafe exception content should be fixed at its source.
+- Persists a `client-log-event` record at emission with client build version, timestamp, level/message, typed allowlisted action fields, trace ID, duration/outcome, and exception details. Arbitrary payload fields are filtered before persistence. Exception text is retained as agreed; unsafe exception content should be fixed at its source. A storage schema marker is deferred until a second persisted shape or real migration is needed.
 - Uses origin-local `localStorage`, with a 1 MiB combined serialized-record-and-key cap, 2,000-record cap, 8 KiB per-record cap, and 30-day expiration. Oldest records are evicted first. Writes are immediate and synchronous; failures are swallowed at the logging boundary and exposed through status/drop counts. This remains best-effort browser storage and may be evicted by the browser or lost with site data. Clock rollback can delay expiry until wall time advances; future-dated records remain until they age past the retention window.
-- Clear is available in About and runs at logout. An epoch prevents a stale tab from repopulating history after clear. A stale tab reports that reload is needed. Export is user-triggered JSONL with a metadata line and event lines; counters explicitly cover only the current document, not other tabs or earlier sessions.
-- About includes `jq` examples for version, time, operation/outcome, and trace ID. Development, blank, and snapshot versions are labeled `unknown`.
+- Clear is available in Developer settings and runs at logout. An epoch prevents a stale tab from repopulating history after clear. A stale tab reports that reload is needed. Export is user-triggered JSONL with a metadata line and event lines; counters explicitly cover only the current document, not other tabs or earlier sessions.
+- Developer settings includes `jq` examples for version, time, operation/outcome, and trace ID. Development, blank, and snapshot versions are labeled `unknown`.
 - TestMints browser tests cover version/type preservation, emission fields and types, expiry, byte eviction, oversized records, unrelated storage, denied writes, write rollback, corrupt records, clear across tabs, safe payload projection, reopened history, and accessible controls. The focused client browser test and action-library JS test pass; production Vite bundle generation passes.
 - Real-device write latency and sustained event rates have not been measured. The approximate serialized-size calculation above suggests about 629 completed action sequences at the byte cap before failures; it is not a retention-days guarantee. The synchronous write cost remains a known limitation to measure before making a performance claim.
+
+### Recovery Semantics Follow-up — 2026-11-25
+
+- Two TestMints browser scenarios now cover tabs sharing one storage namespace: interleaved appends retain the newest records within the shared record cap, and a clear occurring during a record write leaves no stale record recoverable. The latter is a deliberately injected storage-boundary race; normal writes are synchronous and there is no delayed in-memory write queue.
+- Unsupported/corrupt records are discarded and counted. Storage-format versioning is intentionally deferred: no prior format has shipped, and adding a marker when an actual second format or migration exists is routine.
+- The stale-tab policy remains explicit: a tab that observes a changed clear epoch stops appending and tells its user to reload. Real-browser cross-tab and account-switch evidence remains in the unchecked hardening slice.
+- Client JS tests and full `./gradlew check` pass with the marker deferred. The full check executed the unfiltered E2E suite: 61 tests, 0 failures.
 
 ### UI Evidence Follow-up — 2026-11-24
 

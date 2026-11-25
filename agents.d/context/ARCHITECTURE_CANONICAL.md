@@ -39,6 +39,12 @@ feature. Mention an environment name only when needed for an actual resource
 address, existing configuration constraint or historical evidence. A flag's
 removal does not itself justify new environment-specific behavior.
 
+New user-visible UI changes start behind the existing
+`ENABLE_PRERELEASE_FEATURES` gate so they can be pushed without changing the
+default user experience while awaiting owner review. Incorporate the owner's UI
+feedback, then promote the reviewed UI by removing the gate and making it
+unconditional. Do not add a separate flag for each UI change.
+
 This consistency is critical to trustworthy tests and to local development being
 as good a proxy for the released application as possible. Keep concessions to a
 minimum: reuse the released application's behavior and execution paths wherever
