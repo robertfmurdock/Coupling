@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.repository.dynamo.external.queryItems
 import com.zegreatrob.coupling.repository.dynamo.external.transactWrite
 import com.zegreatrob.coupling.repository.party.PartyConfigurationBackfill
 import com.zegreatrob.coupling.repository.party.PartyConfigurationBackfillResult
+import js.objects.Object.Companion.keys
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
@@ -113,7 +114,7 @@ class DynamoPartyConfigurationBackfill(
     }
 
     private suspend fun importPage(run: Run, ledger: Json, start: Checkpoint): Checkpoint {
-        val page = querySource(run, checkpoint = start)
+        val page = querySource(run, through = start.watermark, after = start.lastKey)
         check(page.items.isNotEmpty()) { "Legacy snapshot changed before its watermark was imported" }
         var checkpoint = start
         for (source in page.items) checkpoint = importRevision(run, ledger, checkpoint, source)
@@ -122,11 +123,11 @@ class DynamoPartyConfigurationBackfill(
 
     private suspend fun compareSourceHistory(run: Run, checkpoint: Checkpoint): PartyConfigurationBackfillResult {
         val result = PartyConfigurationBackfillResult(checkpoint.count, checkpoint.lastKey, complete = true)
-        if (checkpoint.watermark == null) return result
+        val watermark = checkpoint.watermark ?: return result
         var missingRevision = false
-        var cursor = checkpoint.copy(lastKey = null)
+        var after: String? = null
         do {
-            val page = querySource(run, checkpoint = cursor)
+            val page = querySource(run, through = watermark, after = after)
             for (source in page.items) {
                 val revisionId = sourceRevisionId(run, source)
                 val imported = get(historyTable, run.historyPartition, "REV#$revisionId")
@@ -136,20 +137,18 @@ class DynamoPartyConfigurationBackfill(
                     return result.copy(complete = false, conflictingSourceKey = source.getDynamoStringValue("timestamp"))
                 }
             }
-            cursor = cursor.copy(lastKey = page.lastEvaluatedKey?.getDynamoStringValue("timestamp"))
-        } while (cursor.lastKey != null)
+            after = page.lastEvaluatedKey?.getDynamoStringValue("timestamp")
+        } while (after != null)
         return result.copy(complete = !missingRevision)
     }
 
     private fun matchesSourceRevision(run: Run, source: Json, imported: Json): Boolean {
         val party = imported["party"].unsafeCast<Json?>() ?: return false
-        return containsFields(imported, sourceHistoryFields(run, source)) && containsFields(party, canonicalParty(source))
+        return imported.containsFields(sourceHistoryFields(run, source)) && party.containsFields(canonicalParty(source))
     }
 
-    private fun containsFields(actual: Json, expected: Json): Boolean {
-        val keys = js("Object").keys(expected).unsafeCast<Array<String>>()
-        return keys.all { key -> actual[key] == expected[key] }
-    }
+    @OptIn(ExperimentalWasmJsInterop::class)
+    private fun Json.containsFields(expected: Json) = keys(expected).all { key -> this[key] == expected[key] }
 
     private suspend fun importRevision(run: Run, ledger: Json, previous: Checkpoint, source: Json): Checkpoint {
         val revisionId = sourceRevisionId(run, source)
@@ -266,16 +265,21 @@ class DynamoPartyConfigurationBackfill(
         ),
     )
 
-    private suspend fun querySource(run: Run, descending: Boolean = false, checkpoint: Checkpoint? = null) = dynamoDBClient.queryItems(
+    private suspend fun querySource(
+        run: Run,
+        descending: Boolean = false,
+        through: String? = null,
+        after: String? = null,
+    ) = dynamoDBClient.queryItems(
         DynamoQueryInput(
             tableName = sourceTable,
-            keyConditionExpression = if (checkpoint == null) "#id = :id" else "#id = :id AND #timestamp <= :watermark",
-            expressionAttributeNames = if (checkpoint == null) json("#id" to "id") else json("#id" to "id", "#timestamp" to "timestamp"),
-            expressionAttributeValues = if (checkpoint == null) json(":id" to run.partyId) else json(":id" to run.partyId, ":watermark" to checkpoint.watermark),
+            keyConditionExpression = if (through == null) "#id = :id" else "#id = :id AND #timestamp <= :watermark",
+            expressionAttributeNames = if (through == null) json("#id" to "id") else json("#id" to "id", "#timestamp" to "timestamp"),
+            expressionAttributeValues = if (through == null) json(":id" to run.partyId) else json(":id" to run.partyId, ":watermark" to through),
             consistentRead = true,
             scanIndexForward = !descending,
             limit = if (descending) 1 else pageSize,
-            exclusiveStartKey = checkpoint?.lastKey?.let { json("id" to run.partyId, "timestamp" to it) }.dynamoOptional(),
+            exclusiveStartKey = after?.let { json("id" to run.partyId, "timestamp" to it) }.dynamoOptional(),
         ),
     ).await()
 

@@ -55,19 +55,18 @@ class PartyConfigurationBackfillTest {
     }
 
     @Test
-    fun completedSnapshotImportsLaterRevisions() = asyncSetup(Fixture()) {
+    fun completedSnapshotImportsMultiplePagesOfLaterRevisions() = asyncSetup(Fixture()) {
         prepare()
         source("20240101000000.000", "Snapshot")
         DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
-        source("20240102000000.000", "Appended")
+        source("20240102000000.000", "First append")
+        source("20240103000000.000", "Second append")
     } exercise {
-        DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
+        DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
     } verify { result ->
-        result.importedCount.assertIsEqualTo(2)
-        result.checkpoint.assertIsEqualTo("20240102000000.000")
-        result.complete.assertIsEqualTo(true)
-        history().map { it["party"].unsafeCast<Json>()["name"] }.assertIsEqualTo(listOf("Snapshot", "Appended"))
-        metadata()?.get("name").assertIsEqualTo("Appended")
+        result.assertIsEqualTo(PartyConfigurationBackfillResult(3, "20240103000000.000", complete = true))
+        history().map { it["party"].unsafeCast<Json>()["name"] }.assertIsEqualTo(listOf("Snapshot", "First append", "Second append"))
+        metadata()?.get("name").assertIsEqualTo("Second append")
     }
 
     @Test
@@ -78,9 +77,8 @@ class PartyConfigurationBackfillTest {
     } exercise {
         DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
     } verify { result ->
-        result.importedCount.assertIsEqualTo(1)
-        result.complete.assertIsEqualTo(true)
-        history().single()["timestamp"].assertIsEqualTo("20240101000000.000")
+        result.assertIsEqualTo(PartyConfigurationBackfillResult(1, "20240101000000.000", complete = true))
+        history().single()["timestamp"].assertIsEqualTo(result.checkpoint)
         metadata()?.get("name").assertIsEqualTo("First")
     }
 
@@ -94,8 +92,7 @@ class PartyConfigurationBackfillTest {
     } exercise {
         DynamoPartyConfigurationBackfill(pageSize = 1).backfill(stage, party.id, runId)
     } verify { result ->
-        result.complete.assertIsEqualTo(false)
-        result.checkpoint.assertIsEqualTo("20240103000000.000")
+        result.assertIsEqualTo(PartyConfigurationBackfillResult(2, "20240103000000.000", complete = false))
         history().map { it["timestamp"] }.assertIsEqualTo(listOf("20240101000000.000", "20240103000000.000"))
         metadata()?.get("name").assertIsEqualTo("Current")
     }
@@ -109,9 +106,8 @@ class PartyConfigurationBackfillTest {
     } exercise {
         DynamoPartyConfigurationBackfill().backfill(stage, party.id, runId)
     } verify { result ->
-        result.complete.assertIsEqualTo(false)
-        result.checkpoint.assertIsEqualTo("20240101000000.000")
-        result.conflictingSourceKey.assertIsEqualTo("20240101000000.000")
+        val timestamp = "20240101000000.000"
+        result.assertIsEqualTo(PartyConfigurationBackfillResult(1, timestamp, complete = false, conflictingSourceKey = timestamp))
         history().single()["party"].unsafeCast<Json>()["name"].assertIsEqualTo("Imported")
         metadata()?.get("name").assertIsEqualTo("Imported")
     }

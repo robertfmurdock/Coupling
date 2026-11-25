@@ -24,7 +24,7 @@ class BackfillPartyConfigurationCommandTest {
         dispatcher.perform(command)
     } verify { result ->
         result.assertIsEqualTo(expected)
-        calls.assertIsEqualTo(listOf(BackfillCall("sandbox", command.partyId, "stable-run")))
+        calls.assertIsEqualTo(listOf(BackfillCall(command.stage, command.partyId, command.runId)))
     }
 }
 
