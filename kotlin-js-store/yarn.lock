@@ -68,10 +68,10 @@
     dpop "^2.1.1"
     es-cookie "~1.3.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.1177.0":
-  version "3.1177.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1177.0.tgz#027fae272f064aecdfddd486124b6b69a0da0dbd"
-  integrity sha512-INozacg3Ms1OAkwdEGBgKn9yTmEMthzZLhFv+eXCIRXdwPMAlNfmBj9rsEBNoLh3IiOQ9+0uo0DS98Gyr7cwzw==
+"@aws-sdk/client-apigatewaymanagementapi@~3.1178.0":
+  version "3.1178.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.1178.0.tgz#056da2b62edc88975a24516a98b4bfa2441cb0a5"
+  integrity sha512-4KGbTzPfXXZGC+SaYTUqJbUIuBexiKGJ8PEcuSUaVo/X8wB0N9N3B7OT2822uu00pDH/sNXgpMsfG8XBMKmhlg==
   dependencies:
     "@aws-sdk/core" "^3.981.2"
     "@aws-sdk/credential-provider-node" "^3.972.99"
@@ -82,10 +82,10 @@
     "@smithy/types" "^4.20.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@3.1177.0":
-  version "3.1177.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1177.0.tgz#99e03457886d2713a15ceffc0f997580816b16d5"
-  integrity sha512-wf4wO/ANS6z8r929K25Y+/0+KP96I6DbE7At6FpxKfuRjMmRWYsLzYw6EcPc/qsfB5lZVQbZfql1eNI0Z7skrQ==
+"@aws-sdk/client-dynamodb@3.1178.0":
+  version "3.1178.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.1178.0.tgz#b9e7ad4b0acc3bcc7fc318e94b30f6484a683e84"
+  integrity sha512-KlFTh6re8fSdsVIUqN/nt4b70zqmzQtKIaTkWrf0CEqQLNw3VL98mAl8q8qB8popE6gGUmU5RUIeWYBZj3RCkQ==
   dependencies:
     "@aws-sdk/core" "^3.981.2"
     "@aws-sdk/credential-provider-node" "^3.972.99"
@@ -112,10 +112,10 @@
     "@smithy/types" "^4.20.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.1177.0":
-  version "3.1177.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1177.0.tgz#7bec91fa660af683a7b50ab5ce30e440d4219c74"
-  integrity sha512-DxXiWQ8/LMUWyYwtoIP3FvwaT02kNGrku7i8PVEjaTdBIu3BmpsX3Lhmw1av/eSDYi8PWH+CJGM1an9Ge+IOOg==
+"@aws-sdk/client-lambda@~3.1178.0":
+  version "3.1178.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.1178.0.tgz#7013688a87e617fc95b0bd956e85f13a747c2b9f"
+  integrity sha512-eEpEiEaEDEZV9JanE+N/Y3mcIYKy0tc/BtFDgA6N+SPQQR1TP1Hctnq+nDkLBRUh2jv0bi25wwZnr6jezX6Sfg==
   dependencies:
     "@aws-sdk/core" "^3.981.2"
     "@aws-sdk/credential-provider-node" "^3.972.99"
@@ -388,10 +388,10 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.1177.0":
-  version "3.1177.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1177.0.tgz#6ea7666c531be0622e10eb16b3fc10eb27784745"
-  integrity sha512-j/n2X9spGya0a9HgGzvzCP/WsB0fhHgAID0uQKNTsQ7U4C1qQo/CUHex1UTKtp5+Xe5nkX2lhlLQRH4Lb9+M0A==
+"@aws-sdk/lib-dynamodb@3.1178.0":
+  version "3.1178.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.1178.0.tgz#4c0cdaf53e0e31c45fc2fae37ea093d66efcc199"
+  integrity sha512-YQ4m9e3PdPIROFfpp3E34FN3xERS6mzOL8EuFyNw0V5zpo8OvgPBOfmbBcZrxlI8BR2/Msa3CzgkpO5IeokERA==
   dependencies:
     "@aws-sdk/core" "^3.981.2"
     "@aws-sdk/util-dynamodb" "^3.996.9"
@@ -744,10 +744,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.86":
-  version "0.31.86"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.86.tgz#1eed45a12eb3efa7ae2a1c75a8dcd3002ae4c286"
-  integrity sha512-xR4VTUfyYkJ/DCK4ccueWVhAQ7j8FNWLDu+HykKEmTUZsZ5+UlE5nCvAKuHylJw523UVZP85ogup558P5IRniw==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.87":
+  version "0.31.87"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.87.tgz#2f1519827076537d4fefab55cd0585f57f63165b"
+  integrity sha512-K2kEzPDgE40W6xG2nVDT+t3I/Ed5j/Y5F5OitwhNWoFryOI/2GU7MPl0tJ0MOMHyq10ME14vV6o2yN/KXAiVrw==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -1530,6 +1530,14 @@
     "@graphql-tools/utils" "^13.2.1"
     tslib "^2.4.0"
 
+"@graphql-tools/merge@^10.0.10":
+  version "10.0.10"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-10.0.10.tgz#e7c6da605751f5f2ff511a1ebc26415dce92c4ff"
+  integrity sha512-xtdL8VCbZGbnn2WsYFitkWi1xrnbVpCysovjaUCnZhR3j8pCiQ1KCMdDn8z9lOk+dzCJZpPlAvHr2kICvJ661Q==
+  dependencies:
+    "@graphql-tools/utils" "^13.2.3"
+    tslib "^2.4.0"
+
 "@graphql-tools/merge@^10.0.2", "@graphql-tools/merge@^10.0.6", "@graphql-tools/merge@^10.0.8":
   version "10.0.8"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-10.0.8.tgz#940525ad4786a2fb5238892f9e281d7a7acbaf16"
@@ -1577,6 +1585,15 @@
   dependencies:
     "@graphql-tools/merge" "^9.1.9"
     "@graphql-tools/utils" "^11.1.0"
+    tslib "^2.4.0"
+
+"@graphql-tools/schema@^11.0.10":
+  version "11.0.10"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-11.0.10.tgz#bfb14e3cc17faa81b607da4549d07db82d2e90c2"
+  integrity sha512-6jzkaird7rhFR9KDjUXFtGOuAGfOfcFdINCSp5X5AnodImEnC3CYj0+YauYBGmo6jW93lCuIxCKy8jDqzH/drg==
+  dependencies:
+    "@graphql-tools/merge" "^10.0.10"
+    "@graphql-tools/utils" "^13.2.3"
     tslib "^2.4.0"
 
 "@graphql-tools/schema@^11.0.2", "@graphql-tools/schema@^11.0.8":
@@ -1666,6 +1683,15 @@
   dependencies:
     "@graphql-typed-document-node/core" "^3.2.0"
     "@whatwg-node/promise-helpers" "^2.0.1"
+    tslib "^2.4.0"
+
+"@graphql-tools/utils@^13.2.3":
+  version "13.2.3"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-13.2.3.tgz#0c1a353c629ecbeeab1ece70eecd8cdbbe1bb28a"
+  integrity sha512-QVM62avswur/KjQufsP2XMHw0JxIP60HK0vYOt9XMNzmhyO+QCwuutolivh5LE847blodInrfpIiwkVE4/tigw==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.2.0"
+    "@whatwg-node/promise-helpers" "^2.0.2"
     tslib "^2.4.0"
 
 "@graphql-tools/wrap@^11.1.1":
