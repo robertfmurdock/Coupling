@@ -744,10 +744,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@continuous-excellence/ze-great-dashboard-aws@0.31.87":
-  version "0.31.87"
-  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.87.tgz#2f1519827076537d4fefab55cd0585f57f63165b"
-  integrity sha512-K2kEzPDgE40W6xG2nVDT+t3I/Ed5j/Y5F5OitwhNWoFryOI/2GU7MPl0tJ0MOMHyq10ME14vV6o2yN/KXAiVrw==
+"@continuous-excellence/ze-great-dashboard-aws@0.31.88":
+  version "0.31.88"
+  resolved "https://registry.yarnpkg.com/@continuous-excellence/ze-great-dashboard-aws/-/ze-great-dashboard-aws-0.31.88.tgz#5f61b440470521c8cda995e41e74cd1632b74848"
+  integrity sha512-hnpdU5cK4gxmOkeUJ+d0Jw2vAiVEx+sw1AZONe8nD54AQRIvshG3vX8/YLaAfpramEY9xXmnc3nWshUF4rtD8Q==
   dependencies:
     fflate "^0.8.3"
     yaml "^2.9.1"
@@ -1245,10 +1245,10 @@
     auto-bind "^5.0.0"
     tslib "~2.8.0"
 
-"@graphql-codegen/visitor-plugin-common@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-8.0.2.tgz#41f319efc06facec4b12f5a8f9527ed5a10c6b20"
-  integrity sha512-yaVQA8WNl2pLCjplSfWbUgTMP9tp1X5Do4GLYDhnskZCU/rCU2zirJLzQ483nriE9Hlv1fPMVaCJHmAeuZxskg==
+"@graphql-codegen/visitor-plugin-common@8.0.3":
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-8.0.3.tgz#f196c4ecf4b145027a98dc57ef4388345c3ada01"
+  integrity sha512-mSZcWdWoLrelb4NsBANHGYl9MpI8KNLyP9Lrhjr4gyMAd2pDA0/0sJcFbndJ+RJOs+Cj1j/5Vi96hjW8AXF7CQ==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^8.0.0"
     "@graphql-tools/optimize" "^3.0.0"
